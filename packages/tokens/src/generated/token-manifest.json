@@ -1,0 +1,335 @@
+{
+  "border.width.default": {
+    "type": "dimension",
+    "value": {
+      "value": 1,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-border-width-default"
+  },
+  "border.width.focus": {
+    "type": "dimension",
+    "value": {
+      "value": 2,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-border-width-focus"
+  },
+  "color.action.background.default": {
+    "type": "color",
+    "value": "#1d4ed8",
+    "cssVariable": "--axiom-color-action-background-default"
+  },
+  "color.action.background.disabled": {
+    "type": "color",
+    "value": "#e2e8f0",
+    "cssVariable": "--axiom-color-action-background-disabled"
+  },
+  "color.action.background.hover": {
+    "type": "color",
+    "value": "#1e40af",
+    "cssVariable": "--axiom-color-action-background-hover"
+  },
+  "color.action.background.pressed": {
+    "type": "color",
+    "value": "#2563eb",
+    "cssVariable": "--axiom-color-action-background-pressed"
+  },
+  "color.action.foreground.default": {
+    "type": "color",
+    "value": "#ffffff",
+    "cssVariable": "--axiom-color-action-foreground-default"
+  },
+  "color.action.foreground.disabled": {
+    "type": "color",
+    "value": "#475569",
+    "cssVariable": "--axiom-color-action-foreground-disabled"
+  },
+  "color.border.danger": {
+    "type": "color",
+    "value": "#dc2626",
+    "cssVariable": "--axiom-color-border-danger"
+  },
+  "color.border.default": {
+    "type": "color",
+    "value": "#e2e8f0",
+    "cssVariable": "--axiom-color-border-default"
+  },
+  "color.border.focus": {
+    "type": "color",
+    "value": "#2563eb",
+    "cssVariable": "--axiom-color-border-focus"
+  },
+  "color.primitive.blue.500": {
+    "type": "color",
+    "value": "#2563eb",
+    "cssVariable": "--axiom-color-primitive-blue-500"
+  },
+  "color.primitive.blue.600": {
+    "type": "color",
+    "value": "#1d4ed8",
+    "cssVariable": "--axiom-color-primitive-blue-600"
+  },
+  "color.primitive.blue.700": {
+    "type": "color",
+    "value": "#1e40af",
+    "cssVariable": "--axiom-color-primitive-blue-700"
+  },
+  "color.primitive.neutral.0": {
+    "type": "color",
+    "value": "#ffffff",
+    "cssVariable": "--axiom-color-primitive-neutral-0"
+  },
+  "color.primitive.neutral.100": {
+    "type": "color",
+    "value": "#f1f5f9",
+    "cssVariable": "--axiom-color-primitive-neutral-100"
+  },
+  "color.primitive.neutral.200": {
+    "type": "color",
+    "value": "#e2e8f0",
+    "cssVariable": "--axiom-color-primitive-neutral-200"
+  },
+  "color.primitive.neutral.400": {
+    "type": "color",
+    "value": "#94a3b8",
+    "cssVariable": "--axiom-color-primitive-neutral-400"
+  },
+  "color.primitive.neutral.50": {
+    "type": "color",
+    "value": "#f8fafc",
+    "cssVariable": "--axiom-color-primitive-neutral-50"
+  },
+  "color.primitive.neutral.600": {
+    "type": "color",
+    "value": "#475569",
+    "cssVariable": "--axiom-color-primitive-neutral-600"
+  },
+  "color.primitive.neutral.900": {
+    "type": "color",
+    "value": "#0f172a",
+    "cssVariable": "--axiom-color-primitive-neutral-900"
+  },
+  "color.primitive.red.50": {
+    "type": "color",
+    "value": "#fef2f2",
+    "cssVariable": "--axiom-color-primitive-red-50"
+  },
+  "color.primitive.red.600": {
+    "type": "color",
+    "value": "#dc2626",
+    "cssVariable": "--axiom-color-primitive-red-600"
+  },
+  "color.primitive.red.700": {
+    "type": "color",
+    "value": "#b91c1c",
+    "cssVariable": "--axiom-color-primitive-red-700"
+  },
+  "color.surface.danger": {
+    "type": "color",
+    "value": "#fef2f2",
+    "cssVariable": "--axiom-color-surface-danger"
+  },
+  "color.surface.default": {
+    "type": "color",
+    "value": "#ffffff",
+    "cssVariable": "--axiom-color-surface-default"
+  },
+  "color.surface.hover": {
+    "type": "color",
+    "value": "#f1f5f9",
+    "cssVariable": "--axiom-color-surface-hover"
+  },
+  "color.surface.selected": {
+    "type": "color",
+    "value": "#1d4ed8",
+    "cssVariable": "--axiom-color-surface-selected"
+  },
+  "color.surface.subtle": {
+    "type": "color",
+    "value": "#f8fafc",
+    "cssVariable": "--axiom-color-surface-subtle"
+  },
+  "color.text.danger": {
+    "type": "color",
+    "value": "#b91c1c",
+    "cssVariable": "--axiom-color-text-danger"
+  },
+  "color.text.default": {
+    "type": "color",
+    "value": "#0f172a",
+    "cssVariable": "--axiom-color-text-default"
+  },
+  "color.text.inverse": {
+    "type": "color",
+    "value": "#ffffff",
+    "cssVariable": "--axiom-color-text-inverse"
+  },
+  "color.text.muted": {
+    "type": "color",
+    "value": "#475569",
+    "cssVariable": "--axiom-color-text-muted"
+  },
+  "font.family.sans": {
+    "type": "fontFamily",
+    "value": [
+      "Inter",
+      "system-ui",
+      "sans-serif"
+    ],
+    "cssVariable": "--axiom-font-family-sans"
+  },
+  "font.lineHeight.md": {
+    "type": "number",
+    "value": 1.5,
+    "cssVariable": "--axiom-font-lineHeight-md"
+  },
+  "font.lineHeight.sm": {
+    "type": "number",
+    "value": 1.25,
+    "cssVariable": "--axiom-font-lineHeight-sm"
+  },
+  "font.size.md": {
+    "type": "dimension",
+    "value": {
+      "value": 16,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-font-size-md"
+  },
+  "font.size.sm": {
+    "type": "dimension",
+    "value": {
+      "value": 14,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-font-size-sm"
+  },
+  "font.weight.medium": {
+    "type": "fontWeight",
+    "value": 500,
+    "cssVariable": "--axiom-font-weight-medium"
+  },
+  "font.weight.regular": {
+    "type": "fontWeight",
+    "value": 400,
+    "cssVariable": "--axiom-font-weight-regular"
+  },
+  "font.weight.semibold": {
+    "type": "fontWeight",
+    "value": 600,
+    "cssVariable": "--axiom-font-weight-semibold"
+  },
+  "radius.full": {
+    "type": "dimension",
+    "value": {
+      "value": 9999,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-radius-full"
+  },
+  "radius.md": {
+    "type": "dimension",
+    "value": {
+      "value": 8,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-radius-md"
+  },
+  "radius.sm": {
+    "type": "dimension",
+    "value": {
+      "value": 4,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-radius-sm"
+  },
+  "size.control.lg": {
+    "type": "dimension",
+    "value": {
+      "value": 48,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-size-control-lg"
+  },
+  "size.control.md": {
+    "type": "dimension",
+    "value": {
+      "value": 40,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-size-control-md"
+  },
+  "size.control.sm": {
+    "type": "dimension",
+    "value": {
+      "value": 32,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-size-control-sm"
+  },
+  "size.icon.md": {
+    "type": "dimension",
+    "value": {
+      "value": 20,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-size-icon-md"
+  },
+  "size.icon.sm": {
+    "type": "dimension",
+    "value": {
+      "value": 16,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-size-icon-sm"
+  },
+  "size.popover.min": {
+    "type": "dimension",
+    "value": {
+      "value": 200,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-size-popover-min"
+  },
+  "space.0": {
+    "type": "dimension",
+    "value": {
+      "value": 0,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-space-0"
+  },
+  "space.1": {
+    "type": "dimension",
+    "value": {
+      "value": 4,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-space-1"
+  },
+  "space.2": {
+    "type": "dimension",
+    "value": {
+      "value": 8,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-space-2"
+  },
+  "space.3": {
+    "type": "dimension",
+    "value": {
+      "value": 12,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-space-3"
+  },
+  "space.4": {
+    "type": "dimension",
+    "value": {
+      "value": 16,
+      "unit": "px"
+    },
+    "cssVariable": "--axiom-space-4"
+  }
+}
