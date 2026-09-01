@@ -33,7 +33,8 @@ then reflected in schemas, fixtures, types, and implementation in that order.
 ```
 
 - `@axiom/spec-tooling` is repository tooling and has no dependency on runtime
-  packages.
+  packages. It validates cross-registry State, Condition, and resolved Token
+  invariants before later contract packages consume their digests.
 - `@axiom/tokens` is target-neutral. It must not import React, renderer,
   Tailwind, browser, or framework concepts.
 - `@axiom/token-tooling` is an adapter boundary. Parser-specific values stop at
@@ -75,6 +76,8 @@ point and contains exports rather than implementation.
 | DTCG parser integration | token source profile | `@axiom/token-tooling` |
 | Token source corpus and resolved manifests | SSOT-01 and `tokens/` | `@axiom/token-tooling`, `@axiom/tokens` |
 | CSS property identity and policy | SSOT-03, Webref input manifest, CSS registries | `@axiom/css-property-profile` |
+| Canonical State and Lifecycle identity | SSOT-05, Canonical State Registry | `@axiom/spec-tooling` semantic gate |
+| Environment conditions and responsive thresholds | SSOT-04, Condition Registry | `@axiom/spec-tooling` semantic gate |
 | Positive and negative behavior | `spec/fixtures/`, `fixtures/` | package tests and spec harness |
 
 ## Change gate

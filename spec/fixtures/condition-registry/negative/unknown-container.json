@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "0.1",
+  "containers": [
+    {
+      "id": "component",
+      "cssName": "axiom-component"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "container.inline.compact",
+      "kind": "container",
+      "container": "unregistered",
+      "feature": "inline-size",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.container.sm"
+      }
+    }
+  ]
+}

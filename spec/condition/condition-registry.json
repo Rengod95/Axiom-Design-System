@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "0.1",
+  "containers": [
+    {
+      "id": "component",
+      "cssName": "axiom-component"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "container.inline.belowCompact",
+      "kind": "container",
+      "container": "component",
+      "feature": "inline-size",
+      "comparison": "<",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.container.sm"
+      }
+    },
+    {
+      "id": "container.inline.belowRegular",
+      "kind": "container",
+      "container": "component",
+      "feature": "inline-size",
+      "comparison": "<",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.container.md"
+      }
+    },
+    {
+      "id": "container.inline.belowWide",
+      "kind": "container",
+      "container": "component",
+      "feature": "inline-size",
+      "comparison": "<",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.container.lg"
+      }
+    },
+    {
+      "id": "container.inline.compact",
+      "kind": "container",
+      "container": "component",
+      "feature": "inline-size",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.container.sm"
+      }
+    },
+    {
+      "id": "container.inline.regular",
+      "kind": "container",
+      "container": "component",
+      "feature": "inline-size",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.container.md"
+      }
+    },
+    {
+      "id": "container.inline.wide",
+      "kind": "container",
+      "container": "component",
+      "feature": "inline-size",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.container.lg"
+      }
+    },
+    {
+      "id": "preference.reducedMotion",
+      "kind": "preference",
+      "feature": "prefers-reduced-motion",
+      "equals": "reduce"
+    },
+    {
+      "id": "viewport.width.belowLg",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": "<",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.viewport.lg"
+      }
+    },
+    {
+      "id": "viewport.width.belowMd",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": "<",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.viewport.md"
+      }
+    },
+    {
+      "id": "viewport.width.belowSm",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": "<",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.viewport.sm"
+      }
+    },
+    {
+      "id": "viewport.width.lg",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.viewport.lg"
+      }
+    },
+    {
+      "id": "viewport.width.md",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.viewport.md"
+      }
+    },
+    {
+      "id": "viewport.width.sm",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.viewport.sm"
+      }
+    }
+  ]
+}

@@ -18,6 +18,7 @@ The harness verifies:
 - registered `$id` and local path agreement;
 - resolvable schema references;
 - registry schema and semantic validation;
+- cross-registry reference, context-invariance, and contradiction validation;
 - positive fixtures succeed;
 - negative fixtures fail;
 - canonical JSON SHA-256 digests are reproducible.

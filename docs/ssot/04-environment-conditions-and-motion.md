@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-04 — Environment Conditions & Motion
-### Version 0.1.1
+### Version 0.1.2
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3, SSOT-01 v0.3, SSOT-03 v0.2 \
@@ -74,14 +74,27 @@ v0.1 naming:
 viewport.width.sm
 viewport.width.md
 viewport.width.lg
+viewport.width.belowSm
+viewport.width.belowMd
+viewport.width.belowLg
 container.inline.compact
 container.inline.regular
 container.inline.wide
+container.inline.belowCompact
+container.inline.belowRegular
+container.inline.belowWide
 preference.reducedMotion
 ```
 
 Condition IDs describe meaning. They do not embed raw `@media` or
-`@container` text.
+`@container` text. `below*` definitions use `<`; their matching unprefixed
+definitions use `>=`. This closed pair supports bounded responsive ranges and
+deterministic contradiction detection without raw query authoring.
+
+The machine-readable authorities are
+`spec/condition/condition-registry.schema.json`,
+`spec/condition/condition-expression.schema.json`, and
+`spec/condition/condition-registry.json`.
 
 ### 3.2 Condition kinds
 
@@ -125,9 +138,10 @@ interface ContainerCondition {
 }
 ```
 
-Container names are registered. A Recipe cannot introduce arbitrary container
-names. The binding/integration layer is responsible for establishing the
-corresponding query container.
+Container names are registered. v0.1 registers the `component` identity and
+maps it to CSS container name `axiom-component`. A Recipe cannot introduce
+arbitrary container names. The binding/integration layer is responsible for
+establishing the corresponding query container.
 
 ### 3.5 Preference condition
 
@@ -151,9 +165,9 @@ Breakpoint thresholds are Tokens so design-system contexts can name and govern
 them, but Theme MUST NOT change their values in v0.1.
 
 ```text
-breakpoint.primitive.viewport.768
+breakpoint.primitive.scale.48
 breakpoint.semantic.viewport.md
-breakpoint.primitive.container.480
+breakpoint.primitive.scale.40
 breakpoint.semantic.container.regular
 ```
 
@@ -209,12 +223,15 @@ when they can be proven from the same condition family.
 Example:
 
 ```text
-viewport.width >= lg
+viewport.width.lg
 AND
-viewport.width < md
+viewport.width.belowMd
 ```
 
-is an error when `lg >= md` in the resolved registry.
+is an error when the resolved `lg >= md` relationship makes the conjunction
+impossible. The validator resolves threshold Tokens from every registered
+context and rejects missing, non-breakpoint, negative, non-`rem`, or
+theme-variant values before evaluating the expression.
 
 ---
 

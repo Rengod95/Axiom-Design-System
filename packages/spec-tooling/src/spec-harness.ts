@@ -19,6 +19,7 @@ import {
 import { runSemanticValidator } from "./semantic-validators.js";
 import type {
   SemanticValidatorId,
+  SemanticValidationContext,
   SpecCheckReport,
   SpecManifest,
 } from "./types.js";
@@ -100,11 +101,12 @@ const validateFixture = (
   validate: ValidateFunction,
   value: unknown,
   semanticValidator: SemanticValidatorId | undefined,
+  semanticContext: SemanticValidationContext,
   file: string,
 ): { readonly schemaValid: boolean; readonly semanticErrors: readonly string[] } => {
   const schemaValid = validate(value) as boolean;
   const semanticErrors = schemaValid
-    ? withFixtureFile(runSemanticValidator(semanticValidator, value), file).map(
+    ? withFixtureFile(runSemanticValidator(semanticValidator, value, semanticContext), file).map(
         (diagnostic) => `${diagnostic.code} ${diagnostic.location?.pointer ?? ""}: ${diagnostic.message}`,
       )
     : [];
@@ -166,13 +168,23 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
   const digests: Record<string, string> = {
     manifest: canonicalJsonDigest(manifestValue),
   };
+  const registryValues: Record<string, unknown> = {};
   for (const entry of manifest.registries) {
     const validate = ajv.getSchema(entry.schema);
     if (validate === undefined) throw new Error(`${entry.id}: unknown schema '${entry.schema}'.`);
     const value = await readJson(resolveInside(specRoot, entry.path));
     assertValid(validate, value, entry.path);
+    registryValues[entry.id] = value;
+    digests[entry.id] = canonicalJsonDigest(value);
+  }
+
+  const semanticContext: SemanticValidationContext = {
+    registries: registryValues,
+  };
+  for (const entry of manifest.registries) {
+    const value = registryValues[entry.id];
     const semanticErrors = withFixtureFile(
-      runSemanticValidator(entry.semanticValidator, value),
+      runSemanticValidator(entry.semanticValidator, value, semanticContext),
       entry.path,
     );
     if (semanticErrors.length > 0) {
@@ -182,7 +194,6 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
           .join("; ")}`,
       );
     }
-    digests[entry.id] = canonicalJsonDigest(value);
   }
 
   let positiveFixtureCount = 0;
@@ -204,6 +215,7 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
         validate,
         value,
         suite.semanticValidator,
+        semanticContext,
         relative(specRoot, path),
       );
       if (!result.schemaValid || result.semanticErrors.length > 0) {
@@ -222,6 +234,7 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
         validate,
         value,
         suite.semanticValidator,
+        semanticContext,
         relative(specRoot, path),
       );
       if (result.schemaValid && result.semanticErrors.length === 0) {

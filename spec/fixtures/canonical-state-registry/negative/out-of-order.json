@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "0.1",
+  "states": [
+    {
+      "id": "pressed",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "disabled",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button"],
+      "usage": ["appearance", "behavior"]
+    }
+  ]
+}
