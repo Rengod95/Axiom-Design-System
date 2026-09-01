@@ -1,0 +1,10 @@
+{
+  "layer": {
+    "primitive": {
+      "sample": {
+        "$type": "number",
+        "$value": 1.5
+      }
+    }
+  }
+}

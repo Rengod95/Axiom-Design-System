@@ -1,0 +1,11 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "fontWeight": {
+    "primitive": {
+      "sample": {
+        "$type": "fontWeight",
+        "$value": 600
+      }
+    }
+  }
+}

@@ -39,7 +39,10 @@ export interface Diagnostic {
   readonly details?: Readonly<Record<string, JsonValue>>;
 }
 
-export type SemanticValidatorId = "token-domain-registry" | "token-identity";
+export type SemanticValidatorId =
+  | "parsed-token-document"
+  | "token-domain-registry"
+  | "token-identity";
 
 export interface SchemaManifestEntry {
   readonly id: string;

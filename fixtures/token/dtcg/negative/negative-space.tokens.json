@@ -1,0 +1,13 @@
+{
+  "space": {
+    "primitive": {
+      "sample": {
+        "$type": "dimension",
+        "$value": {
+          "value": -4,
+          "unit": "px"
+        }
+      }
+    }
+  }
+}

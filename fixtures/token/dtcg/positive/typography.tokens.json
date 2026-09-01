@@ -1,0 +1,17 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "typography": {
+    "primitive": {
+      "sample": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": ["Inter", "sans-serif"],
+          "fontSize": { "value": 16, "unit": "px" },
+          "fontWeight": 600,
+          "letterSpacing": { "value": 0, "unit": "px" },
+          "lineHeight": 1.5
+        }
+      }
+    }
+  }
+}

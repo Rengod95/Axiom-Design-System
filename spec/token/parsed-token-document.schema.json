@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/parsed-document/0.1",
+  "title": "Axiom Parsed DTCG Token Document",
+  "type": "object",
+  "required": ["schemaVersion", "tokens"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "tokens": {
+      "type": "array",
+      "items": { "$ref": "https://axiom.dev/schemas/token/normalized-record/0.1" }
+    }
+  },
+  "unevaluatedProperties": false
+}

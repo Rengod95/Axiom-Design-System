@@ -1,0 +1,11 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "aspectRatio": {
+    "primitive": {
+      "sample": {
+        "$type": "number",
+        "$value": 1.7777777778
+      }
+    }
+  }
+}

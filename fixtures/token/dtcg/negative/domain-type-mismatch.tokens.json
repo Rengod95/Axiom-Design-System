@@ -1,0 +1,11 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "color": {
+    "primitive": {
+      "spacing": {
+        "$type": "dimension",
+        "$value": { "value": 8, "unit": "px" }
+      }
+    }
+  }
+}

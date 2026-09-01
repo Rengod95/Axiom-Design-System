@@ -27,8 +27,24 @@
       "path": "token/token-domain-registry.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/token/id/0.1",
+      "path": "token/token-id.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/token/identity/0.1",
       "path": "token/token-identity.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/normalized-record/0.1",
+      "path": "token/normalized-token-record.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/parsed-document/0.1",
+      "path": "token/parsed-token-document.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/source-profile/0.1",
+      "path": "token/token-source-profile.schema.json"
     },
     {
       "id": "https://axiom.dev/schemas/token/tier/0.1",
@@ -41,6 +57,11 @@
       "path": "token/token-domain-registry.json",
       "schema": "https://axiom.dev/schemas/token/domain-registry/0.1",
       "semanticValidator": "token-domain-registry"
+    },
+    {
+      "id": "token-source-profile",
+      "path": "token/token-source-profile.json",
+      "schema": "https://axiom.dev/schemas/token/source-profile/0.1"
     }
   ],
   "fixtureSuites": [
@@ -69,6 +90,19 @@
       "positiveDirectory": "fixtures/token-identity/positive",
       "negativeDirectory": "fixtures/token-identity/negative",
       "semanticValidator": "token-identity"
+    },
+    {
+      "id": "parsed-token-document",
+      "schema": "https://axiom.dev/schemas/token/parsed-document/0.1",
+      "positiveDirectory": "fixtures/parsed-token-document/positive",
+      "negativeDirectory": "fixtures/parsed-token-document/negative",
+      "semanticValidator": "parsed-token-document"
+    },
+    {
+      "id": "token-source-profile",
+      "schema": "https://axiom.dev/schemas/token/source-profile/0.1",
+      "positiveDirectory": "fixtures/token-source-profile/positive",
+      "negativeDirectory": "fixtures/token-source-profile/negative"
     }
   ]
 }

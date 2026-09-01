@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/normalized-record/0.1",
+  "title": "Axiom Normalized DTCG Token Record",
+  "type": "object",
+  "required": ["id", "domain", "tier", "dtcgType", "value", "source"],
+  "properties": {
+    "id": { "$ref": "https://axiom.dev/schemas/token/id/0.1" },
+    "domain": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+    "tier": { "$ref": "https://axiom.dev/schemas/token/tier/0.1" },
+    "dtcgType": {
+      "enum": [
+        "color",
+        "dimension",
+        "fontFamily",
+        "fontWeight",
+        "duration",
+        "cubicBezier",
+        "number",
+        "strokeStyle",
+        "border",
+        "transition",
+        "shadow",
+        "gradient",
+        "typography"
+      ]
+    },
+    "value": true,
+    "aliasTarget": { "$ref": "https://axiom.dev/schemas/token/id/0.1" },
+    "source": { "$ref": "https://axiom.dev/schemas/common/source-location/0.1" },
+    "description": { "type": "string" },
+    "deprecated": {
+      "oneOf": [{ "type": "boolean" }, { "type": "string" }]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "unevaluatedProperties": false
+}

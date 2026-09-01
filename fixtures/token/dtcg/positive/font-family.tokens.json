@@ -1,0 +1,11 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "fontFamily": {
+    "primitive": {
+      "sample": {
+        "$type": "fontFamily",
+        "$value": ["Inter", "sans-serif"]
+      }
+    }
+  }
+}

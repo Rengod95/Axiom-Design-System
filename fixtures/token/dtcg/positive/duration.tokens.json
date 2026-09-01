@@ -1,0 +1,11 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "duration": {
+    "primitive": {
+      "sample": {
+        "$type": "duration",
+        "$value": { "value": 120, "unit": "ms" }
+      }
+    }
+  }
+}

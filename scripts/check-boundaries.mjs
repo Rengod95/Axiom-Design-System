@@ -6,6 +6,7 @@ const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 
 const allowedRuntimeDependencies = {
   "spec-tooling": ["ajv"],
+  "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],
   tokens: [],
   "appearance-schema": ["@axiom/tokens"],
   recipes: ["@axiom/appearance-schema"],
@@ -51,6 +52,7 @@ const walk = async (directory) => {
 
 const corePackages = [
   "spec-tooling",
+  "token-tooling",
   "tokens",
   "appearance-schema",
   "recipes",

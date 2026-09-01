@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.1",
+  "tokens": [
+    {
+      "id": "color.primitive.brand.600",
+      "domain": "color",
+      "tier": "primitive",
+      "dtcgType": "color",
+      "value": {
+        "colorSpace": "srgb",
+        "components": [0.1, 0.3, 0.8],
+        "alpha": 1
+      },
+      "source": {
+        "file": "file:///tokens/color.tokens.json",
+        "pointer": "/color/primitive/brand/600",
+        "node": { "type": "Object" }
+      }
+    }
+  ]
+}

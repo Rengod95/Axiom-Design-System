@@ -47,7 +47,7 @@
         "path": { "$ref": "#/$defs/relativeJsonPath" },
         "schema": { "type": "string", "pattern": "^https://axiom\\.dev/schemas/" },
         "semanticValidator": {
-          "enum": ["token-domain-registry", "token-identity"]
+          "enum": ["token-domain-registry", "token-identity", "parsed-token-document"]
         }
       },
       "unevaluatedProperties": false
@@ -67,7 +67,7 @@
           "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
         },
         "semanticValidator": {
-          "enum": ["token-domain-registry", "token-identity"]
+          "enum": ["token-domain-registry", "token-identity", "parsed-token-document"]
         }
       },
       "unevaluatedProperties": false

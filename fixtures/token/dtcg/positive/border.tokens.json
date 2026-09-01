@@ -1,0 +1,19 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "border": {
+    "primitive": {
+      "sample": {
+        "$type": "border",
+        "$value": {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [0.2, 0.2, 0.2],
+            "alpha": 1
+          },
+          "width": { "value": 1, "unit": "px" },
+          "style": "solid"
+        }
+      }
+    }
+  }
+}

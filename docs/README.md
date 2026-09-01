@@ -32,6 +32,7 @@ reconciliation한다.
 6. [React Aria Behavioral Criteria Profile v0.1](specs/react-aria-behavioral-criteria-v0.1.md)
 7. [Axiom v0.1 Foundation Reconciliation & Implementation Plan](plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
 8. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
+9. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를
@@ -98,6 +99,7 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 
 - [Axiom v0.1 Foundation Reconciliation & Implementation Plan — 2026-09-01](plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
 - [P1 Normative Specification Harness — Implementation Report — 2026-09-01](implementation/2026-09-01-p1-normative-spec-harness.md)
+- [P2.1 DTCG Parser & Normalization Boundary — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-token-parser-and-normalization.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 
 계획은 현 패키지 disposition, 목표 workspace, schema/artifact inventory,

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "gradient": {
+    "primitive": {
+      "sample": {
+        "$type": "gradient",
+        "$value": [
+          {
+            "color": {
+              "colorSpace": "srgb",
+              "components": [0.1, 0.3, 0.8],
+              "alpha": 1
+            },
+            "position": 0
+          },
+          {
+            "color": {
+              "colorSpace": "srgb",
+              "components": [0.4, 0.7, 1],
+              "alpha": 1
+            },
+            "position": 1
+          }
+        ]
+      }
+    }
+  }
+}

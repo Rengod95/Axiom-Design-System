@@ -6,10 +6,7 @@
   "required": ["kind", "path"],
   "properties": {
     "kind": { "const": "token" },
-    "path": {
-      "type": "string",
-      "pattern": "^[a-z][A-Za-z0-9]*\\.(?:primitive|semantic|component)\\.[a-z0-9][A-Za-z0-9]*(?:\\.[a-z0-9][A-Za-z0-9]*)*$"
-    }
+    "path": { "$ref": "https://axiom.dev/schemas/token/id/0.1" }
   },
   "unevaluatedProperties": false
 }

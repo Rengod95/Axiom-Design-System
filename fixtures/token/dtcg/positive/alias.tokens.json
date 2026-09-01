@@ -1,0 +1,21 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "color": {
+    "primitive": {
+      "brand": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.1, 0.3, 0.8],
+          "alpha": 1
+        }
+      }
+    },
+    "semantic": {
+      "accent": {
+        "$type": "color",
+        "$value": "{color.primitive.brand}"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "color": {
+    "primitive": {
+      "sample": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.1, 0.3, 0.8],
+          "alpha": 1
+        }
+      }
+    }
+  }
+}

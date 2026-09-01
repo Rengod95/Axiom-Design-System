@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.1",
+  "tokens": [
+    {
+      "id": "space.primitive.scale.4",
+      "domain": "color",
+      "tier": "primitive",
+      "dtcgType": "dimension",
+      "value": { "value": 16, "unit": "px" },
+      "source": {
+        "file": "file:///tokens/space.tokens.json",
+        "pointer": "/space/primitive/scale/4"
+      }
+    }
+  ]
+}

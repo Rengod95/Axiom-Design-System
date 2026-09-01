@@ -14,6 +14,7 @@ interface RecordValue {
   readonly kind?: unknown;
   readonly root?: unknown;
   readonly tier?: unknown;
+  readonly tokens?: unknown;
 }
 
 const isRecord = (value: unknown): value is RecordValue =>
@@ -181,6 +182,54 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
   return diagnostics;
 };
 
+const validateParsedTokenDocument = (value: unknown): readonly Diagnostic[] => {
+  if (!isRecord(value) || !Array.isArray(value.tokens)) return [];
+
+  const diagnostics: Diagnostic[] = [];
+  const ids = new Set<string>();
+  let previousId: string | undefined;
+
+  value.tokens.forEach((token, index) => {
+    if (!isRecord(token)) return;
+    const id = token.id;
+    if (typeof id === "string") {
+      if (ids.has(id)) {
+        diagnostics.push(
+          tokenDiagnostic("AXT1301", `Duplicate normalized Token id '${id}'.`, `/tokens/${index}/id`),
+        );
+      }
+      ids.add(id);
+
+      if (previousId !== undefined && previousId.localeCompare(id, "en") > 0) {
+        diagnostics.push(
+          tokenDiagnostic(
+            "AXT1302",
+            "Normalized Tokens must be serialized in ascending id order.",
+            `/tokens/${index}/id`,
+          ),
+        );
+      }
+      previousId = id;
+    }
+
+    diagnostics.push(
+      ...validateTokenIdentity(token).map((diagnostic) => ({
+        ...diagnostic,
+        ...(diagnostic.location === undefined
+          ? {}
+          : {
+              location: {
+                ...diagnostic.location,
+                pointer: `/tokens/${index}${diagnostic.location.pointer}`,
+              },
+            }),
+      })),
+    );
+  });
+
+  return diagnostics;
+};
+
 export const runSemanticValidator = (
   id: SemanticValidatorId | undefined,
   value: unknown,
@@ -192,5 +241,7 @@ export const runSemanticValidator = (
       return validateTokenDomainRegistry(value);
     case "token-identity":
       return validateTokenIdentity(value);
+    case "parsed-token-document":
+      return validateParsedTokenDocument(value);
   }
 };

@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "./packages/spec-tooling" },
+    { "path": "./packages/token-tooling" },
     { "path": "./packages/tokens" },
     { "path": "./packages/appearance-schema" },
     { "path": "./packages/recipes" },

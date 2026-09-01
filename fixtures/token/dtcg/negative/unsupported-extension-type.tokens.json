@@ -1,0 +1,10 @@
+{
+  "opacity": {
+    "primitive": {
+      "sample": {
+        "$type": "boolean",
+        "$value": true
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/source-profile/0.1",
+  "title": "Axiom Token Source Profile",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "dtcgVersion",
+    "formatSchema",
+    "fileExtension",
+    "pathGrammar",
+    "supportedDTCGTypes",
+    "parser"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "dtcgVersion": { "const": "2025.10" },
+    "formatSchema": {
+      "const": "https://designtokens.org/schemas/2025.10/format.json"
+    },
+    "fileExtension": { "const": ".tokens.json" },
+    "pathGrammar": { "const": "<domain>.<tier>.<tier-specific-path>" },
+    "supportedDTCGTypes": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "prefixItems": [
+        { "const": "color" },
+        { "const": "dimension" },
+        { "const": "fontFamily" },
+        { "const": "fontWeight" },
+        { "const": "duration" },
+        { "const": "cubicBezier" },
+        { "const": "number" },
+        { "const": "strokeStyle" },
+        { "const": "border" },
+        { "const": "transition" },
+        { "const": "shadow" },
+        { "const": "gradient" },
+        { "const": "typography" }
+      ],
+      "items": false
+    },
+    "parser": {
+      "type": "object",
+      "required": [
+        "port",
+        "adapter",
+        "package",
+        "version",
+        "resolveAliases",
+        "skipLint"
+      ],
+      "properties": {
+        "port": { "const": "TokenParserPort" },
+        "adapter": { "const": "@axiom/token-tooling/terrazzo" },
+        "package": { "const": "@terrazzo/parser" },
+        "version": { "const": "2.4.0" },
+        "resolveAliases": { "const": false },
+        "skipLint": { "const": false }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

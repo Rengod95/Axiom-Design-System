@@ -10,10 +10,11 @@ describe("normative specification", () => {
   it("validates every declared schema, registry, and conformance fixture", async () => {
     const report = await checkSpecification(specRoot);
 
-    expect(report.schemaCount).toBe(8);
-    expect(report.registryCount).toBe(1);
-    expect(report.positiveFixtureCount).toBe(4);
-    expect(report.negativeFixtureCount).toBe(8);
+    expect(report.schemaCount).toBe(12);
+    expect(report.registryCount).toBe(2);
+    expect(report.positiveFixtureCount).toBe(6);
+    expect(report.negativeFixtureCount).toBe(12);
     expect(report.digests["token-domain-registry"]).toMatch(/^sha256:[a-f0-9]{64}$/);
+    expect(report.digests["token-source-profile"]).toMatch(/^sha256:[a-f0-9]{64}$/);
   });
 });

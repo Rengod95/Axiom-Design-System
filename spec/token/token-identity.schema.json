@@ -5,10 +5,7 @@
   "type": "object",
   "required": ["id", "domain", "tier"],
   "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^[a-z][A-Za-z0-9]*\\.(?:primitive|semantic|component)\\.[a-z0-9][A-Za-z0-9]*(?:\\.[a-z0-9][A-Za-z0-9]*)*$"
-    },
+    "id": { "$ref": "https://axiom.dev/schemas/token/id/0.1" },
     "domain": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
     "tier": { "$ref": "https://axiom.dev/schemas/token/tier/0.1" }
   },

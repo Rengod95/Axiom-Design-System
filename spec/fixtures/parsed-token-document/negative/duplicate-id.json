@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1",
+  "tokens": [
+    {
+      "id": "opacity.primitive.disabled",
+      "domain": "opacity",
+      "tier": "primitive",
+      "dtcgType": "number",
+      "value": 0.4,
+      "source": {
+        "file": "file:///tokens/opacity.tokens.json",
+        "pointer": "/opacity/primitive/disabled"
+      }
+    },
+    {
+      "id": "opacity.primitive.disabled",
+      "domain": "opacity",
+      "tier": "primitive",
+      "dtcgType": "number",
+      "value": 0.5,
+      "source": {
+        "file": "file:///tokens/opacity-duplicate.tokens.json",
+        "pointer": "/opacity/primitive/disabled"
+      }
+    }
+  ]
+}
