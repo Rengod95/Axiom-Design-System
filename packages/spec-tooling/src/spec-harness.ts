@@ -9,15 +9,19 @@ import {
 } from "ajv/dist/2020.js";
 
 import { canonicalJsonDigest } from "./canonical-json.js";
+import {
+  JSON_FILE_SUFFIX,
+  JSON_SCHEMA_FILE_SUFFIX,
+  SPEC_MANIFEST_PATH,
+  SPEC_MANIFEST_SCHEMA_PATH,
+  STABLE_SORT_LOCALE,
+} from "./constants.js";
 import { runSemanticValidator } from "./semantic-validators.js";
 import type {
   SemanticValidatorId,
   SpecCheckReport,
   SpecManifest,
 } from "./types.js";
-
-const MANIFEST_SCHEMA_PATH = "spec-manifest.schema.json";
-const MANIFEST_PATH = "manifest.json";
 
 const createAjv = (): Ajv2020 =>
   new Ajv2020({
@@ -51,9 +55,9 @@ const listJsonFiles = async (directory: string): Promise<readonly string[]> => {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = resolve(directory, entry.name);
     if (entry.isDirectory()) paths.push(...(await listJsonFiles(path)));
-    else if (entry.isFile() && entry.name.endsWith(".json")) paths.push(path);
+    else if (entry.isFile() && entry.name.endsWith(JSON_FILE_SUFFIX)) paths.push(path);
   }
-  return paths.sort((left, right) => left.localeCompare(right, "en"));
+  return paths.sort((left, right) => left.localeCompare(right, STABLE_SORT_LOCALE));
 };
 
 const formatErrors = (errors: readonly ErrorObject[] | null | undefined): string =>
@@ -113,11 +117,11 @@ const validateSchemaInventory = async (
 ): Promise<void> => {
   const declared = manifest.schemas
     .map((entry) => entry.path)
-    .sort((left, right) => left.localeCompare(right, "en"));
+    .sort((left, right) => left.localeCompare(right, STABLE_SORT_LOCALE));
   const actual = (await listJsonFiles(specRoot))
     .map((path) => relative(specRoot, path))
-    .filter((path) => path.endsWith(".schema.json"))
-    .sort((left, right) => left.localeCompare(right, "en"));
+    .filter((path) => path.endsWith(JSON_SCHEMA_FILE_SUFFIX))
+    .sort((left, right) => left.localeCompare(right, STABLE_SORT_LOCALE));
 
   if (JSON.stringify(actual) !== JSON.stringify(declared)) {
     throw new Error(
@@ -127,13 +131,15 @@ const validateSchemaInventory = async (
 };
 
 export const checkSpecification = async (specRoot: string): Promise<SpecCheckReport> => {
-  const manifestSchemaValue = await readJson(resolveInside(specRoot, MANIFEST_SCHEMA_PATH));
-  const manifestSchema = asSchema(manifestSchemaValue, MANIFEST_SCHEMA_PATH);
-  const manifestValue = await readJson(resolveInside(specRoot, MANIFEST_PATH));
+  const manifestSchemaValue = await readJson(
+    resolveInside(specRoot, SPEC_MANIFEST_SCHEMA_PATH),
+  );
+  const manifestSchema = asSchema(manifestSchemaValue, SPEC_MANIFEST_SCHEMA_PATH);
+  const manifestValue = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH));
 
   const bootstrapAjv = createAjv();
   const validateManifest = bootstrapAjv.compile(manifestSchema);
-  assertValid(validateManifest, manifestValue, MANIFEST_PATH);
+  assertValid(validateManifest, manifestValue, SPEC_MANIFEST_PATH);
   const manifest = manifestValue as SpecManifest;
   await validateSchemaInventory(specRoot, manifest);
 

@@ -1,3 +1,15 @@
+import {
+  CONSTRAINT_REQUIRED_DTCG_TYPE,
+  ERROR_DIAGNOSTIC_SEVERITY,
+  IN_MEMORY_SOURCE_NAME,
+  REQUIRED_RESOLVED_THEMES,
+  SPEC_DIAGNOSTIC_CODE,
+  STABLE_SORT_LOCALE,
+  TOKEN_DIAGNOSTIC_PHASE,
+  TOKEN_ID_DOMAIN_SEGMENT_INDEX,
+  TOKEN_ID_TIER_SEGMENT_INDEX,
+  TOKEN_REFERENCE_PATTERN,
+} from "./constants.js";
 import type {
   Diagnostic,
   JsonValue,
@@ -31,10 +43,10 @@ const tokenDiagnostic = (
   details?: Readonly<Record<string, JsonValue>>,
 ): Diagnostic => ({
   code,
-  severity: "error",
-  phase: "token",
+  severity: ERROR_DIAGNOSTIC_SEVERITY,
+  phase: TOKEN_DIAGNOSTIC_PHASE,
   message,
-  location: { file: "<memory>", pointer },
+  location: { file: IN_MEMORY_SOURCE_NAME, pointer },
   ...(details === undefined ? {} : { details }),
 });
 
@@ -49,24 +61,30 @@ const validateTokenIdentity = (value: unknown): readonly Diagnostic[] => {
   const segments = id.split(".");
   const diagnostics: Diagnostic[] = [];
 
-  if (segments[0] !== domain) {
+  if (segments[TOKEN_ID_DOMAIN_SEGMENT_INDEX] !== domain) {
     diagnostics.push(
       tokenDiagnostic(
-        "AXT1101",
-        `Token path domain '${segments[0] ?? ""}' does not match declared domain '${domain}'.`,
+        SPEC_DIAGNOSTIC_CODE.DOMAIN_IDENTITY_MISMATCH,
+        `Token path domain '${segments[TOKEN_ID_DOMAIN_SEGMENT_INDEX] ?? ""}' does not match declared domain '${domain}'.`,
         "/domain",
-        { declaredDomain: domain, pathDomain: segments[0] ?? "" },
+        {
+          declaredDomain: domain,
+          pathDomain: segments[TOKEN_ID_DOMAIN_SEGMENT_INDEX] ?? "",
+        },
       ),
     );
   }
 
-  if (segments[1] !== tier) {
+  if (segments[TOKEN_ID_TIER_SEGMENT_INDEX] !== tier) {
     diagnostics.push(
       tokenDiagnostic(
-        "AXT1102",
-        `Token path tier '${segments[1] ?? ""}' does not match declared tier '${tier}'.`,
+        SPEC_DIAGNOSTIC_CODE.TIER_IDENTITY_MISMATCH,
+        `Token path tier '${segments[TOKEN_ID_TIER_SEGMENT_INDEX] ?? ""}' does not match declared tier '${tier}'.`,
         "/tier",
-        { declaredTier: tier, pathTier: segments[1] ?? "" },
+        {
+          declaredTier: tier,
+          pathTier: segments[TOKEN_ID_TIER_SEGMENT_INDEX] ?? "",
+        },
       ),
     );
   }
@@ -75,7 +93,7 @@ const validateTokenIdentity = (value: unknown): readonly Diagnostic[] => {
 };
 
 const containsTokenReference = (value: unknown): boolean => {
-  if (typeof value === "string") return /^\{[^{}]+\}$/.test(value);
+  if (typeof value === "string") return TOKEN_REFERENCE_PATTERN.test(value);
   if (Array.isArray(value)) return value.some(containsTokenReference);
   if (isRecord(value)) return Object.values(value).some(containsTokenReference);
   return false;
@@ -88,8 +106,8 @@ const validateTokenContextOverride = (value: unknown): readonly Diagnostic[] => 
     if (isRecord(token) && token.tier === "primitive") {
       diagnostics.push(
         tokenDiagnostic(
-          "AXT1503",
-          "Resolver contexts cannot override Primitive Tokens in v0.1.",
+          SPEC_DIAGNOSTIC_CODE.PRIMITIVE_CONTEXT_OVERRIDE,
+          "Resolver contexts cannot override Primitive Tokens in the foundation profile.",
           `/tokens/${index}/tier`,
         ),
       );
@@ -101,16 +119,15 @@ const validateTokenContextOverride = (value: unknown): readonly Diagnostic[] => 
 const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] => {
   if (!isRecord(value) || !Array.isArray(value.contexts)) return [];
   const diagnostics: Diagnostic[] = [];
-  const expectedThemes = ["light", "dark"];
   let baselineIds: readonly string[] | undefined;
 
   value.contexts.forEach((contextEntry, contextIndex) => {
     if (!isRecord(contextEntry) || !isRecord(contextEntry.context)) return;
     const theme = contextEntry.context["theme"];
-    if (theme !== expectedThemes[contextIndex]) {
+    if (theme !== REQUIRED_RESOLVED_THEMES[contextIndex]) {
       diagnostics.push(
         tokenDiagnostic(
-          "AXT1600",
+          SPEC_DIAGNOSTIC_CODE.CONTEXT_ORDER,
           `Resolved contexts must be serialized as theme=light, then theme=dark.`,
           `/contexts/${contextIndex}/context/theme`,
         ),
@@ -141,7 +158,7 @@ const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] =>
     else if (baselineIds.length !== ids.length || baselineIds.some((id, index) => id !== ids[index])) {
       diagnostics.push(
         tokenDiagnostic(
-          "AXT1601",
+          SPEC_DIAGNOSTIC_CODE.CONTEXT_TOKEN_SET_MISMATCH,
           "Every resolved context must contain the same ordered Token ids.",
           `/contexts/${contextIndex}/tokens`,
         ),
@@ -153,7 +170,7 @@ const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] =>
       if (containsTokenReference(token.resolvedValue)) {
         diagnostics.push(
           tokenDiagnostic(
-            "AXT1603",
+            SPEC_DIAGNOSTIC_CODE.UNRESOLVED_ALIAS,
             `Resolved Token '${String(token.id)}' still contains an unresolved alias.`,
             `/contexts/${contextIndex}/tokens/${tokenIndex}/resolvedValue`,
           ),
@@ -164,7 +181,7 @@ const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] =>
         if (typeof dependency === "string" && !idSet.has(dependency)) {
           diagnostics.push(
             tokenDiagnostic(
-              "AXT1602",
+              SPEC_DIAGNOSTIC_CODE.UNKNOWN_RESOLVED_DEPENDENCY,
               `Resolved dependency '${dependency}' is absent from its context.`,
               `/contexts/${contextIndex}/tokens/${tokenIndex}/dependencies/${dependencyIndex}`,
             ),
@@ -193,7 +210,7 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
     if (ids.has(domain.id)) {
       diagnostics.push(
         tokenDiagnostic(
-          "AXT1001",
+          SPEC_DIAGNOSTIC_CODE.DUPLICATE_DOMAIN_ID,
           `Duplicate Token Domain id '${domain.id}'.`,
           `${pointer}/id`,
         ),
@@ -204,7 +221,7 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
     if (roots.has(domain.root)) {
       diagnostics.push(
         tokenDiagnostic(
-          "AXT1002",
+          SPEC_DIAGNOSTIC_CODE.DUPLICATE_DOMAIN_ROOT,
           `Duplicate Token Domain root '${domain.root}'.`,
           `${pointer}/root`,
         ),
@@ -215,17 +232,20 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
     if (domain.id !== domain.root) {
       diagnostics.push(
         tokenDiagnostic(
-          "AXT1003",
-          `Token Domain id '${domain.id}' must equal its v0.1 root '${domain.root}'.`,
+          SPEC_DIAGNOSTIC_CODE.DOMAIN_ROOT_MISMATCH,
+          `Token Domain id '${domain.id}' must equal its root '${domain.root}'.`,
           `${pointer}/root`,
         ),
       );
     }
 
-    if (previousId !== undefined && previousId.localeCompare(domain.id, "en") > 0) {
+    if (
+      previousId !== undefined &&
+      previousId.localeCompare(domain.id, STABLE_SORT_LOCALE) > 0
+    ) {
       diagnostics.push(
         tokenDiagnostic(
-          "AXT1004",
+          SPEC_DIAGNOSTIC_CODE.DOMAIN_ORDER,
           "Token Domains must be serialized in ascending id order.",
           `${pointer}/id`,
         ),
@@ -240,15 +260,14 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
 
     domain.constraints.forEach((constraint, constraintIndex) => {
       if (!isRecord(constraint) || typeof constraint.kind !== "string") return;
-      const expectedType = {
-        dimensionRange: "dimension",
-        durationRange: "duration",
-        numberRange: "number",
-      }[constraint.kind];
+      const expectedType =
+        CONSTRAINT_REQUIRED_DTCG_TYPE[
+          constraint.kind as keyof typeof CONSTRAINT_REQUIRED_DTCG_TYPE
+        ];
       if (expectedType !== undefined && !allowedTypes.has(expectedType)) {
         diagnostics.push(
           tokenDiagnostic(
-            "AXT1005",
+            SPEC_DIAGNOSTIC_CODE.CONSTRAINT_TYPE_MISMATCH,
             `Constraint '${constraint.kind}' requires allowed DTCG type '${expectedType}'.`,
             `${pointer}/constraints/${constraintIndex}`,
           ),
@@ -262,7 +281,7 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
       ) {
         diagnostics.push(
           tokenDiagnostic(
-            "AXT1006",
+            SPEC_DIAGNOSTIC_CODE.CONSTRAINT_MINIMUM_CONFLICT,
             `Constraint '${constraint.kind}' cannot define both minimum and exclusiveMinimum.`,
             `${pointer}/constraints/${constraintIndex}`,
           ),
@@ -276,7 +295,7 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
       ) {
         diagnostics.push(
           tokenDiagnostic(
-            "AXT1007",
+            SPEC_DIAGNOSTIC_CODE.CONSTRAINT_MAXIMUM_CONFLICT,
             "Constraint 'numberRange' cannot define both maximum and exclusiveMaximum.",
             `${pointer}/constraints/${constraintIndex}`,
           ),
@@ -301,15 +320,18 @@ const validateParsedTokenDocument = (value: unknown): readonly Diagnostic[] => {
     if (typeof id === "string") {
       if (ids.has(id)) {
         diagnostics.push(
-          tokenDiagnostic("AXT1301", `Duplicate normalized Token id '${id}'.`, `/tokens/${index}/id`),
+          tokenDiagnostic(SPEC_DIAGNOSTIC_CODE.DUPLICATE_TOKEN, `Duplicate normalized Token id '${id}'.`, `/tokens/${index}/id`),
         );
       }
       ids.add(id);
 
-      if (previousId !== undefined && previousId.localeCompare(id, "en") > 0) {
+      if (
+        previousId !== undefined &&
+        previousId.localeCompare(id, STABLE_SORT_LOCALE) > 0
+      ) {
         diagnostics.push(
           tokenDiagnostic(
-            "AXT1302",
+            SPEC_DIAGNOSTIC_CODE.TOKEN_ORDER,
             "Normalized Tokens must be serialized in ascending id order.",
             `/tokens/${index}/id`,
           ),

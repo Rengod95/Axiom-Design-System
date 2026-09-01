@@ -252,6 +252,7 @@ interface ComponentBehaviorContract<
 > {
   id: string;
   criteriaProfileId: string;
+  criteriaProfileVersion: string;
   criteriaProfileDigest: string;
   slots: readonly string[];
   capabilities: readonly TCapability[];
@@ -278,7 +279,9 @@ Button example:
 const buttonBehaviorContract = {
   id: "button",
   criteriaProfileId:
-    "react-aria.button.v0.1",
+    "react-aria.button",
+  criteriaProfileVersion:
+    "0.1",
   criteriaProfileDigest:
     "<generated digest>",
   slots: ["root"],
@@ -417,7 +420,7 @@ The tables are readable summaries. Machine-readable criteria profiles and
 their evidence digests are the executable release inputs.
 
 The normative
-[React Aria Behavioral Criteria Profile](../specs/react-aria-behavioral-criteria-v0.1.md)
+[React Aria Behavioral Criteria Profile](../specs/react-aria-behavioral-criteria.md)
 defines the complete v0.1 Button, Select, and Dialog criterion IDs and
 verification matrix.
 
@@ -832,4 +835,4 @@ React Runtime reaches Gate C when:
 - [React Aria testing](https://react-aria.adobe.com/testing)
 - [Testing React Aria Select](https://react-aria.adobe.com/Select/testing)
 - [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md)
-- [React Aria Behavioral Criteria Profile v0.1](../specs/react-aria-behavioral-criteria-v0.1.md)
+- [React Aria Behavioral Criteria Profile](../specs/react-aria-behavioral-criteria.md)

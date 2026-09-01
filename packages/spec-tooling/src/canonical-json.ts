@@ -1,5 +1,10 @@
 import { createHash } from "node:crypto";
 
+import {
+  CANONICAL_DIGEST_ALGORITHM,
+  CANONICAL_DIGEST_PREFIX,
+  JSON_INDENT_SPACES,
+} from "./constants.js";
 import type { JsonValue } from "./types.js";
 
 const describe = (value: unknown): string =>
@@ -59,7 +64,13 @@ const escapePointer = (segment: string): string =>
   segment.replaceAll("~", "~0").replaceAll("/", "~1");
 
 export const canonicalJson = (value: unknown): string =>
-  `${JSON.stringify(canonicalize(value, "#", new WeakSet<object>()), null, 2)}\n`;
+  `${JSON.stringify(
+    canonicalize(value, "#", new WeakSet<object>()),
+    null,
+    JSON_INDENT_SPACES,
+  )}\n`;
 
 export const canonicalJsonDigest = (value: unknown): string =>
-  `sha256:${createHash("sha256").update(canonicalJson(value)).digest("hex")}`;
+  `${CANONICAL_DIGEST_PREFIX}${createHash(CANONICAL_DIGEST_ALGORITHM)
+    .update(canonicalJson(value))
+    .digest("hex")}`;

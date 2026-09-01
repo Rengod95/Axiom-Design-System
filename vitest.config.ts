@@ -1,10 +1,16 @@
 import { defineConfig } from "vitest/config";
 
+const COVERAGE_REPORTERS = ["text", "html"] as const;
+const TEST_FILE_PATTERNS = [
+  "packages/**/*.test.ts",
+  "packages/**/*.test.tsx",
+] as const;
+
 export default defineConfig({
   test: {
     coverage: {
-      reporter: ["text", "html"],
+      reporter: COVERAGE_REPORTERS,
     },
-    include: ["packages/**/*.test.ts", "packages/**/*.test.tsx"],
+    include: TEST_FILE_PATTERNS,
   },
 });

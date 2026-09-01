@@ -3,7 +3,7 @@
 **Date:** 2026-09-01 \
 **Status:** IMPLEMENTED — first Foundation code entry point \
 **Scope:** P1 plus the first P2 identity/domain slice \
-**Related plan:** [Axiom v0.1 Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
+**Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-foundation-and-implementation-plan.md)
 
 **Subsequent checkpoint:** [P2.1 DTCG Parser & Normalization Boundary](2026-09-01-p2-token-parser-and-normalization.md)
 

@@ -3,12 +3,6 @@
   "references": [
     { "path": "./packages/spec-tooling" },
     { "path": "./packages/token-tooling" },
-    { "path": "./packages/tokens" },
-    { "path": "./packages/appearance-schema" },
-    { "path": "./packages/recipes" },
-    { "path": "./packages/recipe-engine" },
-    { "path": "./packages/adapter-tailwind" },
-    { "path": "./packages/behavior" },
-    { "path": "./packages/react" }
+    { "path": "./packages/tokens" }
   ]
 }

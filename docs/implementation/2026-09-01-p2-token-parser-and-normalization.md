@@ -4,7 +4,7 @@
 **Status:** IMPLEMENTED — P2.1 complete, bounded P2.2 slice complete \
 **Scope:** parser port, DTCG source profile, normalized token document,
 identity/Domain/type/range validation \
-**Related plan:** [Axiom v0.1 Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
+**Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-foundation-and-implementation-plan.md)
 
 **Subsequent checkpoint:** [P2.3/P2.4 Tier Graph & Context Resolver](2026-09-01-p2-tier-graph-and-context-resolver.md)
 
@@ -20,7 +20,7 @@ flowchart TD
   A["DTCG .tokens.json"] --> B["TokenParserPort"]
   B --> C["Terrazzo adapter 2.4.0"]
   C --> D["Axiom profile checks"]
-  D --> E["ParsedDtcgDocumentV01"]
+  D --> E["ParsedDtcgDocument"]
   E --> F["P2.3 tier graph"]
   F --> G["P2.4 context resolver"]
 ```
@@ -99,15 +99,15 @@ their resolved value is not available until P2.3/P2.4.
 Input is a source document, not a filesystem lookup hidden inside Core:
 
 ```ts
-interface TokenSourceDocumentV01 {
+interface TokenSourceDocument {
   readonly filename: URL;
   readonly content: string;
 }
 
 interface TokenParserPort {
   parse(
-    sources: readonly TokenSourceDocumentV01[],
-  ): Promise<ParsedDtcgDocumentV01>;
+    sources: readonly TokenSourceDocument[],
+  ): Promise<ParsedDtcgDocument>;
 }
 ```
 
@@ -186,8 +186,8 @@ fixtures separately cover:
 
 | Purpose | Entry point |
 | --- | --- |
-| Axiom parser contract and data model | `packages/tokens/src/v0-1/contracts.ts` |
-| Identity and Domain validation | `packages/tokens/src/v0-1/identity.ts` |
+| Axiom parser contract and data model | `packages/tokens/src/contracts.ts` |
+| Identity and Domain validation | `packages/tokens/src/domain/identity.ts` |
 | Terrazzo reference adapter | `packages/token-tooling/src/terrazzo-token-parser.ts` |
 | Raw DTCG conformance fixtures | `fixtures/token/dtcg/` |
 | Parsed-document semantic validation | `packages/spec-tooling/src/semantic-validators.ts` |

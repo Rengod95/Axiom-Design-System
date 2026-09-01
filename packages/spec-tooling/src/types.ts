@@ -1,3 +1,11 @@
+import type {
+  DIAGNOSTIC_PHASES,
+  DIAGNOSTIC_SEVERITIES,
+  JSON_SCHEMA_DIALECT,
+  SEMANTIC_VALIDATOR_IDS,
+  SPEC_MANIFEST_SCHEMA_VERSION,
+} from "./constants.js";
+
 export type JsonPrimitive = boolean | null | number | string;
 
 export type JsonValue = JsonPrimitive | JsonArray | JsonObject;
@@ -8,19 +16,9 @@ export interface JsonObject {
   readonly [key: string]: JsonValue;
 }
 
-export type DiagnosticSeverity = "error" | "info" | "warning";
+export type DiagnosticSeverity = (typeof DIAGNOSTIC_SEVERITIES)[number];
 
-export type DiagnosticPhase =
-  | "behavior"
-  | "compiler"
-  | "condition"
-  | "motion"
-  | "normalization"
-  | "property"
-  | "react"
-  | "recipe"
-  | "schema"
-  | "token";
+export type DiagnosticPhase = (typeof DIAGNOSTIC_PHASES)[number];
 
 export interface SourceLocation {
   readonly file: string;
@@ -39,12 +37,7 @@ export interface Diagnostic {
   readonly details?: Readonly<Record<string, JsonValue>>;
 }
 
-export type SemanticValidatorId =
-  | "parsed-token-document"
-  | "resolved-token-manifest"
-  | "token-context-override"
-  | "token-domain-registry"
-  | "token-identity";
+export type SemanticValidatorId = (typeof SEMANTIC_VALIDATOR_IDS)[number];
 
 export interface SchemaManifestEntry {
   readonly id: string;
@@ -67,8 +60,8 @@ export interface FixtureSuiteManifestEntry {
 }
 
 export interface SpecManifest {
-  readonly schemaVersion: "0.1";
-  readonly dialect: "https://json-schema.org/draft/2020-12/schema";
+  readonly schemaVersion: typeof SPEC_MANIFEST_SCHEMA_VERSION;
+  readonly dialect: typeof JSON_SCHEMA_DIALECT;
   readonly schemas: readonly SchemaManifestEntry[];
   readonly registries: readonly RegistryManifestEntry[];
   readonly fixtureSuites: readonly FixtureSuiteManifestEntry[];

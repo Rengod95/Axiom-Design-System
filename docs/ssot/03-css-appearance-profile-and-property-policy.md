@@ -282,7 +282,7 @@ syntax.
 
 The exhaustive v0.1 direct/template/projector mappings, including every
 physical and logical margin property, are defined by the
-[Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog-v0.1.md).
+[Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog.md).
 The lists below summarize the generated policy groups.
 
 ### 6.1 Paint
@@ -995,6 +995,6 @@ The CSS Appearance Foundation reaches Gate A only when:
 - [CSSTree](https://github.com/csstree/csstree)
 - [CSS Syntax Module Level 3](https://www.w3.org/TR/css-syntax-3/)
 - [Lightning CSS](https://lightningcss.dev/)
-- [Axiom Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog-v0.1.md)
+- [Axiom Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog.md)
 - [Panda CSS Slot Recipes](https://panda-css.com/docs/concepts/slot-recipes)
 - [Tailwind Variants slots](https://www.tailwind-variants.org/docs/slots)
