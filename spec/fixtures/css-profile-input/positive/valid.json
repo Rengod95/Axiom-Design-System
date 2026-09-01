@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "0.1",
+  "id": "axiom-css",
+  "webrefPackageVersion": "8.7.3",
+  "webrefInputPath": "css.json",
+  "webrefInputDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "generatorVersion": "0.1.0",
+  "policySourceDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

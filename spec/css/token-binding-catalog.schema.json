@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/token-binding-catalog/0.1",
+  "title": "Axiom CSS Token Binding Catalog",
+  "type": "object",
+  "required": ["schemaVersion", "conditionOnlyDomains", "bindings"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "conditionOnlyDomains": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/binding" }
+    }
+  },
+  "$defs": {
+    "property": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "domainList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }
+    },
+    "projectorList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)+$" }
+    },
+    "binding": {
+      "type": "object",
+      "required": ["id", "directDomains", "templateDomains", "projectors", "allowsTokenNegation"],
+      "properties": {
+        "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "properties": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/property" }
+        },
+        "expandShorthands": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/property" }
+        },
+        "directDomains": { "$ref": "#/$defs/domainList" },
+        "templateDomains": { "$ref": "#/$defs/domainList" },
+        "projectors": { "$ref": "#/$defs/projectorList" },
+        "allowsTokenNegation": { "type": "boolean" }
+      },
+      "anyOf": [
+        {
+          "properties": { "properties": true },
+          "required": ["properties"]
+        },
+        {
+          "properties": { "expandShorthands": true },
+          "required": ["expandShorthands"]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

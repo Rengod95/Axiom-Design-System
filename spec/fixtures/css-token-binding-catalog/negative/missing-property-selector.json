@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "0.1",
+  "conditionOnlyDomains": [],
+  "bindings": [
+    {
+      "id": "paint",
+      "directDomains": ["color"],
+      "templateDomains": [],
+      "projectors": [],
+      "allowsTokenNegation": false
+    }
+  ]
+}

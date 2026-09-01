@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "0.1",
+  "projectors": [
+    {
+      "id": "css.border-projector.v1",
+      "domain": "border",
+      "dtcgType": "border",
+      "outputProperties": ["border-color", "border-style", "border-width"],
+      "version": "1.0.0"
+    },
+    {
+      "id": "css.gradient.v1",
+      "domain": "gradient",
+      "dtcgType": "gradient",
+      "outputProperties": ["background-image"],
+      "version": "1.0.0"
+    },
+    {
+      "id": "css.shadow.v1",
+      "domain": "shadow",
+      "dtcgType": "shadow",
+      "outputProperties": ["box-shadow"],
+      "version": "1.0.0"
+    },
+    {
+      "id": "css.transition-projector.v1",
+      "domain": "transition",
+      "dtcgType": "transition",
+      "outputProperties": [
+        "transition-delay",
+        "transition-duration",
+        "transition-property",
+        "transition-timing-function"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "id": "css.typography-projector.v1",
+      "domain": "typography",
+      "dtcgType": "typography",
+      "outputProperties": [
+        "font-family",
+        "font-size",
+        "font-weight",
+        "letter-spacing",
+        "line-height"
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

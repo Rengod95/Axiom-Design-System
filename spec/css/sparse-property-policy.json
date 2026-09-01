@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "0.1",
+  "defaults": {
+    "standard": {
+      "authoring": "allowed",
+      "valueKinds": ["css"],
+      "rawCSS": "allowed",
+      "shorthand": "warning",
+      "portability": "unknown",
+      "motion": "unknown",
+      "resources": "reported"
+    },
+    "experimental": {
+      "authoring": "opt-in",
+      "valueKinds": ["css"],
+      "rawCSS": "allowed",
+      "shorthand": "warning",
+      "portability": "web-specific",
+      "motion": "unknown",
+      "resources": "reported"
+    },
+    "deprecated": {
+      "authoring": "opt-in",
+      "valueKinds": ["css"],
+      "rawCSS": "warning",
+      "shorthand": "warning",
+      "portability": "web-specific",
+      "motion": "unknown",
+      "resources": "reported"
+    },
+    "legacy": {
+      "authoring": "blocked",
+      "valueKinds": ["css"],
+      "rawCSS": "blocked",
+      "shorthand": "blocked",
+      "portability": "web-specific",
+      "motion": "unknown",
+      "resources": "reported"
+    },
+    "vendor": {
+      "authoring": "blocked",
+      "valueKinds": ["css"],
+      "rawCSS": "blocked",
+      "shorthand": "blocked",
+      "portability": "web-specific",
+      "motion": "unknown",
+      "resources": "reported"
+    }
+  },
+  "groups": [
+    {
+      "id": "paint",
+      "properties": [
+        "accent-color",
+        "background-color",
+        "border-color",
+        "caret-color",
+        "color",
+        "fill",
+        "outline-color",
+        "stroke",
+        "text-decoration-color"
+      ],
+      "rawCSS": "blocked",
+      "portability": "portable-candidate"
+    },
+    {
+      "id": "motion",
+      "properties": [
+        "animation-delay",
+        "animation-duration",
+        "animation-timing-function",
+        "transition-delay",
+        "transition-duration",
+        "transition-timing-function"
+      ],
+      "motion": "interpolable"
+    },
+    {
+      "id": "resources",
+      "properties": ["background-image", "border-image-source", "mask-image"],
+      "resources": "reported"
+    }
+  ],
+  "overrides": [
+    {
+      "property": "view-transition-name",
+      "status": "experimental",
+      "authoring": "opt-in"
+    }
+  ],
+  "blockedProperties": ["all"],
+  "customProperties": ["--axiom-project-example"]
+}

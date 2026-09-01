@@ -37,6 +37,9 @@ reconciliation한다.
 11. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
 12. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
 13. [MVP Removal & Source Standards — Implementation Report](implementation/2026-09-01-mvp-removal-and-source-standards.md)
+14. [P2 Token Foundation Closeout — Implementation Report](implementation/2026-09-01-p2-token-foundation-closeout.md)
+15. [P3 CSS Property Profile — Implementation Report](implementation/2026-09-01-p3-css-property-profile.md)
+16. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를
@@ -105,6 +108,9 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [P1 Normative Specification Harness — Implementation Report — 2026-09-01](implementation/2026-09-01-p1-normative-spec-harness.md)
 - [P2.1 DTCG Parser & Normalization Boundary — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-token-parser-and-normalization.md)
 - [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
+- [P2 Token Foundation Closeout — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-token-foundation-closeout.md)
+- [P3 CSS Property Profile — Implementation Report — 2026-09-01](implementation/2026-09-01-p3-css-property-profile.md)
+- [Post-P3 Foundation Review and Next Sequence — 2026-09-01](plans/2026-09-01-post-p3-foundation-review.md)
 - [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 

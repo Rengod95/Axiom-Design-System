@@ -1,0 +1,10 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "color": {
+    "semantic": {
+      "surface": { "default": { "$type": "color", "$value": "{color.primitive.neutral.900}" } },
+      "text": { "default": { "$type": "color", "$value": "{color.primitive.neutral.0}" } },
+      "action": { "primary": { "default": { "$type": "color", "$value": "{color.primitive.brand.400}" } } }
+    }
+  }
+}

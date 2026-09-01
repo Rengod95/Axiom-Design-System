@@ -27,8 +27,9 @@ Start with the [documentation index](docs/README.md), the
 | `@axiom/spec-tooling` | Validate normative schemas, registries, fixtures, and canonical digests |
 | `@axiom/tokens` | Own token contracts, identity validation, context resolution, and manifest serialization |
 | `@axiom/token-tooling` | Adapt pinned DTCG parser output to Axiom token contracts |
+| `@axiom/css-property-profile` | Generate the pinned CSS registry, Token bindings, authoring types, and validation services |
 
-Renderer, recipe, appearance, and framework packages are intentionally absent
+Renderer, recipe, appearance-normalization, and framework packages are intentionally absent
 until their implementation gates are satisfied by the SSOT and normative spec.
 The pre-foundation MVP packages are not migration authorities and must not be
 reintroduced as examples.
@@ -40,6 +41,7 @@ reintroduced as examples.
 | `docs/` | ADRs, SSOT, normative annexes, implementation reports, and standards |
 | `spec/` | Machine-readable normative schemas, registries, and conformance fixtures |
 | `fixtures/` | External-source fixtures such as DTCG token documents |
+| `tokens/` | Normative base and context-specific DTCG Token sources |
 | `packages/` | Capability-owned implementation packages with explicit public entry points |
 | `scripts/` | Repository policy and deterministic quality checks |
 
@@ -55,6 +57,7 @@ pnpm test
 pnpm build
 ```
 
-`pnpm check` validates source naming, constants-module policy, package
-boundaries, normative specification integrity, and TypeScript project
-references. Any source-level change must pass all three commands before review.
+`pnpm check` also verifies that the resolved Token artifacts, generated Token
+path types, effective CSS registry, coverage report, and CSS authoring types have
+not drifted from their pinned inputs. Any source-level change must pass all
+three commands before review.

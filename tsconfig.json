@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "./packages/css-property-profile" },
     { "path": "./packages/spec-tooling" },
     { "path": "./packages/token-tooling" },
     { "path": "./packages/tokens" }

@@ -32,8 +32,13 @@ export type {
   TokenResolutionResult,
   TokenSourceDocument,
   TokenSourceLocation,
-  TokenTier,
 } from "./contracts.js";
+export type {
+  TokenDomain,
+  TokenPath,
+  TokenPathByDomain,
+  TokenTier,
+} from "./generated/token-paths.js";
 export {
   parseTokenIdentity,
   validateTokenDomainConstraints,

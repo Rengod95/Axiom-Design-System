@@ -1,0 +1,312 @@
+{
+  "$schema": "https://designtokens.org/schemas/2025.10/format.json",
+  "aspectRatio": {
+    "primitive": {
+      "widescreen": { "$type": "number", "$value": 1.7777777778 }
+    },
+    "semantic": {
+      "media": { "widescreen": { "$type": "number", "$value": "{aspectRatio.primitive.widescreen}" } }
+    }
+  },
+  "blur": {
+    "primitive": {
+      "soft": { "$type": "dimension", "$value": { "value": 12, "unit": "px" } }
+    },
+    "semantic": {
+      "overlay": { "backdrop": { "$type": "dimension", "$value": "{blur.primitive.soft}" } }
+    }
+  },
+  "borderWidth": {
+    "primitive": {
+      "thin": { "$type": "dimension", "$value": { "value": 1, "unit": "px" } },
+      "focus": { "$type": "dimension", "$value": { "value": 2, "unit": "px" } }
+    },
+    "semantic": {
+      "control": { "$type": "dimension", "$value": "{borderWidth.primitive.thin}" },
+      "focus": { "$type": "dimension", "$value": "{borderWidth.primitive.focus}" }
+    },
+    "component": {
+      "button": {
+        "root": {
+          "focus": { "$type": "dimension", "$value": "{borderWidth.semantic.focus}" }
+        }
+      }
+    }
+  },
+  "breakpoint": {
+    "primitive": {
+      "medium": { "$type": "dimension", "$value": { "value": 768, "unit": "px" } }
+    },
+    "semantic": {
+      "viewport": { "md": { "$type": "dimension", "$value": "{breakpoint.primitive.medium}" } }
+    }
+  },
+  "color": {
+    "primitive": {
+      "neutral": {
+        "0": {
+          "$type": "color",
+          "$value": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 1 }
+        },
+        "900": {
+          "$type": "color",
+          "$value": { "colorSpace": "srgb", "components": [0.06, 0.07, 0.09], "alpha": 1 }
+        }
+      },
+      "brand": {
+        "600": {
+          "$type": "color",
+          "$value": { "colorSpace": "srgb", "components": [0.1, 0.3, 0.8], "alpha": 1 }
+        },
+        "400": {
+          "$type": "color",
+          "$value": { "colorSpace": "srgb", "components": [0.35, 0.55, 1], "alpha": 1 }
+        }
+      }
+    },
+    "semantic": {
+      "surface": { "default": { "$type": "color", "$value": "{color.primitive.neutral.0}" } },
+      "text": { "default": { "$type": "color", "$value": "{color.primitive.neutral.900}" } },
+      "action": { "primary": { "default": { "$type": "color", "$value": "{color.primitive.brand.600}" } } }
+    },
+    "component": {
+      "button": { "root": { "background": { "default": { "$type": "color", "$value": "{color.semantic.action.primary.default}" } } } },
+      "select": { "popup": { "background": { "$type": "color", "$value": "{color.semantic.surface.default}" } } },
+      "dialog": { "popup": { "background": { "$type": "color", "$value": "{color.semantic.surface.default}" } } }
+    }
+  },
+  "duration": {
+    "primitive": {
+      "fast": { "$type": "duration", "$value": { "value": 120, "unit": "ms" } },
+      "normal": { "$type": "duration", "$value": { "value": 180, "unit": "ms" } }
+    },
+    "semantic": {
+      "productive": { "$type": "duration", "$value": "{duration.primitive.fast}" },
+      "overlay": { "enter": { "$type": "duration", "$value": "{duration.primitive.normal}" } }
+    },
+    "component": {
+      "dialog": { "popup": { "enter": { "$type": "duration", "$value": "{duration.semantic.overlay.enter}" } } }
+    }
+  },
+  "easing": {
+    "primitive": {
+      "productive": { "$type": "cubicBezier", "$value": [0.2, 0, 0, 1] }
+    },
+    "semantic": {
+      "productive": { "$type": "cubicBezier", "$value": "{easing.primitive.productive}" }
+    },
+    "component": {
+      "dialog": { "popup": { "enter": { "$type": "cubicBezier", "$value": "{easing.semantic.productive}" } } }
+    }
+  },
+  "fontFamily": {
+    "primitive": {
+      "sans": { "$type": "fontFamily", "$value": ["Inter", "sans-serif"] }
+    },
+    "semantic": {
+      "body": { "$type": "fontFamily", "$value": "{fontFamily.primitive.sans}" }
+    }
+  },
+  "fontSize": {
+    "primitive": {
+      "medium": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } }
+    },
+    "semantic": {
+      "body": { "md": { "$type": "dimension", "$value": "{fontSize.primitive.medium}" } }
+    }
+  },
+  "fontWeight": {
+    "primitive": {
+      "medium": { "$type": "fontWeight", "$value": 500 }
+    },
+    "semantic": {
+      "label": { "$type": "fontWeight", "$value": "{fontWeight.primitive.medium}" }
+    }
+  },
+  "gradient": {
+    "primitive": {
+      "brand": {
+        "$type": "gradient",
+        "$value": [
+          { "color": { "colorSpace": "srgb", "components": [0.1, 0.3, 0.8], "alpha": 1 }, "position": 0 },
+          { "color": { "colorSpace": "srgb", "components": [0.35, 0.55, 1], "alpha": 1 }, "position": 1 }
+        ]
+      }
+    },
+    "semantic": {
+      "surface": { "brand": { "$type": "gradient", "$value": "{gradient.primitive.brand}" } }
+    }
+  },
+  "layer": {
+    "primitive": {
+      "overlay": { "$type": "number", "$value": 1000 }
+    },
+    "semantic": {
+      "modal": { "$type": "number", "$value": "{layer.primitive.overlay}" }
+    },
+    "component": {
+      "dialog": { "popup": { "$type": "number", "$value": "{layer.semantic.modal}" } }
+    }
+  },
+  "letterSpacing": {
+    "primitive": {
+      "normal": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+    },
+    "semantic": {
+      "body": { "$type": "dimension", "$value": "{letterSpacing.primitive.normal}" }
+    }
+  },
+  "lineHeight": {
+    "primitive": {
+      "comfortable": { "$type": "number", "$value": 1.5 }
+    },
+    "semantic": {
+      "body": { "$type": "number", "$value": "{lineHeight.primitive.comfortable}" }
+    }
+  },
+  "opacity": {
+    "primitive": {
+      "disabled": { "$type": "number", "$value": 0.4 },
+      "backdrop": { "$type": "number", "$value": 0.56 }
+    },
+    "semantic": {
+      "disabled": { "$type": "number", "$value": "{opacity.primitive.disabled}" },
+      "backdrop": { "$type": "number", "$value": "{opacity.primitive.backdrop}" }
+    },
+    "component": {
+      "dialog": { "backdrop": { "$type": "number", "$value": "{opacity.semantic.backdrop}" } }
+    }
+  },
+  "radius": {
+    "primitive": {
+      "medium": { "$type": "dimension", "$value": { "value": 8, "unit": "px" } }
+    },
+    "semantic": {
+      "control": { "$type": "dimension", "$value": "{radius.primitive.medium}" },
+      "overlay": { "$type": "dimension", "$value": "{radius.primitive.medium}" }
+    },
+    "component": {
+      "button": { "root": { "$type": "dimension", "$value": "{radius.semantic.control}" } },
+      "select": { "popup": { "$type": "dimension", "$value": "{radius.semantic.overlay}" } },
+      "dialog": { "popup": { "$type": "dimension", "$value": "{radius.semantic.overlay}" } }
+    }
+  },
+  "shadow": {
+    "primitive": {
+      "raised": {
+        "$type": "shadow",
+        "$value": {
+          "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.24 },
+          "offsetX": { "value": 0, "unit": "px" },
+          "offsetY": { "value": 4, "unit": "px" },
+          "blur": { "value": 12, "unit": "px" },
+          "spread": { "value": 0, "unit": "px" },
+          "inset": false
+        }
+      }
+    },
+    "semantic": {
+      "overlay": { "$type": "shadow", "$value": "{shadow.primitive.raised}" }
+    },
+    "component": {
+      "dialog": { "popup": { "$type": "shadow", "$value": "{shadow.semantic.overlay}" } }
+    }
+  },
+  "size": {
+    "primitive": {
+      "control": { "$type": "dimension", "$value": { "value": 40, "unit": "px" } },
+      "overlay": { "$type": "dimension", "$value": { "value": 640, "unit": "px" } }
+    },
+    "semantic": {
+      "control": { "height": { "md": { "$type": "dimension", "$value": "{size.primitive.control}" } } },
+      "overlay": { "dialog": { "maxInline": { "$type": "dimension", "$value": "{size.primitive.overlay}" } } }
+    },
+    "component": {
+      "button": { "root": { "block": { "$type": "dimension", "$value": "{size.semantic.control.height.md}" } } },
+      "select": { "trigger": { "block": { "$type": "dimension", "$value": "{size.semantic.control.height.md}" } } },
+      "dialog": { "popup": { "maxInline": { "$type": "dimension", "$value": "{size.semantic.overlay.dialog.maxInline}" } } }
+    }
+  },
+  "space": {
+    "primitive": {
+      "small": { "$type": "dimension", "$value": { "value": 8, "unit": "px" } },
+      "medium": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } }
+    },
+    "semantic": {
+      "control": { "inline": { "md": { "$type": "dimension", "$value": "{space.primitive.medium}" } } },
+      "controlBlock": { "md": { "$type": "dimension", "$value": "{space.primitive.small}" } },
+      "stack": { "md": { "$type": "dimension", "$value": "{space.primitive.medium}" } }
+    },
+    "component": {
+      "button": { "root": { "padding": { "inline": { "md": { "$type": "dimension", "$value": "{space.semantic.control.inline.md}" } } } } },
+      "select": { "item": { "padding": { "block": { "md": { "$type": "dimension", "$value": "{space.semantic.controlBlock.md}" } } } } },
+      "dialog": { "popup": { "gap": { "$type": "dimension", "$value": "{space.semantic.stack.md}" } } }
+    }
+  },
+  "strokeStyle": {
+    "primitive": {
+      "solid": { "$type": "strokeStyle", "$value": "solid" }
+    },
+    "semantic": {
+      "control": { "$type": "strokeStyle", "$value": "{strokeStyle.primitive.solid}" }
+    }
+  },
+  "strokeWidth": {
+    "primitive": {
+      "icon": { "$type": "dimension", "$value": { "value": 1.5, "unit": "px" } }
+    },
+    "semantic": {
+      "icon": { "$type": "dimension", "$value": "{strokeWidth.primitive.icon}" }
+    }
+  },
+  "border": {
+    "primitive": {
+      "control": {
+        "$type": "border",
+        "$value": {
+          "color": "{color.primitive.neutral.900}",
+          "width": "{borderWidth.primitive.thin}",
+          "style": "{strokeStyle.primitive.solid}"
+        }
+      }
+    },
+    "semantic": {
+      "control": { "$type": "border", "$value": "{border.primitive.control}" }
+    }
+  },
+  "transition": {
+    "primitive": {
+      "productive": {
+        "$type": "transition",
+        "$value": {
+          "duration": "{duration.primitive.fast}",
+          "delay": { "value": 0, "unit": "ms" },
+          "timingFunction": "{easing.primitive.productive}"
+        }
+      }
+    },
+    "semantic": {
+      "state": { "$type": "transition", "$value": "{transition.primitive.productive}" }
+    },
+    "component": {
+      "button": { "state": { "$type": "transition", "$value": "{transition.semantic.state}" } }
+    }
+  },
+  "typography": {
+    "primitive": {
+      "body": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamily.primitive.sans}",
+          "fontSize": "{fontSize.primitive.medium}",
+          "fontWeight": "{fontWeight.primitive.medium}",
+          "letterSpacing": "{letterSpacing.primitive.normal}",
+          "lineHeight": "{lineHeight.primitive.comfortable}"
+        }
+      }
+    },
+    "semantic": {
+      "body": { "md": { "$type": "typography", "$value": "{typography.primitive.body}" } }
+    }
+  }
+}

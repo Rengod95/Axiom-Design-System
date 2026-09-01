@@ -5,6 +5,7 @@
   "type": "object",
   "required": [
     "schemaVersion",
+    "profileVersion",
     "dtcgVersion",
     "formatSchema",
     "fileExtension",
@@ -14,6 +15,10 @@
   ],
   "properties": {
     "schemaVersion": { "const": "0.1" },
+    "profileVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
     "dtcgVersion": { "const": "2025.10" },
     "formatSchema": {
       "const": "https://designtokens.org/schemas/2025.10/format.json"
@@ -57,7 +62,7 @@
         "package": { "const": "@terrazzo/parser" },
         "version": { "const": "2.4.0" },
         "resolveAliases": { "const": false },
-        "skipLint": { "const": false }
+        "skipLint": { "const": true }
       },
       "unevaluatedProperties": false
     }

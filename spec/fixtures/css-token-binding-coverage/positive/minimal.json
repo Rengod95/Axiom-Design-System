@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "0.1",
+  "profileDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "direct": { "space": ["margin"] },
+  "template": { "space": ["margin"] },
+  "projectors": {},
+  "properties": {
+    "margin": {
+      "directDomains": ["space"],
+      "templateDomains": ["space"],
+      "projectors": [],
+      "allowsTokenNegation": true
+    }
+  }
+}

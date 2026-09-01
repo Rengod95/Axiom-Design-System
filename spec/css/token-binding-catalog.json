@@ -1,0 +1,297 @@
+{
+  "schemaVersion": "0.1",
+  "conditionOnlyDomains": ["breakpoint"],
+  "bindings": [
+    {
+      "id": "aspect-ratio",
+      "properties": ["aspect-ratio"],
+      "directDomains": ["aspectRatio"],
+      "templateDomains": [],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "blur-template",
+      "properties": ["backdrop-filter", "filter"],
+      "directDomains": [],
+      "templateDomains": ["blur"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "border-composite",
+      "properties": [
+        "border",
+        "border-block",
+        "border-block-end",
+        "border-block-start",
+        "border-bottom",
+        "border-inline",
+        "border-inline-end",
+        "border-inline-start",
+        "border-left",
+        "border-right",
+        "border-top",
+        "outline"
+      ],
+      "directDomains": [],
+      "templateDomains": ["borderWidth", "color", "strokeStyle"],
+      "projectors": ["css.border-projector.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "border-width",
+      "expandShorthands": ["border-block-width", "border-inline-width", "border-width"],
+      "properties": ["column-rule-width", "outline-width"],
+      "directDomains": ["borderWidth"],
+      "templateDomains": ["borderWidth"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "color-paint",
+      "expandShorthands": ["border-block-color", "border-color", "border-inline-color"],
+      "properties": [
+        "accent-color",
+        "background-color",
+        "caret-color",
+        "color",
+        "column-rule-color",
+        "fill",
+        "flood-color",
+        "lighting-color",
+        "outline-color",
+        "stop-color",
+        "stroke",
+        "text-decoration-color",
+        "text-emphasis-color"
+      ],
+      "directDomains": ["color"],
+      "templateDomains": ["color"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "duration",
+      "properties": [
+        "animation-delay",
+        "animation-duration",
+        "transition-delay",
+        "transition-duration"
+      ],
+      "directDomains": ["duration"],
+      "templateDomains": ["duration"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "easing",
+      "properties": ["animation-timing-function", "transition-timing-function"],
+      "directDomains": ["easing"],
+      "templateDomains": ["easing"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "gradient",
+      "properties": ["background-image", "border-image-source", "mask-image"],
+      "directDomains": ["gradient"],
+      "templateDomains": ["color", "gradient"],
+      "projectors": ["css.gradient.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "layer",
+      "properties": ["z-index"],
+      "directDomains": ["layer"],
+      "templateDomains": [],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "opacity",
+      "properties": ["fill-opacity", "flood-opacity", "opacity", "stop-opacity", "stroke-opacity"],
+      "directDomains": ["opacity"],
+      "templateDomains": [],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "radius",
+      "expandShorthands": ["border-radius"],
+      "properties": [
+        "border-end-end-radius",
+        "border-end-start-radius",
+        "border-start-end-radius",
+        "border-start-start-radius"
+      ],
+      "directDomains": ["radius"],
+      "templateDomains": ["radius"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "shadow",
+      "properties": ["box-shadow"],
+      "directDomains": ["shadow"],
+      "templateDomains": ["blur", "color", "space"],
+      "projectors": ["css.shadow.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "size-direct",
+      "properties": [
+        "block-size",
+        "column-width",
+        "flex-basis",
+        "height",
+        "inline-size",
+        "max-block-size",
+        "max-height",
+        "max-inline-size",
+        "max-width",
+        "min-block-size",
+        "min-height",
+        "min-inline-size",
+        "min-width",
+        "perspective",
+        "width"
+      ],
+      "directDomains": ["size"],
+      "templateDomains": ["size"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "size-template",
+      "properties": [
+        "contain-intrinsic-block-size",
+        "contain-intrinsic-inline-size",
+        "contain-intrinsic-size",
+        "grid-auto-columns",
+        "grid-auto-rows",
+        "grid-template-columns",
+        "grid-template-rows"
+      ],
+      "directDomains": [],
+      "templateDomains": ["size"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "space-gap",
+      "expandShorthands": ["gap"],
+      "directDomains": ["space"],
+      "templateDomains": ["space"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "space-inset",
+      "expandShorthands": ["inset", "inset-block", "inset-inline"],
+      "directDomains": ["space"],
+      "templateDomains": ["space"],
+      "projectors": [],
+      "allowsTokenNegation": true
+    },
+    {
+      "id": "space-margin",
+      "expandShorthands": ["margin", "margin-block", "margin-inline"],
+      "directDomains": ["space"],
+      "templateDomains": ["space"],
+      "projectors": [],
+      "allowsTokenNegation": true
+    },
+    {
+      "id": "space-padding",
+      "expandShorthands": ["padding", "padding-block", "padding-inline"],
+      "directDomains": ["space"],
+      "templateDomains": ["space"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "space-scroll-margin",
+      "expandShorthands": ["scroll-margin", "scroll-margin-block", "scroll-margin-inline"],
+      "properties": ["outline-offset", "text-indent"],
+      "directDomains": ["space"],
+      "templateDomains": ["space"],
+      "projectors": [],
+      "allowsTokenNegation": true
+    },
+    {
+      "id": "space-scroll-padding",
+      "expandShorthands": ["scroll-padding", "scroll-padding-block", "scroll-padding-inline"],
+      "properties": ["border-spacing"],
+      "directDomains": ["space"],
+      "templateDomains": ["space"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "stroke-style",
+      "expandShorthands": ["border-block-style", "border-inline-style", "border-style"],
+      "properties": ["column-rule-style", "outline-style"],
+      "directDomains": ["strokeStyle"],
+      "templateDomains": [],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "stroke-width",
+      "properties": ["stroke-width", "text-decoration-thickness"],
+      "directDomains": ["strokeWidth"],
+      "templateDomains": ["strokeWidth"],
+      "projectors": [],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "transition-composite",
+      "properties": ["transition"],
+      "directDomains": [],
+      "templateDomains": [],
+      "projectors": ["css.transition-projector.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "font-family",
+      "properties": ["font-family"],
+      "directDomains": ["fontFamily"],
+      "templateDomains": ["fontFamily"],
+      "projectors": ["css.typography-projector.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "font-size",
+      "properties": ["font-size"],
+      "directDomains": ["fontSize"],
+      "templateDomains": ["fontSize"],
+      "projectors": ["css.typography-projector.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "font-weight",
+      "properties": ["font-weight"],
+      "directDomains": ["fontWeight"],
+      "templateDomains": ["fontWeight"],
+      "projectors": ["css.typography-projector.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "letter-spacing",
+      "properties": ["letter-spacing"],
+      "directDomains": ["letterSpacing"],
+      "templateDomains": ["letterSpacing"],
+      "projectors": ["css.typography-projector.v1"],
+      "allowsTokenNegation": false
+    },
+    {
+      "id": "line-height",
+      "properties": ["line-height"],
+      "directDomains": ["lineHeight"],
+      "templateDomains": ["lineHeight"],
+      "projectors": ["css.typography-projector.v1"],
+      "allowsTokenNegation": false
+    }
+  ]
+}

@@ -325,7 +325,8 @@ Rules:
 - Axiom does not encode Tailwind utility strings in Recipe IR;
 - Tailwind integration documents CSS layer ordering;
 - consumer utilities are downstream overrides, not Recipe stages;
-- the old `adapter-tailwind` package remains a spike until migration;
+- the removed `adapter-tailwind` package is historical and MUST NOT be restored
+  as an implementation authority;
 - a future integration package may export Tailwind theme/source configuration,
   but it cannot redefine Token or Property Registry semantics.
 

@@ -26,12 +26,14 @@ import {
   ERROR_DIAGNOSTIC_SEVERITY,
   PARSER_DIAGNOSTIC_CODE,
   PARSER_ERROR_MESSAGE,
+  PARSER_SKIP_LINT,
   ROOT_JSON_POINTER_PREFIX,
   ROOT_JSON_POINTER_PREFIX_LENGTH,
   TOKEN_DIAGNOSTIC_PHASE,
   TOKEN_REFERENCE_PATTERN,
   UNKNOWN_SOURCE_NAME,
 } from "./constants.js";
+import { validateDtcgValue } from "./dtcg-value-validator.js";
 
 export interface TerrazzoTokenParserOptions {
   readonly domains: readonly TokenDomainDefinition[];
@@ -50,6 +52,19 @@ const aliasTarget = (value: unknown): string | undefined => {
   if (typeof value !== "string") return undefined;
   const match = TOKEN_REFERENCE_PATTERN.exec(value);
   return match?.[1];
+};
+
+const authoredValue = (token: TokenNormalized): unknown => {
+  const originalValue = (token as TokenNormalized & { readonly originalValue?: unknown })
+    .originalValue;
+  if (
+    typeof originalValue === "object" &&
+    originalValue !== null &&
+    "$value" in originalValue
+  ) {
+    return (originalValue as unknown as Readonly<Record<string, unknown>>)["$value"];
+  }
+  return token.$value;
 };
 
 const sourceLocation = (token: TokenNormalized): { file: string; pointer: string } => ({
@@ -116,8 +131,10 @@ const normalizeToken = (
 
   diagnostics.push(...validateTokenDomainType(identityResult.identity, token.$type, domains));
 
-  const value = cloneJson(token.$value, `${token.id} value`);
-  const target = aliasTarget(token.$value);
+  const sourceValue = authoredValue(token);
+  const value = cloneJson(sourceValue, `${token.id} value`);
+  const target = aliasTarget(sourceValue);
+  diagnostics.push(...validateDtcgValue(token.id, token.$type, value, sourceLocation(token)));
   diagnostics.push(...validateStandardUnits(value, token));
   diagnostics.push(
     ...validateTokenDomainConstraints(
@@ -193,7 +210,7 @@ export class TerrazzoTokenParser implements TokenParserPort {
         {
           config,
           resolveAliases: false,
-          skipLint: false,
+          skipLint: PARSER_SKIP_LINT,
         },
       );
     } catch (cause) {
