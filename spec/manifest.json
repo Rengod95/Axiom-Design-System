@@ -19,6 +19,14 @@
       "path": "common/token-reference.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/condition/expression/0.1",
+      "path": "condition/condition-expression.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/condition/registry/0.1",
+      "path": "condition/condition-registry.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/css/effective-property-registry/0.1",
       "path": "css/effective-property-registry.schema.json"
     },
@@ -41,6 +49,10 @@
     {
       "id": "https://axiom.dev/schemas/spec/manifest/0.1",
       "path": "spec-manifest.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+      "path": "state/canonical-state-registry.schema.json"
     },
     {
       "id": "https://axiom.dev/schemas/token/context/0.1",
@@ -97,9 +109,21 @@
   ],
   "registries": [
     {
+      "id": "canonical-state-registry",
+      "path": "state/canonical-state-registry.json",
+      "schema": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+      "semanticValidator": "canonical-state-registry"
+    },
+    {
       "id": "composite-token-projector-registry",
       "path": "token/composite-token-projector-registry.json",
       "schema": "https://axiom.dev/schemas/token/composite-projector-registry/0.1"
+    },
+    {
+      "id": "condition-registry",
+      "path": "condition/condition-registry.json",
+      "schema": "https://axiom.dev/schemas/condition/registry/0.1",
+      "semanticValidator": "condition-registry"
     },
     {
       "id": "css-effective-property-registry",
@@ -156,6 +180,13 @@
   ],
   "fixtureSuites": [
     {
+      "id": "canonical-state-registry",
+      "schema": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+      "positiveDirectory": "fixtures/canonical-state-registry/positive",
+      "negativeDirectory": "fixtures/canonical-state-registry/negative",
+      "semanticValidator": "canonical-state-registry"
+    },
+    {
       "id": "composite-token-projector-registry",
       "schema": "https://axiom.dev/schemas/token/composite-projector-registry/0.1",
       "positiveDirectory": "fixtures/composite-token-projector-registry/positive",
@@ -172,6 +203,20 @@
       "schema": "https://axiom.dev/schemas/common/token-reference/0.1",
       "positiveDirectory": "fixtures/common-token-reference/positive",
       "negativeDirectory": "fixtures/common-token-reference/negative"
+    },
+    {
+      "id": "condition-expression",
+      "schema": "https://axiom.dev/schemas/condition/expression/0.1",
+      "positiveDirectory": "fixtures/condition-expression/positive",
+      "negativeDirectory": "fixtures/condition-expression/negative",
+      "semanticValidator": "condition-expression"
+    },
+    {
+      "id": "condition-registry",
+      "schema": "https://axiom.dev/schemas/condition/registry/0.1",
+      "positiveDirectory": "fixtures/condition-registry/positive",
+      "negativeDirectory": "fixtures/condition-registry/negative",
+      "semanticValidator": "condition-registry"
     },
     {
       "id": "css-profile-input",

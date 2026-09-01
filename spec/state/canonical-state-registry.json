@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "0.1",
+  "states": [
+    {
+      "id": "checked",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["checkbox", "radio"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "disabled",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button", "select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "entering",
+      "axis": "lifecycle",
+      "valueType": "boolean",
+      "applicableComponents": ["dialog", "select.popover"],
+      "usage": ["motion"]
+    },
+    {
+      "id": "exiting",
+      "axis": "lifecycle",
+      "valueType": "boolean",
+      "applicableComponents": ["dialog", "select.popover"],
+      "usage": ["motion"]
+    },
+    {
+      "id": "expanded",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "focused",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button", "dialog", "select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "focusVisible",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button", "dialog", "select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "hovered",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button", "select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "indeterminate",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["checkbox"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "invalid",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "motionSuppressed",
+      "axis": "lifecycle",
+      "valueType": "boolean",
+      "applicableComponents": ["dialog", "select.popover"],
+      "usage": ["motion"]
+    },
+    {
+      "id": "open",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["dialog", "select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "orientation",
+      "axis": "state",
+      "valueType": "enum",
+      "values": ["horizontal", "vertical"],
+      "applicableComponents": ["radioGroup", "select", "tabs"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "pending",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "pressed",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["button", "select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "readOnly",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "required",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["select"],
+      "usage": ["appearance", "behavior"]
+    },
+    {
+      "id": "selected",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["select.option"],
+      "usage": ["appearance", "behavior"]
+    }
+  ]
+}

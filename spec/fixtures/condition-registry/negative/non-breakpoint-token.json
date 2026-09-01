@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.1",
+  "containers": [
+    {
+      "id": "component",
+      "cssName": "axiom-component"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "viewport.width.sm",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "space.semantic.layout.4"
+      }
+    }
+  ]
+}

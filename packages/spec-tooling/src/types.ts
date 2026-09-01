@@ -39,6 +39,10 @@ export interface Diagnostic {
 
 export type SemanticValidatorId = (typeof SEMANTIC_VALIDATOR_IDS)[number];
 
+export interface SemanticValidationContext {
+  readonly registries: Readonly<Record<string, unknown>>;
+}
+
 export interface SchemaManifestEntry {
   readonly id: string;
   readonly path: string;

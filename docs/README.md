@@ -41,6 +41,7 @@ reconciliation한다.
 15. [P3 CSS Property Profile — Implementation Report](implementation/2026-09-01-p3-css-property-profile.md)
 16. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
 17. [Token Foundation Scale Hardening](implementation/2026-09-01-token-foundation-scale-hardening.md)
+18. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를
@@ -55,8 +56,8 @@ Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계�
 | [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.3.2 | primitive/semantic/component tiers, production scales, themes, resolver, manifests |
 | [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.3.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
 | [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.0 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
-| [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.1.1 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
-| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.0 | React Aria criteria source, canonical state, projections, public API |
+| [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.1.2 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
+| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.1 | React Aria criteria source, canonical state, projections, public API |
 
 ## Normative Annexes
 
@@ -113,6 +114,7 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [P3 CSS Property Profile — Implementation Report — 2026-09-01](implementation/2026-09-01-p3-css-property-profile.md)
 - [Post-P3 Foundation Review and Next Sequence — 2026-09-01](plans/2026-09-01-post-p3-foundation-review.md)
 - [Token Foundation Scale Hardening — 2026-09-01](implementation/2026-09-01-token-foundation-scale-hardening.md)
+- [Canonical State and Condition Registries — 2026-09-01](implementation/2026-09-01-state-and-condition-registries.md)
 - [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 

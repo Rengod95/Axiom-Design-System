@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-01 \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0003, SSOT-00 v0.3, SSOT-01 v0.3, SSOT-02 v0.3, SSOT-03 v0.2, SSOT-04 v0.1.1, SSOT-05 v0.2, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0003, SSOT-00 v0.3, SSOT-01 v0.3, SSOT-02 v0.3, SSOT-03 v0.2, SSOT-04 v0.1.2, SSOT-05 v0.2.1, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -961,9 +961,9 @@ Exact first sequence:
 10. [done] Prove background-color + direct color Token binding.
 11. [done] Prove margin-inline + space and governed negative margin.
 12. [done] Prove box-shadow template segments for space/blur/color.
-13. [next] Add the Canonical State Registry schema and fixtures (N12).
-14. Add the Condition Registry schema and fixtures (N13).
-15. Add ordered declaration/value schemas (N14).
+13. [done] Add the Canonical State Registry schema and fixtures (N12).
+14. [done] Add the Condition Registry schema and fixtures (N13).
+15. [next] Add ordered declaration/value schemas (N14).
 16. Add the Appearance IR schema (N15).
 17. Add the Motion IR schema (N16).
 18. Add Behavioral Criteria Source/Profile schemas (N17).

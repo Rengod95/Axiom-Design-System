@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/condition/registry/0.1",
+  "title": "Axiom Environment Condition Registry",
+  "type": "object",
+  "required": ["schemaVersion", "containers", "conditions"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "containers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/container" }
+    },
+    "conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/viewportCondition" },
+          { "$ref": "#/$defs/containerCondition" },
+          { "$ref": "#/$defs/preferenceCondition" }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "container": {
+      "type": "object",
+      "required": ["id", "cssName"],
+      "properties": {
+        "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "cssName": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "rangeBase": {
+      "type": "object",
+      "required": ["id", "kind", "feature", "comparison", "value"],
+      "properties": {
+        "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "kind": { "enum": ["container", "viewport"] },
+        "feature": { "enum": ["inline-size", "width"] },
+        "comparison": { "enum": ["<", ">="] },
+        "value": { "$ref": "https://axiom.dev/schemas/common/token-reference/0.1" }
+      }
+    },
+    "viewportCondition": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/rangeBase" },
+        {
+          "type": "object",
+          "properties": {
+            "kind": { "const": "viewport" },
+            "feature": { "const": "width" }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "containerCondition": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/rangeBase" },
+        {
+          "type": "object",
+          "required": ["container"],
+          "properties": {
+            "kind": { "const": "container" },
+            "container": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+            "feature": { "const": "inline-size" }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "preferenceCondition": {
+      "type": "object",
+      "required": ["id", "kind", "feature", "equals"],
+      "properties": {
+        "id": { "const": "preference.reducedMotion" },
+        "kind": { "const": "preference" },
+        "feature": { "const": "prefers-reduced-motion" },
+        "equals": { "const": "reduce" }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

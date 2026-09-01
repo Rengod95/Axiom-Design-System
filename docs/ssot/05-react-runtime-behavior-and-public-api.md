@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-05 — React Runtime, Behavior Provider & Public API
-### Version 0.2.0
+### Version 0.2.1
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3, SSOT-03 v0.2, SSOT-04 \
@@ -56,6 +56,13 @@ Public Axiom props → extends React Aria props wholesale
 ---
 
 ## 3. Canonical State Registry
+
+The machine-readable authority is
+`spec/state/canonical-state-registry.json`, validated by
+`spec/state/canonical-state-registry.schema.json`. Each entry records its
+State/Lifecycle axis, boolean or enum value shape, applicable component
+contracts, and Appearance/Motion usage evidence. Provider spellings remain in
+later component projection contracts rather than this registry.
 
 ### 3.1 Boolean state
 

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1",
+  "containers": [
+    {
+      "id": "component",
+      "cssName": "axiom-component"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "viewport.width.sm",
+      "kind": "viewport",
+      "feature": "width",
+      "comparison": ">=",
+      "value": {
+        "kind": "token",
+        "path": "breakpoint.semantic.viewport.sm"
+      }
+    },
+    {
+      "id": "preference.reducedMotion",
+      "kind": "preference",
+      "feature": "prefers-reduced-motion",
+      "equals": "reduce"
+    }
+  ]
+}

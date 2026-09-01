@@ -10,9 +10,13 @@ import {
   TOKEN_ID_TIER_SEGMENT_INDEX,
   TOKEN_REFERENCE_PATTERN,
 } from "./constants.js";
+import { validateCanonicalStateRegistry } from "./semantic/canonical-state-registry-validator.js";
+import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
+import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
 import type {
   Diagnostic,
   JsonValue,
+  SemanticValidationContext,
   SemanticValidatorId,
 } from "./types.js";
 
@@ -361,10 +365,17 @@ const validateParsedTokenDocument = (value: unknown): readonly Diagnostic[] => {
 export const runSemanticValidator = (
   id: SemanticValidatorId | undefined,
   value: unknown,
+  context?: SemanticValidationContext,
 ): readonly Diagnostic[] => {
   switch (id) {
     case undefined:
       return [];
+    case "canonical-state-registry":
+      return validateCanonicalStateRegistry(value);
+    case "condition-expression":
+      return validateConditionExpression(value, context);
+    case "condition-registry":
+      return validateConditionRegistry(value, context);
     case "token-domain-registry":
       return validateTokenDomainRegistry(value);
     case "token-identity":

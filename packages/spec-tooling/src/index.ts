@@ -12,6 +12,7 @@ export type {
   JsonValue,
   RegistryManifestEntry,
   SchemaManifestEntry,
+  SemanticValidationContext,
   SemanticValidatorId,
   SourceLocation,
   SpecCheckReport,

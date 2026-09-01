@@ -48,6 +48,9 @@
         "schema": { "type": "string", "pattern": "^https://axiom\\.dev/schemas/" },
         "semanticValidator": {
           "enum": [
+            "canonical-state-registry",
+            "condition-expression",
+            "condition-registry",
             "token-domain-registry",
             "token-identity",
             "parsed-token-document",
@@ -74,6 +77,9 @@
         },
         "semanticValidator": {
           "enum": [
+            "canonical-state-registry",
+            "condition-expression",
+            "condition-registry",
             "token-domain-registry",
             "token-identity",
             "parsed-token-document",

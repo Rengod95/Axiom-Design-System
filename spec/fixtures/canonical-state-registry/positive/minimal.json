@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "0.1",
+  "states": [
+    {
+      "id": "entering",
+      "axis": "lifecycle",
+      "valueType": "boolean",
+      "applicableComponents": ["dialog"],
+      "usage": ["motion"]
+    },
+    {
+      "id": "orientation",
+      "axis": "state",
+      "valueType": "enum",
+      "values": ["horizontal", "vertical"],
+      "applicableComponents": ["select"],
+      "usage": ["appearance", "behavior"]
+    }
+  ]
+}
