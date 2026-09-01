@@ -7,10 +7,10 @@
 
 > 이 문서는 ADR-0001 이전 레포 상태를 기록한 감사 자료다. 제안한 작은
 > target-independent Canonical Property 모델과 당시 open 범위는
-> [ADR-0001](../adr/0001-css-native-appearance-profile-and-v0.1-scope.md)에서
+> [ADR-0001](../adr/0001-css-native-appearance-profile-and-scope.md)에서
 > 대체되었다. 현재 규범과 실행 순서는
 > [docs index](../README.md)와
-> [2026-09-01 active implementation plan](../plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)을 따른다.
+> [2026-09-01 active implementation plan](../plans/2026-09-01-foundation-and-implementation-plan.md)을 따른다.
 
 ---
 

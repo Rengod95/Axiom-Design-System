@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://axiom.dev/schemas/token/context-override/0.1",
-  "title": "Axiom Normalized Token Context Override v0.1",
+  "title": "Axiom Normalized Token Context Override",
   "type": "object",
   "required": ["schemaVersion", "context", "tokens"],
   "properties": {

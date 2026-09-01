@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://axiom.dev/schemas/token/resolved-manifest/0.2",
-  "title": "Axiom Resolved Token Manifest v0.2",
+  "title": "Axiom Resolved Token Manifest",
   "type": "object",
   "required": ["schemaVersion", "profileVersion", "sourceDigest", "contexts"],
   "properties": {

@@ -696,4 +696,4 @@ continues.
 - [React Aria releases](https://react-aria.adobe.com/releases/)
 - [React Aria testing](https://react-aria.adobe.com/testing)
 - [Panda CSS Slot Recipes](https://panda-css.com/docs/concepts/slot-recipes)
-- [Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog-v0.1.md)
+- [Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog.md)

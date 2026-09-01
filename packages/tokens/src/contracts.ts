@@ -1,47 +1,176 @@
-export const tokenTypes = [
-  "color",
-  "dimension",
-  "fontFamily",
-  "fontWeight",
-  "number",
-] as const;
+import {
+  DTCG_TYPES,
+  RESOLVED_TOKEN_SCHEMA_VERSION,
+  TOKEN_DIAGNOSTIC_PHASE,
+  TOKEN_DIAGNOSTIC_SEVERITIES,
+  TOKEN_SCHEMA_VERSION,
+  TOKEN_TIERS,
+} from "./constants.js";
 
-export type TokenType = (typeof tokenTypes)[number];
+export type DtcgType = (typeof DTCG_TYPES)[number];
 
-export type DimensionValue = Readonly<{
-  value: number;
-  unit: "px" | "rem";
-}>;
+export type TokenTier = (typeof TOKEN_TIERS)[number];
 
-export type TokenValueByType = Readonly<{
-  color: string;
-  dimension: DimensionValue;
-  fontFamily: string | readonly string[];
-  fontWeight: number;
-  number: number;
-}>;
+export type TokenJsonPrimitive = boolean | null | number | string;
 
-export type TokenValue<TType extends TokenType = TokenType> =
-  TokenValueByType[TType];
+export type TokenJsonValue =
+  | TokenJsonPrimitive
+  | readonly TokenJsonValue[]
+  | { readonly [key: string]: TokenJsonValue };
 
-export interface DtcgToken<TType extends TokenType = TokenType> {
-  readonly $type?: TType;
-  readonly $value: TokenValue<TType> | `{${string}}`;
-  readonly $description?: string;
+export type TokenDomainConstraint =
+  | {
+      readonly kind: "numberRange";
+      readonly minimum?: number;
+      readonly maximum?: number;
+      readonly exclusiveMinimum?: number;
+      readonly exclusiveMaximum?: number;
+      readonly integer?: boolean;
+    }
+  | {
+      readonly kind: "dimensionRange";
+      readonly minimum?: number;
+      readonly exclusiveMinimum?: number;
+    }
+  | {
+      readonly kind: "durationRange";
+      readonly minimumMilliseconds?: number;
+    };
+
+export interface TokenDomainDefinition {
+  readonly id: string;
+  readonly root: string;
+  readonly allowedDTCGTypes: readonly DtcgType[];
+  readonly constraints?: readonly TokenDomainConstraint[];
 }
 
-export interface DtcgGroup {
-  readonly $type?: TokenType;
-  readonly $description?: string;
-  readonly [key: string]: DtcgGroup | DtcgToken | TokenType | string | undefined;
+export interface NormalizedTokenIdentity {
+  readonly id: string;
+  readonly domain: string;
+  readonly tier: TokenTier;
 }
 
-export interface ResolvedToken<TType extends TokenType = TokenType> {
-  readonly path: string;
-  readonly type: TType;
-  readonly value: TokenValue<TType>;
-  readonly cssVariable: `--axiom-${string}`;
+export interface TokenSourceLocation {
+  readonly file: string;
+  readonly pointer: string;
+}
+
+export interface ParsedDtcgToken extends NormalizedTokenIdentity {
+  readonly dtcgType: DtcgType;
+  readonly value: TokenJsonValue;
+  readonly source: TokenSourceLocation;
+  readonly aliasTarget?: string;
   readonly description?: string;
+  readonly deprecated?: boolean | string;
+  readonly extensions?: Readonly<Record<string, TokenJsonValue>>;
 }
 
-export type ResolvedTokenMap = Readonly<Record<string, ResolvedToken>>;
+export interface ParsedDtcgDocument {
+  readonly schemaVersion: typeof TOKEN_SCHEMA_VERSION;
+  readonly tokens: readonly ParsedDtcgToken[];
+}
+
+export interface TokenSourceDocument {
+  readonly filename: URL;
+  readonly content: string;
+}
+
+export interface TokenDiagnostic {
+  readonly code: string;
+  readonly severity: (typeof TOKEN_DIAGNOSTIC_SEVERITIES)[number];
+  readonly phase: typeof TOKEN_DIAGNOSTIC_PHASE;
+  readonly message: string;
+  readonly tokenId?: string;
+  readonly location?: TokenSourceLocation;
+}
+
+export interface TokenParserPort {
+  parse(sources: readonly TokenSourceDocument[]): Promise<ParsedDtcgDocument>;
+}
+
+export interface TokenContext {
+  readonly [modifier: string]: string;
+}
+
+export interface ResolverModifierDefinition {
+  readonly id: string;
+  readonly values: readonly string[];
+}
+
+export interface ResolverModifierRegistry {
+  readonly schemaVersion: typeof TOKEN_SCHEMA_VERSION;
+  readonly modifiers: readonly ResolverModifierDefinition[];
+}
+
+export interface TokenContextOverrideDocument {
+  readonly schemaVersion: typeof TOKEN_SCHEMA_VERSION;
+  readonly context: TokenContext;
+  readonly tokens: readonly ParsedDtcgToken[];
+}
+
+export interface TokenResolutionInput {
+  readonly profileVersion: string;
+  readonly sourceDigest: string;
+  readonly base: ParsedDtcgDocument;
+  readonly contexts: readonly TokenContextOverrideDocument[];
+}
+
+export interface ResolvedTokenEntry extends NormalizedTokenIdentity {
+  readonly dtcgType: DtcgType;
+  readonly resolvedValue: TokenJsonValue;
+  readonly source: TokenSourceLocation;
+  readonly dependencies: readonly string[];
+  readonly description?: string;
+  readonly deprecated?: boolean | string;
+}
+
+export interface ResolvedTokenContext {
+  readonly context: TokenContext;
+  readonly tokens: readonly ResolvedTokenEntry[];
+}
+
+export interface ResolvedTokenManifest {
+  readonly schemaVersion: typeof RESOLVED_TOKEN_SCHEMA_VERSION;
+  readonly profileVersion: string;
+  readonly sourceDigest: string;
+  readonly contexts: readonly ResolvedTokenContext[];
+}
+
+export interface TokenResolutionResult {
+  readonly manifest: ResolvedTokenManifest;
+  readonly diagnostics: readonly TokenDiagnostic[];
+}
+
+export class TokenParseError extends Error {
+  readonly diagnostics: readonly TokenDiagnostic[];
+
+  constructor(
+    message: string,
+    diagnostics: readonly TokenDiagnostic[],
+    options?: ErrorOptions,
+  ) {
+    super(message, options);
+    this.name = TokenParseError.name;
+    this.diagnostics = diagnostics;
+  }
+}
+
+export class TokenResolutionError extends Error {
+  readonly diagnostics: readonly TokenDiagnostic[];
+
+  constructor(
+    message: string,
+    diagnostics: readonly TokenDiagnostic[],
+    options?: ErrorOptions,
+  ) {
+    super(message, options);
+    this.name = TokenResolutionError.name;
+    this.diagnostics = diagnostics;
+  }
+}
+
+export const isDtcgType = (value: string): value is DtcgType =>
+  (DTCG_TYPES as readonly string[]).includes(value);
+
+export const isTokenTier = (value: string): value is TokenTier =>
+  (TOKEN_TIERS as readonly string[]).includes(value);

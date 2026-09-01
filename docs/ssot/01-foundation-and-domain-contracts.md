@@ -271,7 +271,7 @@ Registry.
 ### 5.4 Required coverage annex
 
 The normative
-[Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog-v0.1.md)
+[Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog.md)
 defines:
 
 - the complete v0.1 Domain list and constraints;
@@ -744,6 +744,6 @@ Token Foundation is ready for the CSS Appearance Profile only when:
 
 - [Design Tokens Format Module 2025.10](https://www.designtokens.org/TR/2025.10/format/)
 - [Design Tokens Resolver Module 2025.10](https://www.designtokens.org/TR/2025.10/resolver/)
-- [Axiom Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog-v0.1.md)
+- [Axiom Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog.md)
 - [Chakra UI Tokens](https://chakra-ui.com/docs/theming/tokens)
 - [Carbon Design System Color and Tokens](https://carbondesignsystem.com/elements/color/overview/)

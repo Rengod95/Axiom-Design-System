@@ -1,6 +1,5 @@
 {
   "name": "@axiom/token-tooling",
-  "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {

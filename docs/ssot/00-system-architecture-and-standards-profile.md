@@ -5,7 +5,7 @@
 **Status:** NORMATIVE \
 **Scope:** Axiom v0.1 system architecture and authority \
 **Authority:** Highest Axiom-owned architectural authority \
-**Decision basis:** [ADR-0001](../adr/0001-css-native-appearance-profile-and-v0.1-scope.md), [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md), [ADR-0003](../adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
+**Decision basis:** [ADR-0001](../adr/0001-css-native-appearance-profile-and-scope.md), [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md), [ADR-0003](../adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
 
 ---
 

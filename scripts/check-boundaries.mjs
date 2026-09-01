@@ -1,41 +1,41 @@
 import { readFile, readdir } from "node:fs/promises";
-import { extname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { extname, join, relative } from "node:path";
 
-const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
-
-const allowedRuntimeDependencies = {
-  "spec-tooling": ["ajv"],
-  "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],
-  tokens: [],
-  "appearance-schema": ["@axiom/tokens"],
-  recipes: ["@axiom/appearance-schema"],
-  "recipe-engine": ["@axiom/appearance-schema", "@axiom/recipes"],
-  "adapter-tailwind": [
-    "@axiom/appearance-schema",
-    "@axiom/recipe-engine",
-    "@axiom/tokens",
-  ],
-  behavior: [],
-  react: [
-    "@axiom/adapter-tailwind",
-    "@axiom/appearance-schema",
-    "@axiom/behavior",
-    "@axiom/recipe-engine",
-    "@axiom/recipes",
-    "react-aria-components",
-  ],
-};
+import {
+  FORBIDDEN_RENDERER_IMPORT_PATTERNS,
+  PACKAGE_MANIFEST_NAME,
+  PACKAGE_RUNTIME_DEPENDENCIES,
+  PACKAGES_DIRECTORY_NAME,
+  RENDERER_INDEPENDENT_PACKAGES,
+  REPOSITORY_ROOT,
+  SOURCE_DIRECTORY_NAME,
+  SOURCE_FILE_EXTENSIONS,
+  STABLE_SORT_LOCALE,
+  TEST_FILE_SUFFIXES,
+} from "./workspace-policy.mjs";
 
 const issues = [];
 
-for (const [packageName, allowed] of Object.entries(allowedRuntimeDependencies)) {
-  const packagePath = join(root, "packages", packageName, "package.json");
-  const manifest = JSON.parse(await readFile(packagePath, "utf8"));
-  const actual = Object.keys(manifest.dependencies ?? {}).sort();
-  if (JSON.stringify(actual) !== JSON.stringify([...allowed].sort())) {
+const sorted = (values) =>
+  [...values].sort((left, right) => left.localeCompare(right, STABLE_SORT_LOCALE));
+
+for (const [packageName, allowedDependencies] of Object.entries(
+  PACKAGE_RUNTIME_DEPENDENCIES,
+)) {
+  const manifestPath = join(
+    REPOSITORY_ROOT,
+    PACKAGES_DIRECTORY_NAME,
+    packageName,
+    PACKAGE_MANIFEST_NAME,
+  );
+  const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+  const actualDependencies = sorted(Object.keys(manifest.dependencies ?? {}));
+  const expectedDependencies = sorted(allowedDependencies);
+  if (JSON.stringify(actualDependencies) !== JSON.stringify(expectedDependencies)) {
     issues.push(
-      `${relative(root, packagePath)}: runtime dependencies ${JSON.stringify(actual)} do not match ${JSON.stringify([...allowed].sort())}`,
+      `${relative(REPOSITORY_ROOT, manifestPath)}: runtime dependencies ${JSON.stringify(
+        actualDependencies,
+      )} do not match ${JSON.stringify(expectedDependencies)}`,
     );
   }
 }
@@ -50,34 +50,23 @@ const walk = async (directory) => {
   return files;
 };
 
-const corePackages = [
-  "spec-tooling",
-  "token-tooling",
-  "tokens",
-  "appearance-schema",
-  "recipes",
-];
-const forbiddenImports = [
-  /from\s+["']react(?:\/|["'])/,
-  /from\s+["']react-aria/,
-  /from\s+["']react-aria-components/,
-  /from\s+["']@base-ui/,
-  /from\s+["']tailwindcss/,
-];
-
-for (const packageName of corePackages) {
-  const sourceRoot = join(root, "packages", packageName, "src");
-  const files = (await walk(sourceRoot)).filter(
-    (path) =>
-      [".ts", ".tsx"].includes(extname(path)) &&
-      !path.endsWith(".test.ts") &&
-      !path.includes(`${join("src", "generated")}`),
+for (const packageName of RENDERER_INDEPENDENT_PACKAGES) {
+  const sourceRoot = join(
+    REPOSITORY_ROOT,
+    PACKAGES_DIRECTORY_NAME,
+    packageName,
+    SOURCE_DIRECTORY_NAME,
   );
-  for (const path of files) {
+  const sourceFiles = (await walk(sourceRoot)).filter(
+    (path) =>
+      SOURCE_FILE_EXTENSIONS.has(extname(path)) &&
+      !TEST_FILE_SUFFIXES.some((suffix) => path.endsWith(suffix)),
+  );
+  for (const path of sourceFiles) {
     const source = await readFile(path, "utf8");
-    for (const pattern of forbiddenImports) {
+    for (const pattern of FORBIDDEN_RENDERER_IMPORT_PATTERNS) {
       if (pattern.test(source)) {
-        issues.push(`${relative(root, path)}: forbidden renderer import ${pattern}`);
+        issues.push(`${relative(REPOSITORY_ROOT, path)}: forbidden renderer import ${pattern}`);
       }
     }
   }

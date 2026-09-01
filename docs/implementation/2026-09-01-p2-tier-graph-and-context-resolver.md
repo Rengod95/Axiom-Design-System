@@ -4,7 +4,7 @@
 **Status:** IMPLEMENTED — P2.3 and P2.4 complete \
 **Scope:** tier graph, alias resolution, light/dark composition, resolved
 manifest and deterministic serialization \
-**Related plan:** [Axiom v0.1 Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
+**Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-foundation-and-implementation-plan.md)
 
 ## 1. Outcome
 
@@ -137,7 +137,7 @@ The normative schema is
 Each entry contains:
 
 ```ts
-interface ResolvedTokenEntryV02 {
+interface ResolvedTokenEntry {
   id: TokenId;
   domain: TokenDomain;
   tier: TokenTier;
@@ -172,7 +172,7 @@ Determinism does not depend on authoring order:
 - output contexts follow Resolver Modifier Registry order;
 - output Tokens and direct dependencies are lexically sorted;
 - object keys inside resolved values are normalized;
-- `serializeResolvedTokenManifestV02()` emits stable two-space JSON with one
+- `serializeResolvedTokenManifest()` emits stable two-space JSON with one
   terminal newline.
 
 Tests prove that reversed base/context inputs produce equal runtime objects and
@@ -208,9 +208,9 @@ spec/token/resolver-modifier-registry.schema.json
 spec/token/resolver-modifier-registry.json
 spec/token/resolved-token-manifest.schema.json
 
-packages/tokens/src/v0-1/context-resolver.ts
-packages/tokens/src/v0-1/manifest-serializer.ts
-packages/tokens/src/v0-1/context-resolver.test.ts
+packages/tokens/src/resolution/context-resolver.ts
+packages/tokens/src/resolution/manifest-serializer.ts
+packages/tokens/src/resolution/context-resolver.test.ts
 ```
 
 The specification harness now validates 16 schemas, three registries/profiles,

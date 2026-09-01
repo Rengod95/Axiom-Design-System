@@ -1,5 +1,6 @@
 import { fileURLToPath } from "node:url";
 
+import { STABLE_SORT_LOCALE } from "./constants.js";
 import { checkSpecification } from "./spec-harness.js";
 
 const repoRoot = fileURLToPath(new URL("../../../", import.meta.url));
@@ -12,7 +13,7 @@ try {
       `${report.positiveFixtureCount} positive fixtures, ${report.negativeFixtureCount} negative fixtures.`,
   );
   for (const [name, digest] of Object.entries(report.digests).sort(([left], [right]) =>
-    left.localeCompare(right, "en"),
+    left.localeCompare(right, STABLE_SORT_LOCALE),
   )) {
     console.log(`${name}: ${digest}`);
   }

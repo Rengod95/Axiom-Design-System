@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://axiom.dev/schemas/token/resolver-modifier-registry/0.1",
-  "title": "Axiom Resolver Modifier Registry v0.1",
+  "title": "Axiom Resolver Modifier Registry",
   "type": "object",
   "required": ["schemaVersion", "modifiers"],
   "properties": {

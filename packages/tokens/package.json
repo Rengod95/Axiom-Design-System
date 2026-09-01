@@ -1,23 +1,19 @@
 {
   "name": "@axiom/tokens",
-  "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./css": "./src/generated/tokens.css",
-    "./manifest": "./src/generated/token-manifest.json"
+    }
   },
-  "files": ["dist", "src/generated"],
+  "files": ["dist"],
   "scripts": {
-    "build": "tsc -b",
-    "generate": "node --import tsx scripts/generate.ts"
+    "build": "tsc -b"
   },
   "devDependencies": {
-    "tsx": "^4.23.13",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
   }
 }

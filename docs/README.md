@@ -1,8 +1,8 @@
 # Axiom Documentation
 
-이 디렉터리는 Axiom v0.1의 규범, 결정 기록, 구현 계획, 역사적 자료를
-분리한다. 현재 패키지 구현은 실행 가능한 spike이며 아래 SSOT를 구현한
-것으로 간주하지 않는다.
+이 디렉터리는 Axiom의 규범, 결정 기록, 구현 계획, 소스 표준, 역사적 자료를
+분리한다. 현재 패키지는 아래 SSOT와 machine-readable spec을 단계적으로
+구현하며, 구현 자체가 별도의 authority가 되지 않는다.
 
 ## Authority Order
 
@@ -24,16 +24,19 @@ reconciliation한다.
 
 ## Start Here
 
-1. [ADR-0001 — CSS-Native Appearance Profile and v0.1 Scope](adr/0001-css-native-appearance-profile-and-v0.1-scope.md)
-2. [ADR-0002 — React Aria Behavioral Criteria Source](adr/0002-react-aria-behavioral-criteria-source.md)
-3. [ADR-0003 — Recipe Authoring Kernel and Third-Party Boundary](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
-4. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
-5. [Token Domain & CSS Binding Catalog v0.1](specs/token-domain-and-css-binding-catalog-v0.1.md)
-6. [React Aria Behavioral Criteria Profile v0.1](specs/react-aria-behavioral-criteria-v0.1.md)
-7. [Axiom v0.1 Foundation Reconciliation & Implementation Plan](plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
-8. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
-9. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
-10. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
+1. [Current implementation architecture](architecture.md)
+2. [ADR-0001 — CSS-Native Appearance Profile and Initial Scope](adr/0001-css-native-appearance-profile-and-scope.md)
+3. [ADR-0002 — React Aria Behavioral Criteria Source](adr/0002-react-aria-behavioral-criteria-source.md)
+4. [ADR-0003 — Recipe Authoring Kernel and Third-Party Boundary](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
+5. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
+6. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
+7. [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
+8. [Foundation Reconciliation & Implementation Plan](plans/2026-09-01-foundation-and-implementation-plan.md)
+9. [Source-code and Module-structure Standard](standards/source-code-and-module-structure.md)
+10. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
+11. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
+12. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
+13. [MVP Removal & Source Standards — Implementation Report](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를
@@ -53,8 +56,8 @@ Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계�
 
 ## Normative Annexes
 
-- [Token Domain & CSS Binding Catalog v0.1](specs/token-domain-and-css-binding-catalog-v0.1.md)
-- [React Aria Behavioral Criteria Profile v0.1](specs/react-aria-behavioral-criteria-v0.1.md)
+- [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
+- [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
 
 이 Catalog는 margin을 포함한 common CSS property binding을 정의하지만 CSS
 allowlist가 아니다. 전체 표준 property authoring은 generated registry가,
@@ -98,21 +101,21 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 
 ## Active Plan
 
-- [Axiom v0.1 Foundation Reconciliation & Implementation Plan — 2026-09-01](plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
+- [Foundation Reconciliation & Implementation Plan — 2026-09-01](plans/2026-09-01-foundation-and-implementation-plan.md)
 - [P1 Normative Specification Harness — Implementation Report — 2026-09-01](implementation/2026-09-01-p1-normative-spec-harness.md)
 - [P2.1 DTCG Parser & Normalization Boundary — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-token-parser-and-normalization.md)
 - [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
+- [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 
 계획은 현 패키지 disposition, 목표 workspace, schema/artifact inventory,
 P0–P8 작업, Gate A–C, fixture/test matrix, migration map, risk register와 첫
 구현 순서를 포함한다.
 
-## Historical Reviews and Spike Documentation
+## Historical Reviews
 
 - [Foundation Gap Analysis & Stabilization Plan — 2026-08-31](reviews/2026-08-31-foundation-gap-analysis-and-stabilization-plan.md)
-- [Executable Architecture Draft](architecture.md)
 
-두 문서는 당시 레포의 문제와 실행 가능한 vertical slice를 보존하는
-역사적 자료다. ADR-0001 이후의 property, component token, responsive,
-Motion, provider 범위 판단에는 사용하지 않는다.
+이 문서는 당시 레포의 문제와 실행 가능한 vertical slice를 분석한
+역사적 자료다. 현재 property, component token, responsive, Motion,
+provider 범위 판단에는 사용하지 않는다.

@@ -7,7 +7,7 @@ import {
   DTCG_TYPES,
   TokenParseError,
   type TokenDomainDefinition,
-  type TokenSourceDocumentV01,
+  type TokenSourceDocument,
 } from "@axiom/tokens";
 
 import { createTerrazzoTokenParser } from "./terrazzo-token-parser.js";
@@ -22,7 +22,7 @@ const registry = JSON.parse(
 
 const parser = createTerrazzoTokenParser({ domains: registry.domains });
 
-const source = async (url: URL): Promise<TokenSourceDocumentV01> => ({
+const source = async (url: URL): Promise<TokenSourceDocument> => ({
   filename: url,
   content: await readFile(url, "utf8"),
 });
@@ -98,7 +98,7 @@ describe("Terrazzo TokenParserPort adapter", () => {
 
   it("does not derive Token identity from filesystem paths", async () => {
     const original = await source(new URL("color.tokens.json", positiveRoot));
-    const relocated: TokenSourceDocumentV01 = {
+    const relocated: TokenSourceDocument = {
       ...original,
       filename: pathToFileURL(`${repositoryRoot}/arbitrary/location/source.tokens.json`),
     };

@@ -5,18 +5,33 @@ import {
 } from "@terrazzo/parser";
 
 import {
+  TOKEN_SCHEMA_VERSION,
   TokenParseError,
   isDtcgType,
   parseTokenIdentity,
   validateTokenDomainConstraints,
   validateTokenDomainType,
-  type ParsedDtcgTokenV01,
-  type TokenDiagnosticV01,
+  type ParsedDtcgToken,
+  type TokenDiagnostic,
   type TokenDomainDefinition,
   type TokenJsonValue,
   type TokenParserPort,
-  type TokenSourceDocumentV01,
+  type TokenSourceDocument,
 } from "@axiom/tokens";
+
+import {
+  DTCG_PROFILE_VERSION,
+  DTCG_SOURCE_UNITS,
+  EMPTY_JSON_POINTER,
+  ERROR_DIAGNOSTIC_SEVERITY,
+  PARSER_DIAGNOSTIC_CODE,
+  PARSER_ERROR_MESSAGE,
+  ROOT_JSON_POINTER_PREFIX,
+  ROOT_JSON_POINTER_PREFIX_LENGTH,
+  TOKEN_DIAGNOSTIC_PHASE,
+  TOKEN_REFERENCE_PATTERN,
+  UNKNOWN_SOURCE_NAME,
+} from "./constants.js";
 
 export interface TerrazzoTokenParserOptions {
   readonly domains: readonly TokenDomainDefinition[];
@@ -33,31 +48,31 @@ const cloneJson = (value: unknown, subject: string): TokenJsonValue => {
 
 const aliasTarget = (value: unknown): string | undefined => {
   if (typeof value !== "string") return undefined;
-  const match = /^\{([^{}]+)\}$/.exec(value);
+  const match = TOKEN_REFERENCE_PATTERN.exec(value);
   return match?.[1];
 };
 
 const sourceLocation = (token: TokenNormalized): { file: string; pointer: string } => ({
-  file: token.source.filename ?? "<unknown>",
-  pointer: token.jsonID.startsWith("#") ? token.jsonID.slice(1) : token.jsonID,
+  file: token.source.filename ?? UNKNOWN_SOURCE_NAME,
+  pointer: token.jsonID.startsWith(ROOT_JSON_POINTER_PREFIX)
+    ? token.jsonID.slice(ROOT_JSON_POINTER_PREFIX_LENGTH)
+    : token.jsonID,
 });
 
-const unsupportedType = (token: TokenNormalized): TokenDiagnosticV01 => ({
-  code: "AXT1200",
-  severity: "error",
-  phase: "token",
-  message: `Unsupported DTCG 2025.10 type '${token.$type}'.`,
+const unsupportedType = (token: TokenNormalized): TokenDiagnostic => ({
+  code: PARSER_DIAGNOSTIC_CODE.UNSUPPORTED_DTCG_TYPE,
+  severity: ERROR_DIAGNOSTIC_SEVERITY,
+  phase: TOKEN_DIAGNOSTIC_PHASE,
+  message: `Unsupported DTCG ${DTCG_PROFILE_VERSION} type '${token.$type}'.`,
   tokenId: token.id,
   location: sourceLocation(token),
 });
 
-const DTCG_SOURCE_UNITS = new Set(["px", "rem", "ms", "s"]);
-
 const validateStandardUnits = (
   value: TokenJsonValue,
   token: TokenNormalized,
-  pointer = "",
-): readonly TokenDiagnosticV01[] => {
+  pointer = EMPTY_JSON_POINTER,
+): readonly TokenDiagnostic[] => {
   if (Array.isArray(value)) {
     return value.flatMap((entry, index) =>
       validateStandardUnits(entry, token, `${pointer}/${index}`),
@@ -66,15 +81,15 @@ const validateStandardUnits = (
   if (typeof value !== "object" || value === null) return [];
 
   const record = value as Readonly<Record<string, TokenJsonValue>>;
-  const diagnostics: TokenDiagnosticV01[] = [];
+  const diagnostics: TokenDiagnostic[] = [];
   const unit = record["unit"];
   if (typeof unit === "string" && !DTCG_SOURCE_UNITS.has(unit)) {
     const source = sourceLocation(token);
     diagnostics.push({
-      code: "AXT1203",
-      severity: "error",
-      phase: "token",
-      message: `Unit '${unit}' is outside the DTCG 2025.10 source profile.`,
+      code: PARSER_DIAGNOSTIC_CODE.UNSUPPORTED_DTCG_UNIT,
+      severity: ERROR_DIAGNOSTIC_SEVERITY,
+      phase: TOKEN_DIAGNOSTIC_PHASE,
+      message: `Unit '${unit}' is outside the DTCG ${DTCG_PROFILE_VERSION} source profile.`,
       tokenId: token.id,
       location: {
         ...source,
@@ -92,9 +107,9 @@ const validateStandardUnits = (
 const normalizeToken = (
   token: TokenNormalized,
   domains: readonly TokenDomainDefinition[],
-): { readonly token?: ParsedDtcgTokenV01; readonly diagnostics: readonly TokenDiagnosticV01[] } => {
+): { readonly token?: ParsedDtcgToken; readonly diagnostics: readonly TokenDiagnostic[] } => {
   const identityResult = parseTokenIdentity(token.id, domains);
-  const diagnostics: TokenDiagnosticV01[] = [...identityResult.diagnostics];
+  const diagnostics: TokenDiagnostic[] = [...identityResult.diagnostics];
 
   if (!isDtcgType(token.$type)) diagnostics.push(unsupportedType(token));
   if (!identityResult.ok || !isDtcgType(token.$type)) return { diagnostics };
@@ -146,14 +161,14 @@ export class TerrazzoTokenParser implements TokenParserPort {
     this.#cwd = options.cwd;
   }
 
-  async parse(sources: readonly TokenSourceDocumentV01[]) {
+  async parse(sources: readonly TokenSourceDocument[]) {
     if (sources.length === 0) {
-      throw new TokenParseError("At least one Token source is required.", [
+      throw new TokenParseError(PARSER_ERROR_MESSAGE.MISSING_SOURCE, [
         {
-          code: "AXT0001",
-          severity: "error",
-          phase: "token",
-          message: "At least one Token source is required.",
+          code: PARSER_DIAGNOSTIC_CODE.MISSING_SOURCE,
+          severity: ERROR_DIAGNOSTIC_SEVERITY,
+          phase: TOKEN_DIAGNOSTIC_PHASE,
+          message: PARSER_ERROR_MESSAGE.MISSING_SOURCE,
         },
       ]);
     }
@@ -184,12 +199,12 @@ export class TerrazzoTokenParser implements TokenParserPort {
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : String(cause);
       throw new TokenParseError(
-        "DTCG source parsing failed.",
+        PARSER_ERROR_MESSAGE.PARSE_FAILURE,
         [
           {
-            code: "AXT0002",
-            severity: "error",
-            phase: "token",
+            code: PARSER_DIAGNOSTIC_CODE.PARSE_FAILURE,
+            severity: ERROR_DIAGNOSTIC_SEVERITY,
+            phase: TOKEN_DIAGNOSTIC_PHASE,
             message,
           },
         ],
@@ -197,8 +212,8 @@ export class TerrazzoTokenParser implements TokenParserPort {
       );
     }
 
-    const diagnostics: TokenDiagnosticV01[] = [];
-    const tokens: ParsedDtcgTokenV01[] = [];
+    const diagnostics: TokenDiagnostic[] = [];
+    const tokens: ParsedDtcgToken[] = [];
     for (const token of Object.values(parsed.tokens).sort((left, right) =>
       left.id < right.id ? -1 : left.id > right.id ? 1 : 0,
     )) {
@@ -208,11 +223,11 @@ export class TerrazzoTokenParser implements TokenParserPort {
     }
 
     if (diagnostics.length > 0) {
-      throw new TokenParseError("Axiom Token normalization failed.", diagnostics);
+      throw new TokenParseError(PARSER_ERROR_MESSAGE.NORMALIZATION_FAILURE, diagnostics);
     }
 
     return {
-      schemaVersion: "0.1" as const,
+      schemaVersion: TOKEN_SCHEMA_VERSION,
       tokens,
     };
   }
