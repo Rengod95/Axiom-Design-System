@@ -3,14 +3,12 @@ import {
   BREAKPOINT_SOURCE_UNIT,
   BREAKPOINT_TOKEN_DOMAIN,
   CONDITION_DIAGNOSTIC_PHASE,
-  ERROR_DIAGNOSTIC_SEVERITY,
-  IN_MEMORY_SOURCE_NAME,
 } from "../constants.js";
-import type { Diagnostic } from "../types.js";
 import {
   isUnknownRecord,
   type UnknownRecord,
 } from "../validation/unknown-record.js";
+import { createSemanticDiagnosticFactory } from "./semantic-diagnostic.js";
 
 export interface ResolvedRange {
   readonly comparison: "<" | ">=";
@@ -18,17 +16,9 @@ export interface ResolvedRange {
   readonly threshold: number;
 }
 
-export const conditionDiagnostic = (
-  code: string,
-  message: string,
-  pointer: string,
-): Diagnostic => ({
-  code,
-  severity: ERROR_DIAGNOSTIC_SEVERITY,
-  phase: CONDITION_DIAGNOSTIC_PHASE,
-  message,
-  location: { file: IN_MEMORY_SOURCE_NAME, pointer },
-});
+export const conditionDiagnostic = createSemanticDiagnosticFactory(
+  CONDITION_DIAGNOSTIC_PHASE,
+);
 
 export const tokenPathFromCondition = (condition: UnknownRecord): string | undefined => {
   const reference = condition["value"];

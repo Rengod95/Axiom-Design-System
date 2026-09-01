@@ -1,24 +1,15 @@
 import {
-  ERROR_DIAGNOSTIC_SEVERITY,
-  IN_MEMORY_SOURCE_NAME,
   SPEC_DIAGNOSTIC_CODE,
   STATE_DIAGNOSTIC_PHASE,
   STABLE_SORT_LOCALE,
 } from "../constants.js";
 import type { Diagnostic } from "../types.js";
 import { isUnknownRecord } from "../validation/unknown-record.js";
+import { createSemanticDiagnosticFactory } from "./semantic-diagnostic.js";
 
-const stateDiagnostic = (
-  code: string,
-  message: string,
-  pointer: string,
-): Diagnostic => ({
-  code,
-  severity: ERROR_DIAGNOSTIC_SEVERITY,
-  phase: STATE_DIAGNOSTIC_PHASE,
-  message,
-  location: { file: IN_MEMORY_SOURCE_NAME, pointer },
-});
+const stateDiagnostic = createSemanticDiagnosticFactory(
+  STATE_DIAGNOSTIC_PHASE,
+);
 
 export const validateCanonicalStateRegistry = (
   value: unknown,

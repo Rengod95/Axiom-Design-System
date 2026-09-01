@@ -1,7 +1,5 @@
 import {
   CONSTRAINT_REQUIRED_DTCG_TYPE,
-  ERROR_DIAGNOSTIC_SEVERITY,
-  IN_MEMORY_SOURCE_NAME,
   REQUIRED_RESOLVED_THEMES,
   SPEC_DIAGNOSTIC_CODE,
   STABLE_SORT_LOCALE,
@@ -13,27 +11,17 @@ import {
 import { validateCanonicalStateRegistry } from "./semantic/canonical-state-registry-validator.js";
 import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
+import { createSemanticDiagnosticFactory } from "./semantic/semantic-diagnostic.js";
 import type {
   Diagnostic,
-  JsonValue,
   SemanticValidationContext,
   SemanticValidatorId,
 } from "./types.js";
 import { isUnknownRecord } from "./validation/unknown-record.js";
 
-const tokenDiagnostic = (
-  code: string,
-  message: string,
-  pointer: string,
-  details?: Readonly<Record<string, JsonValue>>,
-): Diagnostic => ({
-  code,
-  severity: ERROR_DIAGNOSTIC_SEVERITY,
-  phase: TOKEN_DIAGNOSTIC_PHASE,
-  message,
-  location: { file: IN_MEMORY_SOURCE_NAME, pointer },
-  ...(details === undefined ? {} : { details }),
-});
+const tokenDiagnostic = createSemanticDiagnosticFactory(
+  TOKEN_DIAGNOSTIC_PHASE,
+);
 
 const validateTokenIdentity = (value: unknown): readonly Diagnostic[] => {
   if (!isUnknownRecord(value)) return [];

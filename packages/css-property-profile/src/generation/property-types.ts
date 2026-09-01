@@ -3,16 +3,12 @@ import {
   CSS_GENERATED_FILE_INDENT,
   CSS_PROFILE_GENERATOR_VERSION,
   EFFECTIVE_PROPERTY_REGISTRY_SCHEMA_VERSION,
-  STABLE_SORT_LOCALE,
 } from "../constants.js";
 import type { EffectiveCSSPropertyRegistry } from "../contracts.js";
-
-const compare = (left: string, right: string): number =>
-  left.localeCompare(right, STABLE_SORT_LOCALE);
+import { uniqueSortedStrings } from "./stable-string-order.js";
 
 const quotedUnion = (values: readonly string[]): string =>
-  [...new Set(values)]
-    .sort(compare)
+  uniqueSortedStrings(values)
     .map((value) => `${CSS_GENERATED_FILE_INDENT}| ${JSON.stringify(value)}`)
     .join("\n");
 
