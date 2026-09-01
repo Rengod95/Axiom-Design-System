@@ -3,7 +3,8 @@
 **Date:** 2026-09-01 \
 **Status:** ACTIVE PLAN \
 **Normative inputs:** ADR-0001 through ADR-0003, SSOT-00 v0.3, SSOT-01 v0.3, SSOT-02 v0.3, SSOT-03 v0.2, SSOT-04 v0.1.1, SSOT-05 v0.2, Token Domain & CSS Binding Catalog \
-**Repository baseline:** existing Button/Select executable spike remains buildable but non-normative
+**Repository baseline:** pre-foundation MVP removed; SSOT-based specification
+harness and Token Foundation packages are the only live implementation baseline
 
 ---
 
@@ -33,8 +34,10 @@ versioned React Aria Behavior Criteria + Button / Select / Dialog bindings
 responsive, Motion, accessibility, SSR conformance
 ```
 
-The current spike is not incrementally treated as authority. It is preserved as
-behavioral evidence and migrated behind the new contracts.
+The removed MVP is not an implementation or migration authority. Button,
+Select, and Dialog conformance fixtures are recreated from the accepted ADRs,
+SSOT documents, and normative schemas rather than copied from the deleted
+packages.
 
 ---
 
@@ -42,16 +45,14 @@ behavioral evidence and migrated behind the new contracts.
 
 | Current package | Disposition | Reason |
 | --- | --- | --- |
-| `@axiom/tokens` | Preserve, then replace internals | Current source/resolver lacks tier/context/DTCG completeness |
-| `@axiom/appearance-schema` | Preserve as spike; new profile package supersedes | Current registry is a small CSS-like allowlist |
-| `@axiom/recipes` | Preserve fixtures; migrate definitions | Current Recipe object is also Adapter input |
-| `@axiom/recipe-engine` | Preserve tests; replace merge semantics | Current object merge cannot model CSS shorthand/cascade |
-| `@axiom/adapter-tailwind` | Historical spike; do not extend | First normative compiler is direct Web CSS |
-| `@axiom/behavior` | Extract evidence; replace with contracts/projections | Name implies an engine and owns state ordering |
-| `@axiom/react` | Preserve visual slice; rewrite public API/bindings | Current props leak React Aria and runtime overrides enter Core merge |
+| `@axiom/spec-tooling` | Preserve and extend | Owns the normative schema/registry harness |
+| `@axiom/tokens` | Preserve and complete | Owns renderer-independent Token contracts and resolution |
+| `@axiom/token-tooling` | Preserve and complete | Owns pinned DTCG parser and Token artifact generation adapters |
+| `@axiom/css-property-profile` | Preserve and extend | Implements the completed P3 pinned CSS metadata, policy generation, and validation boundary |
 
-No current package is deleted before its relevant replacement passes equivalent
-or stronger fixtures.
+The removed appearance, Recipe, Adapter, Behavior, and React packages MUST NOT
+be restored as examples. Their future replacements enter only after the owning
+SSOT contract and conformance fixtures exist.
 
 ---
 
@@ -193,14 +194,17 @@ Generated artifacts are subordinate to their inputs and generator.
 
 ## 5. Phase P0 — Preserve Baseline and Prevent Drift
 
+**Implementation status (2026-09-01): COMPLETE through the accepted MVP
+removal and SSOT rebaseline.**
+
 ### Work
 
-- record current commit and dirty-tree diff;
-- keep current `pnpm check`, tests, and build passing;
-- label existing architecture and packages as executable spike;
-- add boundary rule preventing new features in `adapter-tailwind`;
-- capture current Button and Select behavior as migration fixtures;
-- record current generated artifact digests.
+- record the cleanup inputs and resulting package disposition;
+- keep `pnpm check`, tests, and build passing;
+- prevent removed MVP packages from becoming migration authority;
+- enforce the current package dependency graph and source standard;
+- recreate future Button, Select, and Dialog fixtures from SSOT evidence;
+- record generated artifact digests through the specification harness.
 
 ### Outputs
 
@@ -226,9 +230,9 @@ boundary check update
 
 The executable result is recorded in
 [P1 Normative Specification Harness — Implementation Report](../implementation/2026-09-01-p1-normative-spec-harness.md).
-The same checkpoint also materializes the first P2 identity/domain slice: Token
-tier/path schemas and the 24-entry Token Domain Registry. DTCG source parsing,
-tier graphs, contexts, resolved manifests, and generated Token types remain P2.
+The same checkpoint also materialized the first P2 identity/domain slice: Token
+tier/path schemas and the 24-entry Token Domain Registry. The remaining P2 work
+is complete and recorded in the P2 implementation reports.
 
 ### Work
 
@@ -265,14 +269,16 @@ packages/spec-tooling/
 
 ## 7. Phase P2 — Token Foundation
 
-**Implementation status (2026-09-01): P2.1, P2.3, and P2.4 COMPLETE; P2.2
-identity, Domain/type, and range-validation slice COMPLETE.**
+**Implementation status (2026-09-01): COMPLETE.**
 
 The executable checkpoint is recorded in
 [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](../implementation/2026-09-01-p2-token-parser-and-normalization.md).
 [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](../implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
-records the next checkpoint. Public-source Token path generation and composite
-projection remain open.
+records the resolver checkpoint. The final generated-artifact and composite
+descriptor evidence is recorded in
+[P2 Token Foundation Closeout](../implementation/2026-09-01-p2-token-foundation-closeout.md).
+The production scale audit and corrective expansion are recorded in
+[Token Foundation Scale Hardening](../implementation/2026-09-01-token-foundation-scale-hardening.md).
 
 ### P2.1 Parser port
 
@@ -293,7 +299,9 @@ projection remain open.
 - [done] validate Domain numeric/range constraints;
 - [done] enforce non-negative Primitive spacing while reserving governed negation for
   margin/inset use sites;
-- generate `TokenDomain`, `TokenTier`, and Token path types.
+- [done] generate `TokenDomain`, `TokenTier`, and Token path types.
+- [done] enforce the machine-readable color, space, unit, typography, primitive
+  naming, and resolved contrast policy.
 
 ### P2.3 Tier graph
 
@@ -312,12 +320,13 @@ projection remain open.
 
 ### P2.5 Composite projectors
 
-- implement typography expansion;
-- implement border longhand expansion;
-- serialize shadow arrays;
-- implement transition composite application with explicit property list;
-- serialize gradient stops plus author-supplied CSS geometry.
-- implement compatible shadow/text-shadow and blur-template serializers;
+- [done] define the composite projector descriptor schema and registry;
+- [done] keep descriptor identity, Token Domain, DTCG type, and declared output
+  properties in Token Foundation;
+- [P4 responsibility] implement typography, border, shadow, transition,
+  gradient, and blur CSS serialization in the Appearance pipeline;
+- [done] require every projector output to re-enter CSS Property Policy and grammar
+  validation.
 
 ### Acceptance
 
@@ -334,6 +343,11 @@ tokens package imports no CSS/React/Motion modules
 ---
 
 ## 8. Phase P3 — CSS Property Profile
+
+**Implementation status (2026-09-01): COMPLETE for the property-profile gate.**
+
+The executable result is recorded in
+[P3 CSS Property Profile — Implementation Report](../implementation/2026-09-01-p3-css-property-profile.md).
 
 ### P3.1 Dependency pinning
 
@@ -929,7 +943,8 @@ resolved.
 
 ## 21. Immediate Next Work
 
-The next coding session starts at P0/P1, not in existing Recipe or Adapter code.
+The next coding session continues from the cleaned SSOT implementation baseline,
+not from removed Recipe or Adapter code.
 
 Exact first sequence:
 
@@ -939,19 +954,34 @@ Exact first sequence:
 3. [done] Add DTCG parser port with all-type fixtures.
 4. [done] Add context/resolved manifest schemas.
 5. [done] Materialize the complete v0.1 Token Domain Registry and constraints.
-6. Pin Webref/CSSTree and generate a minimal effective registry.
-7. Add Token Binding Catalog schema and expand margin/padding families.
-8. Prove unannotated grid-template-columns raw authoring.
-9. Prove background-color + direct color Token binding.
-10. Prove margin-inline + space and governed negative margin.
-11. Prove box-shadow template segments for space/blur/color.
-12. Add Behavioral Criteria Source/Profile schemas.
-13. Implement the Recipe Kernel port and structural conformance suite.
-14. Only then implement CSS-aware defineRecipe normalization.
+6. [done] Complete generated Token path types and composite projector descriptors.
+7. [done] Pin Webref/CSSTree and generate the effective registry.
+8. [done] Add Token Binding Catalog schema and expand margin/padding families.
+9. [done] Prove unannotated grid-template-columns raw authoring.
+10. [done] Prove background-color + direct color Token binding.
+11. [done] Prove margin-inline + space and governed negative margin.
+12. [done] Prove box-shadow template segments for space/blur/color.
+13. [next] Add the Canonical State Registry schema and fixtures (N12).
+14. Add the Condition Registry schema and fixtures (N13).
+15. Add ordered declaration/value schemas (N14).
+16. Add the Appearance IR schema (N15).
+17. Add the Motion IR schema (N16).
+18. Add Behavioral Criteria Source/Profile schemas (N17).
+19. Generate/reference the combined TypeScript contract surface (N18).
+20. Implement the Recipe Kernel port and structural conformance suite (N19).
+21. Implement the CSS-aware defineRecipe SDK (N20).
+22. Integrate the existing profile-level Token validators into declarations (N21).
+23. Implement the Recipe normalizer and collision trace (N22).
+24. Implement defineMotion authoring and normalization (N23).
 ```
 
 This produces the smallest vertical foundation proof without returning to the
 old small-property allowlist.
+
+The sequencing rationale and post-P3 gaps are recorded in
+[Post-P3 Foundation Review](2026-09-01-post-p3-foundation-review.md). In
+particular, authoring implementation cannot precede its normalized State,
+Condition, declaration, Appearance, Motion, and Behavior schemas.
 
 ---
 
@@ -961,8 +991,8 @@ This plan may be closed when:
 
 - every work phase has an owner/status in the project tracker;
 - Gates A, B, and C produce archived reports;
-- old spike packages are migrated, deliberately retained as examples, or
-  removed through an explicit recoverable change;
+- removed spike packages remain absent and are not used as implementation
+  authority;
 - all current SSOT questions have executable fixture answers;
 - v0.1 packages can be rebuilt from a fresh clone with byte-stable normative
   artifacts.

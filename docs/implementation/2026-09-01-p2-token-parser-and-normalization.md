@@ -6,7 +6,8 @@
 identity/Domain/type/range validation \
 **Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-foundation-and-implementation-plan.md)
 
-**Subsequent checkpoint:** [P2.3/P2.4 Tier Graph & Context Resolver](2026-09-01-p2-tier-graph-and-context-resolver.md)
+**Subsequent checkpoints:** [P2.3/P2.4 Tier Graph & Context Resolver](2026-09-01-p2-tier-graph-and-context-resolver.md),
+[P2 Token Foundation Closeout](2026-09-01-p2-token-foundation-closeout.md)
 
 ## 1. Outcome
 
@@ -59,7 +60,9 @@ Behavior, and React packages are intentionally not connected to this code path.
 - `<domain>.<tier>.<tier-specific-path>` identity grammar;
 - all 13 standard DTCG types;
 - parser package and exact version;
-- `resolveAliases: false` and `skipLint: false`.
+- `resolveAliases: false` and `skipLint: true`; Terrazzo supplies parsing while
+  Axiom validates the pinned DTCG value profile so legal non-color aliases are
+  not rejected by provider-specific lint rules.
 
 The standard type set is:
 
@@ -80,7 +83,7 @@ For example, the parser can accept extension types and an `em` dimension,
 while the DTCG 2025.10 source profile used here admits `px`/`rem` dimensions
 and `ms`/`s` durations.
 
-Axiom therefore performs four checks after parsing:
+Axiom therefore performs five checks after parsing:
 
 | Diagnostic | Check | Example rejection |
 | --- | --- | --- |
@@ -89,6 +92,7 @@ Axiom therefore performs four checks after parsing:
 | `AXT1201` | Domain ↔ DTCG type compatibility | `space` with `color` |
 | `AXT1202` | Domain-owned numeric constraints | opacity `1.5`, negative Primitive space |
 | `AXT1203` | DTCG source unit profile | dimension unit `em` |
+| `AXT1204` | DTCG value shape | malformed atomic or composite value |
 
 Parser syntax/value-shape failures become `AXT0002`. Empty input becomes
 `AXT0001`. Alias values skip numeric range validation at this stage because
@@ -218,18 +222,10 @@ git diff --check
 
 Targeted parser/identity tests pass before the repository-wide sequence.
 
-## 9. Deliberately deferred
+## 9. Subsequent completion
 
-P2 Token Foundation is not complete. The next code entry point is P2.3/P2.4:
-
-1. validate primitive/semantic/component tier edges and alias cycles;
-2. resolve whole-token aliases with dependency traces;
-3. define light/dark context source precedence and completeness;
-4. emit byte-stable resolved context manifests;
-5. generate `TokenDomain`, `TokenTier`, and public Token path types from
-   verified source/registry inputs;
-6. validate constraints again after resolution;
-7. only then implement composite projectors and CSS serializers.
-
-Until those steps pass, this parsed document must not be treated as an Adapter
-input or a release-ready token manifest.
+This report remains the historical P2.1 checkpoint. Tier-graph validation,
+light/dark context resolution, constraint revalidation, the normative Token
+corpus, resolved manifests, generated public Token types, and composite
+projector descriptors are now complete. See the subsequent reports above for
+their current evidence and acceptance commands.

@@ -78,7 +78,7 @@ describe("Terrazzo TokenParserPort adapter", () => {
     ["unknown-domain.tokens.json", "AXT1103"],
     ["missing-tier.tokens.json", "AXT1100"],
     ["domain-type-mismatch.tokens.json", "AXT1201"],
-    ["invalid-dimension.tokens.json", "AXT0002"],
+    ["invalid-dimension.tokens.json", "AXT1203"],
     ["terrazzo-extension-em.tokens.json", "AXT1203"],
     ["unsupported-extension-type.tokens.json", "AXT1200"],
     ["invalid-opacity-range.tokens.json", "AXT1202"],

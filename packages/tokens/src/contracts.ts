@@ -6,10 +6,11 @@ import {
   TOKEN_SCHEMA_VERSION,
   TOKEN_TIERS,
 } from "./constants.js";
+import type { TokenTier } from "./generated/token-paths.js";
+
+export type { TokenTier } from "./generated/token-paths.js";
 
 export type DtcgType = (typeof DTCG_TYPES)[number];
-
-export type TokenTier = (typeof TOKEN_TIERS)[number];
 
 export type TokenJsonPrimitive = boolean | null | number | string;
 

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/sparse-property-policy/0.1",
+  "title": "Axiom Sparse CSS Property Policy",
+  "type": "object",
+  "required": ["schemaVersion", "defaults", "groups", "overrides", "blockedProperties", "customProperties"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "defaults": {
+      "type": "object",
+      "required": ["standard", "experimental", "deprecated", "legacy", "vendor"],
+      "properties": {
+        "standard": { "$ref": "#/$defs/policyPatch" },
+        "experimental": { "$ref": "#/$defs/policyPatch" },
+        "deprecated": { "$ref": "#/$defs/policyPatch" },
+        "legacy": { "$ref": "#/$defs/policyPatch" },
+        "vendor": { "$ref": "#/$defs/policyPatch" }
+      },
+      "unevaluatedProperties": false
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/$defs/policyPatch" },
+          {
+            "type": "object",
+            "required": ["id", "properties"],
+            "properties": {
+              "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+              "properties": { "$ref": "#/$defs/propertyList" }
+            }
+          }
+        ],
+        "unevaluatedProperties": false
+      }
+    },
+    "overrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/$defs/policyPatch" },
+          {
+            "type": "object",
+            "required": ["property"],
+            "properties": {
+              "property": { "$ref": "#/$defs/property" },
+              "status": { "enum": ["standard", "experimental", "deprecated", "legacy", "vendor"] }
+            }
+          }
+        ],
+        "unevaluatedProperties": false
+      }
+    },
+    "blockedProperties": { "$ref": "#/$defs/propertyList" },
+    "customProperties": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^--[a-z0-9][a-z0-9-]*$" }
+    }
+  },
+  "$defs": {
+    "property": { "type": "string", "pattern": "^-?[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "propertyList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/property" }
+    },
+    "policyPatch": {
+      "type": "object",
+      "properties": {
+        "authoring": { "enum": ["allowed", "opt-in", "blocked"] },
+        "valueKinds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["css", "token", "css-template"] }
+        },
+        "rawCSS": { "enum": ["allowed", "warning", "blocked"] },
+        "shorthand": { "enum": ["not-applicable", "allowed", "warning", "blocked"] },
+        "portability": { "enum": ["portable-candidate", "web-specific", "unknown"] },
+        "motion": { "enum": ["interpolable", "discrete", "not-animatable", "unknown"] },
+        "resources": { "enum": ["allowed", "reported", "blocked"] }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

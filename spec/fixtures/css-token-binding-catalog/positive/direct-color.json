@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.1",
+  "conditionOnlyDomains": ["breakpoint"],
+  "bindings": [
+    {
+      "id": "paint",
+      "properties": ["background-color"],
+      "directDomains": ["color"],
+      "templateDomains": [],
+      "projectors": [],
+      "allowsTokenNegation": false
+    }
+  ]
+}

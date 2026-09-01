@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "0.1",
+  "profile": {
+    "schemaVersion": "0.1",
+    "id": "axiom-css",
+    "webrefPackageVersion": "8.7.3",
+    "webrefInputPath": "css.json",
+    "webrefInputDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "generatorVersion": "0.1.0",
+    "policySourceDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "properties": [
+    {
+      "name": "width",
+      "authoringName": "width",
+      "syntax": "auto | <length-percentage>",
+      "sourceHref": "https://drafts.csswg.org/css-sizing/#propdef-width",
+      "status": "standard",
+      "kind": "longhand",
+      "inherited": false,
+      "initialValue": "auto",
+      "longhands": [],
+      "resetLonghands": [],
+      "policy": {
+        "authoring": "allowed",
+        "valueKinds": ["css"],
+        "tokenBindings": {
+          "directDomains": [],
+          "templateDomains": [],
+          "projectors": [],
+          "allowsTokenNegation": false
+        },
+        "rawCSS": "allowed",
+        "shorthand": "not-applicable",
+        "portability": "unknown",
+        "motion": "unknown",
+        "security": { "resources": "reported" },
+        "provenance": [{ "source": "status-default", "rule": "standard" }]
+      }
+    }
+  ],
+  "aliases": {},
+  "authoringNames": { "width": "width" },
+  "customProperties": ["--axiom-project-example"]
+}

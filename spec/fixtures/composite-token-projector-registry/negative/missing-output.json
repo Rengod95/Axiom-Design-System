@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.1",
+  "projectors": [
+    {
+      "id": "css.typography-projector.v1",
+      "domain": "typography",
+      "dtcgType": "typography",
+      "outputProperties": [],
+      "version": "1.0.0"
+    }
+  ]
+}

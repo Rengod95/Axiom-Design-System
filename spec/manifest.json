@@ -19,6 +19,26 @@
       "path": "common/token-reference.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/css/effective-property-registry/0.1",
+      "path": "css/effective-property-registry.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/profile-input-manifest/0.1",
+      "path": "css/profile-input-manifest.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/sparse-property-policy/0.1",
+      "path": "css/sparse-property-policy.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/token-binding-catalog/0.1",
+      "path": "css/token-binding-catalog.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/token-binding-coverage/0.1",
+      "path": "css/token-binding-coverage.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/spec/manifest/0.1",
       "path": "spec-manifest.schema.json"
     },
@@ -31,8 +51,16 @@
       "path": "token/token-context-override.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/token/composite-projector-registry/0.1",
+      "path": "token/composite-token-projector-registry.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/token/domain-registry/0.1",
       "path": "token/token-domain-registry.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/foundation-policy/0.1",
+      "path": "token/foundation-token-policy.schema.json"
     },
     {
       "id": "https://axiom.dev/schemas/token/id/0.1",
@@ -69,6 +97,47 @@
   ],
   "registries": [
     {
+      "id": "composite-token-projector-registry",
+      "path": "token/composite-token-projector-registry.json",
+      "schema": "https://axiom.dev/schemas/token/composite-projector-registry/0.1"
+    },
+    {
+      "id": "css-effective-property-registry",
+      "path": "css/effective-property-registry.json",
+      "schema": "https://axiom.dev/schemas/css/effective-property-registry/0.1"
+    },
+    {
+      "id": "css-profile-input",
+      "path": "css/profile-input-manifest.json",
+      "schema": "https://axiom.dev/schemas/css/profile-input-manifest/0.1"
+    },
+    {
+      "id": "css-sparse-property-policy",
+      "path": "css/sparse-property-policy.json",
+      "schema": "https://axiom.dev/schemas/css/sparse-property-policy/0.1"
+    },
+    {
+      "id": "css-token-binding-catalog",
+      "path": "css/token-binding-catalog.json",
+      "schema": "https://axiom.dev/schemas/css/token-binding-catalog/0.1"
+    },
+    {
+      "id": "css-token-binding-coverage",
+      "path": "css/token-binding-coverage.json",
+      "schema": "https://axiom.dev/schemas/css/token-binding-coverage/0.1"
+    },
+    {
+      "id": "foundation-resolved-token-manifest",
+      "path": "token/foundation-resolved-token-manifest.json",
+      "schema": "https://axiom.dev/schemas/token/resolved-manifest/0.2",
+      "semanticValidator": "resolved-token-manifest"
+    },
+    {
+      "id": "foundation-token-policy",
+      "path": "token/foundation-token-policy.json",
+      "schema": "https://axiom.dev/schemas/token/foundation-policy/0.1"
+    },
+    {
       "id": "resolver-modifier-registry",
       "path": "token/resolver-modifier-registry.json",
       "schema": "https://axiom.dev/schemas/token/resolver-modifier-registry/0.1"
@@ -87,6 +156,12 @@
   ],
   "fixtureSuites": [
     {
+      "id": "composite-token-projector-registry",
+      "schema": "https://axiom.dev/schemas/token/composite-projector-registry/0.1",
+      "positiveDirectory": "fixtures/composite-token-projector-registry/positive",
+      "negativeDirectory": "fixtures/composite-token-projector-registry/negative"
+    },
+    {
       "id": "common-diagnostic",
       "schema": "https://axiom.dev/schemas/common/diagnostic/0.1",
       "positiveDirectory": "fixtures/common-diagnostic/positive",
@@ -97,6 +172,36 @@
       "schema": "https://axiom.dev/schemas/common/token-reference/0.1",
       "positiveDirectory": "fixtures/common-token-reference/positive",
       "negativeDirectory": "fixtures/common-token-reference/negative"
+    },
+    {
+      "id": "css-profile-input",
+      "schema": "https://axiom.dev/schemas/css/profile-input-manifest/0.1",
+      "positiveDirectory": "fixtures/css-profile-input/positive",
+      "negativeDirectory": "fixtures/css-profile-input/negative"
+    },
+    {
+      "id": "css-effective-property-registry",
+      "schema": "https://axiom.dev/schemas/css/effective-property-registry/0.1",
+      "positiveDirectory": "fixtures/css-effective-property-registry/positive",
+      "negativeDirectory": "fixtures/css-effective-property-registry/negative"
+    },
+    {
+      "id": "css-sparse-property-policy",
+      "schema": "https://axiom.dev/schemas/css/sparse-property-policy/0.1",
+      "positiveDirectory": "fixtures/css-sparse-property-policy/positive",
+      "negativeDirectory": "fixtures/css-sparse-property-policy/negative"
+    },
+    {
+      "id": "css-token-binding-catalog",
+      "schema": "https://axiom.dev/schemas/css/token-binding-catalog/0.1",
+      "positiveDirectory": "fixtures/css-token-binding-catalog/positive",
+      "negativeDirectory": "fixtures/css-token-binding-catalog/negative"
+    },
+    {
+      "id": "css-token-binding-coverage",
+      "schema": "https://axiom.dev/schemas/css/token-binding-coverage/0.1",
+      "positiveDirectory": "fixtures/css-token-binding-coverage/positive",
+      "negativeDirectory": "fixtures/css-token-binding-coverage/negative"
     },
     {
       "id": "token-domain-registry",
@@ -125,6 +230,12 @@
       "positiveDirectory": "fixtures/resolved-token-manifest/positive",
       "negativeDirectory": "fixtures/resolved-token-manifest/negative",
       "semanticValidator": "resolved-token-manifest"
+    },
+    {
+      "id": "foundation-token-policy",
+      "schema": "https://axiom.dev/schemas/token/foundation-policy/0.1",
+      "positiveDirectory": "fixtures/foundation-token-policy/positive",
+      "negativeDirectory": "fixtures/foundation-token-policy/negative"
     },
     {
       "id": "token-context-override",

@@ -8,12 +8,16 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "check": "pnpm check:standards && pnpm check:boundaries && pnpm spec:check && tsc -b --pretty false",
+    "check": "pnpm check:standards && pnpm check:boundaries && tsc -b --pretty false && pnpm tokens:check && pnpm profile:check && pnpm spec:check",
     "check:standards": "node scripts/check-source-standards.mjs",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "clean": "tsc -b --clean",
+    "profile:check": "node --import tsx packages/css-property-profile/src/cli.ts",
+    "profile:generate": "node --import tsx packages/css-property-profile/src/cli.ts --write",
     "spec:check": "node --import tsx packages/spec-tooling/src/cli.ts",
     "test": "vitest run",
+    "tokens:check": "node --import tsx packages/token-tooling/src/generate-foundation-artifacts.ts",
+    "tokens:generate": "node --import tsx packages/token-tooling/src/generate-foundation-artifacts.ts --write",
     "test:watch": "vitest"
   },
   "devDependencies": {

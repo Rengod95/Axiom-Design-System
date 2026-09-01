@@ -1,0 +1,394 @@
+{
+  "schemaVersion": "0.1",
+  "rootFontSizePx": 16,
+  "authoredDimensionUnits": [
+    "px",
+    "rem"
+  ],
+  "derivedCssUnits": [
+    "em"
+  ],
+  "forbiddenPrimitiveSegments": [
+    "action",
+    "backdrop",
+    "body",
+    "comfortable",
+    "control",
+    "disabled",
+    "focus",
+    "icon",
+    "medium",
+    "modal",
+    "normal",
+    "overlay",
+    "productive",
+    "raised",
+    "small",
+    "surface"
+  ],
+  "colorScales": [
+    {
+      "palette": "neutral",
+      "shades": [
+        0,
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        950,
+        1000
+      ]
+    },
+    {
+      "palette": "brand",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        950
+      ]
+    },
+    {
+      "palette": "red",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        950
+      ]
+    },
+    {
+      "palette": "amber",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        950
+      ]
+    },
+    {
+      "palette": "green",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        950
+      ]
+    },
+    {
+      "palette": "cyan",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        950
+      ]
+    },
+    {
+      "palette": "purple",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        950
+      ]
+    }
+  ],
+  "spaceScale": {
+    "baseUnitPx": 4,
+    "steps": [
+      {
+        "name": "0",
+        "valuePx": 0
+      },
+      {
+        "name": "1",
+        "valuePx": 4
+      },
+      {
+        "name": "2",
+        "valuePx": 8
+      },
+      {
+        "name": "3",
+        "valuePx": 12
+      },
+      {
+        "name": "4",
+        "valuePx": 16
+      },
+      {
+        "name": "5",
+        "valuePx": 20
+      },
+      {
+        "name": "6",
+        "valuePx": 24
+      },
+      {
+        "name": "8",
+        "valuePx": 32
+      },
+      {
+        "name": "10",
+        "valuePx": 40
+      },
+      {
+        "name": "12",
+        "valuePx": 48
+      },
+      {
+        "name": "16",
+        "valuePx": 64
+      },
+      {
+        "name": "20",
+        "valuePx": 80
+      },
+      {
+        "name": "24",
+        "valuePx": 96
+      },
+      {
+        "name": "32",
+        "valuePx": 128
+      }
+    ]
+  },
+  "dimensionDomainUnits": {
+    "blur": [
+      "rem"
+    ],
+    "borderWidth": [
+      "px"
+    ],
+    "breakpoint": [
+      "rem"
+    ],
+    "fontSize": [
+      "rem"
+    ],
+    "letterSpacing": [
+      "px",
+      "rem"
+    ],
+    "radius": [
+      "rem"
+    ],
+    "size": [
+      "rem"
+    ],
+    "space": [
+      "px",
+      "rem"
+    ],
+    "strokeWidth": [
+      "px"
+    ]
+  },
+  "typography": {
+    "bodyBasePx": 16,
+    "bodyMinimumPx": 13,
+    "fontSizePx": [
+      13,
+      14,
+      15,
+      16,
+      18,
+      20,
+      24,
+      28,
+      32,
+      40,
+      48,
+      60,
+      72
+    ],
+    "weightVariants": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "families": [
+      {
+        "path": "heading.h1",
+        "sizePx": 48
+      },
+      {
+        "path": "heading.h2",
+        "sizePx": 40
+      },
+      {
+        "path": "heading.h3",
+        "sizePx": 32
+      },
+      {
+        "path": "heading.h4",
+        "sizePx": 28
+      },
+      {
+        "path": "heading.h5",
+        "sizePx": 24
+      },
+      {
+        "path": "heading.h6",
+        "sizePx": 20
+      },
+      {
+        "path": "body.xsmall",
+        "sizePx": 13
+      },
+      {
+        "path": "body.small",
+        "sizePx": 14
+      },
+      {
+        "path": "body.compact",
+        "sizePx": 15
+      },
+      {
+        "path": "body.base",
+        "sizePx": 16
+      },
+      {
+        "path": "body.large",
+        "sizePx": 18
+      },
+      {
+        "path": "label.small",
+        "sizePx": 13
+      },
+      {
+        "path": "label.base",
+        "sizePx": 14
+      },
+      {
+        "path": "label.large",
+        "sizePx": 16
+      },
+      {
+        "path": "code.small",
+        "sizePx": 13
+      },
+      {
+        "path": "code.base",
+        "sizePx": 14
+      },
+      {
+        "path": "display.small",
+        "sizePx": 60
+      },
+      {
+        "path": "display.large",
+        "sizePx": 72
+      }
+    ]
+  },
+  "contrastPairs": [
+    {
+      "foreground": "color.semantic.text.primary",
+      "background": "color.semantic.surface.canvas",
+      "minimumRatio": 7
+    },
+    {
+      "foreground": "color.semantic.text.secondary",
+      "background": "color.semantic.surface.canvas",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.text.link",
+      "background": "color.semantic.surface.canvas",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.action.primary.text",
+      "background": "color.semantic.action.primary.default",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.action.danger.text",
+      "background": "color.semantic.action.danger.default",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.status.success.text",
+      "background": "color.semantic.status.success.surface",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.status.warning.text",
+      "background": "color.semantic.status.warning.surface",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.status.danger.text",
+      "background": "color.semantic.status.danger.surface",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.status.info.text",
+      "background": "color.semantic.status.info.surface",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.selection.text",
+      "background": "color.semantic.selection.background",
+      "minimumRatio": 4.5
+    },
+    {
+      "foreground": "color.semantic.focus.ring",
+      "background": "color.semantic.surface.canvas",
+      "minimumRatio": 3
+    }
+  ]
+}
+

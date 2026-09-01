@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/token-binding-coverage/0.1",
+  "title": "Axiom Token Binding Coverage Report",
+  "type": "object",
+  "required": ["schemaVersion", "profileDigest", "direct", "template", "projectors", "properties"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "profileDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "direct": { "$ref": "#/$defs/coverage" },
+    "template": { "$ref": "#/$defs/coverage" },
+    "projectors": { "$ref": "#/$defs/coverage" },
+    "properties": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+      "additionalProperties": { "$ref": "#/$defs/tokenBindings" }
+    }
+  },
+  "$defs": {
+    "coverage": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" }
+      }
+    },
+    "stringList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "tokenBindings": {
+      "type": "object",
+      "required": ["directDomains", "templateDomains", "projectors", "allowsTokenNegation"],
+      "properties": {
+        "directDomains": { "$ref": "#/$defs/stringList" },
+        "templateDomains": { "$ref": "#/$defs/stringList" },
+        "projectors": { "$ref": "#/$defs/stringList" },
+        "allowsTokenNegation": { "type": "boolean" }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

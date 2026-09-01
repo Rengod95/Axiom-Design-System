@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/profile-input-manifest/0.1",
+  "title": "Axiom CSS Profile Input Manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "webrefPackageVersion",
+    "webrefInputPath",
+    "webrefInputDigest",
+    "generatorVersion",
+    "policySourceDigest"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "id": { "const": "axiom-css" },
+    "webrefPackageVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "webrefInputPath": { "const": "css.json" },
+    "webrefInputDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "generatorVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "policySourceDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/composite-projector-registry/0.1",
+  "title": "Axiom Composite Token Projector Registry",
+  "type": "object",
+  "required": ["schemaVersion", "projectors"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "projectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/projector" }
+    }
+  },
+  "$defs": {
+    "projector": {
+      "type": "object",
+      "required": ["id", "domain", "dtcgType", "outputProperties", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)+$"
+        },
+        "domain": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "dtcgType": {
+          "enum": ["border", "gradient", "shadow", "transition", "typography"]
+        },
+        "outputProperties": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+          }
+        },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

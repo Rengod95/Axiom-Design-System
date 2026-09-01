@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/effective-property-registry/0.1",
+  "title": "Axiom Effective CSS Property Registry",
+  "type": "object",
+  "required": ["schemaVersion", "profile", "properties", "aliases", "authoringNames", "customProperties"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "profile": { "$ref": "https://axiom.dev/schemas/css/profile-input-manifest/0.1" },
+    "properties": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/property" }
+    },
+    "aliases": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/propertyName" },
+      "additionalProperties": { "$ref": "#/$defs/propertyName" }
+    },
+    "authoringNames": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
+      "additionalProperties": { "$ref": "#/$defs/propertyName" }
+    },
+    "customProperties": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^--[a-z0-9][a-z0-9-]*$" }
+    }
+  },
+  "$defs": {
+    "propertyName": { "type": "string", "pattern": "^-?[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "stringList": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "valueKindList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["css", "token", "css-template"] }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "rule"],
+      "properties": { "source": { "type": "string" }, "rule": { "type": "string" } },
+      "unevaluatedProperties": false
+    },
+    "tokenBindings": {
+      "type": "object",
+      "required": ["directDomains", "templateDomains", "projectors", "allowsTokenNegation"],
+      "properties": {
+        "directDomains": { "$ref": "#/$defs/stringList" },
+        "templateDomains": { "$ref": "#/$defs/stringList" },
+        "projectors": { "$ref": "#/$defs/stringList" },
+        "allowsTokenNegation": { "type": "boolean" }
+      },
+      "unevaluatedProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "required": ["authoring", "valueKinds", "tokenBindings", "rawCSS", "shorthand", "portability", "motion", "security", "provenance"],
+      "properties": {
+        "authoring": { "enum": ["allowed", "opt-in", "blocked"] },
+        "valueKinds": { "$ref": "#/$defs/valueKindList" },
+        "tokenBindings": { "$ref": "#/$defs/tokenBindings" },
+        "rawCSS": { "enum": ["allowed", "warning", "blocked"] },
+        "shorthand": { "enum": ["not-applicable", "allowed", "warning", "blocked"] },
+        "portability": { "enum": ["portable-candidate", "web-specific", "unknown"] },
+        "motion": { "enum": ["interpolable", "discrete", "not-animatable", "unknown"] },
+        "security": {
+          "type": "object",
+          "required": ["resources"],
+          "properties": { "resources": { "enum": ["allowed", "reported", "blocked"] } },
+          "unevaluatedProperties": false
+        },
+        "provenance": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/provenance" } }
+      },
+      "unevaluatedProperties": false
+    },
+    "property": {
+      "type": "object",
+      "required": ["name", "authoringName", "syntax", "sourceHref", "status", "kind", "inherited", "initialValue", "longhands", "resetLonghands", "policy"],
+      "properties": {
+        "name": { "$ref": "#/$defs/propertyName" },
+        "authoringName": { "type": "string", "minLength": 1 },
+        "syntax": { "type": ["string", "null"] },
+        "sourceHref": { "type": "string", "pattern": "^https://" },
+        "status": { "enum": ["standard", "experimental", "deprecated", "legacy", "vendor"] },
+        "kind": { "enum": ["longhand", "shorthand"] },
+        "inherited": { "type": ["boolean", "null"] },
+        "initialValue": { "type": ["string", "null"] },
+        "longhands": { "$ref": "#/$defs/stringList" },
+        "resetLonghands": { "$ref": "#/$defs/stringList" },
+        "legacyAliasOf": { "$ref": "#/$defs/propertyName" },
+        "policy": { "$ref": "#/$defs/policy" }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

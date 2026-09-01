@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.1",
+  "defaults": {
+    "standard": { "authoring": "allowed" },
+    "experimental": { "authoring": "opt-in" },
+    "deprecated": { "authoring": "opt-in" },
+    "legacy": { "authoring": "blocked" },
+    "vendor": { "authoring": "blocked" }
+  },
+  "groups": [],
+  "overrides": [],
+  "blockedProperties": ["all"],
+  "customProperties": ["--project-surface"]
+}
