@@ -11,19 +11,17 @@ import {
   SPEC_DIAGNOSTIC_CODE,
 } from "./constants.js";
 import { runSemanticValidator } from "./semantic-validators.js";
+import { isUnknownRecord } from "./validation/unknown-record.js";
 
 const specRoot = fileURLToPath(new URL("../../../spec/", import.meta.url));
 
 const readSpecJson = async (path: string): Promise<unknown> =>
   JSON.parse(await readFile(`${specRoot}${path}`, "utf8")) as unknown;
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
 const idsFrom = (value: unknown, key: string): readonly string[] => {
-  if (!isRecord(value) || !Array.isArray(value[key])) return [];
+  if (!isUnknownRecord(value) || !Array.isArray(value[key])) return [];
   return value[key]
-    .filter(isRecord)
+    .filter(isUnknownRecord)
     .map((entry) => entry["id"])
     .filter((id): id is string => typeof id === "string");
 };
@@ -45,15 +43,21 @@ describe("State and Condition registry semantics", () => {
       readSpecJson("token/foundation-resolved-token-manifest.json"),
     ]);
     const resolvedManifest = structuredClone(resolvedManifestValue);
-    expect(isRecord(resolvedManifest) && Array.isArray(resolvedManifest["contexts"])).toBe(true);
-    if (!isRecord(resolvedManifest) || !Array.isArray(resolvedManifest["contexts"])) return;
+    expect(
+      isUnknownRecord(resolvedManifest) && Array.isArray(resolvedManifest["contexts"]),
+    ).toBe(true);
+    if (!isUnknownRecord(resolvedManifest) || !Array.isArray(resolvedManifest["contexts"])) return;
     const darkContext = resolvedManifest["contexts"][1];
-    if (!isRecord(darkContext) || !Array.isArray(darkContext["tokens"])) return;
+    if (!isUnknownRecord(darkContext) || !Array.isArray(darkContext["tokens"])) return;
     const breakpoint = darkContext["tokens"].find(
-      (token) => isRecord(token) && token["id"] === "breakpoint.semantic.viewport.sm",
+      (token) => isUnknownRecord(token) && token["id"] === "breakpoint.semantic.viewport.sm",
     );
-    if (!isRecord(breakpoint) || !isRecord(breakpoint["resolvedValue"])) return;
-    breakpoint["resolvedValue"]["value"] = 41;
+    if (
+      !isUnknownRecord(breakpoint) ||
+      !isUnknownRecord(breakpoint["resolvedValue"])
+    ) return;
+    const mutableResolvedValue = breakpoint["resolvedValue"] as Record<string, unknown>;
+    mutableResolvedValue["value"] = 41;
 
     const diagnostics = runSemanticValidator(
       "condition-registry",

@@ -25,6 +25,7 @@ export type {
   TokenDiagnostic,
   TokenDomainConstraint,
   TokenDomainDefinition,
+  TokenJsonObject,
   TokenJsonPrimitive,
   TokenJsonValue,
   TokenParserPort,
@@ -33,6 +34,7 @@ export type {
   TokenSourceDocument,
   TokenSourceLocation,
 } from "./contracts.js";
+export { isTokenJsonObject } from "./domain/token-json-value.js";
 export type {
   TokenDomain,
   TokenPath,

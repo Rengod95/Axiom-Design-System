@@ -193,6 +193,24 @@ Prefer:
 Avoid speculative abstractions. A shared module is created only after the shared
 contract and owner are clear; proximity alone is not evidence of commonality.
 
+### 6.1 Reusable capability ownership
+
+Reusable code MUST keep the narrowest owner that matches its contract:
+
+1. Behavior used by multiple modules in one package belongs in one internal
+   capability module with a responsibility-based name.
+2. Behavior that operates on a public contract owned by an upstream package
+   belongs with that contract and is consumed only through the package's public
+   export.
+3. Structurally similar behavior with different trust boundaries or input
+   contracts remains separately owned and MUST use boundary-specific names.
+4. A domain-neutral cross-package capability requires an explicit package
+   boundary and documented dependency direction before source depends on it.
+
+Catch-all modules or packages named `utils`, `shared`, `common`, or `helpers`
+MUST NOT be introduced. Tests MUST consume the same package-owned capability as
+production code when they exercise the same boundary.
+
 ## 7. Diagnostics and errors
 
 Stable diagnostics MUST have a named code, severity, phase, human-readable

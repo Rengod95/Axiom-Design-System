@@ -6,17 +6,19 @@ import {
 } from "../constants.js";
 import type { Diagnostic, SemanticValidationContext } from "../types.js";
 import {
+  isUnknownRecord,
+  type UnknownRecord,
+} from "../validation/unknown-record.js";
+import {
   conditionDefinitions,
   conditionDiagnostic,
-  isJsonRecord,
   resolvedRange,
-  type JsonRecord,
   type ResolvedRange,
 } from "./condition-model.js";
 
 const hasRangeContradiction = (
   conditionIds: readonly string[],
-  definitions: ReadonlyMap<string, JsonRecord>,
+  definitions: ReadonlyMap<string, UnknownRecord>,
   manifest: unknown,
 ): boolean => {
   const rangesByFamily = new Map<string, ResolvedRange[]>();
@@ -41,19 +43,19 @@ const hasRangeContradiction = (
   });
 };
 
-const conditionChoices = (value: JsonRecord): readonly (readonly string[])[] => {
+const conditionChoices = (value: UnknownRecord): readonly (readonly string[])[] => {
   const all = value["all"];
   if (!Array.isArray(all)) return [];
   return all.map((clause) => {
     if (typeof clause === "string") return [clause];
-    if (!isJsonRecord(clause) || !Array.isArray(clause["any"])) return [];
+    if (!isUnknownRecord(clause) || !Array.isArray(clause["any"])) return [];
     return clause["any"].filter((id): id is string => typeof id === "string");
   });
 };
 
 const hasSatisfyingConditionChoice = (
   choices: readonly (readonly string[])[],
-  definitions: ReadonlyMap<string, JsonRecord>,
+  definitions: ReadonlyMap<string, UnknownRecord>,
   manifest: unknown,
   index = 0,
   selected: readonly string[] = [],
@@ -85,7 +87,7 @@ export const validateConditionExpression = (
   value: unknown,
   context: SemanticValidationContext | undefined,
 ): readonly Diagnostic[] => {
-  if (!isJsonRecord(value) || !Array.isArray(value["all"])) return [];
+  if (!isUnknownRecord(value) || !Array.isArray(value["all"])) return [];
   const definitions = conditionDefinitions(
     context?.registries[CONDITION_REGISTRY_ID],
   );

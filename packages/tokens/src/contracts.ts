@@ -14,10 +14,14 @@ export type DtcgType = (typeof DTCG_TYPES)[number];
 
 export type TokenJsonPrimitive = boolean | null | number | string;
 
+export interface TokenJsonObject {
+  readonly [key: string]: TokenJsonValue;
+}
+
 export type TokenJsonValue =
   | TokenJsonPrimitive
   | readonly TokenJsonValue[]
-  | { readonly [key: string]: TokenJsonValue };
+  | TokenJsonObject;
 
 export type TokenDomainConstraint =
   | {

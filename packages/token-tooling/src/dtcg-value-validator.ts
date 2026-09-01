@@ -1,8 +1,9 @@
-import type {
-  DtcgType,
-  TokenDiagnostic,
-  TokenJsonValue,
-  TokenSourceLocation,
+import {
+  isTokenJsonObject,
+  type DtcgType,
+  type TokenDiagnostic,
+  type TokenJsonValue,
+  type TokenSourceLocation,
 } from "@axiom/tokens";
 
 import {
@@ -12,11 +13,6 @@ import {
   TOKEN_REFERENCE_PATTERN,
 } from "./constants.js";
 
-const isRecord = (
-  value: TokenJsonValue,
-): value is Readonly<Record<string, TokenJsonValue>> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
 const isAlias = (value: TokenJsonValue): boolean =>
   typeof value === "string" && TOKEN_REFERENCE_PATTERN.test(value);
 
@@ -25,13 +21,13 @@ const isFiniteNumber = (value: TokenJsonValue | undefined): value is number =>
 
 const dimension = (value: TokenJsonValue): boolean =>
   isAlias(value) ||
-  (isRecord(value) &&
+  (isTokenJsonObject(value) &&
     isFiniteNumber(value["value"]) &&
     typeof value["unit"] === "string");
 
 const color = (value: TokenJsonValue): boolean =>
   isAlias(value) ||
-  (isRecord(value) &&
+  (isTokenJsonObject(value) &&
     typeof value["colorSpace"] === "string" &&
     Array.isArray(value["components"]) &&
     value["components"].length >= 3 &&
@@ -59,11 +55,11 @@ const fontWeight = (value: TokenJsonValue): boolean =>
   (typeof value === "string" && value.trim() !== "");
 
 const strokeStyle = (value: TokenJsonValue): boolean =>
-  isAlias(value) || typeof value === "string" || isRecord(value);
+  isAlias(value) || typeof value === "string" || isTokenJsonObject(value);
 
 const border = (value: TokenJsonValue): boolean =>
   isAlias(value) ||
-  (isRecord(value) &&
+  (isTokenJsonObject(value) &&
     value["color"] !== undefined &&
     color(value["color"]) &&
     value["width"] !== undefined &&
@@ -75,7 +71,7 @@ const duration = dimension;
 
 const transition = (value: TokenJsonValue): boolean =>
   isAlias(value) ||
-  (isRecord(value) &&
+  (isTokenJsonObject(value) &&
     value["duration"] !== undefined &&
     duration(value["duration"]) &&
     value["delay"] !== undefined &&
@@ -84,7 +80,7 @@ const transition = (value: TokenJsonValue): boolean =>
     cubicBezier(value["timingFunction"]));
 
 const shadowEntry = (value: TokenJsonValue): boolean =>
-  isRecord(value) &&
+  isTokenJsonObject(value) &&
   value["color"] !== undefined &&
   color(value["color"]) &&
   value["offsetX"] !== undefined &&
@@ -106,7 +102,7 @@ const gradient = (value: TokenJsonValue): boolean =>
     value.length > 0 &&
     value.every(
       (entry) =>
-        isRecord(entry) &&
+        isTokenJsonObject(entry) &&
         entry["color"] !== undefined &&
         color(entry["color"]) &&
         isFiniteNumber(entry["position"]),
@@ -114,7 +110,7 @@ const gradient = (value: TokenJsonValue): boolean =>
 
 const typography = (value: TokenJsonValue): boolean =>
   isAlias(value) ||
-  (isRecord(value) &&
+  (isTokenJsonObject(value) &&
     value["fontFamily"] !== undefined &&
     fontFamily(value["fontFamily"]) &&
     value["fontSize"] !== undefined &&
