@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/common/identifier/0.1",
+  "title": "Axiom Stable Identifier",
+  "type": "string",
+  "minLength": 1,
+  "maxLength": 160,
+  "pattern": "^[a-z][A-Za-z0-9]*(?:[.-][a-z0-9][A-Za-z0-9]*)*$"
+}

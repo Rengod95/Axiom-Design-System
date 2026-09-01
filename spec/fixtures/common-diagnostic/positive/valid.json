@@ -1,0 +1,10 @@
+{
+  "code": "AXT1001",
+  "severity": "error",
+  "phase": "token",
+  "message": "Token domain does not match the declared path.",
+  "location": {
+    "file": "tokens/semantic.json",
+    "pointer": "/color/semantic/action/primary"
+  }
+}

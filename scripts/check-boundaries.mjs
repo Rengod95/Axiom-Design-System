@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 
 const allowedRuntimeDependencies = {
+  "spec-tooling": ["ajv"],
   tokens: [],
   "appearance-schema": ["@axiom/tokens"],
   recipes: ["@axiom/appearance-schema"],
@@ -48,7 +49,12 @@ const walk = async (directory) => {
   return files;
 };
 
-const corePackages = ["tokens", "appearance-schema", "recipes"];
+const corePackages = [
+  "spec-tooling",
+  "tokens",
+  "appearance-schema",
+  "recipes",
+];
 const forbiddenImports = [
   /from\s+["']react(?:\/|["'])/,
   /from\s+["']react-aria/,

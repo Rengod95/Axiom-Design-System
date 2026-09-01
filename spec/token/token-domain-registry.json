@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "0.1",
+  "domains": [
+    {
+      "id": "aspectRatio",
+      "root": "aspectRatio",
+      "allowedDTCGTypes": ["number"],
+      "constraints": [{ "kind": "numberRange", "exclusiveMinimum": 0 }],
+      "cssSerializers": ["css.number.v1"]
+    },
+    {
+      "id": "blur",
+      "root": "blur",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "minimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "border",
+      "root": "border",
+      "allowedDTCGTypes": ["border"],
+      "cssSerializers": ["css.border-projector.v1"]
+    },
+    {
+      "id": "borderWidth",
+      "root": "borderWidth",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "minimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "breakpoint",
+      "root": "breakpoint",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "minimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "color",
+      "root": "color",
+      "allowedDTCGTypes": ["color"],
+      "cssSerializers": ["css.color.v1"]
+    },
+    {
+      "id": "duration",
+      "root": "duration",
+      "allowedDTCGTypes": ["duration"],
+      "constraints": [{ "kind": "durationRange", "minimumMilliseconds": 0 }],
+      "cssSerializers": ["css.duration.v1"]
+    },
+    {
+      "id": "easing",
+      "root": "easing",
+      "allowedDTCGTypes": ["cubicBezier"],
+      "cssSerializers": ["css.cubic-bezier.v1"]
+    },
+    {
+      "id": "fontFamily",
+      "root": "fontFamily",
+      "allowedDTCGTypes": ["fontFamily"],
+      "cssSerializers": ["css.font-family.v1"]
+    },
+    {
+      "id": "fontSize",
+      "root": "fontSize",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "exclusiveMinimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "fontWeight",
+      "root": "fontWeight",
+      "allowedDTCGTypes": ["fontWeight"],
+      "cssSerializers": ["css.font-weight.v1"]
+    },
+    {
+      "id": "gradient",
+      "root": "gradient",
+      "allowedDTCGTypes": ["gradient"],
+      "cssSerializers": ["css.gradient.v1"]
+    },
+    {
+      "id": "layer",
+      "root": "layer",
+      "allowedDTCGTypes": ["number"],
+      "constraints": [{ "kind": "numberRange", "integer": true }],
+      "cssSerializers": ["css.number.v1"]
+    },
+    {
+      "id": "letterSpacing",
+      "root": "letterSpacing",
+      "allowedDTCGTypes": ["dimension"],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "lineHeight",
+      "root": "lineHeight",
+      "allowedDTCGTypes": ["number"],
+      "constraints": [{ "kind": "numberRange", "exclusiveMinimum": 0 }],
+      "cssSerializers": ["css.number.v1"]
+    },
+    {
+      "id": "opacity",
+      "root": "opacity",
+      "allowedDTCGTypes": ["number"],
+      "constraints": [{ "kind": "numberRange", "minimum": 0, "maximum": 1 }],
+      "cssSerializers": ["css.number.v1"]
+    },
+    {
+      "id": "radius",
+      "root": "radius",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "minimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "shadow",
+      "root": "shadow",
+      "allowedDTCGTypes": ["shadow"],
+      "cssSerializers": ["css.shadow.v1"]
+    },
+    {
+      "id": "size",
+      "root": "size",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "minimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "space",
+      "root": "space",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "minimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "strokeStyle",
+      "root": "strokeStyle",
+      "allowedDTCGTypes": ["strokeStyle"],
+      "cssSerializers": ["css.stroke-style.v1"]
+    },
+    {
+      "id": "strokeWidth",
+      "root": "strokeWidth",
+      "allowedDTCGTypes": ["dimension"],
+      "constraints": [{ "kind": "dimensionRange", "minimum": 0 }],
+      "cssSerializers": ["css.dimension.v1"]
+    },
+    {
+      "id": "transition",
+      "root": "transition",
+      "allowedDTCGTypes": ["transition"],
+      "cssSerializers": ["css.transition-projector.v1"]
+    },
+    {
+      "id": "typography",
+      "root": "typography",
+      "allowedDTCGTypes": ["typography"],
+      "cssSerializers": ["css.typography-projector.v1"]
+    }
+  ]
+}

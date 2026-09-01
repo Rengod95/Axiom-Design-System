@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/tier/0.1",
+  "title": "Axiom Token Tier",
+  "enum": ["primitive", "semantic", "component"]
+}

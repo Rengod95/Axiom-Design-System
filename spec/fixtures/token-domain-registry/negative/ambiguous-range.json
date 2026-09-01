@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1",
+  "domains": [
+    {
+      "id": "opacity",
+      "root": "opacity",
+      "allowedDTCGTypes": ["number"],
+      "constraints": [
+        {
+          "kind": "numberRange",
+          "minimum": 0,
+          "exclusiveMinimum": 0
+        }
+      ],
+      "cssSerializers": ["css.number.v1"]
+    }
+  ]
+}

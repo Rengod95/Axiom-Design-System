@@ -9,11 +9,12 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "check": "pnpm check:boundaries && pnpm generate:check && tsc -b --pretty false",
+    "check": "pnpm check:boundaries && pnpm spec:check && pnpm generate:check && tsc -b --pretty false",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "clean": "tsc -b --clean",
     "generate": "node --import tsx packages/tokens/scripts/generate.ts && tsc -b packages/tokens packages/appearance-schema packages/recipes packages/recipe-engine && node --import tsx packages/adapter-tailwind/scripts/generate.ts",
     "generate:check": "pnpm generate && git diff --exit-code -- packages/tokens/src/generated packages/adapter-tailwind/src/generated",
+    "spec:check": "node --import tsx packages/spec-tooling/src/cli.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },

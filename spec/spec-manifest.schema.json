@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/spec/manifest/0.1",
+  "title": "Axiom Specification Manifest",
+  "type": "object",
+  "required": ["schemaVersion", "dialect", "schemas", "registries", "fixtureSuites"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "dialect": { "const": "https://json-schema.org/draft/2020-12/schema" },
+    "schemas": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/schemaEntry" }
+    },
+    "registries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/registryEntry" }
+    },
+    "fixtureSuites": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fixtureSuite" }
+    }
+  },
+  "$defs": {
+    "relativeJsonPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+\\.json$"
+    },
+    "stableId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "schemaEntry": {
+      "type": "object",
+      "required": ["id", "path"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^https://axiom\\.dev/schemas/" },
+        "path": { "$ref": "#/$defs/relativeJsonPath" }
+      },
+      "unevaluatedProperties": false
+    },
+    "registryEntry": {
+      "type": "object",
+      "required": ["id", "path", "schema"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "path": { "$ref": "#/$defs/relativeJsonPath" },
+        "schema": { "type": "string", "pattern": "^https://axiom\\.dev/schemas/" },
+        "semanticValidator": {
+          "enum": ["token-domain-registry", "token-identity"]
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "fixtureSuite": {
+      "type": "object",
+      "required": ["id", "schema", "positiveDirectory", "negativeDirectory"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "schema": { "type": "string", "pattern": "^https://axiom\\.dev/schemas/" },
+        "positiveDirectory": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "negativeDirectory": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "semanticValidator": {
+          "enum": ["token-domain-registry", "token-identity"]
+        }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

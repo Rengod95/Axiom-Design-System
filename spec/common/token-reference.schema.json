@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/common/token-reference/0.1",
+  "title": "Axiom Appearance Token Reference",
+  "type": "object",
+  "required": ["kind", "path"],
+  "properties": {
+    "kind": { "const": "token" },
+    "path": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9]*\\.(?:primitive|semantic|component)\\.[a-z0-9][A-Za-z0-9]*(?:\\.[a-z0-9][A-Za-z0-9]*)*$"
+    }
+  },
+  "unevaluatedProperties": false
+}

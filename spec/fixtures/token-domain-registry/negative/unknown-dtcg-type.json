@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1",
+  "domains": [
+    {
+      "id": "color",
+      "root": "color",
+      "allowedDTCGTypes": ["paint"],
+      "cssSerializers": ["css.color.v1"]
+    }
+  ]
+}

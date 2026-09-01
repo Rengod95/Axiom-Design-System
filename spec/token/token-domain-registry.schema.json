@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/domain-registry/0.1",
+  "title": "Axiom Token Domain Registry",
+  "type": "object",
+  "required": ["schemaVersion", "domains"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "domains": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/domain" }
+    }
+  },
+  "$defs": {
+    "dtcgType": {
+      "enum": [
+        "color",
+        "dimension",
+        "fontFamily",
+        "fontWeight",
+        "duration",
+        "cubicBezier",
+        "number",
+        "strokeStyle",
+        "border",
+        "transition",
+        "shadow",
+        "gradient",
+        "typography"
+      ]
+    },
+    "numberRange": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "const": "numberRange" },
+        "minimum": { "type": "number" },
+        "maximum": { "type": "number" },
+        "exclusiveMinimum": { "type": "number" },
+        "exclusiveMaximum": { "type": "number" },
+        "integer": { "type": "boolean" }
+      },
+      "unevaluatedProperties": false
+    },
+    "dimensionRange": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "const": "dimensionRange" },
+        "minimum": { "type": "number" },
+        "exclusiveMinimum": { "type": "number" }
+      },
+      "unevaluatedProperties": false
+    },
+    "durationRange": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "const": "durationRange" },
+        "minimumMilliseconds": { "type": "number", "minimum": 0 }
+      },
+      "unevaluatedProperties": false
+    },
+    "domain": {
+      "type": "object",
+      "required": ["id", "root", "allowedDTCGTypes", "cssSerializers"],
+      "properties": {
+        "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "root": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "allowedDTCGTypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/dtcgType" }
+        },
+        "constraints": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/numberRange" },
+              { "$ref": "#/$defs/dimensionRange" },
+              { "$ref": "#/$defs/durationRange" }
+            ]
+          }
+        },
+        "cssSerializers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)+$"
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

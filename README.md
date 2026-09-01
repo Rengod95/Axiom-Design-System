@@ -1,51 +1,95 @@
 # Axiom Design System
 
-Axiom is a contract-first design-system experiment. Its core is a serializable,
-rendering-independent intermediate representation (IR); React and Tailwind are
-replaceable projections of that IR rather than authorities over it.
+> **Foundation status:** the current packages are an executable architecture
+> spike, not a Gate A-frozen implementation. The normative v0.1 architecture
+> and implementation plan live in [`docs/`](docs/README.md).
 
-This repository currently contains an executable architecture draft. It proves
-the full path with Button and Select:
+Axiom is a contract-first design-system project. The v0.1 architecture combines
+a target-neutral Token Foundation with a Web-specific CSS Appearance Profile,
+serializable Recipe and Motion IRs, generated Web artifacts, React Aria behavior
+projection, and an Axiom-owned React component API.
+
+## Normative v0.1 Direction
 
 ```text
-DTCG token source
-  -> generated token paths and CSS variables
-  -> typed appearance schema
-  -> serializable recipe IR
-  -> deterministic recipe resolver
-  -> generated Tailwind-facing atomic CSS
+DTCG primitive / semantic / component tokens
+  -> light and dark resolved manifests
+  -> pinned Webref CSS registry + sparse Axiom Property Policy
+  -> generated direct/template/projector Token Binding Catalog
+  -> typed Recipe / Condition / Motion authoring
+  -> schema-valid normalized IR
+  -> deterministic CSS, evaluator, and Motion artifacts
   -> React Aria behavior projection
+  -> Axiom React components
 ```
 
-## Architectural invariants
+The CSS property registry is generated from a pinned Webref snapshot rather
+than maintained as a hand-written allowlist. Recognized standard properties may
+use valid CSS values by default. Axiom policy stays sparse and governs the
+design-system-specific questions: whether a property may or must use a token,
+which Token Domains are compatible, and whether a property is restricted or
+blocked.
 
-- `tokens`, `appearance-schema`, and recipe definitions contain no React, JSX,
-  CSS API, Tailwind class, `className`, Base UI, or React Aria concept.
-- A recipe is plain serializable data. Functions and renderer escape hatches are
-  rejected by validation.
-- Appearance variants and interaction states are different axes.
-- State styles are slot-local. A one-slot recipe has only the `root` slot.
-- The merge order is fixed: base -> variants -> states -> compound variants ->
-  adapter extension -> consumer override.
-- Adapters behave as compiler backends. Generated artifacts are committed and
-  checked for drift in CI.
+The required binding catalog includes physical and logical margin, padding,
+gap, inset, scroll spacing, common sizing, paint, typography, border/stroke,
+effect, layering, responsive, and motion property families. `space` Tokens are
+therefore first-class values for margin as well as padding and gap.
 
-## Workspace
+Token and CSS concerns intentionally remain separate. CSS defines where a value
+is applied and how browsers parse it; Axiom tokens define design meaning,
+semantic indirection, component contracts, and theme resolution.
 
-| Package | Responsibility |
-| --- | --- |
-| `@axiom/tokens` | DTCG source, resolution, generated paths and CSS variables |
-| `@axiom/appearance-schema` | Token references and registry-derived appearance contract |
-| `@axiom/recipes` | Serializable recipe contract plus Button and Select recipes |
-| `@axiom/recipe-engine` | Validation and deterministic resolution with trace output |
-| `@axiom/adapter-tailwind` | Atomic artifact compiler and runtime class projection |
-| `@axiom/behavior` | Renderer-neutral behavior capabilities and state names |
-| `@axiom/react` | React Aria Components projection for Button and Select |
+## Required v0.1 Scope
 
-See [`docs/architecture.md`](docs/architecture.md) for dependency rules and the
-current stabilization boundary.
+- DTCG 2025.10 parsing and primitive, semantic, and component token tiers;
+- light and dark resolver contexts and generated token manifests;
+- common-system Token Domains including stroke width, blur, aspect ratio, and
+  complete spacing/margin coverage;
+- full generated standard CSS property profile with sparse Axiom policy;
+- ordered declaration-array IR with CSS cascade and shorthand semantics;
+- an Axiom-owned Recipe Kernel with slots, variants, defaults, compound
+  variants, slot-local states, and environment conditions;
+- viewport and container responsive appearance plus reduced-motion conditions;
+- serializable Motion DSL/IR and the `motion` reference backend;
+- exact-version React Aria Behavioral Criteria Profiles and projections for
+  Button, Select, and Dialog;
+- an Axiom-owned React public API with explicit consumer override boundaries;
+- deterministic Web CSS compilation and Tailwind coexistence integration.
 
-## Run locally
+See the [documentation index](docs/README.md),
+[accepted architecture decisions](docs/adr/0001-css-native-appearance-profile-and-v0.1-scope.md),
+and [detailed implementation plan](docs/plans/2026-09-01-v0.1-foundation-and-implementation-plan.md).
+
+## Current Executable Spike
+
+The repository currently proves a narrower Button and Select vertical slice:
+
+```text
+DTCG-like token source
+  -> generated token paths and CSS variables
+  -> small appearance table
+  -> serializable recipe object and resolver
+  -> generated Tailwind-facing atomic CSS
+  -> React Aria projection
+```
+
+These packages remain buildable migration evidence. They do not implement the
+new normative profile yet.
+
+| Current package | Current role | v0.1 disposition |
+| --- | --- | --- |
+| `@axiom/tokens` | local token source and generator | preserve API evidence; replace internals |
+| `@axiom/appearance-schema` | small hand-written appearance table | superseded by generated CSS profile |
+| `@axiom/recipes` | Button and Select recipe objects | preserve fixtures; migrate authoring |
+| `@axiom/recipe-engine` | object-merge resolver | preserve tests; replace with ordered declaration normalization |
+| `@axiom/adapter-tailwind` | generated atomic CSS spike | keep historical; direct Web CSS becomes normative compiler |
+| `@axiom/behavior` | behavior names and capabilities | extract provider-independent contracts |
+| `@axiom/react` | React Aria Button and Select binding | preserve visual evidence; rewrite public API and bindings |
+
+The older [executable architecture draft](docs/architecture.md) documents this
+spike and is explicitly non-normative.
+
+## Run the Existing Baseline
 
 ```bash
 pnpm install
@@ -55,10 +99,10 @@ pnpm test
 pnpm build
 ```
 
-`pnpm generate:check` fails if a source token or recipe changes without its
-generated artifact being committed.
+`pnpm generate:check` fails if a current spike token or recipe changes without
+its generated artifact being committed.
 
-An application imports the generated styles once, next to Tailwind:
+An existing spike application imports the generated styles beside Tailwind:
 
 ```css
 @import "tailwindcss";
@@ -80,8 +124,6 @@ import { Button, Select } from "@axiom/react";
 />;
 ```
 
-## Status
-
-This is intentionally a narrow v0 draft, not a production component library.
-The Button and Select slices exist to make architectural disagreements concrete
-before the token vocabulary, component count, or adapter surface grows.
+This is not yet a production component library. New feature work should follow
+the active Foundation plan rather than extending the spike contracts as
+authority.

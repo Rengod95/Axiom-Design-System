@@ -1,5 +1,19 @@
 # Axiom executable architecture draft
 
+> **Document status: HISTORICAL / NON-NORMATIVE EXECUTABLE SPIKE.**
+>
+> 현재 authority와 stabilization plan은 [docs index](README.md),
+> [SSOT-00](ssot/00-system-architecture-and-standards-profile.md),
+> [SSOT-01](ssot/01-foundation-and-domain-contracts.md),
+> [SSOT-02](ssot/02-adapter-contract-readiness-and-governance.md),
+> [ADR-0001](adr/0001-css-native-appearance-profile-and-v0.1-scope.md),
+> [ADR-0002](adr/0002-react-aria-behavioral-criteria-source.md),
+> [ADR-0003](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md),
+> [active implementation plan](plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)을 따른다.
+> 이 문서 또는 현재 구현이 SSOT와 충돌하면 SSOT가 우선한다.
+> 특히 이 문서가 deferred로 표시한 responsive/conditional appearance는
+> ADR-0001 이후 v0.1 필수 범위로 승격되었다.
+
 ## Authority and dependency direction
 
 The dependency direction is one-way:

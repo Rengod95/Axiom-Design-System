@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "0.1",
+  "dialect": "https://json-schema.org/draft/2020-12/schema",
+  "schemas": [
+    {
+      "id": "https://axiom.dev/schemas/common/diagnostic/0.1",
+      "path": "common/diagnostic.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/common/identifier/0.1",
+      "path": "common/identifier.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/common/source-location/0.1",
+      "path": "common/source-location.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/common/token-reference/0.1",
+      "path": "common/token-reference.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/spec/manifest/0.1",
+      "path": "spec-manifest.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/domain-registry/0.1",
+      "path": "token/token-domain-registry.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/identity/0.1",
+      "path": "token/token-identity.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/tier/0.1",
+      "path": "token/token-tier.schema.json"
+    }
+  ],
+  "registries": [
+    {
+      "id": "token-domain-registry",
+      "path": "token/token-domain-registry.json",
+      "schema": "https://axiom.dev/schemas/token/domain-registry/0.1",
+      "semanticValidator": "token-domain-registry"
+    }
+  ],
+  "fixtureSuites": [
+    {
+      "id": "common-diagnostic",
+      "schema": "https://axiom.dev/schemas/common/diagnostic/0.1",
+      "positiveDirectory": "fixtures/common-diagnostic/positive",
+      "negativeDirectory": "fixtures/common-diagnostic/negative"
+    },
+    {
+      "id": "common-token-reference",
+      "schema": "https://axiom.dev/schemas/common/token-reference/0.1",
+      "positiveDirectory": "fixtures/common-token-reference/positive",
+      "negativeDirectory": "fixtures/common-token-reference/negative"
+    },
+    {
+      "id": "token-domain-registry",
+      "schema": "https://axiom.dev/schemas/token/domain-registry/0.1",
+      "positiveDirectory": "fixtures/token-domain-registry/positive",
+      "negativeDirectory": "fixtures/token-domain-registry/negative",
+      "semanticValidator": "token-domain-registry"
+    },
+    {
+      "id": "token-identity",
+      "schema": "https://axiom.dev/schemas/token/identity/0.1",
+      "positiveDirectory": "fixtures/token-identity/positive",
+      "negativeDirectory": "fixtures/token-identity/negative",
+      "semanticValidator": "token-identity"
+    }
+  ]
+}

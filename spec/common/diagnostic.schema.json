@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/common/diagnostic/0.1",
+  "title": "Axiom Diagnostic",
+  "type": "object",
+  "required": ["code", "severity", "phase", "message"],
+  "properties": {
+    "code": { "type": "string", "pattern": "^AX[A-Z][0-9]{4}$" },
+    "severity": { "enum": ["error", "warning", "info"] },
+    "phase": {
+      "enum": [
+        "schema",
+        "token",
+        "property",
+        "recipe",
+        "normalization",
+        "condition",
+        "motion",
+        "compiler",
+        "behavior",
+        "react"
+      ]
+    },
+    "message": { "type": "string", "minLength": 1 },
+    "location": { "$ref": "https://axiom.dev/schemas/common/source-location/0.1" },
+    "target": { "type": "string", "minLength": 1 },
+    "details": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "unevaluatedProperties": false
+}

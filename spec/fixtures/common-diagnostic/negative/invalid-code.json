@@ -1,0 +1,6 @@
+{
+  "code": "TOKEN_001",
+  "severity": "error",
+  "phase": "token",
+  "message": "Diagnostic codes must use the Axiom namespace."
+}
