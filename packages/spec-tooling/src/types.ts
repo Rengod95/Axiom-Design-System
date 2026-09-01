@@ -41,6 +41,8 @@ export interface Diagnostic {
 
 export type SemanticValidatorId =
   | "parsed-token-document"
+  | "resolved-token-manifest"
+  | "token-context-override"
   | "token-domain-registry"
   | "token-identity";
 

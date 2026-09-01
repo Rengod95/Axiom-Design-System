@@ -6,6 +6,8 @@
 identity/Domain/type/range validation \
 **Related plan:** [Axiom v0.1 Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
 
+**Subsequent checkpoint:** [P2.3/P2.4 Tier Graph & Context Resolver](2026-09-01-p2-tier-graph-and-context-resolver.md)
+
 ## 1. Outcome
 
 Axiom now accepts raw `.tokens.json` documents through a replaceable parser

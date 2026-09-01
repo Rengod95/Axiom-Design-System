@@ -33,6 +33,7 @@ reconciliation한다.
 7. [Axiom v0.1 Foundation Reconciliation & Implementation Plan](plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
 8. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
 9. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
+10. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를
@@ -44,7 +45,7 @@ Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계�
 | Document | Version | Owns |
 | --- | --- | --- |
 | [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md) | 0.3.0 | authority, layers, boundaries, frozen v0.1 scope |
-| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.3.0 | primitive/semantic/component tiers, expanded domains, themes, resolver, manifests |
+| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.3.1 | primitive/semantic/component tiers, expanded domains, themes, resolver, manifests |
 | [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.3.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
 | [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.0 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
 | [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.1.1 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
@@ -100,6 +101,7 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [Axiom v0.1 Foundation Reconciliation & Implementation Plan — 2026-09-01](plans/2026-09-01-v0.1-foundation-and-implementation-plan.md)
 - [P1 Normative Specification Harness — Implementation Report — 2026-09-01](implementation/2026-09-01-p1-normative-spec-harness.md)
 - [P2.1 DTCG Parser & Normalization Boundary — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-token-parser-and-normalization.md)
+- [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 
 계획은 현 패키지 disposition, 목표 workspace, schema/artifact inventory,

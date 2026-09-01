@@ -97,6 +97,59 @@ export interface TokenParserPort {
   parse(sources: readonly TokenSourceDocumentV01[]): Promise<ParsedDtcgDocumentV01>;
 }
 
+export interface TokenContextV01 {
+  readonly [modifier: string]: string;
+}
+
+export interface ResolverModifierDefinitionV01 {
+  readonly id: string;
+  readonly values: readonly string[];
+}
+
+export interface ResolverModifierRegistryV01 {
+  readonly schemaVersion: "0.1";
+  readonly modifiers: readonly ResolverModifierDefinitionV01[];
+}
+
+export interface TokenContextOverrideDocumentV01 {
+  readonly schemaVersion: "0.1";
+  readonly context: TokenContextV01;
+  readonly tokens: readonly ParsedDtcgTokenV01[];
+}
+
+export interface TokenResolutionInputV01 {
+  readonly profileVersion: string;
+  readonly sourceDigest: string;
+  readonly base: ParsedDtcgDocumentV01;
+  readonly contexts: readonly TokenContextOverrideDocumentV01[];
+}
+
+export interface ResolvedTokenEntryV02 extends NormalizedTokenIdentityV01 {
+  readonly dtcgType: DtcgType;
+  readonly resolvedValue: TokenJsonValue;
+  readonly source: TokenSourceLocationV01;
+  readonly dependencies: readonly string[];
+  readonly description?: string;
+  readonly deprecated?: boolean | string;
+}
+
+export interface ResolvedTokenContextV02 {
+  readonly context: TokenContextV01;
+  readonly tokens: readonly ResolvedTokenEntryV02[];
+}
+
+export interface ResolvedTokenManifestV02 {
+  readonly schemaVersion: "0.2";
+  readonly profileVersion: string;
+  readonly sourceDigest: string;
+  readonly contexts: readonly ResolvedTokenContextV02[];
+}
+
+export interface TokenResolutionResultV01 {
+  readonly manifest: ResolvedTokenManifestV02;
+  readonly diagnostics: readonly TokenDiagnosticV01[];
+}
+
 export class TokenParseError extends Error {
   readonly diagnostics: readonly TokenDiagnosticV01[];
 
@@ -107,6 +160,20 @@ export class TokenParseError extends Error {
   ) {
     super(message, options);
     this.name = "TokenParseError";
+    this.diagnostics = diagnostics;
+  }
+}
+
+export class TokenResolutionError extends Error {
+  readonly diagnostics: readonly TokenDiagnosticV01[];
+
+  constructor(
+    message: string,
+    diagnostics: readonly TokenDiagnosticV01[],
+    options?: ErrorOptions,
+  ) {
+    super(message, options);
+    this.name = "TokenResolutionError";
     this.diagnostics = diagnostics;
   }
 }

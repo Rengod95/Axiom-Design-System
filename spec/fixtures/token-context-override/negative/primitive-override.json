@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.1",
+  "context": { "theme": "dark" },
+  "tokens": [
+    {
+      "id": "color.primitive.neutral.900",
+      "domain": "color",
+      "tier": "primitive",
+      "dtcgType": "color",
+      "value": {
+        "colorSpace": "srgb",
+        "components": [0, 0, 0],
+        "alpha": 1
+      },
+      "source": {
+        "file": "file:///tokens/theme-dark.tokens.json",
+        "pointer": "/color/primitive/neutral/900"
+      }
+    }
+  ]
+}

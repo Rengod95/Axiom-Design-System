@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "0.2",
+  "profileVersion": "0.1.0",
+  "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "contexts": [
+    {
+      "context": { "theme": "light" },
+      "tokens": [
+        {
+          "id": "opacity.semantic.disabled",
+          "domain": "opacity",
+          "tier": "semantic",
+          "dtcgType": "number",
+          "resolvedValue": "{opacity.primitive.disabled}",
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/opacity/semantic/disabled"
+          },
+          "dependencies": []
+        }
+      ]
+    },
+    {
+      "context": { "theme": "dark" },
+      "tokens": [
+        {
+          "id": "opacity.semantic.disabled",
+          "domain": "opacity",
+          "tier": "semantic",
+          "dtcgType": "number",
+          "resolvedValue": "{opacity.primitive.disabled}",
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/opacity/semantic/disabled"
+          },
+          "dependencies": []
+        }
+      ]
+    }
+  ]
+}

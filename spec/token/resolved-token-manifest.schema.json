@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/resolved-manifest/0.2",
+  "title": "Axiom Resolved Token Manifest v0.2",
+  "type": "object",
+  "required": ["schemaVersion", "profileVersion", "sourceDigest", "contexts"],
+  "properties": {
+    "schemaVersion": { "const": "0.2" },
+    "profileVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "sourceDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "contexts": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/resolvedContext" }
+    }
+  },
+  "$defs": {
+    "resolvedEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "domain",
+        "tier",
+        "dtcgType",
+        "resolvedValue",
+        "source",
+        "dependencies"
+      ],
+      "properties": {
+        "id": { "$ref": "https://axiom.dev/schemas/token/id/0.1" },
+        "domain": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "tier": { "$ref": "https://axiom.dev/schemas/token/tier/0.1" },
+        "dtcgType": {
+          "enum": [
+            "color",
+            "dimension",
+            "fontFamily",
+            "fontWeight",
+            "duration",
+            "cubicBezier",
+            "number",
+            "strokeStyle",
+            "border",
+            "transition",
+            "shadow",
+            "gradient",
+            "typography"
+          ]
+        },
+        "resolvedValue": true,
+        "source": { "$ref": "https://axiom.dev/schemas/common/source-location/0.1" },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "https://axiom.dev/schemas/token/id/0.1" }
+        },
+        "description": { "type": "string" },
+        "deprecated": {
+          "oneOf": [{ "type": "boolean" }, { "type": "string" }]
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "resolvedContext": {
+      "type": "object",
+      "required": ["context", "tokens"],
+      "properties": {
+        "context": { "$ref": "https://axiom.dev/schemas/token/context/0.1" },
+        "tokens": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/resolvedEntry" }
+        }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

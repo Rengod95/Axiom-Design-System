@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/context/0.1",
+  "title": "Axiom Token Resolver Context v0.1",
+  "type": "object",
+  "required": ["theme"],
+  "properties": {
+    "theme": { "enum": ["light", "dark"] }
+  },
+  "unevaluatedProperties": false
+}

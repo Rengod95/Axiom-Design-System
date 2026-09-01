@@ -23,6 +23,14 @@
       "path": "spec-manifest.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/token/context/0.1",
+      "path": "token/token-context.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/context-override/0.1",
+      "path": "token/token-context-override.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/token/domain-registry/0.1",
       "path": "token/token-domain-registry.schema.json"
     },
@@ -43,6 +51,14 @@
       "path": "token/parsed-token-document.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/token/resolved-manifest/0.2",
+      "path": "token/resolved-token-manifest.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/token/resolver-modifier-registry/0.1",
+      "path": "token/resolver-modifier-registry.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/token/source-profile/0.1",
       "path": "token/token-source-profile.schema.json"
     },
@@ -52,6 +68,11 @@
     }
   ],
   "registries": [
+    {
+      "id": "resolver-modifier-registry",
+      "path": "token/resolver-modifier-registry.json",
+      "schema": "https://axiom.dev/schemas/token/resolver-modifier-registry/0.1"
+    },
     {
       "id": "token-domain-registry",
       "path": "token/token-domain-registry.json",
@@ -97,6 +118,20 @@
       "positiveDirectory": "fixtures/parsed-token-document/positive",
       "negativeDirectory": "fixtures/parsed-token-document/negative",
       "semanticValidator": "parsed-token-document"
+    },
+    {
+      "id": "resolved-token-manifest",
+      "schema": "https://axiom.dev/schemas/token/resolved-manifest/0.2",
+      "positiveDirectory": "fixtures/resolved-token-manifest/positive",
+      "negativeDirectory": "fixtures/resolved-token-manifest/negative",
+      "semanticValidator": "resolved-token-manifest"
+    },
+    {
+      "id": "token-context-override",
+      "schema": "https://axiom.dev/schemas/token/context-override/0.1",
+      "positiveDirectory": "fixtures/token-context-override/positive",
+      "negativeDirectory": "fixtures/token-context-override/negative",
+      "semanticValidator": "token-context-override"
     },
     {
       "id": "token-source-profile",

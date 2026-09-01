@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1",
+  "context": { "theme": "dark" },
+  "tokens": [
+    {
+      "id": "color.semantic.surface.default",
+      "domain": "color",
+      "tier": "semantic",
+      "dtcgType": "color",
+      "value": "{color.primitive.neutral.900}",
+      "aliasTarget": "color.primitive.neutral.900",
+      "source": {
+        "file": "file:///tokens/theme-dark.tokens.json",
+        "pointer": "/color/semantic/surface/default"
+      }
+    }
+  ]
+}

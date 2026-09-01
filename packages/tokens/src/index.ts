@@ -24,6 +24,7 @@ export {
   DTCG_TYPES,
   TOKEN_TIERS,
   TokenParseError,
+  TokenResolutionError,
   isDtcgType,
   isTokenTierV01,
 } from "./v0-1/contracts.js";
@@ -32,12 +33,21 @@ export type {
   NormalizedTokenIdentityV01,
   ParsedDtcgDocumentV01,
   ParsedDtcgTokenV01,
+  ResolvedTokenContextV02,
+  ResolvedTokenEntryV02,
+  ResolvedTokenManifestV02,
+  ResolverModifierDefinitionV01,
+  ResolverModifierRegistryV01,
+  TokenContextOverrideDocumentV01,
+  TokenContextV01,
   TokenDiagnosticV01,
   TokenDomainConstraint,
   TokenDomainDefinition,
   TokenJsonPrimitive,
   TokenJsonValue,
   TokenParserPort,
+  TokenResolutionInputV01,
+  TokenResolutionResultV01,
   TokenSourceDocumentV01,
   TokenSourceLocationV01,
   TokenTierV01,
@@ -48,3 +58,5 @@ export {
   validateTokenDomainType,
   type TokenIdentityResult,
 } from "./v0-1/identity.js";
+export { resolveTokenContextsV01 } from "./v0-1/context-resolver.js";
+export { serializeResolvedTokenManifestV02 } from "./v0-1/manifest-serializer.js";

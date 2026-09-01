@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-01 — Token Foundation & Domain Contracts
-### Version 0.3.0
+### Version 0.3.1
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3 \
@@ -307,12 +307,19 @@ because another library offers a convenience token category.
 
 ## 6. Alias Dependency Rules
 
-Allowed tier dependencies:
+Allowed tier dependencies in base sources:
 
 ```text
 primitive → primitive or explicit value
-semantic  → primitive or semantic
-component → semantic or component
+semantic  → primitive or semantic or explicit value
+component → semantic
+```
+
+Context overrides may use:
+
+```text
+semantic  → primitive or semantic or explicit value
+component → semantic or component or explicit value
 ```
 
 Forbidden:
@@ -322,10 +329,16 @@ primitive → semantic
 primitive → component
 semantic  → component
 component → primitive
+component base → component
 ```
 
 Every alias also requires compatible Axiom Domain and DTCG type. Composite-field
 references follow DTCG rules and are validated after reference resolution.
+
+The Domain/type identity rule applies to a whole-Token alias. A typed field
+inside a DTCG composite may reference the compatible atomic Token Domain for
+that field; for example, `border.semantic.control` may reference `color` and
+`borderWidth` Primitive Tokens.
 
 Cycles are errors regardless of tier.
 
@@ -351,6 +364,16 @@ theme=dark
 The manifest keeps a generic context record so future modifiers can be added
 without changing its fundamental shape. No unimplemented modifier is admitted
 to v0.1 sources.
+
+Normalized context overrides use the following wrapper after DTCG parsing:
+
+```ts
+interface TokenContextOverrideDocument {
+  schemaVersion: "0.1";
+  context: TokenContext;
+  tokens: readonly ParsedDTCGToken[];
+}
+```
 
 ### 7.2 Source application order
 
@@ -419,6 +442,7 @@ interface ResolvedTokenEntry {
   dtcgType: string;
   resolvedValue: unknown;
   source: TokenSourceLocation;
+  dependencies: readonly TokenId[];
   description?: string;
   deprecated?: boolean | string;
 }
@@ -426,6 +450,11 @@ interface ResolvedTokenEntry {
 
 The real normative shape is JSON Schema. The TypeScript interface is a reference
 projection.
+
+`dependencies` contains the entry's sorted direct Token references. Because
+every referenced Token is also present in the same context, tooling can
+reconstruct and inspect the complete dependency graph without retaining parser
+objects or unresolved values.
 
 ### 8.2 Ordering
 

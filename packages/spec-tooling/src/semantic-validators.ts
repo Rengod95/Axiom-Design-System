@@ -8,11 +8,15 @@ interface RecordValue {
   readonly [key: string]: unknown;
   readonly allowedDTCGTypes?: unknown;
   readonly constraints?: unknown;
+  readonly context?: unknown;
+  readonly contexts?: unknown;
+  readonly dependencies?: unknown;
   readonly domain?: unknown;
   readonly domains?: unknown;
   readonly id?: unknown;
   readonly kind?: unknown;
   readonly root?: unknown;
+  readonly resolvedValue?: unknown;
   readonly tier?: unknown;
   readonly tokens?: unknown;
 }
@@ -67,6 +71,108 @@ const validateTokenIdentity = (value: unknown): readonly Diagnostic[] => {
     );
   }
 
+  return diagnostics;
+};
+
+const containsTokenReference = (value: unknown): boolean => {
+  if (typeof value === "string") return /^\{[^{}]+\}$/.test(value);
+  if (Array.isArray(value)) return value.some(containsTokenReference);
+  if (isRecord(value)) return Object.values(value).some(containsTokenReference);
+  return false;
+};
+
+const validateTokenContextOverride = (value: unknown): readonly Diagnostic[] => {
+  if (!isRecord(value) || !Array.isArray(value.tokens)) return [];
+  const diagnostics = [...validateParsedTokenDocument(value)];
+  value.tokens.forEach((token, index) => {
+    if (isRecord(token) && token.tier === "primitive") {
+      diagnostics.push(
+        tokenDiagnostic(
+          "AXT1503",
+          "Resolver contexts cannot override Primitive Tokens in v0.1.",
+          `/tokens/${index}/tier`,
+        ),
+      );
+    }
+  });
+  return diagnostics;
+};
+
+const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] => {
+  if (!isRecord(value) || !Array.isArray(value.contexts)) return [];
+  const diagnostics: Diagnostic[] = [];
+  const expectedThemes = ["light", "dark"];
+  let baselineIds: readonly string[] | undefined;
+
+  value.contexts.forEach((contextEntry, contextIndex) => {
+    if (!isRecord(contextEntry) || !isRecord(contextEntry.context)) return;
+    const theme = contextEntry.context["theme"];
+    if (theme !== expectedThemes[contextIndex]) {
+      diagnostics.push(
+        tokenDiagnostic(
+          "AXT1600",
+          `Resolved contexts must be serialized as theme=light, then theme=dark.`,
+          `/contexts/${contextIndex}/context/theme`,
+        ),
+      );
+    }
+    if (!Array.isArray(contextEntry.tokens)) return;
+
+    diagnostics.push(
+      ...validateParsedTokenDocument({ tokens: contextEntry.tokens }).map((entry) => ({
+        ...entry,
+        ...(entry.location === undefined
+          ? {}
+          : {
+              location: {
+                ...entry.location,
+                pointer: `/contexts/${contextIndex}${entry.location.pointer}`,
+              },
+            }),
+      })),
+    );
+
+    const ids = contextEntry.tokens
+      .filter(isRecord)
+      .map((token) => token.id)
+      .filter((id): id is string => typeof id === "string");
+    const idSet = new Set(ids);
+    if (baselineIds === undefined) baselineIds = ids;
+    else if (baselineIds.length !== ids.length || baselineIds.some((id, index) => id !== ids[index])) {
+      diagnostics.push(
+        tokenDiagnostic(
+          "AXT1601",
+          "Every resolved context must contain the same ordered Token ids.",
+          `/contexts/${contextIndex}/tokens`,
+        ),
+      );
+    }
+
+    contextEntry.tokens.forEach((token, tokenIndex) => {
+      if (!isRecord(token)) return;
+      if (containsTokenReference(token.resolvedValue)) {
+        diagnostics.push(
+          tokenDiagnostic(
+            "AXT1603",
+            `Resolved Token '${String(token.id)}' still contains an unresolved alias.`,
+            `/contexts/${contextIndex}/tokens/${tokenIndex}/resolvedValue`,
+          ),
+        );
+      }
+      if (!Array.isArray(token.dependencies)) return;
+      token.dependencies.forEach((dependency, dependencyIndex) => {
+        if (typeof dependency === "string" && !idSet.has(dependency)) {
+          diagnostics.push(
+            tokenDiagnostic(
+              "AXT1602",
+              `Resolved dependency '${dependency}' is absent from its context.`,
+              `/contexts/${contextIndex}/tokens/${tokenIndex}/dependencies/${dependencyIndex}`,
+            ),
+          );
+        }
+      });
+    });
+  });
   return diagnostics;
 };
 
@@ -243,5 +349,9 @@ export const runSemanticValidator = (
       return validateTokenIdentity(value);
     case "parsed-token-document":
       return validateParsedTokenDocument(value);
+    case "resolved-token-manifest":
+      return validateResolvedTokenManifest(value);
+    case "token-context-override":
+      return validateTokenContextOverride(value);
   }
 };

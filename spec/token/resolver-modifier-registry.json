@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "0.1",
+  "modifiers": [
+    {
+      "id": "theme",
+      "values": ["light", "dark"]
+    }
+  ]
+}
