@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-01 — Token Foundation & Domain Contracts
-### Version 0.3.1
+### Version 0.3.2
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3 \
@@ -123,6 +123,12 @@ duration.primitive.fast
 
 Primitive Tokens MUST contain an explicit value or a same-tier alias justified
 by DTCG composition. Theme contexts MUST NOT override Primitive Tokens in v0.1.
+
+Primitive paths identify a value scale, palette, ratio, curve, or format value;
+they MUST NOT encode product usage such as `disabled`, `backdrop`, `control`,
+`focus`, `overlay`, or `productive`. Product purpose belongs to Semantic
+Tokens. Numeric scale names denote the registered scale step or value and are
+not inferred from presentation labels such as `small`, `medium`, or `large`.
 
 ### 4.2 Semantic
 
@@ -302,6 +308,33 @@ Domain still requires all of:
 CSS capabilities such as cursor, grid templates, transforms, and generated
 content remain fully authorable raw CSS without becoming Token Domains merely
 because another library offers a convenience token category.
+
+### 5.6 Foundation scale and unit policy
+
+The machine-readable
+`spec/token/foundation-token-policy.json` owns the production scale profile.
+The following rules are normative:
+
+- the root type size is 16px and the minimum supported body style is 13px;
+- the spacing scale uses a 4px base and registered multipliers only;
+- spacing, general size, font size, radius, blur, and breakpoints use `rem`
+  except for the required zero representation;
+- border and stroke hairlines use `px`;
+- DTCG 2025.10 source dimensions use only `px` or `rem`;
+- `em` is a derived CSS output unit for component-relative or condition
+  serialization and MUST NOT be authored as a DTCG dimension;
+- color primitives are complete registered palette/shade coordinates;
+- color roles such as surface, text, icon, border, action, status, focus, and
+  selection are Semantic Tokens and have light/dark context values;
+- typography includes heading h1 through h6, body, label, code, and display
+  families; each registered family exposes regular, medium, semibold, and bold
+  variants;
+- registered foreground/background pairs pass their declared WCAG contrast
+  threshold in every emitted context.
+
+Scale coverage, units, typography variants, primitive naming, and resolved
+contrast are checked by `pnpm tokens:check`. A source is not complete merely
+because it parses as DTCG.
 
 ---
 
@@ -640,6 +673,10 @@ Domain ↔ DTCG type compatibility
 Domain numeric/range constraints
 alias Domain/type compatibility
 tier dependency legality
+registered palette and scale completeness
+primitive naming and dimension-unit policy
+typography family/weight coverage
+resolved semantic color contrast
 ```
 
 ### T4 — Context composition
@@ -690,6 +727,10 @@ gradient stop serialization
 stroke width serialization
 blur template serialization
 aspect ratio serialization
+complete registered color palettes
+4px spacing rhythm
+h1-h6 and 13px+ typography with four weight variants
+light/dark semantic contrast pairs
 ```
 
 ### Negative
@@ -711,6 +752,11 @@ invalid negative Primitive space
 invalid negative size/radius/borderWidth/strokeWidth/blur/duration
 invalid non-positive aspect ratio
 invalid composite field reference
+semantic usage name in Primitive tier
+unregistered color shade or spacing step
+unsupported Domain dimension unit
+missing typography family/weight variant
+semantic color contrast regression
 ```
 
 ### Coverage
@@ -737,6 +783,8 @@ Token Foundation is ready for the CSS Appearance Profile only when:
 - all public Semantic and Component Tokens resolve in light and dark contexts.
 - every Domain in the normative coverage annex has positive and negative value
   fixtures and at least one documented usage or explicit condition-only use.
+- the Foundation Token Policy passes primitive naming, palette, spacing,
+  typography, unit, and contrast validation.
 
 ---
 
@@ -745,5 +793,11 @@ Token Foundation is ready for the CSS Appearance Profile only when:
 - [Design Tokens Format Module 2025.10](https://www.designtokens.org/TR/2025.10/format/)
 - [Design Tokens Resolver Module 2025.10](https://www.designtokens.org/TR/2025.10/resolver/)
 - [Axiom Token Domain & CSS Binding Catalog](../specs/token-domain-and-css-binding-catalog.md)
+- [Toss Design System Colors](https://tossmini-docs.toss.im/tds-mobile/foundation/colors/)
+- [Toss Design System Typography](https://tossmini-docs.toss.im/tds-react-native/foundation/typography/)
+- [Apple Human Interface Guidelines — Typography](https://developer.apple.com/design/human-interface-guidelines/typography)
+- [Vercel Geist — Colors](https://vercel.com/geist/colors)
+- [Vercel Geist — Typography](https://vercel.com/geist/typography)
+- [Linear Brand Guidelines](https://linear.app/brand)
 - [Chakra UI Tokens](https://chakra-ui.com/docs/theming/tokens)
 - [Carbon Design System Color and Tokens](https://carbondesignsystem.com/elements/color/overview/)

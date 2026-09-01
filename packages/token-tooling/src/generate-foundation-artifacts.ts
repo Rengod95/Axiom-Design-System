@@ -13,6 +13,7 @@ import {
 
 import {
   TOKEN_DOMAIN_REGISTRY_PATH,
+  TOKEN_FOUNDATION_POLICY_PATH,
   TOKEN_FOUNDATION_GENERATOR_VERSION,
   TOKEN_MODIFIER_REGISTRY_PATH,
   TOKEN_PATH_TYPES_PATH,
@@ -24,6 +25,10 @@ import {
   digestTokenSources,
   generateTokenPathTypes,
 } from "./foundation-artifacts.js";
+import {
+  assertFoundationTokenPolicy,
+  type FoundationTokenPolicy,
+} from "./foundation-policy.js";
 import { createTerrazzoTokenParser } from "./terrazzo-token-parser.js";
 
 interface TokenSourceProfile {
@@ -57,8 +62,15 @@ const writeOrCheck = async (
   }
 };
 
-const [profile, domainRegistry, modifierRegistry, sourceFiles] = await Promise.all([
+const [
+  profile,
+  foundationPolicyContent,
+  domainRegistry,
+  modifierRegistry,
+  sourceFiles,
+] = await Promise.all([
   readJson<TokenSourceProfile>(TOKEN_SOURCE_PROFILE_PATH),
+  readFile(repositoryPath(TOKEN_FOUNDATION_POLICY_PATH), "utf8"),
   readJson<{ readonly domains: readonly TokenDomainDefinition[] }>(
     TOKEN_DOMAIN_REGISTRY_PATH,
   ),
@@ -70,6 +82,7 @@ const [profile, domainRegistry, modifierRegistry, sourceFiles] = await Promise.a
     })),
   ),
 ]);
+const foundationPolicy = JSON.parse(foundationPolicyContent) as FoundationTokenPolicy;
 
 const parser = createTerrazzoTokenParser({ domains: domainRegistry.domains });
 const parseSource = async (
@@ -87,7 +100,13 @@ if (base === undefined || light === undefined || dark === undefined) {
 }
 
 const sourceDigest = digestTokenSources(
-  sourceFiles.map(({ path, content }) => ({ filename: `file:///${path}`, content })),
+  [
+    ...sourceFiles.map(({ path, content }) => ({ filename: `file:///${path}`, content })),
+    {
+      filename: `file:///${TOKEN_FOUNDATION_POLICY_PATH}`,
+      content: foundationPolicyContent,
+    },
+  ],
 );
 const contexts: readonly TokenContextOverrideDocument[] = [
   { schemaVersion: light.schemaVersion, context: { theme: "light" }, tokens: light.tokens },
@@ -102,6 +121,7 @@ const result = resolveTokenContexts(
   },
   { domains: domainRegistry.domains, modifierRegistry },
 );
+assertFoundationTokenPolicy(base, result.manifest, foundationPolicy);
 
 const write = process.argv.includes("--write");
 await Promise.all([

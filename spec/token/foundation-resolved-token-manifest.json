@@ -9,17 +9,121 @@
           "dependencies": [],
           "domain": "aspectRatio",
           "dtcgType": "number",
-          "id": "aspectRatio.primitive.widescreen",
+          "id": "aspectRatio.primitive.scale.16x9",
           "resolvedValue": 1.7777777778,
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/aspectRatio/primitive/widescreen"
+            "pointer": "/aspectRatio/primitive/scale/16x9"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.primitive.scale.1x1",
+          "resolvedValue": 1,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/primitive/scale/1x1"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.primitive.scale.21x9",
+          "resolvedValue": 2.3333333333,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/primitive/scale/21x9"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.primitive.scale.3x4",
+          "resolvedValue": 0.75,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/primitive/scale/3x4"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.primitive.scale.4x3",
+          "resolvedValue": 1.3333333333,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/primitive/scale/4x3"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [
-            "aspectRatio.primitive.widescreen"
+            "aspectRatio.primitive.scale.21x9"
+          ],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.semantic.media.cinematic",
+          "resolvedValue": 2.3333333333,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/semantic/media/cinematic"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "aspectRatio.primitive.scale.4x3"
+          ],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.semantic.media.landscape",
+          "resolvedValue": 1.3333333333,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/semantic/media/landscape"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "aspectRatio.primitive.scale.3x4"
+          ],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.semantic.media.portrait",
+          "resolvedValue": 0.75,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/semantic/media/portrait"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "aspectRatio.primitive.scale.1x1"
+          ],
+          "domain": "aspectRatio",
+          "dtcgType": "number",
+          "id": "aspectRatio.semantic.media.square",
+          "resolvedValue": 1,
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/aspectRatio/semantic/media/square"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "aspectRatio.primitive.scale.16x9"
           ],
           "domain": "aspectRatio",
           "dtcgType": "number",
@@ -35,68 +139,197 @@
           "dependencies": [],
           "domain": "blur",
           "dtcgType": "dimension",
-          "id": "blur.primitive.soft",
+          "id": "blur.primitive.scale.0",
           "resolvedValue": {
-            "unit": "px",
-            "value": 12
+            "unit": "rem",
+            "value": 0
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/blur/primitive/soft"
+            "pointer": "/blur/primitive/scale/0"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.primitive.scale.1",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 0.25
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/primitive/scale/1"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.primitive.scale.2",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 0.5
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/primitive/scale/2"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.primitive.scale.3",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 0.75
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/primitive/scale/3"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.primitive.scale.4",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 1
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/primitive/scale/4"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.primitive.scale.6",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 1.5
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/primitive/scale/6"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.primitive.scale.8",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 2
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/primitive/scale/8"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [
-            "blur.primitive.soft"
+            "blur.primitive.scale.4"
           ],
           "domain": "blur",
           "dtcgType": "dimension",
-          "id": "blur.semantic.overlay.backdrop",
+          "id": "blur.semantic.modal",
           "resolvedValue": {
-            "unit": "px",
-            "value": 12
+            "unit": "rem",
+            "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/blur/semantic/overlay/backdrop"
+            "pointer": "/blur/semantic/modal"
           },
           "tier": "semantic"
         },
         {
           "dependencies": [
-            "borderWidth.primitive.thin",
-            "color.primitive.neutral.900",
-            "strokeStyle.primitive.solid"
+            "blur.primitive.scale.0"
           ],
-          "domain": "border",
-          "dtcgType": "border",
-          "id": "border.primitive.control",
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.semantic.none",
           "resolvedValue": {
-            "color": {
-              "alpha": 1,
-              "colorSpace": "srgb",
-              "components": [
-                0.06,
-                0.07,
-                0.09
-              ]
-            },
-            "style": "solid",
-            "width": {
-              "unit": "px",
-              "value": 1
-            }
+            "unit": "rem",
+            "value": 0
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/border/primitive/control"
+            "pointer": "/blur/semantic/none"
           },
-          "tier": "primitive"
+          "tier": "semantic"
         },
         {
           "dependencies": [
-            "border.primitive.control"
+            "blur.primitive.scale.3"
+          ],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.semantic.overlay",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 0.75
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/semantic/overlay"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "blur.primitive.scale.1"
+          ],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.semantic.subtle",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 0.25
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/semantic/subtle"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "blur.primitive.scale.2"
+          ],
+          "domain": "blur",
+          "dtcgType": "dimension",
+          "id": "blur.semantic.surface",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 0.5
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/blur/semantic/surface"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "borderWidth.semantic.control",
+            "color.semantic.border.default",
+            "strokeStyle.semantic.control"
           ],
           "domain": "border",
           "dtcgType": "border",
@@ -106,9 +339,9 @@
               "alpha": 1,
               "colorSpace": "srgb",
               "components": [
-                0.06,
-                0.07,
-                0.09
+                0.796078,
+                0.835294,
+                0.882353
               ]
             },
             "style": "solid",
@@ -120,6 +353,68 @@
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/border/semantic/control"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "borderWidth.semantic.focus",
+            "color.semantic.border.focus",
+            "strokeStyle.semantic.focus"
+          ],
+          "domain": "border",
+          "dtcgType": "border",
+          "id": "border.semantic.focus",
+          "resolvedValue": {
+            "color": {
+              "alpha": 1,
+              "colorSpace": "srgb",
+              "components": [
+                0.266667,
+                0.298039,
+                0.905882
+              ]
+            },
+            "style": "solid",
+            "width": {
+              "unit": "px",
+              "value": 2
+            }
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/border/semantic/focus"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "borderWidth.semantic.separator",
+            "color.semantic.border.subtle",
+            "strokeStyle.semantic.separator"
+          ],
+          "domain": "border",
+          "dtcgType": "border",
+          "id": "border.semantic.separator",
+          "resolvedValue": {
+            "color": {
+              "alpha": 1,
+              "colorSpace": "srgb",
+              "components": [
+                0.886275,
+                0.909804,
+                0.941176
+              ]
+            },
+            "style": "solid",
+            "width": {
+              "unit": "px",
+              "value": 1
+            }
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/border/semantic/separator"
           },
           "tier": "semantic"
         },
@@ -144,14 +439,14 @@
           "dependencies": [],
           "domain": "borderWidth",
           "dtcgType": "dimension",
-          "id": "borderWidth.primitive.focus",
+          "id": "borderWidth.primitive.scale.0",
           "resolvedValue": {
             "unit": "px",
-            "value": 2
+            "value": 0
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/borderWidth/primitive/focus"
+            "pointer": "/borderWidth/primitive/scale/0"
           },
           "tier": "primitive"
         },
@@ -159,20 +454,65 @@
           "dependencies": [],
           "domain": "borderWidth",
           "dtcgType": "dimension",
-          "id": "borderWidth.primitive.thin",
+          "id": "borderWidth.primitive.scale.1",
           "resolvedValue": {
             "unit": "px",
             "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/borderWidth/primitive/thin"
+            "pointer": "/borderWidth/primitive/scale/1"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "borderWidth",
+          "dtcgType": "dimension",
+          "id": "borderWidth.primitive.scale.2",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 2
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/borderWidth/primitive/scale/2"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "borderWidth",
+          "dtcgType": "dimension",
+          "id": "borderWidth.primitive.scale.3",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 3
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/borderWidth/primitive/scale/3"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "borderWidth",
+          "dtcgType": "dimension",
+          "id": "borderWidth.primitive.scale.4",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 4
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/borderWidth/primitive/scale/4"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [
-            "borderWidth.primitive.thin"
+            "borderWidth.primitive.scale.1"
           ],
           "domain": "borderWidth",
           "dtcgType": "dimension",
@@ -189,7 +529,7 @@
         },
         {
           "dependencies": [
-            "borderWidth.primitive.focus"
+            "borderWidth.primitive.scale.2"
           ],
           "domain": "borderWidth",
           "dtcgType": "dimension",
@@ -205,34 +545,296 @@
           "tier": "semantic"
         },
         {
-          "dependencies": [],
-          "domain": "breakpoint",
+          "dependencies": [
+            "borderWidth.primitive.scale.0"
+          ],
+          "domain": "borderWidth",
           "dtcgType": "dimension",
-          "id": "breakpoint.primitive.medium",
+          "id": "borderWidth.semantic.none",
           "resolvedValue": {
             "unit": "px",
-            "value": 768
+            "value": 0
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/breakpoint/primitive/medium"
+            "pointer": "/borderWidth/semantic/none"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "borderWidth.primitive.scale.1"
+          ],
+          "domain": "borderWidth",
+          "dtcgType": "dimension",
+          "id": "borderWidth.semantic.separator",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 1
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/borderWidth/semantic/separator"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "borderWidth.primitive.scale.2"
+          ],
+          "domain": "borderWidth",
+          "dtcgType": "dimension",
+          "id": "borderWidth.semantic.strong",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 2
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/borderWidth/semantic/strong"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.primitive.scale.30",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 30
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/primitive/scale/30"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.primitive.scale.40",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 40
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/primitive/scale/40"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.primitive.scale.48",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 48
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/primitive/scale/48"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.primitive.scale.64",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 64
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/primitive/scale/64"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.primitive.scale.80",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 80
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/primitive/scale/80"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.primitive.scale.96",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 96
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/primitive/scale/96"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [
-            "breakpoint.primitive.medium"
+            "breakpoint.primitive.scale.48"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.container.lg",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 48
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/container/lg"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.40"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.container.md",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 40
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/container/md"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.30"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.container.sm",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 30
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/container/sm"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.64"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.container.xl",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 64
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/container/xl"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.64"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.viewport.lg",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 64
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/viewport/lg"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.48"
           ],
           "domain": "breakpoint",
           "dtcgType": "dimension",
           "id": "breakpoint.semantic.viewport.md",
           "resolvedValue": {
-            "unit": "px",
-            "value": 768
+            "unit": "rem",
+            "value": 48
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/breakpoint/semantic/viewport/md"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.40"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.viewport.sm",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 40
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/viewport/sm"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.80"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.viewport.xl",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 80
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/viewport/xl"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "breakpoint.primitive.scale.96"
+          ],
+          "domain": "breakpoint",
+          "dtcgType": "dimension",
+          "id": "breakpoint.semantic.viewport.xxl",
+          "resolvedValue": {
+            "unit": "rem",
+            "value": 96
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/breakpoint/semantic/viewport/xxl"
           },
           "tier": "semantic"
         },
@@ -247,9 +849,9 @@
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.1,
-              0.3,
-              0.8
+              0.266667,
+              0.298039,
+              0.905882
             ]
           },
           "source": {
@@ -260,7 +862,161 @@
         },
         {
           "dependencies": [
-            "color.semantic.surface.default"
+            "color.semantic.action.primary.disabled"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.button.root.background.disabled",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.886275,
+              0.909804,
+              0.941176
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/button/root/background/disabled"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.action.primary.hovered"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.button.root.background.hovered",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.207843,
+              0.219608,
+              0.803922
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/button/root/background/hovered"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.action.primary.pressed"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.button.root.background.pressed",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.176471,
+              0.192157,
+              0.65098
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/button/root/background/pressed"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.focus.ring"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.button.root.focus",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.266667,
+              0.298039,
+              0.905882
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/button/root/focus"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.action.primary.text"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.button.root.text.default",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/button/root/text/default"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.action.primary.textDisabled"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.button.root.text.disabled",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.580392,
+              0.639216,
+              0.721569
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/button/root/text/disabled"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.backdrop"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.dialog.backdrop",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0,
+              0
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/dialog/backdrop"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.surface.overlay"
           ],
           "domain": "color",
           "dtcgType": "color",
@@ -282,7 +1038,51 @@
         },
         {
           "dependencies": [
-            "color.semantic.surface.default"
+            "color.semantic.action.ghost.hovered"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.select.item.background.hovered",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.945098,
+              0.960784,
+              0.976471
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/select/item/background/hovered"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.text.primary"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.select.item.text",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.058824,
+              0.090196,
+              0.164706
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/select/item/text"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [
+            "color.semantic.surface.overlay"
           ],
           "domain": "color",
           "dtcgType": "color",
@@ -303,6 +1103,308 @@
           "tier": "component"
         },
         {
+          "dependencies": [
+            "color.semantic.border.default"
+          ],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.component.select.trigger.border.default",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.796078,
+              0.835294,
+              0.882353
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/component/select/trigger/border/default"
+          },
+          "tier": "component"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.100",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.996078,
+              0.952941,
+              0.780392
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/100"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.200",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.992157,
+              0.901961,
+              0.541176
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/200"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.300",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.988235,
+              0.827451,
+              0.301961
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/300"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.400",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.984314,
+              0.74902,
+              0.141176
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/400"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.50",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              0.984314,
+              0.921569
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/50"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.500",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.960784,
+              0.619608,
+              0.043137
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/500"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.600",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.85098,
+              0.466667,
+              0.023529
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/600"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.700",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.705882,
+              0.32549,
+              0.035294
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/700"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.800",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.572549,
+              0.25098,
+              0.054902
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/800"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.900",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.470588,
+              0.207843,
+              0.058824
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/900"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.amber.950",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.270588,
+              0.101961,
+              0.011765
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/amber/950"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.100",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.878431,
+              0.917647,
+              1
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/100"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.200",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.780392,
+              0.843137,
+              0.996078
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/200"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.300",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.643137,
+              0.737255,
+              0.992157
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/300"
+          },
+          "tier": "primitive"
+        },
+        {
           "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
@@ -311,9 +1413,9 @@
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.35,
-              0.55,
-              1
+              0.501961,
+              0.596078,
+              0.976471
             ]
           },
           "source": {
@@ -326,19 +1428,579 @@
           "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
+          "id": "color.primitive.brand.50",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.933333,
+              0.956863,
+              1
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/50"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.500",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.380392,
+              0.447059,
+              0.952941
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/500"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
           "id": "color.primitive.brand.600",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.1,
-              0.3,
-              0.8
+              0.266667,
+              0.298039,
+              0.905882
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/color/primitive/brand/600"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.700",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.207843,
+              0.219608,
+              0.803922
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/700"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.800",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.176471,
+              0.192157,
+              0.65098
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/800"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.900",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.176471,
+              0.196078,
+              0.509804
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/900"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.brand.950",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.121569,
+              0.137255,
+              0.356863
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/brand/950"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.100",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.811765,
+              0.980392,
+              0.996078
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/100"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.200",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.647059,
+              0.952941,
+              0.988235
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/200"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.300",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.403922,
+              0.909804,
+              0.976471
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/300"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.400",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.133333,
+              0.827451,
+              0.933333
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/400"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.50",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.92549,
+              0.996078,
+              1
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/50"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.500",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.023529,
+              0.713725,
+              0.831373
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/500"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.600",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.031373,
+              0.568627,
+              0.698039
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/600"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.700",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.054902,
+              0.454902,
+              0.564706
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/700"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.800",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.082353,
+              0.368627,
+              0.458824
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/800"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.900",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.086275,
+              0.305882,
+              0.388235
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/900"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.cyan.950",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.031373,
+              0.2,
+              0.266667
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/cyan/950"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.100",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.862745,
+              0.988235,
+              0.905882
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/100"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.200",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.733333,
+              0.968627,
+              0.815686
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/200"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.300",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.52549,
+              0.937255,
+              0.67451
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/300"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.400",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.290196,
+              0.870588,
+              0.501961
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/400"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.50",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.941176,
+              0.992157,
+              0.956863
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/50"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.500",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.133333,
+              0.772549,
+              0.368627
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/500"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.600",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.086275,
+              0.639216,
+              0.290196
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/600"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.700",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.082353,
+              0.501961,
+              0.239216
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/700"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.800",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.086275,
+              0.396078,
+              0.203922
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/800"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.900",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.078431,
+              0.32549,
+              0.176471
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/900"
+          },
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.green.950",
+          "resolvedValue": {
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.019608,
+              0.180392,
+              0.086275
+            ]
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/green/950"
           },
           "tier": "primitive"
         },
@@ -366,1551 +2028,179 @@
           "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.primitive.neutral.900",
+          "id": "color.primitive.neutral.100",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.06,
-              0.07,
-              0.09
+              0.945098,
+              0.960784,
+              0.976471
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/primitive/neutral/900"
+            "pointer": "/color/primitive/neutral/100"
           },
           "tier": "primitive"
         },
         {
-          "dependencies": [
-            "color.primitive.brand.600"
-          ],
+          "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.semantic.action.primary.default",
+          "id": "color.primitive.neutral.1000",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.1,
-              0.3,
-              0.8
+              0,
+              0,
+              0
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/semantic/action/primary/default"
+            "pointer": "/color/primitive/neutral/1000"
           },
-          "tier": "semantic"
+          "tier": "primitive"
         },
         {
-          "dependencies": [
-            "color.primitive.neutral.0"
-          ],
+          "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.semantic.surface.default",
+          "id": "color.primitive.neutral.200",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              1,
-              1,
-              1
+              0.886275,
+              0.909804,
+              0.941176
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/semantic/surface/default"
+            "pointer": "/color/primitive/neutral/200"
           },
-          "tier": "semantic"
+          "tier": "primitive"
         },
         {
-          "dependencies": [
-            "color.primitive.neutral.900"
-          ],
+          "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.semantic.text.default",
+          "id": "color.primitive.neutral.300",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.06,
-              0.07,
-              0.09
+              0.796078,
+              0.835294,
+              0.882353
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/semantic/text/default"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "duration.semantic.overlay.enter"
-          ],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.component.dialog.popup.enter",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 180
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/component/dialog/popup/enter"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.primitive.fast",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 120
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/primitive/fast"
+            "pointer": "/color/primitive/neutral/300"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.primitive.normal",
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.neutral.400",
           "resolvedValue": {
-            "unit": "ms",
-            "value": 180
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.580392,
+              0.639216,
+              0.721569
+            ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/primitive/normal"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "duration.primitive.normal"
-          ],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.semantic.overlay.enter",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 180
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/semantic/overlay/enter"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "duration.primitive.fast"
-          ],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.semantic.productive",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 120
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/semantic/productive"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "easing.semantic.productive"
-          ],
-          "domain": "easing",
-          "dtcgType": "cubicBezier",
-          "id": "easing.component.dialog.popup.enter",
-          "resolvedValue": [
-            0.2,
-            0,
-            0,
-            1
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/easing/component/dialog/popup/enter"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "easing",
-          "dtcgType": "cubicBezier",
-          "id": "easing.primitive.productive",
-          "resolvedValue": [
-            0.2,
-            0,
-            0,
-            1
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/easing/primitive/productive"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "easing.primitive.productive"
-          ],
-          "domain": "easing",
-          "dtcgType": "cubicBezier",
-          "id": "easing.semantic.productive",
-          "resolvedValue": [
-            0.2,
-            0,
-            0,
-            1
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/easing/semantic/productive"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "fontFamily",
-          "dtcgType": "fontFamily",
-          "id": "fontFamily.primitive.sans",
-          "resolvedValue": [
-            "Inter",
-            "sans-serif"
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontFamily/primitive/sans"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "fontFamily.primitive.sans"
-          ],
-          "domain": "fontFamily",
-          "dtcgType": "fontFamily",
-          "id": "fontFamily.semantic.body",
-          "resolvedValue": [
-            "Inter",
-            "sans-serif"
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontFamily/semantic/body"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "fontSize",
-          "dtcgType": "dimension",
-          "id": "fontSize.primitive.medium",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontSize/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "fontSize.primitive.medium"
-          ],
-          "domain": "fontSize",
-          "dtcgType": "dimension",
-          "id": "fontSize.semantic.body.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontSize/semantic/body/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "fontWeight",
-          "dtcgType": "fontWeight",
-          "id": "fontWeight.primitive.medium",
-          "resolvedValue": 500,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontWeight/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "fontWeight.primitive.medium"
-          ],
-          "domain": "fontWeight",
-          "dtcgType": "fontWeight",
-          "id": "fontWeight.semantic.label",
-          "resolvedValue": 500,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontWeight/semantic/label"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "gradient",
-          "dtcgType": "gradient",
-          "id": "gradient.primitive.brand",
-          "resolvedValue": [
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.1,
-                  0.3,
-                  0.8
-                ]
-              },
-              "position": 0
-            },
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.35,
-                  0.55,
-                  1
-                ]
-              },
-              "position": 1
-            }
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/gradient/primitive/brand"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "gradient.primitive.brand"
-          ],
-          "domain": "gradient",
-          "dtcgType": "gradient",
-          "id": "gradient.semantic.surface.brand",
-          "resolvedValue": [
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.1,
-                  0.3,
-                  0.8
-                ]
-              },
-              "position": 0
-            },
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.35,
-                  0.55,
-                  1
-                ]
-              },
-              "position": 1
-            }
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/gradient/semantic/surface/brand"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "layer.semantic.modal"
-          ],
-          "domain": "layer",
-          "dtcgType": "number",
-          "id": "layer.component.dialog.popup",
-          "resolvedValue": 1000,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/layer/component/dialog/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "layer",
-          "dtcgType": "number",
-          "id": "layer.primitive.overlay",
-          "resolvedValue": 1000,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/layer/primitive/overlay"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "layer.primitive.overlay"
-          ],
-          "domain": "layer",
-          "dtcgType": "number",
-          "id": "layer.semantic.modal",
-          "resolvedValue": 1000,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/layer/semantic/modal"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "letterSpacing",
-          "dtcgType": "dimension",
-          "id": "letterSpacing.primitive.normal",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 0
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/letterSpacing/primitive/normal"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "letterSpacing.primitive.normal"
-          ],
-          "domain": "letterSpacing",
-          "dtcgType": "dimension",
-          "id": "letterSpacing.semantic.body",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 0
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/letterSpacing/semantic/body"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "lineHeight",
-          "dtcgType": "number",
-          "id": "lineHeight.primitive.comfortable",
-          "resolvedValue": 1.5,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/lineHeight/primitive/comfortable"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "lineHeight.primitive.comfortable"
-          ],
-          "domain": "lineHeight",
-          "dtcgType": "number",
-          "id": "lineHeight.semantic.body",
-          "resolvedValue": 1.5,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/lineHeight/semantic/body"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "opacity.semantic.backdrop"
-          ],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.component.dialog.backdrop",
-          "resolvedValue": 0.56,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/component/dialog/backdrop"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.primitive.backdrop",
-          "resolvedValue": 0.56,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/primitive/backdrop"
+            "pointer": "/color/primitive/neutral/400"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.primitive.disabled",
-          "resolvedValue": 0.4,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/primitive/disabled"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "opacity.primitive.backdrop"
-          ],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.semantic.backdrop",
-          "resolvedValue": 0.56,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/semantic/backdrop"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "opacity.primitive.disabled"
-          ],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.semantic.disabled",
-          "resolvedValue": 0.4,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/semantic/disabled"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "radius.semantic.control"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.component.button.root",
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.neutral.50",
           "resolvedValue": {
-            "unit": "px",
-            "value": 8
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.972549,
+              0.980392,
+              0.988235
+            ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/component/button/root"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "radius.semantic.overlay"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.component.dialog.popup",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/component/dialog/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "radius.semantic.overlay"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.component.select.popup",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/component/select/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.primitive.medium",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "radius.primitive.medium"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.semantic.control",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/semantic/control"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "radius.primitive.medium"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.semantic.overlay",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/semantic/overlay"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "shadow.semantic.overlay"
-          ],
-          "domain": "shadow",
-          "dtcgType": "shadow",
-          "id": "shadow.component.dialog.popup",
-          "resolvedValue": {
-            "blur": {
-              "unit": "px",
-              "value": 12
-            },
-            "color": {
-              "alpha": 0.24,
-              "colorSpace": "srgb",
-              "components": [
-                0,
-                0,
-                0
-              ]
-            },
-            "inset": false,
-            "offsetX": {
-              "unit": "px",
-              "value": 0
-            },
-            "offsetY": {
-              "unit": "px",
-              "value": 4
-            },
-            "spread": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/shadow/component/dialog/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "shadow",
-          "dtcgType": "shadow",
-          "id": "shadow.primitive.raised",
-          "resolvedValue": {
-            "blur": {
-              "unit": "px",
-              "value": 12
-            },
-            "color": {
-              "alpha": 0.24,
-              "colorSpace": "srgb",
-              "components": [
-                0,
-                0,
-                0
-              ]
-            },
-            "inset": false,
-            "offsetX": {
-              "unit": "px",
-              "value": 0
-            },
-            "offsetY": {
-              "unit": "px",
-              "value": 4
-            },
-            "spread": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/shadow/primitive/raised"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "shadow.primitive.raised"
-          ],
-          "domain": "shadow",
-          "dtcgType": "shadow",
-          "id": "shadow.semantic.overlay",
-          "resolvedValue": {
-            "blur": {
-              "unit": "px",
-              "value": 12
-            },
-            "color": {
-              "alpha": 0.24,
-              "colorSpace": "srgb",
-              "components": [
-                0,
-                0,
-                0
-              ]
-            },
-            "inset": false,
-            "offsetX": {
-              "unit": "px",
-              "value": 0
-            },
-            "offsetY": {
-              "unit": "px",
-              "value": 4
-            },
-            "spread": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/shadow/semantic/overlay"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "size.semantic.control.height.md"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.component.button.root.block",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/component/button/root/block"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "size.semantic.overlay.dialog.maxInline"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.component.dialog.popup.maxInline",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 640
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/component/dialog/popup/maxInline"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "size.semantic.control.height.md"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.component.select.trigger.block",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/component/select/trigger/block"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.primitive.control",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/primitive/control"
+            "pointer": "/color/primitive/neutral/50"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.primitive.overlay",
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.neutral.500",
           "resolvedValue": {
-            "unit": "px",
-            "value": 640
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.392157,
+              0.454902,
+              0.545098
+            ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/primitive/overlay"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "size.primitive.control"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.semantic.control.height.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/semantic/control/height/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "size.primitive.overlay"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.semantic.overlay.dialog.maxInline",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 640
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/semantic/overlay/dialog/maxInline"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "space.semantic.control.inline.md"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.component.button.root.padding.inline.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/component/button/root/padding/inline/md"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "space.semantic.stack.md"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.component.dialog.popup.gap",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/component/dialog/popup/gap"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "space.semantic.controlBlock.md"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.component.select.item.padding.block.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/component/select/item/padding/block/md"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.primitive.medium",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/primitive/medium"
+            "pointer": "/color/primitive/neutral/500"
           },
           "tier": "primitive"
         },
         {
           "dependencies": [],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.primitive.small",
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.neutral.600",
           "resolvedValue": {
-            "unit": "px",
-            "value": 8
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.278431,
+              0.333333,
+              0.411765
+            ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/primitive/small"
+            "pointer": "/color/primitive/neutral/600"
           },
           "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "space.primitive.medium"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.semantic.control.inline.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/semantic/control/inline/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "space.primitive.small"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.semantic.controlBlock.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/semantic/controlBlock/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "space.primitive.medium"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.semantic.stack.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/semantic/stack/md"
-          },
-          "tier": "semantic"
         },
         {
           "dependencies": [],
-          "domain": "strokeStyle",
-          "dtcgType": "strokeStyle",
-          "id": "strokeStyle.primitive.solid",
-          "resolvedValue": "solid",
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeStyle/primitive/solid"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "strokeStyle.primitive.solid"
-          ],
-          "domain": "strokeStyle",
-          "dtcgType": "strokeStyle",
-          "id": "strokeStyle.semantic.control",
-          "resolvedValue": "solid",
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeStyle/semantic/control"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "strokeWidth",
-          "dtcgType": "dimension",
-          "id": "strokeWidth.primitive.icon",
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.neutral.700",
           "resolvedValue": {
-            "unit": "px",
-            "value": 1.5
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/primitive/icon"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "strokeWidth.primitive.icon"
-          ],
-          "domain": "strokeWidth",
-          "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 1.5
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "transition.semantic.state"
-          ],
-          "domain": "transition",
-          "dtcgType": "transition",
-          "id": "transition.component.button.state",
-          "resolvedValue": {
-            "delay": {
-              "unit": "ms",
-              "value": 0
-            },
-            "duration": {
-              "unit": "ms",
-              "value": 120
-            },
-            "timingFunction": [
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
               0.2,
-              0,
-              0,
-              1
+              0.254902,
+              0.333333
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/transition/component/button/state"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "duration.primitive.fast",
-            "easing.primitive.productive"
-          ],
-          "domain": "transition",
-          "dtcgType": "transition",
-          "id": "transition.primitive.productive",
-          "resolvedValue": {
-            "delay": {
-              "unit": "ms",
-              "value": 0
-            },
-            "duration": {
-              "unit": "ms",
-              "value": 120
-            },
-            "timingFunction": [
-              0.2,
-              0,
-              0,
-              1
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/transition/primitive/productive"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "transition.primitive.productive"
-          ],
-          "domain": "transition",
-          "dtcgType": "transition",
-          "id": "transition.semantic.state",
-          "resolvedValue": {
-            "delay": {
-              "unit": "ms",
-              "value": 0
-            },
-            "duration": {
-              "unit": "ms",
-              "value": 120
-            },
-            "timingFunction": [
-              0.2,
-              0,
-              0,
-              1
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/transition/semantic/state"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "fontFamily.primitive.sans",
-            "fontSize.primitive.medium",
-            "fontWeight.primitive.medium",
-            "letterSpacing.primitive.normal",
-            "lineHeight.primitive.comfortable"
-          ],
-          "domain": "typography",
-          "dtcgType": "typography",
-          "id": "typography.primitive.body",
-          "resolvedValue": {
-            "fontFamily": [
-              "Inter",
-              "sans-serif"
-            ],
-            "fontSize": {
-              "unit": "px",
-              "value": 16
-            },
-            "fontWeight": 500,
-            "letterSpacing": {
-              "unit": "px",
-              "value": 0
-            },
-            "lineHeight": 1.5
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/typography/primitive/body"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "typography.primitive.body"
-          ],
-          "domain": "typography",
-          "dtcgType": "typography",
-          "id": "typography.semantic.body.md",
-          "resolvedValue": {
-            "fontFamily": [
-              "Inter",
-              "sans-serif"
-            ],
-            "fontSize": {
-              "unit": "px",
-              "value": 16
-            },
-            "fontWeight": 500,
-            "letterSpacing": {
-              "unit": "px",
-              "value": 0
-            },
-            "lineHeight": 1.5
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/typography/semantic/body/md"
-          },
-          "tier": "semantic"
-        }
-      ]
-    },
-    {
-      "context": {
-        "theme": "dark"
-      },
-      "tokens": [
-        {
-          "dependencies": [],
-          "domain": "aspectRatio",
-          "dtcgType": "number",
-          "id": "aspectRatio.primitive.widescreen",
-          "resolvedValue": 1.7777777778,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/aspectRatio/primitive/widescreen"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "aspectRatio.primitive.widescreen"
-          ],
-          "domain": "aspectRatio",
-          "dtcgType": "number",
-          "id": "aspectRatio.semantic.media.widescreen",
-          "resolvedValue": 1.7777777778,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/aspectRatio/semantic/media/widescreen"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "blur",
-          "dtcgType": "dimension",
-          "id": "blur.primitive.soft",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 12
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/blur/primitive/soft"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "blur.primitive.soft"
-          ],
-          "domain": "blur",
-          "dtcgType": "dimension",
-          "id": "blur.semantic.overlay.backdrop",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 12
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/blur/semantic/overlay/backdrop"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "borderWidth.primitive.thin",
-            "color.primitive.neutral.900",
-            "strokeStyle.primitive.solid"
-          ],
-          "domain": "border",
-          "dtcgType": "border",
-          "id": "border.primitive.control",
-          "resolvedValue": {
-            "color": {
-              "alpha": 1,
-              "colorSpace": "srgb",
-              "components": [
-                0.06,
-                0.07,
-                0.09
-              ]
-            },
-            "style": "solid",
-            "width": {
-              "unit": "px",
-              "value": 1
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/border/primitive/control"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "border.primitive.control"
-          ],
-          "domain": "border",
-          "dtcgType": "border",
-          "id": "border.semantic.control",
-          "resolvedValue": {
-            "color": {
-              "alpha": 1,
-              "colorSpace": "srgb",
-              "components": [
-                0.06,
-                0.07,
-                0.09
-              ]
-            },
-            "style": "solid",
-            "width": {
-              "unit": "px",
-              "value": 1
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/border/semantic/control"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "borderWidth.semantic.focus"
-          ],
-          "domain": "borderWidth",
-          "dtcgType": "dimension",
-          "id": "borderWidth.component.button.root.focus",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 2
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/borderWidth/component/button/root/focus"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "borderWidth",
-          "dtcgType": "dimension",
-          "id": "borderWidth.primitive.focus",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 2
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/borderWidth/primitive/focus"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [],
-          "domain": "borderWidth",
-          "dtcgType": "dimension",
-          "id": "borderWidth.primitive.thin",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 1
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/borderWidth/primitive/thin"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "borderWidth.primitive.thin"
-          ],
-          "domain": "borderWidth",
-          "dtcgType": "dimension",
-          "id": "borderWidth.semantic.control",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 1
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/borderWidth/semantic/control"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "borderWidth.primitive.focus"
-          ],
-          "domain": "borderWidth",
-          "dtcgType": "dimension",
-          "id": "borderWidth.semantic.focus",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 2
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/borderWidth/semantic/focus"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "breakpoint",
-          "dtcgType": "dimension",
-          "id": "breakpoint.primitive.medium",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 768
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/breakpoint/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "breakpoint.primitive.medium"
-          ],
-          "domain": "breakpoint",
-          "dtcgType": "dimension",
-          "id": "breakpoint.semantic.viewport.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 768
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/breakpoint/semantic/viewport/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "color.semantic.action.primary.default"
-          ],
-          "domain": "color",
-          "dtcgType": "color",
-          "id": "color.component.button.root.background.default",
-          "resolvedValue": {
-            "alpha": 1,
-            "colorSpace": "srgb",
-            "components": [
-              0.35,
-              0.55,
-              1
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/component/button/root/background/default"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "color.semantic.surface.default"
-          ],
-          "domain": "color",
-          "dtcgType": "color",
-          "id": "color.component.dialog.popup.background",
-          "resolvedValue": {
-            "alpha": 1,
-            "colorSpace": "srgb",
-            "components": [
-              0.06,
-              0.07,
-              0.09
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/component/dialog/popup/background"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "color.semantic.surface.default"
-          ],
-          "domain": "color",
-          "dtcgType": "color",
-          "id": "color.component.select.popup.background",
-          "resolvedValue": {
-            "alpha": 1,
-            "colorSpace": "srgb",
-            "components": [
-              0.06,
-              0.07,
-              0.09
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/component/select/popup/background"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "color",
-          "dtcgType": "color",
-          "id": "color.primitive.brand.400",
-          "resolvedValue": {
-            "alpha": 1,
-            "colorSpace": "srgb",
-            "components": [
-              0.35,
-              0.55,
-              1
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/primitive/brand/400"
+            "pointer": "/color/primitive/neutral/700"
           },
           "tier": "primitive"
         },
@@ -1918,39 +2208,19 @@
           "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.primitive.brand.600",
+          "id": "color.primitive.neutral.800",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.1,
-              0.3,
-              0.8
+              0.117647,
+              0.160784,
+              0.231373
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/primitive/brand/600"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [],
-          "domain": "color",
-          "dtcgType": "color",
-          "id": "color.primitive.neutral.0",
-          "resolvedValue": {
-            "alpha": 1,
-            "colorSpace": "srgb",
-            "components": [
-              1,
-              1,
-              1
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/color/primitive/neutral/0"
+            "pointer": "/color/primitive/neutral/800"
           },
           "tier": "primitive"
         },
@@ -1963,9 +2233,9 @@
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.06,
-              0.07,
-              0.09
+              0.058824,
+              0.090196,
+              0.164706
             ]
           },
           "source": {
@@ -1975,1217 +2245,110 @@
           "tier": "primitive"
         },
         {
-          "dependencies": [
-            "color.primitive.brand.400"
-          ],
+          "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.semantic.action.primary.default",
+          "id": "color.primitive.neutral.950",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.35,
-              0.55,
-              1
+              0.007843,
+              0.023529,
+              0.090196
             ]
           },
           "source": {
-            "file": "file:///tokens/theme-dark.tokens.json",
-            "pointer": "/color/semantic/action/primary/default"
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/neutral/950"
           },
-          "tier": "semantic"
+          "tier": "primitive"
         },
         {
-          "dependencies": [
-            "color.primitive.neutral.900"
-          ],
+          "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.semantic.surface.default",
+          "id": "color.primitive.purple.100",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              0.06,
-              0.07,
-              0.09
+              0.952941,
+              0.909804,
+              1
             ]
           },
           "source": {
-            "file": "file:///tokens/theme-dark.tokens.json",
-            "pointer": "/color/semantic/surface/default"
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/color/primitive/purple/100"
           },
-          "tier": "semantic"
+          "tier": "primitive"
         },
         {
-          "dependencies": [
-            "color.primitive.neutral.0"
-          ],
+          "dependencies": [],
           "domain": "color",
           "dtcgType": "color",
-          "id": "color.semantic.text.default",
+          "id": "color.primitive.purple.200",
           "resolvedValue": {
             "alpha": 1,
             "colorSpace": "srgb",
             "components": [
-              1,
-              1,
-              1
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/theme-dark.tokens.json",
-            "pointer": "/color/semantic/text/default"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "duration.semantic.overlay.enter"
-          ],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.component.dialog.popup.enter",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 180
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/component/dialog/popup/enter"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.primitive.fast",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 120
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/primitive/fast"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.primitive.normal",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 180
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/primitive/normal"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "duration.primitive.normal"
-          ],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.semantic.overlay.enter",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 180
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/semantic/overlay/enter"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "duration.primitive.fast"
-          ],
-          "domain": "duration",
-          "dtcgType": "duration",
-          "id": "duration.semantic.productive",
-          "resolvedValue": {
-            "unit": "ms",
-            "value": 120
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/duration/semantic/productive"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "easing.semantic.productive"
-          ],
-          "domain": "easing",
-          "dtcgType": "cubicBezier",
-          "id": "easing.component.dialog.popup.enter",
-          "resolvedValue": [
-            0.2,
-            0,
-            0,
-            1
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/easing/component/dialog/popup/enter"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "easing",
-          "dtcgType": "cubicBezier",
-          "id": "easing.primitive.productive",
-          "resolvedValue": [
-            0.2,
-            0,
-            0,
-            1
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/easing/primitive/productive"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "easing.primitive.productive"
-          ],
-          "domain": "easing",
-          "dtcgType": "cubicBezier",
-          "id": "easing.semantic.productive",
-          "resolvedValue": [
-            0.2,
-            0,
-            0,
-            1
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/easing/semantic/productive"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "fontFamily",
-          "dtcgType": "fontFamily",
-          "id": "fontFamily.primitive.sans",
-          "resolvedValue": [
-            "Inter",
-            "sans-serif"
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontFamily/primitive/sans"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "fontFamily.primitive.sans"
-          ],
-          "domain": "fontFamily",
-          "dtcgType": "fontFamily",
-          "id": "fontFamily.semantic.body",
-          "resolvedValue": [
-            "Inter",
-            "sans-serif"
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontFamily/semantic/body"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "fontSize",
-          "dtcgType": "dimension",
-          "id": "fontSize.primitive.medium",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontSize/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "fontSize.primitive.medium"
-          ],
-          "domain": "fontSize",
-          "dtcgType": "dimension",
-          "id": "fontSize.semantic.body.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontSize/semantic/body/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "fontWeight",
-          "dtcgType": "fontWeight",
-          "id": "fontWeight.primitive.medium",
-          "resolvedValue": 500,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontWeight/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "fontWeight.primitive.medium"
-          ],
-          "domain": "fontWeight",
-          "dtcgType": "fontWeight",
-          "id": "fontWeight.semantic.label",
-          "resolvedValue": 500,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/fontWeight/semantic/label"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "gradient",
-          "dtcgType": "gradient",
-          "id": "gradient.primitive.brand",
-          "resolvedValue": [
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.1,
-                  0.3,
-                  0.8
-                ]
-              },
-              "position": 0
-            },
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.35,
-                  0.55,
-                  1
-                ]
-              },
-              "position": 1
-            }
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/gradient/primitive/brand"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "gradient.primitive.brand"
-          ],
-          "domain": "gradient",
-          "dtcgType": "gradient",
-          "id": "gradient.semantic.surface.brand",
-          "resolvedValue": [
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.1,
-                  0.3,
-                  0.8
-                ]
-              },
-              "position": 0
-            },
-            {
-              "color": {
-                "alpha": 1,
-                "colorSpace": "srgb",
-                "components": [
-                  0.35,
-                  0.55,
-                  1
-                ]
-              },
-              "position": 1
-            }
-          ],
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/gradient/semantic/surface/brand"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "layer.semantic.modal"
-          ],
-          "domain": "layer",
-          "dtcgType": "number",
-          "id": "layer.component.dialog.popup",
-          "resolvedValue": 1000,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/layer/component/dialog/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "layer",
-          "dtcgType": "number",
-          "id": "layer.primitive.overlay",
-          "resolvedValue": 1000,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/layer/primitive/overlay"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "layer.primitive.overlay"
-          ],
-          "domain": "layer",
-          "dtcgType": "number",
-          "id": "layer.semantic.modal",
-          "resolvedValue": 1000,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/layer/semantic/modal"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "letterSpacing",
-          "dtcgType": "dimension",
-          "id": "letterSpacing.primitive.normal",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 0
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/letterSpacing/primitive/normal"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "letterSpacing.primitive.normal"
-          ],
-          "domain": "letterSpacing",
-          "dtcgType": "dimension",
-          "id": "letterSpacing.semantic.body",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 0
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/letterSpacing/semantic/body"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "lineHeight",
-          "dtcgType": "number",
-          "id": "lineHeight.primitive.comfortable",
-          "resolvedValue": 1.5,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/lineHeight/primitive/comfortable"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "lineHeight.primitive.comfortable"
-          ],
-          "domain": "lineHeight",
-          "dtcgType": "number",
-          "id": "lineHeight.semantic.body",
-          "resolvedValue": 1.5,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/lineHeight/semantic/body"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "opacity.semantic.backdrop"
-          ],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.component.dialog.backdrop",
-          "resolvedValue": 0.56,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/component/dialog/backdrop"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.primitive.backdrop",
-          "resolvedValue": 0.56,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/primitive/backdrop"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.primitive.disabled",
-          "resolvedValue": 0.4,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/primitive/disabled"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "opacity.primitive.backdrop"
-          ],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.semantic.backdrop",
-          "resolvedValue": 0.56,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/semantic/backdrop"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "opacity.primitive.disabled"
-          ],
-          "domain": "opacity",
-          "dtcgType": "number",
-          "id": "opacity.semantic.disabled",
-          "resolvedValue": 0.4,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/opacity/semantic/disabled"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "radius.semantic.control"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.component.button.root",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/component/button/root"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "radius.semantic.overlay"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.component.dialog.popup",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/component/dialog/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "radius.semantic.overlay"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.component.select.popup",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/component/select/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.primitive.medium",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "radius.primitive.medium"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.semantic.control",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/semantic/control"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "radius.primitive.medium"
-          ],
-          "domain": "radius",
-          "dtcgType": "dimension",
-          "id": "radius.semantic.overlay",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/radius/semantic/overlay"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "shadow.semantic.overlay"
-          ],
-          "domain": "shadow",
-          "dtcgType": "shadow",
-          "id": "shadow.component.dialog.popup",
-          "resolvedValue": {
-            "blur": {
-              "unit": "px",
-              "value": 12
-            },
-            "color": {
-              "alpha": 0.24,
-              "colorSpace": "srgb",
-              "components": [
-                0,
-                0,
-                0
-              ]
-            },
-            "inset": false,
-            "offsetX": {
-              "unit": "px",
-              "value": 0
-            },
-            "offsetY": {
-              "unit": "px",
-              "value": 4
-            },
-            "spread": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/shadow/component/dialog/popup"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "shadow",
-          "dtcgType": "shadow",
-          "id": "shadow.primitive.raised",
-          "resolvedValue": {
-            "blur": {
-              "unit": "px",
-              "value": 12
-            },
-            "color": {
-              "alpha": 0.24,
-              "colorSpace": "srgb",
-              "components": [
-                0,
-                0,
-                0
-              ]
-            },
-            "inset": false,
-            "offsetX": {
-              "unit": "px",
-              "value": 0
-            },
-            "offsetY": {
-              "unit": "px",
-              "value": 4
-            },
-            "spread": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/shadow/primitive/raised"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "shadow.primitive.raised"
-          ],
-          "domain": "shadow",
-          "dtcgType": "shadow",
-          "id": "shadow.semantic.overlay",
-          "resolvedValue": {
-            "blur": {
-              "unit": "px",
-              "value": 12
-            },
-            "color": {
-              "alpha": 0.24,
-              "colorSpace": "srgb",
-              "components": [
-                0,
-                0,
-                0
-              ]
-            },
-            "inset": false,
-            "offsetX": {
-              "unit": "px",
-              "value": 0
-            },
-            "offsetY": {
-              "unit": "px",
-              "value": 4
-            },
-            "spread": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/shadow/semantic/overlay"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "size.semantic.control.height.md"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.component.button.root.block",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/component/button/root/block"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "size.semantic.overlay.dialog.maxInline"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.component.dialog.popup.maxInline",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 640
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/component/dialog/popup/maxInline"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "size.semantic.control.height.md"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.component.select.trigger.block",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/component/select/trigger/block"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.primitive.control",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/primitive/control"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.primitive.overlay",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 640
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/primitive/overlay"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "size.primitive.control"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.semantic.control.height.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 40
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/semantic/control/height/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "size.primitive.overlay"
-          ],
-          "domain": "size",
-          "dtcgType": "dimension",
-          "id": "size.semantic.overlay.dialog.maxInline",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 640
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/size/semantic/overlay/dialog/maxInline"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "space.semantic.control.inline.md"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.component.button.root.padding.inline.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/component/button/root/padding/inline/md"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "space.semantic.stack.md"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.component.dialog.popup.gap",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/component/dialog/popup/gap"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "space.semantic.controlBlock.md"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.component.select.item.padding.block.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/component/select/item/padding/block/md"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.primitive.medium",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/primitive/medium"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.primitive.small",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/primitive/small"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "space.primitive.medium"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.semantic.control.inline.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/semantic/control/inline/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "space.primitive.small"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.semantic.controlBlock.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 8
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/semantic/controlBlock/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "space.primitive.medium"
-          ],
-          "domain": "space",
-          "dtcgType": "dimension",
-          "id": "space.semantic.stack.md",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 16
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/space/semantic/stack/md"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "strokeStyle",
-          "dtcgType": "strokeStyle",
-          "id": "strokeStyle.primitive.solid",
-          "resolvedValue": "solid",
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeStyle/primitive/solid"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "strokeStyle.primitive.solid"
-          ],
-          "domain": "strokeStyle",
-          "dtcgType": "strokeStyle",
-          "id": "strokeStyle.semantic.control",
-          "resolvedValue": "solid",
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeStyle/semantic/control"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [],
-          "domain": "strokeWidth",
-          "dtcgType": "dimension",
-          "id": "strokeWidth.primitive.icon",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 1.5
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/primitive/icon"
-          },
-          "tier": "primitive"
-        },
-        {
-          "dependencies": [
-            "strokeWidth.primitive.icon"
-          ],
-          "domain": "strokeWidth",
-          "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon",
-          "resolvedValue": {
-            "unit": "px",
-            "value": 1.5
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "transition.semantic.state"
-          ],
-          "domain": "transition",
-          "dtcgType": "transition",
-          "id": "transition.component.button.state",
-          "resolvedValue": {
-            "delay": {
-              "unit": "ms",
-              "value": 0
-            },
-            "duration": {
-              "unit": "ms",
-              "value": 120
-            },
-            "timingFunction": [
-              0.2,
-              0,
-              0,
+              0.913725,
+              0.835294,
               1
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/transition/component/button/state"
-          },
-          "tier": "component"
-        },
-        {
-          "dependencies": [
-            "duration.primitive.fast",
-            "easing.primitive.productive"
-          ],
-          "domain": "transition",
-          "dtcgType": "transition",
-          "id": "transition.primitive.productive",
-          "resolvedValue": {
-            "delay": {
-              "unit": "ms",
-              "value": 0
-            },
-            "duration": {
-              "unit": "ms",
-              "value": 120
-            },
-            "timingFunction": [
-              0.2,
-              0,
-              0,
-              1
-            ]
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/transition/primitive/productive"
+            "pointer": "/color/primitive/purple/200"
           },
           "tier": "primitive"
         },
         {
-          "dependencies": [
-            "transition.primitive.productive"
-          ],
-          "domain": "transition",
-          "dtcgType": "transition",
-          "id": "transition.semantic.state",
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.purple.300",
           "resolvedValue": {
-            "delay": {
-              "unit": "ms",
-              "value": 0
-            },
-            "duration": {
-              "unit": "ms",
-              "value": 120
-            },
-            "timingFunction": [
-              0.2,
-              0,
-              0,
-              1
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.847059,
+              0.705882,
+              0.996078
             ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/transition/semantic/state"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "fontFamily.primitive.sans",
-            "fontSize.primitive.medium",
-            "fontWeight.primitive.medium",
-            "letterSpacing.primitive.normal",
-            "lineHeight.primitive.comfortable"
-          ],
-          "domain": "typography",
-          "dtcgType": "typography",
-          "id": "typography.primitive.body",
-          "resolvedValue": {
-            "fontFamily": [
-              "Inter",
-              "sans-serif"
-            ],
-            "fontSize": {
-              "unit": "px",
-              "value": 16
-            },
-            "fontWeight": 500,
-            "letterSpacing": {
-              "unit": "px",
-              "value": 0
-            },
-            "lineHeight": 1.5
-          },
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/typography/primitive/body"
+            "pointer": "/color/primitive/purple/300"
           },
           "tier": "primitive"
         },
         {
-          "dependencies": [
-            "typography.primitive.body"
-          ],
-          "domain": "typography",
-          "dtcgType": "typography",
-          "id": "typography.semantic.body.md",
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.purple.400",
           "resolvedValue": {
-            "fontFamily": [
-              "Inter",
-              "sans-serif"
-            ],
-            "fontSize": {
-              "unit": "px",
-              "value": 16
-            },
-            "fontWeight": 500,
-            "letterSpacing": {
-              "unit": "px",
-              "value": 0
-            },
-            "lineHeight": 1.5
+            "alpha": 1,
+            "colorSpace": "srgb",
+            "components": [
+              0.752941,
+              0.517647,
+              0.988235
+            ]
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/typography/semantic/body/md"
+            "pointer": "/color/primitive/purple/400"
           },
-          "tier": "semantic"
-        }
-      ]
-    }
-  ],
-  "profileVersion": "0.1.0",
-  "schemaVersion": "0.2",
-  "sourceDigest": "sha256:3f51f47c11cfdefae7c8cc76fc2986a98ab0f373e2ece0d69d2826e00a7f1137"
-}
+          "tier": "primitive"
+        },
+        {
+          "dependencies": [],
+          "domain": "color",
+          "dtcgType": "color",
+          "id": "color.primitive.purple.50",
+          "resolvedValue": {
+            "alpha": 1,
+ 

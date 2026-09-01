@@ -729,6 +729,12 @@ aspectRatio
 Composite Tokens may be composed from compatible atomic Tokens rather than
 requiring an unrelated primitive scale.
 
+Primitive paths name palette coordinates, numeric steps, ratios, or value
+shapes. Product-purpose segments such as `disabled`, `control`, `focus`,
+`overlay`, and `backdrop` are forbidden in this tier. The normative
+Foundation Token Policy requires complete registered color shades, a 4px
+spacing rhythm, rem-based responsive/type/layout scales, and px hairlines.
+
 ### Semantic
 
 At minimum, fixtures establish roles for:
@@ -746,6 +752,12 @@ fast / normal / slow durations and productive/expressive easings
 base / sticky / dropdown / overlay / modal / toast layers
 viewport and container breakpoints
 ```
+
+Heading typography covers h1 through h6. Every heading, body, label, and code
+family exposes regular, medium, semibold, and bold composites. Body uses 16px
+as its base and retains a 13px minimum style. Light and dark color roles are
+validated as resolved foreground/background pairs rather than accepted from
+palette presence alone.
 
 ### Component
 

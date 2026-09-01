@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/foundation-policy/0.1",
+  "title": "Axiom Token Foundation Policy",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "rootFontSizePx",
+    "authoredDimensionUnits",
+    "derivedCssUnits",
+    "forbiddenPrimitiveSegments",
+    "colorScales",
+    "spaceScale",
+    "dimensionDomainUnits",
+    "typography",
+    "contrastPairs"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "rootFontSizePx": { "type": "number", "exclusiveMinimum": 0 },
+    "authoredDimensionUnits": {
+      "type": "array",
+      "const": ["px", "rem"]
+    },
+    "derivedCssUnits": {
+      "type": "array",
+      "const": ["em"]
+    },
+    "forbiddenPrimitiveSegments": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }
+    },
+    "colorScales": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/colorScale" }
+    },
+    "spaceScale": {
+      "type": "object",
+      "required": ["baseUnitPx", "steps"],
+      "properties": {
+        "baseUnitPx": { "enum": [2, 4] },
+        "steps": {
+          "type": "array",
+          "minItems": 8,
+          "items": { "$ref": "#/$defs/scaleStep" }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "dimensionDomainUnits": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": { "enum": ["px", "rem"] }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": [
+        "bodyBasePx",
+        "bodyMinimumPx",
+        "fontSizePx",
+        "weightVariants",
+        "families"
+      ],
+      "properties": {
+        "bodyBasePx": { "enum": [15, 16] },
+        "bodyMinimumPx": { "type": "number", "minimum": 13 },
+        "fontSizePx": {
+          "type": "array",
+          "minItems": 10,
+          "uniqueItems": true,
+          "items": { "type": "number", "minimum": 13 }
+        },
+        "weightVariants": {
+          "type": "object",
+          "minProperties": 4,
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "families": {
+          "type": "array",
+          "minItems": 10,
+          "items": { "$ref": "#/$defs/typographyFamily" }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "contrastPairs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/contrastPair" }
+    }
+  },
+  "$defs": {
+    "colorScale": {
+      "type": "object",
+      "required": ["palette", "shades"],
+      "properties": {
+        "palette": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "shades": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "type": "integer", "minimum": 0, "maximum": 1000 }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "scaleStep": {
+      "type": "object",
+      "required": ["name", "valuePx"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[0-9]+$" },
+        "valuePx": { "type": "number", "minimum": 0 }
+      },
+      "unevaluatedProperties": false
+    },
+    "typographyFamily": {
+      "type": "object",
+      "required": ["path", "sizePx"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^[a-z][A-Za-z0-9]*(?:\\.[a-z0-9][A-Za-z0-9]*)+$"
+        },
+        "sizePx": { "type": "number", "minimum": 13 }
+      },
+      "unevaluatedProperties": false
+    },
+    "contrastPair": {
+      "type": "object",
+      "required": ["foreground", "background", "minimumRatio"],
+      "properties": {
+        "foreground": { "type": "string", "pattern": "^color\\.semantic\\." },
+        "background": { "type": "string", "pattern": "^color\\.semantic\\." },
+        "minimumRatio": { "type": "number", "minimum": 1, "maximum": 21 }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

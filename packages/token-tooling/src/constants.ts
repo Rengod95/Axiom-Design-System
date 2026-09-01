@@ -8,9 +8,11 @@ export const ROOT_JSON_POINTER_PREFIX = "#";
 export const ROOT_JSON_POINTER_PREFIX_LENGTH = ROOT_JSON_POINTER_PREFIX.length;
 export const EMPTY_JSON_POINTER = "";
 export const PARSER_SKIP_LINT = true;
-export const TOKEN_FOUNDATION_GENERATOR_VERSION = "0.1.0" as const;
+export const TOKEN_FOUNDATION_GENERATOR_VERSION = "0.2.0" as const;
 export const TOKEN_GENERATED_SCHEMA_VERSION = "0.2" as const;
 export const TOKEN_SOURCE_PROFILE_PATH = "spec/token/token-source-profile.json" as const;
+export const TOKEN_FOUNDATION_POLICY_PATH =
+  "spec/token/foundation-token-policy.json" as const;
 export const TOKEN_DOMAIN_REGISTRY_PATH = "spec/token/token-domain-registry.json" as const;
 export const TOKEN_MODIFIER_REGISTRY_PATH =
   "spec/token/resolver-modifier-registry.json" as const;
@@ -39,6 +41,19 @@ export const PARSER_DIAGNOSTIC_CODE = {
   UNSUPPORTED_DTCG_UNIT: "AXT1203",
   INVALID_DTCG_VALUE: "AXT1204",
 } as const;
+
+export const FOUNDATION_POLICY_DIAGNOSTIC_CODE = {
+  MISSING_REQUIRED_TOKEN: "AXF1001",
+  SEMANTIC_PRIMITIVE_NAME: "AXF1002",
+  INVALID_COLOR_SCALE: "AXF1101",
+  INVALID_SPACE_SCALE: "AXF1102",
+  INVALID_DIMENSION_UNIT: "AXF1103",
+  INVALID_TYPOGRAPHY_SCALE: "AXF1104",
+  INVALID_CONTRAST: "AXF1201",
+} as const;
+
+export const FOUNDATION_POLICY_ERROR_MESSAGE =
+  "Axiom Token Foundation policy validation failed.";
 
 export const PARSER_ERROR_MESSAGE = {
   MISSING_SOURCE: "At least one Token source is required.",

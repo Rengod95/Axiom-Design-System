@@ -21,10 +21,10 @@ tier graph and context resolver
 resolved manifest + generated Domain/tier/path types
 ```
 
-The normative source corpus contains 84 Tokens across all 24 registered
-Domains. The light and dark contexts each resolve to the same complete 84-Token
+The normative source corpus contains 578 Tokens across all 24 registered
+Domains. The light and dark contexts each resolve to the same complete 578-Token
 identity set. The current source digest is
-`sha256:3f51f47c11cfdefae7c8cc76fc2986a98ab0f373e2ece0d69d2826e00a7f1137`.
+`sha256:78c73387b93c2d20bae8bc5504d990394bed115d5e9776a8830d53323dfaaeca`.
 
 ## Authored and generated artifacts
 
@@ -36,6 +36,7 @@ identity set. The current source digest is
 | `spec/token/foundation-resolved-token-manifest.json` | Byte-stable light/dark resolved result |
 | `packages/tokens/src/generated/token-paths.ts` | Generated `TokenDomain`, `TokenTier`, and Domain-indexed `TokenPath` unions |
 | `spec/token/composite-token-projector-registry.json` | Border, gradient, shadow, transition, and typography projector descriptors |
+| `spec/token/foundation-token-policy.json` | Primitive naming, palettes, 4px spacing, units, typography coverage, and contrast |
 
 Every generated artifact records its input digest, generator version, and
 schema version. `pnpm tokens:check` regenerates the expected bytes in memory and
@@ -54,6 +55,8 @@ write path.
   grammar validation.
 - Generated contracts contain no renderer, React, Tailwind, or parser-owned
   object.
+- DTCG source remains restricted to `px` and `rem`; `em` is reserved as a
+  derived CSS/Condition output unit.
 
 ## Acceptance evidence
 
@@ -64,6 +67,9 @@ write path.
 - generated output is independent of caller source ordering and physical clone
   location because canonical source labels are fixed;
 - `@axiom/tokens` remains renderer-independent.
+- every registered typography family has four weight variants and every
+  required semantic color pair passes its context-specific contrast threshold.
 
-Repository-wide results at closeout: 22 schemas, 10 registries, 14 positive
-schema fixtures, 23 negative schema fixtures, and 55 unit/integration tests.
+Repository-wide results after scale hardening: 23 schemas, 11 registries, 15
+positive schema fixtures, 24 negative schema fixtures, and 59
+unit/integration tests.

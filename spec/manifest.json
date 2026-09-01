@@ -59,6 +59,10 @@
       "path": "token/token-domain-registry.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/token/foundation-policy/0.1",
+      "path": "token/foundation-token-policy.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/token/id/0.1",
       "path": "token/token-id.schema.json"
     },
@@ -127,6 +131,11 @@
       "path": "token/foundation-resolved-token-manifest.json",
       "schema": "https://axiom.dev/schemas/token/resolved-manifest/0.2",
       "semanticValidator": "resolved-token-manifest"
+    },
+    {
+      "id": "foundation-token-policy",
+      "path": "token/foundation-token-policy.json",
+      "schema": "https://axiom.dev/schemas/token/foundation-policy/0.1"
     },
     {
       "id": "resolver-modifier-registry",
@@ -221,6 +230,12 @@
       "positiveDirectory": "fixtures/resolved-token-manifest/positive",
       "negativeDirectory": "fixtures/resolved-token-manifest/negative",
       "semanticValidator": "resolved-token-manifest"
+    },
+    {
+      "id": "foundation-token-policy",
+      "schema": "https://axiom.dev/schemas/token/foundation-policy/0.1",
+      "positiveDirectory": "fixtures/foundation-token-policy/positive",
+      "negativeDirectory": "fixtures/foundation-token-policy/negative"
     },
     {
       "id": "token-context-override",

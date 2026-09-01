@@ -277,6 +277,8 @@ The executable checkpoint is recorded in
 records the resolver checkpoint. The final generated-artifact and composite
 descriptor evidence is recorded in
 [P2 Token Foundation Closeout](../implementation/2026-09-01-p2-token-foundation-closeout.md).
+The production scale audit and corrective expansion are recorded in
+[Token Foundation Scale Hardening](../implementation/2026-09-01-token-foundation-scale-hardening.md).
 
 ### P2.1 Parser port
 
@@ -298,6 +300,8 @@ descriptor evidence is recorded in
 - [done] enforce non-negative Primitive spacing while reserving governed negation for
   margin/inset use sites;
 - [done] generate `TokenDomain`, `TokenTier`, and Token path types.
+- [done] enforce the machine-readable color, space, unit, typography, primitive
+  naming, and resolved contrast policy.
 
 ### P2.3 Tier graph
 
