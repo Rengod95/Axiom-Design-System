@@ -979,7 +979,7 @@ Exact first sequence:
 16. [done] Add the Appearance IR schema (N15).
 17. [done] Add the Motion IR schema (N16).
 18. [done, ADR-0005] Add Behavioral Criteria Source/Profile schemas and synthetic structural fixtures (N17); N32 owns current provider data.
-19. [next] Generate/reference the combined TypeScript contract surface (N18).
+19. [done] Generate/reference the combined TypeScript contract surface (N18).
 20. Implement the Recipe Kernel port and structural conformance suite (N19).
 21. Implement the CSS-aware defineRecipe SDK (N20).
 22. Integrate the existing profile-level Token validators into declarations (N21).

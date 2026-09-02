@@ -1,7 +1,10 @@
 {
   "files": [],
   "references": [
+    { "path": "./packages/behavior-contracts" },
     { "path": "./packages/css-property-profile" },
+    { "path": "./packages/condition-registry" },
+    { "path": "./packages/motion-schema" },
     { "path": "./packages/spec-tooling" },
     { "path": "./packages/token-tooling" },
     { "path": "./packages/tokens" }
