@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-03 — CSS Appearance Profile & Property Policy
-### Version 0.2.2
+### Version 0.3.1
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1 \
 **Decision basis:** [ADR-0003](../adr/0003-recipe-authoring-kernel-and-third-party-boundary.md) \
 **Scope:** Pinned CSS metadata → effective property registry → Recipe authoring → normalized Appearance IR
 
@@ -899,6 +899,22 @@ Domain compatibility, projector, negation, serializer, or composite expansion.
 The N20 boundary therefore MUST NOT call Token-binding validation merely
 because an authored declaration contains a Token Reference.
 
+N21 configures authoring with complete resolved Token, Domain, projector,
+canonical-digest, serializer, projector-port, exact sparse policy and Token
+Binding Catalog inputs, and exact Effective CSS Property Registry authority
+inputs. It verifies every authority, including canonical digests of the
+complete effective registry and the exact `{ policy, bindings }` source rather
+than only profile metadata. The latter MUST equal the Effective Registry's
+`profile.policySourceDigest`; `conditionOnlyDomains` is derived only from that
+authenticated Catalog and is never accepted as a free configuration input.
+N21 validates Token identity in every context, validates synthetic and
+context-serialized templates, and returns a frozen source-ordered binding
+receipt. Projector outputs re-enter authoring, security, value-kind, and grammar
+validation. `profileInputDigest` remains `webrefInputDigest`; the receipt also
+carries `effectivePropertyRegistry` and `propertyPolicySource` so N22 cannot
+apply a binding receipt under mutated property or condition-only policy. N22
+consumes the receipt without re-deciding N21 semantics.
+
 ### P6 — Recipe
 
 ```text
@@ -958,6 +974,14 @@ AXA1004  canonical State value does not match its registered value shape
 AXA1005  unknown registered Condition in CSS Recipe authoring
 AXA1006  CSS declaration value kind not permitted by effective property policy
 AXA1007  malformed CSS Recipe declaration value or ordered declaration entry
+AXA1101  N21 authority digest mismatch
+AXA1102  unresolved Token in a required context
+AXA1103  resolved Token context identity mismatch
+AXA1104  Token Domain or DTCG type mismatch
+AXA1105  Token serializer identity failure
+AXA1106  governed Token negation failure
+AXA1107  Token projector identity or parameter failure
+AXA1108  Token projector output revalidation failure
 ```
 
 Every diagnostic includes property, Recipe, Slot, stage, source location, and

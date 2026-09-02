@@ -10,9 +10,13 @@ import {
   CSS_RECIPE_DIAGNOSTIC_SEVERITY,
   CSS_RECIPE_FALLBACK_SOURCE,
   CSS_RECIPE_NEGATED_TOKEN_KIND,
+  CSS_RECIPE_TOKEN_PROJECTOR_KIND,
 } from "./constants.js";
 import {
   CSSRecipeAuthoringError,
+  type CSSProjectorOptions,
+  type CSSProjectorValue,
+  type CSSTransitionProjectorOptions,
 } from "./contracts.js";
 
 /** Preserves literal Token interpolations while remaining assignable to the schema-owned template. */
@@ -39,6 +43,24 @@ export const negateToken = <const TTokenReference extends TokenReference>(
   readonly kind: typeof CSS_RECIPE_NEGATED_TOKEN_KIND;
   readonly token: TTokenReference;
 }> => ({ kind: CSS_RECIPE_NEGATED_TOKEN_KIND, token: tokenReference });
+
+/** Preserves an explicit composite Token application for N21 policy and projector validation. */
+export const projectToken = <
+  const TTokenReference extends TokenReference,
+  const TOptions extends Readonly<{ readonly projector: string }>,
+>(
+  tokenReference: TTokenReference,
+  options: TOptions & (
+    TOptions["projector"] extends "css.transition-projector.v1"
+      ? CSSTransitionProjectorOptions
+      : CSSProjectorOptions<TOptions["projector"]>
+  ) & Record<Exclude<keyof TOptions, keyof CSSProjectorOptions<TOptions["projector"]> | keyof CSSTransitionProjectorOptions>, never>,
+): Readonly<CSSProjectorValue & { readonly token: TTokenReference }> => ({
+  kind: CSS_RECIPE_TOKEN_PROJECTOR_KIND,
+  token: tokenReference,
+  projector: options.projector,
+  ...(options.parameters === undefined ? {} : { parameters: options.parameters }),
+});
 
 /** Marks a literal-preserving string as explicit CSS for value-kind and grammar validation. */
 export const css = <const TValue extends string>(

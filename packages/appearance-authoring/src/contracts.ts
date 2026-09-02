@@ -2,6 +2,8 @@ import type {
   CSSAuthoringProperty,
   CSSCanonicalProperty,
   EffectiveCSSPropertyRegistry,
+  SparsePropertyPolicySource,
+  TokenBindingCatalog,
 } from "@axiom/css-property-profile";
 import type {
   CanonicalStateId,
@@ -19,6 +21,14 @@ import type {
   CSSDeclarationValue,
   TokenReference,
 } from "@axiom/motion-schema";
+import type { TokenJsonValue } from "@axiom/tokens";
+import type {
+  CanonicalDigestPort,
+  CompositeTokenProjectorRegistry,
+  ResolvedTokenEntry,
+  ResolvedTokenManifest,
+  TokenDomainRegistry,
+} from "@axiom/tokens";
 
 import {
   CSS_RECIPE_DIAGNOSTIC_CODE,
@@ -33,8 +43,143 @@ export interface NegatedTokenReference {
   readonly token: TokenReference;
 }
 
+/** Selects a registered composite projector without projector-specific parameters. */
+export interface CSSProjectorOptions<TProjector extends string = string> {
+  readonly projector: TProjector;
+  readonly parameters?: never;
+}
+
+/** Selects the transition projector with its required canonical transitioned-property list. */
+export interface CSSTransitionProjectorOptions {
+  readonly projector: "css.transition-projector.v1";
+  readonly parameters: Readonly<{
+    readonly properties: readonly [CSSCanonicalProperty, ...CSSCanonicalProperty[]];
+  }>;
+}
+
+/** Restricts the current transition projector to its required parameter shape. */
+export type CSSProjectorOptionsFor<TProjector extends string> =
+  TProjector extends "css.transition-projector.v1"
+    ? CSSTransitionProjectorOptions
+    : CSSProjectorOptions<TProjector>;
+
+/** Preserves one closed composite Token application until N21 validates policy and output fields. */
+export interface CSSProjectorValue {
+  readonly kind: "token-projector";
+  readonly token: TokenReference;
+  readonly projector: string;
+  readonly parameters?: Readonly<Record<string, TokenJsonValue>>;
+}
+
+/** Serializes one resolved Token value solely for N21 compatibility validation. */
+export interface TokenCssSerializer {
+  readonly id: string;
+  /** Serializes one direct or template Token value for compatibility validation only. */
+  serialize(entry: ResolvedTokenEntry): string;
+}
+
+/** Names whether a projected CSS literal derives from a Token field or transition parameters. */
+export type ProjectedTokenDeclarationSource = "token" | "parameters";
+
+/** Returns one context-specific CSS declaration from a registered pure projector port. */
+export interface ProjectedTokenDeclaration {
+  readonly property: string;
+  readonly value: string;
+  readonly source: ProjectedTokenDeclarationSource;
+  readonly field: string;
+}
+
+/** Runs one registered composite projector without I/O, global state, or CSS emission. */
+export interface TokenProjector {
+  readonly id: string;
+  /** Produces ordered, context-local declarations without I/O or global state. */
+  project(
+    entry: ResolvedTokenEntry,
+    parameters: Readonly<Record<string, TokenJsonValue>> | undefined,
+  ): readonly ProjectedTokenDeclaration[];
+}
+
+/** Carries the exact CSS policy inputs whose canonical digest generated the Effective Registry. */
+export interface CSSPropertyPolicySourceAuthority {
+  readonly policy: SparsePropertyPolicySource;
+  readonly bindings: TokenBindingCatalog;
+}
+
+/** Pins the canonical identities that N21 verifies before processing declarations. */
+export interface TokenBindingAuthorityDigests {
+  readonly effectivePropertyRegistry: string;
+  readonly propertyPolicySource: string;
+  readonly resolvedTokenManifest: string;
+  readonly tokenDomainRegistry: string;
+  readonly projectorRegistry: string;
+  readonly canonicalStateRegistry: string;
+  readonly conditionRegistry: string;
+}
+
+/** Supplies every explicit authority and pure execution port needed for N21 Token validation. */
+export interface TokenBindingValidationConfig {
+  readonly resolvedTokenManifest: ResolvedTokenManifest;
+  readonly tokenDomainRegistry: TokenDomainRegistry;
+  readonly projectorRegistry: CompositeTokenProjectorRegistry;
+  readonly propertyPolicySource: CSSPropertyPolicySourceAuthority;
+  readonly authorityDigests: TokenBindingAuthorityDigests;
+  readonly canonicalDigest: CanonicalDigestPort;
+  readonly serializers: readonly TokenCssSerializer[];
+  readonly projectors: readonly TokenProjector[];
+}
+
+/** Identifies an authored declaration without claiming a normalized N15 declaration origin. */
+export interface TokenBindingDeclarationPath {
+  readonly recipeId: string;
+  readonly slot: string;
+  readonly stage: "base" | "variant" | "state" | "compound" | "condition";
+  readonly property: string;
+  readonly source: string;
+  readonly pointer: string;
+  readonly declarationIndex: number;
+}
+
+/** Describes one N21-approved projector field for later N22 lowering. */
+export interface ProjectedTokenBlueprint {
+  readonly property: string;
+  readonly source: ProjectedTokenDeclarationSource;
+  readonly field: string;
+  readonly value: CSSDeclarationValue;
+}
+
+/** Captures the immutable semantic evidence for one Token-bearing declaration. */
+export interface ValidatedTokenEvidence {
+  readonly tokenId: string;
+  readonly domain: string;
+  readonly dtcgType: string;
+  readonly serializerId: string;
+}
+
+/** Captures the immutable semantic evidence for one Token-bearing declaration. */
+export interface ValidatedTokenBinding {
+  readonly path: TokenBindingDeclarationPath;
+  readonly mode: "direct" | "template" | "negated-template" | "projector";
+  readonly tokens: readonly ValidatedTokenEvidence[];
+  readonly projectorId?: string;
+  readonly projectorVersion?: string;
+  readonly projectedDeclarations?: readonly ProjectedTokenBlueprint[];
+}
+
+/** Records the exact authority identities behind the source-ordered N21 binding report. */
+export interface TokenBindingAuthorityReceipt extends TokenBindingAuthorityDigests {
+  readonly profileInputDigest: string;
+  readonly manifestSourceDigest: string;
+  readonly contexts: readonly Readonly<Record<string, string>>[];
+}
+
+/** Gives N22 a detached, deterministic Token semantic result without exposing Appearance IR. */
+export interface TokenBindingReport {
+  readonly authority: TokenBindingAuthorityReceipt;
+  readonly bindings: readonly ValidatedTokenBinding[];
+}
+
 /** Accepts raw CSS, a schema-shaped declaration value, or deferred Token-negation intent. */
-export type CSSAuthoringValue = string | CSSDeclarationValue | NegatedTokenReference;
+export type CSSAuthoringValue = string | CSSDeclarationValue | NegatedTokenReference | CSSProjectorValue;
 
 /** Represents the generated camel-case property form accepted in ordinary Recipe styles. */
 export type CSSAuthoringStyleObject = Partial<Readonly<Record<CSSAuthoringProperty, CSSAuthoringValue>>>;
@@ -81,6 +226,7 @@ export interface CSSRecipeAuthoringInput {
   readonly canonicalStateRegistry: CanonicalStateRegistry;
   readonly conditionRegistry: ConditionRegistry;
   readonly enabledExperimentalProperties?: readonly string[];
+  readonly tokenValidation: TokenBindingValidationConfig;
 }
 
 /** Adds CSS provenance context to a stable property or authoring diagnostic. */
@@ -94,7 +240,10 @@ export interface CSSRecipeDiagnostic {
   readonly slot?: string;
   readonly stage?: "base" | "variant" | "state" | "compound" | "condition";
   readonly property?: string;
+  readonly pointer?: string;
+  readonly declarationIndex?: number;
   readonly target?: string;
+  readonly tokenId?: string;
   readonly provenance?: EffectiveCSSPropertyRegistry["properties"][number]["policy"]["provenance"];
 }
 
@@ -112,7 +261,9 @@ export class CSSRecipeAuthoringError extends Error {
 
 /** Preserves the N19 definition/snapshot result without claiming normalized Appearance IR. */
 export type DefinedCSSRecipe<TDefinition extends CSSRecipeDefinition> =
-  DefinedRecipe<CSSAuthoringStyleFragment, TDefinition>;
+  DefinedRecipe<CSSAuthoringStyleFragment, TDefinition> & Readonly<{
+    readonly tokenBindingReport: TokenBindingReport;
+  }>;
 
 /** Provides the configured CSS-aware `defineRecipe` operation. */
 export interface CSSRecipeAuthoringPort {

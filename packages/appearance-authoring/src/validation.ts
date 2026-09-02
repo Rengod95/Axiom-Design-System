@@ -12,6 +12,7 @@ import {
   CSS_RECIPE_DIAGNOSTIC_SEVERITY,
   CSS_RECIPE_FALLBACK_SOURCE,
   CSS_RECIPE_NEGATED_TOKEN_KIND,
+  CSS_RECIPE_TOKEN_PROJECTOR_KIND,
 } from "./constants.js";
 import {
   CSSRecipeAuthoringError,
@@ -97,10 +98,10 @@ const resolveProperty = (
 };
 
 /** Returns the value kind governed by a structural CSS declaration value. */
-const valueKind = (value: unknown): "css" | "token" | "css-template" | "negated-token" | undefined => {
+const valueKind = (value: unknown): "css" | "token" | "css-template" | "negated-token" | "token-projector" | undefined => {
   if (typeof value === "string") return "css";
   if (!isRecord(value) || typeof value["kind"] !== "string") return undefined;
-  return value["kind"] === "css" || value["kind"] === "token" || value["kind"] === "css-template" || value["kind"] === CSS_RECIPE_NEGATED_TOKEN_KIND
+  return value["kind"] === "css" || value["kind"] === "token" || value["kind"] === "css-template" || value["kind"] === CSS_RECIPE_NEGATED_TOKEN_KIND || value["kind"] === CSS_RECIPE_TOKEN_PROJECTOR_KIND
     ? value["kind"]
     : undefined;
 };
@@ -135,6 +136,15 @@ const validateValueShape = (
       "A negated Token requires only a closed non-empty Token Reference.", source, context,
     );
   }
+  if (kind === CSS_RECIPE_TOKEN_PROJECTOR_KIND) {
+    const tokenReference = value["token"];
+    const allowedProjectorKeys = value["parameters"] === undefined ? "kind,projector,token" : "kind,parameters,projector,token";
+    const parameters = value["parameters"];
+    if (keys.join(",") !== allowedProjectorKeys || !isRecord(tokenReference) || Object.keys(tokenReference).sort().join(",") !== "kind,path" || tokenReference["kind"] !== "token" || typeof tokenReference["path"] !== "string" || tokenReference["path"].length === 0 || typeof value["projector"] !== "string" || parameters !== undefined && !isRecord(parameters)) return diagnostic(
+      CSS_RECIPE_DIAGNOSTIC_CODE.INVALID_DECLARATION_VALUE,
+      "A Token projector requires a closed non-empty Token Reference and projector identity.", source, context,
+    );
+  }
   if (kind === "css-template") {
     if (keys.join(",") !== "kind,parts" || !Array.isArray(value["parts"]) || value["parts"].length === 0) return diagnostic(
       CSS_RECIPE_DIAGNOSTIC_CODE.INVALID_DECLARATION_VALUE,
@@ -165,7 +175,7 @@ const validateDeclaration = (
   const kind = valueKind(value);
   const shapeError = validateValueShape(value, kind, source, { ...context, property: resolved.canonicalName });
   if (shapeError !== undefined) return [shapeError];
-  const policyValueKind = kind === CSS_RECIPE_NEGATED_TOKEN_KIND ? "token" : kind;
+  const policyValueKind = kind === CSS_RECIPE_NEGATED_TOKEN_KIND || kind === CSS_RECIPE_TOKEN_PROJECTOR_KIND ? "token" : kind;
   if (!resolved.property.policy.valueKinds.includes(policyValueKind!)) return [diagnostic(
     CSS_RECIPE_DIAGNOSTIC_CODE.VALUE_KIND_NOT_ALLOWED,
     `CSS value kind '${policyValueKind}' is not allowed for '${resolved.canonicalName}'.`,

@@ -20,18 +20,19 @@ const modifiers: ResolverModifierRegistry = {
 };
 
 const domains: readonly TokenDomainDefinition[] = [
-  { id: "border", root: "border", allowedDTCGTypes: ["border"] },
-  { id: "borderWidth", root: "borderWidth", allowedDTCGTypes: ["dimension"] },
-  { id: "color", root: "color", allowedDTCGTypes: ["color"] },
-  { id: "mixed", root: "mixed", allowedDTCGTypes: ["color", "number"] },
+  { id: "border", root: "border", allowedDTCGTypes: ["border"], cssSerializers: ["css.border-projector.v1"] },
+  { id: "borderWidth", root: "borderWidth", allowedDTCGTypes: ["dimension"], cssSerializers: ["css.dimension.v1"] },
+  { id: "color", root: "color", allowedDTCGTypes: ["color"], cssSerializers: ["css.color.v1"] },
+  { id: "mixed", root: "mixed", allowedDTCGTypes: ["color", "number"], cssSerializers: ["css.number.v1"] },
   {
     id: "opacity",
     root: "opacity",
     allowedDTCGTypes: ["number"],
     constraints: [{ kind: "numberRange", minimum: 0, maximum: 1 }],
+    cssSerializers: ["css.number.v1"],
   },
-  { id: "size", root: "size", allowedDTCGTypes: ["dimension"] },
-  { id: "space", root: "space", allowedDTCGTypes: ["dimension"] },
+  { id: "size", root: "size", allowedDTCGTypes: ["dimension"], cssSerializers: ["css.dimension.v1"] },
+  { id: "space", root: "space", allowedDTCGTypes: ["dimension"], cssSerializers: ["css.dimension.v1"] },
 ];
 
 const white = {

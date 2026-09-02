@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-01 — Token Foundation & Domain Contracts
-### Version 0.4.0
+### Version 0.4.1
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3.1 \
@@ -654,6 +654,12 @@ interface CompositeTokenProjectorDescriptor {
 
 Projector output MUST pass the same CSS Property Policy and declaration
 validation as directly authored declarations.
+
+N21 receives resolved Token, Domain, projector, digest, serializer, and
+projector-port inputs explicitly. `projectToken(token(...), { projector,
+parameters? })` is authoring-only; only `css.transition-projector.v1` accepts
+the exact non-empty unique canonical property list. N21 records validated
+ordered projector blueprints and N22 alone materializes N15 origins.
 
 ---
 

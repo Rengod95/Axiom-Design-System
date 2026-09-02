@@ -23,6 +23,7 @@ const failure = (
   },
 ];
 
+/** Validates one canonical property against profile-owned Token binding policy only. */
 export const validateTokenBinding = (
   registry: EffectiveCSSPropertyRegistry,
   input: {

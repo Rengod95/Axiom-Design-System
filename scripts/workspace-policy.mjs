@@ -14,6 +14,7 @@ export const PACKAGE_RUNTIME_DEPENDENCIES = {
     "@axiom/css-property-profile",
     "@axiom/motion-schema",
     "@axiom/recipe-kernel",
+    "@axiom/tokens",
   ],
   "behavior-contracts": [],
   "css-property-profile": ["@webref/css", "css-tree"],

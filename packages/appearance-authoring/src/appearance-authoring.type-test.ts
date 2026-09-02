@@ -3,6 +3,7 @@ import {
   css,
   cssTemplate,
   negateToken,
+  projectToken,
   token,
 } from "./index.js";
 
@@ -49,6 +50,7 @@ const authoring = createCSSRecipeAuthoring({
   propertyRegistry,
   canonicalStateRegistry,
   conditionRegistry,
+  tokenValidation: {} as never,
 });
 
 authoring.defineRecipe({
@@ -75,6 +77,21 @@ void literalTokenPath;
 void literalCSSValue;
 void literalNegatedTokenPath;
 void literalTemplateTokenPath;
+
+projectToken(token("shadow.semantic.raised"), { projector: "css.shadow.v1" });
+projectToken(token("transition.semantic.fast"), {
+  projector: "css.transition-projector.v1",
+  parameters: { properties: ["color"] },
+});
+
+// @ts-expect-error The transition projector requires its explicit property list.
+projectToken(token("transition.semantic.fast"), { projector: "css.transition-projector.v1" });
+
+// @ts-expect-error Non-transition projectors do not accept parameters.
+projectToken(token("shadow.semantic.raised"), { projector: "css.shadow.v1", parameters: { properties: ["color"] } });
+
+// @ts-expect-error Projector options are an authoring-only closed object.
+projectToken(token("shadow.semantic.raised"), { projector: "css.shadow.v1", extra: true });
 
 authoring.defineRecipe({
   id: "button",
