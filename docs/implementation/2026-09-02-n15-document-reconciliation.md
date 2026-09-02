@@ -26,9 +26,9 @@ not become a higher authority. N16 remains the next implementation item.
 - SSOT revision versions, schema compatibility identities, source/profile
   versions, and generator provenance are no longer treated as one version
   number.
-- React Aria Components 1.20.0 is a reviewed N17 candidate, not a claimed
-  lockfile baseline. N17 must pin packages and generate the exact source
-  manifest before the criteria profile is executable.
+- React Aria Components 1.20.0 is a reviewed candidate, not a claimed
+  lockfile baseline. ADR-0005 assigns N32 package pinning and exact source
+  manifest generation before criteria profiles become executable.
 - The active plan and architecture map record the N15 inventory: 33 schemas,
   14 registries, 23 fixture suites, 26 positive fixtures, and 57 negative
   fixtures.

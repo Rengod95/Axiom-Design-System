@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-02 — Compiler Contracts, Readiness & Governance
-### Version 0.4.0
+### Version 0.4.1
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.2 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.3 \
 **Purpose:** Compiler/backend boundaries, diagnostics, release gates, and implementation authority
 
 ---
@@ -626,7 +626,7 @@ release package dry run
 
 ## 13. Normative Implementation Order
 
-The repository has completed N0–N15. N16 is the next implementation boundary;
+The repository has completed N0–N17. N18 is the next implementation boundary;
 listing an item here does not mark it complete.
 
 ```text

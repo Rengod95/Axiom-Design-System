@@ -1,0 +1,1 @@
+{"schemaVersion":"0.1","id":"react-aria.button","component":"button","sourceManifestDigest":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","criteria":[{"id":"BTN-SEM-001","category":"semantics","part":"root","requirement":"Fixture.","evidenceIds":[],"verification":["schema"]}]}

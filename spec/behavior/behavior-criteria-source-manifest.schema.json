@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/behavior/criteria-source-manifest/0.1",
+  "title": "Axiom Behavior Criteria Source Manifest",
+  "type": "object",
+  "required": ["schemaVersion", "provider", "packages", "evidence", "manifestDigest"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "provider": { "const": "react-aria" },
+    "packages": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": { "$ref": "#/$defs/package" }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/evidence" }
+    },
+    "manifestDigest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "package": {
+      "type": "object",
+      "required": ["name", "version", "integrity"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+        "integrity": { "type": "string", "pattern": "^sha512-[A-Za-z0-9+/=]+$" }
+      },
+      "unevaluatedProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["id", "url", "digest", "retrievalPolicy", "artifactPath"],
+      "properties": {
+        "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "url": { "type": "string", "pattern": "^https://" },
+        "digest": { "$ref": "#/$defs/digest" },
+        "retrievalPolicy": { "const": "pinned-artifact" },
+        "artifactPath": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+" }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

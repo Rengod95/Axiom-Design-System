@@ -15,6 +15,11 @@ import { validateConditionExpression } from "./semantic/condition-expression-val
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
 import { createSemanticDiagnosticFactory } from "./semantic/semantic-diagnostic.js";
 import { validateSemanticTokenVocabulary } from "./semantic/semantic-token-vocabulary-validator.js";
+import {
+  validateBehaviorCriteriaSourceManifest,
+  validateBehaviorCriteriaPair,
+  validateComponentBehaviorCriteriaProfile,
+} from "./semantic/behavior-criteria-validator.js";
 import type {
   Diagnostic,
   SemanticValidationContext,
@@ -354,6 +359,15 @@ export const runSemanticValidator = (
   switch (id) {
     case undefined:
       return [];
+    case "behavior-criteria-source-manifest":
+      return validateBehaviorCriteriaSourceManifest(value);
+    case "component-behavior-criteria-profile":
+      return [
+        ...validateComponentBehaviorCriteriaProfile(value),
+        ...(context?.relatedFixtures?.["source"] === undefined
+          ? [{ code: SPEC_DIAGNOSTIC_CODE.BEHAVIOR_SOURCE_MANIFEST_MISSING, severity: "error" as const, phase: "behavior" as const, message: "Component criteria profiles require a related source manifest.", location: { file: "<memory>", pointer: "/" } }]
+          : validateBehaviorCriteriaPair(context.relatedFixtures["source"], value)),
+      ];
     case "canonical-state-registry":
       return validateCanonicalStateRegistry(value);
     case "css-appearance-ir":
