@@ -3,7 +3,7 @@
 ### Version 0.2.3
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-03 v0.2.1, SSOT-04 v0.2.0 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-03 v0.2.2, SSOT-04 v0.2.0 \
 **Decision basis:** [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md) \
 **Scope:** Canonical runtime state, React Aria projection, generated evaluator binding, and v0.1 public component API
 

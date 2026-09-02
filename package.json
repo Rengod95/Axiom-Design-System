@@ -14,7 +14,7 @@
     "contracts:check": "pnpm --filter @axiom/spec-tooling contracts:check",
     "contracts:generate": "pnpm --filter @axiom/spec-tooling contracts:generate",
     "contracts:type-check": "pnpm --filter @axiom/condition-registry type-check && pnpm --filter @axiom/motion-schema type-check && pnpm --filter @axiom/behavior-contracts type-check",
-    "recipe:type-check": "pnpm --filter @axiom/recipe-kernel check:types",
+    "recipe:type-check": "pnpm --filter @axiom/recipe-kernel check:types && pnpm --filter @axiom/appearance-authoring type-check",
     "clean": "tsc -b --clean",
     "profile:check": "node --import tsx packages/css-property-profile/src/cli.ts",
     "profile:generate": "node --import tsx packages/css-property-profile/src/cli.ts --write",

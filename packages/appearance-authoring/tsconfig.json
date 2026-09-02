@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmitOnError": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "src/**/*.test.ts", "src/**/*.type-test.ts"],
+  "references": [
+    { "path": "../condition-registry" },
+    { "path": "../css-property-profile" },
+    { "path": "../motion-schema" },
+    { "path": "../recipe-kernel" }
+  ]
+}

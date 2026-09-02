@@ -3,7 +3,7 @@
 ### Version 0.2.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.1 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.2 \
 **Scope:** Responsive/environment conditions and serializable Motion semantics
 
 ---

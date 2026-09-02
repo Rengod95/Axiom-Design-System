@@ -1,0 +1,26 @@
+{
+  "name": "@axiom/appearance-authoring",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "type-check": "tsc --noEmit --pretty false -p tsconfig.type-test.json"
+  },
+  "dependencies": {
+    "@axiom/condition-registry": "workspace:*",
+    "@axiom/css-property-profile": "workspace:*",
+    "@axiom/motion-schema": "workspace:*",
+    "@axiom/recipe-kernel": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  }
+}
