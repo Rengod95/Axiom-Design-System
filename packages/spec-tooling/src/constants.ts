@@ -198,3 +198,6 @@ export const SPEC_DIAGNOSTIC_CODE = {
 } as const;
 
 export const TOKEN_REFERENCE_PATTERN = /^\{[^{}]+\}$/;
+
+/** Records the deterministic generator protocol used in generated reference-contract provenance. */
+export const CONTRACT_GENERATOR_VERSION = "0.1.0" as const;

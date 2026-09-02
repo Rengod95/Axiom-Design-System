@@ -8,9 +8,12 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "check": "pnpm check:standards && pnpm check:boundaries && tsc -b --pretty false && pnpm tokens:check && pnpm profile:check && pnpm spec:check",
+    "check": "pnpm check:standards && pnpm check:boundaries && tsc -b --pretty false && pnpm contracts:type-check && pnpm tokens:check && pnpm profile:check && pnpm spec:check && pnpm contracts:check",
     "check:standards": "node scripts/check-source-standards.mjs",
     "check:boundaries": "node scripts/check-boundaries.mjs",
+    "contracts:check": "pnpm --filter @axiom/spec-tooling contracts:check",
+    "contracts:generate": "pnpm --filter @axiom/spec-tooling contracts:generate",
+    "contracts:type-check": "pnpm --filter @axiom/condition-registry type-check && pnpm --filter @axiom/motion-schema type-check && pnpm --filter @axiom/behavior-contracts type-check",
     "clean": "tsc -b --clean",
     "profile:check": "node --import tsx packages/css-property-profile/src/cli.ts",
     "profile:generate": "node --import tsx packages/css-property-profile/src/cli.ts --write",

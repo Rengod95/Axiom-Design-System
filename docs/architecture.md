@@ -29,6 +29,11 @@ this rule through ADR-0004 and SSOT-01 v0.4.0.
 
 ```text
 @webref/css + css-tree → @axiom/css-property-profile → @axiom/spec-tooling
+                                                        │
+                                                        └→ generated reference contracts
+                                                           ├→ @axiom/condition-registry
+                                                           ├→ @axiom/motion-schema
+                                                           └→ @axiom/behavior-contracts
 
 @axiom/tokens ← @axiom/token-tooling ← @terrazzo/parser
 ```
@@ -36,7 +41,8 @@ this rule through ADR-0004 and SSOT-01 v0.4.0.
 - `@axiom/spec-tooling` is repository tooling. It consumes the public
   `@axiom/css-property-profile` validation API one-way while validating
   cross-registry State, Condition, resolved Token, Appearance IR, and Motion IR
-  invariants before later contract packages consume their digests.
+  invariants before generating drift-checked reference contracts. Generated
+  packages do not runtime-import `@axiom/spec-tooling`.
 - `@axiom/tokens` is target-neutral. It must not import React, renderer,
   Tailwind, browser, or framework concepts.
 - `@axiom/token-tooling` is an adapter boundary. Parser-specific values stop at
@@ -83,17 +89,19 @@ point and contains exports rather than implementation.
 | Canonical State and Lifecycle identity | SSOT-05, Canonical State Registry | `@axiom/spec-tooling` semantic gate |
 | Environment conditions and responsive thresholds | SSOT-04, Condition Registry | `@axiom/spec-tooling` semantic gate |
 | Ordered declarations and Appearance IR | SSOT-03, declaration/Appearance schemas | `@axiom/spec-tooling` schema and semantic gates |
+| Generated State, Condition, Appearance, Motion, and Behavior references | completed schemas and registries | `@axiom/spec-tooling` generator and the three generated contract packages |
 | Positive and negative behavior | `spec/fixtures/`, `fixtures/` | package tests and spec harness |
 
-## Current N17 checkpoint
+## Current N18 checkpoint
 
-The `spec/manifest.json` inventory after N16 Motion IR and the N17 behavior
-contracts contains 36 schemas, 14 registries, and 26 fixture suites. The
-fixture corpus contains 40 positive and 78 negative files. Token generation
-emits the same 635 Token IDs for light and dark contexts, and the generated
-`TokenPath` union contains the same ID set. Under ADR-0005, N17 adds no provider
-package or current behavior registry; N32 owns pinned React Aria source data
-and N33 owns behavior projection and cross-coverage. N18 is the next boundary.
+The `spec/manifest.json` inventory remains 36 schemas, 14 registries, and 26
+fixture suites with 40 positive and 78 negative files. N18 adds no new schema
+or fixture authority: it adds deterministic, provenance-stamped and
+drift-checked reference types for N12–N17 in three zero-runtime-dependency
+packages. Token generation emits the same 635 Token IDs for light and dark
+contexts. Under ADR-0005, N32 owns pinned React Aria source data and N33 owns
+behavior projection and cross-coverage. N22, not N18, owns the future collision
+trace schema and coverage.
 
 ## Change gate
 

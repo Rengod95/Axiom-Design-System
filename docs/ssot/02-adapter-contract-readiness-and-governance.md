@@ -626,7 +626,7 @@ release package dry run
 
 ## 13. Normative Implementation Order
 
-The repository has completed N0–N17. N18 is the next implementation boundary;
+The repository has completed N0–N18. N19 is the next implementation boundary;
 listing an item here does not mark it complete.
 
 ```text
