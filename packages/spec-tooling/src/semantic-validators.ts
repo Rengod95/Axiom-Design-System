@@ -10,6 +10,7 @@ import {
 } from "./constants.js";
 import { validateCanonicalStateRegistry } from "./semantic/canonical-state-registry-validator.js";
 import { validateAppearanceIr } from "./semantic/appearance-ir-validator.js";
+import { validateMotionIr } from "./semantic/motion-ir-validator.js";
 import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
 import { createSemanticDiagnosticFactory } from "./semantic/semantic-diagnostic.js";
@@ -344,6 +345,7 @@ const validateParsedTokenDocument = (value: unknown): readonly Diagnostic[] => {
   return diagnostics;
 };
 
+/** Dispatches a manifest-selected semantic validator after its JSON Schema has accepted the value. */
 export const runSemanticValidator = (
   id: SemanticValidatorId | undefined,
   value: unknown,
@@ -356,6 +358,8 @@ export const runSemanticValidator = (
       return validateCanonicalStateRegistry(value);
     case "css-appearance-ir":
       return validateAppearanceIr(value, context);
+    case "motion-ir":
+      return validateMotionIr(value, context);
     case "condition-expression":
       return validateConditionExpression(value, context);
     case "condition-registry":

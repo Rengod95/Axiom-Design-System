@@ -10,14 +10,17 @@ import {
 
 import { canonicalJsonDigest } from "./canonical-json.js";
 import {
+  ERROR_DIAGNOSTIC_SEVERITY,
   JSON_FILE_SUFFIX,
   JSON_SCHEMA_FILE_SUFFIX,
   SPEC_MANIFEST_PATH,
   SPEC_MANIFEST_SCHEMA_PATH,
   STABLE_SORT_LOCALE,
+  WARNING_DIAGNOSTIC_SEVERITY,
 } from "./constants.js";
 import { runSemanticValidator } from "./semantic-validators.js";
 import type {
+  Diagnostic,
   SemanticValidatorId,
   SemanticValidationContext,
   SpecCheckReport,
@@ -97,18 +100,36 @@ const withFixtureFile = (
       : { location: { ...diagnostic.location, file } }),
   }));
 
+/** Identifies error diagnostics, which always invalidate a schema-valid fixture. */
+const isErrorDiagnostic = (diagnostic: { readonly severity: string }): boolean =>
+  diagnostic.severity === ERROR_DIAGNOSTIC_SEVERITY;
+
+/** Converts semantic diagnostics to fixture failures while allowing only manifest-declared warning codes. */
+export const validateFixtureDiagnostics = (
+  diagnostics: readonly Diagnostic[],
+  allowedWarnings: readonly string[] = [],
+): readonly string[] => diagnostics
+  .filter((diagnostic) =>
+    isErrorDiagnostic(diagnostic) ||
+    (diagnostic.severity === WARNING_DIAGNOSTIC_SEVERITY && !allowedWarnings.includes(diagnostic.code)),
+  )
+  .map((diagnostic) => `${diagnostic.code} ${diagnostic.location?.pointer ?? ""}: ${diagnostic.message}`);
+
+/** Validates one fixture against schema and scoped semantic-warning allowances. */
 const validateFixture = (
   validate: ValidateFunction,
   value: unknown,
   semanticValidator: SemanticValidatorId | undefined,
   semanticContext: SemanticValidationContext,
   file: string,
+  allowedWarnings: readonly string[] | undefined,
 ): { readonly schemaValid: boolean; readonly semanticErrors: readonly string[] } => {
   const schemaValid = validate(value) as boolean;
   const semanticErrors = schemaValid
-    ? withFixtureFile(runSemanticValidator(semanticValidator, value, semanticContext), file).map(
-        (diagnostic) => `${diagnostic.code} ${diagnostic.location?.pointer ?? ""}: ${diagnostic.message}`,
-      )
+    ? validateFixtureDiagnostics(
+      withFixtureFile(runSemanticValidator(semanticValidator, value, semanticContext), file),
+      allowedWarnings,
+    )
     : [];
   return { schemaValid, semanticErrors };
 };
@@ -217,6 +238,7 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
         suite.semanticValidator,
         semanticContext,
         relative(specRoot, path),
+        suite.allowedWarnings,
       );
       if (!result.schemaValid || result.semanticErrors.length > 0) {
         throw new Error(
@@ -236,6 +258,7 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
         suite.semanticValidator,
         semanticContext,
         relative(specRoot, path),
+        suite.allowedWarnings,
       );
       if (result.schemaValid && result.semanticErrors.length === 0) {
         throw new Error(`${relative(specRoot, path)}: expected invalid fixture, but it passed.`);

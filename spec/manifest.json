@@ -31,6 +31,10 @@
       "path": "css/appearance-ir.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/motion/ir/0.1",
+      "path": "motion/motion-ir.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/css/declaration/0.1",
       "path": "css/declaration.schema.json"
     },
@@ -258,6 +262,14 @@
       "positiveDirectory": "fixtures/css-appearance-ir/positive",
       "negativeDirectory": "fixtures/css-appearance-ir/negative",
       "semanticValidator": "css-appearance-ir"
+    },
+    {
+      "id": "motion-ir",
+      "schema": "https://axiom.dev/schemas/motion/ir/0.1",
+      "positiveDirectory": "fixtures/motion-ir/positive",
+      "negativeDirectory": "fixtures/motion-ir/negative",
+      "semanticValidator": "motion-ir",
+      "allowedWarnings": ["AXM1012", "AXM1015"]
     },
     {
       "id": "css-declaration",

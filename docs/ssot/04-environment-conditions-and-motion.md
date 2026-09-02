@@ -442,10 +442,20 @@ defineMotion({
         tracks: {
           opacity: ["0", "1"],
         },
+        transition: {
+          type: "tween",
+          duration: token("duration.semantic.instant"),
+          easing: token("easing.semantic.productive"),
+        },
       },
       exit: {
         tracks: {
           opacity: ["1", "0"],
+        },
+        transition: {
+          type: "tween",
+          duration: token("duration.semantic.instant"),
+          easing: token("easing.semantic.productive"),
         },
       },
     },
@@ -464,7 +474,25 @@ type MotionPhase =
 
 `stateChange` requires an explicit canonical state and from/to case.
 
-### 10.3 v0.1 transitions
+### 10.3 Keyframe authoring
+
+```ts
+type MotionKeyframesAuthoring =
+  | readonly [MotionValue, MotionValue]
+  | readonly MotionKeyframeAuthoring[];
+
+interface MotionKeyframeAuthoring {
+  offset: number;
+  value: MotionValue;
+}
+```
+
+Exactly two shorthand `MotionValue` entries normalize to offsets `0` and `1`.
+Three or more keyframes MUST use the explicit form and contain at least three
+finite, strictly ascending offsets with `0` and `1` endpoints. Mixed shorthand
+and explicit forms are forbidden; there is no inferred interpolation policy.
+
+### 10.4 v0.1 transitions
 
 ```ts
 type MotionTransitionAuthoring =
@@ -484,8 +512,9 @@ type MotionTransitionAuthoring =
     };
 ```
 
-Physics spring fields are literal numbers with registered ranges. Functions and
-backend-specific easing objects are forbidden.
+`bounce` is a finite literal in `[0,1]`; `stiffness`, `damping`, and `mass` are
+finite literals greater than zero. Functions and backend-specific easing
+objects are forbidden.
 
 ---
 
@@ -500,6 +529,7 @@ interface MotionIR {
   profileInputDigest: string;
   conditionRegistryDigest: string;
   id: string;
+  // Explicit lexical identity; never inferred from a dotted Motion id.
   recipeId: string;
   slot: string;
   phases: readonly MotionPhaseIR[];
@@ -511,6 +541,9 @@ interface MotionIR {
 through `MotionCompilerInput`. The Motion compiler validates both the registry
 identity and digest before it validates reduced-motion policy. It cannot infer
 the registry from a Condition ID or read it from repository state.
+
+`recipeId` is explicit lexical identity at N16. Recipe/Slot applicability is
+not inferred or validated until the Recipe contract exists.
 
 ### 11.2 Phase
 
@@ -529,6 +562,10 @@ interface MotionPhaseIR {
 
 One segment contains parallel property tracks. Multiple segments execute in
 serialized order.
+
+For `stateChange`, the named Canonical State MUST have `axis: "state"` and
+include `motion` in its registered usage. Recipe/Slot applicability remains a
+later Recipe-contract check.
 
 ### 11.3 Segment and track
 
@@ -552,6 +589,7 @@ interface MotionSegmentIR {
 
 interface MotionTrackIR {
   property: CSSPropertyName;
+  allowDiscrete: boolean;
   keyframes: readonly MotionKeyframeIR[];
 }
 
@@ -565,7 +603,11 @@ interface MotionKeyframeIR {
 ```
 
 Offsets are finite numbers in [0,1], sorted ascending, and include 0 and 1 after
-normalization.
+normalization. `allowDiscrete: true` preserves the authoring opt-in required
+for a discrete property; it is required even when the property is interpolable.
+Every segment, including every `reducedMotion.strategy: "replace"` segment,
+MUST declare its own transition. Replacement phases never inherit a normal
+phase or segment transition.
 
 ### 11.4 Reduced motion
 
@@ -730,6 +772,14 @@ AXM1006  unsupported backend transition
 AXM1007  reduced-motion strategy missing
 AXM1008  Token Domain mismatch
 AXM1009  provider lifecycle capability missing
+AXM1010  Motion profile identity mismatch
+AXM1011  Condition Registry digest mismatch
+AXM1012  Motion property requires backend capability validation
+AXM1013  unknown Motion state
+AXM1014  invalid Motion state value
+AXM1015  discrete Motion opt-in accepted (warning)
+AXM1016  Motion keyframe value kind is not permitted
+AXM1017  Motion keyframe Token binding is not permitted
 ```
 
 ---
@@ -761,14 +811,25 @@ Button pressed stateChange
 tween duration/easing Tokens
 spring configuration
 two-segment sequence
+direct Token keyframe
 CSS template keyframe
 reduced-motion replacement
 reduced-motion disable
-non-animatable property negative
-invalid keyframe grammar negative
-unsupported backend feature negative
+reduced-motion replacement transition is explicit (no inheritance)
+unknown property negative
+non-empty invalid keyframe grammar negative
+illegal Token binding negative
+invalid IR transition-kind negative
 JSON round trip
 ```
+
+The invalid IR transition-kind fixture proves only the closed Motion IR
+discriminant. Backend transition support remains AXM1006 work for N31; provider
+lifecycle capability remains AXM1009 work for N33.
+
+The generated profile currently exposes neither a discrete nor a not-animatable
+Motion property. Their policy branches are therefore covered by injected-profile
+validator tests rather than a registered profile fixture.
 
 ### Runtime
 

@@ -1,0 +1,5 @@
+{
+  "schemaVersion": "0.1", "profile": "axiom-css", "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75", "conditionRegistryDigest": "sha256:19fe87b0b53011c4e4ce7b57a51aae66d306c46b3bc1bb512b20f6b29245916b", "id": "dialog.popup.replace-invalid", "recipeId": "dialog", "slot": "popup",
+  "phases": [{ "phase": "enter", "sequence": [{ "at": { "kind": "afterPrevious" }, "tracks": [{ "property": "opacity", "allowDiscrete": false, "keyframes": [{ "offset": 0, "value": { "kind": "css", "value": "0" } }, { "offset": 1, "value": { "kind": "css", "value": "1" } }] }], "transition": { "type": "tween", "duration": { "kind": "token", "path": "duration.semantic.fast" }, "easing": { "kind": "token", "path": "easing.semantic.enter" } } }] }],
+  "reducedMotion": { "strategy": "replace", "phases": [{ "phase": "enter", "sequence": [{ "at": { "kind": "afterPrevious" }, "tracks": [{ "property": "opacity", "allowDiscrete": false, "keyframes": [{ "offset": 0, "value": { "kind": "css", "value": "0" } }, { "offset": 1, "value": { "kind": "css", "value": "1" } }] }] }] }] }
+}

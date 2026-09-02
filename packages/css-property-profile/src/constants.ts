@@ -35,6 +35,8 @@ export const DECLARATION_DELIMITER_PATTERN = /[;{}]/;
 export const IMPORTANT_PATTERN = /!\s*important\b/i;
 export const CUSTOM_PROPERTY_PATTERN = /^--[a-z0-9][a-z0-9-]*$/;
 export const VENDOR_PROPERTY_PATTERN = /^-[a-z]+-/;
+export const CSS_VARIABLE_MATCH_UNSUPPORTED_MESSAGE =
+  "Matching for a tree with var() is not supported";
 
 export const PROPERTY_DIAGNOSTIC_CODE = {
   UNKNOWN_PROPERTY: "AXP1001",

@@ -52,6 +52,7 @@
             "condition-expression",
             "condition-registry",
             "css-appearance-ir",
+            "motion-ir",
             "token-domain-registry",
             "token-identity",
             "parsed-token-document",
@@ -83,6 +84,7 @@
             "condition-expression",
             "condition-registry",
             "css-appearance-ir",
+            "motion-ir",
             "token-domain-registry",
             "token-identity",
             "parsed-token-document",
@@ -90,6 +92,11 @@
             "semantic-token-vocabulary",
             "token-context-override"
           ]
+        },
+        "allowedWarnings": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-Z]+[0-9]+$" }
         }
       },
       "unevaluatedProperties": false
