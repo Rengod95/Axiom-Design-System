@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
+import type { SparsePropertyPolicySource, TokenBindingCatalog } from "@axiom/css-property-profile";
 import { digestResolvedTokenManifest, type ResolvedTokenManifest } from "@axiom/tokens";
 import { validateSpecificationValue } from "@axiom/spec-tooling";
 import { negateToken, projectToken, token } from "@axiom/appearance-authoring";
@@ -21,12 +22,12 @@ const readAuthority = (relativePath: string): unknown => JSON.parse(readFileSync
 const canonical = (value: unknown): unknown => Array.isArray(value)
   ? value.map(canonical)
   : value !== null && typeof value === "object"
-    ? Object.fromEntries(Object.entries(value).sort(([left], [right]) => left.localeCompare(right, "en")).map(([key, item]) => [key, canonical(item)]))
-    : value;
+    ? Object.fromEntries(Object.entries(value).sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0).map(([key, item]) => [key, canonical(item)]))
+    : typeof value === "number" && Object.is(value, -0) ? 0 : value;
 
 /** Produces content-sensitive test digests so authority mutation cannot be hidden. */
 const digest = {
-  digestCanonicalJson: (value: unknown): string => `sha256:${createHash("sha256").update(JSON.stringify(canonical(value))).digest("hex")}`,
+  digestCanonicalJson: (value: unknown): string => `sha256:${createHash("sha256").update(`${JSON.stringify(canonical(value), null, 2)}\n`).digest("hex")}`,
 };
 
 const freeze = <T>(value: T): T => {
@@ -39,10 +40,14 @@ const freeze = <T>(value: T): T => {
 
 const propertyRegistry = readAuthority("spec/css/effective-property-registry.json") as Record<string, unknown>;
 const resolvedTokenManifest = readAuthority("spec/token/foundation-resolved-token-manifest.json") as ResolvedTokenManifest;
-const tokenDomainRegistry = readAuthority("spec/token/token-domain-registry.json") as Readonly<{ readonly domains: readonly { readonly id: string }[] }>;
+const tokenDomainRegistry = readAuthority("spec/token/token-domain-registry.json") as Readonly<{ readonly domains: readonly { readonly id: string; readonly cssSerializers: readonly string[] }[] }>;
 const projectorRegistry = readAuthority("spec/token/composite-token-projector-registry.json");
 const canonicalStateRegistry = readAuthority("spec/state/canonical-state-registry.json");
 const conditionRegistry = readAuthority("spec/condition/condition-registry.json");
+const propertyPolicySource = {
+  policy: readAuthority("spec/css/sparse-property-policy.json") as SparsePropertyPolicySource,
+  bindings: readAuthority("spec/css/token-binding-catalog.json") as TokenBindingCatalog,
+} as const;
 
 const recipe = {
   definition: { id: "button", slots: ["root"], source: "recipes/button.ts", base: { root: { display: { kind: "css", value: "block" }, alignItems: { kind: "css", value: "center" } } }, variants: { tone: { neutral: { root: { display: { kind: "css", value: "flex" } } } } }, defaultVariants: { tone: "neutral" } },
@@ -58,7 +63,7 @@ const recipe = {
   },
   tokenBindingReport: {
     authority: {
-      effectivePropertyRegistry: HASH, resolvedTokenManifest: HASH, tokenDomainRegistry: HASH, projectorRegistry: HASH,
+      effectivePropertyRegistry: HASH, propertyPolicySource: HASH, resolvedTokenManifest: HASH, tokenDomainRegistry: HASH, projectorRegistry: HASH,
       canonicalStateRegistry: HASH, conditionRegistry: HASH, profileInputDigest: HASH,
       manifestSourceDigest: HASH, contexts: [{ theme: "light" }],
     },
@@ -76,6 +81,7 @@ const input = {
     projectorRegistry,
     authorityDigests: {
       effectivePropertyRegistry: digest.digestCanonicalJson(propertyRegistry),
+      propertyPolicySource: digest.digestCanonicalJson(propertyPolicySource),
       resolvedTokenManifest: digestResolvedTokenManifest(resolvedTokenManifest, digest),
       tokenDomainRegistry: digest.digestCanonicalJson(tokenDomainRegistry),
       projectorRegistry: digest.digestCanonicalJson(projectorRegistry),
@@ -83,14 +89,13 @@ const input = {
       conditionRegistry: digest.digestCanonicalJson(conditionRegistry),
     },
     canonicalDigest: digest,
-    conditionOnlyDomains: tokenDomainRegistry.domains.map((domain) => domain.id).filter((id) => !["border", "color", "space"].includes(id)),
-    serializers: [{
-      id: "css.color.v1",
-      serialize: (entry: { readonly resolvedValue: unknown }): string => typeof entry.resolvedValue === "object" && entry.resolvedValue !== null && "hex" in entry.resolvedValue
+    propertyPolicySource,
+    serializers: [...new Set(tokenDomainRegistry.domains.flatMap((domain) => domain.cssSerializers))]
+      .filter((id) => !(projectorRegistry as Readonly<{ readonly projectors: readonly { readonly id: string }[] }>).projectors.some((entry) => entry.id === id))
+      .map((id) => ({ id, serialize: (entry: { readonly resolvedValue: unknown }): string => id === "css.color.v1" && typeof entry.resolvedValue === "object" && entry.resolvedValue !== null && "hex" in entry.resolvedValue
         ? String((entry.resolvedValue as { readonly hex: unknown }).hex)
-        : String(entry.resolvedValue),
-    }, { id: "css.dimension.v1", serialize: (entry: { readonly resolvedValue: unknown }): string => String(entry.resolvedValue) }],
-    projectors: [{ id: "css.border-projector.v1", project: () => [{ property: "border-color", value: "red", source: "token", field: "color" }, { property: "border-style", value: "solid", source: "token", field: "style" }, { property: "border-width", value: "1px", source: "token", field: "width" }] }],
+        : String(entry.resolvedValue) })),
+    projectors: (projectorRegistry as Readonly<{ readonly projectors: readonly { readonly id: string }[] }>).projectors.map(({ id }) => ({ id, project: () => id === "css.border-projector.v1" ? [{ property: "border-color", value: "red", source: "token" as const, field: "color" }, { property: "border-style", value: "solid", source: "token" as const, field: "style" }, { property: "border-width", value: "1px", source: "token" as const, field: "width" }] : [] })),
   },
 } as const;
 
@@ -135,6 +140,28 @@ describe("createAppearanceNormalizer", () => {
     expect(result.appearance).toBeDefined();
     expect(result.trace.entries.map((entry) => entry.relation)).toEqual(["same-property"]);
     expect(result.diagnostics).toEqual([]);
+  });
+
+  it("rejects a changed condition-only policy even when its supplied digest is recomputed", () => {
+    const changedPolicySource = structuredClone(propertyPolicySource) as {
+      bindings: { conditionOnlyDomains: string[] };
+    };
+    changedPolicySource.bindings.conditionOnlyDomains = ["color"];
+    const changedInput = {
+      ...input,
+      tokenValidation: {
+        ...input.tokenValidation,
+        propertyPolicySource: changedPolicySource,
+        authorityDigests: {
+          ...input.tokenValidation.authorityDigests,
+          propertyPolicySource: digest.digestCanonicalJson(changedPolicySource),
+        },
+      },
+    };
+
+    const result = createAppearanceNormalizer(changedInput as never).normalize(freeze(recipe));
+    expect(result.appearance).toBeUndefined();
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toEqual(["AXN2002"]);
   });
 
   it("does not trust a forged projector blueprint", () => {

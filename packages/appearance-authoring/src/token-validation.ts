@@ -91,6 +91,12 @@ const isDomainRegistry = (value: unknown): boolean => hasKeys(value, ["schemaVer
 /** Verifies a closed projector registry before executable projector ports are exposed. */
 const isProjectorRegistry = (value: unknown): boolean => hasKeys(value, ["schemaVersion", "projectors"]) && value["schemaVersion"] === "0.1" && Array.isArray(value["projectors"]) && isOrderedIdentifiers(value["projectors"].map((projector) => isPlainRecord(projector) ? projector["id"] : "")) && value["projectors"].every((projector) => hasKeys(projector, ["id", "domain", "dtcgType", "outputProperties", "version"]) && typeof projector["id"] === "string" && CSS_RECIPE_SERIALIZER_ID_PATTERN.test(projector["id"]) && isIdentifier(projector["domain"]) && (["border", "gradient", "shadow", "transition", "typography"] as readonly unknown[]).includes(projector["dtcgType"]) && typeof projector["version"] === "string" && CSS_RECIPE_SEMVER_PATTERN.test(projector["version"]) && Array.isArray(projector["outputProperties"]) && projector["outputProperties"].length > 0 && projector["outputProperties"].every((property) => typeof property === "string" && CSS_RECIPE_PROPERTY_NAME_PATTERN.test(property)) && new Set(projector["outputProperties"] as readonly string[]).size === projector["outputProperties"].length);
 
+/** Verifies the closed catalog whose bindings own condition-only Domain semantics. */
+const isTokenBindingCatalog = (value: unknown): boolean => hasKeys(value, ["schemaVersion", "conditionOnlyDomains", "bindings"]) && value["schemaVersion"] === "0.1" && isUniqueStrings(value["conditionOnlyDomains"], 0) && (value["conditionOnlyDomains"] as readonly string[]).every(isIdentifier) && Array.isArray(value["bindings"]) && value["bindings"].length > 0 && value["bindings"].every((binding) => hasKeys(binding, ["id", "directDomains", "templateDomains", "projectors", "allowsTokenNegation"], ["properties", "expandShorthands"]) && isIdentifier(binding["id"]) && (binding["properties"] !== undefined || binding["expandShorthands"] !== undefined) && ["properties", "expandShorthands"].every((key) => binding[key] === undefined || isUniqueStrings(binding[key], 0) && (binding[key] as readonly string[]).every((property) => CSS_RECIPE_PROPERTY_NAME_PATTERN.test(property))) && ["directDomains", "templateDomains"].every((key) => isUniqueStrings(binding[key], 0) && (binding[key] as readonly string[]).every(isIdentifier)) && isUniqueStrings(binding["projectors"], 0) && (binding["projectors"] as readonly string[]).every((id) => CSS_RECIPE_SERIALIZER_ID_PATTERN.test(id)) && typeof binding["allowsTokenNegation"] === "boolean");
+
+/** Verifies the exact canonical object used by P3 to derive `policySourceDigest`. */
+const isPropertyPolicySource = (value: unknown): boolean => hasKeys(value, ["policy", "bindings"]) && hasKeys(value["policy"], ["schemaVersion", "defaults", "groups", "overrides", "blockedProperties", "customProperties"]) && value["policy"]["schemaVersion"] === "0.1" && isTokenJson(value["policy"]) && isTokenBindingCatalog(value["bindings"]);
+
 /** Verifies the profile's direct/template/projector Token policy subrecord. */
 const isTokenBindings = (value: unknown): boolean => hasKeys(value, ["directDomains", "templateDomains", "projectors", "allowsTokenNegation"]) && ["directDomains", "templateDomains", "projectors"].every((key) => Array.isArray(value[key]) && value[key].every((entry: unknown) => typeof entry === "string")) && typeof value["allowsTokenNegation"] === "boolean";
 
@@ -104,7 +110,7 @@ const isPropertyRegistry = (value: unknown): boolean => hasKeys(value, ["schemaV
 const isUniqueStrings = (value: unknown, minimum = 1): value is readonly string[] => Array.isArray(value) && value.length >= minimum && value.every((entry) => typeof entry === "string" && entry.length > 0) && new Set(value).size === value.length;
 
 /** Verifies deterministically ordered unique identifier collections owned by registries. */
-const isOrderedIdentifiers = (value: unknown): value is readonly string[] => isUniqueStrings(value) && value.every(isIdentifier) && value.every((entry, index, entries) => index === 0 || entries[index - 1]!.localeCompare(entry, "en") <= 0);
+const isOrderedIdentifiers = (value: unknown, minimum = 1): value is readonly string[] => isUniqueStrings(value, minimum) && value.every(isIdentifier) && value.every((entry, index, entries) => index === 0 || entries[index - 1]!.localeCompare(entry, "en") <= 0);
 
 /** Verifies the canonical State Registry's closed discriminated State records. */
 const isCanonicalStateRegistry = (value: unknown): boolean => hasKeys(value, ["schemaVersion", "states"]) && value["schemaVersion"] === "0.1" && Array.isArray(value["states"]) && isOrderedIdentifiers(value["states"].map((state) => isPlainRecord(state) ? state["id"] : "")) && value["states"].every((state) => hasKeys(state, ["id", "axis", "valueType", "applicableComponents", "usage"], ["values"]) && isIdentifier(state["id"]) && (state["axis"] === "lifecycle" || state["axis"] === "state") && (state["valueType"] === "boolean" || state["valueType"] === "enum") && isUniqueStrings(state["applicableComponents"]) && (state["applicableComponents"] as readonly string[]).every(isIdentifier) && isUniqueStrings(state["usage"]) && (state["usage"] as readonly string[]).some((usage) => usage === "appearance" || usage === "motion") && (state["usage"] as readonly string[]).every((usage) => usage === "appearance" || usage === "behavior" || usage === "motion") && (state["valueType"] === "enum" ? isUniqueStrings(state["values"], 2) && (state["values"] as readonly string[]).every(isIdentifier) : state["values"] === undefined) && (state["axis"] !== "lifecycle" || state["valueType"] === "boolean"));
@@ -227,7 +233,7 @@ const serializerFor = (
   path: TokenBindingDeclarationPath,
 ): { readonly id: string; readonly serialize: (entry: ResolvedTokenEntry) => string } | CSSRecipeDiagnostic => {
   const domain = input.tokenValidation.tokenDomainRegistry.domains.find((entry) => entry.id === domainId && entry.root === domainId);
-  if (domain === undefined || input.tokenValidation.conditionOnlyDomains.includes(domainId) || !domain.allowedDTCGTypes.includes(dtcgType as never)) return diagnostic(
+  if (domain === undefined || input.tokenValidation.propertyPolicySource.bindings.conditionOnlyDomains.includes(domainId) || !domain.allowedDTCGTypes.includes(dtcgType as never)) return diagnostic(
     CSS_RECIPE_DIAGNOSTIC_CODE.TOKEN_DOMAIN_INVALID,
     `Token Domain '${domainId}' does not accept DTCG type '${dtcgType}'.`,
     path,
@@ -248,7 +254,7 @@ const authorityDiagnostic = (
 ): CSSRecipeDiagnostic | undefined => {
   try {
     const candidate = (input as Readonly<{ readonly tokenValidation?: unknown }>).tokenValidation;
-    if (!hasKeys(candidate, ["resolvedTokenManifest", "tokenDomainRegistry", "projectorRegistry", "conditionOnlyDomains", "authorityDigests", "canonicalDigest", "serializers", "projectors"]) || !hasKeys(candidate["canonicalDigest"], ["digestCanonicalJson"]) || typeof candidate["canonicalDigest"]["digestCanonicalJson"] !== "function" || !hasKeys(candidate["authorityDigests"], ["effectivePropertyRegistry", "resolvedTokenManifest", "tokenDomainRegistry", "projectorRegistry", "canonicalStateRegistry", "conditionRegistry"]) || !Object.values(candidate["authorityDigests"]).every((value) => typeof value === "string" && CSS_RECIPE_SHA256_DIGEST_PATTERN.test(value)) || !Array.isArray(candidate["conditionOnlyDomains"]) || !candidate["conditionOnlyDomains"].every(isIdentifier) || !Array.isArray(candidate["serializers"]) || !candidate["serializers"].every((serializer) => hasKeys(serializer, ["id", "serialize"]) && typeof serializer["id"] === "string" && CSS_RECIPE_SERIALIZER_ID_PATTERN.test(serializer["id"]) && typeof serializer["serialize"] === "function") || !Array.isArray(candidate["projectors"]) || !candidate["projectors"].every((projector) => hasKeys(projector, ["id", "project"]) && typeof projector["id"] === "string" && CSS_RECIPE_SERIALIZER_ID_PATTERN.test(projector["id"]) && typeof projector["project"] === "function")) return diagnostic(
+    if (!hasKeys(candidate, ["resolvedTokenManifest", "tokenDomainRegistry", "projectorRegistry", "propertyPolicySource", "authorityDigests", "canonicalDigest", "serializers", "projectors"]) || !hasKeys(candidate["canonicalDigest"], ["digestCanonicalJson"]) || typeof candidate["canonicalDigest"]["digestCanonicalJson"] !== "function" || !hasKeys(candidate["authorityDigests"], ["effectivePropertyRegistry", "propertyPolicySource", "resolvedTokenManifest", "tokenDomainRegistry", "projectorRegistry", "canonicalStateRegistry", "conditionRegistry"]) || !Object.values(candidate["authorityDigests"]).every((value) => typeof value === "string" && CSS_RECIPE_SHA256_DIGEST_PATTERN.test(value)) || !Array.isArray(candidate["serializers"]) || !candidate["serializers"].every((serializer) => hasKeys(serializer, ["id", "serialize"]) && typeof serializer["id"] === "string" && CSS_RECIPE_SERIALIZER_ID_PATTERN.test(serializer["id"]) && typeof serializer["serialize"] === "function") || !Array.isArray(candidate["projectors"]) || !candidate["projectors"].every((projector) => hasKeys(projector, ["id", "project"]) && typeof projector["id"] === "string" && CSS_RECIPE_SERIALIZER_ID_PATTERN.test(projector["id"]) && typeof projector["project"] === "function")) return diagnostic(
       CSS_RECIPE_DIAGNOSTIC_CODE.AUTHORITY_DIGEST_MISMATCH,
       "N21 Token validation requires complete explicit authority identities and execution ports.",
       path,
@@ -262,8 +268,8 @@ const authorityDiagnostic = (
   }
   try {
   const typedConfig = input.tokenValidation;
-  const { canonicalDigest, authorityDigests, resolvedTokenManifest, tokenDomainRegistry, projectorRegistry } = typedConfig;
-  const configShapeInvalid = !isPropertyRegistry(input.propertyRegistry) || !isCanonicalStateRegistry(input.canonicalStateRegistry) || !isResolvedManifest(resolvedTokenManifest) || !isConditionRegistry(input.conditionRegistry, resolvedTokenManifest as unknown as UnknownRecord) || !isDomainRegistry(tokenDomainRegistry) || !isProjectorRegistry(projectorRegistry);
+  const { canonicalDigest, authorityDigests, propertyPolicySource, resolvedTokenManifest, tokenDomainRegistry, projectorRegistry } = typedConfig;
+  const configShapeInvalid = !isPropertyRegistry(input.propertyRegistry) || !isPropertyPolicySource(propertyPolicySource) || !isCanonicalStateRegistry(input.canonicalStateRegistry) || !isResolvedManifest(resolvedTokenManifest) || !isConditionRegistry(input.conditionRegistry, resolvedTokenManifest as unknown as UnknownRecord) || !isDomainRegistry(tokenDomainRegistry) || !isProjectorRegistry(projectorRegistry);
   if (configShapeInvalid) return diagnostic(
     CSS_RECIPE_DIAGNOSTIC_CODE.AUTHORITY_DIGEST_MISMATCH,
     "N21 Token validation configuration is not schema-faithful or complete.",
@@ -285,6 +291,7 @@ const authorityDiagnostic = (
     const digest = (value: unknown): string => canonicalDigest.digestCanonicalJson(value as TokenJsonValue);
     actual = {
       effectivePropertyRegistry: digest(input.propertyRegistry),
+      propertyPolicySource: digest(propertyPolicySource),
       resolvedTokenManifest: digestResolvedTokenManifest(resolvedTokenManifest, canonicalDigest),
       tokenDomainRegistry: digest(tokenDomainRegistry),
       projectorRegistry: digest(projectorRegistry),
@@ -300,7 +307,8 @@ const authorityDiagnostic = (
   }
   const serializerIds = typedConfig.serializers.map((entry) => entry.id);
   const projectorIds = typedConfig.projectors.map((entry) => entry.id);
-  const invalidConditionOnlyDomains = new Set(typedConfig.conditionOnlyDomains).size !== typedConfig.conditionOnlyDomains.length || typedConfig.conditionOnlyDomains.some((domain) => !tokenDomainRegistry.domains.some((entry) => entry.id === domain));
+  const conditionOnlyDomains = propertyPolicySource.bindings.conditionOnlyDomains;
+  const invalidConditionOnlyDomains = conditionOnlyDomains.some((domain) => !tokenDomainRegistry.domains.some((entry) => entry.id === domain));
   if (invalidConditionOnlyDomains) return diagnostic(
     CSS_RECIPE_DIAGNOSTIC_CODE.AUTHORITY_DIGEST_MISMATCH,
     "N21 condition-only Domain configuration is not unique or registered.",
@@ -312,10 +320,15 @@ const authorityDiagnostic = (
     "Configured Token serializer or projector ports do not match registered identities.",
     path,
   );
-  const missingExecutionPort = tokenDomainRegistry.domains.some((domain) => !typedConfig.conditionOnlyDomains.includes(domain.id) && !domain.cssSerializers.some((id: string) => serializerIds.includes(id) || projectorIds.includes(id)));
+  const missingExecutionPort = tokenDomainRegistry.domains.some((domain) => !conditionOnlyDomains.includes(domain.id) && !domain.cssSerializers.some((id: string) => serializerIds.includes(id) || projectorIds.includes(id)));
   if (missingExecutionPort) return diagnostic(
     "AXP1104",
     "A registered Token Domain has no configured serializer or composite projector port.",
+    path,
+  );
+  if (actual.propertyPolicySource !== input.propertyRegistry.profile.policySourceDigest) return diagnostic(
+    CSS_RECIPE_DIAGNOSTIC_CODE.AUTHORITY_DIGEST_MISMATCH,
+    "N21 CSS policy source does not match the Effective Property Registry provenance.",
     path,
   );
   const mismatch = Object.entries(actual).find(([key, value]) => value !== authorityDigests[key as keyof typeof authorityDigests]);
@@ -386,9 +399,9 @@ const validateReferenceValue = (
   if (diagnostics.length > 0) return { diagnostics };
   const entries = resolved.map((item) => ({ reference: item.reference, result: item.result as Exclude<typeof item.result, CSSRecipeDiagnostic> }));
   for (const item of entries) {
-    diagnostics.push(...propertyDiagnostics(input, property, path, mode, item.result.domain, undefined, isNegated));
     const serializer = serializerFor(input, item.result.domain, item.result.dtcgType, path);
     if ("code" in serializer) diagnostics.push(serializer);
+    else diagnostics.push(...propertyDiagnostics(input, property, path, mode, item.result.domain, undefined, isNegated));
   }
   if (diagnostics.length > 0) return { diagnostics };
   const serializers = entries.map((item) => serializerFor(input, item.result.domain, item.result.dtcgType, path) as Exclude<ReturnType<typeof serializerFor>, CSSRecipeDiagnostic>);

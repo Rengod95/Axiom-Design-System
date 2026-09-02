@@ -1,7 +1,7 @@
 # Axiom Token Domain & CSS Binding Catalog
 
 **Status:** NORMATIVE ANNEX \
-**Depends on:** SSOT-01 v0.4.1, SSOT-03 v0.3.0 \
+**Depends on:** SSOT-01 v0.4.1, SSOT-03 v0.3.2 \
 **Purpose:** required Token Domain coverage and common Web property bindings
 
 ---
@@ -675,6 +675,13 @@ named container max inline-size
 It cannot be used as an arbitrary Recipe declaration value simply because both
 breakpoint and size serialize as dimensions. This is the reason Domain is
 separate from DTCG `$type`.
+
+The machine authority for this restriction is
+`spec/css/token-binding-catalog.json#/conditionOnlyDomains`. P3 includes the
+complete sparse policy and Token Binding Catalog in `policySourceDigest`; N21
+accepts that exact source, verifies it against the Effective Property Registry,
+derives the condition-only set from it, and carries the source digest in every
+binding receipt. A caller cannot replace or extend this list as configuration.
 
 ---
 

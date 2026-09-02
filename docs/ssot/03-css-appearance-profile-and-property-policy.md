@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-03 — CSS Appearance Profile & Property Policy
-### Version 0.3.0
+### Version 0.3.2
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1 \
@@ -907,16 +907,22 @@ The N20 boundary therefore MUST NOT call Token-binding validation merely
 because an authored declaration contains a Token Reference.
 
 N21 configures authoring with complete resolved Token, Domain, projector,
-canonical-digest, serializer, projector-port, and exact Effective CSS Property
-Registry authority inputs. It verifies every authority, including a canonical
-digest of the complete effective registry rather than only profile metadata,
-validates Token identity in every context, validates synthetic and
+canonical-digest, serializer, projector-port, exact sparse policy and Token
+Binding Catalog inputs, and exact Effective CSS Property Registry authority
+inputs. It verifies every authority, including canonical digests of the
+complete effective registry and the exact `{ policy, bindings }` source rather
+than only profile metadata. The latter MUST equal the Effective Registry's
+`profile.policySourceDigest`; `conditionOnlyDomains` is derived only from that
+authenticated Catalog and is never accepted as a free configuration input.
+N21 validates Token identity in every context, validates synthetic and
 context-serialized templates, and returns a frozen source-ordered binding
 receipt. Projector outputs re-enter authoring, security, value-kind, and grammar
 validation. `profileInputDigest` remains `webrefInputDigest`; the receipt also
-carries `effectivePropertyRegistry` so N22 cannot apply a binding receipt under
-mutated property policy. N22 consumes the receipt without re-deciding N21
-semantics.
+carries `effectivePropertyRegistry` and `propertyPolicySource` so N22 cannot
+apply a binding receipt under mutated property or condition-only policy. N22
+MUST obtain the receipt by re-entering the public N21 authoring boundary for
+the supplied definition and authorities; it consumes that freshly validated
+receipt without duplicating N21 Token semantic logic.
 
 ### P6 — Recipe
 
