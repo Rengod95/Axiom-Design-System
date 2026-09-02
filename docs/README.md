@@ -61,6 +61,7 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 27. [N17 Behavior Criteria Contracts](implementation/2026-09-02-n17-behavior-criteria-contracts.md)
 28. [N18 Generated Reference Contracts](implementation/2026-09-02-generated-reference-contracts.md)
 29. [N19 Recipe Kernel Reconciliation](implementation/2026-09-02-recipe-kernel-preparation.md)
+30. [N20 CSS Appearance Authoring](implementation/2026-09-02-css-appearance-authoring.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
@@ -74,8 +75,8 @@ SSOT-00은 전체 모듈·권한·의존 방향을, implementation plan은
 | --- | --- | --- |
 | [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md) | 0.3.1 | authority, layers, boundaries, frozen v0.1 scope |
 | [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.4.0 | primitive/semantic/component tiers, production scales, semantic vocabulary, themes, resolver, manifests |
-| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.4.2 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
-| [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.1 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
+| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.4.3 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
+| [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.2 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
 | [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.2.0 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
 | [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.3 | React Aria criteria source, canonical state, projections, public API |
 
@@ -145,6 +146,7 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [N17 Behavior Criteria Contracts — 2026-09-02](implementation/2026-09-02-n17-behavior-criteria-contracts.md)
 - [N18 Generated Reference Contracts — 2026-09-02](implementation/2026-09-02-generated-reference-contracts.md)
 - [N19 Recipe Kernel Reconciliation — 2026-09-02](implementation/2026-09-02-recipe-kernel-preparation.md)
+- [N20 CSS Appearance Authoring — 2026-09-02](implementation/2026-09-02-css-appearance-authoring.md)
 - [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
 - [N15 Documentation Reconciliation Design — 2026-09-02](superpowers/specs/2026-09-02-n15-document-reconciliation.md)
 - [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)

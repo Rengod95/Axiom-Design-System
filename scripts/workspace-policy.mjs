@@ -9,6 +9,12 @@ export const PACKAGE_CONSTANTS_MODULE = "constants.ts";
 export const STABLE_SORT_LOCALE = "en";
 
 export const PACKAGE_RUNTIME_DEPENDENCIES = {
+  "appearance-authoring": [
+    "@axiom/condition-registry",
+    "@axiom/css-property-profile",
+    "@axiom/motion-schema",
+    "@axiom/recipe-kernel",
+  ],
   "behavior-contracts": [],
   "css-property-profile": ["@webref/css", "css-tree"],
   "condition-registry": [],

@@ -1,7 +1,7 @@
 # Axiom Token Domain & CSS Binding Catalog
 
 **Status:** NORMATIVE ANNEX \
-**Depends on:** SSOT-01 v0.4.0, SSOT-03 v0.2.1 \
+**Depends on:** SSOT-01 v0.4.0, SSOT-03 v0.2.2 \
 **Purpose:** required Token Domain coverage and common Web property bindings
 
 ---

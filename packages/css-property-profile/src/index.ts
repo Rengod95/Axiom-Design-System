@@ -25,6 +25,7 @@ export type {
   TokenBindingMode,
   UpstreamCSSProperty,
 } from "./contracts.js";
+export { PROPERTY_DIAGNOSTIC_CODE } from "./constants.js";
 export { generatePropertyProfile } from "./generation/profile-generator.js";
 export { generateCSSPropertyTypes } from "./generation/property-types.js";
 export { diffPropertyProfiles } from "./generation/profile-diff.js";

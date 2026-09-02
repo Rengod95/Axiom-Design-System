@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-03 — CSS Appearance Profile & Property Policy
-### Version 0.2.1
+### Version 0.2.2
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0 \
@@ -81,6 +81,15 @@ The projection is mechanical. It does not introduce Axiom synonyms such as
 
 An authoring object MUST use one naming mode. Mixed camelCase/kebab-case keys in
 one style fragment are rejected.
+
+N20 CSS Recipe authoring accepts generated camelCase object keys for ordinary
+Slot styles. Its explicit same-stage ordered declaration-array escape uses the
+canonical kebab-case property name in each `{ property, value }` entry. An
+object fragment cannot contain canonical kebab-case keys and an ordered array
+cannot contain camelCase keys; the two forms are not mixed within one style
+fragment. The Recipe Kernel treats either JSON-safe form as opaque structural
+data. N20 validates property identity and value shape; N22 owns conversion to
+normalized ordered Declaration IR.
 
 ### 3.3 Custom properties
 
@@ -468,10 +477,14 @@ Each Token segment Domain must appear in
 `box-shadow` may directly accept a `shadow` Token while allowing `space`,
 `blur`, and `color` Token segments in a template.
 
-`negateToken(token(...))` is a restricted authoring helper. It normalizes to a
-CSS template equivalent to `calc(0px - var(--generated-token))` and is legal
-only when `allowsTokenNegation` is true. v0.1 enables it for margin and inset
-families but not padding or gap.
+`negateToken(token(...))` is a restricted authoring helper. N20 preserves its
+closed serializable authoring form `{ kind: "negated-token", token }` and
+checks only that the embedded value is a closed Token Reference; N20 does not
+decide whether a property permits negation. N21 validates
+`allowsTokenNegation`, Domain, and serializer policy, so margin/inset acceptance
+and padding/gap rejection first become binding decisions there. N22 lowers an
+accepted negated Token to a CSS template equivalent to
+`calc(0px - var(--generated-token))`.
 
 ### 7.4 CSS-wide keywords
 
@@ -529,6 +542,15 @@ CSS/class output
 runtime callbacks
 ```
 
+N20 configures this Kernel with an explicit effective Property Registry,
+Canonical State Registry, and Condition Registry. It does not read repository
+state or select a current profile implicitly. The configured `defineRecipe`
+boundary validates generated property identity, permitted value kinds, raw CSS
+grammar, canonical State membership/applicability/value shape, and registered
+Condition membership. It retains only the Kernel definition and structural
+snapshot; it does not emit Appearance IR, CSS, class strings, collision traces,
+or provider/runtime data.
+
 Panda Slot Recipes is the primary API-shape reference and Tailwind Variants is
 a secondary ergonomics reference. Their evaluated output is not accepted by
 the normalizer. Optional source importers are downstream of this contract and
@@ -537,9 +559,14 @@ must fail on any construct without a lossless Axiom representation.
 ### 8.2 Recipe shape
 
 ```ts
-defineRecipe({
+const authoring = createCSSRecipeAuthoring({
+  propertyRegistry,
+  canonicalStateRegistry,
+  conditionRegistry,
+});
+
+authoring.defineRecipe({
   id: "button",
-  profile: "axiom-css",
   slots: ["root", "icon", "label"],
   base: {
     root: {
@@ -864,6 +891,14 @@ template segment validity
 resource policy
 ```
 
+N20 performs the structural declaration path: CSS literal grammar and profile
+value-kind permission, plus the schema-shaped Token Reference/template form
+and closed negated-Token authoring form.
+N21 is the first phase permitted to validate Token existence, direct/template
+Domain compatibility, projector, negation, serializer, or composite expansion.
+The N20 boundary therefore MUST NOT call Token-binding validation merely
+because an authored declaration contains a Token Reference.
+
 ### P6 — Recipe
 
 ```text
@@ -916,6 +951,13 @@ AXR1008  invalid Recipe State rule or case
 AXR1010  invalid Recipe Condition expression or rule
 AXR1011  non-JSON-safe Recipe structural input
 AXR1012  invalid Recipe source location
+AXA1001  CSS Recipe declaration naming mode violation
+AXA1002  unknown canonical State in CSS Recipe authoring
+AXA1003  canonical State not applicable to the Recipe appearance scope
+AXA1004  canonical State value does not match its registered value shape
+AXA1005  unknown registered Condition in CSS Recipe authoring
+AXA1006  CSS declaration value kind not permitted by effective property policy
+AXA1007  malformed CSS Recipe declaration value or ordered declaration entry
 ```
 
 Every diagnostic includes property, Recipe, Slot, stage, source location, and

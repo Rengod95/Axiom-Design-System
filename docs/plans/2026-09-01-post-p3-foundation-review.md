@@ -1,9 +1,12 @@
 # Post-P3 foundation review and next sequence
 
 **Date:** 2026-09-01; reconciled 2026-09-02 \
-**Status:** ACTIVE SEQUENCING REVIEW \
+**Status:** HISTORICAL SEQUENCING REVIEW \
 **Reviewed checkpoint:** P2 Token Foundation, P3 CSS Property Profile, and N12–N17 contracts
 **Authority:** SSOT-02 normative implementation order N0–N36
+
+**Superseded checkpoint:** This review records the N17 checkpoint. The active
+Foundation Implementation Plan is reconciled through N20; N21 is next.
 
 ## Review conclusion
 
