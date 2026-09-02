@@ -6,7 +6,7 @@
 **Authority:** SSOT-02 normative implementation order N0–N36
 
 **Superseded checkpoint:** This review records the N17 checkpoint. The active
-Foundation Implementation Plan is reconciled through N22; N23 is next.
+Foundation Implementation Plan is reconciled through N23; N24 is next.
 
 ## Review conclusion
 

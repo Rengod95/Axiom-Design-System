@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N22 (rich trace reconciliation complete) \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N23 \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.5.2, SSOT-03 v0.3.2, SSOT-04 v0.2.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.5.3, SSOT-03 v0.3.2, SSOT-04 v0.2.3, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -997,7 +997,11 @@ Exact first sequence:
     decisions.
 23. [done] Implement the Recipe normalizer and collision trace (N22), including
     rich trace schema/semantic reconciliation and output round-trip evidence.
-24. Implement defineMotion authoring and normalization (N23).
+24. [done] Implement defineMotion authoring and normalization (N23), including
+    construction-time closed/schema-semantic authority validation before
+    digest comparison and authenticated N22 Appearance Recipe/Slot
+    applicability.
+25. Next: prove the Button vertical fixture and package-local golden (N24).
 ```
 
 This produces the smallest vertical foundation proof without returning to the

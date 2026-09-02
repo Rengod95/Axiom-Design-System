@@ -24,7 +24,11 @@ export const PACKAGE_RUNTIME_DEPENDENCIES = {
   "behavior-contracts": [],
   "css-property-profile": ["@webref/css", "css-tree"],
   "condition-registry": [],
-  "motion-schema": [],
+  "motion-schema": [
+    "@axiom/condition-registry",
+    "@axiom/css-property-profile",
+    "@axiom/tokens",
+  ],
   "recipe-kernel": [],
   "spec-tooling": ["@axiom/condition-registry", "@axiom/css-property-profile", "ajv"],
   "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],

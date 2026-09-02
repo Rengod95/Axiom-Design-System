@@ -1,6 +1,6 @@
 # N22 Appearance normalizer implementation report
 
-**Status:** COMPLETE — N23 is next
+**Status:** COMPLETE — N23 integrated; N24 is next
 
 N22 owns receipt-bound normalization from a freshly revalidated N21 Recipe
 definition to the closed N15 Appearance IR. It exposes the generated

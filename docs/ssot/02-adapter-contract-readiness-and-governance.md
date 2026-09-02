@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-02 — Compiler Contracts, Readiness & Governance
-### Version 0.5.2
+### Version 0.5.3
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.2, SSOT-04 v0.2.0, SSOT-05 v0.2.3 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.2, SSOT-04 v0.2.3, SSOT-05 v0.2.3 \
 **Purpose:** Compiler/backend boundaries, diagnostics, release gates, and implementation authority
 
 ---
@@ -86,6 +86,24 @@ Tailwind source scanner results
 ```
 
 Every required input passes its normative schema and digest checks first.
+
+### 2.4 Motion authoring normalization boundary
+
+`defineMotion()` is a build-time source boundary, not a compiler input. N23
+normalization receives an explicit closed N22 `CSSAppearanceIR`, its expected
+canonical digest, the effective CSS Property Registry/profile provenance,
+Resolved Token Manifest and Domain Registry, Canonical State Registry,
+Condition Registry, expected profile/condition digests, a trusted
+canonical-digest port, and registered Token CSS serializer ports. It validates
+the N22 artifact profile/digest and source Recipe/Slot applicability before it
+returns closed Motion IR. It never reads repository state or imports compiler,
+runtime, provider, Appearance-authoring, or Appearance-normalizer code.
+
+The normalizer computes the Condition Registry digest from the exact supplied
+Registry through its trusted port, verifies the profile's `webrefInputDigest`
+against the expected `profileInputDigest`, and preserves Token references in
+the output. Serializer ports exist only to grammar-check direct Tokens in every
+resolved context; they do not serialize Tokens into Motion IR.
 
 ---
 
@@ -628,7 +646,7 @@ release package dry run
 
 ## 13. Normative Implementation Order
 
-The repository has completed N0–N22. N23 is the next implementation boundary;
+The repository has completed N0–N23. N24 is the next implementation boundary;
 listing an item here does not mark it complete.
 
 ```text
@@ -657,7 +675,7 @@ N19  [complete] Recipe Kernel port and structural conformance suite
 N20  [complete] defineRecipe CSS authoring SDK
 N21  [complete] CSS direct/template/projector Token validation
 N22  [complete] Recipe normalizer and collision trace
-N23  defineMotion authoring SDK and normalizer
+N23  [complete] defineMotion authoring SDK and normalizer
 
 N24  Button conformance fixture
 N25  Select conformance fixture
