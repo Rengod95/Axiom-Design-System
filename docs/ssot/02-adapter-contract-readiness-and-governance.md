@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-02 — Compiler Contracts, Readiness & Governance
-### Version 0.5.0
+### Version 0.5.1
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.0, SSOT-04 v0.2.0, SSOT-05 v0.2.3 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.1, SSOT-04 v0.2.0, SSOT-05 v0.2.3 \
 **Purpose:** Compiler/backend boundaries, diagnostics, release gates, and implementation authority
 
 ---
@@ -574,7 +574,8 @@ light/dark Token CSS
 full standard property raw CSS fixture
 Token Domain policy fixtures
 direct/template/projector Token binding fixtures
-binding receipts pinned to the exact effective CSS property registry digest
+binding receipts pinned to the exact effective CSS property registry and
+authenticated property-policy source digests
 physical/logical margin coverage fixture
 viewport/container/reduced-motion CSS
 stage/layer precedence

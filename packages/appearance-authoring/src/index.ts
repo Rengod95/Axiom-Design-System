@@ -8,6 +8,7 @@ export {
   type CSSProjectorOptions,
   type CSSProjectorOptionsFor,
   type CSSProjectorValue,
+  type CSSPropertyPolicySourceAuthority,
   type CSSTransitionProjectorOptions,
   type CSSRecipeAuthoringInput,
   type CSSRecipeAuthoringPort,
