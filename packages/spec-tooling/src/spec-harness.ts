@@ -22,6 +22,7 @@ import {
   WARNING_DIAGNOSTIC_SEVERITY,
 } from "./constants.js";
 import { runSemanticValidator } from "./semantic-validators.js";
+import { isUnknownRecord } from "./validation/unknown-record.js";
 import type {
   Diagnostic,
   SemanticValidatorId,
@@ -481,4 +482,56 @@ export const validateSpecificationValue = async (
       ? runSemanticValidator(semanticValidator, value, { registries })
       : [],
   };
+};
+
+/** Preloads registered schemas and registry context for repeated synchronous in-memory validation. */
+export const createSpecificationValueValidator = async (
+  specRoot: string,
+): Promise<Readonly<{ readonly validate: (schemaIdentifier: string, semanticValidator: SemanticValidatorId | undefined, value: unknown) => readonly Diagnostic[] }>> => {
+  const manifest = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH)) as SpecManifest;
+  const ajv = createAjv();
+  for (const entry of manifest.schemas) ajv.addSchema(asSchema(await readJson(resolveInside(specRoot, entry.path)), entry.path), entry.id);
+  const registries: Record<string, unknown> = {};
+  for (const entry of manifest.registries) registries[entry.id] = await readJson(resolveInside(specRoot, entry.path));
+  return Object.freeze({
+    validate(schemaIdentifier, semanticValidator, value) {
+      const validate = ajv.getSchema(schemaIdentifier);
+      if (validate === undefined || !validate(value)) return [{ code: "AXS0001", severity: "error", phase: "schema", message: `Schema validation failed for '${schemaIdentifier}'.` }];
+      return runSemanticValidator(semanticValidator, value, { registries });
+    },
+  });
+};
+
+/** Validates the exact detached N23 Motion authority bundle through pinned schemas and semantic validators. */
+export const createMotionAuthorityValidationPort = async (
+  specRoot: string,
+): Promise<Readonly<{ readonly validateBundle: (snapshot: Readonly<Record<string, unknown>>) => readonly { readonly code: string; readonly message: string }[] }>> => {
+  const manifest = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH)) as SpecManifest;
+  const ajv = createAjv();
+  for (const entry of manifest.schemas) ajv.addSchema(asSchema(await readJson(resolveInside(specRoot, entry.path)), entry.path), entry.id);
+  const checks = [
+    ["propertyRegistry", "https://axiom.dev/schemas/css/effective-property-registry/0.1", undefined],
+    ["resolvedTokenManifest", "https://axiom.dev/schemas/token/resolved-manifest/0.2", "resolved-token-manifest"],
+    ["tokenDomainRegistry", "https://axiom.dev/schemas/token/domain-registry/0.1", "token-domain-registry"],
+    ["canonicalStateRegistry", "https://axiom.dev/schemas/state/canonical-state-registry/0.1", "canonical-state-registry"],
+    ["conditionRegistry", "https://axiom.dev/schemas/condition/registry/0.1", "condition-registry"],
+    ["appearance", "https://axiom.dev/schemas/css/appearance-ir/0.1", "css-appearance-ir"],
+  ] as const;
+  return Object.freeze({
+    validateBundle(snapshot) {
+      const registries = {
+        "css-effective-property-registry": snapshot["propertyRegistry"],
+        "foundation-resolved-token-manifest": snapshot["resolvedTokenManifest"],
+        "token-domain-registry": snapshot["tokenDomainRegistry"],
+        "canonical-state-registry": snapshot["canonicalStateRegistry"],
+        "condition-registry": snapshot["conditionRegistry"],
+        "css-profile-input": isUnknownRecord(snapshot["propertyRegistry"]) ? snapshot["propertyRegistry"]["profile"] : undefined,
+      };
+      return checks.flatMap(([key, schema, semanticValidator]) => {
+        const validate = ajv.getSchema(schema);
+        if (validate === undefined || !validate(snapshot[key])) return [{ code: "AXS0001", message: `Pinned Motion authority schema rejected '${key}'.` }];
+        return runSemanticValidator(semanticValidator, snapshot[key], { registries }).filter((diagnostic) => diagnostic.severity === "error").map((diagnostic) => ({ code: diagnostic.code, message: diagnostic.message }));
+      });
+    },
+  });
 };

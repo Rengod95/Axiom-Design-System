@@ -5,5 +5,10 @@
   "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
   "files": ["dist"],
   "scripts": { "build": "tsc -b", "type-check": "tsc --noEmit --pretty false -p tsconfig.type-test.json" },
+  "dependencies": {
+    "@axiom/condition-registry": "workspace:*",
+    "@axiom/css-property-profile": "workspace:*",
+    "@axiom/tokens": "workspace:*"
+  },
   "devDependencies": { "typescript": "^7.0.2", "vitest": "^4.1.11" }
 }

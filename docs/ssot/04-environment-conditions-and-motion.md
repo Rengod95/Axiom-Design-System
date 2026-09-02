@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-04 — Environment Conditions & Motion
-### Version 0.2.0
+### Version 0.2.3
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.2 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.2 \
 **Scope:** Responsive/environment conditions and serializable Motion semantics
 
 ---
@@ -388,20 +388,17 @@ state transitions, focus management, DOM queries, or component mounting policy.
 ```ts
 defineMotion({
   id: "dialog.popup",
-  profile: "axiom-css",
+  recipeId: "dialog",
   slot: "popup",
-  phases: {
-    enter: {
-      tracks: {
-        opacity: [
-          "0",
-          "1",
+  phases: [
+    {
+      phase: "enter",
+      sequence: [{
+        at: { kind: "afterPrevious" },
+        tracks: [
+          { property: "opacity", allowDiscrete: false, keyframes: ["0", "1"] },
+          { property: "transform", allowDiscrete: false, keyframes: ["translateY(8px) scale(0.96)", "translateY(0) scale(1)"] },
         ],
-        transform: [
-          "translateY(8px) scale(0.96)",
-          "translateY(0) scale(1)",
-        ],
-      },
       transition: {
         type: "spring",
         duration:
@@ -410,18 +407,16 @@ defineMotion({
           ),
         bounce: 0.16,
       },
+      }],
     },
-    exit: {
-      tracks: {
-        opacity: [
-          "1",
-          "0",
+    {
+      phase: "exit",
+      sequence: [{
+        at: { kind: "afterPrevious" },
+        tracks: [
+          { property: "opacity", allowDiscrete: false, keyframes: ["1", "0"] },
+          { property: "transform", allowDiscrete: false, keyframes: ["translateY(0) scale(1)", "translateY(4px) scale(0.98)"] },
         ],
-        transform: [
-          "translateY(0) scale(1)",
-          "translateY(4px) scale(0.98)",
-        ],
-      },
       transition: {
         type: "tween",
         duration:
@@ -433,32 +428,35 @@ defineMotion({
             "easing.semantic.exit",
           ),
       },
+      }],
     },
-  },
+  ],
   reducedMotion: {
     strategy: "replace",
-    phases: {
-      enter: {
-        tracks: {
-          opacity: ["0", "1"],
-        },
+    phases: [
+      {
+        phase: "enter",
+        sequence: [{
+          at: { kind: "afterPrevious" },
+          tracks: [{ property: "opacity", allowDiscrete: false, keyframes: ["0", "1"] }],
         transition: {
           type: "tween",
           duration: token("duration.semantic.instant"),
           easing: token("easing.semantic.productive"),
-        },
+        }],
       },
-      exit: {
-        tracks: {
-          opacity: ["1", "0"],
-        },
+      {
+        phase: "exit",
+        sequence: [{
+          at: { kind: "afterPrevious" },
+          tracks: [{ property: "opacity", allowDiscrete: false, keyframes: ["1", "0"] }],
         transition: {
           type: "tween",
           duration: token("duration.semantic.instant"),
           easing: token("easing.semantic.productive"),
-        },
+        }],
       },
-    },
+    ],
   },
 });
 ```
@@ -486,6 +484,11 @@ interface MotionKeyframeAuthoring {
   value: MotionValue;
 }
 ```
+
+`MotionValue` is one of a CSS literal string, a direct `TokenReference`, or a
+`CSSValueTemplate`; the normalizer converts a string to `{ kind: "css", value }`.
+The source form is not an IR escape hatch: raw values cannot include declaration
+delimiters or `!important`, and Tokens are retained rather than resolved.
 
 Exactly two shorthand `MotionValue` entries normalize to offsets `0` and `1`.
 Three or more keyframes MUST use the explicit form and contain at least three
@@ -542,8 +545,24 @@ through `MotionCompilerInput`. The Motion compiler validates both the registry
 identity and digest before it validates reduced-motion policy. It cannot infer
 the registry from a Condition ID or read it from repository state.
 
-`recipeId` is explicit lexical identity at N16. Recipe/Slot applicability is
-not inferred or validated until the Recipe contract exists.
+`recipeId` is explicit lexical identity at N16. N23 validates Recipe/Slot
+applicability against an explicit, closed N22 `CSSAppearanceIR` authority and
+its trusted canonical digest. Before comparing any expected digest, N23
+validates each supplied authority's closed shape, normative array order, and
+registered semantics: the Effective Property Registry; two-context Resolved
+Token Manifest (including per-Token order and domain/tier/type identity across
+contexts); Domain, Canonical State, and Condition registries; and the complete
+N15 Appearance artifact. Appearance declaration origin `slot` and `stage` must
+equal their containing record/rule, and every selected Appearance State must
+apply to the artifact's Recipe. The artifact's `profile`, `profileInputDigest`,
+`recipeId`, and `slots` must match the N23 profile context and source before
+Motion IR is emitted. N23 does not import the Appearance normalizer: the
+serialized artifact is its detached authority boundary.
+
+`createMotionAuthoring()` captures the canonical-digest, authority-validation,
+and Token-serializer function identities at construction time. Mutating the
+caller-owned port objects or serializer array after construction cannot change
+the result of a previously created authoring port.
 
 ### 11.2 Phase
 
@@ -560,12 +579,21 @@ interface MotionPhaseIR {
 }
 ```
 
+N23 source authoring uses the same ordered `phases` and `sequence` arrays as
+the IR. Each source phase declares `phase`, requires `state` exactly when the
+phase is `stateChange`, and each source segment requires `at`, `tracks`, and
+`transition`. Profile identity and both provenance digests are supplied only by
+the explicit normalizer context. The source has no `when`/Condition expression;
+reduced-motion policy is bound to the registered `preference.reducedMotion`
+condition by the compiler boundary.
+
 One segment contains parallel property tracks. Multiple segments execute in
 serialized order.
 
 For `stateChange`, the named Canonical State MUST have `axis: "state"` and
-include `motion` in its registered usage. Recipe/Slot applicability remains a
-later Recipe-contract check.
+include `motion` in its registered usage. Source `recipeId` MUST equal the
+authenticated N22 Appearance `recipeId`, and source `slot` MUST be one of its
+authenticated `slots`.
 
 ### 11.3 Segment and track
 
@@ -601,6 +629,10 @@ interface MotionKeyframeIR {
     | CSSValueTemplate;
 }
 ```
+
+Each source track explicitly declares `property`, `allowDiscrete`, and
+`keyframes`. This preserves a deliberate discrete-animation decision and makes
+sequence order/position visible before normalization.
 
 Offsets are finite numbers in [0,1], sorted ascending, and include 0 and 1 after
 normalization. `allowDiscrete: true` preserves the authoring opt-in required
@@ -785,8 +817,15 @@ AXM1012  Motion property requires backend capability validation
 AXM1013  unknown Motion state
 AXM1014  invalid Motion state value
 AXM1015  discrete Motion opt-in accepted (warning)
-AXM1016  Motion keyframe value kind is not permitted
-AXM1017  Motion keyframe Token binding is not permitted
+AXM1016  Motion property does not allow the submitted value kind
+AXM1017  Motion Token binding does not match effective property policy
+AXM1018  N22 Appearance applicability or digest mismatch
+
+AXM2001  closed Motion authoring source shape invalid
+AXM2002  Motion authoring identifier invalid
+AXM2004  Motion authoring authority or serializer input is malformed, violates
+         its closed/schema-semantic contract, or throws during trusted digest/
+         serializer access; emitted before digest equality comparison
 ```
 
 When AXC1103 references a collision trace, the trace entry has relation
