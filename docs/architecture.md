@@ -28,17 +28,15 @@ this rule through ADR-0004 and SSOT-01 v0.4.0.
 ## Current package graph
 
 ```text
-@axiom/spec-tooling
+@webref/css + css-tree → @axiom/css-property-profile → @axiom/spec-tooling
 
 @axiom/tokens ← @axiom/token-tooling ← @terrazzo/parser
-
-@webref/css + css-tree → @axiom/css-property-profile
 ```
 
-- `@axiom/spec-tooling` is repository tooling and has no dependency on runtime
-  packages. It validates cross-registry State, Condition, resolved Token, and
-  N15 Appearance IR invariants before later contract packages consume their
-  digests.
+- `@axiom/spec-tooling` is repository tooling. It consumes the public
+  `@axiom/css-property-profile` validation API one-way while validating
+  cross-registry State, Condition, resolved Token, Appearance IR, and Motion IR
+  invariants before later contract packages consume their digests.
 - `@axiom/tokens` is target-neutral. It must not import React, renderer,
   Tailwind, browser, or framework concepts.
 - `@axiom/token-tooling` is an adapter boundary. Parser-specific values stop at
@@ -87,14 +85,14 @@ point and contains exports rather than implementation.
 | Ordered declarations and Appearance IR | SSOT-03, declaration/Appearance schemas | `@axiom/spec-tooling` schema and semantic gates |
 | Positive and negative behavior | `spec/fixtures/`, `fixtures/` | package tests and spec harness |
 
-## Current N15 checkpoint
+## Current N16 checkpoint
 
-The `spec/manifest.json` inventory at the reconciled N15 baseline contains 33
-schemas, 14 registries, and 23 fixture suites. The fixture corpus contains 26
-positive and 57 negative files. Token generation emits the same 635 Token IDs
+The `spec/manifest.json` inventory at the N16 Motion IR checkpoint contains 34
+schemas, 14 registries, and 24 fixture suites. The fixture corpus contains 36
+positive and 62 negative files. Token generation emits the same 635 Token IDs
 for light and dark contexts, and the generated `TokenPath` union contains the
-same ID set. N16 Motion IR, N17 Behavioral Criteria schemas, and their later
-packages remain planned rather than current nodes in the package graph.
+same ID set. N17 Behavioral Criteria schemas and later packages remain planned
+rather than current nodes in the package graph.
 
 ## Change gate
 

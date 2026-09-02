@@ -61,6 +61,7 @@ export interface FixtureSuiteManifestEntry {
   readonly positiveDirectory: string;
   readonly negativeDirectory: string;
   readonly semanticValidator?: SemanticValidatorId;
+  readonly allowedWarnings?: readonly string[];
 }
 
 export interface SpecManifest {

@@ -10,7 +10,7 @@ export const STABLE_SORT_LOCALE = "en";
 
 export const PACKAGE_RUNTIME_DEPENDENCIES = {
   "css-property-profile": ["@webref/css", "css-tree"],
-  "spec-tooling": ["ajv"],
+  "spec-tooling": ["@axiom/css-property-profile", "ajv"],
   "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],
   tokens: [],
 };

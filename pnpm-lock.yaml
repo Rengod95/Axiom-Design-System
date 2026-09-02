@@ -48,6 +48,9 @@ importers:
 
   packages/spec-tooling:
     dependencies:
+      '@axiom/css-property-profile':
+        specifier: workspace:*
+        version: link:../css-property-profile
       ajv:
         specifier: 8.20.0
         version: 8.20.0

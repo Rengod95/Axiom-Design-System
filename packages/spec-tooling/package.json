@@ -14,6 +14,7 @@
     "check": "node --import tsx src/cli.ts"
   },
   "dependencies": {
+    "@axiom/css-property-profile": "workspace:*",
     "ajv": "8.20.0"
   },
   "devDependencies": {

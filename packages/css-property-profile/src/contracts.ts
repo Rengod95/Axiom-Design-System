@@ -171,6 +171,7 @@ export type CSSGrammarResult =
 
 export interface CSSGrammarValidatorOptions {
   readonly enabledExperimentalProperties?: readonly string[];
+  readonly allowCustomPropertyReferences?: boolean;
 }
 
 export interface PropertyProfileGenerationInput {

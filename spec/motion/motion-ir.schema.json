@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/motion/ir/0.1",
+  "title": "Axiom Motion IR",
+  "type": "object",
+  "required": ["schemaVersion", "profile", "profileInputDigest", "conditionRegistryDigest", "id", "recipeId", "slot", "phases", "reducedMotion"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "profile": { "const": "axiom-css" },
+    "profileInputDigest": { "$ref": "#/$defs/digest" },
+    "conditionRegistryDigest": { "$ref": "#/$defs/digest" },
+    "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+    "recipeId": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+    "slot": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+    "phases": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/phase" } },
+    "reducedMotion": { "$ref": "#/$defs/reducedMotion" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "phaseName": { "enum": ["enter", "exit", "stateChange"] },
+    "stateTransition": {
+      "type": "object",
+      "required": ["name", "from", "to"],
+      "properties": {
+        "name": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "from": { "oneOf": [{ "type": "boolean" }, { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }] },
+        "to": { "oneOf": [{ "type": "boolean" }, { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }] }
+      },
+      "unevaluatedProperties": false
+    },
+    "phase": {
+      "type": "object",
+      "required": ["phase", "sequence"],
+      "properties": {
+        "phase": { "$ref": "#/$defs/phaseName" },
+        "state": { "$ref": "#/$defs/stateTransition" },
+        "sequence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/segment" } }
+      },
+      "allOf": [{
+        "if": { "properties": { "phase": { "const": "stateChange" } }, "required": ["phase"] },
+        "then": { "required": ["state"], "properties": { "state": true } },
+        "else": { "properties": { "state": false } }
+      }],
+      "unevaluatedProperties": false
+    },
+    "segmentAt": {
+      "oneOf": [
+        { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "afterPrevious" } }, "unevaluatedProperties": false },
+        { "type": "object", "required": ["kind", "seconds"], "properties": { "kind": { "const": "absolute" }, "seconds": { "type": "number", "minimum": 0 } }, "unevaluatedProperties": false },
+        { "type": "object", "required": ["kind", "seconds"], "properties": { "kind": { "const": "overlapPrevious" }, "seconds": { "type": "number", "exclusiveMinimum": 0 } }, "unevaluatedProperties": false }
+      ]
+    },
+    "segment": {
+      "type": "object",
+      "required": ["at", "tracks", "transition"],
+      "properties": {
+        "at": { "$ref": "#/$defs/segmentAt" },
+        "tracks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/track" } },
+        "transition": { "$ref": "#/$defs/transition" }
+      },
+      "unevaluatedProperties": false
+    },
+    "track": {
+      "type": "object",
+      "required": ["property", "allowDiscrete", "keyframes"],
+      "properties": {
+        "property": { "$ref": "https://axiom.dev/schemas/css/property-name/0.1" },
+        "allowDiscrete": { "type": "boolean" },
+        "keyframes": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/keyframe" } }
+      },
+      "unevaluatedProperties": false
+    },
+    "keyframe": {
+      "type": "object",
+      "required": ["offset", "value"],
+      "properties": {
+        "offset": { "type": "number", "minimum": 0, "maximum": 1 },
+        "value": { "$ref": "https://axiom.dev/schemas/css/declaration-value/0.1" }
+      },
+      "unevaluatedProperties": false
+    },
+    "transition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "duration", "easing"],
+          "properties": {
+            "type": { "const": "tween" },
+            "duration": { "$ref": "https://axiom.dev/schemas/common/token-reference/0.1" },
+            "delay": { "$ref": "https://axiom.dev/schemas/common/token-reference/0.1" },
+            "easing": { "$ref": "https://axiom.dev/schemas/common/token-reference/0.1" }
+          },
+          "unevaluatedProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": { "const": "spring" },
+            "duration": { "$ref": "https://axiom.dev/schemas/common/token-reference/0.1" },
+            "bounce": { "type": "number", "minimum": 0, "maximum": 1 },
+            "stiffness": { "type": "number", "exclusiveMinimum": 0 },
+            "damping": { "type": "number", "exclusiveMinimum": 0 },
+            "mass": { "type": "number", "exclusiveMinimum": 0 }
+          },
+          "unevaluatedProperties": false
+        }
+      ]
+    },
+    "reducedMotion": {
+      "oneOf": [
+        { "type": "object", "required": ["strategy"], "properties": { "strategy": { "const": "disable" } }, "unevaluatedProperties": false },
+        { "type": "object", "required": ["strategy", "phases"], "properties": { "strategy": { "const": "replace" }, "phases": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/phase" } } }, "unevaluatedProperties": false }
+      ]
+    }
+  },
+  "unevaluatedProperties": false
+}
