@@ -9,6 +9,17 @@
       "slot": "root",
       "declarations": [
         {
+          "property": "border",
+          "value": { "kind": "css", "value": "1px solid transparent" },
+          "important": false,
+          "origin": {
+            "recipeId": "button",
+            "slot": "root",
+            "stage": "base",
+            "source": "fixtures/button/appearance.ts#/base/root/border"
+          }
+        },
+        {
           "property": "display",
           "value": { "kind": "css", "value": "inline-flex" },
           "important": false,
@@ -16,7 +27,7 @@
             "recipeId": "button",
             "slot": "root",
             "stage": "base",
-            "source": "recipes/button.ts#/base/root/display"
+            "source": "fixtures/button/appearance.ts#/base/root/display"
           }
         }
       ]
@@ -27,7 +38,23 @@
       "name": "tone",
       "defaultValue": "neutral",
       "values": [
-        { "value": "neutral", "apply": [] },
+        {
+          "value": "neutral",
+          "apply": [{
+            "slot": "root",
+            "declarations": [{
+              "property": "opacity",
+              "value": { "kind": "css", "value": "1" },
+              "important": false,
+              "origin": {
+                "recipeId": "button",
+                "slot": "root",
+                "stage": "variant",
+                "source": "fixtures/button/appearance.ts#/variants/tone/neutral/root/opacity"
+              }
+            }]
+          }]
+        },
         {
           "value": "brand",
           "apply": [
@@ -45,7 +72,7 @@
                     "recipeId": "button",
                     "slot": "root",
                     "stage": "variant",
-                    "source": "recipes/button.ts#/variants/tone/brand/root/backgroundColor"
+                    "source": "fixtures/button/appearance.ts#/variants/tone/brand/root/backgroundColor"
                   }
                 }
               ]
@@ -64,6 +91,17 @@
           "equals": true,
           "apply": [
             {
+              "property": "border-color",
+              "value": { "kind": "token", "path": "color.semantic.fill.brand.default" },
+              "important": false,
+              "origin": {
+                "recipeId": "button",
+                "slot": "root",
+                "stage": "state",
+                "source": "fixtures/button/appearance.ts#/states/0/cases/0/apply/borderColor"
+              }
+            },
+            {
               "property": "transform",
               "value": { "kind": "css", "value": "translateY(1px)" },
               "important": false,
@@ -71,7 +109,7 @@
                 "recipeId": "button",
                 "slot": "root",
                 "stage": "state",
-                "source": "recipes/button.ts#/states/root/pressed"
+                "source": "fixtures/button/appearance.ts#/states/0/cases/0/apply/transform"
               }
             }
           ]
@@ -97,7 +135,7 @@
                 "recipeId": "button",
                 "slot": "label",
                 "stage": "compound",
-                "source": "recipes/button.ts#/compoundVariants/0/label/color"
+                "source": "fixtures/button/appearance.ts#/compoundVariants/0/apply/label/color"
               }
             }
           ]
@@ -121,7 +159,7 @@
                 "recipeId": "button",
                 "slot": "root",
                 "stage": "condition",
-                "source": "recipes/button.ts#/conditions/0/root/transitionDuration"
+                "source": "fixtures/button/appearance.ts#/conditions/0/apply/root/transitionDuration"
               }
             }
           ]

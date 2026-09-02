@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "0.1",
+  "fixture": "button-foundation",
+  "artifacts": {
+    "appearance": "sha256:d7127c32d863ec7aaba93cfae0047d2c51c076a2f9003c53b52f73ad8e501cde",
+    "motion": "sha256:caf188846962d4a7f9b67600c8f012b2a5213cb74f8bd903a5cb2b11039186e1",
+    "trace": "sha256:088df722510e6c5984642efb23666318ca4d148be2c5b3726b1dc713417a4357"
+  },
+  "bundle": "sha256:84a6ff4b4b6aaaa76e17a8a2b65cb5b9b56771980cb1e586ae5d1ef2024a3552"
+}

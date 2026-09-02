@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N23 \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N24 \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.5.3, SSOT-03 v0.3.2, SSOT-04 v0.2.3, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.5.4, SSOT-03 v0.3.2, SSOT-04 v0.2.3, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -1001,7 +1001,10 @@ Exact first sequence:
     construction-time closed/schema-semantic authority validation before
     digest comparison and authenticated N22 Appearance Recipe/Slot
     applicability.
-25. Next: prove the Button vertical fixture and package-local golden (N24).
+25. [done] Prove the Button vertical fixture (N24) through the public N20,
+    N21, N22, and N23 boundaries; compare the existing N15/N16 artifacts and
+    governed N22 collision trace, including schema/semantic JSON round trips.
+26. Next: prove the Select vertical fixture (N25).
 ```
 
 This produces the smallest vertical foundation proof without returning to the
