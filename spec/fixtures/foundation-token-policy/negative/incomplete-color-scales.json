@@ -5,60 +5,183 @@
     "canonicalColorSpace": "oklch",
     "fallback": "hex",
     "gamutMapping": "oklch-chroma-reduction",
-    "componentPrecision": { "lightness": 6, "chroma": 6, "hue": 3 }
+    "componentPrecision": {
+      "lightness": 6,
+      "chroma": 6,
+      "hue": 3
+    }
   },
   "commonColors": [
-    { "name": "white", "hex": "#ffffff" },
-    { "name": "black", "hex": "#000000" }
+    {
+      "name": "white",
+      "hex": "#ffffff"
+    },
+    {
+      "name": "black",
+      "hex": "#000000"
+    }
   ],
   "rootFontSizePx": 16,
-  "authoredDimensionUnits": ["px", "rem"],
-  "derivedCssUnits": ["em"],
-  "forbiddenPrimitiveSegments": ["disabled"],
+  "authoredDimensionUnits": [
+    "px",
+    "rem"
+  ],
+  "derivedCssUnits": [
+    "em"
+  ],
+  "forbiddenPrimitiveSegments": [
+    "disabled"
+  ],
   "colorScales": [
     {
       "palette": "neutral",
-      "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
     },
     {
       "palette": "brand",
-      "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
     },
     {
       "palette": "red",
-      "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
     },
     {
       "palette": "amber",
-      "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
     },
     {
       "palette": "green",
-      "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
     },
     {
       "palette": "cyan",
-      "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
     }
   ],
   "spaceScale": {
     "baseUnitPx": 4,
     "steps": [
-      { "name": "0", "valuePx": 0 },
-      { "name": "1", "valuePx": 4 },
-      { "name": "2", "valuePx": 8 },
-      { "name": "3", "valuePx": 12 },
-      { "name": "4", "valuePx": 16 },
-      { "name": "5", "valuePx": 20 },
-      { "name": "6", "valuePx": 24 },
-      { "name": "8", "valuePx": 32 }
+      {
+        "name": "0",
+        "valuePx": 0
+      },
+      {
+        "name": "1",
+        "valuePx": 4
+      },
+      {
+        "name": "2",
+        "valuePx": 8
+      },
+      {
+        "name": "3",
+        "valuePx": 12
+      },
+      {
+        "name": "4",
+        "valuePx": 16
+      },
+      {
+        "name": "5",
+        "valuePx": 20
+      },
+      {
+        "name": "6",
+        "valuePx": 24
+      },
+      {
+        "name": "8",
+        "valuePx": 32
+      }
     ]
   },
-  "dimensionDomainUnits": { "space": ["px", "rem"] },
+  "dimensionDomainUnits": {
+    "space": [
+      "px",
+      "rem"
+    ]
+  },
   "typography": {
     "bodyBasePx": 16,
     "bodyMinimumPx": 13,
-    "fontSizePx": [13, 14, 15, 16, 18, 20, 24, 28, 32, 40],
+    "fontSizePx": [
+      13,
+      14,
+      15,
+      16,
+      18,
+      20,
+      24,
+      28,
+      32,
+      40
+    ],
     "weightVariants": {
       "regular": 400,
       "medium": 500,
@@ -66,16 +189,110 @@
       "bold": 700
     },
     "families": [
-      { "path": "heading.h1", "sizePx": 40 },
-      { "path": "heading.h2", "sizePx": 32 },
-      { "path": "heading.h3", "sizePx": 28 },
-      { "path": "heading.h4", "sizePx": 24 },
-      { "path": "heading.h5", "sizePx": 20 },
-      { "path": "heading.h6", "sizePx": 18 },
-      { "path": "body.xsmall", "sizePx": 13 },
-      { "path": "body.small", "sizePx": 14 },
-      { "path": "body.compact", "sizePx": 15 },
-      { "path": "body.base", "sizePx": 16 }
+      {
+        "path": "heading.h1",
+        "sizePx": 48
+      },
+      {
+        "path": "heading.h2",
+        "sizePx": 40
+      },
+      {
+        "path": "heading.h3",
+        "sizePx": 32
+      },
+      {
+        "path": "heading.h4",
+        "sizePx": 28
+      },
+      {
+        "path": "heading.h5",
+        "sizePx": 24
+      },
+      {
+        "path": "heading.h6",
+        "sizePx": 20
+      },
+      {
+        "path": "body.xs",
+        "sizePx": 13
+      },
+      {
+        "path": "body.sm",
+        "sizePx": 14
+      },
+      {
+        "path": "body.md",
+        "sizePx": 16
+      },
+      {
+        "path": "body.lg",
+        "sizePx": 18
+      },
+      {
+        "path": "body.xl",
+        "sizePx": 20
+      },
+      {
+        "path": "label.xs",
+        "sizePx": 13
+      },
+      {
+        "path": "label.sm",
+        "sizePx": 14
+      },
+      {
+        "path": "label.md",
+        "sizePx": 15
+      },
+      {
+        "path": "label.lg",
+        "sizePx": 16
+      },
+      {
+        "path": "label.xl",
+        "sizePx": 18
+      },
+      {
+        "path": "code.xs",
+        "sizePx": 13
+      },
+      {
+        "path": "code.sm",
+        "sizePx": 14
+      },
+      {
+        "path": "code.md",
+        "sizePx": 15
+      },
+      {
+        "path": "code.lg",
+        "sizePx": 16
+      },
+      {
+        "path": "code.xl",
+        "sizePx": 18
+      },
+      {
+        "path": "display.xs",
+        "sizePx": 32
+      },
+      {
+        "path": "display.sm",
+        "sizePx": 40
+      },
+      {
+        "path": "display.md",
+        "sizePx": 48
+      },
+      {
+        "path": "display.lg",
+        "sizePx": 60
+      },
+      {
+        "path": "display.xl",
+        "sizePx": 72
+      }
     ]
   },
   "contrastPairs": [
@@ -83,6 +300,120 @@
       "foreground": "color.semantic.text.primary",
       "background": "color.semantic.background.canvas",
       "minimumRatio": 4.5
+    }
+  ],
+  "aspectRatios": [
+    {
+      "id": "1x1",
+      "width": 1,
+      "height": 1,
+      "origin": "wanted",
+      "description": "1:1 square aspect ratio."
+    },
+    {
+      "id": "1000x1618",
+      "width": 1000,
+      "height": 1618,
+      "origin": "axiom-portrait-inverse",
+      "description": "1:1.618 portrait golden-ratio aspect ratio."
+    },
+    {
+      "id": "2x3",
+      "width": 2,
+      "height": 3,
+      "origin": "axiom-portrait-inverse",
+      "description": "2:3 portrait aspect ratio."
+    },
+    {
+      "id": "3x4",
+      "width": 3,
+      "height": 4,
+      "origin": "axiom-portrait-inverse",
+      "description": "3:4 portrait aspect ratio."
+    },
+    {
+      "id": "4x5",
+      "width": 4,
+      "height": 5,
+      "origin": "axiom-portrait-inverse",
+      "description": "4:5 portrait aspect ratio."
+    },
+    {
+      "id": "5x4",
+      "width": 5,
+      "height": 4,
+      "origin": "wanted",
+      "description": "5:4 landscape aspect ratio."
+    },
+    {
+      "id": "4x3",
+      "width": 4,
+      "height": 3,
+      "origin": "wanted",
+      "description": "4:3 landscape aspect ratio."
+    },
+    {
+      "id": "3x2",
+      "width": 3,
+      "height": 2,
+      "origin": "wanted",
+      "description": "3:2 landscape aspect ratio."
+    },
+    {
+      "id": "1168x1000",
+      "width": 1168,
+      "height": 1000,
+      "origin": "axiom-custom",
+      "description": "Axiom custom 1.168:1 landscape aspect ratio."
+    },
+    {
+      "id": "1618x1000",
+      "width": 1618,
+      "height": 1000,
+      "origin": "wanted",
+      "description": "1.618:1 landscape golden-ratio aspect ratio."
+    },
+    {
+      "id": "16x10",
+      "width": 16,
+      "height": 10,
+      "origin": "wanted",
+      "description": "16:10 widescreen aspect ratio."
+    },
+    {
+      "id": "16x9",
+      "width": 16,
+      "height": 9,
+      "origin": "wanted",
+      "description": "16:9 widescreen aspect ratio."
+    },
+    {
+      "id": "2x1",
+      "width": 2,
+      "height": 1,
+      "origin": "wanted",
+      "description": "2:1 wide landscape aspect ratio."
+    },
+    {
+      "id": "5x2",
+      "width": 5,
+      "height": 2,
+      "origin": "axiom-custom",
+      "description": "Axiom custom 5:2 panoramic aspect ratio."
+    },
+    {
+      "id": "21x9",
+      "width": 21,
+      "height": 9,
+      "origin": "wanted",
+      "description": "21:9 cinematic aspect ratio."
+    },
+    {
+      "id": "3x1",
+      "width": 3,
+      "height": 1,
+      "origin": "axiom-custom",
+      "description": "Axiom custom 3:1 panoramic aspect ratio."
     }
   ]
 }

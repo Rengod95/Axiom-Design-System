@@ -13,6 +13,7 @@
     "derivedCssUnits",
     "forbiddenPrimitiveSegments",
     "colorScales",
+    "aspectRatios",
     "spaceScale",
     "dimensionDomainUnits",
     "typography",
@@ -117,6 +118,122 @@
         {
           "palette": "purple",
           "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        }
+      ]
+    },
+    "aspectRatios": {
+      "const": [
+        {
+          "id": "1x1",
+          "width": 1,
+          "height": 1,
+          "origin": "wanted",
+          "description": "1:1 square aspect ratio."
+        },
+        {
+          "id": "1000x1618",
+          "width": 1000,
+          "height": 1618,
+          "origin": "axiom-portrait-inverse",
+          "description": "1:1.618 portrait golden-ratio aspect ratio."
+        },
+        {
+          "id": "2x3",
+          "width": 2,
+          "height": 3,
+          "origin": "axiom-portrait-inverse",
+          "description": "2:3 portrait aspect ratio."
+        },
+        {
+          "id": "3x4",
+          "width": 3,
+          "height": 4,
+          "origin": "axiom-portrait-inverse",
+          "description": "3:4 portrait aspect ratio."
+        },
+        {
+          "id": "4x5",
+          "width": 4,
+          "height": 5,
+          "origin": "axiom-portrait-inverse",
+          "description": "4:5 portrait aspect ratio."
+        },
+        {
+          "id": "5x4",
+          "width": 5,
+          "height": 4,
+          "origin": "wanted",
+          "description": "5:4 landscape aspect ratio."
+        },
+        {
+          "id": "4x3",
+          "width": 4,
+          "height": 3,
+          "origin": "wanted",
+          "description": "4:3 landscape aspect ratio."
+        },
+        {
+          "id": "3x2",
+          "width": 3,
+          "height": 2,
+          "origin": "wanted",
+          "description": "3:2 landscape aspect ratio."
+        },
+        {
+          "id": "1168x1000",
+          "width": 1168,
+          "height": 1000,
+          "origin": "axiom-custom",
+          "description": "Axiom custom 1.168:1 landscape aspect ratio."
+        },
+        {
+          "id": "1618x1000",
+          "width": 1618,
+          "height": 1000,
+          "origin": "wanted",
+          "description": "1.618:1 landscape golden-ratio aspect ratio."
+        },
+        {
+          "id": "16x10",
+          "width": 16,
+          "height": 10,
+          "origin": "wanted",
+          "description": "16:10 widescreen aspect ratio."
+        },
+        {
+          "id": "16x9",
+          "width": 16,
+          "height": 9,
+          "origin": "wanted",
+          "description": "16:9 widescreen aspect ratio."
+        },
+        {
+          "id": "2x1",
+          "width": 2,
+          "height": 1,
+          "origin": "wanted",
+          "description": "2:1 wide landscape aspect ratio."
+        },
+        {
+          "id": "5x2",
+          "width": 5,
+          "height": 2,
+          "origin": "axiom-custom",
+          "description": "Axiom custom 5:2 panoramic aspect ratio."
+        },
+        {
+          "id": "21x9",
+          "width": 21,
+          "height": 9,
+          "origin": "wanted",
+          "description": "21:9 cinematic aspect ratio."
+        },
+        {
+          "id": "3x1",
+          "width": 3,
+          "height": 1,
+          "origin": "axiom-custom",
+          "description": "Axiom custom 3:1 panoramic aspect ratio."
         }
       ]
     },
