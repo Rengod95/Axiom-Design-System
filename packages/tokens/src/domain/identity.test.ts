@@ -17,10 +17,10 @@ const domains: readonly TokenDomainDefinition[] = [
 
 describe("Token identity", () => {
   it("parses explicit domain and tier segments", () => {
-    expect(parseTokenIdentity("color.semantic.action.primary", domains)).toEqual({
+    expect(parseTokenIdentity("color.semantic.fill.brand", domains)).toEqual({
       ok: true,
       identity: {
-        id: "color.semantic.action.primary",
+        id: "color.semantic.fill.brand",
         domain: "color",
         tier: "semantic",
       },

@@ -6,6 +6,8 @@
   "required": [
     "schemaVersion",
     "semanticVocabularyRegistry",
+    "colorProfile",
+    "commonColors",
     "rootFontSizePx",
     "authoredDimensionUnits",
     "derivedCssUnits",
@@ -19,6 +21,57 @@
   "properties": {
     "schemaVersion": { "const": "0.1" },
     "semanticVocabularyRegistry": { "const": "semantic-token-vocabulary" },
+    "colorProfile": {
+      "type": "object",
+      "required": [
+        "canonicalColorSpace",
+        "fallback",
+        "gamutMapping",
+        "componentPrecision"
+      ],
+      "properties": {
+        "canonicalColorSpace": { "const": "oklch" },
+        "fallback": { "const": "hex" },
+        "gamutMapping": { "const": "oklch-chroma-reduction" },
+        "componentPrecision": {
+          "type": "object",
+          "required": ["lightness", "chroma", "hue"],
+          "properties": {
+            "lightness": { "const": 6 },
+            "chroma": { "const": 6 },
+            "hue": { "const": 3 }
+          },
+          "unevaluatedProperties": false
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "commonColors": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "object",
+          "required": ["name", "hex"],
+          "properties": {
+            "name": { "const": "white" },
+            "hex": { "const": "#ffffff" }
+          },
+          "unevaluatedProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["name", "hex"],
+          "properties": {
+            "name": { "const": "black" },
+            "hex": { "const": "#000000" }
+          },
+          "unevaluatedProperties": false
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
     "rootFontSizePx": { "type": "number", "exclusiveMinimum": 0 },
     "authoredDimensionUnits": {
       "type": "array",
@@ -36,8 +89,36 @@
     },
     "colorScales": {
       "type": "array",
-      "minItems": 2,
-      "items": { "$ref": "#/$defs/colorScale" }
+      "const": [
+        {
+          "palette": "neutral",
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        },
+        {
+          "palette": "brand",
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        },
+        {
+          "palette": "red",
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        },
+        {
+          "palette": "amber",
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        },
+        {
+          "palette": "green",
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        },
+        {
+          "palette": "cyan",
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        },
+        {
+          "palette": "purple",
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        }
+      ]
     },
     "spaceScale": {
       "type": "object",
@@ -104,20 +185,6 @@
     }
   },
   "$defs": {
-    "colorScale": {
-      "type": "object",
-      "required": ["palette", "shades"],
-      "properties": {
-        "palette": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
-        "shades": {
-          "type": "array",
-          "minItems": 2,
-          "uniqueItems": true,
-          "items": { "type": "integer", "minimum": 0, "maximum": 1000 }
-        }
-      },
-      "unevaluatedProperties": false
-    },
     "scaleStep": {
       "type": "object",
       "required": ["name", "valuePx"],

@@ -2,7 +2,7 @@
   "property": "background-color",
   "value": {
     "kind": "token",
-    "path": "color.semantic.action.primary.default"
+    "path": "color.semantic.fill.brand.default"
   },
   "important": false,
   "origin": {

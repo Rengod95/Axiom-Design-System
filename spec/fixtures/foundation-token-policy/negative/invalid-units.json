@@ -1,34 +1,203 @@
 {
   "schemaVersion": "0.1",
   "semanticVocabularyRegistry": "semantic-token-vocabulary",
+  "colorProfile": {
+    "canonicalColorSpace": "oklch",
+    "fallback": "hex",
+    "gamutMapping": "oklch-chroma-reduction",
+    "componentPrecision": {
+      "lightness": 6,
+      "chroma": 6,
+      "hue": 3
+    }
+  },
+  "commonColors": [
+    {
+      "name": "white",
+      "hex": "#ffffff"
+    },
+    {
+      "name": "black",
+      "hex": "#000000"
+    }
+  ],
   "rootFontSizePx": 16,
-  "authoredDimensionUnits": ["px", "rem", "em"],
-  "derivedCssUnits": ["em"],
-  "forbiddenPrimitiveSegments": ["disabled"],
+  "authoredDimensionUnits": [
+    "px",
+    "rem",
+    "em"
+  ],
+  "derivedCssUnits": [
+    "em"
+  ],
+  "forbiddenPrimitiveSegments": [
+    "disabled"
+  ],
   "colorScales": [
-    { "palette": "neutral", "shades": [0, 1000] },
-    { "palette": "brand", "shades": [50, 950] }
+    {
+      "palette": "neutral",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "palette": "brand",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "palette": "red",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "palette": "amber",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "palette": "green",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "palette": "cyan",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "palette": "purple",
+      "shades": [
+        50,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    }
   ],
   "spaceScale": {
     "baseUnitPx": 4,
     "steps": [
-      { "name": "0", "valuePx": 0 },
-      { "name": "1", "valuePx": 4 },
-      { "name": "2", "valuePx": 8 },
-      { "name": "3", "valuePx": 12 },
-      { "name": "4", "valuePx": 16 },
-      { "name": "5", "valuePx": 20 },
-      { "name": "6", "valuePx": 24 },
-      { "name": "8", "valuePx": 32 }
+      {
+        "name": "0",
+        "valuePx": 0
+      },
+      {
+        "name": "1",
+        "valuePx": 4
+      },
+      {
+        "name": "2",
+        "valuePx": 8
+      },
+      {
+        "name": "3",
+        "valuePx": 12
+      },
+      {
+        "name": "4",
+        "valuePx": 16
+      },
+      {
+        "name": "5",
+        "valuePx": 20
+      },
+      {
+        "name": "6",
+        "valuePx": 24
+      },
+      {
+        "name": "8",
+        "valuePx": 32
+      }
     ]
   },
   "dimensionDomainUnits": {
-    "space": ["px", "rem"]
+    "space": [
+      "px",
+      "rem"
+    ]
   },
   "typography": {
     "bodyBasePx": 16,
     "bodyMinimumPx": 13,
-    "fontSizePx": [13, 14, 15, 16, 18, 20, 24, 28, 32, 40],
+    "fontSizePx": [
+      13,
+      14,
+      15,
+      16,
+      18,
+      20,
+      24,
+      28,
+      32,
+      40
+    ],
     "weightVariants": {
       "regular": 400,
       "medium": 500,
@@ -36,22 +205,52 @@
       "bold": 700
     },
     "families": [
-      { "path": "heading.h1", "sizePx": 40 },
-      { "path": "heading.h2", "sizePx": 32 },
-      { "path": "heading.h3", "sizePx": 28 },
-      { "path": "heading.h4", "sizePx": 24 },
-      { "path": "heading.h5", "sizePx": 20 },
-      { "path": "heading.h6", "sizePx": 18 },
-      { "path": "body.xsmall", "sizePx": 13 },
-      { "path": "body.small", "sizePx": 14 },
-      { "path": "body.compact", "sizePx": 15 },
-      { "path": "body.base", "sizePx": 16 }
+      {
+        "path": "heading.h1",
+        "sizePx": 40
+      },
+      {
+        "path": "heading.h2",
+        "sizePx": 32
+      },
+      {
+        "path": "heading.h3",
+        "sizePx": 28
+      },
+      {
+        "path": "heading.h4",
+        "sizePx": 24
+      },
+      {
+        "path": "heading.h5",
+        "sizePx": 20
+      },
+      {
+        "path": "heading.h6",
+        "sizePx": 18
+      },
+      {
+        "path": "body.xsmall",
+        "sizePx": 13
+      },
+      {
+        "path": "body.small",
+        "sizePx": 14
+      },
+      {
+        "path": "body.compact",
+        "sizePx": 15
+      },
+      {
+        "path": "body.base",
+        "sizePx": 16
+      }
     ]
   },
   "contrastPairs": [
     {
       "foreground": "color.semantic.text.primary",
-      "background": "color.semantic.surface.canvas",
+      "background": "color.semantic.background.canvas",
       "minimumRatio": 4.5
     }
   ]

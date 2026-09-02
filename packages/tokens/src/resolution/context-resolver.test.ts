@@ -76,9 +76,9 @@ const token = (
 
 const baseTokens = (): readonly ParsedDtcgToken[] => [
   token("color.component.button.root.background.default", "component", "{color.semantic.surface.default}"),
-  token("color.primitive.neutral.0", "primitive", white),
+  token("color.primitive.common.white", "primitive", white),
   token("color.primitive.neutral.900", "primitive", black),
-  token("color.semantic.surface.default", "semantic", "{color.primitive.neutral.0}"),
+  token("color.semantic.surface.default", "semantic", "{color.primitive.common.white}"),
   token("opacity.primitive.disabled", "primitive", 0.4, {
     domain: "opacity",
     dtcgType: "number",
@@ -283,7 +283,7 @@ describe("Token tier graph and context resolver", () => {
     {
       name: "Primitive Token",
       code: "AXT1503",
-      override: token("color.primitive.neutral.0", "primitive", black),
+      override: token("color.primitive.common.white", "primitive", black),
     },
     {
       name: "changed invariant",

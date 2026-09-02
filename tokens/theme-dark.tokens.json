@@ -2,12 +2,22 @@
   "$schema": "https://designtokens.org/schemas/2025.10/format.json",
   "color": {
     "semantic": {
-      "surface": {
+      "background": {
         "canvas": {
           "$type": "color",
-          "$value": "{color.primitive.neutral.950}"
+          "$value": "{color.primitive.common.black}"
         },
         "subtle": {
+          "$type": "color",
+          "$value": "{color.primitive.neutral.900}"
+        },
+        "inverse": {
+          "$type": "color",
+          "$value": "{color.primitive.common.white}"
+        }
+      },
+      "surface": {
+        "default": {
           "$type": "color",
           "$value": "{color.primitive.neutral.900}"
         },
@@ -15,21 +25,69 @@
           "$type": "color",
           "$value": "{color.primitive.neutral.900}"
         },
-        "sunken": {
-          "$type": "color",
-          "$value": "{color.primitive.neutral.1000}"
-        },
         "overlay": {
           "$type": "color",
           "$value": "{color.primitive.neutral.800}"
         },
-        "inverse": {
-          "$type": "color",
-          "$value": "{color.primitive.neutral.50}"
-        },
         "brand": {
           "$type": "color",
-          "$value": "{color.primitive.brand.950}"
+          "$value": "{color.primitive.brand.900}"
+        }
+      },
+      "fill": {
+        "neutral": {
+          "default": {
+            "$type": "color",
+            "$value": "{color.primitive.neutral.900}"
+          },
+          "hovered": {
+            "$type": "color",
+            "$value": "{color.primitive.neutral.800}"
+          },
+          "pressed": {
+            "$type": "color",
+            "$value": "{color.primitive.neutral.700}"
+          },
+          "disabled": {
+            "$type": "color",
+            "$value": "{color.primitive.neutral.800}"
+          }
+        },
+        "brand": {
+          "default": {
+            "$type": "color",
+            "$value": "{color.primitive.brand.600}"
+          },
+          "hovered": {
+            "$type": "color",
+            "$value": "{color.primitive.brand.700}"
+          },
+          "pressed": {
+            "$type": "color",
+            "$value": "{color.primitive.brand.800}"
+          },
+          "disabled": {
+            "$type": "color",
+            "$value": "{color.primitive.neutral.800}"
+          }
+        },
+        "danger": {
+          "default": {
+            "$type": "color",
+            "$value": "{color.primitive.red.600}"
+          },
+          "hovered": {
+            "$type": "color",
+            "$value": "{color.primitive.red.700}"
+          },
+          "pressed": {
+            "$type": "color",
+            "$value": "{color.primitive.red.800}"
+          },
+          "disabled": {
+            "$type": "color",
+            "$value": "{color.primitive.neutral.800}"
+          }
         }
       },
       "text": {
@@ -63,11 +121,11 @@
         },
         "onBrand": {
           "$type": "color",
-          "$value": "{color.primitive.neutral.0}"
+          "$value": "{color.primitive.common.white}"
         },
         "onDanger": {
           "$type": "color",
-          "$value": "{color.primitive.neutral.0}"
+          "$value": "{color.primitive.common.white}"
         }
       },
       "icon": {
@@ -110,89 +168,11 @@
           "$value": "{color.primitive.brand.400}"
         }
       },
-      "action": {
-        "primary": {
-          "default": {
-            "$type": "color",
-            "$value": "{color.primitive.brand.600}"
-          },
-          "hovered": {
-            "$type": "color",
-            "$value": "{color.primitive.brand.700}"
-          },
-          "pressed": {
-            "$type": "color",
-            "$value": "{color.primitive.brand.800}"
-          },
-          "disabled": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.800}"
-          },
-          "text": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.0}"
-          },
-          "textDisabled": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.500}"
-          }
-        },
-        "secondary": {
-          "default": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.900}"
-          },
-          "hovered": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.800}"
-          },
-          "pressed": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.700}"
-          },
-          "border": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.700}"
-          },
-          "text": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.100}"
-          }
-        },
-        "danger": {
-          "default": {
-            "$type": "color",
-            "$value": "{color.primitive.red.600}"
-          },
-          "hovered": {
-            "$type": "color",
-            "$value": "{color.primitive.red.700}"
-          },
-          "pressed": {
-            "$type": "color",
-            "$value": "{color.primitive.red.800}"
-          },
-          "text": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.0}"
-          }
-        },
-        "ghost": {
-          "hovered": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.800}"
-          },
-          "pressed": {
-            "$type": "color",
-            "$value": "{color.primitive.neutral.700}"
-          }
-        }
-      },
       "status": {
         "success": {
-          "surface": {
+          "background": {
             "$type": "color",
-            "$value": "{color.primitive.green.950}"
+            "$value": "{color.primitive.green.900}"
           },
           "text": {
             "$type": "color",
@@ -208,9 +188,9 @@
           }
         },
         "warning": {
-          "surface": {
+          "background": {
             "$type": "color",
-            "$value": "{color.primitive.amber.950}"
+            "$value": "{color.primitive.amber.900}"
           },
           "text": {
             "$type": "color",
@@ -226,9 +206,9 @@
           }
         },
         "danger": {
-          "surface": {
+          "background": {
             "$type": "color",
-            "$value": "{color.primitive.red.950}"
+            "$value": "{color.primitive.red.900}"
           },
           "text": {
             "$type": "color",
@@ -244,9 +224,9 @@
           }
         },
         "info": {
-          "surface": {
+          "background": {
             "$type": "color",
-            "$value": "{color.primitive.brand.950}"
+            "$value": "{color.primitive.brand.900}"
           },
           "text": {
             "$type": "color",
@@ -270,7 +250,7 @@
       },
       "backdrop": {
         "$type": "color",
-        "$value": "{color.primitive.neutral.1000}"
+        "$value": "{color.primitive.common.black}"
       },
       "selection": {
         "background": {
