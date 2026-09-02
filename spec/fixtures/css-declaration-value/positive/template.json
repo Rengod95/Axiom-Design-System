@@ -1,0 +1,11 @@
+{
+  "kind": "css-template",
+  "parts": [
+    "calc(100% - ",
+    {
+      "kind": "token",
+      "path": "space.semantic.layout.gutter"
+    },
+    ")"
+  ]
+}

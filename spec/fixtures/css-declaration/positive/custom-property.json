@@ -1,0 +1,14 @@
+{
+  "property": "--brand-color",
+  "value": {
+    "kind": "css",
+    "value": "oklch(60% 0.2 250)"
+  },
+  "important": false,
+  "origin": {
+    "recipeId": "themeBridge",
+    "slot": "root",
+    "stage": "base",
+    "source": "recipes/theme-bridge.ts#/base/root/brandColor"
+  }
+}

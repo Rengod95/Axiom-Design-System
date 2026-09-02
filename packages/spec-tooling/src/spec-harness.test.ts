@@ -10,10 +10,10 @@ describe("normative specification", () => {
   it("validates every declared schema, registry, and conformance fixture", async () => {
     const report = await checkSpecification(specRoot);
 
-    expect(report.schemaCount).toBe(26);
+    expect(report.schemaCount).toBe(31);
     expect(report.registryCount).toBe(13);
-    expect(report.positiveFixtureCount).toBe(18);
-    expect(report.negativeFixtureCount).toBe(33);
+    expect(report.positiveFixtureCount).toBe(24);
+    expect(report.negativeFixtureCount).toBe(45);
     expect(report.digests["canonical-state-registry"]).toMatch(
       /^sha256:[a-f0-9]{64}$/,
     );

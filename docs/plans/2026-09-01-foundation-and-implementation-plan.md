@@ -963,8 +963,8 @@ Exact first sequence:
 12. [done] Prove box-shadow template segments for space/blur/color.
 13. [done] Add the Canonical State Registry schema and fixtures (N12).
 14. [done] Add the Condition Registry schema and fixtures (N13).
-15. [next] Add ordered declaration/value schemas (N14).
-16. Add the Appearance IR schema (N15).
+15. [done] Add ordered declaration/value schemas (N14).
+16. [next] Add the Appearance IR schema (N15).
 17. Add the Motion IR schema (N16).
 18. Add Behavioral Criteria Source/Profile schemas (N17).
 19. Generate/reference the combined TypeScript contract surface (N18).

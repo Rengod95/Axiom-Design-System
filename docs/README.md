@@ -42,6 +42,7 @@ reconciliation한다.
 16. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
 17. [Token Foundation Scale Hardening](implementation/2026-09-01-token-foundation-scale-hardening.md)
 18. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
+19. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를
@@ -115,6 +116,7 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [Post-P3 Foundation Review and Next Sequence — 2026-09-01](plans/2026-09-01-post-p3-foundation-review.md)
 - [Token Foundation Scale Hardening — 2026-09-01](implementation/2026-09-01-token-foundation-scale-hardening.md)
 - [Canonical State and Condition Registries — 2026-09-01](implementation/2026-09-01-state-and-condition-registries.md)
+- [Ordered CSS Declaration Contracts — 2026-09-02](implementation/2026-09-02-ordered-declaration-contracts.md)
 - [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 

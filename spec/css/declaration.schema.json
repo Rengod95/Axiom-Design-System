@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/declaration/0.1",
+  "title": "Axiom CSS Declaration IR",
+  "type": "object",
+  "required": ["property", "value", "important", "origin"],
+  "properties": {
+    "property": {
+      "$ref": "https://axiom.dev/schemas/css/property-name/0.1"
+    },
+    "value": {
+      "$ref": "https://axiom.dev/schemas/css/declaration-value/0.1"
+    },
+    "important": { "const": false },
+    "origin": {
+      "$ref": "https://axiom.dev/schemas/css/declaration-origin/0.1"
+    }
+  },
+  "unevaluatedProperties": false
+}

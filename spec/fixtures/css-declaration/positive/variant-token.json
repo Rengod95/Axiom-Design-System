@@ -1,0 +1,14 @@
+{
+  "property": "background-color",
+  "value": {
+    "kind": "token",
+    "path": "color.semantic.action.primary.default"
+  },
+  "important": false,
+  "origin": {
+    "recipeId": "button",
+    "slot": "root",
+    "stage": "variant",
+    "source": "recipes/button.ts#/variants/tone/primary/root/backgroundColor"
+  }
+}

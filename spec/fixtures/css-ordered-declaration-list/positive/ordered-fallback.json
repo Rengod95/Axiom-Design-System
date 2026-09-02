@@ -1,0 +1,30 @@
+[
+  {
+    "property": "background-color",
+    "value": {
+      "kind": "css",
+      "value": "rgb(10 20 30 / 0.8)"
+    },
+    "important": false,
+    "origin": {
+      "recipeId": "surface",
+      "slot": "root",
+      "stage": "base",
+      "source": "recipes/surface.ts#/base/root/backgroundColor/0"
+    }
+  },
+  {
+    "property": "background-color",
+    "value": {
+      "kind": "css",
+      "value": "oklch(45% 0.08 250 / 0.8)"
+    },
+    "important": false,
+    "origin": {
+      "recipeId": "surface",
+      "slot": "root",
+      "stage": "base",
+      "source": "recipes/surface.ts#/base/root/backgroundColor/1"
+    }
+  }
+]

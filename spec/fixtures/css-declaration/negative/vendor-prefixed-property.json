@@ -1,0 +1,14 @@
+{
+  "property": "-webkit-line-clamp",
+  "value": {
+    "kind": "css",
+    "value": "2"
+  },
+  "important": false,
+  "origin": {
+    "recipeId": "summary",
+    "slot": "root",
+    "stage": "base",
+    "source": "recipes/summary.ts#/base/root/WebkitLineClamp"
+  }
+}
