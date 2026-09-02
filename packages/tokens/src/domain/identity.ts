@@ -17,6 +17,7 @@ import {
   TOKEN_ID_PATH_SEGMENT_PATTERN,
   TOKEN_ID_TIER_SEGMENT_INDEX,
 } from "../constants.js";
+import { isTokenJsonObject } from "./token-json-value.js";
 
 export type TokenIdentityResult =
   | {
@@ -122,12 +123,9 @@ export const validateTokenDomainType = (
   return [];
 };
 
-const isRecord = (value: TokenJsonValue): value is Readonly<Record<string, TokenJsonValue>> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
 const numericValue = (dtcgType: DtcgType, value: TokenJsonValue): number | undefined => {
   if (dtcgType === "number") return typeof value === "number" ? value : undefined;
-  if (!isRecord(value) || typeof value["value"] !== "number") return undefined;
+  if (!isTokenJsonObject(value) || typeof value["value"] !== "number") return undefined;
 
   if (dtcgType === "dimension") return value["value"];
   if (dtcgType === "duration") {

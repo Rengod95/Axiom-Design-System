@@ -1,7 +1,5 @@
 import {
   CONSTRAINT_REQUIRED_DTCG_TYPE,
-  ERROR_DIAGNOSTIC_SEVERITY,
-  IN_MEMORY_SOURCE_NAME,
   REQUIRED_RESOLVED_THEMES,
   SPEC_DIAGNOSTIC_CODE,
   STABLE_SORT_LOCALE,
@@ -13,49 +11,20 @@ import {
 import { validateCanonicalStateRegistry } from "./semantic/canonical-state-registry-validator.js";
 import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
+import { createSemanticDiagnosticFactory } from "./semantic/semantic-diagnostic.js";
 import type {
   Diagnostic,
-  JsonValue,
   SemanticValidationContext,
   SemanticValidatorId,
 } from "./types.js";
+import { isUnknownRecord } from "./validation/unknown-record.js";
 
-interface RecordValue {
-  readonly [key: string]: unknown;
-  readonly allowedDTCGTypes?: unknown;
-  readonly constraints?: unknown;
-  readonly context?: unknown;
-  readonly contexts?: unknown;
-  readonly dependencies?: unknown;
-  readonly domain?: unknown;
-  readonly domains?: unknown;
-  readonly id?: unknown;
-  readonly kind?: unknown;
-  readonly root?: unknown;
-  readonly resolvedValue?: unknown;
-  readonly tier?: unknown;
-  readonly tokens?: unknown;
-}
-
-const isRecord = (value: unknown): value is RecordValue =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
-const tokenDiagnostic = (
-  code: string,
-  message: string,
-  pointer: string,
-  details?: Readonly<Record<string, JsonValue>>,
-): Diagnostic => ({
-  code,
-  severity: ERROR_DIAGNOSTIC_SEVERITY,
-  phase: TOKEN_DIAGNOSTIC_PHASE,
-  message,
-  location: { file: IN_MEMORY_SOURCE_NAME, pointer },
-  ...(details === undefined ? {} : { details }),
-});
+const tokenDiagnostic = createSemanticDiagnosticFactory(
+  TOKEN_DIAGNOSTIC_PHASE,
+);
 
 const validateTokenIdentity = (value: unknown): readonly Diagnostic[] => {
-  if (!isRecord(value)) return [];
+  if (!isUnknownRecord(value)) return [];
 
   const { domain, id, tier } = value;
   if (typeof id !== "string" || typeof domain !== "string" || typeof tier !== "string") {
@@ -99,15 +68,15 @@ const validateTokenIdentity = (value: unknown): readonly Diagnostic[] => {
 const containsTokenReference = (value: unknown): boolean => {
   if (typeof value === "string") return TOKEN_REFERENCE_PATTERN.test(value);
   if (Array.isArray(value)) return value.some(containsTokenReference);
-  if (isRecord(value)) return Object.values(value).some(containsTokenReference);
+  if (isUnknownRecord(value)) return Object.values(value).some(containsTokenReference);
   return false;
 };
 
 const validateTokenContextOverride = (value: unknown): readonly Diagnostic[] => {
-  if (!isRecord(value) || !Array.isArray(value.tokens)) return [];
+  if (!isUnknownRecord(value) || !Array.isArray(value["tokens"])) return [];
   const diagnostics = [...validateParsedTokenDocument(value)];
-  value.tokens.forEach((token, index) => {
-    if (isRecord(token) && token.tier === "primitive") {
+  value["tokens"].forEach((token, index) => {
+    if (isUnknownRecord(token) && token["tier"] === "primitive") {
       diagnostics.push(
         tokenDiagnostic(
           SPEC_DIAGNOSTIC_CODE.PRIMITIVE_CONTEXT_OVERRIDE,
@@ -121,13 +90,13 @@ const validateTokenContextOverride = (value: unknown): readonly Diagnostic[] => 
 };
 
 const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] => {
-  if (!isRecord(value) || !Array.isArray(value.contexts)) return [];
+  if (!isUnknownRecord(value) || !Array.isArray(value["contexts"])) return [];
   const diagnostics: Diagnostic[] = [];
   let baselineIds: readonly string[] | undefined;
 
-  value.contexts.forEach((contextEntry, contextIndex) => {
-    if (!isRecord(contextEntry) || !isRecord(contextEntry.context)) return;
-    const theme = contextEntry.context["theme"];
+  value["contexts"].forEach((contextEntry, contextIndex) => {
+    if (!isUnknownRecord(contextEntry) || !isUnknownRecord(contextEntry["context"])) return;
+    const theme = contextEntry["context"]["theme"];
     if (theme !== REQUIRED_RESOLVED_THEMES[contextIndex]) {
       diagnostics.push(
         tokenDiagnostic(
@@ -137,10 +106,10 @@ const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] =>
         ),
       );
     }
-    if (!Array.isArray(contextEntry.tokens)) return;
+    if (!Array.isArray(contextEntry["tokens"])) return;
 
     diagnostics.push(
-      ...validateParsedTokenDocument({ tokens: contextEntry.tokens }).map((entry) => ({
+      ...validateParsedTokenDocument({ tokens: contextEntry["tokens"] }).map((entry) => ({
         ...entry,
         ...(entry.location === undefined
           ? {}
@@ -153,9 +122,9 @@ const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] =>
       })),
     );
 
-    const ids = contextEntry.tokens
-      .filter(isRecord)
-      .map((token) => token.id)
+    const ids = contextEntry["tokens"]
+      .filter(isUnknownRecord)
+      .map((token) => token["id"])
       .filter((id): id is string => typeof id === "string");
     const idSet = new Set(ids);
     if (baselineIds === undefined) baselineIds = ids;
@@ -169,19 +138,19 @@ const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] =>
       );
     }
 
-    contextEntry.tokens.forEach((token, tokenIndex) => {
-      if (!isRecord(token)) return;
-      if (containsTokenReference(token.resolvedValue)) {
+    contextEntry["tokens"].forEach((token, tokenIndex) => {
+      if (!isUnknownRecord(token)) return;
+      if (containsTokenReference(token["resolvedValue"])) {
         diagnostics.push(
           tokenDiagnostic(
             SPEC_DIAGNOSTIC_CODE.UNRESOLVED_ALIAS,
-            `Resolved Token '${String(token.id)}' still contains an unresolved alias.`,
+            `Resolved Token '${String(token["id"])}' still contains an unresolved alias.`,
             `/contexts/${contextIndex}/tokens/${tokenIndex}/resolvedValue`,
           ),
         );
       }
-      if (!Array.isArray(token.dependencies)) return;
-      token.dependencies.forEach((dependency, dependencyIndex) => {
+      if (!Array.isArray(token["dependencies"])) return;
+      token["dependencies"].forEach((dependency, dependencyIndex) => {
         if (typeof dependency === "string" && !idSet.has(dependency)) {
           diagnostics.push(
             tokenDiagnostic(
@@ -198,46 +167,52 @@ const validateResolvedTokenManifest = (value: unknown): readonly Diagnostic[] =>
 };
 
 const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
-  if (!isRecord(value) || !Array.isArray(value.domains)) return [];
+  if (!isUnknownRecord(value) || !Array.isArray(value["domains"])) return [];
 
   const diagnostics: Diagnostic[] = [];
   const ids = new Set<string>();
   const roots = new Set<string>();
   let previousId: string | undefined;
 
-  value.domains.forEach((domain, index) => {
-    if (!isRecord(domain) || typeof domain.id !== "string" || typeof domain.root !== "string") {
+  value["domains"].forEach((domain, index) => {
+    if (
+      !isUnknownRecord(domain) ||
+      typeof domain["id"] !== "string" ||
+      typeof domain["root"] !== "string"
+    ) {
       return;
     }
+    const id = domain["id"];
+    const root = domain["root"];
 
     const pointer = `/domains/${index}`;
-    if (ids.has(domain.id)) {
+    if (ids.has(id)) {
       diagnostics.push(
         tokenDiagnostic(
           SPEC_DIAGNOSTIC_CODE.DUPLICATE_DOMAIN_ID,
-          `Duplicate Token Domain id '${domain.id}'.`,
+          `Duplicate Token Domain id '${id}'.`,
           `${pointer}/id`,
         ),
       );
     }
-    ids.add(domain.id);
+    ids.add(id);
 
-    if (roots.has(domain.root)) {
+    if (roots.has(root)) {
       diagnostics.push(
         tokenDiagnostic(
           SPEC_DIAGNOSTIC_CODE.DUPLICATE_DOMAIN_ROOT,
-          `Duplicate Token Domain root '${domain.root}'.`,
+          `Duplicate Token Domain root '${root}'.`,
           `${pointer}/root`,
         ),
       );
     }
-    roots.add(domain.root);
+    roots.add(root);
 
-    if (domain.id !== domain.root) {
+    if (id !== root) {
       diagnostics.push(
         tokenDiagnostic(
           SPEC_DIAGNOSTIC_CODE.DOMAIN_ROOT_MISMATCH,
-          `Token Domain id '${domain.id}' must equal its root '${domain.root}'.`,
+          `Token Domain id '${id}' must equal its root '${root}'.`,
           `${pointer}/root`,
         ),
       );
@@ -245,7 +220,7 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
 
     if (
       previousId !== undefined &&
-      previousId.localeCompare(domain.id, STABLE_SORT_LOCALE) > 0
+      previousId.localeCompare(id, STABLE_SORT_LOCALE) > 0
     ) {
       diagnostics.push(
         tokenDiagnostic(
@@ -255,45 +230,50 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
         ),
       );
     }
-    previousId = domain.id;
+    previousId = id;
 
-    const allowedTypes = Array.isArray(domain.allowedDTCGTypes)
-      ? new Set(domain.allowedDTCGTypes.filter((item): item is string => typeof item === "string"))
+    const allowedTypes = Array.isArray(domain["allowedDTCGTypes"])
+      ? new Set(
+          domain["allowedDTCGTypes"].filter(
+            (item): item is string => typeof item === "string",
+          ),
+        )
       : new Set<string>();
-    if (!Array.isArray(domain.constraints)) return;
+    if (!Array.isArray(domain["constraints"])) return;
 
-    domain.constraints.forEach((constraint, constraintIndex) => {
-      if (!isRecord(constraint) || typeof constraint.kind !== "string") return;
+    domain["constraints"].forEach((constraint, constraintIndex) => {
+      if (!isUnknownRecord(constraint) || typeof constraint["kind"] !== "string") return;
+      const kind = constraint["kind"];
       const expectedType =
         CONSTRAINT_REQUIRED_DTCG_TYPE[
-          constraint.kind as keyof typeof CONSTRAINT_REQUIRED_DTCG_TYPE
+          kind as keyof typeof CONSTRAINT_REQUIRED_DTCG_TYPE
         ];
       if (expectedType !== undefined && !allowedTypes.has(expectedType)) {
         diagnostics.push(
           tokenDiagnostic(
             SPEC_DIAGNOSTIC_CODE.CONSTRAINT_TYPE_MISMATCH,
-            `Constraint '${constraint.kind}' requires allowed DTCG type '${expectedType}'.`,
+            `Constraint '${kind}' requires allowed DTCG type '${expectedType}'.`,
             `${pointer}/constraints/${constraintIndex}`,
           ),
         );
       }
 
       if (
-        (constraint.kind === "numberRange" || constraint.kind === "dimensionRange") &&
+        (kind === "numberRange" || kind === "dimensionRange") &&
         "minimum" in constraint &&
         "exclusiveMinimum" in constraint
       ) {
         diagnostics.push(
           tokenDiagnostic(
             SPEC_DIAGNOSTIC_CODE.CONSTRAINT_MINIMUM_CONFLICT,
-            `Constraint '${constraint.kind}' cannot define both minimum and exclusiveMinimum.`,
+            `Constraint '${kind}' cannot define both minimum and exclusiveMinimum.`,
             `${pointer}/constraints/${constraintIndex}`,
           ),
         );
       }
 
       if (
-        constraint.kind === "numberRange" &&
+        kind === "numberRange" &&
         "maximum" in constraint &&
         "exclusiveMaximum" in constraint
       ) {
@@ -312,15 +292,15 @@ const validateTokenDomainRegistry = (value: unknown): readonly Diagnostic[] => {
 };
 
 const validateParsedTokenDocument = (value: unknown): readonly Diagnostic[] => {
-  if (!isRecord(value) || !Array.isArray(value.tokens)) return [];
+  if (!isUnknownRecord(value) || !Array.isArray(value["tokens"])) return [];
 
   const diagnostics: Diagnostic[] = [];
   const ids = new Set<string>();
   let previousId: string | undefined;
 
-  value.tokens.forEach((token, index) => {
-    if (!isRecord(token)) return;
-    const id = token.id;
+  value["tokens"].forEach((token, index) => {
+    if (!isUnknownRecord(token)) return;
+    const id = token["id"];
     if (typeof id === "string") {
       if (ids.has(id)) {
         diagnostics.push(

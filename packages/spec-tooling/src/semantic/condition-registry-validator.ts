@@ -6,16 +6,18 @@ import {
 } from "../constants.js";
 import type { Diagnostic, SemanticValidationContext } from "../types.js";
 import {
+  isUnknownRecord,
+  type UnknownRecord,
+} from "../validation/unknown-record.js";
+import {
   conditionDiagnostic,
   isBreakpointDimension,
-  isJsonRecord,
   resolvedContexts,
   resolvedToken,
   tokenPathFromCondition,
-  type JsonRecord,
 } from "./condition-model.js";
 
-const conditionIdMatchesKind = (condition: JsonRecord): boolean => {
+const conditionIdMatchesKind = (condition: UnknownRecord): boolean => {
   const id = condition["id"];
   const kind = condition["kind"];
   if (typeof id !== "string" || typeof kind !== "string") return true;
@@ -32,7 +34,7 @@ const conditionIdMatchesKind = (condition: JsonRecord): boolean => {
 };
 
 const validateConditionToken = (
-  condition: JsonRecord,
+  condition: UnknownRecord,
   index: number,
   manifest: unknown,
 ): readonly Diagnostic[] => {
@@ -62,7 +64,7 @@ const validateConditionToken = (
       ),
     ];
   }
-  const definedTokens = tokens.filter((token): token is JsonRecord => token !== undefined);
+  const definedTokens = tokens.filter((token): token is UnknownRecord => token !== undefined);
   if (definedTokens.some((token) => !isBreakpointDimension(token))) {
     return [
       conditionDiagnostic(
@@ -94,7 +96,7 @@ export const validateConditionRegistry = (
   context: SemanticValidationContext | undefined,
 ): readonly Diagnostic[] => {
   if (
-    !isJsonRecord(value) ||
+    !isUnknownRecord(value) ||
     !Array.isArray(value["containers"]) ||
     !Array.isArray(value["conditions"])
   ) {
@@ -105,7 +107,7 @@ export const validateConditionRegistry = (
   const containerIds = new Set<string>();
   let previousContainerId: string | undefined;
   value["containers"].forEach((container, index) => {
-    if (!isJsonRecord(container) || typeof container["id"] !== "string") return;
+    if (!isUnknownRecord(container) || typeof container["id"] !== "string") return;
     const id = container["id"];
     if (containerIds.has(id)) {
       diagnostics.push(
@@ -137,7 +139,7 @@ export const validateConditionRegistry = (
   const resolvedManifest =
     context?.registries[FOUNDATION_RESOLVED_TOKEN_MANIFEST_ID];
   value["conditions"].forEach((condition, index) => {
-    if (!isJsonRecord(condition) || typeof condition["id"] !== "string") return;
+    if (!isUnknownRecord(condition) || typeof condition["id"] !== "string") return;
     const id = condition["id"];
     if (conditionIds.has(id)) {
       diagnostics.push(

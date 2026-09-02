@@ -1,8 +1,9 @@
-import type {
-  ParsedDtcgDocument,
-  ParsedDtcgToken,
-  ResolvedTokenManifest,
-  TokenJsonValue,
+import {
+  isTokenJsonObject,
+  type ParsedDtcgDocument,
+  type ParsedDtcgToken,
+  type ResolvedTokenManifest,
+  type TokenJsonValue,
 } from "@axiom/tokens";
 
 import {
@@ -70,11 +71,6 @@ export class TokenFoundationPolicyError extends Error {
   }
 }
 
-const isRecord = (
-  value: TokenJsonValue,
-): value is Readonly<Record<string, TokenJsonValue>> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
 const tokenMap = (
   document: ParsedDtcgDocument,
 ): ReadonlyMap<string, ParsedDtcgToken> =>
@@ -86,7 +82,7 @@ const closeTo = (left: number, right: number): boolean =>
 const dimension = (
   token: ParsedDtcgToken | undefined,
 ): { readonly value: number; readonly unit: string } | undefined => {
-  if (token?.dtcgType !== "dimension" || !isRecord(token.value)) return undefined;
+  if (token?.dtcgType !== "dimension" || !isTokenJsonObject(token.value)) return undefined;
   const value = token.value["value"];
   const unit = token.value["unit"];
   return typeof value === "number" && typeof unit === "string" ? { value, unit } : undefined;
@@ -253,7 +249,7 @@ const validateTypography = (
         pushMissing(diagnostics, tokenId);
         continue;
       }
-      if (token.dtcgType !== "typography" || !isRecord(token.value)) {
+      if (token.dtcgType !== "typography" || !isTokenJsonObject(token.value)) {
         diagnostics.push({
           code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_TYPOGRAPHY_SCALE,
           message: `Typography Token '${tokenId}' must be a DTCG typography composite.`,
@@ -295,7 +291,11 @@ const validateTypography = (
 const colorComponents = (
   value: TokenJsonValue,
 ): readonly [number, number, number] | undefined => {
-  if (!isRecord(value) || value["colorSpace"] !== "srgb" || !Array.isArray(value["components"])) {
+  if (
+    !isTokenJsonObject(value) ||
+    value["colorSpace"] !== "srgb" ||
+    !Array.isArray(value["components"])
+  ) {
     return undefined;
   }
   const components = value["components"];

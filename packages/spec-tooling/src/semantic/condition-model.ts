@@ -3,14 +3,12 @@ import {
   BREAKPOINT_SOURCE_UNIT,
   BREAKPOINT_TOKEN_DOMAIN,
   CONDITION_DIAGNOSTIC_PHASE,
-  ERROR_DIAGNOSTIC_SEVERITY,
-  IN_MEMORY_SOURCE_NAME,
 } from "../constants.js";
-import type { Diagnostic } from "../types.js";
-
-export interface JsonRecord {
-  readonly [key: string]: unknown;
-}
+import {
+  isUnknownRecord,
+  type UnknownRecord,
+} from "../validation/unknown-record.js";
+import { createSemanticDiagnosticFactory } from "./semantic-diagnostic.js";
 
 export interface ResolvedRange {
   readonly comparison: "<" | ">=";
@@ -18,49 +16,38 @@ export interface ResolvedRange {
   readonly threshold: number;
 }
 
-export const isJsonRecord = (value: unknown): value is JsonRecord =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
+export const conditionDiagnostic = createSemanticDiagnosticFactory(
+  CONDITION_DIAGNOSTIC_PHASE,
+);
 
-export const conditionDiagnostic = (
-  code: string,
-  message: string,
-  pointer: string,
-): Diagnostic => ({
-  code,
-  severity: ERROR_DIAGNOSTIC_SEVERITY,
-  phase: CONDITION_DIAGNOSTIC_PHASE,
-  message,
-  location: { file: IN_MEMORY_SOURCE_NAME, pointer },
-});
-
-export const tokenPathFromCondition = (condition: JsonRecord): string | undefined => {
+export const tokenPathFromCondition = (condition: UnknownRecord): string | undefined => {
   const reference = condition["value"];
-  if (!isJsonRecord(reference) || typeof reference["path"] !== "string") return undefined;
+  if (!isUnknownRecord(reference) || typeof reference["path"] !== "string") return undefined;
   return reference["path"];
 };
 
-export const resolvedContexts = (value: unknown): readonly JsonRecord[] =>
-  isJsonRecord(value) && Array.isArray(value["contexts"])
-    ? value["contexts"].filter(isJsonRecord)
+export const resolvedContexts = (value: unknown): readonly UnknownRecord[] =>
+  isUnknownRecord(value) && Array.isArray(value["contexts"])
+    ? value["contexts"].filter(isUnknownRecord)
     : [];
 
 export const resolvedToken = (
-  context: JsonRecord,
+  context: UnknownRecord,
   tokenId: string,
-): JsonRecord | undefined => {
+): UnknownRecord | undefined => {
   const tokens = context["tokens"];
   if (!Array.isArray(tokens)) return undefined;
   return tokens.find(
-    (token): token is JsonRecord => isJsonRecord(token) && token["id"] === tokenId,
+    (token): token is UnknownRecord => isUnknownRecord(token) && token["id"] === tokenId,
   );
 };
 
-export const isBreakpointDimension = (token: JsonRecord): boolean => {
+export const isBreakpointDimension = (token: UnknownRecord): boolean => {
   const resolvedValue = token["resolvedValue"];
   if (
     token["domain"] !== BREAKPOINT_TOKEN_DOMAIN ||
     token["dtcgType"] !== BREAKPOINT_DTCG_TYPE ||
-    !isJsonRecord(resolvedValue)
+    !isUnknownRecord(resolvedValue)
   ) {
     return false;
   }
@@ -71,13 +58,13 @@ export const isBreakpointDimension = (token: JsonRecord): boolean => {
 
 export const conditionDefinitions = (
   registry: unknown,
-): ReadonlyMap<string, JsonRecord> => {
-  const definitions = new Map<string, JsonRecord>();
-  if (!isJsonRecord(registry) || !Array.isArray(registry["conditions"])) {
+): ReadonlyMap<string, UnknownRecord> => {
+  const definitions = new Map<string, UnknownRecord>();
+  if (!isUnknownRecord(registry) || !Array.isArray(registry["conditions"])) {
     return definitions;
   }
   registry["conditions"].forEach((condition) => {
-    if (isJsonRecord(condition) && typeof condition["id"] === "string") {
+    if (isUnknownRecord(condition) && typeof condition["id"] === "string") {
       definitions.set(condition["id"], condition);
     }
   });
@@ -85,7 +72,7 @@ export const conditionDefinitions = (
 };
 
 export const resolvedRange = (
-  condition: JsonRecord,
+  condition: UnknownRecord,
   manifest: unknown,
 ): ResolvedRange | undefined => {
   const kind = condition["kind"];
@@ -100,7 +87,7 @@ export const resolvedRange = (
   const firstContext = resolvedContexts(manifest)[0];
   if (tokenPath === undefined || firstContext === undefined) return undefined;
   const token = resolvedToken(firstContext, tokenPath);
-  if (token === undefined || !isJsonRecord(token["resolvedValue"])) return undefined;
+  if (token === undefined || !isUnknownRecord(token["resolvedValue"])) return undefined;
   const threshold = token["resolvedValue"]["value"];
   if (typeof threshold !== "number") return undefined;
   const family =

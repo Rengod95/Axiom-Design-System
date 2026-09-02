@@ -4,8 +4,8 @@ import {
   CANONICAL_DIGEST_ALGORITHM,
   CANONICAL_DIGEST_PREFIX,
   JSON_INDENT_SPACES,
-  STABLE_SORT_LOCALE,
 } from "../constants.js";
+import { compareStableStrings } from "./stable-string-order.js";
 
 const normalize = (value: unknown): unknown => {
   if (Array.isArray(value)) return value.map(normalize);
@@ -14,7 +14,7 @@ const normalize = (value: unknown): unknown => {
   }
   return Object.fromEntries(
     Object.entries(value)
-      .sort(([left], [right]) => left.localeCompare(right, STABLE_SORT_LOCALE))
+      .sort(([left], [right]) => compareStableStrings(left, right))
       .map(([key, child]) => [key, normalize(child)]),
   );
 };

@@ -1,7 +1,6 @@
 import {
   EFFECTIVE_PROPERTY_REGISTRY_SCHEMA_VERSION,
   PROPERTY_DIAGNOSTIC_CODE,
-  STABLE_SORT_LOCALE,
   VENDOR_PROPERTY_PATTERN,
 } from "../constants.js";
 import type {
@@ -18,12 +17,10 @@ import type {
   UpstreamCSSProperty,
 } from "../contracts.js";
 import { digestCanonicalJson } from "./canonical-json.js";
-
-const compare = (left: string, right: string): number =>
-  left.localeCompare(right, STABLE_SORT_LOCALE);
-
-const uniqueSorted = (values: readonly string[]): readonly string[] =>
-  [...new Set(values)].sort(compare);
+import {
+  compareStableStrings,
+  uniqueSortedStrings,
+} from "./stable-string-order.js";
 
 const toAuthoringName = (property: string): string =>
   property.replace(/-([a-z0-9])/g, (_match, character: string) =>
@@ -134,7 +131,7 @@ const bindingProperties = (
       );
     }
   }
-  return [...expanded].sort(compare);
+  return [...expanded].sort(compareStableStrings);
 };
 
 const applyBinding = (
@@ -142,22 +139,22 @@ const applyBinding = (
   binding: TokenBindingCatalogEntry,
 ): EffectivePropertyPolicy => {
   const tokenBindings = {
-    directDomains: uniqueSorted([
+    directDomains: uniqueSortedStrings([
       ...policy.tokenBindings.directDomains,
       ...binding.directDomains,
     ]),
-    templateDomains: uniqueSorted([
+    templateDomains: uniqueSortedStrings([
       ...policy.tokenBindings.templateDomains,
       ...binding.templateDomains,
     ]),
-    projectors: uniqueSorted([
+    projectors: uniqueSortedStrings([
       ...policy.tokenBindings.projectors,
       ...binding.projectors,
     ]),
     allowsTokenNegation:
       policy.tokenBindings.allowsTokenNegation || binding.allowsTokenNegation,
   };
-  const valueKinds = uniqueSorted([
+  const valueKinds = uniqueSortedStrings([
     ...policy.valueKinds,
     ...(binding.directDomains.length > 0 || binding.projectors.length > 0
       ? ["token"]
@@ -204,13 +201,25 @@ const coverage = (
   return {
     schemaVersion: EFFECTIVE_PROPERTY_REGISTRY_SCHEMA_VERSION,
     profileDigest,
-    direct: Object.fromEntries(Object.entries(direct).sort(([left], [right]) => compare(left, right))),
-    template: Object.fromEntries(Object.entries(template).sort(([left], [right]) => compare(left, right))),
+    direct: Object.fromEntries(
+      Object.entries(direct).sort(([left], [right]) =>
+        compareStableStrings(left, right),
+      ),
+    ),
+    template: Object.fromEntries(
+      Object.entries(template).sort(([left], [right]) =>
+        compareStableStrings(left, right),
+      ),
+    ),
     projectors: Object.fromEntries(
-      Object.entries(projectors).sort(([left], [right]) => compare(left, right)),
+      Object.entries(projectors).sort(([left], [right]) =>
+        compareStableStrings(left, right),
+      ),
     ),
     properties: Object.fromEntries(
-      Object.entries(propertyBindings).sort(([left], [right]) => compare(left, right)),
+      Object.entries(propertyBindings).sort(([left], [right]) =>
+        compareStableStrings(left, right),
+      ),
     ),
   };
 };
@@ -265,7 +274,7 @@ export const generatePropertyProfile = (
   }
 
   const properties = [...input.upstreamProperties]
-    .sort((left, right) => compare(left.name, right.name))
+    .sort((left, right) => compareStableStrings(left.name, right.name))
     .map((property): EffectiveCSSPropertyEntry => {
       const statusOverride = input.policy.overrides.find(
         (entry) => entry.property === property.name,
@@ -311,8 +320,8 @@ export const generatePropertyProfile = (
         inherited:
           typeof property.inherited === "boolean" ? property.inherited : null,
         initialValue: property.initial ?? null,
-        longhands: uniqueSorted(property.longhands ?? []),
-        resetLonghands: uniqueSorted(property.resetLonghands ?? []),
+        longhands: uniqueSortedStrings(property.longhands ?? []),
+        resetLonghands: uniqueSortedStrings(property.resetLonghands ?? []),
         ...(property.legacyAliasOf === undefined
           ? {}
           : { legacyAliasOf: property.legacyAliasOf }),
@@ -324,12 +333,12 @@ export const generatePropertyProfile = (
     properties
       .filter((entry) => entry.legacyAliasOf !== undefined)
       .map((entry): [string, string] => [entry.name, entry.legacyAliasOf as string])
-      .sort(([left], [right]) => compare(left, right)),
+      .sort(([left], [right]) => compareStableStrings(left, right)),
   );
   const authoringEntries = properties
     .filter((entry) => entry.status !== "legacy" && entry.status !== "vendor")
     .map((entry): [string, string] => [entry.authoringName, entry.name])
-    .sort(([left], [right]) => compare(left, right));
+    .sort(([left], [right]) => compareStableStrings(left, right));
   const authoringNames = Object.fromEntries(authoringEntries);
   if (Object.keys(authoringNames).length !== authoringEntries.length) {
     throw new Error(
@@ -342,7 +351,7 @@ export const generatePropertyProfile = (
     properties,
     aliases,
     authoringNames,
-    customProperties: uniqueSorted(input.policy.customProperties),
+    customProperties: uniqueSortedStrings(input.policy.customProperties),
   } satisfies EffectiveCSSPropertyRegistry;
   return { registry, coverage: coverage(properties, digestCanonicalJson(input.profile)) };
 };

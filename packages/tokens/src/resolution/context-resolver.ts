@@ -23,6 +23,7 @@ import {
   TOKEN_REFERENCE_PATTERN,
 } from "../constants.js";
 import { validateTokenDomainConstraints } from "../domain/identity.js";
+import { isTokenJsonObject } from "../domain/token-json-value.js";
 
 export interface TokenContextResolverOptions {
   readonly domains: readonly TokenDomainDefinition[];
@@ -48,11 +49,6 @@ const compareStableStrings = (left: string, right: string): number =>
 const referenceTarget = (value: TokenJsonValue): string | undefined =>
   typeof value === "string" ? TOKEN_REFERENCE_PATTERN.exec(value)?.[1] : undefined;
 
-const isJsonObject = (
-  value: TokenJsonValue,
-): value is Readonly<Record<string, TokenJsonValue>> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
 const collectReferences = (value: TokenJsonValue, references = new Set<string>()): Set<string> => {
   const target = referenceTarget(value);
   if (target !== undefined) {
@@ -63,7 +59,7 @@ const collectReferences = (value: TokenJsonValue, references = new Set<string>()
     for (const child of value) collectReferences(child, references);
     return references;
   }
-  if (isJsonObject(value)) {
+  if (isTokenJsonObject(value)) {
     for (const key of Object.keys(value).sort(compareStableStrings)) {
       const child = value[key];
       if (child !== undefined) collectReferences(child, references);
@@ -362,7 +358,7 @@ const resolveGraph = (
     const target = referenceTarget(value);
     if (target !== undefined) return resolveToken(target);
     if (Array.isArray(value)) return value.map((child) => resolveValue(child));
-    if (isJsonObject(value)) {
+    if (isTokenJsonObject(value)) {
       return Object.fromEntries(
         Object.keys(value)
           .sort(compareStableStrings)
