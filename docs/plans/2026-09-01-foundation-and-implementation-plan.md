@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01 \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N15 \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0003, SSOT-00 v0.3, SSOT-01 v0.3, SSOT-02 v0.3, SSOT-03 v0.2, SSOT-04 v0.1.2, SSOT-05 v0.2.1, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0004, SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-02 v0.4.0, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.2, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -45,7 +45,7 @@ packages.
 
 | Current package | Disposition | Reason |
 | --- | --- | --- |
-| `@axiom/spec-tooling` | Preserve and extend | Owns the normative schema/registry harness |
+| `@axiom/spec-tooling` | Preserve and extend | Owns the normative schema/registry harness and N15 Appearance IR semantic validation |
 | `@axiom/tokens` | Preserve and complete | Owns renderer-independent Token contracts and resolution |
 | `@axiom/token-tooling` | Preserve and complete | Owns pinned DTCG parser and Token artifact generation adapters |
 | `@axiom/css-property-profile` | Preserve and extend | Implements the completed P3 pinned CSS metadata, policy generation, and validation boundary |
@@ -133,7 +133,12 @@ rules.
 
 ## 4. Artifact Inventory
 
-### 4.1 Normative schemas
+At the N15 checkpoint, `spec/manifest.json` is the inventory authority and
+contains **33 schemas, 14 registries, and 23 fixture suites**. Those suites own
+26 positive and 57 negative fixture files. The table below is the target Gate A
+inventory; rows after N15 are planned and MUST NOT be read as implemented.
+
+### 4.1 Target normative schemas
 
 | ID | Artifact |
 | --- | --- |
@@ -158,23 +163,26 @@ rules.
 | S-A02 | Diagnostic |
 | S-A03 | Generated artifact/build manifest |
 
-### 4.2 Authored registries
+### 4.2 Current registered authorities
 
 ```text
-Token Domain Registry
-Token tier/path profile
-Resolver modifier registry
-Property policy defaults
-Property policy groups
-Property overrides and blocks
-Custom Property Registry
-Condition Registry
 Canonical State Registry
 Composite projector registry
-Token Binding Catalog families and overrides
+Condition Registry
+CSS Effective Property Registry
+CSS Profile Input
+CSS Sparse Property Policy
+CSS Token Binding Catalog
+CSS Token Binding Coverage
+Foundation Resolved Token Manifest
+Foundation Token Policy
+Resolver Modifier Registry
+Semantic Token Vocabulary
+Token Domain Registry
+Token Source Profile
 ```
 
-### 4.3 Generated authorities
+### 4.3 Target generated authorities
 
 ```text
 effective CSS Property Registry
@@ -826,11 +834,11 @@ package-boundary behavior.
 ### Token source
 
 ```text
-current color.primitive.blue.600
-  → color.primitive.blue.600
+previous color.primitive.blue.600
+  → color.primitive.brand.600
 
-current color.action.primary
-  → color.semantic.action.primary.default
+previous color.semantic.action.primary.default
+  → color.semantic.fill.brand.default
 
 new component binding
   → color.component.button.root.background.default

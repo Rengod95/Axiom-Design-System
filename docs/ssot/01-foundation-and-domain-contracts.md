@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-01 — Token Foundation & Domain Contracts
-### Version 0.3.3
+### Version 0.4.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3 \
+**Depends on:** SSOT-00 v0.3.1 \
 **Scope:** Token sources → context-complete resolved manifests → Appearance handoff
 
 ---
@@ -118,8 +118,8 @@ Primitive Tokens own reusable value scales.
 color.primitive.common.white
 color.primitive.brand.600
 space.primitive.scale.4
-fontSize.primitive.scale.300
-duration.primitive.fast
+fontSize.primitive.scale.16
+duration.primitive.scale.150
 ```
 
 Primitive Tokens MUST contain an explicit value or a same-tier alias justified
@@ -139,9 +139,9 @@ Semantic Tokens own product-wide design purpose.
 color.semantic.background.canvas
 color.semantic.surface.default
 color.semantic.fill.brand.default
-color.semantic.text.muted
+color.semantic.text.secondary
 space.semantic.control.padding.inline.md
-shadow.semantic.overlay.dialog
+shadow.semantic.modal
 ```
 
 Semantic Tokens normally alias Primitive Tokens of a compatible Domain and DTCG
@@ -155,7 +155,7 @@ Component Tokens expose evidence-backed component customization axes.
 ```text
 color.component.button.root.background.default
 color.component.button.root.background.pressed
-space.component.select.trigger.padding.inline.md
+space.component.select.item.padding.inline.md
 duration.component.dialog.popup.enter
 ```
 
@@ -343,6 +343,13 @@ Scale coverage, units, typography variants, primitive naming, and resolved
 contrast are checked by `pnpm tokens:check`. A source is not complete merely
 because it parses as DTCG.
 
+These production requirements originate in the owner-approved clean break
+recorded by ADR-0004 and supersede the incompatible draft examples from
+SSOT-01 v0.3.x. From v0.4.0 onward this prose, the Foundation Policy, the
+Semantic Vocabulary Registry, the source corpus, and generated manifest form
+one reconciled baseline. Generated output is evidence of that baseline and does
+not independently amend it.
+
 ### 5.7 Semantic vocabulary registry
 
 `spec/token/semantic-token-vocabulary.json` owns the canonical ordered scale,
@@ -367,10 +374,9 @@ space.semantic.layout.gutter.<size>
 space.semantic.layout.section.<size>
 ```
 
-The accepted clean-break stack introduces this authority before migrating the
-production corpus. The registry and source migrations MUST merge in stack order
-without publishing an intermediate release; no compatibility aliases are
-added.
+The accepted clean-break stack introduced this authority before migrating the
+production corpus. Its final tree is the v0.4.0 baseline; no intermediate stack
+state was published and no compatibility aliases were added.
 
 ---
 
@@ -589,7 +595,7 @@ Typography uses an explicit application operation in authoring:
 
 ```ts
 applyToken(
-  token("typography.semantic.body.md"),
+  token("typography.semantic.body.md.regular"),
 )
 ```
 

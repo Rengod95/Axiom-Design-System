@@ -1,11 +1,11 @@
 # Axiom Design System
 ## SSOT-00 — System Architecture & Standards Profile
-### Version 0.3.0
+### Version 0.3.1
 
 **Status:** NORMATIVE \
 **Scope:** Axiom v0.1 system architecture and authority \
 **Authority:** Highest Axiom-owned architectural authority \
-**Decision basis:** [ADR-0001](../adr/0001-css-native-appearance-profile-and-scope.md), [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md), [ADR-0003](../adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
+**Decision basis:** [ADR-0001](../adr/0001-css-native-appearance-profile-and-scope.md), [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md), [ADR-0003](../adr/0003-recipe-authoring-kernel-and-third-party-boundary.md), [ADR-0004](../adr/0004-token-vocabulary-and-color-profile.md)
 
 ---
 
@@ -41,6 +41,14 @@ when a lower specification contradicts its system boundary.
 An accepted ADR MUST be reconciled into the affected SSOT documents before
 implementation begins. A prose/schema conflict stops the release; neither side
 is silently preferred.
+
+An explicit owner-approved requirement that changes an unreleased contract is
+decision input above the stale draft it amends, but it MUST be recorded in an
+ADR before the repository treats the new contract as authoritative. If an
+implementation lands while reconciliation is paused, that implementation is
+evidence only: release and the next dependent work item remain blocked until
+ADR, SSOT, machine-readable contracts, and fixtures agree. ADR-0004 and
+SSOT-01 v0.4.0 apply this rule to the Token clean break.
 
 ---
 

@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-04 — Environment Conditions & Motion
-### Version 0.1.2
+### Version 0.2.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3, SSOT-01 v0.3, SSOT-03 v0.2 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.1 \
 **Scope:** Responsive/environment conditions and serializable Motion semantics
 
 ---
@@ -168,13 +168,15 @@ them, but Theme MUST NOT change their values in v0.1.
 breakpoint.primitive.scale.48
 breakpoint.semantic.viewport.md
 breakpoint.primitive.scale.40
-breakpoint.semantic.container.regular
+breakpoint.semantic.container.md
 ```
 
-Component-specific thresholds require evidence and use Component Tokens:
+Component-specific thresholds require evidence and use Component Tokens. No
+Component breakpoint Token is registered in the N15 baseline; a future path
+must follow this pattern and pass the normal promotion policy:
 
 ```text
-breakpoint.component.dialog.popup.wide
+breakpoint.component.<recipe>.<slot>.<role>
 ```
 
 Breakpoint Token values do not make conditions variant or theme axes. The
@@ -254,7 +256,7 @@ defineRecipe({
         popup: {
           maxInlineSize:
             token(
-              "size.component.dialog.popup.wide",
+              "size.component.dialog.popup.maxInline",
             ),
         },
       },
@@ -269,7 +271,7 @@ defineRecipe({
         popup: {
           transitionDuration:
             token(
-              "duration.semantic.motion.instant",
+              "duration.semantic.instant",
             ),
         },
       },
@@ -428,7 +430,7 @@ defineMotion({
           ),
         easing:
           token(
-            "easing.semantic.motion.exit",
+            "easing.semantic.exit",
           ),
       },
     },
@@ -505,6 +507,11 @@ interface MotionIR {
 }
 ```
 
+`conditionRegistryDigest` is computed from the exact Condition Registry passed
+through `MotionCompilerInput`. The Motion compiler validates both the registry
+identity and digest before it validates reduced-motion policy. It cannot infer
+the registry from a Condition ID or read it from repository state.
+
 ### 11.2 Phase
 
 ```ts
@@ -576,6 +583,20 @@ type ReducedMotionIR =
 
 Every Motion IR MUST define a reduced-motion strategy. Omitting it is a schema
 error.
+
+The field name `reducedMotion` owns policy, not environment identity or
+lifecycle state. The three canonical names are intentionally distinct:
+
+| Name | Owner | Meaning |
+| --- | --- | --- |
+| `preference.reducedMotion` | Condition Registry | browser/user environment preference |
+| `reducedMotion` | Motion authoring and IR | required `disable` or `replace` strategy |
+| `motionSuppressed` | Canonical State Registry | normal Motion execution was suppressed after policy selection |
+
+These names MUST NOT be treated as aliases. Runtime bindings observe the
+registered preference, select the IR strategy, and then project
+`motionSuppressed`. A replacement animation still sets `motionSuppressed`
+because the normal motion path was suppressed.
 
 ---
 
@@ -665,11 +686,13 @@ Provider bindings map provider lifecycle observations to:
 interface CanonicalMotionLifecycle {
   entering: boolean;
   exiting: boolean;
-  reducedMotion: boolean;
+  motionSuppressed: boolean;
 }
 ```
 
-The mapping is component-local. A universal provider adapter is forbidden.
+The mapping is component-local. `motionSuppressed` is a derived lifecycle
+observation, not a copy of the `preference.reducedMotion` Condition ID. A
+universal provider adapter is forbidden.
 
 The binding owns mount/unmount coordination required for exit animation. Motion
 IR does not create or retain DOM nodes by itself.

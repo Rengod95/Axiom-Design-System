@@ -1,9 +1,9 @@
 # React Aria Behavioral Criteria Profile
 
 **Status:** NORMATIVE ANNEX \
-**Depends on:** SSOT-05 v0.2, ADR-0002 \
+**Depends on:** SSOT-05 v0.2.2, ADR-0002 \
 **Initial components:** Button, Select, Dialog \
-**Source baseline:** lockfile-resolved React Aria Components 1.20.0 family
+**Source candidate:** React Aria Components 1.20.0 family; N17 lockfile pinning pending
 
 ---
 
@@ -15,6 +15,9 @@ state machines.
 
 The generated JSON profiles are normative implementation inputs. This Markdown
 document defines their required coverage and human-readable criteria IDs.
+No React Aria package is present in the N15 lockfile, so this annex defines the
+criteria shape and reviewed candidate only. N17 establishes the executable
+source baseline by pinning packages and generating the source manifest.
 
 ---
 
