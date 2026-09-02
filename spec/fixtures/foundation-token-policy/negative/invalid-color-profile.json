@@ -2,7 +2,7 @@
   "schemaVersion": "0.1",
   "semanticVocabularyRegistry": "semantic-token-vocabulary",
   "colorProfile": {
-    "canonicalColorSpace": "oklch",
+    "canonicalColorSpace": "srgb",
     "fallback": "hex",
     "gamutMapping": "oklch-chroma-reduction",
     "componentPrecision": {

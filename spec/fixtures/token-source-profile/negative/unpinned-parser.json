@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "profileVersion": "0.1.0",
+  "profileVersion": "0.2.0",
   "dtcgVersion": "2025.10",
   "formatSchema": "https://designtokens.org/schemas/2025.10/format.json",
   "fileExtension": ".tokens.json",

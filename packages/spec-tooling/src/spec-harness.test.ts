@@ -13,7 +13,7 @@ describe("normative specification", () => {
     expect(report.schemaCount).toBe(32);
     expect(report.registryCount).toBe(14);
     expect(report.positiveFixtureCount).toBe(25);
-    expect(report.negativeFixtureCount).toBe(49);
+    expect(report.negativeFixtureCount).toBe(51);
     expect(report.digests["canonical-state-registry"]).toMatch(
       /^sha256:[a-f0-9]{64}$/,
     );

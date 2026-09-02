@@ -128,7 +128,7 @@ const result = resolveTokenContexts(
   },
   { domains: domainRegistry.domains, modifierRegistry },
 );
-assertFoundationTokenPolicy(base, result.manifest, foundationPolicy);
+assertFoundationTokenPolicy(base, result.manifest, foundationPolicy, [light, dark]);
 
 const write = process.argv.includes("--write");
 await Promise.all([

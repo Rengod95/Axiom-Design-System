@@ -15,10 +15,7 @@
   ],
   "properties": {
     "schemaVersion": { "const": "0.1" },
-    "profileVersion": {
-      "type": "string",
-      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
-    },
+    "profileVersion": { "const": "0.2.0" },
     "dtcgVersion": { "const": "2025.10" },
     "formatSchema": {
       "const": "https://designtokens.org/schemas/2025.10/format.json"

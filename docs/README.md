@@ -45,6 +45,7 @@ reconciliation한다.
 19. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
 20. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
 21. [Token Governance and Vocabulary Registry](implementation/2026-09-02-token-governance.md)
+22. [OKLCH and Semantic Color Migration](implementation/2026-09-02-oklch-semantic-colors.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
@@ -121,6 +122,7 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [Canonical State and Condition Registries — 2026-09-01](implementation/2026-09-01-state-and-condition-registries.md)
 - [Ordered CSS Declaration Contracts — 2026-09-02](implementation/2026-09-02-ordered-declaration-contracts.md)
 - [Token Governance and Vocabulary Registry — 2026-09-02](implementation/2026-09-02-token-governance.md)
+- [OKLCH and Semantic Color Migration — 2026-09-02](implementation/2026-09-02-oklch-semantic-colors.md)
 - [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
 - [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)
 - [OKLCH and Semantic Color Plan — 2026-09-02](superpowers/plans/2026-09-02-oklch-semantic-colors.md)

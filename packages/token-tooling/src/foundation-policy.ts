@@ -10,10 +10,19 @@ import {
   FOUNDATION_POLICY_DIAGNOSTIC_CODE,
   FOUNDATION_POLICY_ERROR_MESSAGE,
 } from "./constants.js";
+import {
+  parseSrgbHex,
+  validateOklchColorValue,
+} from "./oklch-color.js";
 
 export interface FoundationColorScale {
   readonly palette: string;
   readonly shades: readonly number[];
+}
+
+export interface FoundationCommonColor {
+  readonly name: string;
+  readonly hex: string;
 }
 
 export interface FoundationScaleStep {
@@ -35,6 +44,17 @@ export interface FoundationContrastPair {
 export interface FoundationTokenPolicy {
   readonly schemaVersion: "0.1";
   readonly semanticVocabularyRegistry: "semantic-token-vocabulary";
+  readonly colorProfile: {
+    readonly canonicalColorSpace: "oklch";
+    readonly fallback: "hex";
+    readonly gamutMapping: "oklch-chroma-reduction";
+    readonly componentPrecision: {
+      readonly lightness: number;
+      readonly chroma: number;
+      readonly hue: number;
+    };
+  };
+  readonly commonColors: readonly FoundationCommonColor[];
   readonly rootFontSizePx: number;
   readonly authoredDimensionUnits: readonly string[];
   readonly derivedCssUnits: readonly string[];
@@ -124,6 +144,27 @@ const validateColorScales = (
 ): readonly FoundationPolicyDiagnostic[] => {
   const diagnostics: FoundationPolicyDiagnostic[] = [];
   const required = new Set<string>();
+  for (const commonColor of policy.commonColors) {
+    const tokenId = `color.primitive.common.${commonColor.name}`;
+    required.add(tokenId);
+    const token = tokens.get(tokenId);
+    if (token === undefined) {
+      pushMissing(diagnostics, tokenId);
+      continue;
+    }
+    if (
+      token.dtcgType !== "color" ||
+      !isTokenJsonObject(token.value) ||
+      token.value["hex"] !== commonColor.hex ||
+      token.value["alpha"] !== 1
+    ) {
+      diagnostics.push({
+        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_SCALE,
+        message: `Common color Token '${tokenId}' must be opaque and use its registered hex fallback '${commonColor.hex}'.`,
+        tokenId,
+      });
+    }
+  }
   for (const scale of policy.colorScales) {
     for (const shade of scale.shades) {
       const tokenId = `color.primitive.${scale.palette}.${shade}`;
@@ -136,6 +177,12 @@ const validateColorScales = (
           message: `Color scale Token '${tokenId}' must use the DTCG color type.`,
           tokenId,
         });
+      } else if (!isTokenJsonObject(token.value) || token.value["alpha"] !== 1) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_PROFILE,
+          message: `Color scale Token '${tokenId}' must be opaque.`,
+          tokenId,
+        });
       }
     }
   }
@@ -146,6 +193,53 @@ const validateColorScales = (
         message: `Color primitive '${token.id}' is outside the registered palette and shade scales.`,
         tokenId: token.id,
       });
+    }
+  }
+  return diagnostics;
+};
+
+const nestedColorValues = (value: TokenJsonValue): readonly TokenJsonValue[] => {
+  if (Array.isArray(value)) return value.flatMap(nestedColorValues);
+  if (!isTokenJsonObject(value)) return [];
+  if (
+    "colorSpace" in value ||
+    "components" in value ||
+    "hex" in value
+  ) return [value];
+  return Object.values(value).flatMap(nestedColorValues);
+};
+
+const validateColorProfile = (
+  document: ParsedDtcgDocument,
+  policy: FoundationTokenPolicy,
+): readonly FoundationPolicyDiagnostic[] => {
+  const diagnostics: FoundationPolicyDiagnostic[] = [];
+  for (const token of document.tokens) {
+    for (const color of nestedColorValues(token.value)) {
+      const issues = validateOklchColorValue(
+        color,
+        policy.colorProfile.componentPrecision,
+      );
+      const profileIssues = issues.filter(
+        (issue) => issue !== "invalid-hex" && issue !== "fallback-mismatch",
+      );
+      const fallbackIssues = issues.filter(
+        (issue) => issue === "invalid-hex" || issue === "fallback-mismatch",
+      );
+      if (profileIssues.length > 0) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_PROFILE,
+          message: `Color value in '${token.id}' violates the canonical OKLCH profile: ${profileIssues.join(", ")}.`,
+          tokenId: token.id,
+        });
+      }
+      if (fallbackIssues.length > 0) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_FALLBACK,
+          message: `Color value in '${token.id}' has an invalid sRGB hex fallback: ${fallbackIssues.join(", ")}.`,
+          tokenId: token.id,
+        });
+      }
     }
   }
   return diagnostics;
@@ -294,17 +388,17 @@ const colorComponents = (
 ): readonly [number, number, number] | undefined => {
   if (
     !isTokenJsonObject(value) ||
-    value["colorSpace"] !== "srgb" ||
-    !Array.isArray(value["components"])
+    value["colorSpace"] !== "oklch" ||
+    value["alpha"] !== 1 ||
+    typeof value["hex"] !== "string"
   ) {
     return undefined;
   }
-  const components = value["components"];
-  if (
-    components.length !== 3 ||
-    components.some((entry) => typeof entry !== "number")
-  ) return undefined;
-  return components as unknown as readonly [number, number, number];
+  try {
+    return parseSrgbHex(value["hex"]);
+  } catch {
+    return undefined;
+  }
 };
 
 const channelLuminance = (channel: number): number =>
@@ -339,7 +433,7 @@ const validateContrast = (
       if (foreground === undefined || background === undefined) {
         diagnostics.push({
           code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_CONTRAST,
-          message: `Contrast pair '${pair.foreground}' / '${pair.background}' must resolve to sRGB colors.`,
+          message: `Contrast pair '${pair.foreground}' / '${pair.background}' must resolve to opaque OKLCH colors with valid sRGB hex fallbacks.`,
           tokenId: pair.foreground,
           context: context.context,
         });
@@ -363,11 +457,15 @@ export const validateFoundationTokenPolicy = (
   document: ParsedDtcgDocument,
   manifest: ResolvedTokenManifest,
   policy: FoundationTokenPolicy,
+  contextDocuments: readonly ParsedDtcgDocument[] = [],
 ): readonly FoundationPolicyDiagnostic[] => {
   const tokens = tokenMap(document);
   return [
     ...validatePrimitiveNames(document, policy),
     ...validateColorScales(tokens, policy),
+    ...[document, ...contextDocuments].flatMap((source) =>
+      validateColorProfile(source, policy)
+    ),
     ...validateSpaceScale(tokens, policy),
     ...validateDimensionUnits(document, policy),
     ...validateTypography(tokens, policy),
@@ -379,7 +477,13 @@ export const assertFoundationTokenPolicy = (
   document: ParsedDtcgDocument,
   manifest: ResolvedTokenManifest,
   policy: FoundationTokenPolicy,
+  contextDocuments: readonly ParsedDtcgDocument[] = [],
 ): void => {
-  const diagnostics = validateFoundationTokenPolicy(document, manifest, policy);
+  const diagnostics = validateFoundationTokenPolicy(
+    document,
+    manifest,
+    policy,
+    contextDocuments,
+  );
   if (diagnostics.length > 0) throw new TokenFoundationPolicyError(diagnostics);
 };

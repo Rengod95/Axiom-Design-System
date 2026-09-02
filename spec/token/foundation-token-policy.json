@@ -1,6 +1,26 @@
 {
   "schemaVersion": "0.1",
   "semanticVocabularyRegistry": "semantic-token-vocabulary",
+  "colorProfile": {
+    "canonicalColorSpace": "oklch",
+    "fallback": "hex",
+    "gamutMapping": "oklch-chroma-reduction",
+    "componentPrecision": {
+      "lightness": 6,
+      "chroma": 6,
+      "hue": 3
+    }
+  },
+  "commonColors": [
+    {
+      "name": "white",
+      "hex": "#ffffff"
+    },
+    {
+      "name": "black",
+      "hex": "#000000"
+    }
+  ],
   "rootFontSizePx": 16,
   "authoredDimensionUnits": [
     "px",
@@ -31,7 +51,6 @@
     {
       "palette": "neutral",
       "shades": [
-        0,
         50,
         100,
         200,
@@ -41,9 +60,7 @@
         600,
         700,
         800,
-        900,
-        950,
-        1000
+        900
       ]
     },
     {
@@ -58,8 +75,7 @@
         600,
         700,
         800,
-        900,
-        950
+        900
       ]
     },
     {
@@ -74,8 +90,7 @@
         600,
         700,
         800,
-        900,
-        950
+        900
       ]
     },
     {
@@ -90,8 +105,7 @@
         600,
         700,
         800,
-        900,
-        950
+        900
       ]
     },
     {
@@ -106,8 +120,7 @@
         600,
         700,
         800,
-        900,
-        950
+        900
       ]
     },
     {
@@ -122,8 +135,7 @@
         600,
         700,
         800,
-        900,
-        950
+        900
       ]
     },
     {
@@ -138,8 +150,7 @@
         600,
         700,
         800,
-        900,
-        950
+        900
       ]
     }
   ],
@@ -337,47 +348,47 @@
   "contrastPairs": [
     {
       "foreground": "color.semantic.text.primary",
-      "background": "color.semantic.surface.canvas",
+      "background": "color.semantic.background.canvas",
       "minimumRatio": 7
     },
     {
       "foreground": "color.semantic.text.secondary",
-      "background": "color.semantic.surface.canvas",
+      "background": "color.semantic.background.canvas",
       "minimumRatio": 4.5
     },
     {
       "foreground": "color.semantic.text.link",
-      "background": "color.semantic.surface.canvas",
+      "background": "color.semantic.background.canvas",
       "minimumRatio": 4.5
     },
     {
-      "foreground": "color.semantic.action.primary.text",
-      "background": "color.semantic.action.primary.default",
+      "foreground": "color.semantic.text.onBrand",
+      "background": "color.semantic.fill.brand.default",
       "minimumRatio": 4.5
     },
     {
-      "foreground": "color.semantic.action.danger.text",
-      "background": "color.semantic.action.danger.default",
+      "foreground": "color.semantic.text.onDanger",
+      "background": "color.semantic.fill.danger.default",
       "minimumRatio": 4.5
     },
     {
       "foreground": "color.semantic.status.success.text",
-      "background": "color.semantic.status.success.surface",
+      "background": "color.semantic.status.success.background",
       "minimumRatio": 4.5
     },
     {
       "foreground": "color.semantic.status.warning.text",
-      "background": "color.semantic.status.warning.surface",
+      "background": "color.semantic.status.warning.background",
       "minimumRatio": 4.5
     },
     {
       "foreground": "color.semantic.status.danger.text",
-      "background": "color.semantic.status.danger.surface",
+      "background": "color.semantic.status.danger.background",
       "minimumRatio": 4.5
     },
     {
       "foreground": "color.semantic.status.info.text",
-      "background": "color.semantic.status.info.surface",
+      "background": "color.semantic.status.info.background",
       "minimumRatio": 4.5
     },
     {
@@ -387,7 +398,7 @@
     },
     {
       "foreground": "color.semantic.focus.ring",
-      "background": "color.semantic.surface.canvas",
+      "background": "color.semantic.background.canvas",
       "minimumRatio": 3
     }
   ]

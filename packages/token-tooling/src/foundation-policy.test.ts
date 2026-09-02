@@ -7,6 +7,7 @@ import type {
   ResolvedTokenManifest,
   TokenDomainDefinition,
 } from "@axiom/tokens";
+import { isTokenJsonObject } from "@axiom/tokens";
 
 import { FOUNDATION_POLICY_DIAGNOSTIC_CODE } from "./constants.js";
 import {
@@ -51,6 +52,11 @@ describe("Token Foundation policy", () => {
 
   it("accepts the normative production corpus in every theme context", () => {
     expect(validateFoundationTokenPolicy(document, manifest, policy)).toEqual([]);
+    expect(document.tokens.filter((token) =>
+      token.id.startsWith("color.semantic.action.") ||
+      token.id === "color.semantic.surface.sunken" ||
+      /^color\.primitive\.[a-z]+\.(?:0|950|1000)$/.test(token.id)
+    )).toEqual([]);
   });
 
   it("rejects semantic primitive names and unregistered scale entries", () => {
@@ -97,6 +103,106 @@ describe("Token Foundation policy", () => {
     );
   });
 
+  it("rejects non-canonical colors, missing common endpoints, and extra shades", () => {
+    const brand = document.tokens.find((entry) => entry.id === "color.primitive.brand.500");
+    const white = document.tokens.find((entry) => entry.id === "color.primitive.common.white");
+    if (brand === undefined || white === undefined) {
+      throw new Error("Canonical color fixtures are required.");
+    }
+    const diagnostics = validateFoundationTokenPolicy(
+      {
+        ...document,
+        tokens: [
+          ...document.tokens
+            .filter((entry) => entry.id !== white.id)
+            .map((entry) => entry.id === brand.id
+              ? {
+                  ...entry,
+                  value: {
+                    colorSpace: "srgb",
+                    components: [0.1, 0.2, 0.3],
+                    alpha: 1,
+                  },
+                }
+              : entry),
+          { ...brand, id: "color.primitive.brand.950" },
+        ],
+      },
+      manifest,
+      policy,
+    );
+    expect(diagnostics.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.MISSING_REQUIRED_TOKEN,
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_SCALE,
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_PROFILE,
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_FALLBACK,
+      ]),
+    );
+  });
+
+  it("rejects an explicit non-canonical color in a theme override", () => {
+    const semantic = document.tokens.find(
+      (entry) => entry.id === "color.semantic.text.tertiary",
+    );
+    if (semantic === undefined) throw new Error("Semantic color fixture is required.");
+    const diagnostics = validateFoundationTokenPolicy(
+      document,
+      manifest,
+      policy,
+      [{
+        schemaVersion: document.schemaVersion,
+        tokens: [{
+          ...semantic,
+          value: {
+            colorSpace: "srgb",
+            components: [0.1, 0.2, 0.3],
+            alpha: 1,
+          },
+        }],
+      }],
+    );
+    expect(diagnostics.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_PROFILE,
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_FALLBACK,
+      ]),
+    );
+  });
+
+  it("rejects an invalid fallback nested inside a composite color value", () => {
+    const shadow = document.tokens.find(
+      (entry) => entry.id === "shadow.primitive.level.1",
+    );
+    if (shadow === undefined || !isTokenJsonObject(shadow.value)) {
+      throw new Error("Shadow color fixture is required.");
+    }
+    const shadowValue = shadow.value;
+    const color = shadowValue["color"];
+    if (color === undefined || !isTokenJsonObject(color)) {
+      throw new Error("Nested shadow color is required.");
+    }
+    const diagnostics = validateFoundationTokenPolicy(
+      {
+        ...document,
+        tokens: document.tokens.map((entry) => entry.id === shadow.id
+          ? {
+              ...entry,
+              value: {
+                ...shadowValue,
+                color: { ...color, hex: "#ffffff" },
+              },
+            }
+          : entry),
+      },
+      manifest,
+      policy,
+    );
+    expect(diagnostics.some(
+      (entry) => entry.code === FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_COLOR_FALLBACK,
+    )).toBe(true);
+  });
+
   it("rejects a theme contrast regression", () => {
     const contexts = manifest.contexts.map((context, contextIndex) => ({
       ...context,
@@ -105,7 +211,7 @@ describe("Token Foundation policy", () => {
           ? {
               ...token,
               resolvedValue: context.tokens.find(
-                (entry) => entry.id === "color.semantic.surface.canvas",
+                (entry) => entry.id === "color.semantic.background.canvas",
               )?.resolvedValue ?? token.resolvedValue,
             }
           : token,
