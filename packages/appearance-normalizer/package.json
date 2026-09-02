@@ -1,5 +1,5 @@
 {
-  "name": "@axiom/spec-tooling",
+  "name": "@axiom/appearance-normalizer",
   "private": true,
   "type": "module",
   "exports": {
@@ -11,18 +11,16 @@
   "files": ["dist"],
   "scripts": {
     "build": "tsc -b",
-    "check": "node --import tsx src/cli.ts",
-    "contracts:check": "node --import tsx src/contracts-cli.ts",
-    "contracts:generate": "node --import tsx src/contracts-cli.ts --write"
+    "type-check": "tsc --noEmit --pretty false -p tsconfig.type-test.json"
   },
   "dependencies": {
+    "@axiom/appearance-authoring": "workspace:*",
     "@axiom/condition-registry": "workspace:*",
-    "@axiom/css-property-profile": "workspace:*",
-    "ajv": "8.20.0"
+    "@axiom/motion-schema": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
-    "tsx": "^4.23.13",
+    "@axiom/spec-tooling": "workspace:*",
+    "@axiom/tokens": "workspace:*",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11"
   }

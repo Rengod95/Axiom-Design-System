@@ -7,6 +7,7 @@
     { "path": "./packages/motion-schema" },
     { "path": "./packages/recipe-kernel" },
     { "path": "./packages/appearance-authoring" },
+    { "path": "./packages/appearance-normalizer" },
     { "path": "./packages/spec-tooling" },
     { "path": "./packages/token-tooling" },
     { "path": "./packages/tokens" }

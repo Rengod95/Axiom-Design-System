@@ -448,3 +448,37 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
     digests,
   };
 };
+
+/** Reports schema and semantic validation for one in-memory artifact against the declared specification authorities. */
+export const validateSpecificationValue = async (
+  specRoot: string,
+  schemaIdentifier: string,
+  semanticValidator: SemanticValidatorId | undefined,
+  value: unknown,
+): Promise<Readonly<{ readonly schemaValid: boolean; readonly diagnostics: readonly Diagnostic[] }>> => {
+  const manifestSchema = asSchema(
+    await readJson(resolveInside(specRoot, SPEC_MANIFEST_SCHEMA_PATH)),
+    SPEC_MANIFEST_SCHEMA_PATH,
+  );
+  const manifestValue = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH));
+  const bootstrapAjv = createAjv();
+  bootstrapAjv.addSchema(manifestSchema, schemaId(manifestSchema) as string);
+  assertValid(bootstrapAjv.compile(manifestSchema), manifestValue, SPEC_MANIFEST_PATH);
+  const manifest = manifestValue as SpecManifest;
+  const ajv = createAjv();
+  for (const entry of manifest.schemas) ajv.addSchema(
+    asSchema(await readJson(resolveInside(specRoot, entry.path)), entry.path),
+    entry.id,
+  );
+  const validate = ajv.getSchema(schemaIdentifier);
+  if (validate === undefined) throw new Error(`Unknown specification schema '${schemaIdentifier}'.`);
+  const registries: Record<string, unknown> = {};
+  for (const entry of manifest.registries) registries[entry.id] = await readJson(resolveInside(specRoot, entry.path));
+  const schemaValid = validate(value) as boolean;
+  return {
+    schemaValid,
+    diagnostics: schemaValid
+      ? runSemanticValidator(semanticValidator, value, { registries })
+      : [],
+  };
+};

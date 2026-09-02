@@ -39,6 +39,10 @@
       "path": "css/appearance-ir.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/css/collision-trace/0.1",
+      "path": "css/collision-trace.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/motion/ir/0.1",
       "path": "motion/motion-ir.schema.json"
     },
@@ -291,6 +295,13 @@
       "positiveDirectory": "fixtures/css-appearance-ir/positive",
       "negativeDirectory": "fixtures/css-appearance-ir/negative",
       "semanticValidator": "css-appearance-ir"
+    },
+    {
+      "id": "css-collision-trace",
+      "schema": "https://axiom.dev/schemas/css/collision-trace/0.1",
+      "positiveDirectory": "fixtures/css-collision-trace/positive",
+      "negativeDirectory": "fixtures/css-collision-trace/negative",
+      "semanticValidator": "css-collision-trace"
     },
     {
       "id": "motion-ir",

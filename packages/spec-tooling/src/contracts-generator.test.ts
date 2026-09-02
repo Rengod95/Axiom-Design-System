@@ -32,6 +32,7 @@ describe("generated reference contracts", () => {
       expect.stringContaining("schemaOrProfileVersion"),
       expect.stringContaining("canonicalInputDigest"),
       expect.stringContaining("https://axiom.dev/schemas/motion/ir/0.1"),
+      expect.stringContaining("CollisionTrace"),
     ]));
   });
 

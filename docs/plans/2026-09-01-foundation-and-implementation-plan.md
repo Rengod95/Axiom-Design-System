@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N21 \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N22 (rich trace reconciliation complete) \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.5.1, SSOT-03 v0.3.1, SSOT-04 v0.2.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.5.2, SSOT-03 v0.3.2, SSOT-04 v0.2.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -992,9 +992,11 @@ Exact first sequence:
 21. [done] Implement the CSS-aware defineRecipe SDK (N20); N21 retains Token semantic validation.
 22. [done] Integrate profile policy with explicit resolved-manifest, exact
     property-policy source, digest, serializer, and projector validation into
-    declarations (N21); N22 consumes the frozen binding receipt without
-    duplicating Token semantic decisions.
-23. Implement the Recipe normalizer and collision trace (N22).
+    declarations (N21); N22 freshly obtains and consumes the frozen binding
+    receipt through the public N21 boundary without duplicating Token semantic
+    decisions.
+23. [done] Implement the Recipe normalizer and collision trace (N22), including
+    rich trace schema/semantic reconciliation and output round-trip evidence.
 24. Implement defineMotion authoring and normalization (N23).
 ```
 

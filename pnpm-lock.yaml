@@ -46,6 +46,31 @@ importers:
         specifier: ^4.1.11
         version: 4.1.11(@types/node@24.13.3)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(tsx@4.23.13))
 
+  packages/appearance-normalizer:
+    dependencies:
+      '@axiom/appearance-authoring':
+        specifier: workspace:*
+        version: link:../appearance-authoring
+      '@axiom/condition-registry':
+        specifier: workspace:*
+        version: link:../condition-registry
+      '@axiom/motion-schema':
+        specifier: workspace:*
+        version: link:../motion-schema
+    devDependencies:
+      '@axiom/spec-tooling':
+        specifier: workspace:*
+        version: link:../spec-tooling
+      '@axiom/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+      vitest:
+        specifier: ^4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(tsx@4.23.13))
+
   packages/behavior-contracts:
     devDependencies:
       typescript:
@@ -112,6 +137,9 @@ importers:
 
   packages/spec-tooling:
     dependencies:
+      '@axiom/condition-registry':
+        specifier: workspace:*
+        version: link:../condition-registry
       '@axiom/css-property-profile':
         specifier: workspace:*
         version: link:../css-property-profile

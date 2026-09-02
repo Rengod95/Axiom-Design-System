@@ -15,6 +15,8 @@ import {
   resolvedRange,
   type ResolvedRange,
 } from "./condition-model.js";
+import { analyzeConditionExpression } from "@axiom/condition-registry";
+import type { ConditionExpression, ConditionRegistry } from "@axiom/condition-registry";
 
 const hasRangeContradiction = (
   conditionIds: readonly string[],
@@ -111,7 +113,11 @@ export const validateConditionExpression = (
 
   const resolvedManifest =
     context?.registries[FOUNDATION_RESOLVED_TOKEN_MANIFEST_ID];
-  if (!hasSatisfyingConditionChoice(choices, definitions, resolvedManifest)) {
+  const thresholds = Object.fromEntries([...definitions].flatMap(([id, definition]) => {
+    const range = resolvedRange(definition, resolvedManifest);
+    return range === undefined ? [] : [[String((definition["value"] as UnknownRecord)["path"]), range.threshold]];
+  }));
+  if (!analyzeConditionExpression(value as ConditionExpression, context?.registries[CONDITION_REGISTRY_ID] as ConditionRegistry, thresholds).satisfiable) {
     diagnostics.push(
       conditionDiagnostic(
         SPEC_DIAGNOSTIC_CODE.CONTRADICTORY_CONDITION_RANGE,

@@ -10,6 +10,7 @@ import {
 } from "./constants.js";
 import { validateCanonicalStateRegistry } from "./semantic/canonical-state-registry-validator.js";
 import { validateAppearanceIr } from "./semantic/appearance-ir-validator.js";
+import { validateCollisionTrace } from "./semantic/collision-trace-validator.js";
 import { validateMotionIr } from "./semantic/motion-ir-validator.js";
 import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
@@ -372,6 +373,8 @@ export const runSemanticValidator = (
       return validateCanonicalStateRegistry(value);
     case "css-appearance-ir":
       return validateAppearanceIr(value, context);
+    case "css-collision-trace":
+      return validateCollisionTrace(value, context);
     case "motion-ir":
       return validateMotionIr(value, context);
     case "condition-expression":

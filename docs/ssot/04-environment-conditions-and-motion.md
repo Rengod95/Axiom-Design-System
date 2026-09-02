@@ -756,12 +756,19 @@ IR does not create or retain DOM nodes by itself.
 ## 17. Diagnostics
 
 ```text
-AXC1001  unknown Condition ID
-AXC1002  invalid breakpoint Token Domain
-AXC1003  unregistered container
-AXC1004  contradictory condition expression
-AXC1005  raw query string forbidden
-AXC1101  overlapping condition winner unclear
+AXC1001  duplicate container ID
+AXC1002  container order invalid
+AXC1003  duplicate Condition ID
+AXC1004  Condition order invalid
+AXC1005  Condition ID kind mismatch
+AXC1006  unknown container
+AXC1007  invalid breakpoint reference
+AXC1008  unknown breakpoint Token
+AXC1009  invalid breakpoint Token
+AXC1010  theme Variant used as a breakpoint
+AXC1101  unknown Condition ID
+AXC1102  contradictory condition expression
+AXC1103  satisfiable Condition overlap has no explicit relation intent
 
 AXM1001  unknown Motion property
 AXM1002  property not animatable
@@ -781,6 +788,13 @@ AXM1015  discrete Motion opt-in accepted (warning)
 AXM1016  Motion keyframe value kind is not permitted
 AXM1017  Motion keyframe Token binding is not permitted
 ```
+
+When AXC1103 references a collision trace, the trace entry has relation
+`condition-overlap`, includes both closed Condition expressions in declaration
+applicability evidence, and records the computed non-disjoint relation as
+`equivalent`, `overlap`, `subset`, or `superset`. The field is required for
+Condition-overlap entries and forbidden for other collision relations. Semantic
+validation recomputes it from the authoritative Condition model.
 
 ---
 
