@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "0.1",
+  "compatibility": "clean-break",
+  "sizeScale": {
+    "core": ["xs", "sm", "md", "lg", "xl"],
+    "extensions": ["xxs", "xxl"],
+    "excludedLongForms": ["xsmall", "small", "medium", "large", "xlarge"]
+  },
+  "orderedScaleFamilies": [
+    { "path": "fontSize.semantic.body", "coverage": "core" },
+    { "path": "fontSize.semantic.code", "coverage": "core" },
+    { "path": "fontSize.semantic.display", "coverage": "core" },
+    { "path": "fontSize.semantic.label", "coverage": "core" },
+    { "path": "lineHeight.semantic.body", "coverage": "core" },
+    { "path": "lineHeight.semantic.code", "coverage": "core" },
+    { "path": "lineHeight.semantic.display", "coverage": "core" },
+    { "path": "lineHeight.semantic.label", "coverage": "core" },
+    { "path": "size.semantic.control.height", "coverage": "core" },
+    { "path": "size.semantic.icon", "coverage": "core" },
+    { "path": "space.semantic.control.padding.block", "coverage": "core" },
+    { "path": "space.semantic.control.padding.inline", "coverage": "core" },
+    { "path": "space.semantic.layout.cluster.gap", "coverage": "core" },
+    { "path": "space.semantic.layout.gutter", "coverage": "core" },
+    { "path": "space.semantic.layout.section", "coverage": "core" },
+    { "path": "space.semantic.layout.stack.gap", "coverage": "core" },
+    { "path": "typography.semantic.body", "coverage": "core" },
+    { "path": "typography.semantic.code", "coverage": "core" },
+    { "path": "typography.semantic.display", "coverage": "core" },
+    { "path": "typography.semantic.label", "coverage": "core" }
+  ],
+  "extendedScaleFamilies": [
+    {
+      "path": "breakpoint.semantic.viewport",
+      "labels": ["xxl"],
+      "rationale": "The viewport condition registry exposes a desktop-wide threshold beyond xl."
+    }
+  ],
+  "colorRoles": [
+    {
+      "id": "background",
+      "purpose": "Application, page, and section environment colors."
+    },
+    {
+      "id": "surface",
+      "purpose": "Contained card, panel, popover, and dialog layer colors."
+    },
+    {
+      "id": "fill",
+      "purpose": "Control, badge, selection, and compact painted-region colors."
+    },
+    {
+      "id": "text",
+      "purpose": "Text content and text-on-color roles."
+    },
+    {
+      "id": "icon",
+      "purpose": "Icon and glyph foreground roles."
+    },
+    {
+      "id": "border",
+      "purpose": "Separator, outline, and interactive boundary colors."
+    },
+    {
+      "id": "status",
+      "purpose": "Success, warning, danger, and information feedback colors."
+    },
+    {
+      "id": "focus",
+      "purpose": "Keyboard and assistive focus indication colors."
+    },
+    {
+      "id": "backdrop",
+      "purpose": "Modal and overlay environment dimming colors."
+    },
+    {
+      "id": "selection",
+      "purpose": "Selected text and selected-region color pairs."
+    }
+  ],
+  "spaceFamilies": [
+    {
+      "path": "space.semantic.control.padding.block",
+      "purpose": "Logical block padding for controls."
+    },
+    {
+      "path": "space.semantic.control.padding.inline",
+      "purpose": "Logical inline padding for controls."
+    },
+    {
+      "path": "space.semantic.layout.cluster.gap",
+      "purpose": "Gap between inline or wrapping cluster items."
+    },
+    {
+      "path": "space.semantic.layout.gutter",
+      "purpose": "Container inset or column gutter."
+    },
+    {
+      "path": "space.semantic.layout.section",
+      "purpose": "Separation between major page sections."
+    },
+    {
+      "path": "space.semantic.layout.stack.gap",
+      "purpose": "Gap between vertically stacked layout items."
+    }
+  ],
+  "removedPaths": [
+    "color.semantic.action",
+    "color.semantic.surface.sunken",
+    "space.semantic.overlap"
+  ]
+}

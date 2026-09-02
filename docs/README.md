@@ -28,25 +28,28 @@ reconciliation한다.
 2. [ADR-0001 — CSS-Native Appearance Profile and Initial Scope](adr/0001-css-native-appearance-profile-and-scope.md)
 3. [ADR-0002 — React Aria Behavioral Criteria Source](adr/0002-react-aria-behavioral-criteria-source.md)
 4. [ADR-0003 — Recipe Authoring Kernel and Third-Party Boundary](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
-5. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
-6. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
-7. [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
-8. [Foundation Reconciliation & Implementation Plan](plans/2026-09-01-foundation-and-implementation-plan.md)
-9. [Source-code and Module-structure Standard](standards/source-code-and-module-structure.md)
-10. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
-11. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
-12. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
-13. [MVP Removal & Source Standards — Implementation Report](implementation/2026-09-01-mvp-removal-and-source-standards.md)
-14. [P2 Token Foundation Closeout — Implementation Report](implementation/2026-09-01-p2-token-foundation-closeout.md)
-15. [P3 CSS Property Profile — Implementation Report](implementation/2026-09-01-p3-css-property-profile.md)
-16. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
-17. [Token Foundation Scale Hardening](implementation/2026-09-01-token-foundation-scale-hardening.md)
-18. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
-19. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
+5. [ADR-0004 — Token Vocabulary and Perceptual Color Profile](adr/0004-token-vocabulary-and-color-profile.md)
+6. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
+7. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
+8. [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
+9. [Foundation Reconciliation & Implementation Plan](plans/2026-09-01-foundation-and-implementation-plan.md)
+10. [Source-code and Module-structure Standard](standards/source-code-and-module-structure.md)
+11. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
+12. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
+13. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
+14. [MVP Removal & Source Standards — Implementation Report](implementation/2026-09-01-mvp-removal-and-source-standards.md)
+15. [P2 Token Foundation Closeout — Implementation Report](implementation/2026-09-01-p2-token-foundation-closeout.md)
+16. [P3 CSS Property Profile — Implementation Report](implementation/2026-09-01-p3-css-property-profile.md)
+17. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
+18. [Token Foundation Scale Hardening](implementation/2026-09-01-token-foundation-scale-hardening.md)
+19. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
+20. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
+21. [Token Governance and Vocabulary Registry](implementation/2026-09-02-token-governance.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
-Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를
-기록한다. SSOT-00은 전체 모듈·권한·의존 방향을, implementation plan은
+Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
+ADR-0004는 Token vocabulary와 perceptual color profile을 기록한다.
+SSOT-00은 전체 모듈·권한·의존 방향을, implementation plan은
 실제 파일과 작업 순서·검증 gate를 정의한다.
 
 ## Normative Specifications
@@ -54,7 +57,7 @@ Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계�
 | Document | Version | Owns |
 | --- | --- | --- |
 | [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md) | 0.3.0 | authority, layers, boundaries, frozen v0.1 scope |
-| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.3.2 | primitive/semantic/component tiers, production scales, themes, resolver, manifests |
+| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.3.3 | primitive/semantic/component tiers, production scales, semantic vocabulary, themes, resolver, manifests |
 | [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.3.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
 | [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.0 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
 | [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.1.2 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
@@ -117,6 +120,11 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [Token Foundation Scale Hardening — 2026-09-01](implementation/2026-09-01-token-foundation-scale-hardening.md)
 - [Canonical State and Condition Registries — 2026-09-01](implementation/2026-09-01-state-and-condition-registries.md)
 - [Ordered CSS Declaration Contracts — 2026-09-02](implementation/2026-09-02-ordered-declaration-contracts.md)
+- [Token Governance and Vocabulary Registry — 2026-09-02](implementation/2026-09-02-token-governance.md)
+- [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
+- [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)
+- [OKLCH and Semantic Color Plan — 2026-09-02](superpowers/plans/2026-09-02-oklch-semantic-colors.md)
+- [Semantic Scale and Aspect-Ratio Plan — 2026-09-02](superpowers/plans/2026-09-02-semantic-scales-and-ratios.md)
 - [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 

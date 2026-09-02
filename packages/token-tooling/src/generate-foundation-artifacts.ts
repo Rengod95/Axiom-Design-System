@@ -18,6 +18,7 @@ import {
   TOKEN_MODIFIER_REGISTRY_PATH,
   TOKEN_PATH_TYPES_PATH,
   TOKEN_RESOLVED_MANIFEST_PATH,
+  TOKEN_SEMANTIC_VOCABULARY_PATH,
   TOKEN_SOURCE_FILES,
   TOKEN_SOURCE_PROFILE_PATH,
 } from "./constants.js";
@@ -65,12 +66,14 @@ const writeOrCheck = async (
 const [
   profile,
   foundationPolicyContent,
+  semanticVocabularyContent,
   domainRegistry,
   modifierRegistry,
   sourceFiles,
 ] = await Promise.all([
   readJson<TokenSourceProfile>(TOKEN_SOURCE_PROFILE_PATH),
   readFile(repositoryPath(TOKEN_FOUNDATION_POLICY_PATH), "utf8"),
+  readFile(repositoryPath(TOKEN_SEMANTIC_VOCABULARY_PATH), "utf8"),
   readJson<{ readonly domains: readonly TokenDomainDefinition[] }>(
     TOKEN_DOMAIN_REGISTRY_PATH,
   ),
@@ -105,6 +108,10 @@ const sourceDigest = digestTokenSources(
     {
       filename: `file:///${TOKEN_FOUNDATION_POLICY_PATH}`,
       content: foundationPolicyContent,
+    },
+    {
+      filename: `file:///${TOKEN_SEMANTIC_VOCABULARY_PATH}`,
+      content: semanticVocabularyContent,
     },
   ],
 );

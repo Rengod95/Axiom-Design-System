@@ -34,6 +34,7 @@ export interface FoundationContrastPair {
 
 export interface FoundationTokenPolicy {
   readonly schemaVersion: "0.1";
+  readonly semanticVocabularyRegistry: "semantic-token-vocabulary";
   readonly rootFontSizePx: number;
   readonly authoredDimensionUnits: readonly string[];
   readonly derivedCssUnits: readonly string[];

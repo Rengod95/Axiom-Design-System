@@ -252,9 +252,9 @@ Authoring examples:
 base: {
   root: {
     marginBlockEnd:
-      token("space.semantic.stack.md"),
+      token("space.semantic.layout.stack.gap.md"),
     marginInline:
-      token("space.semantic.layout.gutter"),
+      token("space.semantic.layout.gutter.md"),
   },
 }
 ```
@@ -263,9 +263,7 @@ Raw `auto`, percentage, and calculated margins remain valid. Negative spacing
 does not require duplicate negative Primitive Tokens. The authoring helper:
 
 ```ts
-negateToken(
-  token("space.semantic.overlap.sm"),
-)
+negateToken(token("space.semantic.layout.stack.gap.sm"))
 ```
 
 normalizes to a validated template equivalent to

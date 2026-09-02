@@ -12,6 +12,7 @@ import { validateCanonicalStateRegistry } from "./semantic/canonical-state-regis
 import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
 import { createSemanticDiagnosticFactory } from "./semantic/semantic-diagnostic.js";
+import { validateSemanticTokenVocabulary } from "./semantic/semantic-token-vocabulary-validator.js";
 import type {
   Diagnostic,
   SemanticValidationContext,
@@ -364,6 +365,8 @@ export const runSemanticValidator = (
       return validateParsedTokenDocument(value);
     case "resolved-token-manifest":
       return validateResolvedTokenManifest(value);
+    case "semantic-token-vocabulary":
+      return validateSemanticTokenVocabulary(value);
     case "token-context-override":
       return validateTokenContextOverride(value);
   }

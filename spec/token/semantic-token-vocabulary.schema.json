@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/token/semantic-vocabulary/0.1",
+  "title": "Axiom Semantic Token Vocabulary",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "compatibility",
+    "sizeScale",
+    "orderedScaleFamilies",
+    "extendedScaleFamilies",
+    "colorRoles",
+    "spaceFamilies",
+    "removedPaths"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "compatibility": { "const": "clean-break" },
+    "sizeScale": {
+      "type": "object",
+      "required": ["core", "extensions", "excludedLongForms"],
+      "properties": {
+        "core": { "const": ["xs", "sm", "md", "lg", "xl"] },
+        "extensions": { "const": ["xxs", "xxl"] },
+        "excludedLongForms": {
+          "const": ["xsmall", "small", "medium", "large", "xlarge"]
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "orderedScaleFamilies": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/scaleFamily" }
+    },
+    "extendedScaleFamilies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/extendedScaleFamily" }
+    },
+    "colorRoles": {
+      "type": "array",
+      "minItems": 10,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/colorRole" }
+    },
+    "spaceFamilies": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/spaceFamily" }
+    },
+    "removedPaths": {
+      "const": [
+        "color.semantic.action",
+        "color.semantic.surface.sunken",
+        "space.semantic.overlap"
+      ]
+    }
+  },
+  "$defs": {
+    "tokenPath": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9]*(?:\\.[a-z0-9][A-Za-z0-9]*)+$"
+    },
+    "scaleFamily": {
+      "type": "object",
+      "required": ["path", "coverage"],
+      "properties": {
+        "path": { "$ref": "#/$defs/tokenPath" },
+        "coverage": { "const": "core" }
+      },
+      "unevaluatedProperties": false
+    },
+    "extendedScaleFamily": {
+      "type": "object",
+      "required": ["path", "labels", "rationale"],
+      "properties": {
+        "path": { "$ref": "#/$defs/tokenPath" },
+        "labels": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["xxs", "xxl"] }
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      },
+      "unevaluatedProperties": false
+    },
+    "colorRole": {
+      "type": "object",
+      "required": ["id", "purpose"],
+      "properties": {
+        "id": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "purpose": { "type": "string", "minLength": 1 }
+      },
+      "unevaluatedProperties": false
+    },
+    "spaceFamily": {
+      "type": "object",
+      "required": ["path", "purpose"],
+      "properties": {
+        "path": { "$ref": "#/$defs/tokenPath" },
+        "purpose": { "type": "string", "minLength": 1 }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

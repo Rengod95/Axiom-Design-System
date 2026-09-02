@@ -211,6 +211,25 @@ Catch-all modules or packages named `utils`, `shared`, `common`, or `helpers`
 MUST NOT be introduced. Tests MUST consume the same package-owned capability as
 production code when they exercise the same boundary.
 
+### 6.2 NodeNext relative imports
+
+Every package is an ES module and the repository compiles with both `module`
+and `moduleResolution` set to `NodeNext`. Relative TypeScript imports MUST name
+the emitted `.js` file:
+
+```ts
+import { parseTokenIdentity } from "./identity.js";
+```
+
+TypeScript resolves that specifier to `identity.ts` while type-checking and
+preserves `./identity.js` in emitted JavaScript. Node ESM requires the relative
+file extension at runtime. Relative `.ts` specifiers and extensionless relative
+imports MUST NOT be used unless the repository changes its compiler, emit, and
+runtime contract through an ADR.
+
+Package imports continue to use the package export, for example
+`@axiom/tokens`, without a file extension.
+
 ## 7. Diagnostics and errors
 
 Stable diagnostics MUST have a named code, severity, phase, human-readable
