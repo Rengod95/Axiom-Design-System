@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N15 \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N17 \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0004, SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-02 v0.4.0, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.2, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-02 v0.4.1, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -697,10 +697,14 @@ Gate B requires:
 
 ### P8.1 Behavioral Criteria Source
 
+Under ADR-0005, the N17 schema/structural-fixture boundary is complete
+in this branch. The following executable provider-source work belongs to N32.
+
 - generate a source manifest from exact lockfile-resolved
   `react-aria-components`, `react-aria`, and `react-stately` packages;
 - record integrity and official evidence-page digests;
-- add JSON Schemas for the source manifest and component criteria profiles;
+- populate the current source manifest and component criteria profiles under
+  the closed N17 schemas;
 - author Button, Select, and Dialog profiles for semantics, multi-modal
   interaction, focus, state, selection/collection, form/validation, overlay,
   and lifecycle;
@@ -974,8 +978,8 @@ Exact first sequence:
 15. [done] Add ordered declaration/value schemas (N14).
 16. [done] Add the Appearance IR schema (N15).
 17. [done] Add the Motion IR schema (N16).
-18. [next] Add Behavioral Criteria Source/Profile schemas (N17).
-19. Generate/reference the combined TypeScript contract surface (N18).
+18. [done, ADR-0005] Add Behavioral Criteria Source/Profile schemas and synthetic structural fixtures (N17); N32 owns current provider data.
+19. [next] Generate/reference the combined TypeScript contract surface (N18).
 20. Implement the Recipe Kernel port and structural conformance suite (N19).
 21. Implement the CSS-aware defineRecipe SDK (N20).
 22. Integrate the existing profile-level Token validators into declarations (N21).

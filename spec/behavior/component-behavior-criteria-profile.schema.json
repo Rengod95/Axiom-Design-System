@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/behavior/component-criteria-profile/0.1",
+  "title": "Axiom Component Behavior Criteria Profile",
+  "type": "object",
+  "required": ["schemaVersion", "id", "component", "sourceManifestDigest", "criteria"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "id": { "type": "string", "pattern": "^react-aria\\.(button|dialog|select)$" },
+    "component": { "enum": ["button", "dialog", "select"] },
+    "sourceManifestDigest": { "$ref": "#/$defs/digest" },
+    "criteria": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/criterion" } }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "criterion": {
+      "type": "object",
+      "required": ["id", "category", "part", "requirement", "evidenceIds", "verification"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^(BTN|DLG|SEL)-[A-Z]{3}-[0-9]{3}$" },
+        "category": { "enum": ["semantics", "keyboard", "pointer", "touch", "focus", "state", "selection", "collection", "form", "validation", "overlay", "lifecycle"] },
+        "part": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "requirement": { "type": "string", "minLength": 1 },
+        "evidenceIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" } },
+        "providerObservation": { "type": "string", "minLength": 1 },
+        "canonicalProjection": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "verification": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["schema", "type", "dom", "browser", "accessibility-tree", "manual-at"] } }
+      },
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

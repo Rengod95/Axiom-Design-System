@@ -4,6 +4,7 @@
 **Date:** 2026-09-01 \
 **Decision owners:** Axiom Foundation \
 **Amends:** SSOT-00, SSOT-02, SSOT-05
+**Amended by:** ADR-0005
 
 ---
 
@@ -38,9 +39,9 @@ react-aria             3.51.0
 react-stately          3.49.0
 ```
 
-The package versions above describe the current lockfile, not a floating range.
-The implementation phase MUST emit a Behavioral Criteria Source Manifest with
-the actual resolved versions and evidence digests.
+The package versions above are reviewed candidates, not current-lockfile facts.
+N32 MUST emit a Behavioral Criteria Source Manifest with actual resolved
+versions and evidence digests.
 
 ### 2.2 Platform accessibility standards remain higher authority
 

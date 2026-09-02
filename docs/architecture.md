@@ -85,14 +85,15 @@ point and contains exports rather than implementation.
 | Ordered declarations and Appearance IR | SSOT-03, declaration/Appearance schemas | `@axiom/spec-tooling` schema and semantic gates |
 | Positive and negative behavior | `spec/fixtures/`, `fixtures/` | package tests and spec harness |
 
-## Current N16 checkpoint
+## Current N17 checkpoint
 
-The `spec/manifest.json` inventory at the N16 Motion IR checkpoint contains 34
-schemas, 14 registries, and 24 fixture suites. The fixture corpus contains 36
-positive and 62 negative files. Token generation emits the same 635 Token IDs
-for light and dark contexts, and the generated `TokenPath` union contains the
-same ID set. N17 Behavioral Criteria schemas and later packages remain planned
-rather than current nodes in the package graph.
+The `spec/manifest.json` inventory after N16 Motion IR and the N17 behavior
+contracts contains 36 schemas, 14 registries, and 26 fixture suites. The
+fixture corpus contains 40 positive and 78 negative files. Token generation
+emits the same 635 Token IDs for light and dark contexts, and the generated
+`TokenPath` union contains the same ID set. Under ADR-0005, N17 adds no provider
+package or current behavior registry; N32 owns pinned React Aria source data
+and N33 owns behavior projection and cross-coverage. N18 is the next boundary.
 
 ## Change gate
 

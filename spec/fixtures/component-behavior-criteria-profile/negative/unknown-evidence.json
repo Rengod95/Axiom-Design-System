@@ -1,0 +1,1 @@
+{"schemaVersion":"0.1","id":"react-aria.button","component":"button","sourceManifestDigest":"sha256:f0735cfd23b13c35a497ad8b35c5f91a466e3021bfcb14762c3e43c028ba8ddf","criteria":[{"id":"BTN-SEM-001","category":"semantics","part":"root","requirement":"Fixture Button retains button semantics.","evidenceIds":["react-aria.missing.fixture"],"verification":["schema"]}]}

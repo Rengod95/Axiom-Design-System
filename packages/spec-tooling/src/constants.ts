@@ -12,6 +12,7 @@ export const CANONICAL_DIGEST_PREFIX = `${CANONICAL_DIGEST_ALGORITHM}:`;
 export const IN_MEMORY_SOURCE_NAME = "<memory>";
 export const TOKEN_DIAGNOSTIC_PHASE = "token" as const;
 export const STATE_DIAGNOSTIC_PHASE = "behavior" as const;
+export const BEHAVIOR_DIAGNOSTIC_PHASE = "behavior" as const;
 export const CONDITION_DIAGNOSTIC_PHASE = "condition" as const;
 export const MOTION_DIAGNOSTIC_PHASE = "motion" as const;
 export const ERROR_DIAGNOSTIC_SEVERITY = "error" as const;
@@ -31,6 +32,8 @@ export const DIAGNOSTIC_PHASES = [
   "token",
 ] as const;
 export const SEMANTIC_VALIDATOR_IDS = [
+  "behavior-criteria-source-manifest",
+  "component-behavior-criteria-profile",
   "canonical-state-registry",
   "css-appearance-ir",
   "motion-ir",
@@ -69,6 +72,20 @@ export const REQUIRED_CANONICAL_STATE_IDS = [
   "required",
   "selected",
 ] as const;
+export const BEHAVIOR_PROVIDER_ID = "react-aria" as const;
+export const BEHAVIOR_SOURCE_SCHEMA_VERSION = "0.1" as const;
+export const BEHAVIOR_REQUIRED_PACKAGE_NAMES = [
+  "react-aria",
+  "react-aria-components",
+  "react-stately",
+] as const;
+export const BEHAVIOR_COMPONENT_IDS = ["button", "dialog", "select"] as const;
+export const BEHAVIOR_CRITERION_PREFIX = {
+  button: "BTN",
+  dialog: "DLG",
+  select: "SEL",
+} as const;
+export const BEHAVIOR_RETRIEVAL_POLICY = "pinned-artifact" as const;
 export const REQUIRED_CONDITION_IDS = [
   "container.inline.belowCompact",
   "container.inline.belowRegular",
@@ -106,6 +123,21 @@ export const CONSTRAINT_REQUIRED_DTCG_TYPE = {
 } as const;
 
 export const SPEC_DIAGNOSTIC_CODE = {
+  BEHAVIOR_EVIDENCE_DIGEST_MISMATCH: "AXB1102",
+  BEHAVIOR_SOURCE_MANIFEST_MISSING: "AXB1101",
+  UNKNOWN_PROVIDER_OBSERVATION: "AXB1105",
+  BEHAVIOR_EVIDENCE_ARTIFACT_UNAVAILABLE: "AXB1106",
+  BEHAVIOR_EVIDENCE_REPOSITORY_ESCAPE: "AXB1107",
+  BEHAVIOR_MANIFEST_DIGEST_MISMATCH: "AXB1201",
+  BEHAVIOR_PACKAGE_SET: "AXB1202",
+  BEHAVIOR_PACKAGE_ORDER: "AXB1203",
+  BEHAVIOR_EVIDENCE_ORDER: "AXB1204",
+  BEHAVIOR_PROFILE_IDENTITY: "AXB1205",
+  BEHAVIOR_CRITERION_DUPLICATE: "AXB1206",
+  BEHAVIOR_CRITERION_ORDER: "AXB1207",
+  BEHAVIOR_SOURCE_DIGEST_MISMATCH: "AXB1208",
+  BEHAVIOR_UNKNOWN_EVIDENCE: "AXB1209",
+  BEHAVIOR_CRITERION_NAMESPACE: "AXB1210",
   DUPLICATE_STATE_ID: "AXS1001",
   STATE_ORDER: "AXS1002",
   DUPLICATE_CONTAINER_ID: "AXC1001",

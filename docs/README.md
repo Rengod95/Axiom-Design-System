@@ -35,6 +35,7 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 2. [ADR-0001 — CSS-Native Appearance Profile and Initial Scope](adr/0001-css-native-appearance-profile-and-scope.md)
 3. [ADR-0002 — React Aria Behavioral Criteria Source](adr/0002-react-aria-behavioral-criteria-source.md)
 4. [ADR-0003 — Recipe Authoring Kernel and Third-Party Boundary](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
+5. [ADR-0005 — Behavior Criteria Schema Sequencing](adr/0005-behavior-criteria-schema-sequencing.md)
 5. [ADR-0004 — Token Vocabulary and Perceptual Color Profile](adr/0004-token-vocabulary-and-color-profile.md)
 6. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
 7. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
@@ -70,10 +71,10 @@ SSOT-00은 전체 모듈·권한·의존 방향을, implementation plan은
 | --- | --- | --- |
 | [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md) | 0.3.1 | authority, layers, boundaries, frozen v0.1 scope |
 | [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.4.0 | primitive/semantic/component tiers, production scales, semantic vocabulary, themes, resolver, manifests |
-| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.4.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
+| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.4.1 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
 | [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.1 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
 | [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.2.0 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
-| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.2 | React Aria criteria source, canonical state, projections, public API |
+| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.3 | React Aria criteria source, canonical state, projections, public API |
 
 ## Normative Annexes
 

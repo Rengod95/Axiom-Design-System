@@ -1,4 +1,5 @@
-import { readFile, readdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { readFile, readdir, realpath } from "node:fs/promises";
 import { isAbsolute, relative, resolve, sep } from "node:path";
 
 import {
@@ -10,11 +11,13 @@ import {
 
 import { canonicalJsonDigest } from "./canonical-json.js";
 import {
+  BEHAVIOR_DIAGNOSTIC_PHASE,
   ERROR_DIAGNOSTIC_SEVERITY,
   JSON_FILE_SUFFIX,
   JSON_SCHEMA_FILE_SUFFIX,
   SPEC_MANIFEST_PATH,
   SPEC_MANIFEST_SCHEMA_PATH,
+  SPEC_DIAGNOSTIC_CODE,
   STABLE_SORT_LOCALE,
   WARNING_DIAGNOSTIC_SEVERITY,
 } from "./constants.js";
@@ -23,6 +26,7 @@ import type {
   Diagnostic,
   SemanticValidatorId,
   SemanticValidationContext,
+  RelatedFixtureManifestEntry,
   SpecCheckReport,
   SpecManifest,
 } from "./types.js";
@@ -134,6 +138,138 @@ const validateFixture = (
   return { schemaValid, semanticErrors };
 };
 
+/**
+ * Validates pinned evidence files without allowing repository-relative paths or
+ * symlink targets to escape the supplied root.
+ */
+export const validatePinnedEvidenceArtifacts = async (
+  value: unknown,
+  repositoryRoot: string,
+  sourceFile = "<memory>",
+): Promise<readonly Diagnostic[]> => {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return [];
+  const evidence = (value as Record<string, unknown>)["evidence"];
+  if (!Array.isArray(evidence)) return [];
+  const diagnostics: Diagnostic[] = [];
+  const realRoot = await realpath(repositoryRoot);
+  for (const [index, item] of evidence.entries()) {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) continue;
+    const record = item as Record<string, unknown>;
+    if (record["retrievalPolicy"] !== "pinned-artifact" || typeof record["artifactPath"] !== "string" || typeof record["digest"] !== "string") continue;
+    const artifactPath = record["artifactPath"];
+    let artifact: string;
+    try {
+      artifact = resolveInside(repositoryRoot, artifactPath);
+    } catch {
+      diagnostics.push({
+        code: SPEC_DIAGNOSTIC_CODE.BEHAVIOR_EVIDENCE_REPOSITORY_ESCAPE,
+        severity: ERROR_DIAGNOSTIC_SEVERITY,
+        phase: BEHAVIOR_DIAGNOSTIC_PHASE,
+        message: `Pinned evidence path escapes the repository: ${artifactPath}`,
+        location: { file: sourceFile, pointer: `/evidence/${index}/artifactPath` },
+        target: artifactPath,
+      });
+      continue;
+    }
+    let realArtifact: string;
+    try {
+      realArtifact = await realpath(artifact);
+    } catch {
+      diagnostics.push({
+        code: SPEC_DIAGNOSTIC_CODE.BEHAVIOR_EVIDENCE_ARTIFACT_UNAVAILABLE,
+        severity: ERROR_DIAGNOSTIC_SEVERITY,
+        phase: BEHAVIOR_DIAGNOSTIC_PHASE,
+        message: `Pinned evidence artifact is unavailable: ${artifactPath}`,
+        location: { file: sourceFile, pointer: `/evidence/${index}/artifactPath` },
+        target: artifactPath,
+      });
+      continue;
+    }
+    if (realArtifact !== realRoot && !realArtifact.startsWith(`${realRoot}${sep}`)) {
+      diagnostics.push({
+        code: SPEC_DIAGNOSTIC_CODE.BEHAVIOR_EVIDENCE_REPOSITORY_ESCAPE,
+        severity: ERROR_DIAGNOSTIC_SEVERITY,
+        phase: BEHAVIOR_DIAGNOSTIC_PHASE,
+        message: `Pinned evidence artifact resolves outside the repository: ${artifactPath}`,
+        location: { file: sourceFile, pointer: `/evidence/${index}/artifactPath` },
+        target: artifactPath,
+      });
+      continue;
+    }
+    let content: Buffer;
+    try {
+      content = await readFile(realArtifact);
+    } catch {
+      diagnostics.push({
+        code: SPEC_DIAGNOSTIC_CODE.BEHAVIOR_EVIDENCE_ARTIFACT_UNAVAILABLE,
+        severity: ERROR_DIAGNOSTIC_SEVERITY,
+        phase: BEHAVIOR_DIAGNOSTIC_PHASE,
+        message: `Pinned evidence artifact cannot be read: ${artifactPath}`,
+        location: { file: sourceFile, pointer: `/evidence/${index}/artifactPath` },
+        target: artifactPath,
+      });
+      continue;
+    }
+    const digest = `sha256:${createHash("sha256").update(content).digest("hex")}`;
+    if (digest !== record["digest"]) {
+      diagnostics.push({
+        code: SPEC_DIAGNOSTIC_CODE.BEHAVIOR_EVIDENCE_DIGEST_MISMATCH,
+        severity: ERROR_DIAGNOSTIC_SEVERITY,
+        phase: BEHAVIOR_DIAGNOSTIC_PHASE,
+        message: `Pinned evidence artifact digest does not match its declared bytes: ${artifactPath}`,
+        location: { file: sourceFile, pointer: `/evidence/${index}/digest` },
+        target: artifactPath,
+      });
+    }
+  }
+  return diagnostics;
+};
+
+/** Loads a related fixture only after its declared schema and semantics pass. */
+const loadRelatedFixture = async (
+  id: string,
+  entry: RelatedFixtureManifestEntry,
+  ajv: Ajv2020,
+  semanticContext: SemanticValidationContext,
+  specRoot: string,
+): Promise<unknown> => {
+  const validate = ajv.getSchema(entry.schema);
+  if (validate === undefined) {
+    throw new Error(`${id}: unknown related fixture schema '${entry.schema}'.`);
+  }
+  const fixturePath = resolveInside(specRoot, entry.path);
+  const relativePath = relative(specRoot, fixturePath);
+  const value = await readJson(fixturePath);
+  const result = validateFixture(
+    validate,
+    value,
+    entry.semanticValidator,
+    semanticContext,
+    relativePath,
+    undefined,
+  );
+  const artifactErrors =
+    entry.semanticValidator === "behavior-criteria-source-manifest" && result.schemaValid
+      ? validateFixtureDiagnostics(
+        await validatePinnedEvidenceArtifacts(
+          value,
+          resolve(specRoot, ".."),
+          relativePath,
+        ),
+      )
+      : [];
+  if (!result.schemaValid || result.semanticErrors.length > 0 || artifactErrors.length > 0) {
+    throw new Error(
+      `${id}: related fixture '${relativePath}' is invalid: ${
+        result.schemaValid
+          ? [...result.semanticErrors, ...artifactErrors].join("; ")
+          : formatErrors(validate.errors)
+      }`,
+    );
+  }
+  return value;
+};
+
 const validateSchemaInventory = async (
   specRoot: string,
   manifest: SpecManifest,
@@ -223,6 +359,20 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
     const validate = ajv.getSchema(suite.schema);
     if (validate === undefined) throw new Error(`${suite.id}: unknown schema '${suite.schema}'.`);
 
+    const relatedFixtures: Record<string, unknown> = {};
+    for (const [id, entry] of Object.entries(suite.relatedFixtures ?? {})) {
+      relatedFixtures[id] = await loadRelatedFixture(
+        id,
+        entry,
+        ajv,
+        semanticContext,
+        specRoot,
+      );
+    }
+    const fixtureContext: SemanticValidationContext = {
+      ...semanticContext,
+      ...(Object.keys(relatedFixtures).length === 0 ? {} : { relatedFixtures }),
+    };
     const positiveFiles = await listJsonFiles(resolveInside(specRoot, suite.positiveDirectory));
     const negativeFiles = await listJsonFiles(resolveInside(specRoot, suite.negativeDirectory));
     if (positiveFiles.length === 0 || negativeFiles.length === 0) {
@@ -236,14 +386,25 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
         validate,
         value,
         suite.semanticValidator,
-        semanticContext,
+        fixtureContext,
         relative(specRoot, path),
         suite.allowedWarnings,
       );
-      if (!result.schemaValid || result.semanticErrors.length > 0) {
+      const artifactErrors = suite.id === "behavior-criteria-source-manifest" && result.schemaValid
+        ? validateFixtureDiagnostics(
+          await validatePinnedEvidenceArtifacts(
+            value,
+            resolve(specRoot, ".."),
+            relative(specRoot, path),
+          ),
+        )
+        : [];
+      if (!result.schemaValid || result.semanticErrors.length > 0 || artifactErrors.length > 0) {
         throw new Error(
           `${relative(specRoot, path)}: expected valid fixture; ${
-            result.schemaValid ? result.semanticErrors.join("; ") : formatErrors(validate.errors)
+            result.schemaValid
+              ? [...result.semanticErrors, ...artifactErrors].join("; ")
+              : formatErrors(validate.errors)
           }`,
         );
       }
@@ -256,11 +417,24 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
         validate,
         value,
         suite.semanticValidator,
-        semanticContext,
+        fixtureContext,
         relative(specRoot, path),
         suite.allowedWarnings,
       );
-      if (result.schemaValid && result.semanticErrors.length === 0) {
+      const artifactErrors = suite.id === "behavior-criteria-source-manifest" && result.schemaValid
+        ? validateFixtureDiagnostics(
+          await validatePinnedEvidenceArtifacts(
+            value,
+            resolve(specRoot, ".."),
+            relative(specRoot, path),
+          ),
+        )
+        : [];
+      if (
+        result.schemaValid &&
+        result.semanticErrors.length === 0 &&
+        artifactErrors.length === 0
+      ) {
         throw new Error(`${relative(specRoot, path)}: expected invalid fixture, but it passed.`);
       }
     }

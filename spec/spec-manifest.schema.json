@@ -49,6 +49,8 @@
         "semanticValidator": {
           "enum": [
             "canonical-state-registry",
+            "behavior-criteria-source-manifest",
+            "component-behavior-criteria-profile",
             "condition-expression",
             "condition-registry",
             "css-appearance-ir",
@@ -81,6 +83,8 @@
         "semanticValidator": {
           "enum": [
             "canonical-state-registry",
+            "behavior-criteria-source-manifest",
+            "component-behavior-criteria-profile",
             "condition-expression",
             "condition-registry",
             "css-appearance-ir",
@@ -97,6 +101,36 @@
           "type": "array",
           "uniqueItems": true,
           "items": { "type": "string", "pattern": "^[A-Z]+[0-9]+$" }
+        },
+        "relatedFixtures": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/relatedFixture" }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "relatedFixture": {
+      "type": "object",
+      "required": ["path", "schema"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relativeJsonPath" },
+        "schema": { "type": "string", "pattern": "^https://axiom\\.dev/schemas/" },
+        "semanticValidator": {
+          "enum": [
+            "canonical-state-registry",
+            "behavior-criteria-source-manifest",
+            "component-behavior-criteria-profile",
+            "condition-expression",
+            "condition-registry",
+            "css-appearance-ir",
+            "motion-ir",
+            "token-domain-registry",
+            "token-identity",
+            "parsed-token-document",
+            "resolved-token-manifest",
+            "semantic-token-vocabulary",
+            "token-context-override"
+          ]
         }
       },
       "unevaluatedProperties": false
