@@ -12,6 +12,7 @@
     { "path": "../condition-registry" },
     { "path": "../css-property-profile" },
     { "path": "../motion-schema" },
-    { "path": "../recipe-kernel" }
+    { "path": "../recipe-kernel" },
+    { "path": "../tokens" }
   ]
 }

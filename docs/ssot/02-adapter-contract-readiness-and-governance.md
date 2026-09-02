@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-02 — Compiler Contracts, Readiness & Governance
-### Version 0.4.3
+### Version 0.5.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.2, SSOT-04 v0.2.0, SSOT-05 v0.2.3 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.0, SSOT-04 v0.2.0, SSOT-05 v0.2.3 \
 **Purpose:** Compiler/backend boundaries, diagnostics, release gates, and implementation authority
 
 ---
@@ -574,6 +574,7 @@ light/dark Token CSS
 full standard property raw CSS fixture
 Token Domain policy fixtures
 direct/template/projector Token binding fixtures
+binding receipts pinned to the exact effective CSS property registry digest
 physical/logical margin coverage fixture
 viewport/container/reduced-motion CSS
 stage/layer precedence
@@ -626,7 +627,7 @@ release package dry run
 
 ## 13. Normative Implementation Order
 
-The repository has completed N0–N20. N21 is the next implementation boundary;
+The repository has completed N0–N21. N22 is the next implementation boundary;
 listing an item here does not mark it complete.
 
 ```text
@@ -653,7 +654,7 @@ N17  Behavioral Criteria Source/Profile schemas
 N18  generated/reference TypeScript types
 N19  [complete] Recipe Kernel port and structural conformance suite
 N20  [complete] defineRecipe CSS authoring SDK
-N21  [next] CSS direct/template/projector Token validation
+N21  [complete] CSS direct/template/projector Token validation
 N22  Recipe normalizer and collision trace
 N23  defineMotion authoring SDK and normalizer
 

@@ -35,6 +35,9 @@ importers:
       '@axiom/recipe-kernel':
         specifier: workspace:*
         version: link:../recipe-kernel
+      '@axiom/tokens':
+        specifier: workspace:*
+        version: link:../tokens
     devDependencies:
       typescript:
         specifier: ^7.0.2

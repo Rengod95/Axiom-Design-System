@@ -37,8 +37,8 @@ const propertyRegistry = {
         authoring: "allowed",
         valueKinds: ["css", "token", "css-template"],
         tokenBindings: {
-          directDomains: [],
-          templateDomains: [],
+          directDomains: ["color"],
+          templateDomains: ["color"],
           projectors: [],
           allowsTokenNegation: false,
         },
@@ -108,10 +108,54 @@ const conditionRegistry = {
   }],
 } as const;
 
+const canonicalDigest = {
+  digestCanonicalJson: (_value: unknown): string => "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+};
+
+const tokenValidation = (states = canonicalStateRegistry, conditions = conditionRegistry) => {
+  const resolvedTokenManifest = {
+    schemaVersion: "0.2",
+    profileVersion: "0.1.0",
+    sourceDigest: "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    contexts: ["light", "dark"].map((theme) => ({ context: { theme }, tokens: [
+      { id: "color.semantic.brand", domain: "color", tier: "semantic", dtcgType: "color", resolvedValue: theme === "light" ? "red" : "blue", source: { file: "tokens.json", pointer: `/${theme}/color` }, dependencies: [] },
+      { id: "shadow.semantic.raised", domain: "shadow", tier: "semantic", dtcgType: "shadow", resolvedValue: { color: theme === "light" ? "red" : "blue" }, source: { file: "tokens.json", pointer: `/${theme}/shadow` }, dependencies: [] },
+      { id: "space.semantic.layout.gutter.md", domain: "space", tier: "semantic", dtcgType: "dimension", resolvedValue: { value: 1, unit: "rem" }, source: { file: "tokens.json", pointer: `/${theme}/space` }, dependencies: [] },
+    ] })),
+  } as const;
+  const tokenDomainRegistry = { schemaVersion: "0.1", domains: [
+    { id: "color", root: "color", allowedDTCGTypes: ["color"], cssSerializers: ["css.color.v1"] },
+    { id: "shadow", root: "shadow", allowedDTCGTypes: ["shadow"], cssSerializers: ["css.shadow.v1"] },
+    { id: "space", root: "space", allowedDTCGTypes: ["dimension"], cssSerializers: ["css.dimension.v1"] },
+  ] } as const;
+  const projectorRegistry = { schemaVersion: "0.1", projectors: [
+    { id: "css.shadow.v1", domain: "shadow", dtcgType: "shadow", outputProperties: ["box-shadow"], version: "1.0.0" },
+  ] } as const;
+  return {
+    resolvedTokenManifest,
+    tokenDomainRegistry,
+    projectorRegistry,
+    conditionOnlyDomains: [],
+    authorityDigests: {
+      effectivePropertyRegistry: canonicalDigest.digestCanonicalJson(propertyRegistry),
+      resolvedTokenManifest: canonicalDigest.digestCanonicalJson(resolvedTokenManifest),
+      tokenDomainRegistry: canonicalDigest.digestCanonicalJson(tokenDomainRegistry),
+      projectorRegistry: canonicalDigest.digestCanonicalJson(projectorRegistry),
+      canonicalStateRegistry: canonicalDigest.digestCanonicalJson(states),
+      conditionRegistry: canonicalDigest.digestCanonicalJson(conditions),
+    },
+    canonicalDigest,
+    serializers: [
+      { id: "css.color.v1", serialize: (entry: { readonly resolvedValue: unknown }) => String(entry.resolvedValue) },
+      { id: "css.dimension.v1", serialize: () => "1rem" },
+    ],
+    projectors: [{ id: "css.shadow.v1", project: () => [{ property: "box-shadow", value: "0 1px 1px red", source: "token", field: "shadow" }] }],
+  } as const;
+};
+
 const enumStateRegistry = {
   ...canonicalStateRegistry,
   states: [
-    ...canonicalStateRegistry.states,
     {
       id: "orientation",
       axis: "state",
@@ -120,6 +164,7 @@ const enumStateRegistry = {
       applicableComponents: ["button"],
       usage: ["appearance"],
     },
+    ...canonicalStateRegistry.states,
   ],
 } as const;
 
@@ -143,7 +188,7 @@ const negationPropertyRegistry = {
         valueKinds: ["token"],
         tokenBindings: {
           directDomains: ["space"],
-          templateDomains: [],
+          templateDomains: ["space"],
           projectors: [],
           allowsTokenNegation: true,
         },
@@ -197,6 +242,7 @@ describe("CSS Recipe authoring", () => {
       propertyRegistry: negationPropertyRegistry,
       canonicalStateRegistry,
       conditionRegistry,
+      tokenValidation: tokenValidation(),
     });
     const recipe = authoring.defineRecipe({
       id: "button",
@@ -204,17 +250,12 @@ describe("CSS Recipe authoring", () => {
       base: {
         root: {
           margin: negateToken(token("space.semantic.layout.gutter.md")),
-          padding: negateToken(token("space.semantic.layout.gutter.md")),
         },
       },
     } as const);
 
     expect(recipe.snapshot.base[0]?.style).toEqual({
       margin: {
-        kind: "negated-token",
-        token: { kind: "token", path: "space.semantic.layout.gutter.md" },
-      },
-      padding: {
         kind: "negated-token",
         token: { kind: "token", path: "space.semantic.layout.gutter.md" },
       },
@@ -231,6 +272,7 @@ describe("CSS Recipe authoring", () => {
       propertyRegistry: incompatibleRegistry as never,
       canonicalStateRegistry,
       conditionRegistry,
+      tokenValidation: tokenValidation(),
     })).toThrow(CSSRecipeAuthoringError);
   });
 
@@ -243,6 +285,7 @@ describe("CSS Recipe authoring", () => {
       propertyRegistry,
       canonicalStateRegistry,
       conditionRegistry,
+      tokenValidation: tokenValidation(),
     });
 
     const recipe = authoring.defineRecipe({
@@ -270,7 +313,8 @@ describe("CSS Recipe authoring", () => {
     } as const);
 
     expect(recipe.snapshot.base).toEqual([{ slot: "root", style: { color: { kind: "css", value: "red" } } }]);
-    expect(JSON.stringify(recipe)).not.toContain("profileInputDigest");
+    expect(recipe.tokenBindingReport.authority.profileInputDigest).toBe(propertyRegistry.profile.webrefInputDigest);
+    expect(recipe.tokenBindingReport.bindings).toHaveLength(2);
     expect(JSON.stringify(recipe)).not.toContain("className");
     expect(Object.isFrozen(recipe)).toBe(true);
   });
@@ -280,6 +324,7 @@ describe("CSS Recipe authoring", () => {
       propertyRegistry,
       canonicalStateRegistry,
       conditionRegistry,
+      tokenValidation: tokenValidation(),
     });
     const recipe = authoring.defineRecipe({
       id: "button",
@@ -306,6 +351,7 @@ describe("CSS Recipe authoring", () => {
       propertyRegistry,
       canonicalStateRegistry,
       conditionRegistry,
+      tokenValidation: tokenValidation(),
     });
     const invalid = {
       id: "dialog",
@@ -355,6 +401,7 @@ describe("CSS Recipe authoring", () => {
       propertyRegistry,
       canonicalStateRegistry: enumStateRegistry,
       conditionRegistry,
+      tokenValidation: tokenValidation(enumStateRegistry),
     });
     const invalid = {
       id: "button",
@@ -403,6 +450,7 @@ describe("CSS Recipe authoring", () => {
       propertyRegistry,
       canonicalStateRegistry,
       conditionRegistry,
+      tokenValidation: tokenValidation(),
     });
     let getterReads = 0;
     const getterStyle = {};

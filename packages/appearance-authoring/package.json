@@ -17,7 +17,8 @@
     "@axiom/condition-registry": "workspace:*",
     "@axiom/css-property-profile": "workspace:*",
     "@axiom/motion-schema": "workspace:*",
-    "@axiom/recipe-kernel": "workspace:*"
+    "@axiom/recipe-kernel": "workspace:*",
+    "@axiom/tokens": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^7.0.2",

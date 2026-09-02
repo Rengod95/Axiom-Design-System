@@ -1,7 +1,7 @@
 # Axiom Token Domain & CSS Binding Catalog
 
 **Status:** NORMATIVE ANNEX \
-**Depends on:** SSOT-01 v0.4.0, SSOT-03 v0.2.2 \
+**Depends on:** SSOT-01 v0.4.1, SSOT-03 v0.3.0 \
 **Purpose:** required Token Domain coverage and common Web property bindings
 
 ---
@@ -815,7 +815,7 @@ Examples:
   "tokenBindings": {
     "directDomains": ["shadow"],
     "templateDomains": ["space", "blur", "color"],
-    "projectors": ["shadow.css.box-shadow.v1"],
+    "projectors": ["css.shadow.v1"],
     "allowsTokenNegation": false
   }
 }

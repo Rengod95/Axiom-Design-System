@@ -19,11 +19,14 @@ import {
 } from "./constants.js";
 import { CSSRecipeAuthoringError } from "./contracts.js";
 import { validateCSSRecipeDefinition } from "./validation.js";
+import { validateTokenBindingConfiguration, validateTokenBindings } from "./token-validation.js";
 
 /** Binds explicit profile registries to a CSS-aware Recipe Kernel without reading repository state. */
 export const createCSSRecipeAuthoring = (
   input: CSSRecipeAuthoringInput,
 ): CSSRecipeAuthoringPort => {
+  const tokenConfigurationDiagnostics = validateTokenBindingConfiguration(input);
+  if (tokenConfigurationDiagnostics.length > 0) throw new CSSRecipeAuthoringError(tokenConfigurationDiagnostics);
   if (input.propertyRegistry.profile.id !== CSS_RECIPE_PROFILE_ID) throw new CSSRecipeAuthoringError([{
     code: PROPERTY_DIAGNOSTIC_CODE.PROFILE_INPUT_MISMATCH,
     severity: CSS_RECIPE_DIAGNOSTIC_SEVERITY,
@@ -46,7 +49,8 @@ export const createCSSRecipeAuthoring = (
     ): DefinedCSSRecipe<TDefinition> {
       const recipe = kernel.define(definition as never);
       validateCSSRecipeDefinition(recipe.definition, input, grammarValidator);
-      return recipe as DefinedCSSRecipe<TDefinition>;
+      const tokenBindingReport = validateTokenBindings(recipe.definition as CSSRecipeDefinition, input);
+      return Object.freeze({ ...recipe, tokenBindingReport }) as DefinedCSSRecipe<TDefinition>;
     },
   });
 };
