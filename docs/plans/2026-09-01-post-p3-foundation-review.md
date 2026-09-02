@@ -1,7 +1,7 @@
 # Post-P3 foundation review and next sequence
 
-**Date:** 2026-09-01  
-**Status:** ACTIVE SEQUENCING REVIEW  
+**Date:** 2026-09-01; reconciled 2026-09-02 \
+**Status:** ACTIVE SEQUENCING REVIEW \
 **Reviewed checkpoint:** P2 Token Foundation, P3 CSS Property Profile, and N12–N15 contracts
 **Authority:** SSOT-02 normative implementation order N0–N36
 
@@ -76,5 +76,7 @@ The N12–N15 implementation sequence remained contract-first and bounded:
    Condition identities without adding authoring or rendering behavior;
 8. stop before Recipe or runtime implementation.
 
-This creates a reviewable authority boundary and prepares N15–N17 without
-coupling State or Condition semantics to a renderer or provider.
+This creates a reviewable authority boundary and prepares N16–N17 without
+coupling State or Condition semantics to a renderer or provider. The N15
+documentation reconciliation closes the Token, Motion-input, versioning, and
+provider-baseline contradictions found before N16.

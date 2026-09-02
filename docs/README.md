@@ -22,6 +22,13 @@ Accepted ADR은 구현 전에 관련 SSOT에 반영해야 한다. Prose와 norma
 schema가 충돌하면 어느 한쪽을 임의로 우선하지 않고 release를 중단한 뒤
 reconciliation한다.
 
+명시적으로 승인된 owner requirement가 아직 출시되지 않은 계약을 변경하는
+경우 그 요구사항은 ADR의 decision input이 된다. 기존 SSOT가 그 요구사항과
+충돌하면 구식 SSOT를 유지하기 위해 구현을 되돌리지 않고, 먼저 ADR에 결정을
+기록한 다음 SSOT와 machine-readable 계약을 함께 갱신한다. 이 절차가 끝난 뒤에는
+위 authority order가 다시 유일한 기준이며 구현 자체가 authority가 되지는 않는다.
+ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결과다.
+
 ## Start Here
 
 1. [Current implementation architecture](architecture.md)
@@ -48,6 +55,7 @@ reconciliation한다.
 22. [OKLCH and Semantic Color Migration](implementation/2026-09-02-oklch-semantic-colors.md)
 23. [Semantic Scales and Aspect Ratios](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
 24. [CSS Appearance IR](implementation/2026-09-02-appearance-ir.md)
+25. [N15 Documentation Reconciliation](implementation/2026-09-02-n15-document-reconciliation.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
@@ -59,12 +67,12 @@ SSOT-00은 전체 모듈·권한·의존 방향을, implementation plan은
 
 | Document | Version | Owns |
 | --- | --- | --- |
-| [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md) | 0.3.0 | authority, layers, boundaries, frozen v0.1 scope |
-| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.3.3 | primitive/semantic/component tiers, production scales, semantic vocabulary, themes, resolver, manifests |
-| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.3.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
-| [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.0 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
-| [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.1.2 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
-| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.1 | React Aria criteria source, canonical state, projections, public API |
+| [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md) | 0.3.1 | authority, layers, boundaries, frozen v0.1 scope |
+| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.4.0 | primitive/semantic/component tiers, production scales, semantic vocabulary, themes, resolver, manifests |
+| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.4.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
+| [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.1 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
+| [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.2.0 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
+| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.2 | React Aria criteria source, canonical state, projections, public API |
 
 ## Normative Annexes
 
@@ -127,11 +135,14 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [OKLCH and Semantic Color Migration — 2026-09-02](implementation/2026-09-02-oklch-semantic-colors.md)
 - [Semantic Scales and Aspect Ratios — 2026-09-02](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
 - [CSS Appearance IR — 2026-09-02](implementation/2026-09-02-appearance-ir.md)
+- [N15 Documentation Reconciliation — 2026-09-02](implementation/2026-09-02-n15-document-reconciliation.md)
 - [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
+- [N15 Documentation Reconciliation Design — 2026-09-02](superpowers/specs/2026-09-02-n15-document-reconciliation.md)
 - [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)
 - [OKLCH and Semantic Color Plan — 2026-09-02](superpowers/plans/2026-09-02-oklch-semantic-colors.md)
 - [Semantic Scale and Aspect-Ratio Plan — 2026-09-02](superpowers/plans/2026-09-02-semantic-scales-and-ratios.md)
 - [Appearance IR Plan — 2026-09-02](superpowers/plans/2026-09-02-appearance-ir.md)
+- [N15 Documentation Reconciliation Plan — 2026-09-02](superpowers/plans/2026-09-02-n15-document-reconciliation.md)
 - [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 

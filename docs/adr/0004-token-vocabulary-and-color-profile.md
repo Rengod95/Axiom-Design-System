@@ -3,7 +3,8 @@
 **Status:** ACCEPTED \
 **Date:** 2026-09-02 \
 **Decision owners:** Axiom Foundation \
-**Amends:** SSOT-01 and the Token Foundation Policy
+**Amends:** SSOT-01 v0.3.x and the Token Foundation Policy \
+**Reconciled by:** SSOT-01 v0.4.0
 
 ---
 
@@ -35,6 +36,14 @@ requests:
 No compatibility aliases are added to the DTCG graph. The stack is merged in
 order after review; the target contract is complete only when all three changes
 are present.
+
+The production-grade Token requirements approved by the repository owner are
+the decision input for this ADR and supersede conflicting draft examples in
+SSOT-01 v0.3.x. This does not make an implementation authoritative: this ADR
+records the change, SSOT-01 v0.4.0 describes the resulting contract, and the
+machine-readable policy and vocabulary registry enforce it. The final stack was
+restored to `main` through recovery PR #10 before this reconciliation; no
+intermediate stack state was released.
 
 ### 2.2 Primitive color profile
 
@@ -131,6 +140,11 @@ contract for this repository.
 - every light/dark contrast pair must be revalidated;
 - external consumers must migrate at the stack boundary because aliases are
   intentionally absent.
+
+Because the packages had no supported external release, this migration is a
+pre-Gate-A baseline reset rather than an in-place compatibility promise. The
+resulting schema/profile identities are frozen as the starting point for future
+change control.
 
 ## 4. Rejected Alternatives
 

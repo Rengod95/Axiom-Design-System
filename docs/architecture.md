@@ -21,6 +21,9 @@ generated artifacts and framework projections
 Implementation code may prove or realize a normative contract. It may not
 silently amend one. A contract change starts in an ADR or the owning SSOT and is
 then reflected in schemas, fixtures, types, and implementation in that order.
+An explicit owner-approved requirement enters this flow as ADR decision input;
+it does not insert implementation above SSOT. The Token clean break follows
+this rule through ADR-0004 and SSOT-01 v0.4.0.
 
 ## Current package graph
 
@@ -33,8 +36,9 @@ then reflected in schemas, fixtures, types, and implementation in that order.
 ```
 
 - `@axiom/spec-tooling` is repository tooling and has no dependency on runtime
-  packages. It validates cross-registry State, Condition, and resolved Token
-  invariants before later contract packages consume their digests.
+  packages. It validates cross-registry State, Condition, resolved Token, and
+  N15 Appearance IR invariants before later contract packages consume their
+  digests.
 - `@axiom/tokens` is target-neutral. It must not import React, renderer,
   Tailwind, browser, or framework concepts.
 - `@axiom/token-tooling` is an adapter boundary. Parser-specific values stop at
@@ -53,7 +57,9 @@ packages/tokens/src/
 ├── contracts.ts
 ├── domain/
 │   ├── identity.ts
-│   └── identity.test.ts
+│   ├── identity.test.ts
+│   ├── token-json-value.ts
+│   └── token-json-value.test.ts
 ├── resolution/
 │   ├── context-resolver.ts
 │   ├── context-resolver.test.ts
@@ -78,7 +84,17 @@ point and contains exports rather than implementation.
 | CSS property identity and policy | SSOT-03, Webref input manifest, CSS registries | `@axiom/css-property-profile` |
 | Canonical State and Lifecycle identity | SSOT-05, Canonical State Registry | `@axiom/spec-tooling` semantic gate |
 | Environment conditions and responsive thresholds | SSOT-04, Condition Registry | `@axiom/spec-tooling` semantic gate |
+| Ordered declarations and Appearance IR | SSOT-03, declaration/Appearance schemas | `@axiom/spec-tooling` schema and semantic gates |
 | Positive and negative behavior | `spec/fixtures/`, `fixtures/` | package tests and spec harness |
+
+## Current N15 checkpoint
+
+The `spec/manifest.json` inventory at the reconciled N15 baseline contains 33
+schemas, 14 registries, and 23 fixture suites. The fixture corpus contains 26
+positive and 57 negative files. Token generation emits the same 635 Token IDs
+for light and dark contexts, and the generated `TokenPath` union contains the
+same ID set. N16 Motion IR, N17 Behavioral Criteria schemas, and their later
+packages remain planned rather than current nodes in the package graph.
 
 ## Change gate
 

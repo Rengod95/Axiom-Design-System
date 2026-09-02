@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-02 — Compiler Contracts, Readiness & Governance
-### Version 0.3.0
+### Version 0.4.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3, SSOT-01 v0.3, SSOT-03 v0.2, SSOT-04, SSOT-05 v0.2 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.2 \
 **Purpose:** Compiler/backend boundaries, diagnostics, release gates, and implementation authority
 
 ---
@@ -62,6 +62,8 @@ interface MotionCompilerInput {
     EffectiveCSSPropertyRegistry;
   stateRegistry:
     CanonicalStateRegistry;
+  conditionRegistry:
+    ConditionRegistry;
   motions:
     readonly MotionIR[];
   backend:
@@ -468,27 +470,47 @@ untrusted CSS.
 
 ## 11. Versioning and Change Control
 
-### 11.1 Specification versioning
+### 11.1 Contract and document versioning
 
 ```text
-PATCH
+DOCUMENT PATCH
   editorial correction without meaning change
 
-MINOR
+COMPATIBLE CONTRACT CHANGE
   optional compatible field
   new Token Domain or canonical state
   new condition/backend capability
   expanded sparse policy that does not invalidate valid input
 
-MAJOR
+BREAKING CONTRACT CHANGE
   property identity/profile model change
-  IR field removal or meaning change
+  required field addition or field removal/meaning change
   stage precedence change
   Token path/tier rule change
   previously valid Recipe becomes invalid by default
 ```
 
-Pre-1.0 document versions still record breaking changes explicitly.
+Document revision, JSON Schema compatibility identity, source/profile version,
+and generator version are separate axes:
+
+- an SSOT version records the revision of that prose contract;
+- a schema `$id` identifies a compatibility line and MUST NOT change meaning in
+  place after the line is frozen;
+- a source/profile version records the governed input contract or corpus;
+- a generator version records implementation provenance, not input
+  compatibility.
+
+Before 1.0, a breaking prose contract change increments the SSOT minor version
+and resets its patch version. A breaking machine-readable change creates a new
+schema compatibility identity and migration fixtures. Compatible additions
+increment the owning profile or schema line according to that artifact's
+published policy; editorial-only changes increment a document patch version.
+
+ADR-0004 is a documented exception for the private pre-Gate-A reset: no
+supported external consumer existed, so the clean-break tree established the
+current schema identities as a new baseline while the Token Source Profile
+moved to `0.2.0` and SSOT-01 moved to `0.4.0`. From that baseline forward,
+schema meaning MUST NOT be changed in place.
 
 ### 11.2 Webref snapshot updates
 
@@ -521,7 +543,7 @@ Required:
 
 ```text
 SSOT-00 through SSOT-05 approved
-ADR-0001 through ADR-0003 reconciled
+ADR-0001 through ADR-0004 reconciled
 Token Domain/Tier schemas and registries
 Token Binding Catalog schema and expanded margin/padding coverage
 Resolved Token Manifest schema
@@ -603,6 +625,9 @@ release package dry run
 ---
 
 ## 13. Normative Implementation Order
+
+The repository has completed N0–N15. N16 is the next implementation boundary;
+listing an item here does not mark it complete.
 
 ```text
 N0   schema directory and authority harness

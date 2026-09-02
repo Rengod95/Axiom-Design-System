@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-03 — CSS Appearance Profile & Property Policy
-### Version 0.2.0
+### Version 0.2.1
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3, SSOT-01 v0.3 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0 \
 **Decision basis:** [ADR-0003](../adr/0003-recipe-authoring-kernel-and-third-party-boundary.md) \
 **Scope:** Pinned CSS metadata → effective property registry → Recipe authoring → normalized Appearance IR
 

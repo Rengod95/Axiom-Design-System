@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-05 — React Runtime, Behavior Provider & Public API
-### Version 0.2.1
+### Version 0.2.2
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3, SSOT-03 v0.2, SSOT-04 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-03 v0.2.1, SSOT-04 v0.2.0 \
 **Decision basis:** [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md) \
 **Scope:** Canonical runtime state, React Aria projection, generated evaluator binding, and v0.1 public component API
 
@@ -109,6 +109,11 @@ motionSuppressed
 Lifecycle state feeds Motion bindings. It does not become a Recipe behavior
 variant unless an explicit Appearance state rule exists.
 
+`motionSuppressed` is the lifecycle result emitted after the binding observes
+the `preference.reducedMotion` environment Condition and applies the Motion
+IR's `reducedMotion` strategy. It is not another spelling for either the
+Condition ID or the strategy field.
+
 ---
 
 ## 4. Behavioral Criteria Source
@@ -151,7 +156,7 @@ interface BehaviorCriteriaSourceManifest {
 }
 ```
 
-The current baseline resolves:
+The reviewed provider candidate for N17 is:
 
 ```text
 react-aria-components  1.20.0
@@ -159,7 +164,10 @@ react-aria             3.51.0
 react-stately          3.49.0
 ```
 
-Implementation reads actual lockfile data; these prose values do not override
+These packages are not installed in the N15 lockfile and therefore are not a
+current source baseline. N17 MUST pin the selected packages, generate the source
+manifest from the resulting lockfile, and reconcile any version difference
+before a criteria profile becomes executable. Candidate prose never overrides
 the generated manifest.
 
 ### 4.2 Criteria profile

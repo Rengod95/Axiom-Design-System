@@ -1,7 +1,7 @@
 # Axiom Token Domain & CSS Binding Catalog
 
 **Status:** NORMATIVE ANNEX \
-**Depends on:** SSOT-01 v0.3, SSOT-03 v0.2 \
+**Depends on:** SSOT-01 v0.4.0, SSOT-03 v0.2.1 \
 **Purpose:** required Token Domain coverage and common Web property bindings
 
 ---
@@ -126,9 +126,9 @@ The Token supplies one typed segment of a larger CSS value.
 
 ```ts
 boxShadow: css`
-  0 ${token("space.semantic.elevation.offset.sm")}
-  ${token("blur.semantic.elevation.soft")}
-  ${token("color.semantic.shadow.default")}
+  0 ${token("space.primitive.scale.2")}
+  ${token("blur.semantic.subtle")}
+  ${token("color.semantic.border.subtle")}
 `
 ```
 
@@ -138,7 +138,7 @@ A composite Token expands into one or more validated declarations.
 
 ```ts
 applyToken(
-  token("typography.semantic.body.md"),
+  token("typography.semantic.body.md.regular"),
 )
 ```
 
@@ -394,8 +394,8 @@ size.semantic.touchTarget.minimum
 size.semantic.icon.sm
 size.semantic.icon.md
 size.semantic.field.inline.md
-size.semantic.content.readable
-size.semantic.overlay.dialog.maxInline
+size.semantic.content.maxInline
+size.semantic.overlay.dialog.md
 ```
 
 ### 7.2 `size` — track/template
@@ -555,12 +555,12 @@ text-shadow      only through a compatible no-spread projector
 filter           drop-shadow template/projector when compatible
 ```
 
-Semantic paths distinguish elevation from other effects:
+Semantic paths name governed effect roles directly:
 
 ```text
-shadow.semantic.elevation.raised
-shadow.semantic.elevation.overlay
-shadow.semantic.focus.default
+shadow.semantic.raised
+shadow.semantic.overlay
+shadow.semantic.modal
 shadow.component.dialog.popup
 ```
 
@@ -577,7 +577,7 @@ Example:
 
 ```ts
 backdropFilter: css`
-  blur(${token("blur.semantic.overlay.backdrop")})
+  blur(${token("blur.semantic.overlay")})
 `
 ```
 
