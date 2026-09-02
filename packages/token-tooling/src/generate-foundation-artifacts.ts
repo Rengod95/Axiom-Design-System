@@ -29,6 +29,7 @@ import {
 import {
   assertFoundationTokenPolicy,
   type FoundationTokenPolicy,
+  type SemanticTokenVocabulary,
 } from "./foundation-policy.js";
 import { createTerrazzoTokenParser } from "./terrazzo-token-parser.js";
 
@@ -86,6 +87,9 @@ const [
   ),
 ]);
 const foundationPolicy = JSON.parse(foundationPolicyContent) as FoundationTokenPolicy;
+const semanticVocabulary = JSON.parse(
+  semanticVocabularyContent,
+) as SemanticTokenVocabulary;
 
 const parser = createTerrazzoTokenParser({ domains: domainRegistry.domains });
 const parseSource = async (
@@ -128,7 +132,13 @@ const result = resolveTokenContexts(
   },
   { domains: domainRegistry.domains, modifierRegistry },
 );
-assertFoundationTokenPolicy(base, result.manifest, foundationPolicy, [light, dark]);
+assertFoundationTokenPolicy(
+  base,
+  result.manifest,
+  foundationPolicy,
+  semanticVocabulary,
+  [light, dark],
+);
 
 const write = process.argv.includes("--write");
 await Promise.all([

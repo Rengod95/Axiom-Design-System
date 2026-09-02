@@ -14,9 +14,11 @@ export {
   assertFoundationTokenPolicy,
   validateFoundationTokenPolicy,
   type FoundationColorScale,
+  type FoundationAspectRatio,
   type FoundationContrastPair,
   type FoundationPolicyDiagnostic,
   type FoundationScaleStep,
   type FoundationTokenPolicy,
   type FoundationTypographyFamily,
+  type SemanticTokenVocabulary,
 } from "./foundation-policy.js";

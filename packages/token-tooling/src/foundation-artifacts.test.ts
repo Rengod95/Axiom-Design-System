@@ -8,7 +8,7 @@ const document: ParsedDtcgDocument = {
   schemaVersion: "0.1",
   tokens: [
     {
-      id: "space.semantic.stack.md",
+      id: "space.semantic.layout.stack.gap.md",
       domain: "space",
       tier: "semantic",
       dtcgType: "dimension",
