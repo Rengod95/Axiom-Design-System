@@ -17,6 +17,7 @@ import { describe, expect, it } from "vitest";
 import { SPEC_DIAGNOSTIC_CODE } from "./constants.js";
 import {
   checkSpecification,
+  createMotionAuthorityValidationPort,
   validateFixtureDiagnostics,
   validatePinnedEvidenceArtifacts,
 } from "./spec-harness.js";
@@ -25,6 +26,49 @@ const specRoot = fileURLToPath(new URL("../../../spec/", import.meta.url));
 const repositoryRoot = fileURLToPath(new URL("../../../", import.meta.url));
 
 describe("normative specification", () => {
+  it("refuses to preload the Motion authority port from an invalid manifest", async () => {
+    const temporaryRoot = await mkdtemp(join(tmpdir(), "axiom-motion-port-manifest-"));
+    const temporarySpecRoot = join(temporaryRoot, "spec");
+    try {
+      await cp(specRoot, temporarySpecRoot, { recursive: true });
+      const manifestPath = join(temporarySpecRoot, "manifest.json");
+      const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as Record<string, unknown>;
+      delete manifest["dialect"];
+      await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+      await expect(createMotionAuthorityValidationPort(temporarySpecRoot)).rejects.toThrow(
+        /manifest\.json: schema validation failed/,
+      );
+    } finally {
+      await rm(temporaryRoot, { force: true, recursive: true });
+    }
+  });
+
+  it("refuses to preload the Motion authority port when a pinned schema path changes", async () => {
+    const temporaryRoot = await mkdtemp(join(tmpdir(), "axiom-motion-port-inventory-"));
+    const temporarySpecRoot = join(temporaryRoot, "spec");
+    try {
+      await cp(specRoot, temporarySpecRoot, { recursive: true });
+      const manifestPath = join(temporarySpecRoot, "manifest.json");
+      const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as {
+        schemas: Array<{ id: string; path: string }>;
+      };
+      const appearance = manifest.schemas.find(
+        (entry) => entry.id === "https://axiom.dev/schemas/css/appearance-ir/0.1",
+      );
+      expect(appearance).toBeDefined();
+      if (appearance === undefined) return;
+      appearance.path = "css/declaration.schema.json";
+      await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+      await expect(createMotionAuthorityValidationPort(temporarySpecRoot)).rejects.toThrow(
+        /pinned Motion authority schema.*appearance/i,
+      );
+    } finally {
+      await rm(temporaryRoot, { force: true, recursive: true });
+    }
+  });
+
   it("allows only fixture-suite warning codes declared in the manifest", () => {
     const backendWarning = {
       code: "AXM1012",

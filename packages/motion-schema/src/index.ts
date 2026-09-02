@@ -24,6 +24,9 @@ export {
 export type {
   DefinedMotion,
   MotionAuthoringInput,
+  MotionAuthoritySnapshot,
+  MotionAuthorityValidationDiagnostic,
+  MotionAuthorityValidationPort,
   MotionAuthoringPort,
   MotionDefinition,
   MotionDiagnostic,

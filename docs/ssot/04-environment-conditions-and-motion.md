@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-04 — Environment Conditions & Motion
-### Version 0.2.3
+### Version 0.3.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.2 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.0 \
 **Scope:** Responsive/environment conditions and serializable Motion semantics
 
 ---
@@ -547,22 +547,31 @@ the registry from a Condition ID or read it from repository state.
 
 `recipeId` is explicit lexical identity at N16. N23 validates Recipe/Slot
 applicability against an explicit, closed N22 `CSSAppearanceIR` authority and
-its trusted canonical digest. Before comparing any expected digest, N23
-validates each supplied authority's closed shape, normative array order, and
-registered semantics: the Effective Property Registry; two-context Resolved
-Token Manifest (including per-Token order and domain/tier/type identity across
-contexts); Domain, Canonical State, and Condition registries; and the complete
-N15 Appearance artifact. Appearance declaration origin `slot` and `stage` must
-equal their containing record/rule, and every selected Appearance State must
-apply to the artifact's Recipe. The artifact's `profile`, `profileInputDigest`,
-`recipeId`, and `slots` must match the N23 profile context and source before
-Motion IR is emitted. N23 does not import the Appearance normalizer: the
-serialized artifact is its detached authority boundary.
+its trusted canonical digest. Its required detached authority bundle is exactly
+the Effective Property Registry, two-context Resolved Token Manifest, Domain
+Registry, Canonical State Registry, Condition Registry, and N15 Appearance
+artifact; a deep snapshot includes this bundle and every expected digest.
+Before comparing any expected digest, the required trusted
+`MotionAuthorityValidationPort` validates each supplied authority's closed
+shape, normative array order, and registered semantics in the supplied bundle's
+cross-authority registry context. The port uses fixed internal
+schema/semantic identities for those six authorities and is created once by
+the composition root with asynchronous `createMotionAuthorityValidationPort()`
+preload before synchronous authoring begins.
 
-`createMotionAuthoring()` captures the canonical-digest, authority-validation,
-and Token-serializer function identities at construction time. Mutating the
-caller-owned port objects or serializer array after construction cannot change
-the result of a previously created authoring port.
+The Resolved Token Manifest check includes per-Token order and
+domain/tier/type identity across contexts. Appearance declaration origin `slot`
+and `stage` must equal their containing record/rule, and every selected
+Appearance State must apply to the artifact's Recipe. The artifact's `profile`,
+`profileInputDigest`, `recipeId`, and `slots` must match the N23 profile context
+and source before Motion IR is emitted. N23 does not import spec tooling or the
+Appearance normalizer: the serialized artifact and injected validator are its
+detached authority boundary. The injected validator has the same explicit trust
+assumption as the canonical-digest port; a pass-through unit stub is not
+conformance evidence. Any malformed authority/serializer input, validator
+rejection, or validator throw is reported only as AXM2004 before equality
+comparison. Authenticated equality/applicability mismatches retain AXM1010,
+AXM1011, or AXM1018 as applicable.
 
 ### 11.2 Phase
 

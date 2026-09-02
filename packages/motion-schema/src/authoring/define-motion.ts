@@ -70,6 +70,7 @@ const diagnostic = (
   message: string,
   property?: string,
   tokenId?: string,
+  target?: string,
 ): MotionDiagnostic => ({
   code,
   severity: "error",
@@ -78,6 +79,7 @@ const diagnostic = (
   source: MOTION_FALLBACK_SOURCE,
   ...(property === undefined ? {} : { property }),
   ...(tokenId === undefined ? {} : { tokenId }),
+  ...(target === undefined ? {} : { target }),
 });
 
 /** Builds a warning while retaining the same location shape as validation failures. */
@@ -109,30 +111,6 @@ const hasOnlyDataDescriptors = (value: unknown, seen = new Set<object>()): boole
   const descriptors = Object.getOwnPropertyDescriptors(value);
   if (Object.values(descriptors).some((descriptor) => descriptor.get !== undefined || descriptor.set !== undefined)) return false;
   return Object.values(descriptors).every((descriptor) => hasOnlyDataDescriptors(descriptor.value, seen));
-};
-
-/** Captures executable ports by function identity so later caller mutation cannot change normalization. */
-const captureExecutablePorts = (
-  input: MotionAuthoringInput,
-): Pick<MotionAuthoringInput, "canonicalDigest" | "authorityValidation" | "serializers"> => {
-  const digestCanonicalJson = input.canonicalDigest.digestCanonicalJson;
-  const validateBundle = input.authorityValidation.validateBundle;
-  const serializers = input.serializers.map((serializer) => {
-    const serialize = serializer.serialize;
-    return Object.freeze({
-      id: serializer.id,
-      serialize: (entry: ResolvedTokenEntry): string => serialize(entry),
-    });
-  });
-  return Object.freeze({
-    canonicalDigest: Object.freeze({
-      digestCanonicalJson: (value: Parameters<MotionAuthoringInput["canonicalDigest"]["digestCanonicalJson"]>[0]) => digestCanonicalJson(value),
-    }),
-    authorityValidation: Object.freeze({
-      validateBundle: (snapshot: Parameters<MotionAuthoringInput["authorityValidation"]["validateBundle"]>[0]) => validateBundle(snapshot),
-    }),
-    serializers: Object.freeze(serializers),
-  });
 };
 
 /** Checks the exact closed-key rule used by every N16 source object decoder. */
@@ -492,7 +470,13 @@ const validateAppearanceApplicability = (
   && input.appearance.recipeId === definition.recipeId
   && input.appearance.slots.includes(definition.slot)
     ? []
-    : [diagnostic(MOTION_DIAGNOSTIC_CODE.APPEARANCE_APPLICABILITY_MISMATCH, "Motion Recipe and Slot must be present in the authenticated N22 Appearance artifact.")];
+    : [diagnostic(
+      MOTION_DIAGNOSTIC_CODE.APPEARANCE_APPLICABILITY_MISMATCH,
+      `Motion Recipe '${definition.recipeId}' and Slot '${definition.slot}' must be present in the authenticated N22 Appearance artifact.`,
+      undefined,
+      undefined,
+      `${definition.recipeId}/${definition.slot}`,
+    )];
 
 /** Returns a literal-preserving frozen source value without assigning compiler provenance. */
 export const defineMotion = <const TDefinition extends MotionDefinition>(definition: TDefinition): TDefinition => {
@@ -516,8 +500,7 @@ export const createMotionAuthoring = (input: MotionAuthoringInput): MotionAuthor
   };
   if (!isSafeJsonData(rawAuthorities)) throw new MotionAuthoringError([diagnostic(MOTION_DIAGNOSTIC_CODE.INVALID_AUTHORITY, "Motion authoring authorities must be closed JSON-safe data.")]);
   const authorities = deepFreeze(cloneJson(rawAuthorities));
-  const executablePorts = captureExecutablePorts(input);
-  const capturedInput = Object.freeze({ ...input, ...authorities, ...executablePorts }) as MotionAuthoringInput;
+  const capturedInput = Object.freeze({ ...input, ...authorities }) as MotionAuthoringInput;
   return Object.freeze({
   /** Validates one frozen source definition and returns exact N16 IR plus retained warnings. */
   defineMotion<const TDefinition extends MotionDefinition>(definition: TDefinition): DefinedMotion<TDefinition> {

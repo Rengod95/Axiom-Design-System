@@ -71,13 +71,26 @@ export interface MotionTokenSerializer {
   serialize(entry: ResolvedTokenEntry): string;
 }
 
-/** Pins the context-owned profile and condition provenance expected in normalized output. */
+/**
+ * Pins all context-owned provenance and detached-authority identities expected
+ * during N23 normalization. `profileInputDigest` names the profile Webref input
+ * provenance, while `conditionRegistryDigest` retains the Motion IR field name
+ * for the complete Condition Registry identity. The remaining fields pin the
+ * Effective Property Registry, Resolved Token Manifest, Token Domain Registry,
+ * Canonical State Registry, and complete N22 Appearance artifact respectively.
+ */
 export interface MotionExpectedDigests {
+  /** Pins the CSS profile Webref input provenance; it is distinct from the full effective registry digest. */
   readonly profileInputDigest: string;
+  /** Pins the full Effective CSS Property Registry. */
   readonly effectivePropertyRegistry: string;
+  /** Pins the complete two-context Resolved Token Manifest. */
   readonly resolvedTokenManifest: string;
+  /** Pins the complete Token Domain Registry. */
   readonly tokenDomainRegistry: string;
+  /** Pins the complete Canonical State Registry. */
   readonly canonicalStateRegistry: string;
+  /** Pins the complete Condition Registry under the Motion IR-compatible field name. */
   readonly conditionRegistryDigest: string;
   /** Pins the complete N22-normalized Appearance artifact used for Recipe and Slot applicability. */
   readonly appearanceIR: string;
@@ -136,6 +149,8 @@ export interface MotionDiagnostic {
   readonly source: string;
   readonly property?: string;
   readonly tokenId?: string;
+  /** Names the authenticated Recipe/Slot target or other governed Motion subject. */
+  readonly target?: string;
 }
 
 /** Enumerates diagnostics governed by the Motion schema and N23 authoring boundary. */

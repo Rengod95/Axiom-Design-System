@@ -19,7 +19,7 @@ const propertyRegistry = {
     webrefInputPath: "test.json",
     webrefInputDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     generatorVersion: "test",
-    policySourceDigest: "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    policySourceDigest: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
   },
   properties: [
     {
@@ -112,35 +112,6 @@ const canonicalDigest = {
   digestCanonicalJson: (_value: unknown): string => "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
 };
 
-const propertyPolicySource = {
-  policy: {
-    schemaVersion: "0.1",
-    defaults: {
-      standard: {},
-      experimental: {},
-      deprecated: {},
-      legacy: {},
-      vendor: {},
-    },
-    groups: [],
-    overrides: [],
-    blockedProperties: [],
-    customProperties: [],
-  },
-  bindings: {
-    schemaVersion: "0.1",
-    conditionOnlyDomains: [],
-    bindings: [{
-      id: "color",
-      properties: ["color"],
-      directDomains: ["color"],
-      templateDomains: ["color"],
-      projectors: [],
-      allowsTokenNegation: false,
-    }],
-  },
-} as const;
-
 const tokenValidation = (states = canonicalStateRegistry, conditions = conditionRegistry) => {
   const resolvedTokenManifest = {
     schemaVersion: "0.2",
@@ -164,10 +135,9 @@ const tokenValidation = (states = canonicalStateRegistry, conditions = condition
     resolvedTokenManifest,
     tokenDomainRegistry,
     projectorRegistry,
-    propertyPolicySource,
+    conditionOnlyDomains: [],
     authorityDigests: {
       effectivePropertyRegistry: canonicalDigest.digestCanonicalJson(propertyRegistry),
-      propertyPolicySource: canonicalDigest.digestCanonicalJson(propertyPolicySource),
       resolvedTokenManifest: canonicalDigest.digestCanonicalJson(resolvedTokenManifest),
       tokenDomainRegistry: canonicalDigest.digestCanonicalJson(tokenDomainRegistry),
       projectorRegistry: canonicalDigest.digestCanonicalJson(projectorRegistry),

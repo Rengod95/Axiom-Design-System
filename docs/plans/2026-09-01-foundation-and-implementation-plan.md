@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N24 \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N24 (Button Foundation conformance complete) \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.5.4, SSOT-03 v0.3.2, SSOT-04 v0.2.3, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.6.0, SSOT-03 v0.3.0, SSOT-04 v0.3.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -569,6 +569,10 @@ Before Web compiler implementation:
 10. Record unresolved warnings and classify P0/P1/P2.
 11. Declare Gate A only with zero P0/P1 blockers.
 
+N23 completion is not a Gate A declaration. N24 Button, N25 Select, N26
+Dialog, N27 negative/type/round-trip/determinism fixtures, and this review
+remain required before Gate A can close.
+
 Compiler inconvenience after Gate A is not enough reason to mutate Core. A
 demonstrated domain deficiency requires ADR and fixture evidence.
 
@@ -990,17 +994,18 @@ Exact first sequence:
 19. [done] Generate/reference the combined TypeScript contract surface (N18).
 20. [done] Implement the Recipe Kernel port and structural conformance suite (N19).
 21. [done] Implement the CSS-aware defineRecipe SDK (N20); N21 retains Token semantic validation.
-22. [done] Integrate profile policy with explicit resolved-manifest, exact
-    property-policy source, digest, serializer, and projector validation into
-    declarations (N21); N22 freshly obtains and consumes the frozen binding
-    receipt through the public N21 boundary without duplicating Token semantic
-    decisions.
+22. [done] Integrate profile policy with explicit resolved-manifest, digest,
+    serializer, and projector validation into declarations (N21); N22 consumes
+    the frozen binding receipt without duplicating Token semantic decisions.
 23. [done] Implement the Recipe normalizer and collision trace (N22), including
     rich trace schema/semantic reconciliation and output round-trip evidence.
 24. [done] Implement defineMotion authoring and normalization (N23), including
-    construction-time closed/schema-semantic authority validation before
-    digest comparison and authenticated N22 Appearance Recipe/Slot
-    applicability.
+    a required trusted `MotionAuthorityValidationPort`, an exact deep-snapshotted
+    six-authority bundle and expected-digest set, fixed preloaded schema/semantic
+    checks against supplied cross-authority context, and authenticated N22
+    Appearance Recipe/Slot applicability. AXM2004 alone normalizes malformed
+    authority/serializer/validator failures; canonical-digest trust remains an
+    explicit composition-root assumption without a spec-tooling package edge.
 25. [done] Prove the Button vertical fixture (N24) through the public N20,
     N21, N22, and N23 boundaries; compare the existing N15/N16 artifacts and
     governed N22 collision trace, including schema/semantic JSON round trips.

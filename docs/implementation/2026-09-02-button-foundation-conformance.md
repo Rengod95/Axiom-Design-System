@@ -21,11 +21,11 @@ runtime conformance.
   Appearance fixture, existing N16 Button Motion fixture, and the new N22
   Button collision-trace fixture.
 - Each artifact passes public schema plus semantic validation before and after
-  JSON transport. Canonical JSON is parsed back to the same three-artifact
-  bundle. A package-local golden binds the individual Appearance, Motion, and
-  collision-trace digests plus their bundle digest; fresh authority contexts
-  and ordinary declaration-object key permutation produce identical canonical
-  output.
+  JSON transport. The subordinate package-local
+  `button-foundation.golden.json` pins the canonical three-artifact bundle;
+  two independently cloned authority contexts each preload a new validation
+  port and produce identical bundle bytes. Ordinary declaration-object key
+  permutation also preserves canonical output.
 - Button-local negative cases prove N21 wrong-domain Token rejection
   (`AXP1103`), N22 directional reset-longhand withholding (`AXP1302`), and N23
   authenticated unknown-slot rejection (`AXM1018`). Literal no-emit checks
@@ -50,13 +50,14 @@ It remains subordinate to the existing trace schema and semantic authority.
 
 ## Authority reconciliation
 
-The Button proof authenticates the N21 property-policy source and its canonical
-digest, enters N22 through a fresh Token-binding receipt, and supplies N23 with
-the real trusted authority-validation port. N23 captures that port and its
-canonical digest and serialization functions when the authoring boundary is
-constructed. The positive path therefore crosses the strengthened `AXM2004`
-boundary without trusting a caller-provided receipt, mutable port, or shallow
-matching digest.
+N24 is based on N23 `9b8fde9`, which requires a trusted composition-owned
+`MotionAuthorityValidationPort` before any digest comparison. The Button test
+asynchronously preloads the public
+`createMotionAuthorityValidationPort(specRoot)` and supplies it with the real
+profile, resolved Token Manifest, Domain, State, Condition, Appearance, and
+digest authorities. The positive path therefore crosses the pinned
+schema/semantic `AXM2004` boundary rather than trusting shallow matching
+digests, while Motion retains no runtime dependency on spec tooling.
 
 ## Deferred work
 

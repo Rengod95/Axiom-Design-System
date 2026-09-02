@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-02 — Compiler Contracts, Readiness & Governance
-### Version 0.5.4
+### Version 0.6.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.2, SSOT-04 v0.2.3, SSOT-05 v0.2.3 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.0, SSOT-04 v0.3.0, SSOT-05 v0.2.3 \
 **Purpose:** Compiler/backend boundaries, diagnostics, release gates, and implementation authority
 
 ---
@@ -90,14 +90,36 @@ Every required input passes its normative schema and digest checks first.
 ### 2.4 Motion authoring normalization boundary
 
 `defineMotion()` is a build-time source boundary, not a compiler input. N23
-normalization receives an explicit closed N22 `CSSAppearanceIR`, its expected
-canonical digest, the effective CSS Property Registry/profile provenance,
-Resolved Token Manifest and Domain Registry, Canonical State Registry,
-Condition Registry, expected profile/condition digests, a trusted
-canonical-digest port, and registered Token CSS serializer ports. It validates
-the N22 artifact profile/digest and source Recipe/Slot applicability before it
-returns closed Motion IR. It never reads repository state or imports compiler,
-runtime, provider, Appearance-authoring, or Appearance-normalizer code.
+normalization receives an exact detached six-authority bundle: the Effective
+CSS Property Registry, Resolved Token Manifest, Token Domain Registry,
+Canonical State Registry, Condition Registry, and closed N22
+`CSSAppearanceIR`. It also receives expected digests for the six authority
+members—`effectivePropertyRegistry`, `resolvedTokenManifest`,
+`tokenDomainRegistry`, `canonicalStateRegistry`, `conditionRegistryDigest`,
+and `appearanceIR`—plus the distinct profile provenance
+`profileInputDigest`, a trusted canonical-digest port, a required trusted
+`MotionAuthorityValidationPort`, and registered Token CSS serializer ports.
+`createMotionAuthoring()` deep-snapshots the bundle and expected digests before
+a synchronous `defineMotion()` call can observe them.
+
+The composition root creates `MotionAuthorityValidationPort` asynchronously by
+calling `createMotionAuthorityValidationPort(specRoot)` once, then injects the
+preloaded synchronous port into `createMotionAuthoring()`. The port has six
+fixed internal schema/semantic pairs—effective property registry; resolved
+manifest/`resolved-token-manifest`; Domain Registry/`token-domain-registry`;
+Canonical State Registry/`canonical-state-registry`; Condition Registry/
+`condition-registry`; and Appearance IR/`css-appearance-ir`. It validates the
+supplied bundle as its own cross-authority registry context, not repository
+state. N23 itself never imports `@axiom/spec-tooling`, compiler, runtime,
+provider, Appearance-authoring, or Appearance-normalizer code.
+
+The port is a trusted composition-owned boundary, analogous to the trusted
+canonical-digest port: production composition is responsible for supplying the
+pinned preloaded validator. A pass-through unit-test stub proves only narrow
+synchronous transformation behavior and is not N23 conformance evidence.
+Malformed authority/serializer input, a port rejection, or a port throw is
+normalized to AXM2004 only; authenticated digest and Appearance applicability
+mismatches retain their dedicated diagnostics.
 
 The normalizer computes the Condition Registry digest from the exact supplied
 Registry through its trusted port, verifies the profile's `webrefInputDigest`
@@ -581,6 +603,8 @@ no compiler/provider dependency in Foundation packages
 ```
 
 Gate A authorizes compiler implementation.
+Completion through N23 does not close Gate A: N24–N27 fixtures and the Gate A
+review still require zero P0/P1 blockers.
 
 ### Gate B — Web Compiler Conformant
 
@@ -592,8 +616,7 @@ light/dark Token CSS
 full standard property raw CSS fixture
 Token Domain policy fixtures
 direct/template/projector Token binding fixtures
-binding receipts pinned to the exact effective CSS property registry and
-authenticated property-policy source digests
+binding receipts pinned to the exact effective CSS property registry digest
 physical/logical margin coverage fixture
 viewport/container/reduced-motion CSS
 stage/layer precedence

@@ -8,11 +8,6 @@ definition to the closed N15 Appearance IR. It exposes the generated
 serializes that IR canonically: object keys are lexical while all precedence-bearing
 arrays retain their authored order.
 
-The fresh N21 receipt pins both the complete Effective CSS Property Registry
-and the exact `{ policy, bindings }` source. N22 compares both identities with
-its configured authorities before normalization, so a recomputed digest for a
-caller-modified condition-only policy cannot authorize an Appearance artifact.
-
 The normalizer does not emit CSS, class names, or runtime/provider code. It
 returns a detached frozen result, keeps collisions in a separate trace, and
 uses the public Condition analyzer to decide whether Condition rules can be
