@@ -1,8 +1,8 @@
 # Axiom Repository Guidebook Design
 
-**Status:** Proposed for owner review  
-**Baseline:** `main` at `4546147ba7537aee9188a82b3f35fe266f2f1422`  
-**Audience:** Axiom을 처음 접하는 contributor, reviewer, adapter/compiler author  
+**Status:** Approved for implementation\
+**Baseline:** `main` at `4546147ba7537aee9188a82b3f35fe266f2f1422`\
+**Audience:** Axiom을 처음 접하는 contributor, reviewer, adapter/compiler author\
 **Language:** 한국어 본문과 영문 code identifier, signature, path
 
 ## 1. Purpose
@@ -34,7 +34,8 @@ Axiom에는 authority를 소유하는 ADR·SSOT·machine-readable spec과 현재
   있다.
 - 현재 4개 workspace package와 package 내부 source directory의 책임, 입력, 출력,
   dependency, public entry point를 찾을 수 있다.
-- 패키지 비테스트 source module 44개와 repository policy script 3개를 모두 설명한다.
+- 패키지 비테스트 source module 44개, 기존 repository policy script 3개와 이번
+  작업에서 추가하는 guidebook coverage script를 모두 설명한다.
 - handwritten module의 named top-level function, arrow-function constant, class,
   constructor, method, getter, setter와 exported contract의 역할을 찾을 수 있다.
 - generated module은 모든 generated union member를 복제하지 않고 source,
@@ -226,9 +227,10 @@ ADR 없이 internal tooling improvement로 제안할 수 있지만, 이번 scope
 ### 8.3 Baseline statements
 
 가이드북은 `main`의 구현 checkpoint를 명시하되 숫자를 영구 architecture처럼 쓰지
-않는다. 4 packages, 44 package source modules, 3 policy scripts, N0–N15라는 값은 문서
-작성 시점의 inventory임을 표시한다. Token/property/schema 수는 생성 command로
-재확인하는 방법과 함께 기록한다.
+않는다. 4 packages, 44 package source modules, 기존 policy scripts 3개,
+N0–N15라는 값은 설계 시점의 inventory임을 표시한다. 구현 후에는 새 guidebook
+coverage script를 포함한 policy scripts 4개를 설명한다. Token/property/schema 수는
+생성 command로 재확인하는 방법과 함께 기록한다.
 
 ## 9. Data-flow presentation
 
@@ -272,7 +274,7 @@ checker 구현 시 최소 다음 동작을 검증한다.
 ### 11.2 Documentation checks
 
 - 모든 local Markdown link target이 존재하는지 검사
-- 모든 47개 target module marker가 정확히 한 번 존재하는지 검사
+- 모든 48개 target module marker가 정확히 한 번 존재하는지 검사
 - source inventory와 package/directory/API checklist를 재대조
 - guidebook에서 미래 package를 현재 구현으로 서술하지 않았는지 확인
 - 미완성 표식, placeholder와 깨진 anchor를 검사
@@ -307,7 +309,7 @@ pnpm build
 - [ ] 본문은 한국어이고 code identifier, signature, path는 영문 원문이다.
 - [ ] narrative에서 reference로 자연스럽게 깊어지는 reading order다.
 - [ ] guidebook은 non-normative이며 authority를 복제하거나 변경하지 않는다.
-- [ ] 4 packages, 44 source modules, 3 policy scripts를 모두 다룬다.
+- [ ] 4 packages, 44 source modules, 최종 policy scripts 4개를 모두 다룬다.
 - [ ] 대상 named function, class, method, exported contract의 역할이 설명된다.
 - [ ] generated artifact는 provenance와 drift gate로 설명된다.
 - [ ] dependency direction과 forbidden boundary가 명확하다.

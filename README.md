@@ -16,7 +16,10 @@ When sources disagree, use this order:
 6. compiler and runtime packages;
 7. examples and historical reviews.
 
-Start with the [documentation index](docs/README.md), the
+If this is your first visit, read the Korean
+[repository guidebook](docs/guidebook.md) for the end-to-end mental model,
+package/module/API catalog, data flows, and change recipes. Then use the
+[documentation index](docs/README.md), the
 [current architecture](docs/architecture.md), and the
 [source-code and module standard](docs/standards/source-code-and-module-structure.md).
 
