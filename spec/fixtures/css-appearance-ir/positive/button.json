@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "0.1",
+  "profile": "axiom-css",
+  "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+  "recipeId": "button",
+  "slots": ["root", "label"],
+  "base": [
+    {
+      "slot": "root",
+      "declarations": [
+        {
+          "property": "display",
+          "value": { "kind": "css", "value": "inline-flex" },
+          "important": false,
+          "origin": {
+            "recipeId": "button",
+            "slot": "root",
+            "stage": "base",
+            "source": "recipes/button.ts#/base/root/display"
+          }
+        }
+      ]
+    }
+  ],
+  "variantAxes": [
+    {
+      "name": "tone",
+      "defaultValue": "neutral",
+      "values": [
+        { "value": "neutral", "apply": [] },
+        {
+          "value": "brand",
+          "apply": [
+            {
+              "slot": "root",
+              "declarations": [
+                {
+                  "property": "background-color",
+                  "value": {
+                    "kind": "token",
+                    "path": "color.semantic.fill.brand.default"
+                  },
+                  "important": false,
+                  "origin": {
+                    "recipeId": "button",
+                    "slot": "root",
+                    "stage": "variant",
+                    "source": "recipes/button.ts#/variants/tone/brand/root/backgroundColor"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stateRules": [
+    {
+      "slot": "root",
+      "state": "pressed",
+      "cases": [
+        {
+          "equals": true,
+          "apply": [
+            {
+              "property": "transform",
+              "value": { "kind": "css", "value": "translateY(1px)" },
+              "important": false,
+              "origin": {
+                "recipeId": "button",
+                "slot": "root",
+                "stage": "state",
+                "source": "recipes/button.ts#/states/root/pressed"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "compoundRules": [
+    {
+      "when": {
+        "variants": { "tone": "brand" },
+        "states": { "root": { "pressed": true } }
+      },
+      "apply": [
+        {
+          "slot": "label",
+          "declarations": [
+            {
+              "property": "color",
+              "value": { "kind": "token", "path": "color.semantic.text.onBrand" },
+              "important": false,
+              "origin": {
+                "recipeId": "button",
+                "slot": "label",
+                "stage": "compound",
+                "source": "recipes/button.ts#/compoundVariants/0/label/color"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conditionRules": [
+    {
+      "when": { "all": ["preference.reducedMotion"] },
+      "variants": { "tone": ["neutral", "brand"] },
+      "apply": [
+        {
+          "slot": "root",
+          "declarations": [
+            {
+              "property": "transition-duration",
+              "value": { "kind": "token", "path": "duration.semantic.instant" },
+              "important": false,
+              "origin": {
+                "recipeId": "button",
+                "slot": "root",
+                "stage": "condition",
+                "source": "recipes/button.ts#/conditions/0/root/transitionDuration"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

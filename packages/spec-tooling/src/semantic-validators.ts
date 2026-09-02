@@ -9,6 +9,7 @@ import {
   TOKEN_REFERENCE_PATTERN,
 } from "./constants.js";
 import { validateCanonicalStateRegistry } from "./semantic/canonical-state-registry-validator.js";
+import { validateAppearanceIr } from "./semantic/appearance-ir-validator.js";
 import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
 import { createSemanticDiagnosticFactory } from "./semantic/semantic-diagnostic.js";
@@ -353,6 +354,8 @@ export const runSemanticValidator = (
       return [];
     case "canonical-state-registry":
       return validateCanonicalStateRegistry(value);
+    case "css-appearance-ir":
+      return validateAppearanceIr(value, context);
     case "condition-expression":
       return validateConditionExpression(value, context);
     case "condition-registry":
