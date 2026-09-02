@@ -105,6 +105,7 @@ const CONTRACT_FAMILY_DEFINITIONS: Readonly<Record<ContractFamily, ContractFamil
       "spec/css/declaration.schema.json",
       "spec/css/ordered-declaration-list.schema.json",
       "spec/css/appearance-ir.schema.json",
+      "spec/css/collision-trace.schema.json",
       "spec/motion/motion-ir.schema.json",
     ],
     schemas: [
@@ -134,6 +135,19 @@ const CONTRACT_FAMILY_DEFINITIONS: Readonly<Record<ContractFamily, ContractFamil
           variantSelection: "VariantSelection", stateSelection: "StateSelection",
           compoundPredicate: "CompoundPredicate", compoundRule: "AppearanceCompoundRule",
           conditionRule: "AppearanceConditionRule",
+        },
+      },
+      {
+        path: "spec/css/collision-trace.schema.json",
+        rootName: "CollisionTrace",
+        definitionNames: {
+          policyProvenance: "CollisionPolicyProvenance",
+          variantApplicability: "CollisionVariantApplicability",
+          stateApplicability: "CollisionStateApplicability",
+          applicability: "CollisionApplicability",
+          declarationEvidence: "CollisionDeclarationEvidence",
+          conditionRelation: "CollisionConditionRelation",
+          entry: "CollisionTraceEntry",
         },
       },
       {

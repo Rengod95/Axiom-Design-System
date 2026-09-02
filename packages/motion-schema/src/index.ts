@@ -1,6 +1,8 @@
 export type {
   AppearanceCompoundRule, AppearanceConditionRule, AppearanceStateRule, CompoundPredicate,
-  AxiomIdentifier, CSSAppearanceIR, CSSDeclaration, CSSDeclarationValue, CSSLiteral, CSSValueTemplate,
+  AxiomIdentifier, CollisionApplicability, CollisionConditionRelation, CollisionDeclarationEvidence,
+  CollisionPolicyProvenance, CollisionStateApplicability, CollisionTrace, CollisionTraceEntry,
+  CollisionVariantApplicability, CSSAppearanceIR, CSSDeclaration, CSSDeclarationValue, CSSLiteral, CSSValueTemplate,
   CSSValueTemplatePart, CSSPropertyName, ConditionExpression,
   DeclarationOrigin, MotionIR, MotionKeyframe, MotionPhase,
   MotionSegment, MotionSegmentAt, MotionStateTransition, MotionTrack, MotionTransition,

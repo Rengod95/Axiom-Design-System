@@ -33,6 +33,7 @@ const stringSet = (value: unknown): ReadonlySet<string> =>
 interface AppearanceStateDefinition {
   readonly valueType: "boolean" | "enum";
   readonly values: ReadonlySet<string>;
+  readonly applicableComponents: ReadonlySet<string>;
 }
 
 const canonicalStates = (
@@ -51,6 +52,7 @@ const canonicalStates = (
     .map((state) => [state.id, {
       valueType: state["valueType"] === "enum" ? "enum" : "boolean",
       values: stringSet(state["values"]),
+      applicableComponents: stringSet(state["applicableComponents"]),
     }]));
 };
 
@@ -231,6 +233,7 @@ const validateStateSelection = (
   pointer: string,
   slots: ReadonlySet<string>,
   states: ReadonlyMap<string, AppearanceStateDefinition>,
+  recipeId: string,
 ): readonly Diagnostic[] => {
   if (!isUnknownRecord(value)) return [];
   const diagnostics: Diagnostic[] = [];
@@ -251,6 +254,11 @@ const validateStateSelection = (
           `${pointer}/${slot}/${state}`,
         ));
       } else {
+        if (states.get(state)?.applicableComponents.size !== 0 && !states.get(state)?.applicableComponents.has(recipeId)) diagnostics.push(appearanceDiagnostic(
+          SPEC_DIAGNOSTIC_CODE.UNKNOWN_APPEARANCE_STATE,
+          `State '${state}' is not applicable to component '${recipeId}'.`,
+          `${pointer}/${slot}/${state}`,
+        ));
         diagnostics.push(...validateStateValue(
           selection[state],
           state,
@@ -304,6 +312,11 @@ export const validateAppearanceIr = (
         `/stateRules/${ruleIndex}/state`,
       ));
     }
+    if (typeof rule["state"] === "string" && states.get(rule["state"])?.applicableComponents.size !== 0 && !states.get(rule["state"])?.applicableComponents.has(recipeId)) diagnostics.push(appearanceDiagnostic(
+      SPEC_DIAGNOSTIC_CODE.UNKNOWN_APPEARANCE_STATE,
+      `State '${rule["state"]}' is not applicable to component '${recipeId}'.`,
+      `/stateRules/${ruleIndex}/state`,
+    ));
     if (!Array.isArray(rule["cases"])) return;
     rule["cases"].forEach((entry, caseIndex) => {
       if (!isUnknownRecord(entry) || !Array.isArray(entry["apply"])) return;
@@ -335,12 +348,14 @@ export const validateAppearanceIr = (
         validateConditionExpression(when, context),
         `/conditionRules/${index}/when`,
       ));
-      if (isUnknownRecord(when)) {
+      if (key === "compoundRules" && isUnknownRecord(when)) {
         diagnostics.push(...validateVariantSelection(when["variants"], `/${key}/${index}/when/variants`, variants));
-        diagnostics.push(...validateStateSelection(when["states"], `/${key}/${index}/when/states`, slots, states));
+        diagnostics.push(...validateStateSelection(when["states"], `/${key}/${index}/when/states`, slots, states, recipeId));
       }
-      diagnostics.push(...validateVariantSelection(rule["variants"], `/${key}/${index}/variants`, variants));
-      diagnostics.push(...validateStateSelection(rule["states"], `/${key}/${index}/states`, slots, states));
+      if (key === "conditionRules") {
+        diagnostics.push(...validateVariantSelection(rule["variants"], `/${key}/${index}/variants`, variants));
+        diagnostics.push(...validateStateSelection(rule["states"], `/${key}/${index}/states`, slots, states, recipeId));
+      }
       diagnostics.push(...validateSlotRecords(rule["apply"], `/${key}/${index}/apply`, slots, recipeId, stage));
     });
   };

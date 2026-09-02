@@ -719,6 +719,13 @@ interface CSSAppearanceIR {
 
 Condition rule details are normative in SSOT-04.
 
+During Gate A, the generated `CSSAppearanceIR` and `CollisionTrace` TypeScript
+contracts are intentionally carried by `@axiom/motion-schema` as the existing
+shared serializable-contract carrier. This is a type-only ownership bridge: it
+does not make Appearance normalization part of Motion, and it does not change
+the closed N15 Appearance IR schema. A later governed package split may move
+the carrier only with regenerated contracts and compatibility review.
+
 ### 9.4 Variant and state IR
 
 ```ts
@@ -931,6 +938,19 @@ stable stage order
 serialized profile digest
 ```
 
+The separate collision trace is closed and evidence-bearing. Each entry has a
+contiguous source-order ID, the concrete affected property, the earlier and
+later declaration property identities and origins, the effective-policy
+provenance for both declarations, and Variant, State, and optional Condition
+applicability derived by N22 from the freshly revalidated N21 snapshot. The trace
+semantic validator authenticates the root profile identity and checks
+declaration provenance, ordering, and structural consistency with serialized
+origins; a trace alone does not recreate the source Compound predicate. The concrete affected property is the shared property
+for same-property collisions and the affected longhand for shorthand/reset
+relations. A semantic validator checks this evidence against the effective CSS
+Property Registry; trace consumers MUST NOT treat unvalidated evidence as
+authentic.
+
 ---
 
 ## 12. Diagnostics
@@ -952,6 +972,12 @@ AXP1301  shorthand/longhand overlap
 AXP1302  reset-longhand conflict
 AXN2001  unstable declaration order
 AXN2002  profile digest mismatch
+AXN2101  collision trace ID order invalid
+AXN2102  collision trace Recipe identity mismatch
+AXN2103  collision declaration property evidence invalid
+AXN2104  collision policy provenance stale or forged
+AXN2105  collision relation evidence invalid
+AXN2106  collision applicability serialization order invalid
 AXR1001  invalid Recipe structural shape or closed-key violation
 AXR1002  invalid shared-schema Recipe identifier
 AXR1003  duplicate Recipe Slot

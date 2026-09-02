@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/collision-trace/0.1",
+  "title": "Axiom CSS Collision Trace",
+  "type": "object",
+  "required": ["schemaVersion", "profile", "profileInputDigest", "recipeId", "entries"],
+  "properties": {
+    "schemaVersion": { "const": "0.1" },
+    "profile": { "const": "axiom-css" },
+    "profileInputDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "recipeId": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+    "entries": { "type": "array", "items": { "$ref": "#/$defs/entry" } }
+  },
+  "$defs": {
+    "policyProvenance": {
+      "type": "object",
+      "required": ["source", "rule"],
+      "properties": {
+        "source": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "rule": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }
+      },
+      "unevaluatedProperties": false
+    },
+    "variantApplicability": {
+      "type": "object",
+      "required": ["axis", "values"],
+      "properties": {
+        "axis": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "values": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" } }
+      },
+      "unevaluatedProperties": false
+    },
+    "stateApplicability": {
+      "type": "object",
+      "required": ["slot", "state", "equals"],
+      "properties": {
+        "slot": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "state": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" },
+        "equals": { "oneOf": [{ "type": "boolean" }, { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }] }
+      },
+      "unevaluatedProperties": false
+    },
+    "applicability": {
+      "type": "object",
+      "required": ["variants", "states"],
+      "properties": {
+        "variants": { "type": "array", "items": { "$ref": "#/$defs/variantApplicability" } },
+        "states": { "type": "array", "items": { "$ref": "#/$defs/stateApplicability" } },
+        "condition": { "$ref": "https://axiom.dev/schemas/condition/expression/0.1" }
+      },
+      "unevaluatedProperties": false
+    },
+    "declarationEvidence": {
+      "type": "object",
+      "required": ["property", "origin", "policyProvenance", "applicability"],
+      "properties": {
+        "property": { "$ref": "https://axiom.dev/schemas/css/property-name/0.1" },
+        "origin": { "$ref": "https://axiom.dev/schemas/css/declaration-origin/0.1" },
+        "policyProvenance": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/policyProvenance" } },
+        "applicability": { "$ref": "#/$defs/applicability" }
+      },
+      "unevaluatedProperties": false
+    },
+    "conditionRelation": { "enum": ["equivalent", "overlap", "subset", "superset"] },
+    "entry": {
+      "type": "object",
+      "required": ["id", "relation", "affectedProperty", "earlier", "later", "winner"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^collision-[0-9]{4,}$" },
+        "relation": { "enum": ["same-property", "shorthand-longhand", "reset-longhand", "condition-overlap"] },
+        "affectedProperty": { "$ref": "https://axiom.dev/schemas/css/property-name/0.1" },
+        "earlier": { "$ref": "#/$defs/declarationEvidence" },
+        "later": { "$ref": "#/$defs/declarationEvidence" },
+        "conditionRelation": { "$ref": "#/$defs/conditionRelation" },
+        "winner": { "enum": ["earlier", "later", "unresolved"] }
+      },
+      "allOf": [{
+        "if": { "properties": { "relation": { "const": "condition-overlap" } }, "required": ["relation"] },
+        "then": { "properties": { "conditionRelation": { "$ref": "#/$defs/conditionRelation" } }, "required": ["conditionRelation"] },
+        "else": { "properties": { "conditionRelation": false } }
+      }],
+      "unevaluatedProperties": false
+    }
+  },
+  "unevaluatedProperties": false
+}

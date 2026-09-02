@@ -148,4 +148,49 @@ describe("Appearance IR semantic validation", () => {
       SPEC_DIAGNOSTIC_CODE.APPEARANCE_PROFILE_MISMATCH,
     );
   });
+
+  it("enforces State applicableComponents in State, Compound, and Condition rules", () => {
+    const restrictedContext: SemanticValidationContext = {
+      ...context,
+      registries: {
+        ...context.registries,
+        "canonical-state-registry": {
+          states: REQUIRED_CANONICAL_STATE_IDS.map((id) => ({
+            id,
+            usage: ["appearance"],
+            valueType: id === "orientation" ? "enum" : "boolean",
+            ...(id === "orientation" ? { values: ["horizontal", "vertical"] } : {}),
+            ...(id === "pressed" ? { applicableComponents: ["dialog"] } : {}),
+          })),
+        },
+      },
+    };
+    const diagnostics = validateAppearanceIr({
+      ...validIr,
+      stateRules: [{
+        slot: "root",
+        state: "pressed",
+        cases: [{ equals: true, apply: [] }],
+      }],
+      compoundRules: [{
+        when: { states: { root: { pressed: true } } },
+        apply: [],
+      }],
+      conditionRules: [{
+        when: { all: ["preference.reducedMotion"] },
+        states: { root: { pressed: true } },
+        apply: [],
+      }],
+    }, restrictedContext);
+
+    const applicabilityDiagnostics = diagnostics.filter((diagnostic) =>
+      diagnostic.code === SPEC_DIAGNOSTIC_CODE.UNKNOWN_APPEARANCE_STATE,
+    );
+    expect(applicabilityDiagnostics).toHaveLength(3);
+    expect(applicabilityDiagnostics.map((diagnostic) => diagnostic.location?.pointer)).toEqual(expect.arrayContaining([
+      "/stateRules/0/state",
+      "/compoundRules/0/when/states/root/pressed",
+      "/conditionRules/0/states/root/pressed",
+    ]));
+  });
 });

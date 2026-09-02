@@ -9,6 +9,11 @@ export const PACKAGE_CONSTANTS_MODULE = "constants.ts";
 export const STABLE_SORT_LOCALE = "en";
 
 export const PACKAGE_RUNTIME_DEPENDENCIES = {
+  "appearance-normalizer": [
+    "@axiom/appearance-authoring",
+    "@axiom/condition-registry",
+    "@axiom/motion-schema",
+  ],
   "appearance-authoring": [
     "@axiom/condition-registry",
     "@axiom/css-property-profile",
@@ -21,7 +26,7 @@ export const PACKAGE_RUNTIME_DEPENDENCIES = {
   "condition-registry": [],
   "motion-schema": [],
   "recipe-kernel": [],
-  "spec-tooling": ["@axiom/css-property-profile", "ajv"],
+  "spec-tooling": ["@axiom/condition-registry", "@axiom/css-property-profile", "ajv"],
   "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],
   tokens: [],
 };

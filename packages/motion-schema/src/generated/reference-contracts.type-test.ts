@@ -1,4 +1,4 @@
-import type { CSSAppearanceIR, MotionIR } from "./reference-contracts.js";
+import type { CollisionTrace, CSSAppearanceIR, MotionIR } from "./reference-contracts.js";
 
 const appearance = {
   schemaVersion: "0.1",
@@ -46,6 +46,60 @@ const motion = {
 
 void appearance;
 void motion;
+
+const collisionTrace = {
+  schemaVersion: "0.1",
+  profile: "axiom-css",
+  profileInputDigest: "sha256:example",
+  recipeId: "button",
+  entries: [{
+    id: "collision-0001",
+    relation: "condition-overlap",
+    conditionRelation: "overlap",
+    affectedProperty: "color",
+    earlier: {
+      property: "color",
+      origin: { recipeId: "button", slot: "root", stage: "condition", source: "button.ts#/conditions/0" },
+      policyProvenance: [{ source: "status-default", rule: "standard" }],
+      applicability: { variants: [], states: [], condition: { all: ["viewport.width.sm"] } },
+    },
+    later: {
+      property: "color",
+      origin: { recipeId: "button", slot: "root", stage: "condition", source: "button.ts#/conditions/1" },
+      policyProvenance: [{ source: "status-default", rule: "standard" }],
+      applicability: { variants: [], states: [], condition: { all: ["viewport.width.md"] } },
+    },
+    winner: "later",
+  }],
+} as const satisfies CollisionTrace;
+
+void collisionTrace;
+
+const incompleteCollisionTrace = {
+  ...collisionTrace,
+  entries: [{
+    ...collisionTrace.entries[0],
+    earlier: collisionTrace.entries[0].earlier.origin,
+  }],
+};
+
+// @ts-expect-error Collision declarations require property, policy, and applicability evidence.
+const invalidCollisionTrace: CollisionTrace = incompleteCollisionTrace;
+
+void invalidCollisionTrace;
+
+const misplacedConditionRelation = {
+  ...collisionTrace,
+  entries: [{
+    ...collisionTrace.entries[0],
+    relation: "same-property",
+  }],
+};
+
+// @ts-expect-error Only Condition-overlap entries may carry a Condition relation.
+const invalidRelationTrace: CollisionTrace = misplacedConditionRelation;
+
+void invalidRelationTrace;
 
 const missingDiscreteDecision = {
   ...motion,

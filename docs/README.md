@@ -63,6 +63,7 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 29. [N19 Recipe Kernel Reconciliation](implementation/2026-09-02-recipe-kernel-preparation.md)
 30. [N20 CSS Appearance Authoring](implementation/2026-09-02-css-appearance-authoring.md)
 31. [N21 Token Binding Validation](implementation/2026-09-02-token-binding-validation.md)
+32. [N22 Appearance Normalizer](plans/2026-09-02-n22-implementation-report.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
@@ -148,6 +149,8 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [N18 Generated Reference Contracts — 2026-09-02](implementation/2026-09-02-generated-reference-contracts.md)
 - [N19 Recipe Kernel Reconciliation — 2026-09-02](implementation/2026-09-02-recipe-kernel-preparation.md)
 - [N20 CSS Appearance Authoring — 2026-09-02](implementation/2026-09-02-css-appearance-authoring.md)
+- [N21 Token Binding Validation — 2026-09-02](implementation/2026-09-02-token-binding-validation.md)
+- [N22 Appearance Normalizer — 2026-09-02](plans/2026-09-02-n22-implementation-report.md)
 - [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
 - [N15 Documentation Reconciliation Design — 2026-09-02](superpowers/specs/2026-09-02-n15-document-reconciliation.md)
 - [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)
