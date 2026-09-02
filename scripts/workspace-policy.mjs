@@ -13,6 +13,7 @@ export const PACKAGE_RUNTIME_DEPENDENCIES = {
   "css-property-profile": ["@webref/css", "css-tree"],
   "condition-registry": [],
   "motion-schema": [],
+  "recipe-kernel": [],
   "spec-tooling": ["@axiom/css-property-profile", "ajv"],
   "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],
   tokens: [],

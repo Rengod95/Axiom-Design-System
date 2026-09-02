@@ -905,6 +905,17 @@ AXP1301  shorthand/longhand overlap
 AXP1302  reset-longhand conflict
 AXN2001  unstable declaration order
 AXN2002  profile digest mismatch
+AXR1001  invalid Recipe structural shape or closed-key violation
+AXR1002  invalid shared-schema Recipe identifier
+AXR1003  duplicate Recipe Slot
+AXR1004  undeclared Recipe Slot reference
+AXR1005  invalid Recipe Variant shape or identifier
+AXR1006  invalid default Recipe Variant selection
+AXR1007  invalid compound Recipe predicate or reference
+AXR1008  invalid Recipe State rule or case
+AXR1010  invalid Recipe Condition expression or rule
+AXR1011  non-JSON-safe Recipe structural input
+AXR1012  invalid Recipe source location
 ```
 
 Every diagnostic includes property, Recipe, Slot, stage, source location, and
