@@ -206,43 +206,107 @@
     "families": [
       {
         "path": "heading.h1",
-        "sizePx": 40
+        "sizePx": 48
       },
       {
         "path": "heading.h2",
-        "sizePx": 32
+        "sizePx": 40
       },
       {
         "path": "heading.h3",
-        "sizePx": 28
+        "sizePx": 32
       },
       {
         "path": "heading.h4",
-        "sizePx": 24
+        "sizePx": 28
       },
       {
         "path": "heading.h5",
-        "sizePx": 20
+        "sizePx": 24
       },
       {
         "path": "heading.h6",
-        "sizePx": 18
+        "sizePx": 20
       },
       {
-        "path": "body.xsmall",
+        "path": "body.xs",
         "sizePx": 13
       },
       {
-        "path": "body.small",
+        "path": "body.sm",
         "sizePx": 14
       },
       {
-        "path": "body.compact",
+        "path": "body.md",
+        "sizePx": 16
+      },
+      {
+        "path": "body.lg",
+        "sizePx": 18
+      },
+      {
+        "path": "body.xl",
+        "sizePx": 20
+      },
+      {
+        "path": "label.xs",
+        "sizePx": 13
+      },
+      {
+        "path": "label.sm",
+        "sizePx": 14
+      },
+      {
+        "path": "label.md",
         "sizePx": 15
       },
       {
-        "path": "body.base",
+        "path": "label.lg",
         "sizePx": 16
+      },
+      {
+        "path": "label.xl",
+        "sizePx": 18
+      },
+      {
+        "path": "code.xs",
+        "sizePx": 13
+      },
+      {
+        "path": "code.sm",
+        "sizePx": 14
+      },
+      {
+        "path": "code.md",
+        "sizePx": 15
+      },
+      {
+        "path": "code.lg",
+        "sizePx": 16
+      },
+      {
+        "path": "code.xl",
+        "sizePx": 18
+      },
+      {
+        "path": "display.xs",
+        "sizePx": 32
+      },
+      {
+        "path": "display.sm",
+        "sizePx": 40
+      },
+      {
+        "path": "display.md",
+        "sizePx": 48
+      },
+      {
+        "path": "display.lg",
+        "sizePx": 60
+      },
+      {
+        "path": "display.xl",
+        "sizePx": 72
       }
     ]
   },
@@ -258,97 +322,113 @@
       "id": "1x1",
       "width": 1,
       "height": 1,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "1:1 square aspect ratio."
     },
     {
       "id": "1000x1618",
       "width": 1000,
       "height": 1618,
-      "provenance": "reference"
+      "origin": "axiom-portrait-inverse",
+      "description": "1:1.618 portrait golden-ratio aspect ratio."
     },
     {
       "id": "2x3",
       "width": 2,
       "height": 3,
-      "provenance": "reference"
+      "origin": "axiom-portrait-inverse",
+      "description": "2:3 portrait aspect ratio."
     },
     {
       "id": "3x4",
       "width": 3,
       "height": 4,
-      "provenance": "reference"
+      "origin": "axiom-portrait-inverse",
+      "description": "3:4 portrait aspect ratio."
     },
     {
       "id": "4x5",
       "width": 4,
       "height": 5,
-      "provenance": "reference"
+      "origin": "axiom-portrait-inverse",
+      "description": "4:5 portrait aspect ratio."
     },
     {
       "id": "5x4",
       "width": 5,
       "height": 4,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "5:4 landscape aspect ratio."
     },
     {
       "id": "4x3",
       "width": 4,
       "height": 3,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "4:3 landscape aspect ratio."
     },
     {
       "id": "3x2",
       "width": 3,
       "height": 2,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "3:2 landscape aspect ratio."
     },
     {
       "id": "1168x1000",
       "width": 1168,
       "height": 1000,
-      "provenance": "axiom-extension"
+      "origin": "axiom-custom",
+      "description": "Axiom custom 1.168:1 landscape aspect ratio."
     },
     {
       "id": "1618x1000",
       "width": 1618,
       "height": 1000,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "1.618:1 landscape golden-ratio aspect ratio."
     },
     {
       "id": "16x10",
       "width": 16,
       "height": 10,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "16:10 widescreen aspect ratio."
     },
     {
       "id": "16x9",
       "width": 16,
       "height": 9,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "16:9 widescreen aspect ratio."
     },
     {
       "id": "2x1",
       "width": 2,
       "height": 1,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "2:1 wide landscape aspect ratio."
     },
     {
       "id": "5x2",
       "width": 5,
       "height": 2,
-      "provenance": "axiom-extension"
+      "origin": "axiom-custom",
+      "description": "Axiom custom 5:2 panoramic aspect ratio."
     },
     {
       "id": "21x9",
       "width": 21,
       "height": 9,
-      "provenance": "reference"
+      "origin": "wanted",
+      "description": "21:9 cinematic aspect ratio."
     },
     {
       "id": "3x1",
       "width": 3,
       "height": 1,
-      "provenance": "axiom-extension"
+      "origin": "axiom-custom",
+      "description": "Axiom custom 3:1 panoramic aspect ratio."
     }
   ]
 }

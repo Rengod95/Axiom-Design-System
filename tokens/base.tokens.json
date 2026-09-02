@@ -6,82 +6,82 @@
         "1x1": {
           "$type": "number",
           "$value": 1,
-          "$description": "Square 1:1."
+          "$description": "1:1 square aspect ratio."
         },
         "1000x1618": {
           "$type": "number",
-          "$value": 0.6180469715698393,
-          "$description": "Inverse golden portrait 1:1.618."
+          "$value": 0.6180469716,
+          "$description": "1:1.618 portrait golden-ratio aspect ratio."
         },
         "2x3": {
           "$type": "number",
-          "$value": 0.6666666666666666,
-          "$description": "Portrait 2:3."
+          "$value": 0.6666666667,
+          "$description": "2:3 portrait aspect ratio."
         },
         "3x4": {
           "$type": "number",
           "$value": 0.75,
-          "$description": "Portrait 3:4."
+          "$description": "3:4 portrait aspect ratio."
         },
         "4x5": {
           "$type": "number",
           "$value": 0.8,
-          "$description": "Portrait 4:5."
+          "$description": "4:5 portrait aspect ratio."
         },
         "5x4": {
           "$type": "number",
           "$value": 1.25,
-          "$description": "Landscape 5:4."
+          "$description": "5:4 landscape aspect ratio."
         },
         "4x3": {
           "$type": "number",
-          "$value": 1.3333333333333333,
-          "$description": "Landscape 4:3."
+          "$value": 1.3333333333,
+          "$description": "4:3 landscape aspect ratio."
         },
         "3x2": {
           "$type": "number",
           "$value": 1.5,
-          "$description": "Landscape 3:2."
+          "$description": "3:2 landscape aspect ratio."
         },
         "1168x1000": {
           "$type": "number",
           "$value": 1.168,
-          "$description": "Axiom custom landscape ratio 1.168:1."
+          "$description": "Axiom custom 1.168:1 landscape aspect ratio."
         },
         "1618x1000": {
           "$type": "number",
           "$value": 1.618,
-          "$description": "Golden ratio 1.618:1."
+          "$description": "1.618:1 landscape golden-ratio aspect ratio."
         },
         "16x10": {
           "$type": "number",
           "$value": 1.6,
-          "$description": "Wide 16:10."
+          "$description": "16:10 widescreen aspect ratio."
         },
         "16x9": {
           "$type": "number",
-          "$value": 1.7777777777777777,
-          "$description": "Widescreen 16:9."
+          "$value": 1.7777777778,
+          "$description": "16:9 widescreen aspect ratio."
         },
         "2x1": {
           "$type": "number",
           "$value": 2,
-          "$description": "Wide 2:1."
+          "$description": "2:1 wide landscape aspect ratio."
         },
         "5x2": {
           "$type": "number",
           "$value": 2.5,
-          "$description": "Axiom panoramic ratio 5:2."
+          "$description": "Axiom custom 5:2 panoramic aspect ratio."
         },
         "21x9": {
           "$type": "number",
-          "$value": 2.3333333333333335,
-          "$description": "Cinematic 21:9."
+          "$value": 2.3333333333,
+          "$description": "21:9 cinematic aspect ratio."
         },
         "3x1": {
           "$type": "number",
           "$value": 3,
-          "$description": "Axiom panoramic ratio 3:1."
+          "$description": "Axiom custom 3:1 panoramic aspect ratio."
         }
       }
     },
@@ -98,10 +98,6 @@
         "landscape": {
           "$type": "number",
           "$value": "{aspectRatio.primitive.scale.4x3}"
-        },
-        "golden": {
-          "$type": "number",
-          "$value": "{aspectRatio.primitive.scale.1618x1000}"
         },
         "widescreen": {
           "$type": "number",
@@ -2049,15 +2045,15 @@
         },
         "md": {
           "$type": "dimension",
-          "$value": "{fontSize.primitive.scale.16}"
+          "$value": "{fontSize.primitive.scale.15}"
         },
         "lg": {
           "$type": "dimension",
-          "$value": "{fontSize.primitive.scale.18}"
+          "$value": "{fontSize.primitive.scale.16}"
         },
         "xl": {
           "$type": "dimension",
-          "$value": "{fontSize.primitive.scale.20}"
+          "$value": "{fontSize.primitive.scale.18}"
         }
       },
       "code": {
@@ -2463,23 +2459,23 @@
       "label": {
         "xs": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.130}"
+          "$value": "{lineHeight.primitive.scale.140}"
         },
         "sm": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.125}"
+          "$value": "{lineHeight.primitive.scale.140}"
         },
         "md": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.120}"
+          "$value": "{lineHeight.primitive.scale.140}"
         },
         "lg": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.120}"
+          "$value": "{lineHeight.primitive.scale.150}"
         },
         "xl": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.120}"
+          "$value": "{lineHeight.primitive.scale.150}"
         }
       },
       "code": {
@@ -2489,25 +2485,25 @@
         },
         "sm": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.150}"
+          "$value": "{lineHeight.primitive.scale.160}"
         },
         "md": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.150}"
+          "$value": "{lineHeight.primitive.scale.160}"
         },
         "lg": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.150}"
+          "$value": "{lineHeight.primitive.scale.160}"
         },
         "xl": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.140}"
+          "$value": "{lineHeight.primitive.scale.160}"
         }
       },
       "display": {
         "xs": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.110}"
+          "$value": "{lineHeight.primitive.scale.120}"
         },
         "sm": {
           "$type": "number",
@@ -2515,7 +2511,7 @@
         },
         "md": {
           "$type": "number",
-          "$value": "{lineHeight.primitive.scale.100}"
+          "$value": "{lineHeight.primitive.scale.110}"
         },
         "lg": {
           "$type": "number",
@@ -3371,23 +3367,23 @@
           "block": {
             "xs": {
               "$type": "dimension",
-              "$value": "{space.primitive.scale.1}"
+              "$value": "{space.primitive.scale.0}"
             },
             "sm": {
               "$type": "dimension",
-              "$value": "{space.primitive.scale.2}"
+              "$value": "{space.primitive.scale.1}"
             },
             "md": {
               "$type": "dimension",
-              "$value": "{space.primitive.scale.3}"
+              "$value": "{space.primitive.scale.2}"
             },
             "lg": {
               "$type": "dimension",
-              "$value": "{space.primitive.scale.4}"
+              "$value": "{space.primitive.scale.3}"
             },
             "xl": {
               "$type": "dimension",
-              "$value": "{space.primitive.scale.5}"
+              "$value": "{space.primitive.scale.4}"
             }
           },
           "inline": {
@@ -3640,17 +3636,25 @@
     },
     "semantic": {
       "icon": {
-        "small": {
+        "xs": {
           "$type": "dimension",
           "$value": "{strokeWidth.primitive.scale.100}"
         },
-        "medium": {
+        "sm": {
           "$type": "dimension",
           "$value": "{strokeWidth.primitive.scale.150}"
         },
-        "large": {
+        "md": {
           "$type": "dimension",
           "$value": "{strokeWidth.primitive.scale.200}"
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "{strokeWidth.primitive.scale.250}"
+        },
+        "xl": {
+          "$type": "dimension",
+          "$value": "{strokeWidth.primitive.scale.300}"
         }
       },
       "illustration": {

@@ -13,19 +13,15 @@
     "derivedCssUnits",
     "forbiddenPrimitiveSegments",
     "colorScales",
-    "spaceScale",
     "aspectRatios",
+    "spaceScale",
     "dimensionDomainUnits",
     "typography",
     "contrastPairs"
   ],
   "properties": {
-    "schemaVersion": {
-      "const": "0.1"
-    },
-    "semanticVocabularyRegistry": {
-      "const": "semantic-token-vocabulary"
-    },
+    "schemaVersion": { "const": "0.1" },
+    "semanticVocabularyRegistry": { "const": "semantic-token-vocabulary" },
     "colorProfile": {
       "type": "object",
       "required": [
@@ -35,32 +31,16 @@
         "componentPrecision"
       ],
       "properties": {
-        "canonicalColorSpace": {
-          "const": "oklch"
-        },
-        "fallback": {
-          "const": "hex"
-        },
-        "gamutMapping": {
-          "const": "oklch-chroma-reduction"
-        },
+        "canonicalColorSpace": { "const": "oklch" },
+        "fallback": { "const": "hex" },
+        "gamutMapping": { "const": "oklch-chroma-reduction" },
         "componentPrecision": {
           "type": "object",
-          "required": [
-            "lightness",
-            "chroma",
-            "hue"
-          ],
+          "required": ["lightness", "chroma", "hue"],
           "properties": {
-            "lightness": {
-              "const": 6
-            },
-            "chroma": {
-              "const": 6
-            },
-            "hue": {
-              "const": 3
-            }
+            "lightness": { "const": 6 },
+            "chroma": { "const": 6 },
+            "hue": { "const": 3 }
           },
           "unevaluatedProperties": false
         }
@@ -72,33 +52,19 @@
       "prefixItems": [
         {
           "type": "object",
-          "required": [
-            "name",
-            "hex"
-          ],
+          "required": ["name", "hex"],
           "properties": {
-            "name": {
-              "const": "white"
-            },
-            "hex": {
-              "const": "#ffffff"
-            }
+            "name": { "const": "white" },
+            "hex": { "const": "#ffffff" }
           },
           "unevaluatedProperties": false
         },
         {
           "type": "object",
-          "required": [
-            "name",
-            "hex"
-          ],
+          "required": ["name", "hex"],
           "properties": {
-            "name": {
-              "const": "black"
-            },
-            "hex": {
-              "const": "#000000"
-            }
+            "name": { "const": "black" },
+            "hex": { "const": "#000000" }
           },
           "unevaluatedProperties": false
         }
@@ -107,264 +73,182 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "rootFontSizePx": {
-      "type": "number",
-      "exclusiveMinimum": 0
-    },
+    "rootFontSizePx": { "type": "number", "exclusiveMinimum": 0 },
     "authoredDimensionUnits": {
       "type": "array",
-      "const": [
-        "px",
-        "rem"
-      ]
+      "const": ["px", "rem"]
     },
     "derivedCssUnits": {
       "type": "array",
-      "const": [
-        "em"
-      ]
+      "const": ["em"]
     },
     "forbiddenPrimitiveSegments": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {
-        "$ref": "https://axiom.dev/schemas/common/identifier/0.1"
-      }
+      "items": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }
     },
     "colorScales": {
       "type": "array",
       "const": [
         {
           "palette": "neutral",
-          "shades": [
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900
-          ]
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         },
         {
           "palette": "brand",
-          "shades": [
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900
-          ]
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         },
         {
           "palette": "red",
-          "shades": [
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900
-          ]
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         },
         {
           "palette": "amber",
-          "shades": [
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900
-          ]
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         },
         {
           "palette": "green",
-          "shades": [
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900
-          ]
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         },
         {
           "palette": "cyan",
-          "shades": [
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900
-          ]
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         },
         {
           "palette": "purple",
-          "shades": [
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900
-          ]
+          "shades": [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         }
       ]
     },
-    "spaceScale": {
-      "type": "object",
-      "required": [
-        "baseUnitPx",
-        "steps"
-      ],
-      "properties": {
-        "baseUnitPx": {
-          "enum": [
-            2,
-            4
-          ]
-        },
-        "steps": {
-          "type": "array",
-          "minItems": 8,
-          "items": {
-            "$ref": "#/$defs/scaleStep"
-          }
-        }
-      },
-      "unevaluatedProperties": false
-    },
     "aspectRatios": {
-      "type": "array",
       "const": [
         {
           "id": "1x1",
           "width": 1,
           "height": 1,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "1:1 square aspect ratio."
         },
         {
           "id": "1000x1618",
           "width": 1000,
           "height": 1618,
-          "provenance": "reference"
+          "origin": "axiom-portrait-inverse",
+          "description": "1:1.618 portrait golden-ratio aspect ratio."
         },
         {
           "id": "2x3",
           "width": 2,
           "height": 3,
-          "provenance": "reference"
+          "origin": "axiom-portrait-inverse",
+          "description": "2:3 portrait aspect ratio."
         },
         {
           "id": "3x4",
           "width": 3,
           "height": 4,
-          "provenance": "reference"
+          "origin": "axiom-portrait-inverse",
+          "description": "3:4 portrait aspect ratio."
         },
         {
           "id": "4x5",
           "width": 4,
           "height": 5,
-          "provenance": "reference"
+          "origin": "axiom-portrait-inverse",
+          "description": "4:5 portrait aspect ratio."
         },
         {
           "id": "5x4",
           "width": 5,
           "height": 4,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "5:4 landscape aspect ratio."
         },
         {
           "id": "4x3",
           "width": 4,
           "height": 3,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "4:3 landscape aspect ratio."
         },
         {
           "id": "3x2",
           "width": 3,
           "height": 2,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "3:2 landscape aspect ratio."
         },
         {
           "id": "1168x1000",
           "width": 1168,
           "height": 1000,
-          "provenance": "axiom-extension"
+          "origin": "axiom-custom",
+          "description": "Axiom custom 1.168:1 landscape aspect ratio."
         },
         {
           "id": "1618x1000",
           "width": 1618,
           "height": 1000,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "1.618:1 landscape golden-ratio aspect ratio."
         },
         {
           "id": "16x10",
           "width": 16,
           "height": 10,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "16:10 widescreen aspect ratio."
         },
         {
           "id": "16x9",
           "width": 16,
           "height": 9,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "16:9 widescreen aspect ratio."
         },
         {
           "id": "2x1",
           "width": 2,
           "height": 1,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "2:1 wide landscape aspect ratio."
         },
         {
           "id": "5x2",
           "width": 5,
           "height": 2,
-          "provenance": "axiom-extension"
+          "origin": "axiom-custom",
+          "description": "Axiom custom 5:2 panoramic aspect ratio."
         },
         {
           "id": "21x9",
           "width": 21,
           "height": 9,
-          "provenance": "reference"
+          "origin": "wanted",
+          "description": "21:9 cinematic aspect ratio."
         },
         {
           "id": "3x1",
           "width": 3,
           "height": 1,
-          "provenance": "axiom-extension"
+          "origin": "axiom-custom",
+          "description": "Axiom custom 3:1 panoramic aspect ratio."
         }
       ]
+    },
+    "spaceScale": {
+      "type": "object",
+      "required": ["baseUnitPx", "steps"],
+      "properties": {
+        "baseUnitPx": { "enum": [2, 4] },
+        "steps": {
+          "type": "array",
+          "minItems": 8,
+          "items": { "$ref": "#/$defs/scaleStep" }
+        }
+      },
+      "unevaluatedProperties": false
     },
     "dimensionDomainUnits": {
       "type": "object",
@@ -373,12 +257,7 @@
         "type": "array",
         "minItems": 1,
         "uniqueItems": true,
-        "items": {
-          "enum": [
-            "px",
-            "rem"
-          ]
-        }
+        "items": { "enum": ["px", "rem"] }
       }
     },
     "typography": {
@@ -391,24 +270,13 @@
         "families"
       ],
       "properties": {
-        "bodyBasePx": {
-          "enum": [
-            15,
-            16
-          ]
-        },
-        "bodyMinimumPx": {
-          "type": "number",
-          "minimum": 13
-        },
+        "bodyBasePx": { "enum": [15, 16] },
+        "bodyMinimumPx": { "type": "number", "minimum": 13 },
         "fontSizePx": {
           "type": "array",
           "minItems": 10,
           "uniqueItems": true,
-          "items": {
-            "type": "number",
-            "minimum": 13
-          }
+          "items": { "type": "number", "minimum": 13 }
         },
         "weightVariants": {
           "type": "object",
@@ -422,9 +290,7 @@
         "families": {
           "type": "array",
           "minItems": 10,
-          "items": {
-            "$ref": "#/$defs/typographyFamily"
-          }
+          "items": { "$ref": "#/$defs/typographyFamily" }
         }
       },
       "unevaluatedProperties": false
@@ -432,69 +298,38 @@
     "contrastPairs": {
       "type": "array",
       "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/contrastPair"
-      }
+      "items": { "$ref": "#/$defs/contrastPair" }
     }
   },
   "$defs": {
     "scaleStep": {
       "type": "object",
-      "required": [
-        "name",
-        "valuePx"
-      ],
+      "required": ["name", "valuePx"],
       "properties": {
-        "name": {
-          "type": "string",
-          "pattern": "^[0-9]+$"
-        },
-        "valuePx": {
-          "type": "number",
-          "minimum": 0
-        }
+        "name": { "type": "string", "pattern": "^[0-9]+$" },
+        "valuePx": { "type": "number", "minimum": 0 }
       },
       "unevaluatedProperties": false
     },
     "typographyFamily": {
       "type": "object",
-      "required": [
-        "path",
-        "sizePx"
-      ],
+      "required": ["path", "sizePx"],
       "properties": {
         "path": {
           "type": "string",
           "pattern": "^[a-z][A-Za-z0-9]*(?:\\.[a-z0-9][A-Za-z0-9]*)+$"
         },
-        "sizePx": {
-          "type": "number",
-          "minimum": 13
-        }
+        "sizePx": { "type": "number", "minimum": 13 }
       },
       "unevaluatedProperties": false
     },
     "contrastPair": {
       "type": "object",
-      "required": [
-        "foreground",
-        "background",
-        "minimumRatio"
-      ],
+      "required": ["foreground", "background", "minimumRatio"],
       "properties": {
-        "foreground": {
-          "type": "string",
-          "pattern": "^color\\.semantic\\."
-        },
-        "background": {
-          "type": "string",
-          "pattern": "^color\\.semantic\\."
-        },
-        "minimumRatio": {
-          "type": "number",
-          "minimum": 1,
-          "maximum": 21
-        }
+        "foreground": { "type": "string", "pattern": "^color\\.semantic\\." },
+        "background": { "type": "string", "pattern": "^color\\.semantic\\." },
+        "minimumRatio": { "type": "number", "minimum": 1, "maximum": 21 }
       },
       "unevaluatedProperties": false
     }

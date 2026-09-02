@@ -7,6 +7,7 @@ import {
 } from "@axiom/tokens";
 
 import {
+  ASPECT_RATIO_DECIMAL_PRECISION,
   FOUNDATION_POLICY_DIAGNOSTIC_CODE,
   FOUNDATION_POLICY_ERROR_MESSAGE,
 } from "./constants.js";
@@ -30,37 +31,6 @@ export interface FoundationScaleStep {
   readonly valuePx: number;
 }
 
-export interface FoundationAspectRatio {
-  readonly id: string;
-  readonly width: number;
-  readonly height: number;
-  readonly provenance: "reference" | "axiom-extension";
-}
-
-export interface SemanticScaleFamily {
-  readonly path: string;
-  readonly coverage: "core";
-}
-
-export interface SemanticExtendedScaleFamily {
-  readonly path: string;
-  readonly labels: readonly ("xxs" | "xxl")[];
-  readonly rationale: string;
-}
-
-export interface SemanticTokenVocabulary {
-  readonly schemaVersion: "0.1";
-  readonly compatibility: "clean-break";
-  readonly sizeScale: {
-    readonly core: readonly string[];
-    readonly extensions: readonly string[];
-    readonly excludedLongForms: readonly string[];
-  };
-  readonly orderedScaleFamilies: readonly SemanticScaleFamily[];
-  readonly extendedScaleFamilies: readonly SemanticExtendedScaleFamily[];
-  readonly removedPaths: readonly string[];
-}
-
 export interface FoundationTypographyFamily {
   readonly path: string;
   readonly sizePx: number;
@@ -70,6 +40,32 @@ export interface FoundationContrastPair {
   readonly foreground: string;
   readonly background: string;
   readonly minimumRatio: number;
+}
+
+export interface FoundationAspectRatio {
+  readonly id: string;
+  readonly width: number;
+  readonly height: number;
+  readonly origin: "wanted" | "axiom-portrait-inverse" | "axiom-custom";
+  readonly description: string;
+}
+
+export interface FoundationSemanticVocabulary {
+  readonly sizeScale: {
+    readonly core: readonly string[];
+    readonly extensions: readonly string[];
+    readonly excludedLongForms: readonly string[];
+  };
+  readonly orderedScaleFamilies: readonly {
+    readonly path: string;
+    readonly coverage: "core";
+  }[];
+  readonly extendedScaleFamilies: readonly {
+    readonly path: string;
+    readonly labels: readonly string[];
+    readonly rationale: string;
+  }[];
+  readonly removedPaths: readonly string[];
 }
 
 export interface FoundationTokenPolicy {
@@ -91,11 +87,11 @@ export interface FoundationTokenPolicy {
   readonly derivedCssUnits: readonly string[];
   readonly forbiddenPrimitiveSegments: readonly string[];
   readonly colorScales: readonly FoundationColorScale[];
+  readonly aspectRatios: readonly FoundationAspectRatio[];
   readonly spaceScale: {
     readonly baseUnitPx: number;
     readonly steps: readonly FoundationScaleStep[];
   };
-  readonly aspectRatios: readonly FoundationAspectRatio[];
   readonly dimensionDomainUnits: Readonly<Record<string, readonly string[]>>;
   readonly typography: {
     readonly bodyBasePx: number;
@@ -315,69 +311,144 @@ const validateSpaceScale = (
   return diagnostics;
 };
 
-const directScaleLabels = (
+const semanticFamilyEntries = (
   document: ParsedDtcgDocument,
   familyPath: string,
-): readonly string[] => {
+  allowVariantDescendants: boolean,
+): {
+  readonly labels: ReadonlySet<string>;
+  readonly invalidDescendantIds: readonly string[];
+} => {
   const prefix = `${familyPath}.`;
-  const labels: string[] = [];
-  const seen = new Set<string>();
+  const labels = new Set<string>();
+  const invalidDescendantIds: string[] = [];
   for (const token of document.tokens) {
     if (!token.id.startsWith(prefix)) continue;
-    const label = token.id.slice(prefix.length).split(".")[0];
-    if (label !== undefined && label.length > 0 && !seen.has(label)) {
-      seen.add(label);
-      labels.push(label);
+    const suffix = token.id.slice(prefix.length);
+    const [label, descendant] = suffix.split(".");
+    if (label === undefined || label.length === 0) continue;
+    if (!allowVariantDescendants && descendant !== undefined) {
+      invalidDescendantIds.push(token.id);
+      continue;
     }
+    labels.add(label);
   }
-  return labels;
+  return { labels, invalidDescendantIds };
 };
 
-const validateSemanticVocabulary = (
+const validateSemanticVocabularyCoverage = (
   document: ParsedDtcgDocument,
-  vocabulary: SemanticTokenVocabulary,
+  vocabulary: FoundationSemanticVocabulary,
 ): readonly FoundationPolicyDiagnostic[] => {
   const diagnostics: FoundationPolicyDiagnostic[] = [];
-  const core = vocabulary.sizeScale.core;
-  const longForms = new Set(vocabulary.sizeScale.excludedLongForms);
-  const registeredExtensions = new Map(
-    vocabulary.extendedScaleFamilies.map((family) => [family.path, new Set(family.labels)]),
+  const extendedLabels = new Map(
+    vocabulary.extendedScaleFamilies.map((family) => [family.path, family.labels]),
   );
-
   for (const family of vocabulary.orderedScaleFamilies) {
-    const labels = directScaleLabels(document, family.path);
-    const extensions = registeredExtensions.get(family.path) ?? new Set<string>();
-    const allowed = new Set([...core, ...extensions]);
-    const invalid = labels.filter((label) => longForms.has(label) || !allowed.has(label));
-    const missing = core.filter((label) => !labels.includes(label));
-    if (
-      invalid.length > 0 ||
-      missing.length > 0 ||
-      labels.length !== allowed.size
-    ) {
+    const allowed = [
+      ...vocabulary.sizeScale.core,
+      ...(extendedLabels.get(family.path) ?? []),
+    ];
+    const { labels: actual, invalidDescendantIds } = semanticFamilyEntries(
+      document,
+      family.path,
+      family.path.startsWith("typography.semantic."),
+    );
+    for (const tokenId of invalidDescendantIds) {
       diagnostics.push({
         code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
-        message: `Semantic scale '${family.path}' must expose the canonical ordered labels '${[
-          ...core,
-          ...extensions,
-        ].join(", ")}'.`,
-        tokenId: family.path,
+        message: `Scalar semantic family '${family.path}' requires exact scale leaves; '${tokenId}' is not a registered leaf.`,
+        tokenId,
       });
     }
+    for (const label of allowed) {
+      if (!actual.has(label)) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+          message: `Ordered semantic family '${family.path}' is missing required scale label '${label}'.`,
+          tokenId: `${family.path}.${label}`,
+        });
+      }
+    }
+    for (const label of actual) {
+      if (!allowed.includes(label)) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+          message: `Ordered semantic family '${family.path}' cannot use unregistered scale label '${label}'.`,
+          tokenId: `${family.path}.${label}`,
+        });
+      }
+    }
   }
-
-  for (const removedPath of vocabulary.removedPaths) {
-    if (document.tokens.some(
-      (token) => token.id === removedPath || token.id.startsWith(`${removedPath}.`),
-    )) {
+  for (const family of vocabulary.extendedScaleFamilies) {
+    const allowed = new Set([
+      ...vocabulary.sizeScale.core,
+      ...family.labels,
+    ]);
+    const { labels: actual, invalidDescendantIds } = semanticFamilyEntries(
+      document,
+      family.path,
+      false,
+    );
+    for (const tokenId of invalidDescendantIds) {
       diagnostics.push({
-        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.REMOVED_SEMANTIC_PATH,
-        message: `Removed semantic Token path '${removedPath}' must not be present.`,
-        tokenId: removedPath,
+        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+        message: `Extended semantic family '${family.path}' requires exact scale leaves; '${tokenId}' is not a registered leaf.`,
+        tokenId,
       });
+    }
+    for (const label of actual) {
+      if (!allowed.has(label)) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+          message: `Extended semantic family '${family.path}' cannot use unregistered scale label '${label}'.`,
+          tokenId: `${family.path}.${label}`,
+        });
+      }
+    }
+    for (const label of family.labels) {
+      if (!vocabulary.sizeScale.extensions.includes(label)) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+          message: `Extended label '${label}' for '${family.path}' is not registered by the semantic size scale.`,
+          tokenId: `${family.path}.${label}`,
+        });
+      } else if (!actual.has(label)) {
+        diagnostics.push({
+          code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+          message: `Extended semantic family '${family.path}' is missing registered label '${label}'.`,
+          tokenId: `${family.path}.${label}`,
+        });
+      }
     }
   }
   return diagnostics;
+};
+
+const validateRemovedSemanticPaths = (
+  documents: readonly ParsedDtcgDocument[],
+  vocabulary: FoundationSemanticVocabulary,
+): readonly FoundationPolicyDiagnostic[] => {
+  const diagnostics: FoundationPolicyDiagnostic[] = [];
+  for (const removedPath of vocabulary.removedPaths) {
+    for (const document of documents) {
+      for (const token of document.tokens) {
+        if (token.id === removedPath || token.id.startsWith(`${removedPath}.`)) {
+          diagnostics.push({
+            code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.REMOVED_SEMANTIC_PATH,
+            message: `Removed semantic path '${removedPath}' cannot be authored.`,
+            tokenId: token.id,
+          });
+        }
+      }
+    }
+  }
+  return diagnostics;
+};
+
+const roundDecimal = (value: number, digits: number): number => {
+  const factor = 10 ** digits;
+  return Math.round((value + Number.EPSILON) * factor) / factor;
 };
 
 const validateAspectRatios = (
@@ -394,11 +465,18 @@ const validateAspectRatios = (
       pushMissing(diagnostics, tokenId);
       continue;
     }
-    const expected = ratio.width / ratio.height;
-    if (token.dtcgType !== "number" || typeof token.value !== "number" || !closeTo(token.value, expected)) {
+    const expectedValue = roundDecimal(
+      ratio.width / ratio.height,
+      ASPECT_RATIO_DECIMAL_PRECISION,
+    );
+    if (
+      token.dtcgType !== "number" ||
+      token.value !== expectedValue ||
+      token.description !== ratio.description
+    ) {
       diagnostics.push({
         code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_ASPECT_RATIO,
-        message: `Aspect-ratio Token '${tokenId}' must equal ${ratio.width}/${ratio.height}.`,
+        message: `Aspect-ratio Token '${tokenId}' must equal ${ratio.width}:${ratio.height} (${expectedValue}) and use its registered description.`,
         tokenId,
       });
     }
@@ -407,7 +485,7 @@ const validateAspectRatios = (
     if (token.id.startsWith("aspectRatio.primitive.") && !required.has(token.id)) {
       diagnostics.push({
         code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_ASPECT_RATIO,
-        message: `Aspect-ratio primitive '${token.id}' is outside the registered ratio catalog.`,
+        message: `Aspect-ratio primitive '${token.id}' is outside the registered catalog.`,
         tokenId: token.id,
       });
     }
@@ -501,7 +579,7 @@ const validateTypography = (
   if (
     policy.typography.bodyBasePx < policy.typography.bodyMinimumPx ||
     !policy.typography.families.some(
-      (entry) => entry.path.startsWith("body.") && entry.sizePx === policy.typography.bodyBasePx,
+      (entry) => entry.path === "body.md" && entry.sizePx === policy.typography.bodyBasePx,
     ) ||
     !policy.typography.families.some(
       (entry) => entry.path.startsWith("body.") && entry.sizePx === policy.typography.bodyMinimumPx,
@@ -589,7 +667,7 @@ export const validateFoundationTokenPolicy = (
   document: ParsedDtcgDocument,
   manifest: ResolvedTokenManifest,
   policy: FoundationTokenPolicy,
-  vocabulary: SemanticTokenVocabulary,
+  vocabulary: FoundationSemanticVocabulary,
   contextDocuments: readonly ParsedDtcgDocument[] = [],
 ): readonly FoundationPolicyDiagnostic[] => {
   const tokens = tokenMap(document);
@@ -600,7 +678,8 @@ export const validateFoundationTokenPolicy = (
       validateColorProfile(source, policy)
     ),
     ...validateSpaceScale(tokens, policy),
-    ...validateSemanticVocabulary(document, vocabulary),
+    ...validateSemanticVocabularyCoverage(document, vocabulary),
+    ...validateRemovedSemanticPaths([document, ...contextDocuments], vocabulary),
     ...validateAspectRatios(tokens, policy),
     ...validateDimensionUnits(document, policy),
     ...validateTypography(tokens, policy),
@@ -612,7 +691,7 @@ export const assertFoundationTokenPolicy = (
   document: ParsedDtcgDocument,
   manifest: ResolvedTokenManifest,
   policy: FoundationTokenPolicy,
-  vocabulary: SemanticTokenVocabulary,
+  vocabulary: FoundationSemanticVocabulary,
   contextDocuments: readonly ParsedDtcgDocument[] = [],
 ): void => {
   const diagnostics = validateFoundationTokenPolicy(

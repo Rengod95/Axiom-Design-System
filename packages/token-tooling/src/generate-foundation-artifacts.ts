@@ -28,8 +28,8 @@ import {
 } from "./foundation-artifacts.js";
 import {
   assertFoundationTokenPolicy,
+  type FoundationSemanticVocabulary,
   type FoundationTokenPolicy,
-  type SemanticTokenVocabulary,
 } from "./foundation-policy.js";
 import { createTerrazzoTokenParser } from "./terrazzo-token-parser.js";
 
@@ -89,7 +89,7 @@ const [
 const foundationPolicy = JSON.parse(foundationPolicyContent) as FoundationTokenPolicy;
 const semanticVocabulary = JSON.parse(
   semanticVocabularyContent,
-) as SemanticTokenVocabulary;
+) as FoundationSemanticVocabulary;
 
 const parser = createTerrazzoTokenParser({ domains: domainRegistry.domains });
 const parseSource = async (

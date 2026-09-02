@@ -7,11 +7,11 @@
       "tokens": [
         {
           "dependencies": [],
-          "description": "Inverse golden portrait 1:1.618.",
+          "description": "1:1.618 portrait golden-ratio aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1000x1618",
-          "resolvedValue": 0.6180469715698393,
+          "resolvedValue": 0.6180469716,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/1000x1618"
@@ -20,7 +20,7 @@
         },
         {
           "dependencies": [],
-          "description": "Axiom custom landscape ratio 1.168:1.",
+          "description": "Axiom custom 1.168:1 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1168x1000",
@@ -33,7 +33,7 @@
         },
         {
           "dependencies": [],
-          "description": "Golden ratio 1.618:1.",
+          "description": "1.618:1 landscape golden-ratio aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1618x1000",
@@ -46,7 +46,7 @@
         },
         {
           "dependencies": [],
-          "description": "Wide 16:10.",
+          "description": "16:10 widescreen aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.16x10",
@@ -59,11 +59,11 @@
         },
         {
           "dependencies": [],
-          "description": "Widescreen 16:9.",
+          "description": "16:9 widescreen aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.16x9",
-          "resolvedValue": 1.7777777777777777,
+          "resolvedValue": 1.7777777778,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/16x9"
@@ -72,7 +72,7 @@
         },
         {
           "dependencies": [],
-          "description": "Square 1:1.",
+          "description": "1:1 square aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1x1",
@@ -85,11 +85,11 @@
         },
         {
           "dependencies": [],
-          "description": "Cinematic 21:9.",
+          "description": "21:9 cinematic aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.21x9",
-          "resolvedValue": 2.3333333333333335,
+          "resolvedValue": 2.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/21x9"
@@ -98,7 +98,7 @@
         },
         {
           "dependencies": [],
-          "description": "Wide 2:1.",
+          "description": "2:1 wide landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.2x1",
@@ -111,11 +111,11 @@
         },
         {
           "dependencies": [],
-          "description": "Portrait 2:3.",
+          "description": "2:3 portrait aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.2x3",
-          "resolvedValue": 0.6666666666666666,
+          "resolvedValue": 0.6666666667,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/2x3"
@@ -124,7 +124,7 @@
         },
         {
           "dependencies": [],
-          "description": "Axiom panoramic ratio 3:1.",
+          "description": "Axiom custom 3:1 panoramic aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.3x1",
@@ -137,7 +137,7 @@
         },
         {
           "dependencies": [],
-          "description": "Landscape 3:2.",
+          "description": "3:2 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.3x2",
@@ -150,7 +150,7 @@
         },
         {
           "dependencies": [],
-          "description": "Portrait 3:4.",
+          "description": "3:4 portrait aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.3x4",
@@ -163,11 +163,11 @@
         },
         {
           "dependencies": [],
-          "description": "Landscape 4:3.",
+          "description": "4:3 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.4x3",
-          "resolvedValue": 1.3333333333333333,
+          "resolvedValue": 1.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/4x3"
@@ -176,7 +176,7 @@
         },
         {
           "dependencies": [],
-          "description": "Portrait 4:5.",
+          "description": "4:5 portrait aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.4x5",
@@ -189,7 +189,7 @@
         },
         {
           "dependencies": [],
-          "description": "Axiom panoramic ratio 5:2.",
+          "description": "Axiom custom 5:2 panoramic aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.5x2",
@@ -202,7 +202,7 @@
         },
         {
           "dependencies": [],
-          "description": "Landscape 5:4.",
+          "description": "5:4 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.5x4",
@@ -220,24 +220,10 @@
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.semantic.media.cinematic",
-          "resolvedValue": 2.3333333333333335,
+          "resolvedValue": 2.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/semantic/media/cinematic"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "aspectRatio.primitive.scale.1618x1000"
-          ],
-          "domain": "aspectRatio",
-          "dtcgType": "number",
-          "id": "aspectRatio.semantic.media.golden",
-          "resolvedValue": 1.618,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/aspectRatio/semantic/media/golden"
           },
           "tier": "semantic"
         },
@@ -248,7 +234,7 @@
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.semantic.media.landscape",
-          "resolvedValue": 1.3333333333333333,
+          "resolvedValue": 1.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/semantic/media/landscape"
@@ -290,7 +276,7 @@
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.semantic.media.widescreen",
-          "resolvedValue": 1.7777777777777777,
+          "resolvedValue": 1.7777777778,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/semantic/media/widescreen"
@@ -5298,14 +5284,14 @@
         },
         {
           "dependencies": [
-            "fontSize.primitive.scale.18"
+            "fontSize.primitive.scale.16"
           ],
           "domain": "fontSize",
           "dtcgType": "dimension",
           "id": "fontSize.semantic.label.lg",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1.125
+            "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -5315,14 +5301,14 @@
         },
         {
           "dependencies": [
-            "fontSize.primitive.scale.16"
+            "fontSize.primitive.scale.15"
           ],
           "domain": "fontSize",
           "dtcgType": "dimension",
           "id": "fontSize.semantic.label.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1
+            "value": 0.9375
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -5349,14 +5335,14 @@
         },
         {
           "dependencies": [
-            "fontSize.primitive.scale.20"
+            "fontSize.primitive.scale.18"
           ],
           "domain": "fontSize",
           "dtcgType": "dimension",
           "id": "fontSize.semantic.label.xl",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1.25
+            "value": 1.125
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -6197,12 +6183,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.150"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.lg",
-          "resolvedValue": 1.5,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/lg"
@@ -6211,12 +6197,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.150"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.md",
-          "resolvedValue": 1.5,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/md"
@@ -6225,12 +6211,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.150"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.sm",
-          "resolvedValue": 1.5,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/sm"
@@ -6239,12 +6225,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.140"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.xl",
-          "resolvedValue": 1.4,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/xl"
@@ -6281,12 +6267,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.100"
+            "lineHeight.primitive.scale.110"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.display.md",
-          "resolvedValue": 1,
+          "resolvedValue": 1.1,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/display/md"
@@ -6323,12 +6309,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.110"
+            "lineHeight.primitive.scale.120"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.display.xs",
-          "resolvedValue": 1.1,
+          "resolvedValue": 1.2,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/display/xs"
@@ -6421,12 +6407,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.120"
+            "lineHeight.primitive.scale.150"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.lg",
-          "resolvedValue": 1.2,
+          "resolvedValue": 1.5,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/lg"
@@ -6435,12 +6421,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.120"
+            "lineHeight.primitive.scale.140"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.md",
-          "resolvedValue": 1.2,
+          "resolvedValue": 1.4,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/md"
@@ -6449,12 +6435,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.125"
+            "lineHeight.primitive.scale.140"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.sm",
-          "resolvedValue": 1.25,
+          "resolvedValue": 1.4,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/sm"
@@ -6463,12 +6449,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.120"
+            "lineHeight.primitive.scale.150"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.xl",
-          "resolvedValue": 1.2,
+          "resolvedValue": 1.5,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/xl"
@@ -6477,12 +6463,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.130"
+            "lineHeight.primitive.scale.140"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.xs",
-          "resolvedValue": 1.3,
+          "resolvedValue": 1.4,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/xs"
@@ -8343,7 +8329,7 @@
           "id": "space.component.button.root.padding.block.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.75
+            "value": 0.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -8411,7 +8397,7 @@
           "id": "space.component.select.item.padding.block.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.75
+            "value": 0.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -8648,14 +8634,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.4"
+            "space.primitive.scale.3"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.lg",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1
+            "value": 0.75
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -8665,14 +8651,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.3"
+            "space.primitive.scale.2"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.75
+            "value": 0.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -8682,14 +8668,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.2"
+            "space.primitive.scale.1"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.sm",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.5
+            "value": 0.25
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -8699,14 +8685,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.5"
+            "space.primitive.scale.4"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.xl",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1.25
+            "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -8716,14 +8702,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.1"
+            "space.primitive.scale.0"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.xs",
           "resolvedValue": {
-            "unit": "rem",
-            "value": 0.25
+            "unit": "px",
+            "value": 0
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -9337,18 +9323,35 @@
         },
         {
           "dependencies": [
+            "strokeWidth.primitive.scale.250"
+          ],
+          "domain": "strokeWidth",
+          "dtcgType": "dimension",
+          "id": "strokeWidth.semantic.icon.lg",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 2.5
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/strokeWidth/semantic/icon/lg"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
             "strokeWidth.primitive.scale.200"
           ],
           "domain": "strokeWidth",
           "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon.large",
+          "id": "strokeWidth.semantic.icon.md",
           "resolvedValue": {
             "unit": "px",
             "value": 2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon/large"
+            "pointer": "/strokeWidth/semantic/icon/md"
           },
           "tier": "semantic"
         },
@@ -9358,14 +9361,31 @@
           ],
           "domain": "strokeWidth",
           "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon.medium",
+          "id": "strokeWidth.semantic.icon.sm",
           "resolvedValue": {
             "unit": "px",
             "value": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon/medium"
+            "pointer": "/strokeWidth/semantic/icon/sm"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "strokeWidth.primitive.scale.300"
+          ],
+          "domain": "strokeWidth",
+          "dtcgType": "dimension",
+          "id": "strokeWidth.semantic.icon.xl",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 3
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/strokeWidth/semantic/icon/xl"
           },
           "tier": "semantic"
         },
@@ -9375,14 +9395,14 @@
           ],
           "domain": "strokeWidth",
           "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon.small",
+          "id": "strokeWidth.semantic.icon.xs",
           "resolvedValue": {
             "unit": "px",
             "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon/small"
+            "pointer": "/strokeWidth/semantic/icon/xs"
           },
           "tier": "semantic"
         },
@@ -10420,7 +10440,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10458,7 +10478,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10496,7 +10516,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10534,7 +10554,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10572,7 +10592,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10610,7 +10630,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10648,7 +10668,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10686,7 +10706,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10724,7 +10744,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10762,7 +10782,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10800,7 +10820,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10838,7 +10858,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10876,7 +10896,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10914,7 +10934,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10952,7 +10972,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -10990,7 +11010,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11337,7 +11357,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11376,7 +11396,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11415,7 +11435,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11454,7 +11474,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11805,7 +11825,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11844,7 +11864,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11883,7 +11903,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -11922,7 +11942,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -12890,14 +12910,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 700,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -12929,14 +12949,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 500,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -12968,14 +12988,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 400,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13007,14 +13027,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 600,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13046,14 +13066,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 700,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13085,14 +13105,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 500,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13124,14 +13144,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 400,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13163,14 +13183,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 600,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13209,7 +13229,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13248,7 +13268,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13287,7 +13307,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13326,7 +13346,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13358,14 +13378,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 700,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13397,14 +13417,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 500,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13436,14 +13456,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 400,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13475,14 +13495,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 600,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13521,7 +13541,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13560,7 +13580,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13599,7 +13619,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13638,7 +13658,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -13655,11 +13675,11 @@
       "tokens": [
         {
           "dependencies": [],
-          "description": "Inverse golden portrait 1:1.618.",
+          "description": "1:1.618 portrait golden-ratio aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1000x1618",
-          "resolvedValue": 0.6180469715698393,
+          "resolvedValue": 0.6180469716,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/1000x1618"
@@ -13668,7 +13688,7 @@
         },
         {
           "dependencies": [],
-          "description": "Axiom custom landscape ratio 1.168:1.",
+          "description": "Axiom custom 1.168:1 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1168x1000",
@@ -13681,7 +13701,7 @@
         },
         {
           "dependencies": [],
-          "description": "Golden ratio 1.618:1.",
+          "description": "1.618:1 landscape golden-ratio aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1618x1000",
@@ -13694,7 +13714,7 @@
         },
         {
           "dependencies": [],
-          "description": "Wide 16:10.",
+          "description": "16:10 widescreen aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.16x10",
@@ -13707,11 +13727,11 @@
         },
         {
           "dependencies": [],
-          "description": "Widescreen 16:9.",
+          "description": "16:9 widescreen aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.16x9",
-          "resolvedValue": 1.7777777777777777,
+          "resolvedValue": 1.7777777778,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/16x9"
@@ -13720,7 +13740,7 @@
         },
         {
           "dependencies": [],
-          "description": "Square 1:1.",
+          "description": "1:1 square aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.1x1",
@@ -13733,11 +13753,11 @@
         },
         {
           "dependencies": [],
-          "description": "Cinematic 21:9.",
+          "description": "21:9 cinematic aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.21x9",
-          "resolvedValue": 2.3333333333333335,
+          "resolvedValue": 2.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/21x9"
@@ -13746,7 +13766,7 @@
         },
         {
           "dependencies": [],
-          "description": "Wide 2:1.",
+          "description": "2:1 wide landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.2x1",
@@ -13759,11 +13779,11 @@
         },
         {
           "dependencies": [],
-          "description": "Portrait 2:3.",
+          "description": "2:3 portrait aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.2x3",
-          "resolvedValue": 0.6666666666666666,
+          "resolvedValue": 0.6666666667,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/2x3"
@@ -13772,7 +13792,7 @@
         },
         {
           "dependencies": [],
-          "description": "Axiom panoramic ratio 3:1.",
+          "description": "Axiom custom 3:1 panoramic aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.3x1",
@@ -13785,7 +13805,7 @@
         },
         {
           "dependencies": [],
-          "description": "Landscape 3:2.",
+          "description": "3:2 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.3x2",
@@ -13798,7 +13818,7 @@
         },
         {
           "dependencies": [],
-          "description": "Portrait 3:4.",
+          "description": "3:4 portrait aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.3x4",
@@ -13811,11 +13831,11 @@
         },
         {
           "dependencies": [],
-          "description": "Landscape 4:3.",
+          "description": "4:3 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.4x3",
-          "resolvedValue": 1.3333333333333333,
+          "resolvedValue": 1.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/primitive/scale/4x3"
@@ -13824,7 +13844,7 @@
         },
         {
           "dependencies": [],
-          "description": "Portrait 4:5.",
+          "description": "4:5 portrait aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.4x5",
@@ -13837,7 +13857,7 @@
         },
         {
           "dependencies": [],
-          "description": "Axiom panoramic ratio 5:2.",
+          "description": "Axiom custom 5:2 panoramic aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.5x2",
@@ -13850,7 +13870,7 @@
         },
         {
           "dependencies": [],
-          "description": "Landscape 5:4.",
+          "description": "5:4 landscape aspect ratio.",
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.primitive.scale.5x4",
@@ -13868,24 +13888,10 @@
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.semantic.media.cinematic",
-          "resolvedValue": 2.3333333333333335,
+          "resolvedValue": 2.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/semantic/media/cinematic"
-          },
-          "tier": "semantic"
-        },
-        {
-          "dependencies": [
-            "aspectRatio.primitive.scale.1618x1000"
-          ],
-          "domain": "aspectRatio",
-          "dtcgType": "number",
-          "id": "aspectRatio.semantic.media.golden",
-          "resolvedValue": 1.618,
-          "source": {
-            "file": "file:///tokens/base.tokens.json",
-            "pointer": "/aspectRatio/semantic/media/golden"
           },
           "tier": "semantic"
         },
@@ -13896,7 +13902,7 @@
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.semantic.media.landscape",
-          "resolvedValue": 1.3333333333333333,
+          "resolvedValue": 1.3333333333,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/semantic/media/landscape"
@@ -13938,7 +13944,7 @@
           "domain": "aspectRatio",
           "dtcgType": "number",
           "id": "aspectRatio.semantic.media.widescreen",
-          "resolvedValue": 1.7777777777777777,
+          "resolvedValue": 1.7777777778,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/aspectRatio/semantic/media/widescreen"
@@ -18946,14 +18952,14 @@
         },
         {
           "dependencies": [
-            "fontSize.primitive.scale.18"
+            "fontSize.primitive.scale.16"
           ],
           "domain": "fontSize",
           "dtcgType": "dimension",
           "id": "fontSize.semantic.label.lg",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1.125
+            "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -18963,14 +18969,14 @@
         },
         {
           "dependencies": [
-            "fontSize.primitive.scale.16"
+            "fontSize.primitive.scale.15"
           ],
           "domain": "fontSize",
           "dtcgType": "dimension",
           "id": "fontSize.semantic.label.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1
+            "value": 0.9375
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -18997,14 +19003,14 @@
         },
         {
           "dependencies": [
-            "fontSize.primitive.scale.20"
+            "fontSize.primitive.scale.18"
           ],
           "domain": "fontSize",
           "dtcgType": "dimension",
           "id": "fontSize.semantic.label.xl",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1.25
+            "value": 1.125
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -19845,12 +19851,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.150"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.lg",
-          "resolvedValue": 1.5,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/lg"
@@ -19859,12 +19865,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.150"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.md",
-          "resolvedValue": 1.5,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/md"
@@ -19873,12 +19879,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.150"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.sm",
-          "resolvedValue": 1.5,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/sm"
@@ -19887,12 +19893,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.140"
+            "lineHeight.primitive.scale.160"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.code.xl",
-          "resolvedValue": 1.4,
+          "resolvedValue": 1.6,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/code/xl"
@@ -19929,12 +19935,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.100"
+            "lineHeight.primitive.scale.110"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.display.md",
-          "resolvedValue": 1,
+          "resolvedValue": 1.1,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/display/md"
@@ -19971,12 +19977,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.110"
+            "lineHeight.primitive.scale.120"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.display.xs",
-          "resolvedValue": 1.1,
+          "resolvedValue": 1.2,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/display/xs"
@@ -20069,12 +20075,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.120"
+            "lineHeight.primitive.scale.150"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.lg",
-          "resolvedValue": 1.2,
+          "resolvedValue": 1.5,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/lg"
@@ -20083,12 +20089,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.120"
+            "lineHeight.primitive.scale.140"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.md",
-          "resolvedValue": 1.2,
+          "resolvedValue": 1.4,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/md"
@@ -20097,12 +20103,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.125"
+            "lineHeight.primitive.scale.140"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.sm",
-          "resolvedValue": 1.25,
+          "resolvedValue": 1.4,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/sm"
@@ -20111,12 +20117,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.120"
+            "lineHeight.primitive.scale.150"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.xl",
-          "resolvedValue": 1.2,
+          "resolvedValue": 1.5,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/xl"
@@ -20125,12 +20131,12 @@
         },
         {
           "dependencies": [
-            "lineHeight.primitive.scale.130"
+            "lineHeight.primitive.scale.140"
           ],
           "domain": "lineHeight",
           "dtcgType": "number",
           "id": "lineHeight.semantic.label.xs",
-          "resolvedValue": 1.3,
+          "resolvedValue": 1.4,
           "source": {
             "file": "file:///tokens/base.tokens.json",
             "pointer": "/lineHeight/semantic/label/xs"
@@ -21991,7 +21997,7 @@
           "id": "space.component.button.root.padding.block.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.75
+            "value": 0.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -22059,7 +22065,7 @@
           "id": "space.component.select.item.padding.block.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.75
+            "value": 0.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -22296,14 +22302,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.4"
+            "space.primitive.scale.3"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.lg",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1
+            "value": 0.75
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -22313,14 +22319,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.3"
+            "space.primitive.scale.2"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.md",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.75
+            "value": 0.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -22330,14 +22336,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.2"
+            "space.primitive.scale.1"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.sm",
           "resolvedValue": {
             "unit": "rem",
-            "value": 0.5
+            "value": 0.25
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -22347,14 +22353,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.5"
+            "space.primitive.scale.4"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.xl",
           "resolvedValue": {
             "unit": "rem",
-            "value": 1.25
+            "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -22364,14 +22370,14 @@
         },
         {
           "dependencies": [
-            "space.primitive.scale.1"
+            "space.primitive.scale.0"
           ],
           "domain": "space",
           "dtcgType": "dimension",
           "id": "space.semantic.control.padding.block.xs",
           "resolvedValue": {
-            "unit": "rem",
-            "value": 0.25
+            "unit": "px",
+            "value": 0
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -22985,18 +22991,35 @@
         },
         {
           "dependencies": [
+            "strokeWidth.primitive.scale.250"
+          ],
+          "domain": "strokeWidth",
+          "dtcgType": "dimension",
+          "id": "strokeWidth.semantic.icon.lg",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 2.5
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/strokeWidth/semantic/icon/lg"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
             "strokeWidth.primitive.scale.200"
           ],
           "domain": "strokeWidth",
           "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon.large",
+          "id": "strokeWidth.semantic.icon.md",
           "resolvedValue": {
             "unit": "px",
             "value": 2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon/large"
+            "pointer": "/strokeWidth/semantic/icon/md"
           },
           "tier": "semantic"
         },
@@ -23006,14 +23029,31 @@
           ],
           "domain": "strokeWidth",
           "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon.medium",
+          "id": "strokeWidth.semantic.icon.sm",
           "resolvedValue": {
             "unit": "px",
             "value": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon/medium"
+            "pointer": "/strokeWidth/semantic/icon/sm"
+          },
+          "tier": "semantic"
+        },
+        {
+          "dependencies": [
+            "strokeWidth.primitive.scale.300"
+          ],
+          "domain": "strokeWidth",
+          "dtcgType": "dimension",
+          "id": "strokeWidth.semantic.icon.xl",
+          "resolvedValue": {
+            "unit": "px",
+            "value": 3
+          },
+          "source": {
+            "file": "file:///tokens/base.tokens.json",
+            "pointer": "/strokeWidth/semantic/icon/xl"
           },
           "tier": "semantic"
         },
@@ -23023,14 +23063,14 @@
           ],
           "domain": "strokeWidth",
           "dtcgType": "dimension",
-          "id": "strokeWidth.semantic.icon.small",
+          "id": "strokeWidth.semantic.icon.xs",
           "resolvedValue": {
             "unit": "px",
             "value": 1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
-            "pointer": "/strokeWidth/semantic/icon/small"
+            "pointer": "/strokeWidth/semantic/icon/xs"
           },
           "tier": "semantic"
         },
@@ -24068,7 +24108,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24106,7 +24146,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24144,7 +24184,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24182,7 +24222,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24220,7 +24260,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24258,7 +24298,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24296,7 +24336,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24334,7 +24374,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24372,7 +24412,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24410,7 +24450,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24448,7 +24488,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24486,7 +24526,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.5
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24524,7 +24564,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24562,7 +24602,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24600,7 +24640,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24638,7 +24678,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.4
+            "lineHeight": 1.6
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -24985,7 +25025,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -25024,7 +25064,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -25063,7 +25103,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -25102,7 +25142,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1
+            "lineHeight": 1.1
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -25453,7 +25493,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -25492,7 +25532,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -25531,7 +25571,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -25570,7 +25610,7 @@
               "unit": "rem",
               "value": -0.04
             },
-            "lineHeight": 1.1
+            "lineHeight": 1.2
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26538,14 +26578,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 700,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26577,14 +26617,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 500,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26616,14 +26656,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 400,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26655,14 +26695,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.125
+              "value": 1
             },
             "fontWeight": 600,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26694,14 +26734,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 700,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26733,14 +26773,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 500,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26772,14 +26812,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 400,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26811,14 +26851,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1
+              "value": 0.9375
             },
             "fontWeight": 600,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26857,7 +26897,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26896,7 +26936,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26935,7 +26975,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -26974,7 +27014,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.25
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27006,14 +27046,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 700,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27045,14 +27085,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 500,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27084,14 +27124,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 400,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27123,14 +27163,14 @@
             ],
             "fontSize": {
               "unit": "rem",
-              "value": 1.25
+              "value": 1.125
             },
             "fontWeight": 600,
             "letterSpacing": {
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.2
+            "lineHeight": 1.5
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27169,7 +27209,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27208,7 +27248,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27247,7 +27287,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27286,7 +27326,7 @@
               "unit": "px",
               "value": 0
             },
-            "lineHeight": 1.3
+            "lineHeight": 1.4
           },
           "source": {
             "file": "file:///tokens/base.tokens.json",
@@ -27299,5 +27339,5 @@
   ],
   "profileVersion": "0.2.0",
   "schemaVersion": "0.2",
-  "sourceDigest": "sha256:e6717b223223a1737d9742c8c3d672662a7f3f2738654130fbb3f66831a0571f"
+  "sourceDigest": "sha256:8ad10a932693fa10fbd74fef9dbb969079b8567285e206bbe6c7de3e4b25c629"
 }

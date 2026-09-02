@@ -8,7 +8,7 @@ export const ROOT_JSON_POINTER_PREFIX = "#";
 export const ROOT_JSON_POINTER_PREFIX_LENGTH = ROOT_JSON_POINTER_PREFIX.length;
 export const EMPTY_JSON_POINTER = "";
 export const PARSER_SKIP_LINT = true;
-export const TOKEN_FOUNDATION_GENERATOR_VERSION = "0.3.0" as const;
+export const TOKEN_FOUNDATION_GENERATOR_VERSION = "0.4.0" as const;
 export const TOKEN_GENERATED_SCHEMA_VERSION = "0.2" as const;
 export const TOKEN_SOURCE_PROFILE_PATH = "spec/token/token-source-profile.json" as const;
 export const TOKEN_FOUNDATION_POLICY_PATH =
@@ -35,6 +35,7 @@ export const TOKEN_GENERATED_FILE_HEADER = [
 ] as const;
 export const TOKEN_GENERATED_FILE_INDENT = "  ";
 export const TOKEN_STABLE_SORT_LOCALE = "en";
+export const ASPECT_RATIO_DECIMAL_PRECISION = 10;
 
 export const PARSER_DIAGNOSTIC_CODE = {
   MISSING_SOURCE: "AXT0001",

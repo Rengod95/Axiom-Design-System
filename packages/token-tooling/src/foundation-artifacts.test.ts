@@ -13,7 +13,10 @@ const document: ParsedDtcgDocument = {
       tier: "semantic",
       dtcgType: "dimension",
       value: { value: 16, unit: "px" },
-      source: { file: "file:///tokens/base.tokens.json", pointer: "/space/semantic/stack/md" },
+      source: {
+        file: "file:///tokens/base.tokens.json",
+        pointer: "/space/semantic/layout/stack/gap/md",
+      },
     },
     {
       id: "color.primitive.brand.600",

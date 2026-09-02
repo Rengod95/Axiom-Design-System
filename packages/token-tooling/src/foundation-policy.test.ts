@@ -12,8 +12,8 @@ import { isTokenJsonObject } from "@axiom/tokens";
 import { FOUNDATION_POLICY_DIAGNOSTIC_CODE } from "./constants.js";
 import {
   validateFoundationTokenPolicy,
+  type FoundationSemanticVocabulary,
   type FoundationTokenPolicy,
-  type SemanticTokenVocabulary,
 } from "./foundation-policy.js";
 import { createTerrazzoTokenParser } from "./terrazzo-token-parser.js";
 
@@ -26,7 +26,7 @@ const readJson = async <Value>(path: string): Promise<Value> =>
 let document: ParsedDtcgDocument;
 let manifest: ResolvedTokenManifest;
 let policy: FoundationTokenPolicy;
-let vocabulary: SemanticTokenVocabulary;
+let vocabulary: FoundationSemanticVocabulary;
 
 beforeAll(async () => {
   const [
@@ -42,7 +42,9 @@ beforeAll(async () => {
     readFile(repositoryFile("tokens/base.tokens.json"), "utf8"),
     readJson<ResolvedTokenManifest>("spec/token/foundation-resolved-token-manifest.json"),
     readJson<FoundationTokenPolicy>("spec/token/foundation-token-policy.json"),
-    readJson<SemanticTokenVocabulary>("spec/token/semantic-token-vocabulary.json"),
+    readJson<FoundationSemanticVocabulary>(
+      "spec/token/semantic-token-vocabulary.json",
+    ),
   ]);
   document = await createTerrazzoTokenParser({ domains: domains.domains }).parse([
     {
@@ -88,6 +90,148 @@ describe("Token Foundation policy", () => {
       expect.arrayContaining([
         FOUNDATION_POLICY_DIAGNOSTIC_CODE.SEMANTIC_PRIMITIVE_NAME,
         FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SPACE_SCALE,
+      ]),
+    );
+  });
+
+  it("rejects incomplete, long-form, extended, and removed semantic paths", () => {
+    const icon = document.tokens.find((entry) => entry.id === "size.semantic.icon.xs");
+    const space = document.tokens.find(
+      (entry) => entry.id === "space.semantic.layout.gutter.md",
+    );
+    if (icon === undefined || space === undefined) {
+      throw new Error("Canonical semantic scale fixtures are required.");
+    }
+    const diagnostics = validateFoundationTokenPolicy(
+      {
+        ...document,
+        tokens: [
+          ...document.tokens.filter(
+            (entry) => !entry.id.startsWith("typography.semantic.body.xs."),
+          ),
+          { ...icon, id: "size.semantic.icon.small" },
+          { ...icon, id: "size.semantic.icon.xxl" },
+          { ...space, id: "space.semantic.overlap.md" },
+        ],
+      },
+      manifest,
+      policy,
+      vocabulary,
+    );
+    expect(diagnostics.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.REMOVED_SEMANTIC_PATH,
+      ]),
+    );
+  });
+
+  it("rejects labels that are not registered for an extended family", () => {
+    const viewport = document.tokens.find(
+      (entry) => entry.id === "breakpoint.semantic.viewport.xxl",
+    );
+    if (viewport === undefined) throw new Error("Extended viewport fixture is required.");
+    const diagnostics = validateFoundationTokenPolicy(
+      {
+        ...document,
+        tokens: [
+          ...document.tokens,
+          { ...viewport, id: "breakpoint.semantic.viewport.xxs" },
+          { ...viewport, id: "breakpoint.semantic.viewport.small" },
+          { ...viewport, id: "breakpoint.semantic.viewport.foo" },
+        ],
+      },
+      manifest,
+      policy,
+      vocabulary,
+    );
+    expect(diagnostics).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+        tokenId: "breakpoint.semantic.viewport.xxs",
+      }),
+      expect.objectContaining({
+        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+        tokenId: "breakpoint.semantic.viewport.small",
+      }),
+      expect.objectContaining({
+        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+        tokenId: "breakpoint.semantic.viewport.foo",
+      }),
+    ]));
+  });
+
+  it("requires exact scalar leaves for ordered semantic families", () => {
+    const icon = document.tokens.find((entry) => entry.id === "size.semantic.icon.xs");
+    if (icon === undefined) throw new Error("Canonical icon scale fixture is required.");
+    const diagnostics = validateFoundationTokenPolicy(
+      {
+        ...document,
+        tokens: document.tokens.map((entry) => entry.id === icon.id
+          ? { ...entry, id: "size.semantic.icon.xs.unexpected" }
+          : entry),
+      },
+      manifest,
+      policy,
+      vocabulary,
+    );
+    expect(diagnostics).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+        tokenId: "size.semantic.icon.xs",
+      }),
+      expect.objectContaining({
+        code: FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
+        tokenId: "size.semantic.icon.xs.unexpected",
+      }),
+    ]));
+  });
+
+  it("rejects a removed semantic path introduced only by a theme override", () => {
+    const semantic = document.tokens.find(
+      (entry) => entry.id === "color.semantic.fill.brand.default",
+    );
+    if (semantic === undefined) throw new Error("Semantic color fixture is required.");
+    const diagnostics = validateFoundationTokenPolicy(
+      document,
+      manifest,
+      policy,
+      vocabulary,
+      [{
+        schemaVersion: document.schemaVersion,
+        tokens: [{ ...semantic, id: "color.semantic.action.primary.default" }],
+      }],
+    );
+    expect(diagnostics.some(
+      (entry) => entry.code === FOUNDATION_POLICY_DIAGNOSTIC_CODE.REMOVED_SEMANTIC_PATH,
+    )).toBe(true);
+  });
+
+  it("rejects missing, incorrect, and unregistered aspect ratios", () => {
+    const ratio = document.tokens.find(
+      (entry) => entry.id === "aspectRatio.primitive.scale.3x2",
+    );
+    if (ratio === undefined) throw new Error("Aspect-ratio fixture is required.");
+    const diagnostics = validateFoundationTokenPolicy(
+      {
+        ...document,
+        tokens: [
+          ...document.tokens
+            .filter((entry) => entry.id !== "aspectRatio.primitive.scale.16x10")
+            .map((entry) => entry.id === ratio.id
+              ? { ...entry, value: 1.49 }
+              : entry),
+          { ...ratio, id: "aspectRatio.primitive.scale.4x7" },
+        ],
+      },
+      manifest,
+      policy,
+      vocabulary,
+    );
+    expect(diagnostics.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.MISSING_REQUIRED_TOKEN,
+        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_ASPECT_RATIO,
       ]),
     );
   });
@@ -241,60 +385,5 @@ describe("Token Foundation policy", () => {
     expect(diagnostics.some(
       (entry) => entry.code === FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_CONTRAST,
     )).toBe(true);
-  });
-
-  it("rejects incomplete, long-form, extended, and removed semantic scale paths", () => {
-    const icon = document.tokens.find(
-      (entry) => entry.id === "size.semantic.icon.md",
-    );
-    if (icon === undefined) throw new Error("Icon scale fixture is required.");
-    const diagnostics = validateFoundationTokenPolicy(
-      {
-        ...document,
-        tokens: [
-          ...document.tokens.filter((entry) =>
-            entry.id !== "size.semantic.icon.xs" &&
-            !entry.id.startsWith("space.semantic.overlap.")
-          ),
-          { ...icon, id: "size.semantic.icon.xxl" },
-          { ...icon, id: "space.semantic.overlap.md" },
-        ],
-      },
-      manifest,
-      policy,
-      vocabulary,
-    );
-
-    expect(diagnostics.map((entry) => entry.code)).toEqual(
-      expect.arrayContaining([
-        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_SEMANTIC_SCALE,
-        FOUNDATION_POLICY_DIAGNOSTIC_CODE.REMOVED_SEMANTIC_PATH,
-      ]),
-    );
-  });
-
-  it("rejects missing and numerically incorrect required aspect ratios", () => {
-    const ratio = document.tokens.find(
-      (entry) => entry.id === "aspectRatio.primitive.scale.16x9",
-    );
-    if (ratio === undefined) throw new Error("Aspect-ratio fixture is required.");
-    const diagnostics = validateFoundationTokenPolicy(
-      {
-        ...document,
-        tokens: document.tokens
-          .filter((entry) => entry.id !== "aspectRatio.primitive.scale.21x9")
-          .map((entry) => entry.id === ratio.id ? { ...entry, value: 1 } : entry),
-      },
-      manifest,
-      policy,
-      vocabulary,
-    );
-
-    expect(diagnostics.map((entry) => entry.code)).toEqual(
-      expect.arrayContaining([
-        FOUNDATION_POLICY_DIAGNOSTIC_CODE.MISSING_REQUIRED_TOKEN,
-        FOUNDATION_POLICY_DIAGNOSTIC_CODE.INVALID_ASPECT_RATIO,
-      ]),
-    );
   });
 });
