@@ -964,8 +964,8 @@ Exact first sequence:
 13. [done] Add the Canonical State Registry schema and fixtures (N12).
 14. [done] Add the Condition Registry schema and fixtures (N13).
 15. [done] Add ordered declaration/value schemas (N14).
-16. [next] Add the Appearance IR schema (N15).
-17. Add the Motion IR schema (N16).
+16. [done] Add the Appearance IR schema (N15).
+17. [next] Add the Motion IR schema (N16).
 18. Add Behavioral Criteria Source/Profile schemas (N17).
 19. Generate/reference the combined TypeScript contract surface (N18).
 20. Implement the Recipe Kernel port and structural conformance suite (N19).
