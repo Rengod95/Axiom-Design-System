@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N17 \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N19 \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-02 v0.4.1, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-02 v0.4.2, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -980,7 +980,7 @@ Exact first sequence:
 17. [done] Add the Motion IR schema (N16).
 18. [done, ADR-0005] Add Behavioral Criteria Source/Profile schemas and synthetic structural fixtures (N17); N32 owns current provider data.
 19. [done] Generate/reference the combined TypeScript contract surface (N18).
-20. Implement the Recipe Kernel port and structural conformance suite (N19).
+20. [done] Implement the Recipe Kernel port and structural conformance suite (N19).
 21. Implement the CSS-aware defineRecipe SDK (N20).
 22. Integrate the existing profile-level Token validators into declarations (N21).
 23. Implement the Recipe normalizer and collision trace (N22).

@@ -14,6 +14,8 @@ export const PACKAGE_RUNTIME_DEPENDENCIES = {
   "condition-registry": [],
   "motion-schema": [],
   "spec-tooling": ["@axiom/css-property-profile", "ajv"],
+  "recipe-kernel": [],
+  "spec-tooling": ["@axiom/css-property-profile", "ajv"],
   "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],
   tokens: [],
 };
