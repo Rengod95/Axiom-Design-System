@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/declaration-origin/0.1",
+  "title": "Axiom CSS Declaration Origin",
+  "type": "object",
+  "required": ["recipeId", "slot", "stage", "source"],
+  "properties": {
+    "recipeId": {
+      "$ref": "https://axiom.dev/schemas/common/identifier/0.1"
+    },
+    "slot": {
+      "$ref": "https://axiom.dev/schemas/common/identifier/0.1"
+    },
+    "stage": {
+      "enum": ["base", "variant", "state", "compound", "condition"]
+    },
+    "source": {
+      "type": "string",
+      "pattern": "\\S"
+    }
+  },
+  "unevaluatedProperties": false
+}

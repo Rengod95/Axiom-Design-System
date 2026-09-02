@@ -1,0 +1,14 @@
+{
+  "property": "display",
+  "value": {
+    "kind": "css",
+    "value": "inline-flex"
+  },
+  "important": false,
+  "origin": {
+    "recipeId": "button",
+    "slot": "root",
+    "stage": "override",
+    "source": "recipes/button.ts#/base/root/display"
+  }
+}

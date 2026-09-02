@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiom.dev/schemas/css/ordered-declaration-list/0.1",
+  "title": "Axiom Ordered CSS Declaration List",
+  "type": "array",
+  "items": {
+    "$ref": "https://axiom.dev/schemas/css/declaration/0.1"
+  }
+}

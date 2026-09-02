@@ -1,0 +1,14 @@
+{
+  "property": "--Brand-color",
+  "value": {
+    "kind": "css",
+    "value": "transparent"
+  },
+  "important": false,
+  "origin": {
+    "recipeId": "themeBridge",
+    "slot": "root",
+    "stage": "base",
+    "source": "recipes/theme-bridge.ts#/base/root/brandColor"
+  }
+}

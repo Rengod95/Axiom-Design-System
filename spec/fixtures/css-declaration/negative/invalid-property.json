@@ -1,0 +1,14 @@
+{
+  "property": "backgroundColor",
+  "value": {
+    "kind": "css",
+    "value": "transparent"
+  },
+  "important": false,
+  "origin": {
+    "recipeId": "button",
+    "slot": "root",
+    "stage": "base",
+    "source": "recipes/button.ts#/base/root/backgroundColor"
+  }
+}

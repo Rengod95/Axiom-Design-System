@@ -27,12 +27,32 @@
       "path": "condition/condition-registry.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/css/declaration/0.1",
+      "path": "css/declaration.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/declaration-origin/0.1",
+      "path": "css/declaration-origin.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/declaration-value/0.1",
+      "path": "css/declaration-value.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/css/effective-property-registry/0.1",
       "path": "css/effective-property-registry.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/css/ordered-declaration-list/0.1",
+      "path": "css/ordered-declaration-list.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/css/profile-input-manifest/0.1",
       "path": "css/profile-input-manifest.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/property-name/0.1",
+      "path": "css/property-name.schema.json"
     },
     {
       "id": "https://axiom.dev/schemas/css/sparse-property-policy/0.1",
@@ -219,6 +239,18 @@
       "semanticValidator": "condition-registry"
     },
     {
+      "id": "css-declaration",
+      "schema": "https://axiom.dev/schemas/css/declaration/0.1",
+      "positiveDirectory": "fixtures/css-declaration/positive",
+      "negativeDirectory": "fixtures/css-declaration/negative"
+    },
+    {
+      "id": "css-declaration-value",
+      "schema": "https://axiom.dev/schemas/css/declaration-value/0.1",
+      "positiveDirectory": "fixtures/css-declaration-value/positive",
+      "negativeDirectory": "fixtures/css-declaration-value/negative"
+    },
+    {
       "id": "css-profile-input",
       "schema": "https://axiom.dev/schemas/css/profile-input-manifest/0.1",
       "positiveDirectory": "fixtures/css-profile-input/positive",
@@ -229,6 +261,12 @@
       "schema": "https://axiom.dev/schemas/css/effective-property-registry/0.1",
       "positiveDirectory": "fixtures/css-effective-property-registry/positive",
       "negativeDirectory": "fixtures/css-effective-property-registry/negative"
+    },
+    {
+      "id": "css-ordered-declaration-list",
+      "schema": "https://axiom.dev/schemas/css/ordered-declaration-list/0.1",
+      "positiveDirectory": "fixtures/css-ordered-declaration-list/positive",
+      "negativeDirectory": "fixtures/css-ordered-declaration-list/negative"
     },
     {
       "id": "css-sparse-property-policy",

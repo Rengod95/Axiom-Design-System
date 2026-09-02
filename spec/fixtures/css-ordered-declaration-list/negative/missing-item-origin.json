@@ -1,0 +1,10 @@
+[
+  {
+    "property": "display",
+    "value": {
+      "kind": "css",
+      "value": "block"
+    },
+    "important": false
+  }
+]

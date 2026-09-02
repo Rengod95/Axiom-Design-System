@@ -1,0 +1,4 @@
+{
+  "kind": "css-template",
+  "parts": ["calc(100% - 1rem)"]
+}
