@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-02 — Compiler Contracts, Readiness & Governance
-### Version 0.5.3
+### Version 0.5.4
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.2, SSOT-04 v0.2.3, SSOT-05 v0.2.3 \
@@ -646,7 +646,7 @@ release package dry run
 
 ## 13. Normative Implementation Order
 
-The repository has completed N0–N23. N24 is the next implementation boundary;
+The repository has completed N0–N24. N25 is the next implementation boundary;
 listing an item here does not mark it complete.
 
 ```text
@@ -677,7 +677,7 @@ N21  [complete] CSS direct/template/projector Token validation
 N22  [complete] Recipe normalizer and collision trace
 N23  [complete] defineMotion authoring SDK and normalizer
 
-N24  Button conformance fixture
+N24  [complete] Button conformance fixture
 N25  Select conformance fixture
 N26  Dialog conformance fixture
 N27  negative/type/round-trip/determinism fixtures
