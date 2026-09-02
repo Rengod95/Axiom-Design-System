@@ -13,10 +13,12 @@ export {
   TokenFoundationPolicyError,
   assertFoundationTokenPolicy,
   validateFoundationTokenPolicy,
+  type FoundationAspectRatio,
   type FoundationColorScale,
   type FoundationContrastPair,
   type FoundationPolicyDiagnostic,
   type FoundationScaleStep,
+  type FoundationSemanticVocabulary,
   type FoundationTokenPolicy,
   type FoundationTypographyFamily,
 } from "./foundation-policy.js";

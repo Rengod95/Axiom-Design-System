@@ -23,6 +23,7 @@
     { "path": "space.semantic.layout.gutter", "coverage": "core" },
     { "path": "space.semantic.layout.section", "coverage": "core" },
     { "path": "space.semantic.layout.stack.gap", "coverage": "core" },
+    { "path": "strokeWidth.semantic.icon", "coverage": "core" },
     { "path": "typography.semantic.body", "coverage": "core" },
     { "path": "typography.semantic.code", "coverage": "core" },
     { "path": "typography.semantic.display", "coverage": "core" },

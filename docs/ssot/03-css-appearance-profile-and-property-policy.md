@@ -456,7 +456,7 @@ Authoring example:
 
 ```ts
 inlineSize:
-  css`calc(100% - ${token("space.semantic.layout.gutter")})`
+  css`calc(100% - ${token("space.semantic.layout.gutter.md")})`
 ```
 
 Templates are not arbitrary JavaScript templates in IR. The authoring helper

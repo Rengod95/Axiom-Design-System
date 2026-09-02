@@ -46,6 +46,8 @@ reconciliation한다.
 20. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
 21. [Token Governance and Vocabulary Registry](implementation/2026-09-02-token-governance.md)
 22. [OKLCH and Semantic Color Migration](implementation/2026-09-02-oklch-semantic-colors.md)
+23. [Semantic Scales and Aspect Ratios](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
+24. [CSS Appearance IR](implementation/2026-09-02-appearance-ir.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
@@ -123,10 +125,13 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [Ordered CSS Declaration Contracts — 2026-09-02](implementation/2026-09-02-ordered-declaration-contracts.md)
 - [Token Governance and Vocabulary Registry — 2026-09-02](implementation/2026-09-02-token-governance.md)
 - [OKLCH and Semantic Color Migration — 2026-09-02](implementation/2026-09-02-oklch-semantic-colors.md)
+- [Semantic Scales and Aspect Ratios — 2026-09-02](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
+- [CSS Appearance IR — 2026-09-02](implementation/2026-09-02-appearance-ir.md)
 - [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
 - [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)
 - [OKLCH and Semantic Color Plan — 2026-09-02](superpowers/plans/2026-09-02-oklch-semantic-colors.md)
 - [Semantic Scale and Aspect-Ratio Plan — 2026-09-02](superpowers/plans/2026-09-02-semantic-scales-and-ratios.md)
+- [Appearance IR Plan — 2026-09-02](superpowers/plans/2026-09-02-appearance-ir.md)
 - [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 
