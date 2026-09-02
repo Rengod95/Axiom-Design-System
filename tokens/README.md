@@ -9,7 +9,8 @@ generate the resolved Foundation manifest and public Token path types.
 - Theme remains resolver context data and never appears in a Token ID.
 
 `spec/token/foundation-token-policy.json` is the machine-readable scale
-contract:
+contract and pins `spec/token/semantic-token-vocabulary.json` as the canonical
+semantic naming and role registry:
 
 - Primitive names identify palette/scale coordinates, ratios, or value shapes;
   product-purpose names belong to the Semantic tier.
@@ -23,6 +24,13 @@ contract:
   h1-h6, and exposes four weights for every registered typography family.
 - Required semantic foreground/background pairs are contrast-checked in light
   and dark contexts.
+- The accepted clean-break target uses `xs–xl` for registered ordered scale
+  families, separate background/surface/fill roles, OKLCH with sRGB hex
+  fallback, and palette coordinates `50–900` plus common white/black.
+
+The governance registry lands before the two source migrations in a stacked
+change. It is not a compatibility alias catalog, and no intermediate release is
+published between the registry and source migrations.
 
 Run `pnpm tokens:generate` after changing a source. Generated artifacts must be
 reviewed with their source and must remain byte-stable across directories.

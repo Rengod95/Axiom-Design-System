@@ -115,6 +115,10 @@
       "path": "token/resolved-token-manifest.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/token/semantic-vocabulary/0.1",
+      "path": "token/semantic-token-vocabulary.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/token/resolver-modifier-registry/0.1",
       "path": "token/resolver-modifier-registry.schema.json"
     },
@@ -185,6 +189,12 @@
       "id": "resolver-modifier-registry",
       "path": "token/resolver-modifier-registry.json",
       "schema": "https://axiom.dev/schemas/token/resolver-modifier-registry/0.1"
+    },
+    {
+      "id": "semantic-token-vocabulary",
+      "path": "token/semantic-token-vocabulary.json",
+      "schema": "https://axiom.dev/schemas/token/semantic-vocabulary/0.1",
+      "semanticValidator": "semantic-token-vocabulary"
     },
     {
       "id": "token-domain-registry",
@@ -313,6 +323,13 @@
       "positiveDirectory": "fixtures/resolved-token-manifest/positive",
       "negativeDirectory": "fixtures/resolved-token-manifest/negative",
       "semanticValidator": "resolved-token-manifest"
+    },
+    {
+      "id": "semantic-token-vocabulary",
+      "schema": "https://axiom.dev/schemas/token/semantic-vocabulary/0.1",
+      "positiveDirectory": "fixtures/semantic-token-vocabulary/positive",
+      "negativeDirectory": "fixtures/semantic-token-vocabulary/negative",
+      "semanticValidator": "semantic-token-vocabulary"
     },
     {
       "id": "foundation-token-policy",

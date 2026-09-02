@@ -34,6 +34,7 @@ export const SEMANTIC_VALIDATOR_IDS = [
   "condition-registry",
   "parsed-token-document",
   "resolved-token-manifest",
+  "semantic-token-vocabulary",
   "token-context-override",
   "token-domain-registry",
   "token-identity",
@@ -79,6 +80,18 @@ export const REQUIRED_CONDITION_IDS = [
   "viewport.width.md",
   "viewport.width.sm",
 ] as const;
+export const REQUIRED_SEMANTIC_COLOR_ROLE_IDS = [
+  "background",
+  "surface",
+  "fill",
+  "text",
+  "icon",
+  "border",
+  "status",
+  "focus",
+  "backdrop",
+  "selection",
+] as const;
 export const TOKEN_ID_DOMAIN_SEGMENT_INDEX = 0;
 export const TOKEN_ID_TIER_SEGMENT_INDEX = 1;
 
@@ -119,6 +132,9 @@ export const SPEC_DIAGNOSTIC_CODE = {
   CONTEXT_TOKEN_SET_MISMATCH: "AXT1601",
   UNKNOWN_RESOLVED_DEPENDENCY: "AXT1602",
   UNRESOLVED_ALIAS: "AXT1603",
+  DUPLICATE_SEMANTIC_VOCABULARY_PATH: "AXG1001",
+  SEMANTIC_VOCABULARY_ORDER: "AXG1002",
+  SEMANTIC_COLOR_ROLE_SET: "AXG1003",
 } as const;
 
 export const TOKEN_REFERENCE_PATTERN = /^\{[^{}]+\}$/;

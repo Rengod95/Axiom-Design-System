@@ -1,5 +1,6 @@
 {
   "schemaVersion": "0.1",
+  "semanticVocabularyRegistry": "semantic-token-vocabulary",
   "rootFontSizePx": 16,
   "authoredDimensionUnits": ["px", "rem", "em"],
   "derivedCssUnits": ["em"],

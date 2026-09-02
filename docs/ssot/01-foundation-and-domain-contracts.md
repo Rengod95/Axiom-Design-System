@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-01 — Token Foundation & Domain Contracts
-### Version 0.3.2
+### Version 0.3.3
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3 \
@@ -61,12 +61,13 @@ The first segment identifies Axiom Token Domain. The second segment explicitly
 identifies Token Tier.
 
 ```text
-color.primitive.blue.600
-color.semantic.action.primary.default
+color.primitive.brand.600
+color.primitive.common.white
+color.semantic.fill.brand.default
 color.component.button.root.background.default
 
 space.primitive.scale.4
-space.semantic.control.inline.md
+space.semantic.control.padding.inline.md
 space.component.button.root.padding.inline.md
 ```
 
@@ -114,7 +115,7 @@ type TokenTier =
 Primitive Tokens own reusable value scales.
 
 ```text
-color.primitive.neutral.0
+color.primitive.common.white
 color.primitive.brand.600
 space.primitive.scale.4
 fontSize.primitive.scale.300
@@ -135,10 +136,11 @@ not inferred from presentation labels such as `small`, `medium`, or `large`.
 Semantic Tokens own product-wide design purpose.
 
 ```text
+color.semantic.background.canvas
 color.semantic.surface.default
+color.semantic.fill.brand.default
 color.semantic.text.muted
-color.semantic.action.primary.default
-space.semantic.control.inline.md
+space.semantic.control.padding.inline.md
 shadow.semantic.overlay.dialog
 ```
 
@@ -324,8 +326,13 @@ The following rules are normative:
 - `em` is a derived CSS output unit for component-relative or condition
   serialization and MUST NOT be authored as a DTCG dimension;
 - color primitives are complete registered palette/shade coordinates;
-- color roles such as surface, text, icon, border, action, status, focus, and
-  selection are Semantic Tokens and have light/dark context values;
+- every palette exposes the registered `50–900` coordinates; absolute white and
+  black are `color.primitive.common.white` and `.black`;
+- explicit color values use canonical OKLCH components and an Axiom-required
+  lowercase six-digit sRGB `hex` fallback;
+- environmental `background`, contained `surface`, compact `fill`, text, icon,
+  border, status, focus, backdrop, and selection roles are distinct Semantic
+  Token responsibilities and have light/dark context values;
 - typography includes heading h1 through h6, body, label, code, and display
   families; each registered family exposes regular, medium, semibold, and bold
   variants;
@@ -335,6 +342,35 @@ The following rules are normative:
 Scale coverage, units, typography variants, primitive naming, and resolved
 contrast are checked by `pnpm tokens:check`. A source is not complete merely
 because it parses as DTCG.
+
+### 5.7 Semantic vocabulary registry
+
+`spec/token/semantic-token-vocabulary.json` owns the canonical ordered scale,
+color-role responsibilities, logical spacing family paths, permitted extended
+sizes, and removed paths. The Foundation Policy pins that registry by ID, and
+its content participates in the generated artifact source digest.
+
+The core ordered Token scale is `xs`, `sm`, `md`, `lg`, and `xl`. `xxs` or
+`xxl` requires a registry entry with a consumer rationale. The long forms
+`xsmall`, `small`, `medium`, `large`, and `xlarge` are not scale positions. This
+does not rename non-scale meanings such as the `medium` font-weight variant,
+duration `normal`, or heading levels.
+
+Logical spacing uses:
+
+```text
+space.semantic.control.padding.inline.<size>
+space.semantic.control.padding.block.<size>
+space.semantic.layout.stack.gap.<size>
+space.semantic.layout.cluster.gap.<size>
+space.semantic.layout.gutter.<size>
+space.semantic.layout.section.<size>
+```
+
+The accepted clean-break stack introduces this authority before migrating the
+production corpus. The registry and source migrations MUST merge in stack order
+without publishing an intermediate release; no compatibility aliases are
+added.
 
 ---
 
@@ -622,10 +658,10 @@ Generated TypeScript types derive from the Domain Registry and Token Manifest.
 ```ts
 interface TokenPathByDomain {
   color:
-    | "color.semantic.action.primary.default"
+    | "color.semantic.fill.brand.default"
     | "color.component.button.root.background.default";
   space:
-    | "space.semantic.control.inline.md"
+    | "space.semantic.control.padding.inline.md"
     | "space.component.button.root.padding.inline.md";
 }
 ```

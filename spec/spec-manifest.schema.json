@@ -55,6 +55,7 @@
             "token-identity",
             "parsed-token-document",
             "resolved-token-manifest",
+            "semantic-token-vocabulary",
             "token-context-override"
           ]
         }
@@ -84,6 +85,7 @@
             "token-identity",
             "parsed-token-document",
             "resolved-token-manifest",
+            "semantic-token-vocabulary",
             "token-context-override"
           ]
         }

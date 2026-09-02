@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.1",
+  "compatibility": "clean-break",
+  "sizeScale": {
+    "core": ["xsmall", "small", "medium", "large", "xlarge"],
+    "extensions": ["xxs", "xxl"],
+    "excludedLongForms": ["xsmall", "small", "medium", "large", "xlarge"]
+  },
+  "orderedScaleFamilies": [
+    { "path": "size.semantic.icon", "coverage": "core" }
+  ],
+  "extendedScaleFamilies": [],
+  "colorRoles": [
+    { "id": "background", "purpose": "Page environment." },
+    { "id": "surface", "purpose": "Contained layer." },
+    { "id": "fill", "purpose": "Compact painted region." },
+    { "id": "text", "purpose": "Text content." },
+    { "id": "icon", "purpose": "Icon foreground." },
+    { "id": "border", "purpose": "Boundaries." },
+    { "id": "status", "purpose": "Feedback." },
+    { "id": "focus", "purpose": "Focus indication." },
+    { "id": "backdrop", "purpose": "Environment dimming." },
+    { "id": "selection", "purpose": "Selected regions." }
+  ],
+  "spaceFamilies": [
+    { "path": "space.semantic.layout.stack.gap", "purpose": "Stack gap." }
+  ],
+  "removedPaths": [
+    "color.semantic.action",
+    "color.semantic.surface.sunken",
+    "space.semantic.overlap"
+  ]
+}

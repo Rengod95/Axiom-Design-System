@@ -45,6 +45,10 @@ beforeAll(async () => {
 });
 
 describe("Token Foundation policy", () => {
+  it("pins the semantic vocabulary registry", () => {
+    expect(policy.semanticVocabularyRegistry).toBe("semantic-token-vocabulary");
+  });
+
   it("accepts the normative production corpus in every theme context", () => {
     expect(validateFoundationTokenPolicy(document, manifest, policy)).toEqual([]);
   });

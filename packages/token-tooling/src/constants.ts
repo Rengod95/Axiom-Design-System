@@ -13,6 +13,8 @@ export const TOKEN_GENERATED_SCHEMA_VERSION = "0.2" as const;
 export const TOKEN_SOURCE_PROFILE_PATH = "spec/token/token-source-profile.json" as const;
 export const TOKEN_FOUNDATION_POLICY_PATH =
   "spec/token/foundation-token-policy.json" as const;
+export const TOKEN_SEMANTIC_VOCABULARY_PATH =
+  "spec/token/semantic-token-vocabulary.json" as const;
 export const TOKEN_DOMAIN_REGISTRY_PATH = "spec/token/token-domain-registry.json" as const;
 export const TOKEN_MODIFIER_REGISTRY_PATH =
   "spec/token/resolver-modifier-registry.json" as const;
