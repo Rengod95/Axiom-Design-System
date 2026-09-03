@@ -85,7 +85,7 @@ const propertyRegistry = {
 } as const;
 
 const canonicalStateRegistry = {
-  schemaVersion: "0.1",
+  schemaVersion: "0.2",
   states: [
     {
       id: "pressed",
@@ -95,6 +95,17 @@ const canonicalStateRegistry = {
       usage: ["appearance", "behavior"],
     },
   ],
+} as const;
+
+const slotScopedStateRegistry = {
+  schemaVersion: "0.2",
+  states: [{
+    id: "selected",
+    axis: "state",
+    valueType: "boolean",
+    applicableComponents: ["select.item"],
+    usage: ["appearance", "behavior"],
+  }],
 } as const;
 
 const conditionRegistry = {
@@ -237,6 +248,109 @@ const negationPropertyRegistry = {
 } as const;
 
 describe("CSS Recipe authoring", () => {
+  it("accepts a Slot-qualified State only on its registered Recipe Slot", () => {
+    const authoring = createCSSRecipeAuthoring({
+      propertyRegistry,
+      canonicalStateRegistry: slotScopedStateRegistry,
+      conditionRegistry,
+      tokenValidation: tokenValidation(slotScopedStateRegistry),
+    });
+
+    const recipe = authoring.defineRecipe({
+      id: "select",
+      slots: ["root", "item"],
+      base: { root: { color: css("red") } },
+      states: [{
+        slot: "item",
+        state: "selected",
+        cases: [{ equals: true, apply: { color: css("blue") } }],
+      }],
+      compoundVariants: [{
+        when: { states: { item: { selected: true } } },
+        apply: { root: { color: css("green") } },
+      }],
+      conditions: [{
+        when: { all: ["preference.reducedMotion"] },
+        states: { item: { selected: true } },
+        apply: { root: { color: css("purple") } },
+      }],
+    } as const);
+
+    expect(recipe.snapshot.stateRules[0]?.slot).toBe("item");
+    expect(recipe.snapshot.compoundVariants[0]?.when.states).toEqual({ item: { selected: true } });
+    expect(recipe.snapshot.conditions[0]?.states).toEqual({ item: { selected: true } });
+
+    expect(() => authoring.defineRecipe({
+      id: "select",
+      slots: ["root", "item"],
+      base: { root: { color: css("red") } },
+      states: [{
+        slot: "root",
+        state: "selected",
+        cases: [{ equals: true, apply: { color: css("blue") } }],
+      }],
+    } as const)).toThrow(CSSRecipeAuthoringError);
+    try {
+      authoring.defineRecipe({
+        id: "select",
+        slots: ["root", "item"],
+        base: { root: { color: css("red") } },
+        states: [{
+          slot: "root",
+          state: "selected",
+          cases: [{ equals: true, apply: { color: css("blue") } }],
+        }],
+      } as const);
+    } catch (error) {
+      expect((error as CSSRecipeAuthoringError).diagnostics).toEqual([
+        expect.objectContaining({
+          code: "AXA1003",
+          recipeId: "select",
+          slot: "root",
+          stage: "state",
+          target: "selected",
+        }),
+      ]);
+    }
+
+    for (const [stage, scopedRule] of [
+      ["compound", {
+        compoundVariants: [{
+          when: { states: { root: { selected: true } } },
+          apply: { root: { color: css("green") } },
+        }],
+      }],
+      ["condition", {
+        conditions: [{
+          when: { all: ["preference.reducedMotion"] },
+          states: { root: { selected: true } },
+          apply: { root: { color: css("purple") } },
+        }],
+      }],
+    ] as const) {
+      try {
+        authoring.defineRecipe({
+          id: "select",
+          slots: ["root", "item"],
+          base: { root: { color: css("red") } },
+          states: [{
+            slot: "root",
+            state: "selected",
+            cases: [{ equals: true, apply: { color: css("blue") } }],
+          }],
+          ...scopedRule,
+        } as const);
+        throw new Error(`Expected ${stage} Slot-qualified State failure.`);
+      } catch (error) {
+        expect(error).toBeInstanceOf(CSSRecipeAuthoringError);
+        expect((error as CSSRecipeAuthoringError).diagnostics.map((diagnostic) => diagnostic.stage)).toEqual(["state", stage]);
+        expect((error as CSSRecipeAuthoringError).diagnostics).toEqual(expect.arrayContaining([
+          expect.objectContaining({ code: "AXA1003", recipeId: "select", slot: "root", stage, target: "selected" }),
+        ]));
+      }
+    }
+  });
+
   it("preserves restricted Token negation authoring without making the N21 binding decision", () => {
     const authoring = createCSSRecipeAuthoring({
       propertyRegistry: negationPropertyRegistry,

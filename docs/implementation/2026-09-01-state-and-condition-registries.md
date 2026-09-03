@@ -26,6 +26,21 @@ The Condition Registry contains:
 - the registered `component` query-container identity and its stable
   `axiom-component` CSS name.
 
+## N25 Select Slot reconciliation
+
+N25 made the existing Slot-local State intent executable and advanced the
+Canonical State Registry compatibility identity to `0.2`.
+`applicableComponents` accepts either an exact Recipe ID for Recipe-wide
+applicability or an exact `${recipeId}.${slot}` target for one declared Slot.
+The authoring, Appearance semantic, and N23 closed-authority validators apply
+the same rule to State rules and State selections. A migration fixture rejects
+the former `0.1` identity.
+
+The Select vocabulary now uses the canonical Recipe Slots already owned by the
+Kernel, SSOT-05, and Component Tokens: `selected` targets `select.item`, while
+`entering`, `exiting`, and `motionSuppressed` target `select.popup`. The stale
+`select.option` and `select.popover` spellings were not retained as aliases.
+
 ## Semantic enforcement
 
 The specification harness now loads all normative registries before semantic
@@ -48,7 +63,7 @@ and accepts the expression when at least one combination is satisfiable.
 | Artifact | Responsibility |
 | --- | --- |
 | `spec/state/canonical-state-registry.schema.json` | State/Lifecycle entry shape and usage evidence |
-| `spec/state/canonical-state-registry.json` | canonical state vocabulary and component applicability |
+| `spec/state/canonical-state-registry.json` | canonical state vocabulary and exact Recipe or Recipe/Slot target applicability |
 | `spec/condition/condition-registry.schema.json` | viewport, container, preference, and container-name contracts |
 | `spec/condition/condition-expression.schema.json` | bounded AND/OR expression shape |
 | `spec/condition/condition-registry.json` | registered responsive and reduced-motion observations |

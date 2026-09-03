@@ -99,8 +99,8 @@ describe("normative specification", () => {
 
     expect(report.schemaCount).toBe(37);
     expect(report.registryCount).toBe(14);
-    expect(report.positiveFixtureCount).toBe(44);
-    expect(report.negativeFixtureCount).toBe(87);
+    expect(report.positiveFixtureCount).toBe(47);
+    expect(report.negativeFixtureCount).toBe(88);
     expect(report.digests["canonical-state-registry"]).toMatch(
       /^sha256:[a-f0-9]{64}$/,
     );

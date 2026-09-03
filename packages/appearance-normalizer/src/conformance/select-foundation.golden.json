@@ -1,0 +1,738 @@
+{
+  "appearance": {
+    "schemaVersion": "0.1",
+    "profile": "axiom-css",
+    "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+    "recipeId": "select",
+    "slots": [
+      "root",
+      "trigger",
+      "popup",
+      "item"
+    ],
+    "base": [
+      {
+        "slot": "root",
+        "declarations": [
+          {
+            "property": "display",
+            "value": {
+              "kind": "css",
+              "value": "grid"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "root",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/root/display"
+            }
+          }
+        ]
+      },
+      {
+        "slot": "trigger",
+        "declarations": [
+          {
+            "property": "border",
+            "value": {
+              "kind": "css",
+              "value": "1px solid transparent"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "trigger",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/trigger/border"
+            }
+          },
+          {
+            "property": "display",
+            "value": {
+              "kind": "css",
+              "value": "inline-flex"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "trigger",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/trigger/display"
+            }
+          }
+        ]
+      },
+      {
+        "slot": "popup",
+        "declarations": [
+          {
+            "property": "background-color",
+            "value": {
+              "kind": "token",
+              "path": "color.component.select.popup.background"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "popup",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/popup/backgroundColor"
+            }
+          },
+          {
+            "property": "border-radius",
+            "value": {
+              "kind": "token",
+              "path": "radius.component.select.popup"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "popup",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/popup/borderRadius"
+            }
+          },
+          {
+            "property": "box-shadow",
+            "value": {
+              "kind": "token",
+              "path": "shadow.component.select.popup"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "popup",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/popup/boxShadow"
+            }
+          },
+          {
+            "property": "z-index",
+            "value": {
+              "kind": "token",
+              "path": "layer.semantic.dropdown"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "popup",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/popup/zIndex"
+            }
+          }
+        ]
+      },
+      {
+        "slot": "item",
+        "declarations": [
+          {
+            "property": "color",
+            "value": {
+              "kind": "token",
+              "path": "color.component.select.item.text"
+            },
+            "important": false,
+            "origin": {
+              "recipeId": "select",
+              "slot": "item",
+              "stage": "base",
+              "source": "fixtures/select/appearance.ts#/base/item/color"
+            }
+          }
+        ]
+      }
+    ],
+    "variantAxes": [
+      {
+        "name": "size",
+        "defaultValue": "md",
+        "values": [
+          {
+            "value": "md",
+            "apply": [
+              {
+                "slot": "trigger",
+                "declarations": [
+                  {
+                    "property": "min-block-size",
+                    "value": {
+                      "kind": "token",
+                      "path": "size.component.select.trigger.block.md"
+                    },
+                    "important": false,
+                    "origin": {
+                      "recipeId": "select",
+                      "slot": "trigger",
+                      "stage": "variant",
+                      "source": "fixtures/select/appearance.ts#/variants/size/md/trigger/minBlockSize"
+                    }
+                  }
+                ]
+              },
+              {
+                "slot": "item",
+                "declarations": [
+                  {
+                    "property": "padding-block",
+                    "value": {
+                      "kind": "token",
+                      "path": "space.component.select.item.padding.block.md"
+                    },
+                    "important": false,
+                    "origin": {
+                      "recipeId": "select",
+                      "slot": "item",
+                      "stage": "variant",
+                      "source": "fixtures/select/appearance.ts#/variants/size/md/item/paddingBlock"
+                    }
+                  },
+                  {
+                    "property": "padding-inline",
+                    "value": {
+                      "kind": "token",
+                      "path": "space.component.select.item.padding.inline.md"
+                    },
+                    "important": false,
+                    "origin": {
+                      "recipeId": "select",
+                      "slot": "item",
+                      "stage": "variant",
+                      "source": "fixtures/select/appearance.ts#/variants/size/md/item/paddingInline"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "stateRules": [
+      {
+        "slot": "root",
+        "state": "disabled",
+        "cases": [
+          {
+            "equals": true,
+            "apply": [
+              {
+                "property": "opacity",
+                "value": {
+                  "kind": "token",
+                  "path": "opacity.semantic.disabled"
+                },
+                "important": false,
+                "origin": {
+                  "recipeId": "select",
+                  "slot": "root",
+                  "stage": "state",
+                  "source": "fixtures/select/appearance.ts#/states/0/cases/0/apply/opacity"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slot": "trigger",
+        "state": "open",
+        "cases": [
+          {
+            "equals": true,
+            "apply": [
+              {
+                "property": "border-color",
+                "value": {
+                  "kind": "token",
+                  "path": "color.component.select.trigger.border.default"
+                },
+                "important": false,
+                "origin": {
+                  "recipeId": "select",
+                  "slot": "trigger",
+                  "stage": "state",
+                  "source": "fixtures/select/appearance.ts#/states/1/cases/0/apply/borderColor"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slot": "trigger",
+        "state": "focusVisible",
+        "cases": [
+          {
+            "equals": true,
+            "apply": [
+              {
+                "property": "outline-color",
+                "value": {
+                  "kind": "token",
+                  "path": "color.semantic.focus.ring"
+                },
+                "important": false,
+                "origin": {
+                  "recipeId": "select",
+                  "slot": "trigger",
+                  "stage": "state",
+                  "source": "fixtures/select/appearance.ts#/states/2/cases/0/apply/outlineColor"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slot": "item",
+        "state": "hovered",
+        "cases": [
+          {
+            "equals": true,
+            "apply": [
+              {
+                "property": "background-color",
+                "value": {
+                  "kind": "token",
+                  "path": "color.component.select.item.background.hovered"
+                },
+                "important": false,
+                "origin": {
+                  "recipeId": "select",
+                  "slot": "item",
+                  "stage": "state",
+                  "source": "fixtures/select/appearance.ts#/states/3/cases/0/apply/backgroundColor"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slot": "item",
+        "state": "selected",
+        "cases": [
+          {
+            "equals": true,
+            "apply": [
+              {
+                "property": "background-color",
+                "value": {
+                  "kind": "token",
+                  "path": "color.semantic.selection.background"
+                },
+                "important": false,
+                "origin": {
+                  "recipeId": "select",
+                  "slot": "item",
+                  "stage": "state",
+                  "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/backgroundColor"
+                }
+              },
+              {
+                "property": "color",
+                "value": {
+                  "kind": "token",
+                  "path": "color.semantic.selection.text"
+                },
+                "important": false,
+                "origin": {
+                  "recipeId": "select",
+                  "slot": "item",
+                  "stage": "state",
+                  "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/color"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "compoundRules": [],
+    "conditionRules": [
+      {
+        "when": {
+          "all": [
+            "preference.reducedMotion"
+          ]
+        },
+        "states": {
+          "trigger": {
+            "open": true
+          }
+        },
+        "apply": [
+          {
+            "slot": "popup",
+            "declarations": [
+              {
+                "property": "transition-duration",
+                "value": {
+                  "kind": "token",
+                  "path": "duration.semantic.instant"
+                },
+                "important": false,
+                "origin": {
+                  "recipeId": "select",
+                  "slot": "popup",
+                  "stage": "condition",
+                  "source": "fixtures/select/appearance.ts#/conditions/0/apply/popup/transitionDuration"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "motion": {
+    "schemaVersion": "0.1",
+    "profile": "axiom-css",
+    "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+    "conditionRegistryDigest": "sha256:19fe87b0b53011c4e4ce7b57a51aae66d306c46b3bc1bb512b20f6b29245916b",
+    "id": "select.popup.visibility",
+    "recipeId": "select",
+    "slot": "popup",
+    "phases": [
+      {
+        "phase": "enter",
+        "sequence": [
+          {
+            "at": {
+              "kind": "afterPrevious"
+            },
+            "tracks": [
+              {
+                "property": "opacity",
+                "allowDiscrete": false,
+                "keyframes": [
+                  {
+                    "offset": 0,
+                    "value": {
+                      "kind": "css",
+                      "value": "0"
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "value": {
+                      "kind": "css",
+                      "value": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "property": "transform",
+                "allowDiscrete": false,
+                "keyframes": [
+                  {
+                    "offset": 0,
+                    "value": {
+                      "kind": "css",
+                      "value": "translateY(-4px) scale(0.98)"
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "value": {
+                      "kind": "css",
+                      "value": "translateY(0) scale(1)"
+                    }
+                  }
+                ]
+              }
+            ],
+            "transition": {
+              "type": "tween",
+              "duration": {
+                "kind": "token",
+                "path": "duration.semantic.overlay.enter"
+              },
+              "easing": {
+                "kind": "token",
+                "path": "easing.semantic.enter"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "phase": "exit",
+        "sequence": [
+          {
+            "at": {
+              "kind": "afterPrevious"
+            },
+            "tracks": [
+              {
+                "property": "opacity",
+                "allowDiscrete": false,
+                "keyframes": [
+                  {
+                    "offset": 0,
+                    "value": {
+                      "kind": "css",
+                      "value": "1"
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "value": {
+                      "kind": "css",
+                      "value": "0"
+                    }
+                  }
+                ]
+              },
+              {
+                "property": "transform",
+                "allowDiscrete": false,
+                "keyframes": [
+                  {
+                    "offset": 0,
+                    "value": {
+                      "kind": "css",
+                      "value": "translateY(0) scale(1)"
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "value": {
+                      "kind": "css",
+                      "value": "translateY(-2px) scale(0.98)"
+                    }
+                  }
+                ]
+              }
+            ],
+            "transition": {
+              "type": "tween",
+              "duration": {
+                "kind": "token",
+                "path": "duration.semantic.overlay.exit"
+              },
+              "easing": {
+                "kind": "token",
+                "path": "easing.semantic.exit"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "strategy": "disable"
+    }
+  },
+  "trace": {
+    "schemaVersion": "0.1",
+    "profile": "axiom-css",
+    "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+    "recipeId": "select",
+    "entries": [
+      {
+        "id": "collision-0001",
+        "affectedProperty": "border-color",
+        "earlier": {
+          "property": "border",
+          "origin": {
+            "recipeId": "select",
+            "slot": "trigger",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/trigger/border"
+          },
+          "policyProvenance": [
+            {
+              "rule": "standard",
+              "source": "status-default"
+            },
+            {
+              "rule": "border-composite",
+              "source": "token-binding-catalog"
+            }
+          ],
+          "applicability": {
+            "variants": [],
+            "states": []
+          }
+        },
+        "later": {
+          "property": "border-color",
+          "origin": {
+            "recipeId": "select",
+            "slot": "trigger",
+            "stage": "state",
+            "source": "fixtures/select/appearance.ts#/states/1/cases/0/apply/borderColor"
+          },
+          "policyProvenance": [
+            {
+              "rule": "standard",
+              "source": "status-default"
+            },
+            {
+              "rule": "paint",
+              "source": "policy-group"
+            },
+            {
+              "rule": "color-paint",
+              "source": "token-binding-catalog"
+            }
+          ],
+          "applicability": {
+            "variants": [],
+            "states": [
+              {
+                "slot": "trigger",
+                "state": "open",
+                "equals": true
+              }
+            ]
+          }
+        },
+        "winner": "later",
+        "relation": "shorthand-longhand"
+      },
+      {
+        "id": "collision-0002",
+        "affectedProperty": "background-color",
+        "earlier": {
+          "property": "background-color",
+          "origin": {
+            "recipeId": "select",
+            "slot": "item",
+            "stage": "state",
+            "source": "fixtures/select/appearance.ts#/states/3/cases/0/apply/backgroundColor"
+          },
+          "policyProvenance": [
+            {
+              "rule": "standard",
+              "source": "status-default"
+            },
+            {
+              "rule": "paint",
+              "source": "policy-group"
+            },
+            {
+              "rule": "color-paint",
+              "source": "token-binding-catalog"
+            }
+          ],
+          "applicability": {
+            "variants": [],
+            "states": [
+              {
+                "slot": "item",
+                "state": "hovered",
+                "equals": true
+              }
+            ]
+          }
+        },
+        "later": {
+          "property": "background-color",
+          "origin": {
+            "recipeId": "select",
+            "slot": "item",
+            "stage": "state",
+            "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/backgroundColor"
+          },
+          "policyProvenance": [
+            {
+              "rule": "standard",
+              "source": "status-default"
+            },
+            {
+              "rule": "paint",
+              "source": "policy-group"
+            },
+            {
+              "rule": "color-paint",
+              "source": "token-binding-catalog"
+            }
+          ],
+          "applicability": {
+            "variants": [],
+            "states": [
+              {
+                "slot": "item",
+                "state": "selected",
+                "equals": true
+              }
+            ]
+          }
+        },
+        "winner": "later",
+        "relation": "same-property"
+      },
+      {
+        "id": "collision-0003",
+        "affectedProperty": "color",
+        "earlier": {
+          "property": "color",
+          "origin": {
+            "recipeId": "select",
+            "slot": "item",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/item/color"
+          },
+          "policyProvenance": [
+            {
+              "rule": "standard",
+              "source": "status-default"
+            },
+            {
+              "rule": "paint",
+              "source": "policy-group"
+            },
+            {
+              "rule": "color-paint",
+              "source": "token-binding-catalog"
+            }
+          ],
+          "applicability": {
+            "variants": [],
+            "states": []
+          }
+        },
+        "later": {
+          "property": "color",
+          "origin": {
+            "recipeId": "select",
+            "slot": "item",
+            "stage": "state",
+            "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/color"
+          },
+          "policyProvenance": [
+            {
+              "rule": "standard",
+              "source": "status-default"
+            },
+            {
+              "rule": "paint",
+              "source": "policy-group"
+            },
+            {
+              "rule": "color-paint",
+              "source": "token-binding-catalog"
+            }
+          ],
+          "applicability": {
+            "variants": [],
+            "states": [
+              {
+                "slot": "item",
+                "state": "selected",
+                "equals": true
+              }
+            ]
+          }
+        },
+        "winner": "later",
+        "relation": "same-property"
+      }
+    ]
+  }
+}

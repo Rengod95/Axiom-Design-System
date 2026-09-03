@@ -36,6 +36,23 @@ interface AppearanceStateDefinition {
   readonly applicableComponents: ReadonlySet<string>;
 }
 
+/** Resolves component-wide and Slot-qualified State targets for one normalized rule location. */
+const stateAppliesToTarget = (
+  applicableComponents: ReadonlySet<string>,
+  recipeId: string,
+  slot: string,
+): boolean => applicableComponents.has(recipeId)
+  || applicableComponents.has(`${recipeId}.${slot}`);
+
+/** Reports a scope violation only after the referenced State definition has been resolved. */
+const stateScopeIsInvalid = (
+  definition: AppearanceStateDefinition | undefined,
+  recipeId: string,
+  slot: string,
+): boolean => definition !== undefined
+  && definition.applicableComponents.size !== 0
+  && !stateAppliesToTarget(definition.applicableComponents, recipeId, slot);
+
 const canonicalStates = (
   context: SemanticValidationContext | undefined,
 ): ReadonlyMap<string, AppearanceStateDefinition> => {
@@ -254,9 +271,9 @@ const validateStateSelection = (
           `${pointer}/${slot}/${state}`,
         ));
       } else {
-        if (states.get(state)?.applicableComponents.size !== 0 && !states.get(state)?.applicableComponents.has(recipeId)) diagnostics.push(appearanceDiagnostic(
+        if (stateScopeIsInvalid(states.get(state), recipeId, slot)) diagnostics.push(appearanceDiagnostic(
           SPEC_DIAGNOSTIC_CODE.UNKNOWN_APPEARANCE_STATE,
-          `State '${state}' is not applicable to component '${recipeId}'.`,
+          `State '${state}' is not applicable to component/Slot target '${recipeId}.${slot}'.`,
           `${pointer}/${slot}/${state}`,
         ));
         diagnostics.push(...validateStateValue(
@@ -312,9 +329,9 @@ export const validateAppearanceIr = (
         `/stateRules/${ruleIndex}/state`,
       ));
     }
-    if (typeof rule["state"] === "string" && states.get(rule["state"])?.applicableComponents.size !== 0 && !states.get(rule["state"])?.applicableComponents.has(recipeId)) diagnostics.push(appearanceDiagnostic(
+    if (typeof rule["state"] === "string" && stateScopeIsInvalid(states.get(rule["state"]), recipeId, slot)) diagnostics.push(appearanceDiagnostic(
       SPEC_DIAGNOSTIC_CODE.UNKNOWN_APPEARANCE_STATE,
-      `State '${rule["state"]}' is not applicable to component '${recipeId}'.`,
+      `State '${rule["state"]}' is not applicable to component/Slot target '${recipeId}.${slot}'.`,
       `/stateRules/${ruleIndex}/state`,
     ));
     if (!Array.isArray(rule["cases"])) return;

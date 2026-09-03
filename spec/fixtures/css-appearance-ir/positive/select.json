@@ -1,0 +1,388 @@
+{
+  "schemaVersion": "0.1",
+  "profile": "axiom-css",
+  "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+  "recipeId": "select",
+  "slots": [
+    "root",
+    "trigger",
+    "popup",
+    "item"
+  ],
+  "base": [
+    {
+      "slot": "root",
+      "declarations": [
+        {
+          "property": "display",
+          "value": {
+            "kind": "css",
+            "value": "grid"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "root",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/root/display"
+          }
+        }
+      ]
+    },
+    {
+      "slot": "trigger",
+      "declarations": [
+        {
+          "property": "border",
+          "value": {
+            "kind": "css",
+            "value": "1px solid transparent"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "trigger",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/trigger/border"
+          }
+        },
+        {
+          "property": "display",
+          "value": {
+            "kind": "css",
+            "value": "inline-flex"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "trigger",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/trigger/display"
+          }
+        }
+      ]
+    },
+    {
+      "slot": "popup",
+      "declarations": [
+        {
+          "property": "background-color",
+          "value": {
+            "kind": "token",
+            "path": "color.component.select.popup.background"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "popup",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/popup/backgroundColor"
+          }
+        },
+        {
+          "property": "border-radius",
+          "value": {
+            "kind": "token",
+            "path": "radius.component.select.popup"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "popup",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/popup/borderRadius"
+          }
+        },
+        {
+          "property": "box-shadow",
+          "value": {
+            "kind": "token",
+            "path": "shadow.component.select.popup"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "popup",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/popup/boxShadow"
+          }
+        },
+        {
+          "property": "z-index",
+          "value": {
+            "kind": "token",
+            "path": "layer.semantic.dropdown"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "popup",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/popup/zIndex"
+          }
+        }
+      ]
+    },
+    {
+      "slot": "item",
+      "declarations": [
+        {
+          "property": "color",
+          "value": {
+            "kind": "token",
+            "path": "color.component.select.item.text"
+          },
+          "important": false,
+          "origin": {
+            "recipeId": "select",
+            "slot": "item",
+            "stage": "base",
+            "source": "fixtures/select/appearance.ts#/base/item/color"
+          }
+        }
+      ]
+    }
+  ],
+  "variantAxes": [
+    {
+      "name": "size",
+      "defaultValue": "md",
+      "values": [
+        {
+          "value": "md",
+          "apply": [
+            {
+              "slot": "trigger",
+              "declarations": [
+                {
+                  "property": "min-block-size",
+                  "value": {
+                    "kind": "token",
+                    "path": "size.component.select.trigger.block.md"
+                  },
+                  "important": false,
+                  "origin": {
+                    "recipeId": "select",
+                    "slot": "trigger",
+                    "stage": "variant",
+                    "source": "fixtures/select/appearance.ts#/variants/size/md/trigger/minBlockSize"
+                  }
+                }
+              ]
+            },
+            {
+              "slot": "item",
+              "declarations": [
+                {
+                  "property": "padding-block",
+                  "value": {
+                    "kind": "token",
+                    "path": "space.component.select.item.padding.block.md"
+                  },
+                  "important": false,
+                  "origin": {
+                    "recipeId": "select",
+                    "slot": "item",
+                    "stage": "variant",
+                    "source": "fixtures/select/appearance.ts#/variants/size/md/item/paddingBlock"
+                  }
+                },
+                {
+                  "property": "padding-inline",
+                  "value": {
+                    "kind": "token",
+                    "path": "space.component.select.item.padding.inline.md"
+                  },
+                  "important": false,
+                  "origin": {
+                    "recipeId": "select",
+                    "slot": "item",
+                    "stage": "variant",
+                    "source": "fixtures/select/appearance.ts#/variants/size/md/item/paddingInline"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stateRules": [
+    {
+      "slot": "root",
+      "state": "disabled",
+      "cases": [
+        {
+          "equals": true,
+          "apply": [
+            {
+              "property": "opacity",
+              "value": {
+                "kind": "token",
+                "path": "opacity.semantic.disabled"
+              },
+              "important": false,
+              "origin": {
+                "recipeId": "select",
+                "slot": "root",
+                "stage": "state",
+                "source": "fixtures/select/appearance.ts#/states/0/cases/0/apply/opacity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slot": "trigger",
+      "state": "open",
+      "cases": [
+        {
+          "equals": true,
+          "apply": [
+            {
+              "property": "border-color",
+              "value": {
+                "kind": "token",
+                "path": "color.component.select.trigger.border.default"
+              },
+              "important": false,
+              "origin": {
+                "recipeId": "select",
+                "slot": "trigger",
+                "stage": "state",
+                "source": "fixtures/select/appearance.ts#/states/1/cases/0/apply/borderColor"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slot": "trigger",
+      "state": "focusVisible",
+      "cases": [
+        {
+          "equals": true,
+          "apply": [
+            {
+              "property": "outline-color",
+              "value": {
+                "kind": "token",
+                "path": "color.semantic.focus.ring"
+              },
+              "important": false,
+              "origin": {
+                "recipeId": "select",
+                "slot": "trigger",
+                "stage": "state",
+                "source": "fixtures/select/appearance.ts#/states/2/cases/0/apply/outlineColor"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slot": "item",
+      "state": "hovered",
+      "cases": [
+        {
+          "equals": true,
+          "apply": [
+            {
+              "property": "background-color",
+              "value": {
+                "kind": "token",
+                "path": "color.component.select.item.background.hovered"
+              },
+              "important": false,
+              "origin": {
+                "recipeId": "select",
+                "slot": "item",
+                "stage": "state",
+                "source": "fixtures/select/appearance.ts#/states/3/cases/0/apply/backgroundColor"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slot": "item",
+      "state": "selected",
+      "cases": [
+        {
+          "equals": true,
+          "apply": [
+            {
+              "property": "background-color",
+              "value": {
+                "kind": "token",
+                "path": "color.semantic.selection.background"
+              },
+              "important": false,
+              "origin": {
+                "recipeId": "select",
+                "slot": "item",
+                "stage": "state",
+                "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/backgroundColor"
+              }
+            },
+            {
+              "property": "color",
+              "value": {
+                "kind": "token",
+                "path": "color.semantic.selection.text"
+              },
+              "important": false,
+              "origin": {
+                "recipeId": "select",
+                "slot": "item",
+                "stage": "state",
+                "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/color"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "compoundRules": [],
+  "conditionRules": [
+    {
+      "when": {
+        "all": [
+          "preference.reducedMotion"
+        ]
+      },
+      "states": {
+        "trigger": {
+          "open": true
+        }
+      },
+      "apply": [
+        {
+          "slot": "popup",
+          "declarations": [
+            {
+              "property": "transition-duration",
+              "value": {
+                "kind": "token",
+                "path": "duration.semantic.instant"
+              },
+              "important": false,
+              "origin": {
+                "recipeId": "select",
+                "slot": "popup",
+                "stage": "condition",
+                "source": "fixtures/select/appearance.ts#/conditions/0/apply/popup/transitionDuration"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

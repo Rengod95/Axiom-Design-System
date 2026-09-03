@@ -91,7 +91,7 @@
       "path": "spec-manifest.schema.json"
     },
     {
-      "id": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+      "id": "https://axiom.dev/schemas/state/canonical-state-registry/0.2",
       "path": "state/canonical-state-registry.schema.json"
     },
     {
@@ -155,7 +155,7 @@
     {
       "id": "canonical-state-registry",
       "path": "state/canonical-state-registry.json",
-      "schema": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+      "schema": "https://axiom.dev/schemas/state/canonical-state-registry/0.2",
       "semanticValidator": "canonical-state-registry"
     },
     {
@@ -252,7 +252,7 @@
     },
     {
       "id": "canonical-state-registry",
-      "schema": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+      "schema": "https://axiom.dev/schemas/state/canonical-state-registry/0.2",
       "positiveDirectory": "fixtures/canonical-state-registry/positive",
       "negativeDirectory": "fixtures/canonical-state-registry/negative",
       "semanticValidator": "canonical-state-registry"

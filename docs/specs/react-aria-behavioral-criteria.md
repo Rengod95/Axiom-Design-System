@@ -1,7 +1,7 @@
 # React Aria Behavioral Criteria Profile
 
 **Status:** NORMATIVE ANNEX \
-**Depends on:** SSOT-05 v0.2.3, ADR-0002 \
+**Depends on:** SSOT-05 v0.3.0, ADR-0002 \
 **Initial components:** Button, Select, Dialog \
 **Source candidate:** React Aria Components 1.20.0 family; N32 lockfile pinning pending under ADR-0005
 

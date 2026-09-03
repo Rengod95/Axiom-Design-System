@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.1",
+  "states": [
+    {
+      "id": "selected",
+      "axis": "state",
+      "valueType": "boolean",
+      "applicableComponents": ["select.item"],
+      "usage": ["appearance", "behavior"]
+    }
+  ]
+}

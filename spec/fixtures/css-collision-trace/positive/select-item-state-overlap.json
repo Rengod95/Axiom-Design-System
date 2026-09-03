@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "0.1",
+  "profile": "axiom-css",
+  "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+  "recipeId": "select",
+  "entries": [
+    {
+      "id": "collision-0001",
+      "affectedProperty": "border-color",
+      "earlier": {
+        "property": "border",
+        "origin": {
+          "recipeId": "select",
+          "slot": "trigger",
+          "stage": "base",
+          "source": "fixtures/select/appearance.ts#/base/trigger/border"
+        },
+        "policyProvenance": [
+          {
+            "rule": "standard",
+            "source": "status-default"
+          },
+          {
+            "rule": "border-composite",
+            "source": "token-binding-catalog"
+          }
+        ],
+        "applicability": {
+          "variants": [],
+          "states": []
+        }
+      },
+      "later": {
+        "property": "border-color",
+        "origin": {
+          "recipeId": "select",
+          "slot": "trigger",
+          "stage": "state",
+          "source": "fixtures/select/appearance.ts#/states/1/cases/0/apply/borderColor"
+        },
+        "policyProvenance": [
+          {
+            "rule": "standard",
+            "source": "status-default"
+          },
+          {
+            "rule": "paint",
+            "source": "policy-group"
+          },
+          {
+            "rule": "color-paint",
+            "source": "token-binding-catalog"
+          }
+        ],
+        "applicability": {
+          "variants": [],
+          "states": [
+            {
+              "slot": "trigger",
+              "state": "open",
+              "equals": true
+            }
+          ]
+        }
+      },
+      "winner": "later",
+      "relation": "shorthand-longhand"
+    },
+    {
+      "id": "collision-0002",
+      "affectedProperty": "background-color",
+      "earlier": {
+        "property": "background-color",
+        "origin": {
+          "recipeId": "select",
+          "slot": "item",
+          "stage": "state",
+          "source": "fixtures/select/appearance.ts#/states/3/cases/0/apply/backgroundColor"
+        },
+        "policyProvenance": [
+          {
+            "rule": "standard",
+            "source": "status-default"
+          },
+          {
+            "rule": "paint",
+            "source": "policy-group"
+          },
+          {
+            "rule": "color-paint",
+            "source": "token-binding-catalog"
+          }
+        ],
+        "applicability": {
+          "variants": [],
+          "states": [
+            {
+              "slot": "item",
+              "state": "hovered",
+              "equals": true
+            }
+          ]
+        }
+      },
+      "later": {
+        "property": "background-color",
+        "origin": {
+          "recipeId": "select",
+          "slot": "item",
+          "stage": "state",
+          "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/backgroundColor"
+        },
+        "policyProvenance": [
+          {
+            "rule": "standard",
+            "source": "status-default"
+          },
+          {
+            "rule": "paint",
+            "source": "policy-group"
+          },
+          {
+            "rule": "color-paint",
+            "source": "token-binding-catalog"
+          }
+        ],
+        "applicability": {
+          "variants": [],
+          "states": [
+            {
+              "slot": "item",
+              "state": "selected",
+              "equals": true
+            }
+          ]
+        }
+      },
+      "winner": "later",
+      "relation": "same-property"
+    },
+    {
+      "id": "collision-0003",
+      "affectedProperty": "color",
+      "earlier": {
+        "property": "color",
+        "origin": {
+          "recipeId": "select",
+          "slot": "item",
+          "stage": "base",
+          "source": "fixtures/select/appearance.ts#/base/item/color"
+        },
+        "policyProvenance": [
+          {
+            "rule": "standard",
+            "source": "status-default"
+          },
+          {
+            "rule": "paint",
+            "source": "policy-group"
+          },
+          {
+            "rule": "color-paint",
+            "source": "token-binding-catalog"
+          }
+        ],
+        "applicability": {
+          "variants": [],
+          "states": []
+        }
+      },
+      "later": {
+        "property": "color",
+        "origin": {
+          "recipeId": "select",
+          "slot": "item",
+          "stage": "state",
+          "source": "fixtures/select/appearance.ts#/states/4/cases/0/apply/color"
+        },
+        "policyProvenance": [
+          {
+            "rule": "standard",
+            "source": "status-default"
+          },
+          {
+            "rule": "paint",
+            "source": "policy-group"
+          },
+          {
+            "rule": "color-paint",
+            "source": "token-binding-catalog"
+          }
+        ],
+        "applicability": {
+          "variants": [],
+          "states": [
+            {
+              "slot": "item",
+              "state": "selected",
+              "equals": true
+            }
+          ]
+        }
+      },
+      "winner": "later",
+      "relation": "same-property"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ export const MOTION_AUTHORITY_SCHEMA_ENTRIES = [
   },
   {
     key: "canonicalStateRegistry",
-    id: "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+    id: "https://axiom.dev/schemas/state/canonical-state-registry/0.2",
     path: "state/canonical-state-registry.schema.json",
     semanticValidator: "canonical-state-registry",
   },
