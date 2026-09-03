@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { CSSRecipeAuthoringError, createCSSRecipeAuthoring } from "@axiom/appearance-authoring";
 import { MotionAuthoringError, createMotionAuthoring } from "@axiom/motion-schema";
-import { canonicalJson, canonicalJsonDigest, validateSpecificationValue } from "@axiom/spec-tooling";
+import { canonicalJson, validateSpecificationValue } from "@axiom/spec-tooling";
 
 import { BUTTON_APPEARANCE } from "../../../../fixtures/button/appearance.js";
 import { BUTTON_PRESSED_MOTION } from "../../../../fixtures/button/motion.js";
@@ -21,12 +21,6 @@ const readFixture = (relativePath: string): unknown => JSON.parse(readFileSync(
 ));
 const SPEC_ROOT = fileURLToPath(new URL("../../../../spec/", import.meta.url));
 
-/** Reads the package-local digest golden that binds the three Button Foundation artifacts. */
-const readButtonGolden = (): unknown => JSON.parse(readFileSync(
-  new URL("./fixtures/button-foundation.golden.json", import.meta.url),
-  "utf8",
-));
-
 /** Validates one N15, N16, or N22 artifact before and after its JSON transport boundary. */
 const expectValidArtifact = async (
   schema: string,
@@ -40,11 +34,16 @@ const expectValidArtifact = async (
   }
 };
 
-/** Runs the public N20 and N22 path with a fresh authority context for deterministic comparisons. */
-const normalizeButton = (definition = BUTTON_APPEARANCE) => {
+/** Runs the full public N20 through N23 path with a fresh cloned authority context. */
+const normalizeButton = async (definition = BUTTON_APPEARANCE) => {
   const input = createButtonAppearanceInput();
   const recipe = createCSSRecipeAuthoring(input).defineRecipe(definition);
-  return createAppearanceNormalizer(input).normalize(recipe);
+  const normalized = createAppearanceNormalizer(input).normalize(recipe);
+  if (normalized.appearance === undefined) throw new Error("Expected valid Button Appearance.");
+  return {
+    normalized,
+    motion: createMotionAuthoring(await createButtonMotionInput(normalized.appearance)).defineMotion(BUTTON_PRESSED_MOTION),
+  };
 };
 
 describe("Button Foundation conformance", () => {
@@ -70,22 +69,17 @@ describe("Button Foundation conformance", () => {
     expect(motion.motion).toEqual(readFixture("motion-ir/positive/button-pressed-state-change.json"));
     expect(normalized.trace).toEqual(readFixture("css-collision-trace/positive/button-shorthand-longhand.json"));
     expect(normalized.diagnostics.map((diagnostic) => diagnostic.code)).toContain("AXP1301");
+    expect(motion.diagnostics).toEqual([expect.objectContaining({ code: "AXM1012", severity: "warning" })]);
     expect(normalized.trace.entries[0]?.id).toBe("collision-0001");
     await expectValidArtifact("https://axiom.dev/schemas/css/appearance-ir/0.1", "css-appearance-ir", normalized.appearance);
     await expectValidArtifact("https://axiom.dev/schemas/motion/ir/0.1", "motion-ir", motion.motion);
     await expectValidArtifact("https://axiom.dev/schemas/css/collision-trace/0.1", "css-collision-trace", normalized.trace);
     const bundle = { appearance: normalized.appearance, motion: motion.motion, trace: normalized.trace };
     expect(JSON.parse(canonicalJson(bundle))).toEqual(bundle);
-    expect({
-      schemaVersion: "0.1",
-      fixture: "button-foundation",
-      artifacts: {
-        appearance: canonicalJsonDigest(normalized.appearance),
-        motion: canonicalJsonDigest(motion.motion),
-        trace: canonicalJsonDigest(normalized.trace),
-      },
-      bundle: canonicalJsonDigest(bundle),
-    }).toEqual(readButtonGolden());
+    expect(canonicalJson(bundle)).toBe(canonicalJson(JSON.parse(readFileSync(
+      new URL("button-foundation.golden.json", import.meta.url),
+      "utf8",
+    ))));
   });
 
   it("rejects a Button Token from the wrong direct CSS domain before normalization", () => {
@@ -102,6 +96,8 @@ describe("Button Foundation conformance", () => {
         stage: "base",
         property: "color",
         source: "fixtures/button/negative/invalid-token.ts",
+        tokenId: "duration.semantic.instant",
+        target: "duration.semantic.instant",
       })]);
     }
   });
@@ -112,6 +108,40 @@ describe("Button Foundation conformance", () => {
     const normalized = createAppearanceNormalizer(input).normalize(recipe);
     expect(normalized.appearance).toBeUndefined();
     expect(normalized.diagnostics.map((diagnostic) => diagnostic.code)).toContain("AXP1302");
+    expect(normalized.trace).toEqual({
+      schemaVersion: "0.1",
+      profile: "axiom-css",
+      profileInputDigest: "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+      recipeId: "button-reset-longhand",
+      entries: [{
+        id: "collision-0001",
+        relation: "reset-longhand",
+        affectedProperty: "background-blend-mode",
+        earlier: {
+          property: "background-blend-mode",
+          origin: {
+            recipeId: "button-reset-longhand",
+            slot: "root",
+            stage: "base",
+            source: "fixtures/button/negative/reset-longhand.ts#/base/root/0/value",
+          },
+          policyProvenance: [{ rule: "standard", source: "status-default" }],
+          applicability: { variants: [], states: [] },
+        },
+        later: {
+          property: "background",
+          origin: {
+            recipeId: "button-reset-longhand",
+            slot: "root",
+            stage: "base",
+            source: "fixtures/button/negative/reset-longhand.ts#/base/root/1/value",
+          },
+          policyProvenance: [{ rule: "standard", source: "status-default" }],
+          applicability: { variants: [], states: [] },
+        },
+        winner: "later",
+      }],
+    });
     return expectValidArtifact("https://axiom.dev/schemas/css/collision-trace/0.1", "css-collision-trace", normalized.trace);
   });
 
@@ -125,21 +155,41 @@ describe("Button Foundation conformance", () => {
       throw new Error("Expected the unknown Button slot to be rejected.");
     } catch (error) {
       expect(error).toBeInstanceOf(MotionAuthoringError);
-      expect((error as MotionAuthoringError).diagnostics.map((diagnostic) => diagnostic.code)).toContain("AXM1018");
+      expect((error as MotionAuthoringError).diagnostics).toEqual([
+        {
+          code: "AXM1018",
+          severity: "error",
+          phase: "motionAuthoring",
+          source: "<motion>",
+          target: "button/unknown",
+          message: "Motion Recipe 'button' and Slot 'unknown' must be present in the authenticated N22 Appearance artifact.",
+        },
+        {
+          code: "AXM1012",
+          severity: "warning",
+          phase: "motionAuthoring",
+          source: "<motion>",
+          property: "transform",
+          message: "Property 'transform' requires backend capability validation.",
+        },
+      ]);
     }
   });
 
-  it("is repeatable across authority contexts and insensitive to ordinary declaration-object key order", async () => {
-    const first = normalizeButton();
-    const second = normalizeButton();
-    if (first.appearance === undefined || second.appearance === undefined) throw new Error("Expected deterministic Button Appearance.");
-    const firstMotion = createMotionAuthoring(await createButtonMotionInput(first.appearance)).defineMotion(BUTTON_PRESSED_MOTION);
-    const secondMotion = createMotionAuthoring(await createButtonMotionInput(second.appearance)).defineMotion(BUTTON_PRESSED_MOTION);
-    expect(canonicalJson({ appearance: first.appearance, motion: firstMotion.motion, trace: first.trace })).toBe(
-      canonicalJson({ appearance: second.appearance, motion: secondMotion.motion, trace: second.trace }),
-    );
+  it("is repeatable across fresh authority contexts and insensitive to ordinary declaration-object key order", async () => {
+    const first = await normalizeButton();
+    const second = await normalizeButton();
+    expect(canonicalJson({
+      appearance: first.normalized.appearance,
+      motion: first.motion.motion,
+      trace: first.normalized.trace,
+    })).toBe(canonicalJson({
+      appearance: second.normalized.appearance,
+      motion: second.motion.motion,
+      trace: second.normalized.trace,
+    }));
 
-    const permuted = normalizeButton({
+    const permuted = await normalizeButton({
       ...BUTTON_APPEARANCE,
       base: {
         root: {
@@ -148,7 +198,6 @@ describe("Button Foundation conformance", () => {
         },
       },
     });
-    if (permuted.appearance === undefined) throw new Error("Expected permuted Button Appearance.");
-    expect(canonicalJson(permuted.appearance)).toBe(canonicalJson(first.appearance));
+    expect(canonicalJson(permuted.normalized.appearance)).toBe(canonicalJson(first.normalized.appearance));
   });
 });

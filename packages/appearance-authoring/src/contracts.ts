@@ -2,8 +2,6 @@ import type {
   CSSAuthoringProperty,
   CSSCanonicalProperty,
   EffectiveCSSPropertyRegistry,
-  SparsePropertyPolicySource,
-  TokenBindingCatalog,
 } from "@axiom/css-property-profile";
 import type {
   CanonicalStateId,
@@ -99,16 +97,9 @@ export interface TokenProjector {
   ): readonly ProjectedTokenDeclaration[];
 }
 
-/** Carries the exact CSS policy inputs whose canonical digest generated the Effective Registry. */
-export interface CSSPropertyPolicySourceAuthority {
-  readonly policy: SparsePropertyPolicySource;
-  readonly bindings: TokenBindingCatalog;
-}
-
 /** Pins the canonical identities that N21 verifies before processing declarations. */
 export interface TokenBindingAuthorityDigests {
   readonly effectivePropertyRegistry: string;
-  readonly propertyPolicySource: string;
   readonly resolvedTokenManifest: string;
   readonly tokenDomainRegistry: string;
   readonly projectorRegistry: string;
@@ -121,7 +112,7 @@ export interface TokenBindingValidationConfig {
   readonly resolvedTokenManifest: ResolvedTokenManifest;
   readonly tokenDomainRegistry: TokenDomainRegistry;
   readonly projectorRegistry: CompositeTokenProjectorRegistry;
-  readonly propertyPolicySource: CSSPropertyPolicySourceAuthority;
+  readonly conditionOnlyDomains: readonly string[];
   readonly authorityDigests: TokenBindingAuthorityDigests;
   readonly canonicalDigest: CanonicalDigestPort;
   readonly serializers: readonly TokenCssSerializer[];
@@ -243,6 +234,7 @@ export interface CSSRecipeDiagnostic {
   readonly pointer?: string;
   readonly declarationIndex?: number;
   readonly target?: string;
+  /** Names the authored Token reference that caused a declaration-level failure. */
   readonly tokenId?: string;
   readonly provenance?: EffectiveCSSPropertyRegistry["properties"][number]["policy"]["provenance"];
 }

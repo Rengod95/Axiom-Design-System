@@ -3,6 +3,45 @@ export const SPEC_MANIFEST_SCHEMA_VERSION = "0.1" as const;
 export const JSON_SCHEMA_DIALECT = "https://json-schema.org/draft/2020-12/schema" as const;
 export const SPEC_MANIFEST_SCHEMA_PATH = "spec-manifest.schema.json";
 export const SPEC_MANIFEST_PATH = "manifest.json";
+/** Pins the six registered schemas that compose Motion's authority-validation boundary. */
+export const MOTION_AUTHORITY_SCHEMA_ENTRIES = [
+  {
+    key: "propertyRegistry",
+    id: "https://axiom.dev/schemas/css/effective-property-registry/0.1",
+    path: "css/effective-property-registry.schema.json",
+    semanticValidator: undefined,
+  },
+  {
+    key: "resolvedTokenManifest",
+    id: "https://axiom.dev/schemas/token/resolved-manifest/0.2",
+    path: "token/resolved-token-manifest.schema.json",
+    semanticValidator: "resolved-token-manifest",
+  },
+  {
+    key: "tokenDomainRegistry",
+    id: "https://axiom.dev/schemas/token/domain-registry/0.1",
+    path: "token/token-domain-registry.schema.json",
+    semanticValidator: "token-domain-registry",
+  },
+  {
+    key: "canonicalStateRegistry",
+    id: "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+    path: "state/canonical-state-registry.schema.json",
+    semanticValidator: "canonical-state-registry",
+  },
+  {
+    key: "conditionRegistry",
+    id: "https://axiom.dev/schemas/condition/registry/0.1",
+    path: "condition/condition-registry.schema.json",
+    semanticValidator: "condition-registry",
+  },
+  {
+    key: "appearance",
+    id: "https://axiom.dev/schemas/css/appearance-ir/0.1",
+    path: "css/appearance-ir.schema.json",
+    semanticValidator: "css-appearance-ir",
+  },
+] as const;
 export const JSON_FILE_SUFFIX = ".json";
 export const JSON_SCHEMA_FILE_SUFFIX = ".schema.json";
 export const JSON_INDENT_SPACES = 2;

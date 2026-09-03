@@ -3,11 +3,7 @@ import { createHash } from "node:crypto";
 
 import { describe, expect, it } from "vitest";
 import { digestResolvedTokenManifest, type ResolvedTokenManifest } from "@axiom/tokens";
-import type {
-  EffectiveCSSPropertyRegistry,
-  SparsePropertyPolicySource,
-  TokenBindingCatalog,
-} from "@axiom/css-property-profile";
+import type { EffectiveCSSPropertyRegistry } from "@axiom/css-property-profile";
 
 import {
   createCSSRecipeAuthoring,
@@ -22,26 +18,16 @@ const propertyRegistry = JSON.parse(readFileSync(
     new URL("../../../spec/css/effective-property-registry.json", import.meta.url),
     "utf8",
   )) as EffectiveCSSPropertyRegistry;
-const propertyPolicySource = {
-  policy: JSON.parse(readFileSync(
-    new URL("../../../spec/css/sparse-property-policy.json", import.meta.url),
-    "utf8",
-  )) as SparsePropertyPolicySource,
-  bindings: JSON.parse(readFileSync(
-    new URL("../../../spec/css/token-binding-catalog.json", import.meta.url),
-    "utf8",
-  )) as TokenBindingCatalog,
-} as const;
 
 const canonical = (value: unknown): unknown => Array.isArray(value)
   ? value.map(canonical)
   : value !== null && typeof value === "object"
-    ? Object.fromEntries(Object.entries(value).sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0).map(([key, item]) => [key, canonical(item)]))
-    : typeof value === "number" && Object.is(value, -0) ? 0 : value;
+    ? Object.fromEntries(Object.entries(value).sort(([left], [right]) => left.localeCompare(right, "en")).map(([key, item]) => [key, canonical(item)]))
+    : value;
 
 /** Uses content-sensitive test digests so authority changes cannot be hidden by a constant port. */
 const canonicalDigest = {
-  digestCanonicalJson: (value: unknown): string => `sha256:${createHash("sha256").update(`${JSON.stringify(canonical(value), null, 2)}\n`).digest("hex")}`,
+  digestCanonicalJson: (value: unknown): string => `sha256:${createHash("sha256").update(JSON.stringify(canonical(value))).digest("hex")}`,
 };
 
 const states = { schemaVersion: "0.1", states: [{
@@ -60,21 +46,18 @@ const baseManifest = (): ResolvedTokenManifest => ({
   schemaVersion: "0.2", profileVersion: "0.1.0", sourceDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   contexts: [
     { context: { theme: "light" }, tokens: [
-      entry("border.semantic.default", "border", "border", { color: "red" }), entry("breakpoint.semantic.sm", "breakpoint", "dimension", "640px"),
-      entry("color.semantic.brand", "color", "color", "red"), entry("space.semantic.gutter", "space", "dimension", "8px"),
-      entry("transition.semantic.fast", "transition", "transition", { duration: "100ms" }),
+      entry("border.semantic.default", "border", "border", { color: "red" }), entry("color.semantic.brand", "color", "color", "red"),
+      entry("space.semantic.gutter", "space", "dimension", "8px"), entry("transition.semantic.fast", "transition", "transition", { duration: "100ms" }),
     ] },
     { context: { theme: "dark" }, tokens: [
-      entry("border.semantic.default", "border", "border", { color: "blue" }), entry("breakpoint.semantic.sm", "breakpoint", "dimension", "640px"),
-      entry("color.semantic.brand", "color", "color", "blue"), entry("space.semantic.gutter", "space", "dimension", "12px"),
-      entry("transition.semantic.fast", "transition", "transition", { duration: "200ms" }),
+      entry("border.semantic.default", "border", "border", { color: "blue" }), entry("color.semantic.brand", "color", "color", "blue"),
+      entry("space.semantic.gutter", "space", "dimension", "12px"), entry("transition.semantic.fast", "transition", "transition", { duration: "200ms" }),
     ] },
   ],
 } as never);
 
 const domains = { schemaVersion: "0.1", domains: [
   { id: "border", root: "border", allowedDTCGTypes: ["border"], cssSerializers: ["css.border-projector.v1"] },
-  { id: "breakpoint", root: "breakpoint", allowedDTCGTypes: ["dimension"], cssSerializers: ["css.dimension.v1"] },
   { id: "color", root: "color", allowedDTCGTypes: ["color"], cssSerializers: ["css.color.v1"] },
   { id: "space", root: "space", allowedDTCGTypes: ["dimension"], cssSerializers: ["css.dimension.v1"] },
   { id: "transition", root: "transition", allowedDTCGTypes: ["transition"], cssSerializers: ["css.transition-projector.v1"] },
@@ -104,7 +87,6 @@ const fixture = (overrides: Record<string, unknown> = {}) => {
   const tokenDomainRegistry = (overrides.domains ?? domains) as never;
   const authorityDigests = {
     effectivePropertyRegistry: canonicalDigest.digestCanonicalJson(propertyRegistry),
-    propertyPolicySource: canonicalDigest.digestCanonicalJson(propertyPolicySource),
     resolvedTokenManifest: digestResolvedTokenManifest(resolvedTokenManifest, canonicalDigest as never),
     tokenDomainRegistry: canonicalDigest.digestCanonicalJson(tokenDomainRegistry),
     projectorRegistry: canonicalDigest.digestCanonicalJson(projectorRegistry),
@@ -117,8 +99,7 @@ const fixture = (overrides: Record<string, unknown> = {}) => {
     ...(overrides.enabledExperimentalProperties === undefined ? {} : { enabledExperimentalProperties: overrides.enabledExperimentalProperties }),
     tokenValidation: {
       resolvedTokenManifest, tokenDomainRegistry, projectorRegistry,
-      propertyPolicySource: (overrides.propertyPolicySource ?? propertyPolicySource) as never,
-      authorityDigests,
+      conditionOnlyDomains: (overrides.conditionOnlyDomains ?? []) as readonly string[], authorityDigests,
       canonicalDigest: (overrides.canonicalDigest ?? canonicalDigest) as never,
       serializers: (overrides.serializers ?? [
         { id: "css.color.v1", serialize: (resolved: { readonly resolvedValue: unknown }) => String(resolved.resolvedValue) },
@@ -141,8 +122,8 @@ const semanticFixture = (): Record<string, unknown> => {
     resolvedTokenManifest: structuredClone(validation["resolvedTokenManifest"]),
     tokenDomainRegistry: structuredClone(validation["tokenDomainRegistry"]),
     projectorRegistry: structuredClone(validation["projectorRegistry"]),
-    propertyPolicySource: structuredClone(validation["propertyPolicySource"]),
     authorityDigests: { ...(validation["authorityDigests"] as Record<string, unknown>) },
+    conditionOnlyDomains: [...(validation["conditionOnlyDomains"] as readonly unknown[])],
   };
   return input;
 };
@@ -153,7 +134,6 @@ const recomputeAuthorityDigests = (input: Record<string, unknown>): void => {
   const digests = validation["authorityDigests"] as Record<string, string>;
   const manifest = validation["resolvedTokenManifest"] as ResolvedTokenManifest;
   digests["effectivePropertyRegistry"] = canonicalDigest.digestCanonicalJson(input["propertyRegistry"]);
-  digests["propertyPolicySource"] = canonicalDigest.digestCanonicalJson(validation["propertyPolicySource"]);
   digests["resolvedTokenManifest"] = digestResolvedTokenManifest(manifest, canonicalDigest as never);
   digests["tokenDomainRegistry"] = canonicalDigest.digestCanonicalJson(validation["tokenDomainRegistry"]);
   digests["projectorRegistry"] = canonicalDigest.digestCanonicalJson(validation["projectorRegistry"]);
@@ -172,41 +152,6 @@ describe("Token projector authoring", () => {
 });
 
 describe("N21 authority and resolved-manifest boundary", () => {
-  it("accepts condition-only policy only through the authenticated CSS policy source", () => {
-    const input = fixture() as unknown as Record<string, unknown>;
-    const validation = input["tokenValidation"] as Record<string, unknown>;
-    validation["propertyPolicySource"] = propertyPolicySource;
-    delete validation["conditionOnlyDomains"];
-    const digests = validation["authorityDigests"] as Record<string, string>;
-    digests["propertyPolicySource"] = canonicalDigest.digestCanonicalJson(propertyPolicySource);
-
-    expect(codeFor(input, "color", reference("color.semantic.brand"))).toBeUndefined();
-    expect(codeFor(input, "width", reference("breakpoint.semantic.sm"))).toBe("AXA1104");
-  });
-
-  it("rejects changed condition-only policy under the previous authority digest", () => {
-    const input = fixture() as unknown as Record<string, unknown>;
-    const validation = input["tokenValidation"] as Record<string, unknown>;
-    validation["propertyPolicySource"] = structuredClone(propertyPolicySource);
-    delete validation["conditionOnlyDomains"];
-    const digests = validation["authorityDigests"] as Record<string, string>;
-    digests["propertyPolicySource"] = canonicalDigest.digestCanonicalJson(propertyPolicySource);
-    const source = validation["propertyPolicySource"] as {
-      bindings: { conditionOnlyDomains: string[] };
-    };
-    source.bindings.conditionOnlyDomains = ["color"];
-
-    expect(codeFor(input, "color", reference("color.semantic.brand"))).toBe("AXA1101");
-  });
-
-  it("rejects the former free condition-only configuration input", () => {
-    const input = fixture() as unknown as Record<string, unknown>;
-    const validation = input["tokenValidation"] as Record<string, unknown>;
-    validation["conditionOnlyDomains"] = ["breakpoint"];
-
-    expect(codeFor(input, "color", reference("color.semantic.brand"))).toBe("AXA1101");
-  });
-
   it.each([
     ["content-sensitive authority mismatch", fixture({ authorityDigests: { tokenDomainRegistry: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" } }), "AXA1101"],
     ["missing Token validation config", { ...fixture(), tokenValidation: undefined }, "AXA1101"],
@@ -260,8 +205,7 @@ describe("N21 authority and resolved-manifest boundary", () => {
     ["an unknown condition container", (input: Record<string, unknown>) => { (input["conditionRegistry"] as Record<string, unknown>)["conditions"] = [{ id: "container.width.sm", kind: "container", container: "missing", feature: "inline-size", comparison: ">=", value: { kind: "token", path: "breakpoint.semantic.sm" } }]; }],
     ["a condition identifier with the wrong kind prefix", (input: Record<string, unknown>) => { (input["conditionRegistry"] as Record<string, unknown>)["conditions"] = [{ id: "viewport.width.sm", kind: "container", container: "component", feature: "inline-size", comparison: ">=", value: { kind: "token", path: "breakpoint.semantic.sm" } }]; }],
     ["a viewport condition that references a non-breakpoint Token", (input: Record<string, unknown>) => { (input["conditionRegistry"] as Record<string, unknown>)["conditions"] = [{ id: "viewport.width.sm", kind: "viewport", feature: "width", comparison: ">=", value: { kind: "token", path: "color.semantic.brand" } }]; }],
-    ["duplicate condition-only Domains", (input: Record<string, unknown>) => { const validation = input["tokenValidation"] as Record<string, unknown>; const source = validation["propertyPolicySource"] as Record<string, unknown>; const bindings = source["bindings"] as Record<string, unknown>; bindings["conditionOnlyDomains"] = ["color", "color"]; }],
-    ["a condition-only Domain outside the effective CSS policy source", (input: Record<string, unknown>) => { const validation = input["tokenValidation"] as Record<string, unknown>; const source = validation["propertyPolicySource"] as Record<string, unknown>; const bindings = source["bindings"] as Record<string, unknown>; bindings["conditionOnlyDomains"] = ["color"]; }],
+    ["duplicate condition-only Domains", (input: Record<string, unknown>) => { const validation = input["tokenValidation"] as Record<string, unknown>; validation["conditionOnlyDomains"] = ["color", "color"]; }],
   ])("rejects semantic authority corruption even after matching digests are recomputed", (_name, corrupt) => {
     const input = semanticFixture();
     corrupt(input);
@@ -314,7 +258,7 @@ describe("N21 direct, template, and negation semantics", () => {
   it.each([
     ["direct success", fixture(), "color", reference("color.semantic.brand"), undefined],
     ["wrong direct Domain", fixture(), "color", reference("space.semantic.gutter"), "AXP1103"],
-    ["condition-only Domain", fixture(), "width", reference("breakpoint.semantic.sm"), "AXA1104"],
+    ["condition-only Domain", fixture({ conditionOnlyDomains: ["color"] }), "color", reference("color.semantic.brand"), "AXA1104"],
     ["serializer throw", fixture({ serializers: [{ id: "css.color.v1", serialize: () => { throw new Error("serializer"); } }, { id: "css.dimension.v1", serialize: () => "8px" }] }), "color", reference("color.semantic.brand"), "AXA1105"],
     ["one-context grammar failure", fixture({ serializers: [{ id: "css.color.v1", serialize: (resolved: { readonly resolvedValue: unknown }) => resolved.resolvedValue === "blue" ? "not-a-color(" : "red" }, { id: "css.dimension.v1", serialize: () => "8px" }] }), "color", reference("color.semantic.brand"), "AXP1201"],
   ])("validates %s", (_name, input, property, value, expected) => expect(codeFor(input, property, value)).toBe(expected));
@@ -419,7 +363,6 @@ describe("N21 detached report provenance", () => {
     expect(Object.isFrozen(recipe.tokenBindingReport.authority.contexts)).toBe(true);
     expect(recipe.tokenBindingReport.authority.manifestSourceDigest).toBe("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     expect(recipe.tokenBindingReport.authority.effectivePropertyRegistry).toBe(canonicalDigest.digestCanonicalJson(propertyRegistry));
-    expect(recipe.tokenBindingReport.authority.propertyPolicySource).toBe(propertyRegistry.profile.policySourceDigest);
     (definition.base.root as unknown as Array<{ value: unknown }>)[0]!.value = reference("space.semantic.gutter");
     expect(recipe.tokenBindingReport.bindings[0]?.tokens[0]?.tokenId).toBe("color.semantic.brand");
   });

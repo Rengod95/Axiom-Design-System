@@ -15,6 +15,7 @@ import {
   ERROR_DIAGNOSTIC_SEVERITY,
   JSON_FILE_SUFFIX,
   JSON_SCHEMA_FILE_SUFFIX,
+  MOTION_AUTHORITY_SCHEMA_ENTRIES,
   SPEC_MANIFEST_PATH,
   SPEC_MANIFEST_SCHEMA_PATH,
   SPEC_DIAGNOSTIC_CODE,
@@ -290,32 +291,54 @@ const validateSchemaInventory = async (
   }
 };
 
-export const checkSpecification = async (specRoot: string): Promise<SpecCheckReport> => {
-  const manifestSchemaValue = await readJson(
-    resolveInside(specRoot, SPEC_MANIFEST_SCHEMA_PATH),
+/** Loads and schema-validates the specification manifest before any manifest-derived bootstrap work. */
+const readValidatedSpecManifest = async (specRoot: string): Promise<SpecManifest> => {
+  const manifestSchema = asSchema(
+    await readJson(resolveInside(specRoot, SPEC_MANIFEST_SCHEMA_PATH)),
+    SPEC_MANIFEST_SCHEMA_PATH,
   );
-  const manifestSchema = asSchema(manifestSchemaValue, SPEC_MANIFEST_SCHEMA_PATH);
   const manifestValue = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH));
-
   const bootstrapAjv = createAjv();
-  const validateManifest = bootstrapAjv.compile(manifestSchema);
-  assertValid(validateManifest, manifestValue, SPEC_MANIFEST_PATH);
-  const manifest = manifestValue as SpecManifest;
-  await validateSchemaInventory(specRoot, manifest);
+  assertValid(
+    bootstrapAjv.compile(manifestSchema),
+    manifestValue,
+    SPEC_MANIFEST_PATH,
+  );
+  return manifestValue as SpecManifest;
+};
 
+/** Asserts that the Motion authority port's fixed schema inventory has not drifted in the manifest. */
+const assertPinnedMotionAuthoritySchemaEntries = (manifest: SpecManifest): void => {
+  for (const expected of MOTION_AUTHORITY_SCHEMA_ENTRIES) {
+    const entry = manifest.schemas.find((candidate) => candidate.id === expected.id);
+    if (entry?.path !== expected.path) {
+      throw new Error(
+        `Pinned Motion authority schema '${expected.key}' must map '${expected.id}' to '${expected.path}'.`,
+      );
+    }
+  }
+};
+
+/** Builds one Ajv instance after verifying every manifest schema's declared identity. */
+const loadManifestSchemas = async (specRoot: string, manifest: SpecManifest): Promise<Ajv2020> => {
   const ajv = createAjv();
   const schemaIds = new Set<string>();
   for (const entry of manifest.schemas) {
     if (schemaIds.has(entry.id)) throw new Error(`Duplicate schema id in manifest: ${entry.id}`);
     schemaIds.add(entry.id);
-
-    const value = await readJson(resolveInside(specRoot, entry.path));
-    const schema = asSchema(value, entry.path);
+    const schema = asSchema(await readJson(resolveInside(specRoot, entry.path)), entry.path);
     if (schemaId(schema) !== entry.id) {
       throw new Error(`${entry.path}: $id does not match manifest id '${entry.id}'.`);
     }
     ajv.addSchema(schema, entry.id);
   }
+  return ajv;
+};
+
+export const checkSpecification = async (specRoot: string): Promise<SpecCheckReport> => {
+  const manifest = await readValidatedSpecManifest(specRoot);
+  await validateSchemaInventory(specRoot, manifest);
+  const ajv = await loadManifestSchemas(specRoot, manifest);
 
   for (const entry of manifest.schemas) {
     if (ajv.getSchema(entry.id) === undefined) {
@@ -324,7 +347,7 @@ export const checkSpecification = async (specRoot: string): Promise<SpecCheckRep
   }
 
   const digests: Record<string, string> = {
-    manifest: canonicalJsonDigest(manifestValue),
+    manifest: canonicalJsonDigest(manifest),
   };
   const registryValues: Record<string, unknown> = {};
   for (const entry of manifest.registries) {
@@ -457,20 +480,8 @@ export const validateSpecificationValue = async (
   semanticValidator: SemanticValidatorId | undefined,
   value: unknown,
 ): Promise<Readonly<{ readonly schemaValid: boolean; readonly diagnostics: readonly Diagnostic[] }>> => {
-  const manifestSchema = asSchema(
-    await readJson(resolveInside(specRoot, SPEC_MANIFEST_SCHEMA_PATH)),
-    SPEC_MANIFEST_SCHEMA_PATH,
-  );
-  const manifestValue = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH));
-  const bootstrapAjv = createAjv();
-  bootstrapAjv.addSchema(manifestSchema, schemaId(manifestSchema) as string);
-  assertValid(bootstrapAjv.compile(manifestSchema), manifestValue, SPEC_MANIFEST_PATH);
-  const manifest = manifestValue as SpecManifest;
-  const ajv = createAjv();
-  for (const entry of manifest.schemas) ajv.addSchema(
-    asSchema(await readJson(resolveInside(specRoot, entry.path)), entry.path),
-    entry.id,
-  );
+  const manifest = await readValidatedSpecManifest(specRoot);
+  const ajv = await loadManifestSchemas(specRoot, manifest);
   const validate = ajv.getSchema(schemaIdentifier);
   if (validate === undefined) throw new Error(`Unknown specification schema '${schemaIdentifier}'.`);
   const registries: Record<string, unknown> = {};
@@ -484,39 +495,18 @@ export const validateSpecificationValue = async (
   };
 };
 
-/** Preloads registered schemas and registry context for repeated synchronous in-memory validation. */
-export const createSpecificationValueValidator = async (
-  specRoot: string,
-): Promise<Readonly<{ readonly validate: (schemaIdentifier: string, semanticValidator: SemanticValidatorId | undefined, value: unknown) => readonly Diagnostic[] }>> => {
-  const manifest = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH)) as SpecManifest;
-  const ajv = createAjv();
-  for (const entry of manifest.schemas) ajv.addSchema(asSchema(await readJson(resolveInside(specRoot, entry.path)), entry.path), entry.id);
-  const registries: Record<string, unknown> = {};
-  for (const entry of manifest.registries) registries[entry.id] = await readJson(resolveInside(specRoot, entry.path));
-  return Object.freeze({
-    validate(schemaIdentifier, semanticValidator, value) {
-      const validate = ajv.getSchema(schemaIdentifier);
-      if (validate === undefined || !validate(value)) return [{ code: "AXS0001", severity: "error", phase: "schema", message: `Schema validation failed for '${schemaIdentifier}'.` }];
-      return runSemanticValidator(semanticValidator, value, { registries });
-    },
-  });
-};
-
 /** Validates the exact detached N23 Motion authority bundle through pinned schemas and semantic validators. */
 export const createMotionAuthorityValidationPort = async (
   specRoot: string,
 ): Promise<Readonly<{ readonly validateBundle: (snapshot: Readonly<Record<string, unknown>>) => readonly { readonly code: string; readonly message: string }[] }>> => {
-  const manifest = await readJson(resolveInside(specRoot, SPEC_MANIFEST_PATH)) as SpecManifest;
-  const ajv = createAjv();
-  for (const entry of manifest.schemas) ajv.addSchema(asSchema(await readJson(resolveInside(specRoot, entry.path)), entry.path), entry.id);
-  const checks = [
-    ["propertyRegistry", "https://axiom.dev/schemas/css/effective-property-registry/0.1", undefined],
-    ["resolvedTokenManifest", "https://axiom.dev/schemas/token/resolved-manifest/0.2", "resolved-token-manifest"],
-    ["tokenDomainRegistry", "https://axiom.dev/schemas/token/domain-registry/0.1", "token-domain-registry"],
-    ["canonicalStateRegistry", "https://axiom.dev/schemas/state/canonical-state-registry/0.1", "canonical-state-registry"],
-    ["conditionRegistry", "https://axiom.dev/schemas/condition/registry/0.1", "condition-registry"],
-    ["appearance", "https://axiom.dev/schemas/css/appearance-ir/0.1", "css-appearance-ir"],
-  ] as const;
+  const manifest = await readValidatedSpecManifest(specRoot);
+  assertPinnedMotionAuthoritySchemaEntries(manifest);
+  const ajv = await loadManifestSchemas(specRoot, manifest);
+  for (const expected of MOTION_AUTHORITY_SCHEMA_ENTRIES) {
+    if (ajv.getSchema(expected.id) === undefined) {
+      throw new Error(`Pinned Motion authority schema '${expected.key}' could not be compiled.`);
+    }
+  }
   return Object.freeze({
     validateBundle(snapshot) {
       const registries = {
@@ -527,8 +517,8 @@ export const createMotionAuthorityValidationPort = async (
         "condition-registry": snapshot["conditionRegistry"],
         "css-profile-input": isUnknownRecord(snapshot["propertyRegistry"]) ? snapshot["propertyRegistry"]["profile"] : undefined,
       };
-      return checks.flatMap(([key, schema, semanticValidator]) => {
-        const validate = ajv.getSchema(schema);
+      return MOTION_AUTHORITY_SCHEMA_ENTRIES.flatMap(({ key, id, semanticValidator }) => {
+        const validate = ajv.getSchema(id);
         if (validate === undefined || !validate(snapshot[key])) return [{ code: "AXS0001", message: `Pinned Motion authority schema rejected '${key}'.` }];
         return runSemanticValidator(semanticValidator, snapshot[key], { registries }).filter((diagnostic) => diagnostic.severity === "error").map((diagnostic) => ({ code: diagnostic.code, message: diagnostic.message }));
       });

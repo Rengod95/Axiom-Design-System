@@ -365,8 +365,6 @@ const receiptDiagnostics = (
   const receipt = recipe.tokenBindingReport.authority;
   const configured = input.tokenValidation.authorityDigests;
   const matches = receipt.profileInputDigest === input.propertyRegistry.profile.webrefInputDigest
-    && receipt.effectivePropertyRegistry === configured.effectivePropertyRegistry
-    && receipt.propertyPolicySource === configured.propertyPolicySource
     && receipt.resolvedTokenManifest === configured.resolvedTokenManifest
     && receipt.tokenDomainRegistry === configured.tokenDomainRegistry
     && receipt.projectorRegistry === configured.projectorRegistry

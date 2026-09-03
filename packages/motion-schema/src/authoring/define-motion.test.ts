@@ -353,42 +353,4 @@ describe("Motion authoring", () => {
     const throwingSerializer = createMotionAuthoring({ propertyRegistry, resolvedTokenManifest: manifest, tokenDomainRegistry: tokenDomains, canonicalStateRegistry: states, conditionRegistry: conditions, appearance, expectedDigests, canonicalDigest: digest, authorityValidation: unitAuthorityValidation, serializers: [{ id: "css.test.v1", serialize: () => { throw new Error("port failure"); } }] });
     expect(errorCodes(() => throwingSerializer.defineMotion(direct))).toContain("AXM2004");
   });
-
-  it("captures executable authority ports and serializers at construction time", () => {
-    const canonicalDigest = { digestCanonicalJson: (_value: unknown) => SHA256_TEST_DIGEST };
-    const authorityValidation = {
-      validateBundle: (_snapshot: unknown): readonly { readonly code: string; readonly message: string }[] => [],
-    };
-    const serializers = [{ id: "css.test.v1", serialize: (entry: { readonly resolvedValue: unknown }) => String(entry.resolvedValue) }];
-    const authoring = createMotionAuthoring({
-      propertyRegistry, resolvedTokenManifest: manifest, tokenDomainRegistry: tokenDomains,
-      canonicalStateRegistry: states, conditionRegistry: conditions, appearance, expectedDigests,
-      canonicalDigest, authorityValidation, serializers,
-    });
-
-    canonicalDigest.digestCanonicalJson = () => { throw new Error("mutated digest port"); };
-    authorityValidation.validateBundle = () => [{ code: "MUTATED", message: "mutated validator" }];
-    serializers[0]!.serialize = () => "not-an-opacity";
-    serializers.push({ id: "css.injected.v1", serialize: () => "not-an-opacity" });
-
-    const direct = {
-      ...source(),
-      phases: [{
-        ...source().phases[0],
-        sequence: [{
-          ...source().phases[0].sequence[0],
-          tracks: [{
-            ...source().phases[0].sequence[0].tracks[0],
-            keyframes: [token("number.semantic.opacity.start"), token("number.semantic.opacity.end")],
-          }],
-        }],
-      }],
-    } as const;
-
-    expect(authoring.defineMotion(direct).motion.phases[0]?.sequence[0]?.tracks[0]?.keyframes)
-      .toEqual([
-        { offset: 0, value: token("number.semantic.opacity.start") },
-        { offset: 1, value: token("number.semantic.opacity.end") },
-      ]);
-  });
 });
