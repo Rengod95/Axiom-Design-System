@@ -30,7 +30,7 @@ const canonicalDigest = {
   digestCanonicalJson: (value: unknown): string => `sha256:${createHash("sha256").update(JSON.stringify(canonical(value))).digest("hex")}`,
 };
 
-const states = { schemaVersion: "0.1", states: [{
+const states = { schemaVersion: "0.2", states: [{
   id: "pressed", axis: "state", valueType: "boolean", applicableComponents: ["button"], usage: ["appearance"],
 }] } as const;
 const conditions = { schemaVersion: "0.1", containers: [{ id: "component", cssName: "axiom-component" }], conditions: [{

@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N24 (Button Foundation conformance complete) \
+**Date:** 2026-09-01; reconciled 2026-09-03 through N25 (Select Foundation conformance complete) \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.6.0, SSOT-03 v0.3.0, SSOT-04 v0.3.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.6.1, SSOT-03 v0.4.0, SSOT-04 v0.4.0, SSOT-05 v0.3.0, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -569,8 +569,8 @@ Before Web compiler implementation:
 10. Record unresolved warnings and classify P0/P1/P2.
 11. Declare Gate A only with zero P0/P1 blockers.
 
-N23 completion is not a Gate A declaration. N24 Button, N25 Select, N26
-Dialog, N27 negative/type/round-trip/determinism fixtures, and this review
+N24 Button and N25 Select are complete, but this is not a Gate A declaration.
+N26 Dialog, N27 negative/type/round-trip/determinism fixtures, and this review
 remain required before Gate A can close.
 
 Compiler inconvenience after Gate A is not enough reason to mutate Core. A
@@ -1009,7 +1009,13 @@ Exact first sequence:
 25. [done] Prove the Button vertical fixture (N24) through the public N20,
     N21, N22, and N23 boundaries; compare the existing N15/N16 artifacts and
     governed N22 collision trace, including schema/semantic JSON round trips.
-26. Next: prove the Select vertical fixture (N25).
+26. [done] Prove the Select vertical fixture (N25) through the public N20,
+    N21, N22, and N23 boundaries; retain repeated `item` State locality,
+    authenticated `popup` Motion, exact artifacts, JSON round trips, and stable
+    canonical bundle bytes. Reconcile Slot-qualified State applicability and
+    the stale `select.option`/`select.popover` registry names to the canonical
+    `select.item`/`select.popup` Recipe Slots.
+27. Next: prove the Dialog vertical fixture (N26).
 ```
 
 This produces the smallest vertical foundation proof without returning to the

@@ -25,7 +25,7 @@ const propertyRegistry = {
 } as const;
 
 const canonicalStateRegistry = {
-  schemaVersion: "0.1",
+  schemaVersion: "0.2",
   states: [{
     id: "pressed",
     axis: "state",

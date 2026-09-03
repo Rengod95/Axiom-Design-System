@@ -1,6 +1,6 @@
 # Axiom Design System
 ## SSOT-03 — CSS Appearance Profile & Property Policy
-### Version 0.3.0
+### Version 0.4.0
 
 **Status:** NORMATIVE \
 **Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1 \
@@ -619,8 +619,11 @@ at runtime; no default makes it required.
 
 ### 8.6 State
 
-State is slot-local and references the canonical registry in SSOT-05. Provider
-names such as `isPressed` are not Recipe state IDs.
+State is slot-local and references the canonical registry in SSOT-05. A
+registry `applicableComponents` entry equal to the Recipe ID applies across
+that Recipe's declared Slots; an entry equal to `${recipeId}.${slot}` applies
+only to that exact Slot. Matching is exact and never prefix- or wildcard-based.
+Provider names such as `isPressed` are not Recipe state IDs.
 
 ### 8.7 Compound variants
 
@@ -991,7 +994,7 @@ AXR1011  non-JSON-safe Recipe structural input
 AXR1012  invalid Recipe source location
 AXA1001  CSS Recipe declaration naming mode violation
 AXA1002  unknown canonical State in CSS Recipe authoring
-AXA1003  canonical State not applicable to the Recipe appearance scope
+AXA1003  canonical State not applicable to the Recipe/Slot appearance scope
 AXA1004  canonical State value does not match its registered value shape
 AXA1005  unknown registered Condition in CSS Recipe authoring
 AXA1006  CSS declaration value kind not permitted by effective property policy

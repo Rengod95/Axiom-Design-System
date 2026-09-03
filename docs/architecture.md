@@ -92,16 +92,18 @@ point and contains exports rather than implementation.
 | Generated State, Condition, Appearance, Motion, and Behavior references | completed schemas and registries | `@axiom/spec-tooling` generator and the three generated contract packages |
 | Positive and negative behavior | `spec/fixtures/`, `fixtures/` | package tests and spec harness |
 
-## Current N18 checkpoint
+## Current N25 checkpoint
 
-The `spec/manifest.json` inventory remains 36 schemas, 14 registries, and 26
-fixture suites with 40 positive and 78 negative files. N18 adds no new schema
-or fixture authority: it adds deterministic, provenance-stamped and
-drift-checked reference types for N12–N17 in three zero-runtime-dependency
-packages. Token generation emits the same 635 Token IDs for light and dark
-contexts. Under ADR-0005, N32 owns pinned React Aria source data and N33 owns
-behavior projection and cross-coverage. N22, not N18, owns the future collision
-trace schema and coverage.
+The `spec/manifest.json` inventory contains 37 schemas, 14 registries, and 27
+fixture suites with 47 positive and 88 negative files. N0–N25 now cover the
+Foundation authorities, generated references, Recipe authoring, Token binding,
+normalization, Motion authoring, and the Button and Select vertical conformance
+fixtures. The Canonical State Registry `0.2` contract distinguishes exact
+Recipe-wide targets from exact Recipe/Slot targets and is enforced at the N15,
+N20, and N23 semantic boundaries. Token generation emits the same 635 Token IDs
+for light and dark contexts. N26 Dialog conformance is the next implementation
+boundary; N32 and N33 retain ownership of pinned React Aria source data and
+behavior projection.
 
 ## Change gate
 

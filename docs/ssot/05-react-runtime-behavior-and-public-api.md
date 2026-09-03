@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-05 — React Runtime, Behavior Provider & Public API
-### Version 0.2.3
+### Version 0.3.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-03 v0.2.2, SSOT-04 v0.2.0 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-03 v0.4.0, SSOT-04 v0.4.0 \
 **Decision basis:** [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md) \
 **Scope:** Canonical runtime state, React Aria projection, generated evaluator binding, and v0.1 public component API
 
@@ -59,10 +59,14 @@ Public Axiom props → extends React Aria props wholesale
 
 The machine-readable authority is
 `spec/state/canonical-state-registry.json`, validated by
-`spec/state/canonical-state-registry.schema.json`. Each entry records its
-State/Lifecycle axis, boolean or enum value shape, applicable component
-contracts, and Appearance/Motion usage evidence. Provider spellings remain in
-later component projection contracts rather than this registry.
+`spec/state/canonical-state-registry.schema.json` under compatibility identity
+`https://axiom.dev/schemas/state/canonical-state-registry/0.2`. Each entry records its
+State/Lifecycle axis, boolean or enum value shape, applicable Recipe or
+Recipe/Slot targets, and Appearance/Motion usage evidence. An unqualified
+target such as `select` applies across the Recipe's declared Slots. A qualified
+target such as `select.item` applies only to that exact Slot; matching is exact
+and does not infer aliases, prefixes, or wildcards. Provider spellings remain
+in later component projection contracts rather than this registry.
 
 ### 3.1 Boolean state
 
@@ -393,6 +397,9 @@ item       hovered, pressed, focused, focusVisible, selected, disabled
 ```
 
 Each repeated item instance is evaluated separately with its own snapshot.
+The Canonical State Registry therefore scopes `selected` to `select.item`, and
+Select lifecycle observations use the canonical `select.popup` Slot identity.
+`option` and `popover` are provider or conceptual terms, not Recipe Slot aliases.
 
 ### 6.4 Dialog projection
 

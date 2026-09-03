@@ -214,7 +214,15 @@ const validateStyleFragment = (
     validateDeclaration(property, value, "object", input, grammarValidator, source, context));
 };
 
-/** Checks one State ID against supplied registry membership, appearance usage, component scope, and value type. */
+/** Resolves component-wide and Slot-qualified State targets without granting sibling Slots access. */
+const stateAppliesToTarget = (
+  applicableComponents: readonly string[],
+  recipeId: string,
+  slot: string | undefined,
+): boolean => applicableComponents.includes(recipeId)
+  || (slot !== undefined && applicableComponents.includes(`${recipeId}.${slot}`));
+
+/** Checks one State ID against supplied registry membership, appearance usage, component/Slot scope, and value type. */
 const validateState = (
   stateId: string,
   value: unknown,
@@ -225,9 +233,10 @@ const validateState = (
 ): CSSRecipeDiagnostic | undefined => {
   const state = input.canonicalStateRegistry.states.find((candidate) => candidate.id === stateId);
   if (state === undefined) return diagnostic(CSS_RECIPE_DIAGNOSTIC_CODE.UNKNOWN_STATE, `Unknown canonical State '${stateId}'.`, source, { ...context, target: stateId });
-  if (!state.usage.includes("appearance") || !state.applicableComponents.includes(recipeId)) return diagnostic(
+  const appearanceTarget = context.slot === undefined ? recipeId : `${recipeId}.${context.slot}`;
+  if (!state.usage.includes("appearance") || !stateAppliesToTarget(state.applicableComponents, recipeId, context.slot)) return diagnostic(
     CSS_RECIPE_DIAGNOSTIC_CODE.STATE_NOT_APPLICABLE,
-    `Canonical State '${stateId}' is not applicable to appearance Recipe '${recipeId}'.`, source, { ...context, target: stateId },
+    `Canonical State '${stateId}' is not applicable to appearance target '${appearanceTarget}'.`, source, { ...context, target: stateId },
   );
   if (state.valueType === "boolean" && typeof value !== "boolean") return diagnostic(
     CSS_RECIPE_DIAGNOSTIC_CODE.STATE_VALUE_INVALID,

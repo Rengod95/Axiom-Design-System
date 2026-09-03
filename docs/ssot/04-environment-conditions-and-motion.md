@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-04 — Environment Conditions & Motion
-### Version 0.3.0
+### Version 0.4.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.0 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.4.0 \
 **Scope:** Responsive/environment conditions and serializable Motion semantics
 
 ---
@@ -562,7 +562,8 @@ preload before synchronous authoring begins.
 The Resolved Token Manifest check includes per-Token order and
 domain/tier/type identity across contexts. Appearance declaration origin `slot`
 and `stage` must equal their containing record/rule, and every selected
-Appearance State must apply to the artifact's Recipe. The artifact's `profile`,
+Appearance State must apply to the artifact's Recipe or exact Recipe/Slot
+target under SSOT-03 and SSOT-05. The artifact's `profile`,
 `profileInputDigest`, `recipeId`, and `slots` must match the N23 profile context
 and source before Motion IR is emitted. N23 does not import spec tooling or the
 Appearance normalizer: the serialized artifact and injected validator are its

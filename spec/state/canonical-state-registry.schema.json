@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
+  "$id": "https://axiom.dev/schemas/state/canonical-state-registry/0.2",
   "title": "Axiom Canonical State Registry",
   "type": "object",
   "required": ["schemaVersion", "states"],
   "properties": {
-    "schemaVersion": { "const": "0.1" },
+    "schemaVersion": { "const": "0.2" },
     "states": {
       "type": "array",
       "minItems": 1,
@@ -33,6 +33,7 @@
           "items": { "$ref": "https://axiom.dev/schemas/common/identifier/0.1" }
         },
         "applicableComponents": {
+          "description": "Exact Recipe IDs apply component-wide; exact Recipe.Slot IDs apply only to that Slot.",
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,

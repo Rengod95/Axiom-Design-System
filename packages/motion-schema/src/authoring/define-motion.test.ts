@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { EffectiveCSSPropertyRegistry } from "@axiom/css-property-profile";
 
 import { createMotionAuthoring, defineMotion, token } from "../index.js";
+import { isClosedAppearanceAuthority } from "./authority-validation.js";
 
 const SHA256_TEST_DIGEST = "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
@@ -15,7 +16,7 @@ const propertyRegistry = {
 const manifestTokens = [{ id: "number.semantic.opacity.start", domain: "number", tier: "semantic", dtcgType: "number", resolvedValue: 0, source: { file: "test", pointer: "" }, dependencies: [] }, { id: "number.semantic.opacity.end", domain: "number", tier: "semantic", dtcgType: "number", resolvedValue: 1, source: { file: "test", pointer: "" }, dependencies: [] }, { id: "duration.semantic.fast", domain: "duration", tier: "semantic", dtcgType: "duration", resolvedValue: { value: 100, unit: "ms" }, source: { file: "test", pointer: "" }, dependencies: [] }, { id: "easing.semantic.standard", domain: "easing", tier: "semantic", dtcgType: "cubicBezier", resolvedValue: [0, 0, 1, 1], source: { file: "test", pointer: "" }, dependencies: [] }, { id: "breakpoint.semantic.viewport.sm", domain: "breakpoint", tier: "semantic", dtcgType: "dimension", resolvedValue: { value: 40, unit: "rem" }, source: { file: "test", pointer: "" }, dependencies: [] }] as const;
 const manifest = { schemaVersion: "0.2", profileVersion: "0.1.0", sourceDigest: SHA256_TEST_DIGEST, contexts: [{ context: { theme: "light" }, tokens: [...manifestTokens].sort((left, right) => left.id.localeCompare(right.id, "en")) }, { context: { theme: "dark" }, tokens: [...manifestTokens].sort((left, right) => left.id.localeCompare(right.id, "en")) }] } as const;
 const tokenDomains = { schemaVersion: "0.1", domains: [{ id: "breakpoint", root: "breakpoint", allowedDTCGTypes: ["dimension"], cssSerializers: ["css.test.v1"] }, { id: "duration", root: "duration", allowedDTCGTypes: ["duration"], cssSerializers: ["css.test.v1"] }, { id: "easing", root: "easing", allowedDTCGTypes: ["cubicBezier"], cssSerializers: ["css.test.v1"] }, { id: "number", root: "number", allowedDTCGTypes: ["number"], cssSerializers: ["css.test.v1"], }] } as const;
-const states = { schemaVersion: "0.1", states: [{ id: "pressed", axis: "state", valueType: "boolean", applicableComponents: ["button"], usage: ["appearance", "motion"] }, { id: "selected", axis: "state", valueType: "boolean", applicableComponents: ["button"], usage: ["appearance"] }] } as const;
+const states = { schemaVersion: "0.2", states: [{ id: "pressed", axis: "state", valueType: "boolean", applicableComponents: ["button"], usage: ["appearance", "motion"] }, { id: "selected", axis: "state", valueType: "boolean", applicableComponents: ["button"], usage: ["appearance"] }] } as const;
 const conditions = { schemaVersion: "0.1", containers: [{ id: "component", cssName: "component" }], conditions: [{ id: "preference.reducedMotion", kind: "preference", feature: "prefers-reduced-motion", equals: "reduce" }, { id: "viewport.width.sm", kind: "viewport", feature: "width", comparison: ">=", value: { kind: "token", path: "breakpoint.semantic.viewport.sm" } }] } as const;
 const appearance = { schemaVersion: "0.1", profile: "axiom-css", profileInputDigest: SHA256_TEST_DIGEST, recipeId: "button", slots: ["root"], base: [], variantAxes: [], stateRules: [], compoundRules: [], conditionRules: [] } as const;
 const digest = { digestCanonicalJson: (_value: unknown) => SHA256_TEST_DIGEST };
@@ -63,6 +64,52 @@ const errorCodes = (operation: () => unknown): readonly string[] => {
 };
 
 describe("Motion authoring", () => {
+  it("authenticates Slot-qualified Appearance States only at their registered Slot", () => {
+    const selectStates = {
+      schemaVersion: "0.2",
+      states: [{
+        id: "selected",
+        axis: "state",
+        valueType: "boolean",
+        applicableComponents: ["select.item"],
+        usage: ["appearance", "behavior"],
+      }],
+    } as const;
+    const selectAppearance = {
+      ...appearance,
+      recipeId: "select",
+      slots: ["root", "item"],
+      stateRules: [{
+        slot: "item",
+        state: "selected",
+        cases: [{ equals: true, apply: [] }],
+      }],
+      compoundRules: [{
+        when: { states: { item: { selected: true } } },
+        apply: [{ slot: "root", declarations: [] }],
+      }],
+      conditionRules: [{
+        when: { all: ["preference.reducedMotion"] },
+        states: { item: { selected: true } },
+        apply: [{ slot: "root", declarations: [] }],
+      }],
+    } as const;
+
+    expect(isClosedAppearanceAuthority(selectAppearance, selectStates, conditions)).toBe(true);
+    expect(isClosedAppearanceAuthority({
+      ...selectAppearance,
+      stateRules: [{ ...selectAppearance.stateRules[0], slot: "root" }],
+    }, selectStates, conditions)).toBe(false);
+    expect(isClosedAppearanceAuthority({
+      ...selectAppearance,
+      compoundRules: [{ ...selectAppearance.compoundRules[0], when: { states: { root: { selected: true } } } }],
+    }, selectStates, conditions)).toBe(false);
+    expect(isClosedAppearanceAuthority({
+      ...selectAppearance,
+      conditionRules: [{ ...selectAppearance.conditionRules[0], states: { root: { selected: true } } }],
+    }, selectStates, conditions)).toBe(false);
+  });
+
   it("normalizes two literal keyframes with explicit provenance", () => {
     const authoring = createAuthoring();
 

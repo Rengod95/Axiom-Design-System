@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1",
+  "schemaVersion": "0.2",
   "states": [
     {
       "id": "checked",
@@ -19,14 +19,14 @@
       "id": "entering",
       "axis": "lifecycle",
       "valueType": "boolean",
-      "applicableComponents": ["dialog", "select.popover"],
+      "applicableComponents": ["dialog", "select.popup"],
       "usage": ["motion"]
     },
     {
       "id": "exiting",
       "axis": "lifecycle",
       "valueType": "boolean",
-      "applicableComponents": ["dialog", "select.popover"],
+      "applicableComponents": ["dialog", "select.popup"],
       "usage": ["motion"]
     },
     {
@@ -75,7 +75,7 @@
       "id": "motionSuppressed",
       "axis": "lifecycle",
       "valueType": "boolean",
-      "applicableComponents": ["dialog", "select.popover"],
+      "applicableComponents": ["dialog", "select.popup"],
       "usage": ["motion"]
     },
     {
@@ -125,7 +125,7 @@
       "id": "selected",
       "axis": "state",
       "valueType": "boolean",
-      "applicableComponents": ["select.option"],
+      "applicableComponents": ["select.item"],
       "usage": ["appearance", "behavior"]
     }
   ]

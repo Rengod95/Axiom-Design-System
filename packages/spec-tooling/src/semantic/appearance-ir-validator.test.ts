@@ -63,6 +63,70 @@ const validIr = {
 };
 
 describe("Appearance IR semantic validation", () => {
+  it("applies a Slot-qualified State only to its registered Recipe Slot", () => {
+    const slotScopedContext: SemanticValidationContext = {
+      ...context,
+      registries: {
+        ...context.registries,
+        "canonical-state-registry": {
+          states: [{
+            id: "selected",
+            usage: ["appearance", "behavior"],
+            valueType: "boolean",
+            applicableComponents: ["select.item"],
+          }],
+        },
+      },
+    };
+    const selectedIr = {
+      ...validIr,
+      recipeId: "select",
+      slots: ["root", "item"],
+      base: [],
+      variantAxes: [],
+      stateRules: [{
+        slot: "item",
+        state: "selected",
+        cases: [{ equals: true, apply: [] }],
+      }],
+      compoundRules: [{
+        when: { states: { item: { selected: true } } },
+        apply: [],
+      }],
+      conditionRules: [{
+        when: { all: ["preference.reducedMotion"] },
+        states: { item: { selected: true } },
+        apply: [],
+      }],
+    };
+
+    expect(validateAppearanceIr(selectedIr, slotScopedContext)).toEqual([]);
+
+    const invalidDiagnostics = validateAppearanceIr({
+      ...selectedIr,
+      stateRules: [{
+        slot: "root",
+        state: "selected",
+        cases: [{ equals: true, apply: [] }],
+      }],
+      compoundRules: [{
+        when: { states: { root: { selected: true } } },
+        apply: [],
+      }],
+      conditionRules: [{
+        when: { all: ["preference.reducedMotion"] },
+        states: { root: { selected: true } },
+        apply: [],
+      }],
+    }, slotScopedContext);
+
+    expect(invalidDiagnostics.map((diagnostic) => diagnostic.location?.pointer)).toEqual([
+      "/stateRules/0/state",
+      "/compoundRules/0/when/states/root/selected",
+      "/conditionRules/0/states/root/selected",
+    ]);
+  });
+
   it("accepts registered slots, variants, states, conditions, and provenance", () => {
     expect(validateAppearanceIr(validIr, context)).toEqual([]);
   });

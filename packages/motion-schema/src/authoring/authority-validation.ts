@@ -196,7 +196,7 @@ const isStateValue = (state: UnknownRecord, value: unknown): boolean =>
 
 /** Validates the Canonical State Registry including axis/value/consumer semantics. */
 const isCanonicalStateRegistry = (value: unknown): boolean => {
-  if (!isRecord(value) || !hasExactKeys(value, ["schemaVersion", "states"]) || value["schemaVersion"] !== "0.1" || !Array.isArray(value["states"]) || value["states"].length === 0) return false;
+  if (!isRecord(value) || !hasExactKeys(value, ["schemaVersion", "states"]) || value["schemaVersion"] !== "0.2" || !Array.isArray(value["states"]) || value["states"].length === 0) return false;
   const ids: string[] = [];
   for (const state of value["states"]) {
     if (!isRecord(state) || !hasExactKeys(state, ["id", "axis", "valueType", "applicableComponents", "usage"], ["values"]) || !isIdentifier(state["id"]) || !MOTION_STATE_AXES.includes(state["axis"] as never) || (state["valueType"] !== "boolean" && state["valueType"] !== "enum") || !Array.isArray(state["applicableComponents"]) || state["applicableComponents"].length === 0 || !state["applicableComponents"].every(isIdentifier) || !hasUniqueStrings(state["applicableComponents"] as readonly string[]) || !Array.isArray(state["usage"]) || state["usage"].length === 0 || !state["usage"].every((usage) => MOTION_STATE_USAGES.includes(usage as never)) || !hasUniqueStrings(state["usage"] as readonly string[]) || !state["usage"].some((usage) => usage === "appearance" || usage === "motion")) return false;
@@ -274,20 +274,20 @@ const hasUniqueSlotRecords = (value: readonly unknown[]): boolean => {
   return slots.every((slot): slot is string => typeof slot === "string") && hasUniqueStrings(slots as readonly string[]);
 };
 
-/** Checks whether a Canonical State may govern the detached Appearance recipe. */
-const isAppearanceApplicableState = (state: UnknownRecord | undefined, recipeId: string): boolean =>
+/** Checks whether a Canonical State may govern the detached Appearance Recipe or exact Slot target. */
+const isAppearanceApplicableState = (state: UnknownRecord | undefined, recipeId: string, slot: string): boolean =>
   state !== undefined
   && Array.isArray(state["usage"])
   && state["usage"].includes("appearance")
   && Array.isArray(state["applicableComponents"])
-  && state["applicableComponents"].includes(recipeId);
+  && (state["applicableComponents"].includes(recipeId) || state["applicableComponents"].includes(`${recipeId}.${slot}`));
 
 /** Validates Variant and State selection maps against their declared Appearance axes. */
 const isSelection = (value: unknown, variants: ReadonlyMap<string, ReadonlySet<string>>, states: ReadonlyMap<string, UnknownRecord>, slots: readonly string[], recipeId: string, kind: "variants" | "states"): boolean => {
   if (!isRecord(value) || Object.keys(value).length === 0) return false;
   return Object.entries(value).every(([name, selection]) => isIdentifier(name) && (kind === "variants"
     ? variants.has(name) && (typeof selection === "string" ? variants.get(name)?.has(selection) === true : Array.isArray(selection) && selection.length > 0 && selection.every((entry) => typeof entry === "string" && variants.get(name)?.has(entry) === true) && hasUniqueStrings(selection as readonly string[]))
-    : isRecord(selection) && Object.keys(selection).length > 0 && Object.entries(selection).every(([stateName, stateValue]) => slots.includes(name) && isAppearanceApplicableState(states.get(stateName), recipeId) && isStateValue(states.get(stateName)!, stateValue))));
+    : isRecord(selection) && Object.keys(selection).length > 0 && Object.entries(selection).every(([stateName, stateValue]) => slots.includes(name) && isAppearanceApplicableState(states.get(stateName), recipeId, name) && isStateValue(states.get(stateName)!, stateValue))));
 };
 
 /** Validates the full closed N15 Appearance shape and its State/Condition/slot semantics before digest comparison. */
@@ -325,7 +325,7 @@ export const isClosedAppearanceAuthority = (
   for (const rule of stateRules) {
     if (!isRecord(rule) || !hasExactKeys(rule, ["slot", "state", "cases"]) || typeof rule["slot"] !== "string" || !slots.includes(rule["slot"]) || typeof rule["state"] !== "string" || !stateMap.has(rule["state"]) || !Array.isArray(rule["cases"]) || rule["cases"].length === 0 || rule["cases"].length > 16) return false;
     const state = stateMap.get(rule["state"] as string)!;
-    if (!isAppearanceApplicableState(state, recipeId) || !rule["cases"].every((stateCase) => isRecord(stateCase) && hasExactKeys(stateCase, ["equals", "apply"]) && isStateValue(state, stateCase["equals"]) && isDeclarationList(stateCase["apply"], recipeId, slots, rule["slot"] as string, "state"))) return false;
+    if (!isAppearanceApplicableState(state, recipeId, rule["slot"] as string) || !rule["cases"].every((stateCase) => isRecord(stateCase) && hasExactKeys(stateCase, ["equals", "apply"]) && isStateValue(state, stateCase["equals"]) && isDeclarationList(stateCase["apply"], recipeId, slots, rule["slot"] as string, "state"))) return false;
   }
   const compoundRules = value["compoundRules"];
   if (!Array.isArray(compoundRules) || compoundRules.length > 256 || !compoundRules.every((rule) => isRecord(rule) && hasExactKeys(rule, ["when", "apply"]) && isRecord(rule["when"]) && hasExactKeys(rule["when"], [], ["variants", "states"]) && Object.keys(rule["when"]).length > 0 && (rule["when"]["variants"] === undefined || isSelection(rule["when"]["variants"], variants, stateMap, slots, recipeId, "variants")) && (rule["when"]["states"] === undefined || isSelection(rule["when"]["states"], variants, stateMap, slots, recipeId, "states")) && Array.isArray(rule["apply"]) && rule["apply"].length > 0 && rule["apply"].length <= 64 && rule["apply"].every((entry) => isSlotRecord(entry, recipeId, slots, "compound")))) return false;
