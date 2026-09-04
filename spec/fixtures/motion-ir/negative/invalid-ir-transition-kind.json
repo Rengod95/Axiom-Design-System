@@ -1,0 +1,4 @@
+{
+  "schemaVersion": "0.1", "profile": "axiom-css", "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75", "conditionRegistryDigest": "sha256:19fe87b0b53011c4e4ce7b57a51aae66d306c46b3bc1bb512b20f6b29245916b", "id": "button.root.backend", "recipeId": "button", "slot": "root",
+  "phases": [{ "phase": "enter", "sequence": [{ "at": { "kind": "afterPrevious" }, "tracks": [{ "property": "opacity", "allowDiscrete": false, "keyframes": [{ "offset": 0, "value": { "kind": "css", "value": "0" } }, { "offset": 1, "value": { "kind": "css", "value": "1" } }] }], "transition": { "type": "keyframes" } }] }], "reducedMotion": { "strategy": "disable" }
+}

@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-03 — CSS Appearance Profile & Property Policy
-### Version 0.2.1
+### Version 0.3.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1 \
 **Decision basis:** [ADR-0003](../adr/0003-recipe-authoring-kernel-and-third-party-boundary.md) \
 **Scope:** Pinned CSS metadata → effective property registry → Recipe authoring → normalized Appearance IR
 
@@ -81,6 +81,15 @@ The projection is mechanical. It does not introduce Axiom synonyms such as
 
 An authoring object MUST use one naming mode. Mixed camelCase/kebab-case keys in
 one style fragment are rejected.
+
+N20 CSS Recipe authoring accepts generated camelCase object keys for ordinary
+Slot styles. Its explicit same-stage ordered declaration-array escape uses the
+canonical kebab-case property name in each `{ property, value }` entry. An
+object fragment cannot contain canonical kebab-case keys and an ordered array
+cannot contain camelCase keys; the two forms are not mixed within one style
+fragment. The Recipe Kernel treats either JSON-safe form as opaque structural
+data. N20 validates property identity and value shape; N22 owns conversion to
+normalized ordered Declaration IR.
 
 ### 3.3 Custom properties
 
@@ -468,10 +477,14 @@ Each Token segment Domain must appear in
 `box-shadow` may directly accept a `shadow` Token while allowing `space`,
 `blur`, and `color` Token segments in a template.
 
-`negateToken(token(...))` is a restricted authoring helper. It normalizes to a
-CSS template equivalent to `calc(0px - var(--generated-token))` and is legal
-only when `allowsTokenNegation` is true. v0.1 enables it for margin and inset
-families but not padding or gap.
+`negateToken(token(...))` is a restricted authoring helper. N20 preserves its
+closed serializable authoring form `{ kind: "negated-token", token }` and
+checks only that the embedded value is a closed Token Reference; N20 does not
+decide whether a property permits negation. N21 validates
+`allowsTokenNegation`, Domain, and serializer policy, so margin/inset acceptance
+and padding/gap rejection first become binding decisions there. N22 lowers an
+accepted negated Token to a CSS template equivalent to
+`calc(0px - var(--generated-token))`.
 
 ### 7.4 CSS-wide keywords
 
@@ -529,6 +542,15 @@ CSS/class output
 runtime callbacks
 ```
 
+N20 configures this Kernel with an explicit effective Property Registry,
+Canonical State Registry, and Condition Registry. It does not read repository
+state or select a current profile implicitly. The configured `defineRecipe`
+boundary validates generated property identity, permitted value kinds, raw CSS
+grammar, canonical State membership/applicability/value shape, and registered
+Condition membership. It retains only the Kernel definition and structural
+snapshot; it does not emit Appearance IR, CSS, class strings, collision traces,
+or provider/runtime data.
+
 Panda Slot Recipes is the primary API-shape reference and Tailwind Variants is
 a secondary ergonomics reference. Their evaluated output is not accepted by
 the normalizer. Optional source importers are downstream of this contract and
@@ -537,9 +559,14 @@ must fail on any construct without a lossless Axiom representation.
 ### 8.2 Recipe shape
 
 ```ts
-defineRecipe({
+const authoring = createCSSRecipeAuthoring({
+  propertyRegistry,
+  canonicalStateRegistry,
+  conditionRegistry,
+});
+
+authoring.defineRecipe({
   id: "button",
-  profile: "axiom-css",
   slots: ["root", "icon", "label"],
   base: {
     root: {
@@ -691,6 +718,13 @@ interface CSSAppearanceIR {
 ```
 
 Condition rule details are normative in SSOT-04.
+
+During Gate A, the generated `CSSAppearanceIR` and `CollisionTrace` TypeScript
+contracts are intentionally carried by `@axiom/motion-schema` as the existing
+shared serializable-contract carrier. This is a type-only ownership bridge: it
+does not make Appearance normalization part of Motion, and it does not change
+the closed N15 Appearance IR schema. A later governed package split may move
+the carrier only with regenerated contracts and compatibility review.
 
 ### 9.4 Variant and state IR
 
@@ -864,6 +898,26 @@ template segment validity
 resource policy
 ```
 
+N20 performs the structural declaration path: CSS literal grammar and profile
+value-kind permission, plus the schema-shaped Token Reference/template form
+and closed negated-Token authoring form.
+N21 is the first phase permitted to validate Token existence, direct/template
+Domain compatibility, projector, negation, serializer, or composite expansion.
+The N20 boundary therefore MUST NOT call Token-binding validation merely
+because an authored declaration contains a Token Reference.
+
+N21 configures authoring with complete resolved Token, Domain, projector,
+canonical-digest, serializer, projector-port, and exact Effective CSS Property
+Registry authority inputs. It verifies every authority, including a canonical
+digest of the complete effective registry rather than only profile metadata,
+validates Token identity in every context, validates synthetic and
+context-serialized templates, and returns a frozen source-ordered binding
+receipt. Projector outputs re-enter authoring, security, value-kind, and grammar
+validation. `profileInputDigest` remains `webrefInputDigest`; the receipt also
+carries `effectivePropertyRegistry` so N22 cannot apply a binding receipt under
+mutated property policy. N22 consumes the receipt without re-deciding N21
+semantics.
+
 ### P6 — Recipe
 
 ```text
@@ -883,6 +937,19 @@ shorthand overlap diagnostics
 stable stage order
 serialized profile digest
 ```
+
+The separate collision trace is closed and evidence-bearing. Each entry has a
+contiguous source-order ID, the concrete affected property, the earlier and
+later declaration property identities and origins, the effective-policy
+provenance for both declarations, and Variant, State, and optional Condition
+applicability derived by N22 from the freshly revalidated N21 snapshot. The trace
+semantic validator authenticates the root profile identity and checks
+declaration provenance, ordering, and structural consistency with serialized
+origins; a trace alone does not recreate the source Compound predicate. The concrete affected property is the shared property
+for same-property collisions and the affected longhand for shorthand/reset
+relations. A semantic validator checks this evidence against the effective CSS
+Property Registry; trace consumers MUST NOT treat unvalidated evidence as
+authentic.
 
 ---
 
@@ -905,6 +972,38 @@ AXP1301  shorthand/longhand overlap
 AXP1302  reset-longhand conflict
 AXN2001  unstable declaration order
 AXN2002  profile digest mismatch
+AXN2101  collision trace ID order invalid
+AXN2102  collision trace Recipe identity mismatch
+AXN2103  collision declaration property evidence invalid
+AXN2104  collision policy provenance stale or forged
+AXN2105  collision relation evidence invalid
+AXN2106  collision applicability serialization order invalid
+AXR1001  invalid Recipe structural shape or closed-key violation
+AXR1002  invalid shared-schema Recipe identifier
+AXR1003  duplicate Recipe Slot
+AXR1004  undeclared Recipe Slot reference
+AXR1005  invalid Recipe Variant shape or identifier
+AXR1006  invalid default Recipe Variant selection
+AXR1007  invalid compound Recipe predicate or reference
+AXR1008  invalid Recipe State rule or case
+AXR1010  invalid Recipe Condition expression or rule
+AXR1011  non-JSON-safe Recipe structural input
+AXR1012  invalid Recipe source location
+AXA1001  CSS Recipe declaration naming mode violation
+AXA1002  unknown canonical State in CSS Recipe authoring
+AXA1003  canonical State not applicable to the Recipe appearance scope
+AXA1004  canonical State value does not match its registered value shape
+AXA1005  unknown registered Condition in CSS Recipe authoring
+AXA1006  CSS declaration value kind not permitted by effective property policy
+AXA1007  malformed CSS Recipe declaration value or ordered declaration entry
+AXA1101  N21 authority digest mismatch
+AXA1102  unresolved Token in a required context
+AXA1103  resolved Token context identity mismatch
+AXA1104  Token Domain or DTCG type mismatch
+AXA1105  Token serializer identity failure
+AXA1106  governed Token negation failure
+AXA1107  Token projector identity or parameter failure
+AXA1108  Token projector output revalidation failure
 ```
 
 Every diagnostic includes property, Recipe, Slot, stage, source location, and

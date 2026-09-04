@@ -41,6 +41,7 @@ export type SemanticValidatorId = (typeof SEMANTIC_VALIDATOR_IDS)[number];
 
 export interface SemanticValidationContext {
   readonly registries: Readonly<Record<string, unknown>>;
+  readonly relatedFixtures?: Readonly<Record<string, unknown>>;
 }
 
 export interface SchemaManifestEntry {
@@ -55,12 +56,20 @@ export interface RegistryManifestEntry {
   readonly semanticValidator?: SemanticValidatorId;
 }
 
+export interface RelatedFixtureManifestEntry {
+  readonly path: string;
+  readonly schema: string;
+  readonly semanticValidator?: SemanticValidatorId;
+}
+
 export interface FixtureSuiteManifestEntry {
   readonly id: string;
   readonly schema: string;
   readonly positiveDirectory: string;
   readonly negativeDirectory: string;
   readonly semanticValidator?: SemanticValidatorId;
+  readonly allowedWarnings?: readonly string[];
+  readonly relatedFixtures?: Readonly<Record<string, RelatedFixtureManifestEntry>>;
 }
 
 export interface SpecManifest {

@@ -1,9 +1,9 @@
 # React Aria Behavioral Criteria Profile
 
 **Status:** NORMATIVE ANNEX \
-**Depends on:** SSOT-05 v0.2.2, ADR-0002 \
+**Depends on:** SSOT-05 v0.2.3, ADR-0002 \
 **Initial components:** Button, Select, Dialog \
-**Source candidate:** React Aria Components 1.20.0 family; N17 lockfile pinning pending
+**Source candidate:** React Aria Components 1.20.0 family; N32 lockfile pinning pending under ADR-0005
 
 ---
 
@@ -16,8 +16,9 @@ state machines.
 The generated JSON profiles are normative implementation inputs. This Markdown
 document defines their required coverage and human-readable criteria IDs.
 No React Aria package is present in the N15 lockfile, so this annex defines the
-criteria shape and reviewed candidate only. N17 establishes the executable
-source baseline by pinning packages and generating the source manifest.
+criteria shape and reviewed candidate only. Under ADR-0005, N17 adds
+schema/structural-fixture contracts; N32 establishes the executable source
+baseline by pinning packages and generating the source manifest/profiles.
 
 ---
 
@@ -224,7 +225,8 @@ Behavior Criteria Profile rather than the animation timeline.
 
 ## 7. Criteria-to-Projection Coverage
 
-Generation emits these reports:
+N33 generation emits these reports from the N32 current data and N33 projection
+schema:
 
 ```text
 provider observation → canonical state/lifecycle

@@ -12,6 +12,7 @@ const domains: readonly TokenDomainDefinition[] = [
     id: "color",
     root: "color",
     allowedDTCGTypes: ["color"],
+    cssSerializers: ["css.color.v1"],
   },
 ];
 
@@ -55,6 +56,7 @@ describe("Token identity", () => {
         root: "opacity",
         allowedDTCGTypes: ["number"],
         constraints: [{ kind: "numberRange", minimum: 0, maximum: 1 }],
+        cssSerializers: ["css.number.v1"],
       },
     ];
     const result = parseTokenIdentity("opacity.primitive.overlay", constrainedDomains);

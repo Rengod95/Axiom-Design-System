@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": ["src/generated/reference-contracts.ts", "src/generated/reference-contracts.type-test.ts"],
+  "exclude": []
+}

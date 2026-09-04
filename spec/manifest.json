@@ -19,6 +19,14 @@
       "path": "common/token-reference.schema.json"
     },
     {
+      "id": "https://axiom.dev/schemas/behavior/component-criteria-profile/0.1",
+      "path": "behavior/component-behavior-criteria-profile.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/behavior/criteria-source-manifest/0.1",
+      "path": "behavior/behavior-criteria-source-manifest.schema.json"
+    },
+    {
       "id": "https://axiom.dev/schemas/condition/expression/0.1",
       "path": "condition/condition-expression.schema.json"
     },
@@ -29,6 +37,14 @@
     {
       "id": "https://axiom.dev/schemas/css/appearance-ir/0.1",
       "path": "css/appearance-ir.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/css/collision-trace/0.1",
+      "path": "css/collision-trace.schema.json"
+    },
+    {
+      "id": "https://axiom.dev/schemas/motion/ir/0.1",
+      "path": "motion/motion-ir.schema.json"
     },
     {
       "id": "https://axiom.dev/schemas/css/declaration/0.1",
@@ -214,6 +230,27 @@
   ],
   "fixtureSuites": [
     {
+      "id": "behavior-criteria-source-manifest",
+      "schema": "https://axiom.dev/schemas/behavior/criteria-source-manifest/0.1",
+      "positiveDirectory": "fixtures/behavior-criteria-source-manifest/positive",
+      "negativeDirectory": "fixtures/behavior-criteria-source-manifest/negative",
+      "semanticValidator": "behavior-criteria-source-manifest"
+    },
+    {
+      "id": "component-behavior-criteria-profile",
+      "schema": "https://axiom.dev/schemas/behavior/component-criteria-profile/0.1",
+      "positiveDirectory": "fixtures/component-behavior-criteria-profile/positive",
+      "negativeDirectory": "fixtures/component-behavior-criteria-profile/negative",
+      "semanticValidator": "component-behavior-criteria-profile",
+      "relatedFixtures": {
+        "source": {
+          "path": "fixtures/behavior-criteria-source-manifest/positive/structurally-valid.json",
+          "schema": "https://axiom.dev/schemas/behavior/criteria-source-manifest/0.1",
+          "semanticValidator": "behavior-criteria-source-manifest"
+        }
+      }
+    },
+    {
       "id": "canonical-state-registry",
       "schema": "https://axiom.dev/schemas/state/canonical-state-registry/0.1",
       "positiveDirectory": "fixtures/canonical-state-registry/positive",
@@ -258,6 +295,21 @@
       "positiveDirectory": "fixtures/css-appearance-ir/positive",
       "negativeDirectory": "fixtures/css-appearance-ir/negative",
       "semanticValidator": "css-appearance-ir"
+    },
+    {
+      "id": "css-collision-trace",
+      "schema": "https://axiom.dev/schemas/css/collision-trace/0.1",
+      "positiveDirectory": "fixtures/css-collision-trace/positive",
+      "negativeDirectory": "fixtures/css-collision-trace/negative",
+      "semanticValidator": "css-collision-trace"
+    },
+    {
+      "id": "motion-ir",
+      "schema": "https://axiom.dev/schemas/motion/ir/0.1",
+      "positiveDirectory": "fixtures/motion-ir/positive",
+      "negativeDirectory": "fixtures/motion-ir/negative",
+      "semanticValidator": "motion-ir",
+      "allowedWarnings": ["AXM1012", "AXM1015"]
     },
     {
       "id": "css-declaration",

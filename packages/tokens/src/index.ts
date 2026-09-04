@@ -11,7 +11,11 @@ export {
   isTokenTier,
 } from "./contracts.js";
 export type {
+  CanonicalDigestPort,
+  CompositeTokenProjectorDescriptor,
+  CompositeTokenProjectorRegistry,
   DtcgType,
+  IndexedResolvedToken,
   NormalizedTokenIdentity,
   ParsedDtcgDocument,
   ParsedDtcgToken,
@@ -25,6 +29,7 @@ export type {
   TokenDiagnostic,
   TokenDomainConstraint,
   TokenDomainDefinition,
+  TokenDomainRegistry,
   TokenJsonObject,
   TokenJsonPrimitive,
   TokenJsonValue,
@@ -49,3 +54,7 @@ export {
 } from "./domain/identity.js";
 export { resolveTokenContexts } from "./resolution/context-resolver.js";
 export { serializeResolvedTokenManifest } from "./resolution/manifest-serializer.js";
+export {
+  createResolvedTokenManifestIndex,
+  digestResolvedTokenManifest,
+} from "./resolution/manifest-index.js";

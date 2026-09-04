@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "0.1",
+  "provider": "react-aria",
+  "packages": [
+    { "name": "@react-aria/test-utils", "version": "0.0.0-fixture", "integrity": "sha512-fixtureTestUtils" },
+    { "name": "react-aria", "version": "0.0.0-fixture", "integrity": "sha512-fixtureReactAria" },
+    { "name": "react-aria-components", "version": "0.0.0-fixture", "integrity": "sha512-fixtureComponents" }
+  ],
+  "evidence": [
+    {
+      "id": "react-aria.button.fixture",
+      "url": "https://react-aria.adobe.com/Button",
+      "digest": "sha256:4639fb2ca0eef99003c8d4d0cfcf2715b9563f677df65152261dd772fff249d5",
+      "retrievalPolicy": "pinned-artifact",
+      "artifactPath": "fixtures/behavior-evidence/button.fixture.html"
+    }
+  ],
+  "manifestDigest": "sha256:4155951148f287669b1d5a8e430521482c48fd704ac95f86fa6b3761f260ff0e"
+}

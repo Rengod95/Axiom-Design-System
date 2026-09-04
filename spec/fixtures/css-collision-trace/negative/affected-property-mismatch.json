@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.1",
+  "profile": "axiom-css",
+  "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+  "recipeId": "button",
+  "entries": [{
+    "id": "collision-0001", "relation": "shorthand-longhand", "affectedProperty": "color",
+    "earlier": { "property": "border", "origin": { "recipeId": "button", "slot": "root", "stage": "base", "source": "button.ts#/base/root/border" }, "policyProvenance": [{ "rule": "standard", "source": "status-default" }, { "rule": "border-composite", "source": "token-binding-catalog" }], "applicability": { "variants": [], "states": [] } },
+    "later": { "property": "border-color", "origin": { "recipeId": "button", "slot": "root", "stage": "variant", "source": "button.ts#/variants/tone/brand/root/borderColor" }, "policyProvenance": [{ "rule": "standard", "source": "status-default" }, { "rule": "paint", "source": "policy-group" }, { "rule": "color-paint", "source": "token-binding-catalog" }], "applicability": { "variants": [{ "axis": "tone", "values": ["brand"] }], "states": [] } },
+    "winner": "later"
+  }]
+}

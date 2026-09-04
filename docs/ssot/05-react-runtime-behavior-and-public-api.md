@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-05 — React Runtime, Behavior Provider & Public API
-### Version 0.2.2
+### Version 0.2.3
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-03 v0.2.1, SSOT-04 v0.2.0 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-03 v0.2.2, SSOT-04 v0.2.0 \
 **Decision basis:** [ADR-0002](../adr/0002-react-aria-behavioral-criteria-source.md) \
 **Scope:** Canonical runtime state, React Aria projection, generated evaluator binding, and v0.1 public component API
 
@@ -151,6 +151,8 @@ interface BehaviorCriteriaSourceManifest {
     id: string;
     url: string;
     digest: string;
+    retrievalPolicy: "pinned-artifact";
+    artifactPath: string;
   }[];
   manifestDigest: string;
 }
@@ -165,10 +167,15 @@ react-stately          3.49.0
 ```
 
 These packages are not installed in the N15 lockfile and therefore are not a
-current source baseline. N17 MUST pin the selected packages, generate the source
-manifest from the resulting lockfile, and reconcile any version difference
-before a criteria profile becomes executable. Candidate prose never overrides
-the generated manifest.
+current source baseline. Under ADR-0005, N17 defines only
+schema/structural-fixture contracts; N32 pins the selected packages and
+generates the source manifest/profiles from the resulting lockfile. Candidate
+prose never overrides the generated manifest.
+
+A component profile may consume a source manifest only through a relation that
+declares the source schema and semantic validator. The conformance harness MUST
+validate that relation, its self digest, and its pinned artifacts before pairing
+the source with the profile.
 
 ### 4.2 Criteria profile
 
@@ -325,6 +332,10 @@ const buttonBehaviorContract = {
 ## 6. Provider State Projection
 
 ### 6.1 Projection rule
+
+N33 owns `behavior-projection.schema.json`, cross-coverage, and
+component-local projection validation. N17 does not create executable
+projection data.
 
 A projection may:
 
@@ -736,6 +747,18 @@ AXB1102  criteria evidence digest mismatch
 AXB1103  provider upgrade has unreviewed criteria diff
 AXB1104  public behavior fails a required criterion
 AXB1105  criteria profile references an unknown provider observation
+AXB1106  pinned criteria evidence artifact is unavailable
+AXB1107  pinned criteria evidence resolves outside the repository
+AXB1201  source manifest self-digest mismatch
+AXB1202  invalid required provider package set
+AXB1203  duplicate or unordered provider package identity
+AXB1204  duplicate or unordered evidence identity
+AXB1205  profile id and component identity mismatch
+AXB1206  duplicate criterion id
+AXB1207  unordered criterion ids
+AXB1208  profile source manifest digest mismatch
+AXB1209  criterion references unknown source evidence
+AXB1210  criterion namespace does not match its component
 
 AXR3001  public API exposes provider type
 AXR3002  unsupported consumer appearance object

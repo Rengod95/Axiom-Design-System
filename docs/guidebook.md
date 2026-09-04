@@ -1,1220 +1,1556 @@
-# Axiom Repository Guidebook
+# Axiom Guidebook
 
-**Orientation:** Non-normative\
-**Language:** 한국어 설명과 영문 code identifier·signature·path\
-**Implementation baseline:** N0–N15, `main` `4546147ba7537aee9188a82b3f35fe266f2f1422`
+> 이 문서는 Axiom을 처음 읽는 기여자를 위한 학습 지도다. 규칙을 새로 정하는 문서가
+> 아니며, 실제 권한은 ADR, SSOT, `spec/`, 고정된 검증 사례(fixture), source에서 생성된
+> contract 순서로 확인한다.
+> 이 문서가 그 자료와 다르면 Guidebook을 믿고 진행하지 말고 충돌을 보고한다.
 
-이 책은 Axiom 저장소를 처음 보는 contributor가 처음부터 끝까지 읽으며 하나의
-mental model을 만들 수 있도록 구성한 구현 안내서다. 현재 구조를 이해하고 코드를
-찾는 출발점이지, 새로운 규칙을 만드는 문서는 아니다. 보장과 규범의 실제 소유자는
-[documentation authority index](README.md)에 정의된 ADR, SSOT와 machine-readable
-`spec/`다.
+## 이 문서를 사용하는 네 가지 방법
 
-## 1. 이 책을 읽는 방법
+처음부터 모든 파일을 외울 필요는 없다. 지금 하려는 일에 맞는 부분부터 읽는다.
 
-처음 방문했다면 1–7장을 순서대로 읽는다. 그러면 “무엇이 authority인가”, “데이터가
-어디서 어디로 흐르는가”, “네 package가 왜 분리되어 있는가”가 연결된다. 실제 변경을
-준비할 때는 package guide와 change recipe로 이동한다. 특정 symbol을 찾는 경우에는
-8–12장의 package/module reference에서 path나 symbol을 검색한다.
+| 지금 궁금한 것 | 읽을 곳 | 읽은 뒤 할 수 있어야 하는 일 |
+| --- | --- | --- |
+| Axiom이 무엇을 만드는가 | Part I | Button 값 하나가 현재 결과까지 이동하는 과정을 설명한다. |
+| 무엇을 어디서 바꾸는가 | Part II | 원본과 generated file을 구분하고 올바른 검증 명령을 고른다. |
+| 왜 이런 경계가 있는가 | Part III | `contract`, `registry`, `manifest`, `IR`이 서로 다른 이유를 설명한다. |
+| 특정 파일/API가 무엇을 하는가 | Part IV | 10개 package와 95개 검증 대상 module에서 구현 위치를 찾는다. |
 
-이 책에서 사용하는 표현은 다음처럼 구분한다.
+이 문서가 가정하는 독자는 JavaScript object, TypeScript type/interface, 함수와 module,
+JSON, `package.json`, `pnpm` 명령을 읽을 수 있다. 디자인 Token, 기계가 읽는 데이터
+규칙, 여러 단계의 변환, 중간 산출물은 처음 접할 수 있다고 가정한다. 설명은 한국어로 하고 실제로
+검색해야 하는 identifier와 path는 원문을 유지한다.
 
-| Expression | Meaning |
-| --- | --- |
-| **owns** | 해당 경계가 contract나 behavior의 변경 책임을 가진다 |
-| **validates** | 더 높은 authority가 정한 규칙을 검사한다 |
-| **generates** | pinned input으로부터 byte-stable artifact를 만든다 |
-| **adapts** | 외부 형식을 Axiom-owned contract로 변환하고 외부 type을 차단한다 |
-| **planned** | SSOT에는 필요하지만 현재 package graph에는 아직 없는 기능이다 |
+상태 표현은 세 가지로 고정한다.
 
-### 현재 checkpoint
+- **current**: 현재 N0–N24 코드와 검증에서 실행되는 동작
+- **planned**: SSOT에 순서가 있지만 아직 현재 package가 제공하지 않는 동작
+- **historical**: 당시 판단을 기록하지만 현재 규칙을 소유하지 않는 자료
 
-이 문서가 처음 작성된 N0–N15 checkpoint는 다음과 같다. 숫자는 architecture 상수가
-아니라 command로 다시 계산되는 inventory다.
+# Part I — Axiom을 이해하는 한 경로
 
-| Inventory | Current value | Verification owner |
-| --- | ---: | --- |
-| Workspace packages | 4 | `pnpm-workspace.yaml` |
-| Handwritten/generated non-test package modules | 44 | `pnpm guidebook:check` |
-| Repository policy scripts after this guide | 4 | `pnpm guidebook:check` |
-| Schemas / registries / fixture suites | 33 / 14 / 23 | `pnpm spec:check` |
-| Positive / negative spec fixtures | 26 / 57 | `pnpm spec:check` |
-| Resolved Token IDs per light/dark context | 635 / 635 | `pnpm tokens:check` |
-| Effective CSS properties | 818 | `pnpm profile:check` |
-| Unit tests before the guidebook checker | 87 | `pnpm test` |
+## 1. Axiom은 아직 UI component library가 아니다
 
-N16 Motion IR, N17 Behavioral Criteria contract와 그 뒤 compiler/runtime package는
-여전히 planned scope다. [current architecture](architecture.md)의 current graph와
-[SSOT-02](ssot/02-adapter-contract-readiness-and-governance.md)의 implementation order를
-혼동하지 않는다.
+버튼을 만드는 일은 JSX와 CSS를 작성하는 것으로 끝나지 않는다. 다음 질문에 여러
+package가 서로 다른 답을 갖기 시작하면 component 수가 늘수록 결과를 믿기 어렵다.
 
-## 2. Axiom을 한 장으로 이해하기
+- 브랜드 배경색은 어떤 이름으로 부르고 light/dark에서 어떤 값이 되는가?
+- `backgroundColor`에 아무 Token이나 넣어도 되는가?
+- `pressed`와 `reducedMotion`은 같은 종류의 조건인가?
+- 두 선언이 같은 CSS property를 덮으면 어떤 선언이 이기는가?
+- 생성된 파일이 어떤 원본과 규칙으로 만들어졌는가?
 
-Axiom은 component library에서 출발하지 않는다. 사람이 작성하는 Token과 Recipe,
-외부 표준 데이터, State와 Condition을 먼저 **검사 가능한 contract**로 고정하고,
-compiler와 runtime은 그 contract를 소비한다. 따라서 TypeScript 구현이 먼저 새
-규칙을 발명할 수 없다.
+Axiom의 현재 결과는 브라우저에 그려진 Button이 아니다. 사람이 작성한 의도와 저장된
+규칙을 검사하여, 다음 단계가 신뢰할 수 있는 **검증된 중간 결과**를 만드는 토대
+(Foundation)다. N24에서 Button에 대해 현재 얻는 대표 결과는 다음과 같다.
+
+1. light/dark별로 실제 값이 채워진 Token 목록
+2. 사용할 수 있는 CSS property와 Token 연결 규칙표
+3. 어떤 규칙을 통과했는지 증거가 붙은 Recipe
+4. 적용 단계 순서가 명시된 declaration data와 별도의 충돌 근거
+5. 시간에 따른 변화가 검증되어 기록된 data
+
+뒤에서는 이 결과를 각각 resolved manifest, Recipe receipt, Appearance IR,
+collision trace, Motion IR이라는 실제 이름으로 연결한다. 지금은 이름보다 “의도와 규칙을
+검사해 다음 단계용 data를 만든다”는 관계만 기억하면 된다.
+
+최종 CSS text, class name, DOM, React component는 아직 current 결과가 아니다. Web
+compiler는 N29, Motion runtime backend와 React용 결과 변환은 그 뒤의 planned 작업이다.
+
+### 왜 component보다 contract가 먼저인가
+
+TypeScript 함수 `saveUser(input): Result`를 여러 팀이 호출한다고 생각해 보자. 구현보다
+먼저 입력, 출력, 오류가 합의되어야 호출자가 안전하게 작업할 수 있다. Axiom에서
+계약(`contract`: 다른 module이 의존해도 되는 입력·출력·오류·호환 규칙의 경계)이 먼저인
+이유도 같다. Token, component 상태(State), 환경 조건(Condition), Appearance의 모양과
+실패 조건을 먼저 고정해야 이후
+compiler와 runtime이 서로 다른 해석을 하지 않는다.
+
+비유의 한계도 있다. 일반 함수 type은 주로 한 호출 경계를 설명하지만 Axiom contract는
+기계가 읽는 모양 규칙, 등록 목록, 통과·실패 사례, generated TypeScript가 함께 한 경계를
+증명한다.
+
+**기억할 것**
+
+- Axiom의 현재 산출물은 UI가 아니라 검증된 Foundation artifact다.
+- contract-first는 구현을 미루는 뜻이 아니라 여러 구현이 공유할 경계를 먼저 고정한다는 뜻이다.
+- N24 결과와 N29 이후 planned 결과를 한 pipeline처럼 말하면 안 된다.
+
+확인 질문: 지금 `docs/guidebook.md`만 보고 “Axiom이 CSS를 생성한다”고 말하면 왜 틀린가?
+
+## 2. package 이름을 빼고 보는 전체 시스템
+
+먼저 구현 이름을 가리고 값이 어디서 어디로 이동하는지만 본다. 아래 그림은 두 입력
+흐름이 검증된 Appearance 결과에서 만나는 과정을 보여준다.
 
 ```mermaid
 flowchart TD
-    R["Owner requirement"] --> A["Accepted ADR"]
-    A --> S["SSOT"]
-    S --> M["Schemas and registries"]
-    M --> F["Fixtures and generated contracts"]
-    F --> I["Packages and adapters"]
+    A["사람이 작성한 Token"] --> B["Token 형식·관계 검사와 context별 값 계산"]
+    R["ADR·SSOT·spec의 규칙"] --> B
+    B --> C["theme별 실제 값이 든 Token 목록"]
+    D["사람이 작성한 Button Recipe"] --> E["property·Token·State·Condition 검사"]
+    R --> E
+    C --> E
+    E --> F["통과한 규칙의 증거가 붙은 Recipe"]
+    F --> G["단계별 declaration data + 충돌 근거"]
 ```
 
-권한 순서는 다음과 같다.
+그림은 위에서 아래로 읽는다. 각 화살표가 의미하는 실제 입력, 작업, 출력, 실패는 다음과
+같다.
 
-1. architecture를 수정하는 accepted ADR
-2. system/domain SSOT
-3. `spec/`의 schema, registry, pinned input manifest
-4. positive/negative conformance fixture와 golden artifact
-5. generated TypeScript/reference definition
-6. compiler/runtime implementation
-7. example과 historical report
+| 화살표 | 들어오는 값 | 하는 일 | 나가는 값 | 실패 예 |
+| --- | --- | --- | --- | --- |
+| Token → 계산 | `$value`와 `$type`이 있는 JSON | ID, type, unit, alias 관계를 검사한다. | 정규화된 Token record | 중복 ID, 지원하지 않는 unit |
+| 규칙 → 계산 | Token 값 범주(Domain)·의미 층(tier)·계산 환경(context) 규칙 | context override를 합치고 `{target.id}`를 조회한다. | light/dark별 concrete value | 없는 target, alias cycle |
+| Token 목록 → Recipe 검사 | context마다 완성된 Token entry | property가 그 Token 값 범주를 허용하는지와 실제 CSS 문법을 검사한다. | Token 연결 evidence | `space` Token을 `background-color`에 직접 사용 |
+| Recipe → 통과 증거 | slot·variant·state·condition별 선언 | 구조와 모든 authority content 지문(digest)을 다시 확인한다. | frozen `DefinedCSSRecipe` | stale registry content |
+| 통과 증거 → declaration data | 검증된 선언과 property 관계 | key를 표준으로 고정한 CSS 이름(canonical name)으로 바꾸고 순서를 보존하며 충돌을 분석한다. | `CSSAppearanceIR`, `CollisionTrace` | reset-longhand 충돌 |
 
-명시적으로 승인된 owner requirement가 출시 전 계약과 충돌하면 기존 구현을 억지로
-SSOT에 맞추지 않는다. requirement를 ADR decision input으로 기록하고 SSOT와
-machine-readable contract를 reconcile한 뒤 위 순서를 다시 적용한다. Token clean
-break는 [ADR-0004](adr/0004-token-vocabulary-and-color-profile.md)와
-[SSOT-01](ssot/01-foundation-and-domain-contracts.md)이 이 절차를 적용한 사례다.
+여기서 authority는 “누가 더 중요해 보이는가”가 아니라, 어떤 파일이 어떤 결정을 최종으로
+소유하는지를 뜻한다. 진실의 원천(`source of truth`: 충돌 시 최종 판정이 시작되는 자료)은
+하나의 파일 이름이 아니라 정해진 우선순위다. [문서 index](README.md)의 Authority Order가
+그 순서를 소유한다.
 
-### 서로 섞지 말아야 하는 네 축
+**기억할 것**
 
-| Axis | Question | Example |
+- Token Foundation 흐름과 Recipe 소비 흐름은 별개로 시작해 N21 검사에서 만난다.
+- 모든 화살표에는 구체적인 전후 값과 실패 경계가 있다.
+- package graph는 이 값 흐름을 구현에 배치한 지도이지, 값 흐름 자체가 아니다.
+
+확인 질문: resolved Token manifest가 없으면 Recipe 검사가 확정할 수 없는 두 가지는 무엇인가?
+
+## 3. 실제 Button 배경색 하나를 끝까지 따라가기
+
+이제 같은 흐름에 실제 값을 넣는다. 이 사례는 두 관점을 의도적으로 구분한다.
+
+- Foundation 관점(Token 규칙을 계산하는 경로): public Component Token이 Semantic Token을
+  거쳐 primitive 값으로 간다.
+- N24 fixture 관점: 현재 Button Recipe는 Component Token이 아니라 Semantic Token을 직접 쓴다.
+
+두 경로를 억지로 하나라고 쓰지 않는 것이 중요하다.
+
+### 3.1 사람이 쓴 값은 아직 색상 하나가 아니다
+
+먼저 무엇을 관찰할지 정한다. `$value`가 실제 색 object인지, 다른 Token ID를 감싼
+문자열인지 본다.
+
+**실제 값에 기반한 단순화한 표현 — 실제 `tokens/base.tokens.json`은 중첩 구조**
+
+```json
+{
+  "color.component.button.root.background.default": {
+    "$type": "color",
+    "$value": "{color.semantic.fill.brand.default}"
+  },
+  "color.semantic.fill.brand.default": {
+    "$type": "color",
+    "$value": "{color.primitive.brand.600}"
+  },
+  "color.primitive.brand.600": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "oklch",
+      "components": [0.514676, 0.228711, 272.806],
+      "alpha": 1,
+      "hex": "#444ce7"
+    }
+  }
+}
+```
+
+실제 파일은 중첩 JSON이지만 읽기 쉽게 ID를 key처럼 펼쳐 적었다. 첫 두 `$value`는
+색상이 아니라 별칭(`alias`: 다른 Token의 값을 쓰겠다는 연결)이다. Axiom에서 Token
+참조(`reference`)는 JavaScript object reference나 메모리 주소가 아니다.
+`"{color.semantic.fill.brand.default}"`처럼 **중괄호 안에 대상 Token ID가 든 문자열**이다.
+
+세 record의 역할은 다르다.
+
+| Token | tier | 답하는 질문 |
 | --- | --- | --- |
-| Token resolver context | 어떤 환경별 값 그래프인가? | `theme=light`, `theme=dark` |
-| Variant | component author가 선택한 구조적 option인가? | `size=sm`, `tone=neutral` |
-| State | component/runtime의 canonical behavior 상태인가? | `pressed`, `disabled`, `open` |
-| Condition | 환경에서 rule이 활성화되는가? | viewport, container, `preference.reducedMotion` |
+| `color.primitive.brand.600` | primitive | 브랜드 팔레트의 600 값은 수치로 무엇인가? |
+| `color.semantic.fill.brand.default` | semantic | 기본 브랜드 채움이라는 제품 의미에 어떤 primitive를 배정하는가? |
+| `color.component.button.root.background.default` | component | Button root의 기본 배경 역할에 어떤 semantic 의미를 배정하는가? |
 
-Theme은 Token tier가 아니며, Condition은 State가 아니고, Variant도 둘 중 어느 것도
-아니다. 이 분리는 cache identity, diagnostics와 backend projection이 서로를 오염시키지
-않게 한다.
+tier는 의미 재사용의 층이다. 참조 방향도 제한한다. base Component Token은 Semantic
+Token을 직접 가리켜야 하고, Semantic Token은 Primitive 또는 Semantic Token을 가리킬 수
+있다. 이 규칙은 [SSOT-01](ssot/01-foundation-and-domain-contracts.md)과 Token schema가
+소유한다.
 
-## 3. Repository map
+결과: source에는 “Button 배경은 브랜드 채움 의미를 사용한다”는 의도와 “그 의미의 현재
+수치는 무엇이다”라는 값이 분리되어 있다. 그래서 팔레트 값이 바뀌어도 Button source를
+일일이 수정하지 않는다.
 
-### Root directories
+### 3.2 parser와 adapter가 외부 모양을 Axiom record로 바꾼다
 
-| Path | Owner and role | Change together |
+JSON text는 그 자체로 Axiom 내부 계약이 아니다. 먼저 외부 parser가 DTCG 문서를 읽는다.
+parser(`parser`: text/file 형식을 읽어 구조화된 값으로 만드는 도구)는
+`@terrazzo/parser`다. Axiom은 그 package가 돌려준 vendor object를 repository 전체로
+퍼뜨리지 않는다.
+
+`TerrazzoTokenParser`가 adapter(`adapter`: 외부 모양을 Axiom 경계의 모양으로 바꾸는
+변환기) 역할을 한다. `normalizeToken`은 다음처럼 여러 외부 표현을 하나의 record로
+정규화한다. 정규화(`normalize`: 허용된 여러 표현을 이후 단계가 다룰 한 가지 모양으로
+맞추는 일)는 아직 alias의 최종 값을 계산하는 일이 아니다.
+
+| 전 | 검사·변환 | 후 |
 | --- | --- | --- |
-| `docs/adr/` | architecture decision과 검토한 대안 | affected SSOT와 normative contract |
-| `docs/ssot/` | system/domain prose authority | schema, registry, fixture |
-| `docs/specs/` | 사람이 읽는 normative annex | owning SSOT와 `spec/` |
-| `docs/standards/` | contributor와 source engineering rule | policy script와 review gate |
-| `docs/implementation/` | 완료 작업의 provenance와 evidence | current authority로 사용하지 않음 |
-| `docs/plans/`, `docs/superpowers/` | 실행 계획과 승인된 작업 설계 | implementation 전후 상태를 구분 |
-| `docs/reviews/` | 시점이 명시된 historical analysis | 현재 behavior 판단에 사용하지 않음 |
-| `spec/` | JSON Schema, registry, manifest, conformance fixture | `@axiom/spec-tooling` |
-| `fixtures/` | Terrazzo 등 외부 adapter 입력 fixture | adapter unit tests |
-| `tokens/` | normative DTCG base와 theme override source | Token policy, generated artifacts |
-| `packages/` | dependency가 명시된 capability implementation | package-owned tests와 public `index.ts` |
-| `scripts/` | repository-wide policy와 drift check | root commands와 CI |
-| `.github/` | remote Quality Gate workflow | root verification commands |
+| Terrazzo `TokenNormalized` | ID를 `domain.tier.path`로 분해 | `domain: "color"`, `tier: "semantic"` |
+| `$value` | JSON으로 복제 가능한지 검사 | 함수·class instance가 없는 `TokenJsonValue` |
+| `"{...}"` | 정규식으로 대상 ID 추출 | `aliasTarget`과 원래 `value` |
+| parser source 정보 | filename과 JSON pointer만 보존 | `{ file, pointer }` |
 
-`dist/`는 `tsc -b` 출력이며 직접 수정하지 않는다. `node_modules/`는 pnpm이 관리하는
-외부 dependency tree다. 둘 다 source authority나 guidebook coverage 대상이 아니다.
+JSON-safe는 `JSON.stringify`와 `JSON.parse`를 통과해도 의미가 보존되는 data라는 뜻이다.
+함수, `Map`, class instance는 이 경계를 통과하지 않는다. 결과 record가
+`ParsedDtcgToken`이라는 이름을 쓰는 이유는 파일을 읽었고 Axiom 모양으로 맞췄지만 아직
+context별 alias 계산은 하지 않았기 때문이다.
 
-### Root operational files
+여기서 `source`는 값이 출발한 파일·위치이고, `target`은 alias가 도달하려는 Token ID다.
+일반 영어와 달리 방향을 추적하는 field 이름으로 쓰이므로 둘을 바꾸면 diagnostic도 반대로
+읽게 된다.
 
-| File | Role |
-| --- | --- |
-| `AGENTS.md` | 이 저장소에서 source를 바꿀 때 지켜야 하는 자동화·review instruction |
-| `README.md` | public entry point와 최소 verification path |
-| `package.json` | root command orchestration, Node/pnpm floor, dev dependency pin |
-| `pnpm-workspace.yaml` | `packages/*` capability discovery와 allowed build dependency |
-| `pnpm-lock.yaml` | reproducible dependency resolution |
-| `tsconfig.base.json` | NodeNext, strictness, declaration/source-map 공통 compiler contract |
-| `tsconfig.json` | 네 package의 TypeScript project reference graph |
-| `vitest.config.ts` | package tests와 repository policy test discovery |
+### 3.3 resolver는 문자열 target을 Map에서 찾는다
 
-### Source module 기본 형태
+이 단계에서 관찰할 값은 `current.value`, 중괄호에서 꺼낸 `targetId`, 그리고
+`Map.get(targetId)`의 결과다.
+
+**단순화한 예시 — 실제 API가 아니라 `context-resolver.ts`의 핵심 동작만 표현**
+
+```ts
+const byId = new Map(tokens.map((token) => [token.id, token]));
+
+function resolveToken(id: string) {
+  const token = byId.get(id);
+  const targetId = readAliasTarget(token.value);
+  return targetId === undefined ? token.value : resolveToken(targetId);
+}
+```
+
+1. 모든 parsed Token을 `Token ID → Token record` Map으로 만든다.
+2. `resolveToken("color.component.button.root.background.default")`를 호출한다.
+3. 현재 `$value`에서 `color.semantic.fill.brand.default`를 꺼내 Map을 다시 조회한다.
+4. 다시 `color.primitive.brand.600`을 조회한다.
+5. 참조 문자열이 아닌 OKLCH object에 도착하면 그 값을 반환한다.
+
+실제 구현은 이보다 더 많은 일을 한다. 조회 전에 unknown target, 금지된 tier edge,
+Domain/type 불일치와 cycle을 검사한다. 계산 중에는 cache를 써서 같은 ID를 반복 계산하지
+않고, object 안에 포함된 참조도 재귀적으로 해결한다. 구현은
+`packages/tokens/src/resolution/context-resolver.ts`의 `validateGraph`, `resolveGraph`,
+`resolveTokenContexts`에 있다.
+
+결과는 단순한 색 문자열이 아니라 다음 정보를 가진 resolved entry다.
+
+| field | 이 사례의 값 | 필요한 이유 |
+| --- | --- | --- |
+| `id` | `color.component.button.root.background.default` | 어떤 Token 결과인지 찾는다. |
+| `domain` | `color` | 이후 CSS binding 호환성을 판정한다. |
+| `tier` | `component` | 의미 계층을 보존한다. |
+| `dtcgType` | `color` | 값 구조를 검사한다. |
+| `resolvedValue.hex` | `#444ce7` | CSS 문법 검사에 쓸 문자열을 만들 수 있다. |
+| `dependencies` | `color.semantic.fill.brand.default` | 직접 의존 관계를 추적한다. |
+| `source` | base file과 pointer | 결과가 어디서 왔는지 찾는다. |
+
+### 3.4 light와 dark는 tier가 아니라 계산 조건이다
+
+Theme을 Token 이름에 별도 tier로 넣지 않는다. context(`context`: 같은 의도를 어떤 환경
+조건에서 계산하는지를 나타내는 입력)가 먼저 base record 위에 override를 합친다.
+
+1. `resolver-modifier-registry.json`이 `theme: light | dark` 조합을 요구한다.
+2. 각 theme document는 기존 Semantic 또는 Component Token의 값만 바꿀 수 있다.
+3. Primitive Token은 context에서 바꿀 수 없다.
+4. 합쳐진 각 Map을 따로 resolve한다.
+
+Modifier는 Token 이름을 바꾸는 문자열 조각이 아니다. resolver가 지원하는 계산 축과 허용
+값을 등록한 정의다. 현재 modifier는 `theme`이고 값은 `light`, `dark`다. context는 그
+축에서 고른 한 조합, 예를 들어 `{ theme: "dark" }`다.
+
+이 Button brand default는 light와 dark 모두 우연히 `#444ce7`이다. 이것은 context가 쓸모
+없다는 뜻이 아니다. 다른 Semantic Token은 context에 따라 다른 primitive를 가리킬 수
+있다. “resolver가 dark를 적용하면 반드시 값이 달라진다”가 아니라 “dark에서 사용할
+record를 먼저 합성한 뒤 그 graph를 계산한다”가 정확하다.
+
+### 3.5 manifest는 계산 결과의 운송 상자다
+
+manifest(`manifest`: 한 처리 결과에 무엇이 들어 있는지 다른 단계가 읽을 수 있게 나열한
+serializable inventory)는 source Token을 대체하지 않는다. 이 사례에서
+`foundation-resolved-token-manifest.json`은 light와 dark context마다 정렬된 resolved
+entry를 담는다.
+
+`serializeResolvedTokenManifest`는 object key와 Token을 안정된 순서로 정렬해 JSON text로
+바꾼다. 직렬화(`serialize`: 메모리 값을 저장하거나 전달할 표현으로 바꾸는 일)는 여기서
+**manifest object → JSON string**을 뜻한다. 이때의 serializer와 뒤에서 나오는
+`css.color.v1`은 이름이 비슷하지만 목적과 입력이 다르다.
+
+| 이름 | 입력 | 출력 | 사용 시점 |
+| --- | --- | --- | --- |
+| `serializeResolvedTokenManifest` | resolved manifest object | deterministic JSON text | generated manifest 검사/쓰기 |
+| `css.color.v1` serializer port | `ResolvedTokenEntry` | `#444ce7` 같은 CSS value string | Recipe Token binding의 문법 검사 |
+| `serializeAppearanceIR` | Appearance IR object | canonical JSON text | IR 비교/전달 |
+
+### 3.6 Domain은 값 범주이고 registry는 허용 관계표다
+
+Domain은 결제나 배송 같은 business domain이 아니다. Axiom의 Token Domain은 “이 Token이
+어떤 종류의 디자인 값을 나타내며 어디에 연결될 수 있는가”를 구분하는 값 범주다. Token
+ID의 첫 segment가 `color`이므로 parser는 이 record에 `domain: "color"`를 기록한다.
+
+`spec/token/token-domain-registry.json`의 `color` row는 다음 사실만 선언한다.
+
+| field | 값 | 뜻 |
+| --- | --- | --- |
+| `id`, `root` | `color` | Token ID의 첫 segment와 일치해야 한다. |
+| `allowedDTCGTypes` | `["color"]` | `$type: "color"`만 이 Domain에 들어온다. |
+| `cssSerializers` | `["css.color.v1"]` | CSS 검사가 필요할 때 이 ID의 실행 port를 찾을 수 있다. |
+
+registry(`registry`: 허용된 identity와 그 identity의 규칙을 안정된 key로 조회하게 하는
+목록)는 함수를 실행하지 않는다. `cssSerializers`에 문자열 ID가 있다는 사실과 실제
+`serialize(entry)` 함수가 주입되었다는 사실은 별도다. N21은 둘이 맞는지 검사한다.
+
+DTCG type과 Domain도 같은 개념이 아니다. 둘 다 dimension 모양을 쓰더라도 `space`는 CSS
+간격에 쓸 수 있고 `breakpoint`는 Condition threshold로만 쓴다. 값 모양만으로 사용 목적을
+결정하면 breakpoint가 임의의 padding 값으로 새어 나갈 수 있다.
+
+### 3.7 Webref, sparse policy, binding catalog가 한 property row를 만든다
+
+`backgroundColor`를 허용하려면 서로 다른 세 질문에 답해야 한다.
+
+| 자료 | 소유하는 질문 | `background-color`에서 주는 답 |
+| --- | --- | --- |
+| pinned Webref | 이 CSS property의 표준 이름과 grammar는 무엇인가? | name은 `background-color`, syntax는 `<color>` |
+| sparse property policy | Axiom authoring에서 Token이 아닌 직접 CSS 값(raw CSS), shorthand, motion 등을 어떻게 다루는가? | paint group의 정책을 적용 |
+| Token Binding Catalog | 어떤 Domain을 어떤 방식으로 연결할 수 있는가? | `color`를 전체 값(direct) 또는 일부 조합(template)으로 허용 |
+
+pinned(`pin`: 검토한 외부 입력의 version·path·content identity를 고정한 상태) Webref는 웹
+표준 사실을 제공한다. sparse는 “대부분은 기본값을 쓰고 다른 항목만 기록한다”는 뜻이다.
+따라서 sparse policy에 row가 없다고 property가 미지원인 것은 아니다.
+
+`generatePropertyProfile`은 Webref property마다 status default → group patch → property
+override → Token binding → blocked property 순서로 규칙을 합친다. `default`는 더 구체적인
+선택이 없을 때 적용되는 값이고, `override`는 더 구체적인 규칙이 앞의 값을 교체한다는
+뜻이다. 이 계산이 끝난 값을 effective policy라고 부른다.
+effective(`effective`: 여러 기본값과 override가 모두 적용된
+뒤 실제 판정에 쓰이는 최종값)는 source policy 한 줄과 동일하지 않을 수 있다.
+
+여기서 policy는 막연한 운영 방침이 아니라 validator와 generator가 읽어 실제 허용/차단을
+결정하는 Axiom 규칙 data다. 이 규칙과 Webref capability를 target별로 묶은 것이 CSS
+Appearance Profile이다.
+
+결과 `effective-property-registry.json`의 `background-color` row에는 다음이 함께 있다.
+
+- authoring name `backgroundColor`와 canonical name `background-color`
+- syntax `<color>`
+- current authoring/security/motion policy
+- direct `color` Domain binding
+- 어떤 source rule이 적용됐는지 나타내는 provenance
+
+provenance(`provenance`: 결과가 어떤 입력과 규칙에서 만들어졌는지 되짚는 근거)는 주석이
+아니다. 충돌 분석과 stale authority 검사가 실제로 소비한다.
+
+### 3.8 serializer는 N21 검사 중에만 실행된다
+
+이제 사용자가 가장 헷갈리기 쉬운 연결을 실행 순서로 고정한다.
+
+1. Recipe declaration의 `backgroundColor`를 registry에서 `background-color`로 바꾼다.
+2. Token reference `color.semantic.fill.brand.default`를 resolved manifest index에서 찾는다.
+3. 모든 context에 entry가 있고 `domain`, `tier`, `dtcgType`이 변하지 않는지 검사한다.
+4. effective property policy가 `background-color + direct + color`를 허용하는지 검사한다.
+5. Domain registry의 `cssSerializers`에서 `css.color.v1` ID를 읽는다.
+6. 주입된 serializer port 중 같은 ID의 함수를 찾는다.
+7. 각 context의 `ResolvedTokenEntry`를 함수에 넣어 `#444ce7` 문자열을 얻는다.
+8. `CSSGrammarValidator`가 그 문자열을 `background-color`의 grammar와 대조한다.
+9. 통과하면 receipt에 Token ID, Domain, DTCG type, serializer ID를 증거로 남긴다.
+
+중요한 경계: `#444ce7`은 **검사용 임시 문자열**이다. 현재 Appearance IR에는 원래
+`{ kind: "token", path: "color.semantic.fill.brand.default" }`가 보존된다. serializer가
+CSS file을 쓰거나 class name을 만들거나 DOM에 style을 적용하지 않는다.
+
+실패 예를 보면 책임이 더 선명하다.
+
+| 실패 | 발견 위치 | 대표 diagnostic |
+| --- | --- | --- |
+| Token ID가 context 하나에 없음 | manifest index/authoring validation | `AXT1501`, Token unresolved |
+| Domain에 실행 serializer port가 없음 | `serializerFor` | `AXP1104` |
+| `space`를 `background-color`에 direct binding | Token binding policy | `AXP1103` |
+| serializer가 만든 문자열이 `<color>`가 아님 | CSS grammar validator | `AXP1201` |
+
+### 3.9 현재 Button fixture는 Semantic Token을 직접 쓴다
+
+이제 실제 소비 source에서 무엇을 관찰할지 정한다. `backgroundColor`의 value가 앞의
+Component Token인지 Semantic Token인지 본다.
+
+**실제 Axiom code — `fixtures/button/appearance.ts`의 brand variant**
+
+```ts
+brand: {
+  root: {
+    backgroundColor: {
+      kind: "token",
+      path: "color.semantic.fill.brand.default"
+    }
+  }
+}
+```
+
+현재 fixture는 `color.component.button.root.background.default`를 쓰지 않는다. Foundation에
+그 Component Token이 존재하고 같은 색으로 resolve된다는 사실과 N24 Button conformance가
+그 경로를 소비한다는 주장은 다르다. Guidebook은 전자는 설명하지만 후자를 만들어내지
+않는다.
+
+`createCSSRecipeAuthoring(...).defineRecipe(...)`는 Kernel 구조, property, raw CSS grammar,
+State/Condition, Token authority와 digest를 검사하고 frozen `DefinedCSSRecipe` receipt를
+반환한다. receipt는 “이 정의가 이 정확한 authority set을 통과했다”는 증거다.
+
+### 3.10 normalizer가 선언을 IR로 낮추고 현재 흐름은 멈춘다
+
+IR(`intermediate representation`: 다음 단계가 source 문법을 다시 해석하지 않도록 의미를
+명시한 중간 데이터)은 source를 예쁘게 복사한 object가 아니다. normalizer는 다음을 한다.
+
+- `backgroundColor`를 canonical `background-color`로 바꾼다.
+- base → variant → state → compound → condition stage를 분리해 순서를 보존한다.
+- declaration마다 `recipeId`, slot, source pointer, stage를 origin으로 남긴다.
+- shorthand/longhand, reset, 같은 property, condition overlap을 별도 trace로 분석한다.
+- receipt가 현재 주입된 authority digest와 맞는지 새로 검증한다.
+
+이 사례의 golden IR에서 관찰할 값은 property 이름과 Token reference가 어떻게 달라졌는지다.
+
+**축약한 실제 Axiom generated evidence — 필요한 field만 발췌**
+
+```json
+{
+  "property": "background-color",
+  "value": {
+    "kind": "token",
+    "path": "color.semantic.fill.brand.default"
+  },
+  "origin": {
+    "recipeId": "button",
+    "slot": "root",
+    "stage": "variant",
+    "source": "fixtures/button/appearance.ts#/variants/tone/brand/root/backgroundColor"
+  }
+}
+```
+
+결과에서 camelCase property는 canonical CSS 이름으로 바뀌었지만 Token은 `#444ce7`로
+치환되지 않았다. 이 보존 덕분에 planned compiler가 theme과 output 전략을 결정할 여지가
+남고 provenance도 잃지 않는다. N24 current pipeline은 Appearance IR, collision trace,
+Motion IR과 Button conformance evidence에서 멈춘다.
+
+**Button 경로 요약**
 
 ```text
-packages/<capability>/
-├── package.json       # public exports와 dependency
-├── tsconfig.json      # build boundary
-└── src/
-    ├── constants.ts   # protocol/policy/diagnostic static owner
-    ├── contracts.ts   # serializable contract와 typed error
-    ├── <domain>/      # behavior 기준 grouping과 colocated test
-    └── index.ts       # deliberate public export surface
+Foundation source
+color.component.button.root.background.default
+→ color.semantic.fill.brand.default
+→ color.primitive.brand.600
+→ light/dark resolvedValue.hex = #444ce7
+
+N24 consumer source
+backgroundColor + color.semantic.fill.brand.default
+→ property/Domain/serializer/grammar validation
+→ frozen binding receipt
+→ background-color + preserved Token reference in Appearance IR
+→ no final CSS emission yet
 ```
 
-`index.ts`에는 business logic을 넣지 않는다. 다른 package는 상대 package의 내부
-경로가 아니라 `package.json#exports`로만 import한다. shared-looking code도 contract
-owner가 불명확하면 `utils`로 합치지 않는다. 상세 규칙은
-[source-code and module-structure standard](standards/source-code-and-module-structure.md)를
-따른다.
+위 요약은 두 source 경로가 N21에서 같은 resolved authority를 공유한다는 뜻이지, Button
+fixture가 Component Token을 직접 통과한다는 뜻은 아니다.
 
-### NodeNext에서 `.js`를 import하는 이유
+**스스로 설명해 보기**
 
-모든 package는 ESM이며 `moduleResolution: NodeNext`를 사용한다. source의
-`import "./identity.js"`는 type-check 시 `identity.ts`로 해석되고 emit 후에도
-`identity.js`로 남는다. Node ESM runtime이 확장자를 요구하므로 상대 import를 `.ts`
-또는 extensionless form으로 바꾸면 안 된다. package import인 `@axiom/tokens`에는
-확장자를 붙이지 않는다.
+1. 중괄호 Token reference에서 target ID를 꺼낸 뒤 어떤 자료구조를 조회하는가?
+2. `Domain`과 `$type`이 둘 다 필요한 이유는 무엇인가?
+3. `css.color.v1`이 실행되는 정확한 시점과 입출력은 무엇인가?
+4. 왜 IR에는 `#444ce7` 대신 Token reference가 남는가?
 
-## 4. Current topology and legal dependency direction
+## 4. 이 값 흐름을 구현 package에 배치하기
 
-```mermaid
-flowchart TD
-    T["@axiom/tokens"] --> TT["@axiom/token-tooling"]
-    P["@terrazzo/parser"] --> TT
-    W["@webref/css + css-tree"] --> C["@axiom/css-property-profile"]
-    S["@axiom/spec-tooling"]
-```
+이제야 package 이름을 붙인다. 화살표 방향은 runtime/import dependency 방향이며, authority
+우선순위를 뜻하지 않는다.
 
-Arrow는 dependency가 소비자 쪽으로 들어간다는 뜻이다. `@axiom/token-tooling`이
-`@axiom/tokens` contract를 소비하지만 반대 방향 import는 금지된다.
-`@axiom/spec-tooling`은 repository contract validator로 독립되어 있고 runtime
-package를 import하지 않는다. `@axiom/css-property-profile`도 Token runtime, React,
-Recipe, renderer를 import하지 않는다.
+| package | 값 흐름에서 맡는 경계 | 받는 것 → 내는 것 | 하지 않는 일 |
+| --- | --- | --- | --- |
+| `@axiom/tokens` | target-neutral Token identity와 resolution | parsed Token + contexts → resolved manifest | DTCG file parsing, CSS, React |
+| `@axiom/token-tooling` | 외부 Token source adapter와 Foundation generation | DTCG files → parsed records/generated artifacts | vendor object를 public contract로 노출 |
+| `@axiom/css-property-profile` | Web CSS capability와 policy | pinned Webref + sparse rules → effective registry | Token graph resolve, CSS emission |
+| `@axiom/condition-registry` | registered Condition 관계 분석 | expression + registry + thresholds → satisfiability/relation | browser 상태 읽기 |
+| `@axiom/behavior-contracts` | generated behavior type surface | normative schema → TypeScript types | runtime behavior 구현 |
+| `@axiom/recipe-kernel` | renderer-neutral Recipe 구조 | definition → frozen structural snapshot | CSS/Token 의미 검사 |
+| `@axiom/appearance-authoring` | CSS-aware Recipe authoring | definition + authorities → validated receipt | Appearance IR 생성 |
+| `@axiom/appearance-normalizer` | source를 canonical IR로 lowering | authenticated receipt → Appearance IR + trace | CSS/class 방출 |
+| `@axiom/motion-schema` | Appearance/Motion generated types와 Motion authoring | motion definition + authorities → Motion IR | runtime animation 실행 |
+| `@axiom/spec-tooling` | repository의 normative spec harness | manifest + schemas + fixtures → report/generated contracts | runtime package의 authority가 되기 |
 
-| Package | Owns | Must not own |
+분리 기준은 “파일이 많아서”가 아니다. 외부 parser가 바뀌어도 target-neutral Token
+contract가 흔들리지 않아야 하고, spec generator가 runtime package에 역으로 import되면
+안 되며, Recipe structure와 CSS policy는 서로 다른 authority를 가진다. 실제 허용 import는
+[implementation architecture](architecture.md)와 `scripts/check-boundaries.mjs`가 검사한다.
+
+### public API와 internal module
+
+각 package의 `src/index.ts`가 entrypoint(`entrypoint`: 다른 package가 들어올 수 있도록
+공식적으로 연 문)다. 파일이 `src/`에 있다고 모두 public API는 아니다. 다른 package는
+상대 경로로 내부 파일을 찌르지 않고 package export를 통해서만 의존한다.
+
+`contracts.ts`는 입력·출력·error shape를 모으는 경계이고, `constants.ts`는 package-wide
+protocol과 diagnostic identity의 owner이며, generated file은 source schema/registry의
+projection이다. projection(`projection`: 원본의 일부 의미를 다른 소비 형식으로 옮긴 결과)은
+새 authority가 아니다.
+
+확인 질문: 외부 DTCG parser 교체가 `@axiom/tokens`의 public contract 변경으로 곧바로
+이어지지 않아야 하는 이유는 무엇인가?
+
+## 5. State, Condition, context, variant는 서로 다른 축이다
+
+이름이 비슷한 “조건”을 한 object에 섞으면 누가 값을 공급하고 언제 평가하는지 알 수 없다.
+
+| 축 | 질문 | Button 사례 | owner |
+| --- | --- | --- | --- |
+| variant | 사용자가/호출자가 어떤 디자인 선택을 했는가? | `tone: brand` | Recipe definition |
+| State | component behavior가 현재 어떤 상태인가? | `pressed: true` | canonical state registry + behavior projection |
+| Condition | 어떤 환경 규칙이 참인가? | `preference.reducedMotion` | condition registry |
+| Token context | 같은 Token 의도를 어떤 계산 환경에서 resolve하는가? | `theme: dark` | resolver modifier registry |
+| Motion phase | 시간에 따라 어떤 전이가 진행되는가? | `stateChange`, `enter`, `exit` | Motion authoring/IR |
+
+State는 `pressed`, `open`, `disabled`처럼 component의 의미 상태다. Condition은 viewport,
+container, reduced-motion처럼 환경을 나타낸다. Token context는 source graph를 계산할 때 쓰고,
+Appearance Condition은 declaration 적용 가능성을 표현한다. 서로 문자열처럼 보인다는 이유로
+같은 registry나 lifecycle로 합치지 않는다.
+
+N24 Button fixture는 variant, pressed State, reduced-motion Condition, Token binding과 Motion을
+한 conformance proof에서 함께 확인한다. React Aria runtime이 실제 state를 공급하는 일은
+planned다.
+
+확인 질문: `theme: dark`와 `pressed: true`는 각각 어느 단계의 입력이며, 왜 같은
+registry에 들어가지 않는가?
+
+## 6. schema, validation, fixture를 한꺼번에 부르지 않기
+
+회원가입 form을 생각하면 차이가 쉽다. form field 규칙은 실제 제출 값이 아니고, TypeScript
+type이 있다고 서버로 들어온 JSON이 자동으로 안전해지는 것도 아니다.
+
+| 개념 | Axiom에서의 정확한 역할 | 보장하지 않는 것 |
 | --- | --- | --- |
-| `@axiom/tokens` | target-neutral Token contract, identity, resolution | parser vendor, React, CSS renderer |
-| `@axiom/token-tooling` | DTCG parser adapter, foundation policy, Token artifact generation | downstream component/runtime behavior |
-| `@axiom/css-property-profile` | pinned CSS identity, sparse policy resolution, grammar/binding validation | Token resolver, Recipe, React |
-| `@axiom/spec-tooling` | schema/registry/fixture harness와 cross-registry semantics | product runtime이나 renderer behavior |
+| JSON | data를 저장/전달하는 text 형식 | 값이 올바르다는 보장 |
+| JSON Schema | required field, type, enum, conditional shape를 기계가 검사하는 규칙 | cross-file 의미와 graph 규칙 전부 |
+| TypeScript type | compile time에 작성자와 소비자가 쓰는 shape | runtime JSON의 진위 |
+| schema validation | 한 value가 선언된 구조와 맞는지 검사 | alias cycle, digest 일치 같은 의미 관계 |
+| semantic validation | 여러 field/file 사이의 Axiom 규칙 검사 | UI runtime 동작 |
+| fixture | 통과하거나 실패해야 하는 구체 사례 | 규칙 자체의 authority |
 
-현재 graph 밖의 package를 추가하려면 owning SSOT가 authority, input/output contract,
-diagnostic과 release gate를 먼저 정의해야 한다.
+fixture(`fixture`: 같은 검사를 반복 재현하기 위해 고정한 입력 사례)는 positive와 negative가
+짝을 이룬다. positive만 있으면 허용 경계는 보이지만 무엇을 거부해야 하는지 증명하지 못한다.
+`@axiom/spec-tooling`은 `spec/manifest.json`에서 schema, registry, fixture suite와 semantic
+validator dispatch를 읽어 구조 검사와 의미 검사를 모두 실행한다.
 
-## 5. Core concepts
+diagnostic은 단순 message string이 아니라 `code`, `severity`, `phase`, `source`, `target` 등을
+가진 실패 data다. 따라서 CI와 개발자가 같은 실패를 안정적으로 분류할 수 있다.
 
-### Token graph
+확인 질문: JSON Schema를 통과한 Condition registry가 semantic validation에서 여전히 실패할
+수 있는 사례를 하나 들어보자.
 
-Token ID는 `<domain>.<tier>.<path...>`다. `primitive`는 raw scale,
-`semantic`은 product-independent role, `component`는 component slot contract를
-표현한다. 허용 alias 방향은 `primitive → primitive`, `semantic → primitive|semantic`,
-`component → semantic|component`이며 base Component Token은 Semantic Token을 직접
-alias해야 한다.
+**Part I을 마치며 답할 수 있어야 하는 것**
 
-Theme은 별도 tier가 아니라 resolver modifier다. `tokens/base.tokens.json`이 identity
-set을 만들고 light/dark document는 기존 Semantic 또는 review-described Component
-Token만 override한다. Primitive override와 새 identity 도입은 거부된다.
+- Axiom이 component library보다 contract와 Foundation을 먼저 만드는 이유
+- authored Token에서 resolved manifest까지 값이 바뀌는 단계
+- Token reference의 실제 문자열 표현과 Map lookup
+- tier, Domain, DTCG type, context의 차이
+- Webref, sparse policy, binding catalog, effective registry의 역할 분리
+- CSS serializer의 선택 시점, 입력, 출력, 비-emission 경계
+- Recipe receipt와 Appearance IR이 다른 이유
+- schema, TypeScript type, runtime/semantic validation, fixture의 차이
+- 10개 package가 나뉜 책임과 public entrypoint
+- current N24와 planned N25+/N29+ 경계
 
-### CSS property profile
+# Part II — Axiom에서 안전하게 작업하기
 
-CSS property 이름과 grammar를 사람이 allowlist로 복사하지 않는다. pinned
-`@webref/css`가 property identity를 제공하고, sparse Axiom policy가 status별 default,
-group patch, property override, blocked property를 합성한다. Token Binding Catalog는
-property별로 `direct`, `template`, `projector` binding과 negation permission을 추가한다.
-생성된 registry가 authoring, validation과 coverage의 단일 executable view다.
+## 7. 먼저 원본과 결과를 구분한다
 
-### Schema validation과 semantic validation
+편집 전에 “내가 바꾸려는 결정을 누가 소유하는가?”를 묻는다. generated artifact를 직접
+고치면 다음 generation에서 사라지고 provenance도 거짓이 된다.
 
-JSON Schema는 shape와 local constraint를 검사한다. 정렬, 중복, cross-registry
-reference, context 간 동일 Token set, Condition range satisfiability처럼 JSON Schema만으로
-안전하게 표현하기 어려운 규칙은 semantic validator가 담당한다. 둘 중 하나라도
-실패하면 fixture나 registry는 유효하지 않다.
+| 하고 싶은 일 | 먼저 읽을 authority | 편집하는 source | 직접 편집하지 않는 결과 |
+| --- | --- | --- | --- |
+| Token 값/경로 변경 | ADR-0004, SSOT-01, Token schemas | `tokens/*.tokens.json`과 필요 시 owning policy | resolved manifest, generated token paths |
+| semantic vocabulary 변경 | SSOT-01, semantic vocabulary schema | `spec/token/semantic-token-vocabulary.json` + Token source | generated types |
+| CSS property policy 변경 | ADR-0001, SSOT-03 | sparse policy 또는 binding catalog | effective registry, CSS property names |
+| State/Condition 변경 | SSOT-04/05 | owning registry와 schema/fixtures | generated reference contracts |
+| Recipe authoring 변경 | ADR-0003, SSOT-03 | authoring source와 관련 contract/tests | normalized golden output |
+| spec contract 변경 | owning SSOT + schema | schema, manifest, positive/negative fixtures | generated contract package files |
 
-### State, Condition, Appearance IR
+Owner-approved 구조 변경이 stale SSOT와 충돌하면 구현으로 몰래 우회하지 않는다. 먼저 ADR
+decision과 owning SSOT를 맞춘 뒤 downstream schema, fixture, generated contract,
+implementation을 순서대로 갱신한다.
 
-- Canonical State Registry는 component 간 behavior vocabulary와 value type을 소유한다.
-- Condition Registry는 viewport/container/preference identity와 breakpoint Token 연결을
-  소유한다.
-- Condition expression은 AND clause와 `any` choice를 정규화해 range contradiction을
-  검사한다.
-- Appearance IR은 Recipe의 slot, variant, state, condition declaration을 renderer와
-  무관한 serializable form으로 고정한다.
-- declaration `origin`은 `recipeId`, `slot`, normalization `stage`를 기록해 provenance를
-  잃지 않게 한다.
+## 8. Token을 추가하거나 변경하기
 
-### Diagnostic
+### 언제 하는가
 
-Diagnostic은 stable `code`, `severity`, `phase`, human-readable `message`와 가능한
-`location`/`target`을 가진다. 문자열 message만으로 제어 흐름을 만들지 않는다.
-package boundary를 넘는 예외는 `TokenParseError`, `TokenResolutionError`,
-`TokenFoundationPolicyError`처럼 diagnostics를 보존하는 typed error다.
+새로운 재사용 값이나 의미 역할이 실제 제품 요구로 생겼고 기존 Token이 그 뜻을 정확히
+나타내지 못할 때 한다. CSS 한 줄을 줄이기 위한 이유만으로 public Component Token을 만들지
+않는다.
 
-## 6. End-to-end data flows
+### 작업 순서
 
-### Token source to resolved artifact
+1. `docs/ssot/01-foundation-and-domain-contracts.md`에서 tier/Domain 규칙을 확인한다.
+2. `spec/token/token-domain-registry.json`에서 Domain과 DTCG type을 확인한다.
+3. base 또는 theme source 중 올바른 owner를 고른다. Primitive는 theme override에 두지 않는다.
+4. Semantic/Component라면 허용된 tier 방향으로 alias를 건다.
+5. production scale이나 semantic family를 바꾸면 Foundation policy/vocabulary와 일치시킨다.
+6. generated artifact는 명령으로 갱신한다.
 
-```mermaid
-flowchart TD
-    A["DTCG source files"] --> B["Terrazzo adapter"]
-    B --> C["ParsedDtcgDocument"]
-    C --> D["Context resolver"]
-    D --> E["Resolved manifest"]
-    E --> F["Policy validation and TokenPath generation"]
+실행할 명령과 관찰할 결과는 다음 순서다.
+
+```bash
+pnpm tokens:generate
+pnpm tokens:check
+pnpm check
+pnpm test
+pnpm build
 ```
 
-1. `tokens/*.tokens.json`과 Token registries/policy를 읽는다.
-2. `TerrazzoTokenParser`가 vendor output을 JSON-safe Axiom contract로 normalize한다.
-3. identity, DTCG value, unit와 domain constraint를 검사한다.
-4. `resolveTokenContexts`가 base graph와 light/dark overrides를 합성하고 alias를 푼다.
-5. `assertFoundationTokenPolicy`가 palette, scale, vocabulary, typography, ratio, contrast를
-   검사한다.
-6. resolved manifest와 `TokenPath` union을 결정적으로 serialize한다.
-7. check mode는 현재 파일과 byte 단위로 비교하고, write mode만 파일을 갱신한다.
+`tokens:generate`는 resolved manifest와 Token path type을 source에서 다시 만든다.
+`tokens:check`는 현재 checked-in 결과와 새 계산이 같은지 검사한다. unknown alias, 금지 tier
+edge, missing context, Foundation scale 위반이 나오면 diagnostic의 Token ID와 source pointer부터
+따라간다.
 
-### Webref to effective CSS profile
+## 9. CSS property policy나 Token binding을 바꾸기
 
-```mermaid
-flowchart TD
-    A["Pinned Webref"] --> B["Normalized properties"]
-    P["Sparse policy + bindings"] --> C["Profile generator"]
-    B --> C
-    C --> D["Registry + coverage"]
-    D --> E["Property types + validators"]
+표준 CSS property 존재 여부, Axiom authoring 정책, Token Domain 호환성을 먼저 구분한다.
+
+1. property 자체의 표준 사실이 바뀌었다면 pinned Webref update 절차가 필요하다.
+2. 공통 authoring/security/motion 정책을 바꾸면 `sparse-property-policy.json`의 group/default를 본다.
+3. 한 property만 예외라면 override를 쓴다.
+4. Token Domain의 direct/template/projector 연결을 바꾸면 `token-binding-catalog.json`을 고친다.
+5. Domain 또는 projector identity가 registry에 존재하는지 확인한다.
+6. positive와 negative fixture/test로 허용과 거부를 함께 증명한다.
+
+결과를 생성하고 검사하는 명령은 다음과 같다.
+
+```bash
+pnpm profile:generate
+pnpm profile:check
+pnpm check
+pnpm test
+pnpm build
 ```
 
-profile input manifest가 Webref version/input digest와 policy digest를 pin한다.
-`generatePropertyProfile`은 default → group → override → binding → blocked-property 순서로
-effective policy를 만든다. registry, coverage와 generated authoring type은 같은 입력에서
-생기므로 서로 다른 목록을 수동 관리하지 않는다.
+`profile:generate`는 effective registry, coverage, generated CSS property type을 갱신한다.
+group conflict, unknown Webref property, unknown Domain/projector, authoring-name collision이 대표
+실패다. effective registry를 손으로 고쳐 통과시키지 않는다.
 
-### Spec manifest to conformance report
+## 10. schema, registry, fixture, semantic validator를 추가하기
 
-```mermaid
-flowchart TD
-    A["spec/manifest.json"] --> B["Schema inventory"]
-    B --> C["Registry validation"]
-    C --> D["Semantic validation"]
-    D --> E["Positive and negative fixtures"]
-    E --> F["Counts + canonical digests"]
+구조만 검사하면 되는지 cross-file 의미까지 검사해야 하는지 먼저 결정한다.
+
+1. owning SSOT에서 규칙을 확인한다.
+2. `*.schema.json`에 JSON 한 개의 구조를 표현한다.
+3. 실제 canonical registry/source를 `spec/manifest.json`에 연결한다.
+4. 최소 positive fixture와 각 금지 경계를 증명하는 negative fixture를 추가한다.
+5. cross-file 규칙이면 `packages/spec-tooling/src/semantic/`에 validator를 두고
+   `semantic-validators.ts` dispatch에 연결한다.
+6. diagnostic code와 phase를 existing owner에서 재사용하거나 그 owner에 추가한다.
+7. generated TypeScript가 필요한 family면 contracts generation을 실행한다.
+
+관찰할 명령은 다음과 같다.
+
+```bash
+pnpm spec:check
+pnpm contracts:generate
+pnpm contracts:check
+pnpm check
+pnpm test
+pnpm build
 ```
 
-`checkSpecification`은 manifest 자체를 bootstrap schema로 검사하고, 실제 schema file
-inventory가 manifest와 같은지 확인한다. 모든 schema를 Ajv에 등록한 뒤 registry를
-shape와 semantic rule로 검증하고, 각 suite의 positive fixture는 통과해야 하며 negative
-fixture는 반드시 실패해야 한다.
+schema에는 맞지만 semantic validator가 실패할 수 있다. 예를 들어 ID field가 모두 string이어도
+정렬, 중복, required member coverage, digest 관계가 틀리면 의미 검사가 거부한다.
 
-### Appearance IR validation
+## 11. generated artifact를 갱신할 때
 
-Appearance IR schema가 shape를 검사한 뒤 `validateAppearanceIr`가 CSS profile identity,
-slot, variant default/value, canonical State와 value type, Condition satisfiability,
-declaration origin을 registry context와 교차 검증한다. N15에는 compiler package가 아직
-없으므로 이 validator가 현재 executable boundary다.
+| artifact family | source owner | write command | drift check |
+| --- | --- | --- | --- |
+| Token manifest/path types | Token sources + Token policy/registries | `pnpm tokens:generate` | `pnpm tokens:check` |
+| CSS registry/property types | Webref pin + sparse policy + binding catalog | `pnpm profile:generate` | `pnpm profile:check` |
+| condition/motion/behavior reference types | normative schemas/registries | `pnpm contracts:generate` | `pnpm contracts:check` |
 
-## 7. Workspace commands
+generated artifact(`generated artifact`: source와 generator로 재현되는 결과 파일)는 review 대상이
+아닌 것이 아니다. 직접 편집하지 않을 뿐, diff가 source 변화와 일치하는지 검토한다.
 
-| Command | What it proves or changes |
+## 12. validation failure를 역추적하기
+
+message 전체를 검색하기 전에 phase와 code를 본다.
+
+| 단서 | 먼저 볼 owner | 다음 증거 |
+| --- | --- | --- |
+| `AXT...`, phase `token` | `@axiom/tokens`, `@axiom/token-tooling` | Token negative fixture와 resolver/parser tests |
+| `AXP100...` | CSS property/grammar | `css-grammar-validator.ts`와 property tests |
+| `AXP110...` | Token binding policy/serializer | `token-binding-validator.ts`, authoring Token tests |
+| Recipe structure code | Recipe Kernel/appearance authoring | definition/validation colocated tests |
+| normalization collision code | appearance normalizer/spec semantic validator | collision trace fixture와 golden |
+| motion code | motion authoring/spec semantic validator | Motion positive/negative fixtures |
+| schema path/AJV error | spec harness | manifest entry, schema, exact fixture |
+
+실패를 좁히는 실제 순서:
+
+1. diagnostic의 `phase`, `code`, `source`, `target`을 기록한다.
+2. code constant를 `rg`로 찾아 정적 owner를 찾는다.
+3. 같은 code를 기대하는 negative test/fixture를 찾는다.
+4. source input과 generated output 중 어느 쪽이 stale인지 digest/provenance로 확인한다.
+5. focused test를 실행한 뒤 root gate로 넓힌다.
+
+예를 들어 `AXP1103`이면 resolver를 먼저 고치는 것이 아니다. 이 code는 property와 Domain의
+binding 불일치를 뜻하므로 effective property row, binding catalog, Token Domain을 비교한다.
+
+## 13. Button input을 current 결과까지 추적하기
+
+1. `fixtures/button/appearance.ts`에서 declaration과 source path를 찾는다.
+2. `authoringNames`에서 camelCase가 어떤 canonical property가 되는지 본다.
+3. effective property row의 policy와 Token bindings를 확인한다.
+4. resolved manifest의 모든 context에서 Token ID를 찾는다.
+5. `tokenBindingReport.bindings`가 serializer ID와 declaration pointer를 보존하는지 본다.
+6. normalizer golden에서 canonical property, preserved Token reference, origin을 확인한다.
+7. collision trace와 diagnostics가 허용 가능한지 본다.
+8. Motion fixture/IR가 같은 Recipe ID와 authority digest를 쓰는지 본다.
+
+현재 마지막 산출물은 normalized evidence다. “브라우저에서 어떤 CSS가 나오는가?”는 N29
+compiler가 구현된 뒤에야 이 추적 경로에 추가한다.
+
+## 14. source module을 추가할 때
+
+package boundary와 public 여부를 먼저 결정하고 `constants.ts`, `contracts.ts`, `index.ts`의
+owner 역할을 침범하지 않는다. public callable에는 intent를 설명하는 English TSDoc을 붙이고,
+test는 colocate한다. 그 다음 Guidebook Part IV에 module entry와 marker를 추가한다.
+
+```bash
+pnpm check:standards
+pnpm check:boundaries
+pnpm guidebook:check
+pnpm check
+pnpm test
+pnpm build
+```
+
+`guidebook:check`는 package `src/`의 비-test TypeScript module과 root policy script를 찾아 이
+문서의 marker와 비교한다. 현재 baseline은 package module 91개와 script 4개, 총 95개다.
+
+# Part III — 설계 선택을 이해하기
+
+## 15. authority는 문서 종류가 아니라 변경 방향을 정한다
+
+Axiom의 authority order는 다음 방향으로 흐른다.
+
+1. accepted ADR이 architecture 변경을 기록한다.
+2. owning SSOT가 system/domain contract를 설명한다.
+3. schema, registry, pinned manifest가 기계가 읽는 규칙을 소유한다.
+4. fixture와 golden artifact가 구체 사례를 증명한다.
+5. generated TypeScript가 그 규칙을 compile-time surface로 projection한다.
+6. implementation이 계약을 실행한다.
+
+구현이 테스트를 통과했다고 SSOT를 자동으로 바꾸지는 않는다. 반대로 owner가 아직 release되지
+않은 구조를 명시적으로 바꾸면 ADR decision input으로 기록하고 SSOT와 downstream contract를
+함께 갱신한다. Guidebook은 어느 방향에도 새 결정을 삽입하지 않는다.
+
+## 16. parse, adapt, normalize, resolve, validate, serialize
+
+이 동사들은 모두 “데이터를 처리한다”로 번역하면 경계가 사라진다.
+
+| 동사 | Button Token에서의 전 값 | 작업 | 후 값 |
+| --- | --- | --- | --- |
+| parse | DTCG JSON file | syntax/vendor 형식을 읽는다. | Terrazzo object |
+| adapt | vendor-specific object | Axiom field와 diagnostic으로 변환한다. | `ParsedDtcgDocument` |
+| normalize | 여러 허용 표현 | 한 canonical internal shape로 맞춘다. | JSON-safe Token record |
+| resolve | alias와 context override가 남은 graph | target 조회와 context 계산 | concrete `resolvedValue` |
+| validate | candidate + rule/authority | 허용 여부를 판정한다. | diagnostics 또는 trusted receipt |
+| serialize | in-memory object/value | 전달 가능한 문자열 표현으로 바꾼다. | manifest JSON 또는 CSS 검사 문자열 |
+| deserialize | JSON text 같은 전달 표현 | 메모리 object로 읽는다. | 아직 검증되지 않은 parsed value |
+
+canonical(`canonical`: 여러 동등한 표현 중 비교와 downstream 의존에 쓰기로 정한 대표 표현)은
+“가장 예쁜 형식”이라는 뜻이 아니다. Axiom에서는 stable sort, kebab-case property, closed
+object shape처럼 동일 입력이 동일 결과를 만들게 하는 약속과 연결된다.
+
+deterministic output은 같은 pinned input과 version으로 반복했을 때 byte 또는 semantic output이
+같다는 뜻이다. 그래서 object key order, array order, JSON indentation까지 generator가 통제한다.
+
+## 17. schema, registry, manifest, profile
+
+네 명사는 모두 JSON file에 나타날 수 있지만 질문이 다르다.
+
+| 이름 | 핵심 질문 | Button 사례 |
+| --- | --- | --- |
+| schema | 이 data가 가질 수 있는 shape와 조건은? | resolved entry의 required fields |
+| registry | 어떤 identity가 등록되어 있고 무엇을 허용하는가? | `color` Domain, `pressed` State |
+| manifest | 이번 artifact set/input set에 무엇이 들어 있는가? | light/dark resolved Tokens, spec inventory |
+| profile | 특정 target/환경에서 어떤 capability와 policy를 적용하는가? | `axiom-css` property profile |
+
+profile은 사용자 프로필이 아니다. 같은 renderer-neutral Recipe structure라도 CSS target에서
+어떤 property/value를 허용할지 묶은 capability 계약이다. manifest는 그 policy를 계산하지
+않고, registry는 한 실행의 산출물 목록을 뜻하지 않는다.
+
+## 18. pin, digest, provenance는 서로 다른 질문에 답한다
+
+| 개념 | 질문 | 실패 사례 |
+| --- | --- | --- |
+| pin | 어느 package version과 어느 input path를 읽기로 했는가? | installed Webref version이 `8.7.3`이 아님 |
+| digest | 실제 bytes/canonical data가 검토한 내용과 같은가? | version은 같지만 `css.json` content가 다름 |
+| provenance | 어떤 source rule들이 이 final row에 적용됐는가? | stale policy로 만든 collision evidence |
+
+digest(`digest`: 입력을 고정 길이 fingerprint로 요약한 값)는 내용을 복원하지 않는다. equality를
+빠르고 안정적으로 비교한다. `sha256:...`만 같다고 두 자료의 의미까지 저절로 같아지는 것은
+아니므로 schema/profile identity와 함께 검사한다.
+
+## 19. raw, authored, normalized, resolved, effective, generated
+
+| 상태 | 아직 남아 있는 일 |
 | --- | --- |
-| `pnpm install` | lockfile에 맞는 workspace dependency를 설치한다 |
-| `pnpm check:standards` | naming, version-bearing path, constants-module rule을 검사한다 |
-| `pnpm check:boundaries` | package dependency allowlist와 renderer-free import를 검사한다 |
-| `pnpm guidebook:check` | 모든 대상 source/policy module이 이 책에 등록됐는지 검사한다 |
-| `pnpm tokens:check` | Token generated artifact가 pinned input과 같은지 검사한다 |
-| `pnpm tokens:generate` | 승인된 Token source 변경 뒤 artifact를 다시 쓴다 |
-| `pnpm profile:check` | CSS registry/coverage/type drift를 검사한다 |
-| `pnpm profile:generate` | 승인된 CSS profile input 변경 뒤 artifact를 다시 쓴다 |
-| `pnpm spec:check` | schema, registry, semantic rule, fixture와 digest를 검사한다 |
-| `pnpm check` | standards, boundaries, guidebook, type, Token, CSS, spec gate를 순서대로 실행한다 |
-| `pnpm test` | package와 repository policy unit test를 실행한다 |
-| `pnpm build` | 네 package project reference를 `tsc -b`로 emit한다 |
+| raw input | parsing, trust 검사가 안 됐을 수 있다. |
+| authored source | 사람이 의도를 썼지만 아직 전체 authority를 통과하지 않았다. |
+| normalized data | 표현은 한 모양이지만 alias/context 결정이 남을 수 있다. |
+| resolved data | 참조가 concrete value로 계산되었다. |
+| effective policy | default와 override가 모두 합쳐져 실제 판정에 쓸 수 있다. |
+| generated artifact | source와 generator에서 재현된 downstream 형식이다. |
 
-일반적인 handoff gate는 `pnpm check` → `pnpm test` → `pnpm build`다. generate command는
-입력 변경이 상위 authority에서 승인된 경우에만 사용한다. drift error를 없애기 위해
-무조건 generate하는 것은 잘못된 수정일 수 있다.
+authoring은 “저자에 관한 것”이라는 일반 번역보다 좁다. Axiom에서 authoring은 사람이나 도구가
+의도를 적는 입력 경계다. authored source도 자동으로 trusted source는 아니다.
 
-## 8. Package guide: `@axiom/tokens`
+## 20. receipt, IR, projection이 source와 다른 이유
 
-`@axiom/tokens`는 parser나 renderer를 모르는 target-neutral Token core다. 공개
-entry point는 `packages/tokens/src/index.ts` 하나이며 runtime dependency가 없다.
+receipt는 검사를 통과했다는 증거와 authority identity를 붙인 결과다. Appearance IR은 그
+receipt를 다음 compiler가 처리하기 쉬운 canonical stage 구조로 낮춘 data다. generated
+TypeScript type은 schema/registry 의미를 코드 작성자가 쓰는 형식으로 옮긴 projection이다.
 
-```text
-src/
-├── constants.ts
-├── contracts.ts
-├── domain/
-│   ├── identity.ts
-│   └── token-json-value.ts
-├── generated/
-│   └── token-paths.ts
-├── resolution/
-│   ├── context-resolver.ts
-│   └── manifest-serializer.ts
-└── index.ts
-```
+세 결과 모두 source를 대체하지 않는다.
 
-주요 입력은 Token Domain/Modifier Registry와 normalized DTCG documents이고, 출력은
-serializable resolved manifest와 structured diagnostics다. external parser I/O는
-`@axiom/token-tooling`에 남는다.
+- receipt가 있다고 source definition이 사라지지 않는다.
+- IR가 있다고 final CSS가 존재하지 않는다.
+- generated type이 있다고 runtime JSON이 자동으로 유효하지 않다.
 
-<a id="module-tokens-constants"></a>
+boundary(`boundary`: 한 책임의 입력·출력·실패가 고정되어 다른 책임이 내부 구현을 몰라도 되는
+경계)가 분명하면 각 단계는 앞 단계의 내부 object가 아니라 공개 contract만 소비한다.
+
+port는 이 경계를 실행하기 위해 caller가 주입하는 함수/interface다. `css.color.v1`
+serializer port가 대표 예다. 여러 authority와 port를 실제 실행에 맞게 조립하는 module을
+composition root라고 하며, Foundation generator CLI와 Button conformance test-support가 그
+역할을 한다. port ID가 registry에 있다는 사실만으로 실행 함수가 생기지는 않는다.
+
+## 21. direct, template, projector는 Token을 CSS에 연결하는 세 방식이다
+
+| mode | 예 | 필요한 이유 |
+| --- | --- | --- |
+| direct | color Token → `background-color` 전체 값 | Token 하나가 property value 전체를 나타낸다. |
+| template | space Token → `calc(100% - <token>)` 일부 | literal 구조와 Token을 조합한다. |
+| projector | typography Token → 여러 longhand | composite Token 한 개를 여러 declaration으로 분해한다. |
+
+direct는 “registry를 우회한다”는 뜻이 아니다. intermediate template이나 projector 없이 Token
+serializer 결과가 property value 전체가 된다는 뜻이다. 세 mode 모두 property policy,
+Domain, grammar를 검사한다.
+
+## 22. Recipe Kernel, authoring, normalizer를 나눈 이유
+
+Recipe Kernel은 slot, variant, state/condition rule container 같은 renderer-neutral structure만
+소유한다. CSS-aware authoring은 canonical property, grammar, Token binding authority를 추가한다.
+normalizer는 이미 검증된 receipt를 stage별 Appearance IR로 낮추고 collision을 분석한다.
+
+이 분리 덕분에 structure ergonomics를 바꿀 때 Token resolver를 건드리지 않고, CSS policy를
+바꿀 때 Kernel을 재정의하지 않으며, normalizer가 stale receipt를 신뢰하지 않고 새 authority로
+재검증할 수 있다.
+
+## 23. repository policy script도 architecture다
+
+문서에 “dependency는 한 방향이다”라고 적는 것만으로는 import가 막히지 않는다.
+
+- `check-boundaries.mjs`는 package dependency와 forbidden import를 검사한다.
+- `check-source-standards.mjs`는 versioned name, constants owner, TSDoc 등 source policy를 검사한다.
+- `check-guidebook-coverage.mjs`는 새 module이 reference에서 사라지는 것을 막는다.
+- `workspace-policy.mjs`는 세 checker가 공유하는 package와 naming policy를 소유한다.
+
+이 script들은 normative SSOT를 대체하지 않는다. 문서화된 architecture 일부를 CI에서 실행
+가능한 제약으로 만든다.
+
+## 24. 용어 빠른 찾기
+
+이 표는 복습용이다. 처음 배우는 설명은 앞 절을 따른다.
+
+| 용어 | 이 Guidebook에서의 뜻 | 처음 연결한 절 |
+| --- | --- | --- |
+| contract | 다른 module이 의존할 입력·출력·오류 경계 | 1 |
+| source of truth | 충돌 판정을 시작하는 권한 자료 | 2 |
+| alias/reference | 중괄호 안 target Token ID를 담은 문자열 연결 | 3.1–3.3 |
+| adapter | 외부 표현을 Axiom contract로 바꾸는 경계 | 3.2 |
+| normalize | 여러 표현을 한 내부 모양으로 맞춤 | 3.2, 16 |
+| resolve | context와 alias를 실제 값으로 계산 | 3.3–3.4 |
+| Modifier | resolver가 지원하는 계산 축과 허용 값 정의 | 3.4 |
+| Domain | Token의 디자인 값 범주와 사용 목적 | 3.6 |
+| registry | stable identity별 허용 규칙 lookup | 3.6, 17 |
+| manifest | 한 처리 결과/input set의 serializable inventory | 3.5, 17 |
+| profile | target별 capability/policy 묶음 | 3.7, 17 |
+| effective | default와 override를 적용한 실제 판정값 | 3.7 |
+| serializer | 특정 in-memory 값을 문자열 표현으로 바꾸는 실행 경계 | 3.5, 3.8 |
+| provenance | 결과가 적용받은 source와 rule 근거 | 3.7, 18 |
+| pin/digest | 입력 위치·version 고정 / content fingerprint | 18 |
+| fixture | 반복 가능한 검증 사례 | 6 |
+| diagnostic | code와 위치를 가진 구조화된 실패 data | 6 |
+| IR | downstream을 위한 canonical 중간 표현 | 3.10 |
+| projection | 원본 의미 일부를 다른 소비 형식으로 옮긴 결과 | 4 |
+| port/composition root | 주입하는 실행 경계 / 그 경계들을 조립하는 module | 20 |
+| entrypoint | package가 공식적으로 공개한 import 문 | 4 |
+| owner | 특정 결정 변경의 최종 책임 경계 | 7 |
+| stable | 명시된 호환 정책 아래 downstream이 의존 가능한 상태 | 15–20 |
+
+# Part IV — Module & API Reference
+
+Part IV는 처음부터 순서대로 읽는 tutorial이 아니다. Part I의 흐름에서 구현 위치가 필요할 때
+찾는 지도다. 각 marker는 `pnpm guidebook:check`가 실제 source tree와 대조한다.
+
+## 25. `@axiom/tokens` — Token의 target-neutral core
+
+이 package는 이미 Axiom record가 된 Token의 identity, Domain/tier 규칙, context resolution,
+manifest index를 소유한다. public entrypoint는 `src/index.ts`다. DTCG file I/O와 CSS
+serialization은 이 경계 밖이다.
+
 <!-- guidebook-module: packages/tokens/src/constants.ts -->
 ### `packages/tokens/src/constants.ts`
 
-- **Role:** Token protocol, tier, schema version, diagnostic, serialization과 identity
-  pattern의 package-wide static owner다.
-- **Inputs/outputs:** I/O 없이 readonly literal과 regular expression을 export한다.
-- **Dependencies/side effects:** 없음.
-- **Evidence:** [SSOT-01](ssot/01-foundation-and-domain-contracts.md),
-  [Token schemas](../spec/token/).
+Token schema version, DTCG type, tier, ID segment 위치, reference 정규식과 `AXT...`
+diagnostic code의 정적 owner다. 다른 module은 protocol string을 다시 선언하지 않는다.
 
-| Identifier group | Responsibility |
-| --- | --- |
-| `DTCG_TYPES`, `TOKEN_TIERS` | runtime guard와 literal union이 공유하는 canonical value set |
-| `TOKEN_SCHEMA_VERSION`, `RESOLVED_TOKEN_SCHEMA_VERSION` | parsed/context와 resolved manifest compatibility data |
-| `TOKEN_DIAGNOSTIC_*`, `TOKEN_ERROR_MESSAGE` | stable phase, severity, AXT code와 typed-error message owner |
-| `TOKEN_ID_*`, `TOKEN_REFERENCE_PATTERN` | identity segment 위치와 alias syntax contract |
-| `JSON_INDENT_SPACES`, `MILLISECONDS_PER_SECOND`, `STABLE_SORT_LOCALE` | deterministic conversion/serialization policy |
-
-<a id="module-tokens-contracts"></a>
 <!-- guidebook-module: packages/tokens/src/contracts.ts -->
 ### `packages/tokens/src/contracts.ts`
 
-- **Role:** parser, resolver와 consumer 사이의 serializable Token contract와 typed error를
-  소유한다.
-- **Inputs/outputs:** constants와 generated `TokenTier`를 type으로 결합한다. I/O는 없다.
-- **Evidence:** parsed/context/resolved Token schemas와 `context-resolver.test.ts`.
+`ParsedDtcgToken`, `TokenResolutionInput`, `ResolvedTokenManifest`, Domain/Modifier registry,
+diagnostic과 typed error를 정의한다. data shape만 소유하며 parsing이나 resolution을 실행하지
+않는다.
 
-| Identifier | Visibility | Responsibility | Failure/side effect |
-| --- | --- | --- | --- |
-| `DtcgType`, `TokenJsonPrimitive`, `TokenJsonObject`, `TokenJsonValue` | public | 허용 DTCG type과 JSON-safe recursive value universe | none |
-| `TokenDomainConstraint`, `TokenDomainDefinition` | public | Domain별 DTCG type 및 numeric/dimension/duration constraint | none |
-| `NormalizedTokenIdentity`, `TokenSourceLocation` | public | normalized ID/domain/tier와 source provenance | none |
-| `ParsedDtcgToken`, `ParsedDtcgDocument`, `TokenSourceDocument` | public | adapter input과 parser output boundary | none |
-| `TokenDiagnostic` | public | stable Token failure record | none |
-| `TokenParserPort.parse(sources)` | public port | vendor-independent async parser interface | implementation may throw `TokenParseError` |
-| `TokenContext`, `ResolverModifier*`, `TokenContextOverrideDocument` | public | context cartesian product와 override document | none |
-| `TokenResolutionInput`, `ResolvedToken*`, `TokenResolutionResult` | public | resolver input, context output와 manifest | none |
-| `TokenParseError.constructor(message, diagnostics, options)` | public | parse/normalization diagnostics와 optional cause를 보존 | creates typed error |
-| `TokenResolutionError.constructor(message, diagnostics, options)` | public | graph/context diagnostics와 optional cause를 보존 | creates typed error |
-| `isDtcgType(value)` | public | string을 `DtcgType`으로 narrow | none |
-| `isTokenTier(value)` | public | string을 generated `TokenTier`로 narrow | none |
-
-<a id="module-tokens-identity"></a>
 <!-- guidebook-module: packages/tokens/src/domain/identity.ts -->
 ### `packages/tokens/src/domain/identity.ts`
 
-- **Role:** Token identity, Domain/DTCG compatibility와 registry-owned numeric constraint를
-  검사한다.
-- **Inputs:** raw ID 또는 normalized identity, Domain Registry와 Token value.
-- **Outputs:** discriminated `TokenIdentityResult` 또는 deterministic diagnostics.
-- **Side effects:** 없음.
-- **Evidence:** `identity.test.ts`, token identity/domain fixture suites.
+`parseTokenIdentity`가 ID를 Domain/tier/path로 나누고, `validateTokenDomainType`과
+`validateTokenDomainConstraints`가 registry의 type/range 규칙을 검사한다. malformed ID와
+Domain/type mismatch는 Token diagnostic으로 돌려준다.
 
-| Identifier | Visibility | Responsibility | Failure behavior |
-| --- | --- | --- | --- |
-| `TokenIdentityResult` | public | success identity와 failure diagnostics를 분리하는 union | none |
-| `error(code, message, tokenId)` | internal | 공통 Token diagnostic shape를 만든다 | none |
-| `parseTokenIdentity(id, domains)` | public | segment 수/형식, known Domain, tier를 검사하고 identity를 만든다 | invalid input을 `ok: false`로 반환 |
-| `validateTokenDomainType(identity, dtcgType, domains)` | public | Domain의 allowed DTCG type membership을 검사한다 | diagnostics 반환 |
-| `numericValue(dtcgType, value)` | internal | number/dimension/duration을 비교용 number(ms 포함)로 투영한다 | unsupported shape는 `undefined` |
-| `validateTokenDomainConstraints(...)` | public | alias가 아닌 resolved numeric value에 range/integer rule을 적용한다 | diagnostics 반환; alias는 resolver 이후로 유예 |
-
-<a id="module-tokens-json-value"></a>
 <!-- guidebook-module: packages/tokens/src/domain/token-json-value.ts -->
 ### `packages/tokens/src/domain/token-json-value.ts`
 
-- **Role:** JSON object와 array/null을 구분하는 공용 structural guard다.
-- **Dependencies/side effects:** contract type만 사용하며 side effect가 없다.
-- **Evidence:** `token-json-value.test.ts`.
+`isTokenJsonObject`라는 작은 runtime guard를 소유한다. array와 null을 일반 Token object로
+잘못 순회하지 않게 하며 resolver와 serializer가 공유한다.
 
-| Identifier | Visibility | Responsibility |
-| --- | --- | --- |
-| `isTokenJsonObject(value)` | public | `TokenJsonValue`를 non-null, non-array `TokenJsonObject`로 narrow |
-
-<a id="module-tokens-generated-paths"></a>
 <!-- guidebook-module: packages/tokens/src/generated/token-paths.ts -->
 ### `packages/tokens/src/generated/token-paths.ts`
 
-- **Role:** foundation Token corpus의 compile-time path view다.
-- **Source/generator:** `tokens/*.tokens.json` → `@axiom/token-tooling`의
-  `generateTokenPathTypes`; header에 source digest, generator/schema version을 기록한다.
-- **Change rule:** 직접 수정하지 않고 `pnpm tokens:generate`로만 갱신한다.
-- **Evidence:** `foundation-artifacts.test.ts`, `pnpm tokens:check`.
+resolved Foundation manifest에서 생성된 `TokenDomain`, `TokenTier`,
+`TokenPathByDomain`, `TokenPath` type projection이다. 직접 편집하지 않고
+`pnpm tokens:generate`로 재생성한다.
 
-| Identifier | Responsibility |
-| --- | --- |
-| `TokenDomain` | 생성 시점에 존재하는 Domain union |
-| `TokenTier` | `component | primitive | semantic` union |
-| `TokenPathByDomain` | Domain별 exact Token path lookup interface |
-| `TokenPath<Domain>` | 선택 Domain의 path union을 반환하는 generic public type |
-
-635개 path literal을 이 책에 복제하지 않는다. 이 module과 resolved light/dark manifest의
-ID set이 같은지는 generation test와 drift check가 보장한다.
-
-<a id="module-tokens-index"></a>
 <!-- guidebook-module: packages/tokens/src/index.ts -->
 ### `packages/tokens/src/index.ts`
 
-- **Role:** `@axiom/tokens`의 유일한 supported public surface다.
-- **Exports:** constants, serializable contracts/errors/guards, identity validators,
-  `resolveTokenContexts`, manifest serializer와 generated Token path types.
-- **Rule:** implementation을 두지 않으며 consumer의 deep import를 허용하지 않는다.
-- **Side effects:** 없음.
+package의 public entrypoint다. contracts, identity 검사, resolver, manifest index/serializer만
+재수출한다. 구현을 두거나 internal path import를 권장하는 파일이 아니다.
 
-<a id="module-tokens-context-resolver"></a>
 <!-- guidebook-module: packages/tokens/src/resolution/context-resolver.ts -->
 ### `packages/tokens/src/resolution/context-resolver.ts`
 
-- **Role:** base Token graph와 모든 registered context override를 검증·합성하고 alias를
-  완전히 해소한 manifest를 만든다.
-- **Inputs:** `TokenResolutionInput`, Domain definitions와 Modifier Registry.
-- **Outputs:** sorted `ResolvedTokenManifest`와 informational diagnostics.
-- **Failure:** error diagnostic이 있으면 `TokenResolutionError`; validation 뒤 불가능한
-  내부 state는 plain `Error`로 invariant failure를 알린다.
-- **Evidence:** `context-resolver.test.ts`, resolved/context fixture suites.
+`resolveTokenContexts`가 required context 조합을 만들고 override를 base에 합친 뒤 alias graph를
+검사·계산한다. unknown target, cycle, forbidden tier edge, primitive override, context 누락을
+`TokenResolutionError`와 diagnostics로 보고한다.
 
-| Identifier | Visibility | Responsibility |
-| --- | --- | --- |
-| `TokenContextResolverOptions` | public | Domain/Modifier Registry dependency bundle |
-| `diagnostic(...)` | internal | resolver diagnostic과 optional source를 조립 |
-| `compareStableStrings(left, right)` | internal | deterministic `en` ordering |
-| `referenceTarget(value)` | internal | whole-value `{token.path}` alias target 추출 |
-| `collectReferences(value, references)` | internal | composite 안의 모든 nested alias dependency 수집 |
-| `allowedTierEdge(from, to)` | internal | tier graph 방향 permission 계산 |
-| `duplicateTokenDiagnostics(tokens, label)` | internal | document-local duplicate ID 탐지 |
-| `tokenMap(tokens)` | internal | ID lookup map 작성 |
-| `validateGraph(tokens, strictComponentBase)` | internal | unknown reference, tier/domain/type edge, Component base alias, cycle 검사 |
-| `expectedContexts(registry)` | internal | modifier value의 cartesian product 생성 |
-| `contextKey(context, registry)` | internal | registry order 기반 deterministic context identity 생성 |
-| `validateContext(document, registry)` | internal | modifier key set과 value membership 검사 |
-| `composeContext(base, document)` | internal | override 정책을 검사하고 base map에 허용된 변경 적용 |
-| `resolveGraph(tokens, domains)` | internal | cache를 사용해 aliases를 재귀 해소하고 dependency와 resolved constraint를 기록 |
-| `resolveTokenContexts(input, options)` | public | 전체 base/context gate를 조율하고 final manifest 반환 |
+<!-- guidebook-module: packages/tokens/src/resolution/manifest-index.ts -->
+### `packages/tokens/src/resolution/manifest-index.ts`
 
-<a id="module-tokens-manifest-serializer"></a>
+`createResolvedTokenManifestIndex`는 한 Token ID의 context별 entry를 함께 찾게 하고 identity
+drift나 context 누락을 진단한다. `digestResolvedTokenManifest`는 canonical digest port를 통해
+manifest identity를 계산한다.
+
 <!-- guidebook-module: packages/tokens/src/resolution/manifest-serializer.ts -->
 ### `packages/tokens/src/resolution/manifest-serializer.ts`
 
-- **Role:** resolved manifest를 byte-stable JSON으로 만든다.
-- **Inputs/outputs:** `ResolvedTokenManifest` → trailing newline이 있는 JSON string.
-- **Side effects:** 없음; file I/O는 generator CLI가 담당한다.
-- **Evidence:** `context-resolver.test.ts`, `pnpm tokens:check`.
+`serializeResolvedTokenManifest`는 key와 context/token order를 안정화해 deterministic JSON
+text를 만든다. CSS value를 만들지 않으며 file write도 하지 않는다.
 
-| Identifier | Visibility | Responsibility |
-| --- | --- | --- |
-| `normalizeJson(value)` | internal | object key를 정렬하고 `-0`을 `0`으로 canonicalize |
-| `serializeResolvedTokenManifest(manifest)` | public | two-space indentation과 newline을 적용해 serialize |
+## 26. `@axiom/token-tooling` — DTCG adapter와 Foundation generation
 
-## 9. Package guide: `@axiom/token-tooling`
+이 package는 external parser와 repository source file을 Axiom Token core에 연결한다. parser
+object는 여기서 끝나고 public 소비자는 Axiom contract만 받는다.
 
-`@axiom/token-tooling`은 외부 DTCG parser와 Axiom Token core 사이의 adapter이자
-foundation artifact build tool이다. runtime dependency는 `@axiom/tokens`와 pinned
-`@terrazzo/parser`뿐이다. vendor type은 이 package 밖으로 나가지 않으며 consumer는
-`@axiom/token-tooling` 또는 별도 `@axiom/token-tooling/terrazzo` export를 사용한다.
-
-```text
-src/
-├── constants.ts
-├── dtcg-value-validator.ts
-├── terrazzo-token-parser.ts
-├── foundation-policy.ts
-├── oklch-color.ts
-├── foundation-artifacts.ts
-├── generate-foundation-artifacts.ts
-└── index.ts
-```
-
-<a id="module-token-tooling-constants"></a>
 <!-- guidebook-module: packages/token-tooling/src/constants.ts -->
 ### `packages/token-tooling/src/constants.ts`
 
-- **Role:** parser profile, source paths, generator version, diagnostic code와 color/ratio
-  precision의 package-wide static owner다.
-- **Side effects:** 없음.
-- **Evidence:** Token Source Profile, Foundation Policy와 generation tests.
+DTCG profile, 허용 source unit, Foundation generator/schema version, input/output path, digest
+algorithm과 parser/Foundation diagnostic code를 소유한다.
 
-| Identifier group | Responsibility |
-| --- | --- |
-| `DTCG_PROFILE_VERSION`, `DTCG_SOURCE_UNITS`, pointer constants | adapter가 허용하는 DTCG profile과 authored unit/pointer 처리 |
-| `TOKEN_FOUNDATION_GENERATOR_VERSION`, `TOKEN_GENERATED_SCHEMA_VERSION` | generated manifest/type provenance |
-| `TOKEN_*_PATH`, `TOKEN_SOURCE_FILES` | normative input과 generated output의 단일 repository path owner |
-| digest/header/indent/sort constants | byte-stable artifact 생성 policy |
-| `ASPECT_RATIO_DECIMAL_PRECISION` | ratio division의 canonical decimal precision |
-| `PARSER_DIAGNOSTIC_CODE`, `FOUNDATION_POLICY_DIAGNOSTIC_CODE` | parser/foundation stable failure vocabulary |
-| `PARSER_ERROR_MESSAGE`, `FOUNDATION_POLICY_ERROR_MESSAGE` | typed error의 human-readable summary |
-
-<a id="module-token-tooling-dtcg-value"></a>
 <!-- guidebook-module: packages/token-tooling/src/dtcg-value-validator.ts -->
 ### `packages/token-tooling/src/dtcg-value-validator.ts`
 
-- **Role:** Terrazzo가 normalize한 value가 Axiom이 지원하는 DTCG type shape인지 검사한다.
-- **Inputs:** `DtcgType`, JSON-safe value와 source location.
-- **Outputs:** 빈 배열 또는 `AXT1204` diagnostic.
-- **Side effects:** 없음.
-- **Evidence:** `terrazzo-token-parser.test.ts`와 `fixtures/token/dtcg/`.
+`validateDtcgValue`가 color, dimension, transition, shadow, typography 등 DTCG type별 JSON
+value shape를 검사한다. alias string은 이후 graph 검사를 위해 허용하고 concrete value의
+구조 오류는 parser diagnostic으로 바꾼다.
 
-| Identifier | Visibility | Responsibility |
-| --- | --- | --- |
-| `isAlias(value)` | internal | whole-value Token reference는 concrete shape 검사에서 허용 |
-| `isFiniteNumber(value)` | internal | finite number type guard |
-| `dimension(value)` | internal | alias 또는 `{ value, unit }` shape 검사 |
-| `color(value)` | internal | color space, 3+ components, finite alpha shape 검사 |
-| `cubicBezier(value)` | internal | 네 finite number tuple 검사 |
-| `fontFamily(value)` | internal | non-empty string 또는 string array 검사 |
-| `fontWeight(value)` | internal | 0–999 integer 또는 non-empty keyword 검사 |
-| `strokeStyle(value)` | internal | alias, keyword 또는 object form 허용 |
-| `border(value)` | internal | color/width/style composite 검사 |
-| `duration` | internal alias | duration을 dimension shape로 검사 |
-| `transition(value)` | internal | duration/delay/timingFunction composite 검사 |
-| `shadowEntry(value)` | internal | color, offsets, blur, spread와 optional inset 검사 |
-| `shadow(value)` | internal | single shadow 또는 shadow array 검사 |
-| `gradient(value)` | internal | color/position stop의 non-empty array 검사 |
-| `typography(value)` | internal | family/size/weight/spacing/line-height composite 검사 |
-| `validators` | internal table | 모든 supported `DtcgType`을 validator에 exhaustively 연결 |
-| `validateDtcgValue(...)` | package internal | selected validator를 실행하고 structured diagnostic 반환 |
-
-<a id="module-token-tooling-foundation-artifacts"></a>
 <!-- guidebook-module: packages/token-tooling/src/foundation-artifacts.ts -->
 ### `packages/token-tooling/src/foundation-artifacts.ts`
 
-- **Role:** Token source digest, generated path type source와 manifest ID projection을
-  결정적으로 만든다.
-- **Inputs/outputs:** parsed/resolved Token contract → string digest, TypeScript source,
-  sorted path array.
-- **Side effects:** 없음.
-- **Evidence:** `foundation-artifacts.test.ts`, `pnpm tokens:check`.
+`digestTokenSources`가 ordered source bytes의 identity를 만들고,
+`generateTokenPathTypes`와 `tokenPathsFromManifest`가 resolved manifest를 TypeScript path
+projection으로 바꾼다.
 
-| Identifier | Visibility | Responsibility |
-| --- | --- | --- |
-| `TokenSourceDigestInput` | public | filename/content digest input contract |
-| `compare(left, right)` | internal | stable filename/domain/path ordering |
-| `digestTokenSources(sources)` | public | filename 순 정렬 후 content를 포함한 SHA-256 provenance 생성 |
-| `quotedUnion(values, indentation)` | internal | 중복 제거·정렬된 TypeScript string union body 생성 |
-| `generateTokenPathTypes(document, sourceDigest)` | public | `TokenDomain`, `TokenTier`, `TokenPathByDomain`, `TokenPath` source 생성 |
-| `tokenPathsFromManifest(manifest)` | public | 모든 context Token ID의 unique sorted union 반환 |
-
-<a id="module-token-tooling-foundation-policy"></a>
 <!-- guidebook-module: packages/token-tooling/src/foundation-policy.ts -->
 ### `packages/token-tooling/src/foundation-policy.ts`
 
-- **Role:** owner-approved production scale와 semantic vocabulary가 parsed source와
-  resolved contexts에서 지켜지는지 검사한다.
-- **Inputs:** base/context documents, resolved manifest, Foundation Policy, Semantic
-  Vocabulary Registry.
-- **Outputs:** `FoundationPolicyDiagnostic[]` 또는 assertion error.
-- **Evidence:** `foundation-policy.test.ts`, foundation-policy/semantic-vocabulary fixture suites.
+production color/space/typography/ratio scale, semantic vocabulary coverage, unit와 contrast 규칙을
+검사한다. `validateFoundationTokenPolicy`는 diagnostics를, assert variant는
+`TokenFoundationPolicyError`를 반환한다.
 
-| Identifier | Visibility | Responsibility |
-| --- | --- | --- |
-| `FoundationColorScale`, `FoundationCommonColor` | public | palette shade와 canonical black/white policy shape |
-| `FoundationScaleStep`, `FoundationTypographyFamily` | public | space/font family scale policy shape |
-| `FoundationContrastPair`, `FoundationAspectRatio` | public | context contrast와 registered ratio contract |
-| `FoundationSemanticVocabulary`, `FoundationTokenPolicy` | public | machine-readable clean-break policy input |
-| `FoundationPolicyDiagnostic` | public | AXF diagnostic record |
-| `TokenFoundationPolicyError.constructor(diagnostics)` | public | 모든 policy diagnostics를 보존하는 assertion error |
-| `tokenMap(document)` | internal | base Token ID lookup 생성 |
-| `closeTo(left, right)` | internal | floating-point scale comparison |
-| `dimension(token)` | internal | DTCG dimension의 numeric value/unit 추출 |
-| `pushMissing(diagnostics, tokenId)` | internal | required Token missing diagnostic 추가 |
-| `validatePrimitiveNames(document, policy)` | internal | Primitive path의 semantic segment 금지 |
-| `validateColorScales(tokens, policy)` | internal | common colors와 palette/shade set/type/opacity 검사 |
-| `nestedColorValues(value)` | internal | composite 안 canonical color candidate 재귀 수집 |
-| `validateColorProfile(document, policy)` | internal | OKLCH precision/profile과 hex fallback 일치 검사 |
-| `validateSpaceScale(tokens, policy)` | internal | registered step와 px grid 환산 검사 |
-| `semanticFamilyEntries(document, familyPath, allowVariantDescendants)` | internal | semantic family의 label과 invalid descendant 추출 |
-| `validateSemanticVocabularyCoverage(document, vocabulary)` | internal | core/extended `xs–xl` family completeness와 exact leaf 검사 |
-| `validateRemovedSemanticPaths(documents, vocabulary)` | internal | clean-break removed path 재도입 차단 |
-| `roundDecimal(value, digits)` | internal | aspect-ratio canonical rounding |
-| `validateAspectRatios(tokens, policy)` | internal | ratio catalog 값/description/set 검사 |
-| `validateDimensionUnits(document, policy)` | internal | Domain별 primitive authored unit 검사 |
-| `validateTypography(tokens, policy)` | internal | rem size, weight, composite family, base/minimum body 규칙 검사 |
-| `colorComponents(value)` | internal | opaque OKLCH value의 registered hex를 sRGB triplet으로 추출 |
-| `channelLuminance(channel)`, `luminance(components)` | internal | WCAG-style relative luminance 계산 |
-| `contrastRatio(foreground, background)` | internal | 두 opaque color의 contrast ratio 계산 |
-| `validateContrast(manifest, policy)` | internal | 모든 context에서 registered pair minimum 검사 |
-| `validateFoundationTokenPolicy(...)` | public | 모든 foundation validator를 deterministic order로 합성 |
-| `assertFoundationTokenPolicy(...)` | public | diagnostics가 있으면 `TokenFoundationPolicyError` throw |
-
-<a id="module-token-tooling-generator"></a>
 <!-- guidebook-module: packages/token-tooling/src/generate-foundation-artifacts.ts -->
 ### `packages/token-tooling/src/generate-foundation-artifacts.ts`
 
-- **Role:** Token generation/check pipeline의 executable CLI entry다.
-- **Inputs:** source profile, Foundation Policy, Semantic Vocabulary, Domain/Modifier Registry,
-  base/light/dark source files.
-- **Outputs:** resolved manifest와 generated Token path source; check mode에서는 byte 비교만
-  수행한다.
-- **Side effects:** input file read, `--write`일 때만 directory/file write, status log.
+Token generation composition root다. source/profile/registry/policy를 읽고 parser → resolver →
+Foundation policy → manifest/type generation을 연결한다. 기본 실행은 drift check, `--write`는
+generated file 갱신이다.
 
-| Identifier | Visibility | Responsibility | Failure behavior |
-| --- | --- | --- | --- |
-| `TokenSourceProfile` | internal | 필요한 `profileVersion` view |
-| `repositoryPath(path)` | internal | repository-relative path를 absolute path로 resolve |
-| `readJson<Value>(path)` | internal | typed JSON file load |
-| `writeOrCheck(path, content, write)` | internal | write mode 저장 또는 check mode drift/missing 검사 |
-| `parseSource(source)` | internal | 각 DTCG source를 독립 `ParsedDtcgDocument`로 변환 |
-| top-level pipeline | CLI | parallel load → parse → digest → resolve → policy assert → artifacts | missing/drift/validation을 throw |
-
-`pnpm tokens:check`는 check mode, `pnpm tokens:generate`는 `--write` mode를 사용한다.
-
-<a id="module-token-tooling-index"></a>
 <!-- guidebook-module: packages/token-tooling/src/index.ts -->
 ### `packages/token-tooling/src/index.ts`
 
-- **Role:** parser factory, artifact function과 Foundation Policy API만 노출하는 public
-  entry point다.
-- **Rule:** OKLCH/math와 raw DTCG value validator는 현재 package-internal이다.
-- **Side effects:** 없음.
+Terrazzo adapter, Foundation policy, artifact helper와 OKLCH utility의 public surface를 제한한다.
+repository CLI 자체는 export하지 않는다.
 
-<a id="module-token-tooling-oklch"></a>
 <!-- guidebook-module: packages/token-tooling/src/oklch-color.ts -->
 ### `packages/token-tooling/src/oklch-color.ts`
 
-- **Role:** canonical OKLCH value와 deterministic sRGB hex fallback 사이의 변환·검증을
-  담당한다.
-- **Inputs/outputs:** numeric triplet, alpha, precision policy → canonical color 또는 issue IDs.
-- **Side effects:** 없음.
-- **Evidence:** `oklch-color.test.ts`, color Foundation Policy tests.
+sRGB hex와 OKLCH 변환, gamut mapping, precision·fallback 검사를 소유한다. Foundation color
+source가 canonical OKLCH components와 checked-in hex fallback을 함께 유지하게 한다.
 
-| Identifier | Visibility | Responsibility |
-| --- | --- | --- |
-| `OklchComponentPrecision` | package type | lightness/chroma/hue decimal precision |
-| `CanonicalOklchColorValue` | package type | OKLCH components, alpha와 lowercase six-digit hex fallback |
-| `OklchColorIssue` | package type | profile/fallback failure reason union |
-| `roundTo(value, digits)`, `hasPrecision(value, digits)` | internal | canonical rounding과 authored precision 검사 |
-| `channelToHex(channel)` | internal | clamped sRGB channel을 two-digit hex로 변환 |
-| `linearToSrgb(channel)`, `srgbToLinear(channel)` | internal | transfer function 양방향 변환 |
-| `oklchToLinearSrgb(components)` | internal | OKLCH → linear sRGB matrix conversion |
-| `isInSrgbGamut(channels)` | internal | epsilon을 포함한 gamut membership 검사 |
-| `mapOklchToSrgb(components)` | internal | out-of-gamut chroma를 binary reduction해 sRGB에 매핑 |
-| `serializeSrgbHex(components)` | internal | sRGB triplet을 canonical hex로 serialize |
-| `parseSrgbHex(hex)` | package internal | lowercase six-digit hex를 normalized triplet으로 parse | invalid format은 `Error` |
-| `oklchToSrgbHex(components)` | package internal | gamut mapping 후 canonical fallback 생성 |
-| `srgbToOklch(components, precision)` | package internal | sRGB를 rounded OKLCH로 변환; achromatic hue는 `0` |
-| `createOklchColorValueFromSrgb(...)` | package internal | sRGB source에서 canonical DTCG color object 생성 |
-| `validateOklchColorValue(value, precision)` | package internal | shape, range, precision, achromatic hue, fallback 일치 검사 |
-
-<a id="module-token-tooling-terrazzo"></a>
 <!-- guidebook-module: packages/token-tooling/src/terrazzo-token-parser.ts -->
 ### `packages/token-tooling/src/terrazzo-token-parser.ts`
 
-- **Role:** pinned Terrazzo parser를 `TokenParserPort`에 맞추고 vendor output을 Axiom
-  normalized Token contract로 차단한다.
-- **Inputs:** URL과 UTF-8 content를 가진 `TokenSourceDocument[]`, Domain definitions.
-- **Outputs:** sorted `ParsedDtcgDocument`.
-- **Side effects:** Terrazzo parsing; 직접 filesystem/network I/O는 하지 않는다.
-- **Evidence:** `terrazzo-token-parser.test.ts`, `fixtures/token/dtcg/positive|negative`.
+`TerrazzoTokenParser`는 `@terrazzo/parser` output을 JSON-safe `ParsedDtcgDocument`로
+adapt한다. ID/Domain/type/unit/value와 source pointer를 검사하며 vendor object leakage를
+거부한다.
 
-| Identifier | Visibility | Responsibility | Failure behavior |
-| --- | --- | --- | --- |
-| `TerrazzoTokenParserOptions` | public | Domain dependency와 optional parser cwd |
-| `cloneJson(value, subject)` | internal | vendor value를 serialization round-trip으로 JSON-safe clone | non-serializable이면 `TypeError` |
-| `aliasTarget(value)` | internal | authored whole Token reference target 추출 |
-| `authoredValue(token)` | internal | Terrazzo의 original `$value`를 우선 보존 |
-| `sourceLocation(token)` | internal | vendor filename/jsonID를 Axiom file/pointer로 변환 |
-| `unsupportedType(token)` | internal | unsupported DTCG type diagnostic 생성 |
-| `validateStandardUnits(value, token, pointer)` | internal | composite 안의 모든 authored unit을 재귀 검사 |
-| `normalizeToken(token, domains)` | internal | identity, type, value, unit, Domain constraint를 합쳐 Axiom Token 생성 |
-| `TerrazzoTokenParser.constructor(options)` | public | immutable Domain/cwd dependency 저장 |
-| `TerrazzoTokenParser.parse(sources)` | public async | source 정렬, Terrazzo 호출, Token normalize와 정렬 | missing/parse/normalization을 `TokenParseError`로 throw |
-| `createTerrazzoTokenParser(options)` | public | parser implementation을 `TokenParserPort`로 반환 |
+## 27. `@axiom/css-property-profile` — Web CSS capability와 policy
 
-## 10. Package reference: `@axiom/css-property-profile`
+이 package는 pinned Webref의 표준 사실과 Axiom sparse policy/binding catalog를 합쳐 effective
+property registry를 만든다. Token value 자체나 Recipe stage는 소유하지 않는다.
 
-이 패키지는 Webref의 전체 CSS property 목록을 그대로 허용하지 않는다. pinned upstream
-자료와 Axiom의 sparse policy, Token binding catalog를 합성해 **실제로 허용되는 property
-profile**을 만들고, authoring value와 Token binding을 같은 profile에 대해 검증한다.
-
-<a id="module-css-constants"></a>
-<!-- guidebook-module: packages/css-property-profile/src/constants.ts -->
-### `packages/css-property-profile/src/constants.ts`
-
-- **Role:** profile identity, pinned Webref provenance, 생성 경로, 진단 코드와 CSS 구문 차단 규칙의 단일 이름표다.
-- **Read when:** profile/schema version, keyword 정책, diagnostic code를 바꿀 때.
-- **Rule:** 다른 모듈에 문자열·정규식을 복제하지 말고 이 상수를 가져온다.
-
-<a id="module-css-contracts"></a>
-<!-- guidebook-module: packages/css-property-profile/src/contracts.ts -->
-### `packages/css-property-profile/src/contracts.ts`
-
-- **Role:** upstream input부터 effective registry, coverage, diff, validation result까지 package의 데이터 경계를 선언한다.
-- **Key contracts:** `UpstreamCSSProperty`, `SparsePropertyPolicySource`,
-  `TokenBindingCatalog`, `EffectivePropertyPolicy`, `EffectiveCSSPropertyRegistry`,
-  `TokenBindingCoverageReport`, `PropertyDiagnostic`, `CSSGrammarResult`,
-  `PropertyProfileGenerationInput`.
-- **Mental model:** sparse input은 사람이 관리하고 effective output은 generator가 완전히 펼친다.
-
-<a id="module-css-generated-names"></a>
-<!-- guidebook-module: packages/css-property-profile/src/generated/css-property-names.ts -->
-### `packages/css-property-profile/src/generated/css-property-names.ts`
-
-- **Role:** effective registry에서 생성된 818개 property의 compile-time union이다.
-- **Exports:** `CSSCanonicalProperty`, `CSSAuthoringProperty`,
-  `CsstypeBackedAuthoringProperty`.
-- **Do not edit:** `pnpm css-profile:write`가 재생성한다. 헤더의 provenance가 입력을 설명한다.
-
-<a id="module-css-canonical-json"></a>
-<!-- guidebook-module: packages/css-property-profile/src/generation/canonical-json.ts -->
-### `packages/css-property-profile/src/generation/canonical-json.ts`
-
-| API | Responsibility |
-| --- | --- |
-| `normalize(value)` | internal; object key 정렬과 `-0` 정규화 |
-| `serializeCanonicalJson(value)` | deterministic JSON text 생성 |
-| `digestCanonicalJson(value)` | canonical text의 prefixed SHA-256 digest 생성 |
-
-<a id="module-css-profile-diff"></a>
-<!-- guidebook-module: packages/css-property-profile/src/generation/profile-diff.ts -->
-### `packages/css-property-profile/src/generation/profile-diff.ts`
-
-`entriesByName(registry)`는 비교용 map을 만들고,
-`diffPropertyProfiles(previous, next)`는 canonical entry 비교로 added/removed/changed
-property를 반환한다. upstream 갱신의 영향도를 리뷰 가능한 목록으로 만드는 모듈이다.
-
-<a id="module-css-profile-generator"></a>
-<!-- guidebook-module: packages/css-property-profile/src/generation/profile-generator.ts -->
-### `packages/css-property-profile/src/generation/profile-generator.ts`
-
-- **Main API:** `generatePropertyProfile(input)` → effective registry와 binding coverage.
-- **Composition order:** baseline → policy group → property override → Token binding → blocked status.
-- **Failure behavior:** unknown Domain/projector, group conflict, shorthand expansion 오류,
-  binding 충돌을 stable diagnostic code와 함께 거부한다.
-
-| Internal helper | Responsibility |
-| --- | --- |
-| `toAuthoringName`, `resolveStatus` | canonical name과 upstream status 정규화 |
-| `emptyBindings`, `baselinePolicy`, `patchPolicy` | effective policy의 기본값과 patch 합성 |
-| `assertNoGroupConflicts` | 한 property가 상충하는 sparse group에 중복 소속되는지 검사 |
-| `expandShorthand`, `bindingProperties` | shorthand와 catalog target을 실제 property 집합으로 확장 |
-| `applyBinding` | direct/template/projector binding을 policy에 적용 |
-| `coverage` | Domain별 bound/unbound/block 상태 집계 |
-
-<a id="module-css-property-types"></a>
-<!-- guidebook-module: packages/css-property-profile/src/generation/property-types.ts -->
-### `packages/css-property-profile/src/generation/property-types.ts`
-
-`quotedUnion(values)`는 안정 정렬된 TypeScript union 조각을 만들고,
-`generateCSSPropertyTypes(registry)`는 세 generated type과 provenance header 전체를
-생성한다. 출력은 사람이 편집하는 source가 아니라 registry의 projection이다.
-
-<a id="module-css-stable-order"></a>
-<!-- guidebook-module: packages/css-property-profile/src/generation/stable-string-order.ts -->
-### `packages/css-property-profile/src/generation/stable-string-order.ts`
-
-`compareStableStrings(left, right)`는 pinned locale 순서를 제공하고,
-`uniqueSortedStrings(values)`는 중복 제거 후 같은 순서를 적용한다. generator 결과가
-머신·입력 순서에 따라 흔들리지 않게 하는 작은 결정성 primitive다.
-
-<a id="module-css-index"></a>
-<!-- guidebook-module: packages/css-property-profile/src/index.ts -->
-### `packages/css-property-profile/src/index.ts`
-
-package의 의도된 public surface다. contracts와 generated types, profile generation/diff,
-`CSSGrammarValidator`, `validateTokenBinding`, `loadPinnedWebref`만 re-export하며 자체
-로직은 없다. 소비자는 deep import보다 이 entrypoint를 우선한다.
-
-<a id="module-css-grammar-validator"></a>
-<!-- guidebook-module: packages/css-property-profile/src/validation/css-grammar-validator.ts -->
-### `packages/css-property-profile/src/validation/css-grammar-validator.ts`
-
-`CSSGrammarValidator`는 profile과 `css-tree` grammar를 연결한다.
-
-| Member | Responsibility | Failure behavior |
-| --- | --- | --- |
-| `constructor(registry, options)` | effective registry와 experimental/custom-property opt-in 저장 | 없음 |
-| `validate(propertyName, value)` | alias/vendor/unknown/status/raw CSS/`!important`/delimiter/CSS-wide keyword를 차례로 검사하고 grammar match | throw 대신 `CSSGrammarResult` diagnostic 반환 |
-| `error(...)` | internal diagnostic factory | stable property code 사용 |
-
-Custom property는 allowlist에 있어야 하고, experimental property는 명시적으로 opt-in돼야
-한다. 이 validator는 stylesheet parser가 아니라 **한 declaration value의 trust boundary**다.
-
-<a id="module-css-binding-validator"></a>
-<!-- guidebook-module: packages/css-property-profile/src/validation/token-binding-validator.ts -->
-### `packages/css-property-profile/src/validation/token-binding-validator.ts`
-
-`validateTokenBinding(registry, input)`은 property가 Token을 받을 수 있는지, 요청 Domain과
-direct/template/projector mode가 effective policy와 맞는지, negation이 허용되는지를
-검사한다. `failure(...)`는 모든 거부를 동일한 `PropertyDiagnostic` 형태로 만든다.
-
-<a id="module-css-webref-importer"></a>
-<!-- guidebook-module: packages/css-property-profile/src/webref/webref-importer.ts -->
-### `packages/css-property-profile/src/webref/webref-importer.ts`
-
-| Identifier | Responsibility |
-| --- | --- |
-| `PinnedWebrefInput`, `WebrefDocument` | import 경계의 입력/문서 contract |
-| `require`, `isStringArray`, `normalizeProperty` | internal shape check와 property normalization |
-| `loadPinnedWebref(input?)` | 정확한 package version과 파일을 resolve하고, parse·중복 검사·정렬·digest 수행 |
-
-버전이나 document shape가 다르면 즉시 실패한다. 따라서 upstream drift는 암묵적으로
-흡수되지 않고 의도적인 dependency/profile 갱신 작업으로 드러난다.
-
-<a id="module-css-cli"></a>
 <!-- guidebook-module: packages/css-property-profile/src/cli.ts -->
 ### `packages/css-property-profile/src/cli.ts`
 
-CLI는 profile/policy/binding/Domain/projector JSON과 pinned Webref를 읽어 버전·digest를
-대조한 뒤 registry, coverage, generated types를 조립한다. `readJson`, `assertEqual`,
-`writeOrCheck`가 I/O 경계를 담당한다. 기본은 drift 검사이고 `--write`일 때만 세 생성물을
-쓴다. 즉 library core는 pure하고 파일 변경은 이 composition root에 격리된다.
+Webref pin, sparse policy, Token binding catalog와 Domain/projector registry를 읽어 effective
+registry, coverage, generated property type을 만든다. check/write mode의 repository
+composition root다.
 
-## 11. Package reference: `@axiom/spec-tooling`
+<!-- guidebook-module: packages/css-property-profile/src/constants.ts -->
+### `packages/css-property-profile/src/constants.ts`
 
-이 패키지는 `spec/manifest.json`을 출발점으로 JSON Schema 검증과 Axiom 고유의 의미
-검증을 실행한다. Schema가 “형태”를 판정한다면 semantic validator는 registry 상호 참조,
-정렬, 필수 vocabulary, context invariant처럼 JSON Schema만으로 표현하기 어려운 규칙을
-판정한다.
+profile/schema/generator version, Webref package/path, digest format, CSS keyword와 injection 차단
+pattern, `AXP...` property diagnostic code를 소유한다.
 
-<a id="module-spec-constants"></a>
-<!-- guidebook-module: packages/spec-tooling/src/constants.ts -->
-### `packages/spec-tooling/src/constants.ts`
+<!-- guidebook-module: packages/css-property-profile/src/contracts.ts -->
+### `packages/css-property-profile/src/contracts.ts`
 
-- **Role:** manifest/dialect, 파일 suffix, canonical digest, phase/severity, 필수 theme·State·Condition·color role,
-  semantic validator ID, registry ID, breakpoint 규칙, diagnostic code를 소유한다.
-- **Read when:** 새 semantic validator나 필수 vocabulary를 도입할 때.
-- **Rule:** validator가 문자열 identity를 자체 발명하지 않게 한다.
+upstream property, sparse patch, binding catalog, effective policy/registry, coverage/diff,
+grammar result의 serializable type 경계다.
 
-<a id="module-spec-types"></a>
-<!-- guidebook-module: packages/spec-tooling/src/types.ts -->
-### `packages/spec-tooling/src/types.ts`
+<!-- guidebook-module: packages/css-property-profile/src/generated/css-property-names.ts -->
+### `packages/css-property-profile/src/generated/css-property-names.ts`
 
-`JsonPrimitive`/`JsonArray`/`JsonObject`/`JsonValue`는 직렬화 가능한 경계를,
-`Diagnostic` 계열은 phase·severity·location을, `SpecManifest`와 entry types는 검사 대상을,
-`SpecCheckReport`는 성공 결과의 schema/registry/fixture 수와 digest를 표현한다.
+effective registry에서 생성된 canonical kebab-case와 authoring camelCase property union이다.
+`csstype`와 겹치는 surface도 compile time에 증명한다. `pnpm profile:generate` 결과다.
 
-<a id="module-spec-canonical-json"></a>
+<!-- guidebook-module: packages/css-property-profile/src/generation/canonical-json.ts -->
+### `packages/css-property-profile/src/generation/canonical-json.ts`
+
+CSS profile generator용 canonical JSON serializer와 SHA-256 digest를 제공한다. object key를
+stable order로 정렬하여 pin과 drift 비교가 순서 우연에 흔들리지 않게 한다.
+
+<!-- guidebook-module: packages/css-property-profile/src/generation/profile-diff.ts -->
+### `packages/css-property-profile/src/generation/profile-diff.ts`
+
+`diffPropertyProfiles`는 이전/다음 registry를 property name으로 비교해 added, removed,
+changed set을 deterministic하게 만든다. Webref/profile update review의 변화 요약에 쓴다.
+
+<!-- guidebook-module: packages/css-property-profile/src/generation/profile-generator.ts -->
+### `packages/css-property-profile/src/generation/profile-generator.ts`
+
+`generatePropertyProfile`이 status default → group → override → binding → block 순서로 각
+Webref property의 effective policy를 만든다. conflict, unknown property/Domain/projector와
+authoring-name collision은 generation error다.
+
+<!-- guidebook-module: packages/css-property-profile/src/generation/property-types.ts -->
+### `packages/css-property-profile/src/generation/property-types.ts`
+
+`generateCSSPropertyTypes`가 registry의 canonical/authoring name을 정렬된 TypeScript union
+source로 rendering한다. output file을 직접 쓰지 않는다.
+
+<!-- guidebook-module: packages/css-property-profile/src/generation/stable-string-order.ts -->
+### `packages/css-property-profile/src/generation/stable-string-order.ts`
+
+profile generation 전체가 공유하는 locale-stable compare와 unique sorted string helper다.
+order가 digest와 generated diff에 의미를 갖기 때문에 별도 owner로 둔다.
+
+<!-- guidebook-module: packages/css-property-profile/src/index.ts -->
+### `packages/css-property-profile/src/index.ts`
+
+contracts, generator, diff, grammar validator, Token binding validator, pinned Webref loader를
+공개하는 entrypoint다. 내부 canonicalization helper는 public surface가 아니다.
+
+<!-- guidebook-module: packages/css-property-profile/src/validation/css-grammar-validator.ts -->
+### `packages/css-property-profile/src/validation/css-grammar-validator.ts`
+
+`CSSGrammarValidator.validate`는 canonical property identity, opt-in/block policy,
+`!important`/delimiter/resource 위험과 `css-tree` grammar를 검사한다. Token serializer가 만든
+문자열도 이 경계를 통과한다.
+
+<!-- guidebook-module: packages/css-property-profile/src/validation/token-binding-validator.ts -->
+### `packages/css-property-profile/src/validation/token-binding-validator.ts`
+
+`validateTokenBinding`은 property effective policy만 보고 direct/template Domain 또는
+projector/negation 허용을 판정한다. Token manifest 조회나 serializer 실행은 하지 않는다.
+
+<!-- guidebook-module: packages/css-property-profile/src/webref/webref-importer.ts -->
+### `packages/css-property-profile/src/webref/webref-importer.ts`
+
+`loadPinnedWebref`가 installed package version, `css.json` path와 SHA-256 digest를 pin과
+대조하고 upstream property를 좁은 Axiom input shape로 normalize한다.
+
+## 28. `@axiom/spec-tooling` — normative spec harness
+
+이 repository-only package는 schema, registry, fixture와 cross-file semantic rule을 검사하고
+reference TypeScript를 생성한다. runtime package가 이 package를 import하는 방향은 금지된다.
+
 <!-- guidebook-module: packages/spec-tooling/src/canonical-json.ts -->
 ### `packages/spec-tooling/src/canonical-json.ts`
 
-| API | Responsibility | Failure behavior |
-| --- | --- | --- |
-| `describe(value)` | internal; 오류 메시지용 runtime type 기술 | 없음 |
-| `canonicalize(value, pointer, seen)` | recursive key sort, `-0` normalize, JSON-safe 검증 | cycle/nonfinite/non-plain/non-JSON을 pointer와 함께 throw |
-| `escapePointer(segment)` | JSON Pointer escaping | 없음 |
-| `canonicalJson(value)` | trailing newline을 포함한 canonical JSON 생성 | invalid input throw |
-| `canonicalJsonDigest(value)` | canonical JSON SHA-256 identity 생성 | invalid input throw |
+`canonicalJson`과 `canonicalJsonDigest`가 JSON-safe data, finite number, plain object와
+stable key order를 강제한다. unsupported value는 pointer가 포함된 error로 거부한다.
 
-<a id="module-spec-unknown-record"></a>
-<!-- guidebook-module: packages/spec-tooling/src/validation/unknown-record.ts -->
-### `packages/spec-tooling/src/validation/unknown-record.ts`
-
-`UnknownRecord`와 `isUnknownRecord(value)`는 untrusted JSON에서 object를 좁히는 공통
-trust-boundary primitive다. array와 `null`을 record로 취급하지 않는다.
-
-<a id="module-spec-semantic-diagnostic"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic/semantic-diagnostic.ts -->
-### `packages/spec-tooling/src/semantic/semantic-diagnostic.ts`
-
-`createSemanticDiagnosticFactory(phase)`는 semantic validator가 `<memory>` source,
-JSON Pointer, severity, optional details를 같은 형태로 만들도록 하는 factory다. 각
-validator는 자신이 소유한 phase로 factory를 한 번 생성한다.
-
-<a id="module-spec-condition-model"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic/condition-model.ts -->
-### `packages/spec-tooling/src/semantic/condition-model.ts`
-
-| API | Responsibility |
-| --- | --- |
-| `ResolvedRange` | min/max가 resolve된 range contract |
-| `conditionDiagnostic` | condition phase diagnostic factory |
-| `tokenPathFromCondition(condition)` | Condition의 Token reference target 추출 |
-| `resolvedContexts(value)` | resolved manifest의 context records 추출 |
-| `resolvedToken(context, path)` | 한 context에서 Token lookup |
-| `isBreakpointDimension(token)` | breakpoint Domain/type/unit shape 판정 |
-| `conditionDefinitions(registry)` | registry의 Condition map 생성 |
-| `resolvedRange(condition, manifest)` | range Condition의 min/max를 resolved Token에서 계산 |
-
-<a id="module-spec-condition-expression"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic/condition-expression-validator.ts -->
-### `packages/spec-tooling/src/semantic/condition-expression-validator.ts`
-
-`validateConditionExpression(value, context)`는 참조 ID 존재 여부와 range 조합의
-satisfiability를 검사한다. `conditionChoices`가 OR/AND 선택지를 정규화하고,
-`hasRangeContradiction`과 `hasSatisfyingConditionChoice`가 모든 대안이 모순인지 판단한다.
-
-<a id="module-spec-state-registry"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic/canonical-state-registry-validator.ts -->
-### `packages/spec-tooling/src/semantic/canonical-state-registry-validator.ts`
-
-`validateCanonicalStateRegistry(value)`는 canonical State ID의 중복과 안정 정렬을 검사한다.
-`stateDiagnostic`은 behavior phase diagnostic을 만든다. Schema 통과 후 vocabulary의
-결정성을 보장하는 2차 방어선이다.
-
-<a id="module-spec-condition-registry"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic/condition-registry-validator.ts -->
-### `packages/spec-tooling/src/semantic/condition-registry-validator.ts`
-
-`validateConditionRegistry(value, context)`는 container/Condition 중복과 정렬, ID-kind
-일치, container reference, breakpoint Token Domain/type/unit, theme-invariance를 검증한다.
-`conditionIdMatchesKind`와 `validateConditionToken`이 각각 identity와 Token-backed 범위를
-담당한다.
-
-<a id="module-spec-token-vocabulary"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic/semantic-token-vocabulary-validator.ts -->
-### `packages/spec-tooling/src/semantic/semantic-token-vocabulary-validator.ts`
-
-`validateSemanticTokenVocabulary(value)`는 현재 canonical semantic color role 집합이
-정확히 존재하고 family path가 unique·stable order인지 검사한다.
-`validateUniqueOrderedPaths`는 family별 중복과 순서를, `vocabularyDiagnostic`은 token
-phase 오류 형식을 소유한다.
-
-<a id="module-spec-appearance-ir"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic/appearance-ir-validator.ts -->
-### `packages/spec-tooling/src/semantic/appearance-ir-validator.ts`
-
-`validateAppearanceIr(value, context)`는 N15 Appearance IR의 의미 계약을 한 번에 조정한다.
-
-| Helper group | Responsibility |
-| --- | --- |
-| `prefixDiagnosticPointers`, `appearanceDiagnostic`, `stringSet` | 하위 진단의 위치 합성과 set conversion |
-| `canonicalStates`, `validateStateValue` | State Registry에 대한 값 검사 |
-| `validateProfileIdentity` | pinned CSS profile ID/digest 일치 검사 |
-| `declarationsInSlotRecords`, `validateSlotRecords`, `validateOrigin` | slot과 declaration provenance 검사 |
-| `variantDefinitions`, `validateVariantSelection` | Variant Registry와 default/selection 검사 |
-| `validateStateSelection` | canonical state selection 검사 |
-
-public 함수 내부의 `validateRules` orchestration은 compound/condition rule 모두에 같은
-slot·variant·state·Condition 검사를 적용한다. unknown reference, duplicate/default mismatch,
-declaration provenance mismatch를 diagnostic으로 반환하고 입력을 변경하지 않는다.
-
-<a id="module-spec-semantic-validators"></a>
-<!-- guidebook-module: packages/spec-tooling/src/semantic-validators.ts -->
-### `packages/spec-tooling/src/semantic-validators.ts`
-
-`runSemanticValidator(id, value, context)`는 manifest가 선언한 ID를 실제 validator로
-dispatch하는 exhaustive switch다. 내부 validator 역할은 다음과 같다.
-
-| Validator/helper | Responsibility |
-| --- | --- |
-| `validateTokenIdentity` | Token ID/path/tier identity invariant |
-| `containsTokenReference` | JSON subtree의 authored reference 탐색 |
-| `validateTokenContextOverride` | context override의 허용 shape와 reference 제한 |
-| `validateResolvedTokenManifest` | 필수 light/dark context, Token 집합과 resolved value invariant |
-| `validateTokenDomainRegistry` | Domain constraint와 required DTCG type 정합성 |
-| `validateParsedTokenDocument` | normalized parser output의 identity·unit·reference 규칙 |
-| `tokenDiagnostic` | token phase diagnostic factory |
-
-새 validator를 추가할 때는 constants의 ID, manifest entry, dispatch case, fixture를 함께
-추가해야 한다. 함수만 작성하면 harness가 호출하지 않는다.
-
-<a id="module-spec-harness"></a>
-<!-- guidebook-module: packages/spec-tooling/src/spec-harness.ts -->
-### `packages/spec-tooling/src/spec-harness.ts`
-
-`checkSpecification(specRoot)`가 전체 규범 검사의 composition root다. `createAjv`로 Draft
-2020-12 환경을 만들고, `validateSchemaInventory`로 schema 자체와 `$id`를 검사한 다음,
-manifest가 선언한 registry와 fixture를 `validateFixture`/`assertValid`로 평가한다.
-`readJson`, `resolveInside`, `listJsonFiles`, `formatErrors`, `asSchema`, `schemaId`, `withFixtureFile`은
-path confinement, inventory, parse와 diagnostic location을 담당한다. 성공 시 수와 digest를
-담은 `SpecCheckReport`, 실패 시 파일·pointer가 있는 오류를 낸다.
-
-<a id="module-spec-index"></a>
-<!-- guidebook-module: packages/spec-tooling/src/index.ts -->
-### `packages/spec-tooling/src/index.ts`
-
-`canonicalJson`, `canonicalJsonDigest`, `runSemanticValidator`, `checkSpecification`와 public
-types만 노출하는 package entrypoint다. consumer가 개별 semantic file에 결합하지 않게
-한다.
-
-<a id="module-spec-cli"></a>
 <!-- guidebook-module: packages/spec-tooling/src/cli.ts -->
 ### `packages/spec-tooling/src/cli.ts`
 
-repository/spec root를 계산해 `checkSpecification`을 호출하는 얇은 executable이다. 성공하면
-schema·registry·fixture 수와 digest를 출력하고, 실패하면 stack/message를 출력해 non-zero
-exit code를 설정한다. 검증 로직 자체는 harness에 남아 있어 테스트 가능하다.
+`checkSpecification`을 repository `spec/`에 실행하고 schema/registry/fixture/digest/semantic
+진단을 정렬해 출력하는 CLI다.
 
-## 12. Repository policy scripts
+<!-- guidebook-module: packages/spec-tooling/src/constants.ts -->
+### `packages/spec-tooling/src/constants.ts`
 
-이 네 파일은 package runtime이 아니라 repository 자체의 architecture를 검사한다.
-`pnpm check`가 모두 실행하므로 문서와 코드가 늘어날 때도 규칙이 자동으로 유지된다.
+manifest dialect/version, validator IDs, required State/Condition/behavior identity, phase와
+diagnostic code, reference-contract generator version의 owner다.
 
-<a id="module-script-workspace-policy"></a>
-<!-- guidebook-module: scripts/workspace-policy.mjs -->
-### `scripts/workspace-policy.mjs`
+<!-- guidebook-module: packages/spec-tooling/src/contracts-cli.ts -->
+### `packages/spec-tooling/src/contracts-cli.ts`
 
-repository/package/source 이름, 허용 runtime dependency, renderer-independent package,
-금지 renderer import pattern, source/test suffix, ignore directory, version-bearing path·identifier,
-constant-case pattern을 export한다. 나머지 checker의 **정책 데이터 SSOT**다.
+reference contract drift check를 실행하며 `--write`일 때만 generated package file을 갱신한다.
+root의 `contracts:check/generate`가 이 module을 호출한다.
 
-<a id="module-script-source-standards"></a>
-<!-- guidebook-module: scripts/check-source-standards.mjs -->
-### `scripts/check-source-standards.mjs`
+<!-- guidebook-module: packages/spec-tooling/src/contracts-generator.ts -->
+### `packages/spec-tooling/src/contracts-generator.ts`
 
-`walk(directory)`로 source를 순회해 version이 박힌 path/identifier, 잘못된 exported constant
-case, package별 `constants.ts` 누락을 찾는다. 발견한 모든 issue를 정렬해 한 번에 출력하며,
-위반이 없으면 검사 파일 수를 출력한다.
+selected schema/registry family를 읽어 generated TypeScript contract와 provenance header를
+render한다. temporary directory 재생성으로 checked-in output drift도 검사한다.
 
-<a id="module-script-boundaries"></a>
+<!-- guidebook-module: packages/spec-tooling/src/index.ts -->
+### `packages/spec-tooling/src/index.ts`
+
+canonical JSON, semantic dispatch, spec check/value validation, Motion authority validation port와
+report type만 공개한다. runtime behavior를 제공하지 않는다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic-validators.ts -->
+### `packages/spec-tooling/src/semantic-validators.ts`
+
+`runSemanticValidator` dispatch owner다. manifest의 validator ID를 Token, State, Condition,
+Appearance, collision, Motion, behavior validator에 연결하고 unknown ID를 거부한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/appearance-ir-validator.ts -->
+### `packages/spec-tooling/src/semantic/appearance-ir-validator.ts`
+
+Appearance IR의 profile identity, slot/origin, variant/State selection과 Condition expression을
+관련 registry에 대조한다. JSON shape를 넘는 cross-registry 의미를 검사한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/behavior-criteria-validator.ts -->
+### `packages/spec-tooling/src/semantic/behavior-criteria-validator.ts`
+
+React Aria source manifest의 canonical form/digest, required package/evidence와 component
+criteria profile pair를 검사한다. provider runtime을 실행하지 않는다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/canonical-state-registry-validator.ts -->
+### `packages/spec-tooling/src/semantic/canonical-state-registry-validator.ts`
+
+required canonical State, axis/value shape, applicable component와 usage coverage를 검사한다.
+State runtime 값을 읽지 않는다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/collision-trace-validator.ts -->
+### `packages/spec-tooling/src/semantic/collision-trace-validator.ts`
+
+collision entry의 declaration origin, policy provenance, property 관계, applicability와 Condition
+relation을 effective registry/Condition authority에 대조한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/condition-expression-validator.ts -->
+### `packages/spec-tooling/src/semantic/condition-expression-validator.ts`
+
+registered Condition만 사용했는지 확인하고 threshold로 표현식의 satisfiability와 range
+contradiction을 분석한다. 관계 계산은 public condition analyzer를 사용한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/condition-model.ts -->
+### `packages/spec-tooling/src/semantic/condition-model.ts`
+
+Condition validator들이 공유하는 resolved Token/threshold lookup과 diagnostic factory를
+제공한다. breakpoint가 context 모두에서 올바른 dimension인지 확인하는 기반이다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/condition-registry-validator.ts -->
+### `packages/spec-tooling/src/semantic/condition-registry-validator.ts`
+
+Condition ID/kind naming, container reference, breakpoint Token Domain/type/unit, required Condition
+coverage를 검사한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/motion-ir-validator.ts -->
+### `packages/spec-tooling/src/semantic/motion-ir-validator.ts`
+
+Motion IR profile/digest, property motion policy, timing Token Domain, keyframe grammar, State와
+reduced-motion rule을 여러 authority에 대조한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/semantic-diagnostic.ts -->
+### `packages/spec-tooling/src/semantic/semantic-diagnostic.ts`
+
+`createSemanticDiagnosticFactory`가 semantic validator의 phase/source/target 형식을 통일한다.
+규칙 자체보다 diagnostic construction을 소유한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/semantic/semantic-token-vocabulary-validator.ts -->
+### `packages/spec-tooling/src/semantic/semantic-token-vocabulary-validator.ts`
+
+semantic Token path family의 unique/stable order, allowed size vocabulary와 removed path 부재를
+검사한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/spec-harness.ts -->
+### `packages/spec-tooling/src/spec-harness.ts`
+
+AJV 2020 instance를 만들고 manifest inventory, schema, registry, positive/negative fixture,
+pinned evidence와 semantic diagnostics를 한 report로 묶는다. path escape로 spec root 밖의
+입력도 차단한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/types.ts -->
+### `packages/spec-tooling/src/types.ts`
+
+JSON value, diagnostic, manifest entry와 `SpecCheckReport`의 internal/public type vocabulary를
+정의한다.
+
+<!-- guidebook-module: packages/spec-tooling/src/validation/unknown-record.ts -->
+### `packages/spec-tooling/src/validation/unknown-record.ts`
+
+`unknown` runtime input이 non-null, non-array object인지 좁히는 `isUnknownRecord` guard다.
+semantic validator가 unsafe cast를 반복하지 않게 한다.
+
+## 29. `@axiom/condition-registry` — Condition identity와 관계 분석
+
+generated State/Condition types를 public surface로 제공하고, 등록된 viewport/container 조건의
+관계를 순수 함수로 분석한다. 실제 viewport나 browser preference를 읽지 않는다.
+
+<!-- guidebook-module: packages/condition-registry/src/condition-analyzer.ts -->
+### `packages/condition-registry/src/condition-analyzer.ts`
+
+`analyzeConditionExpression`과 `analyzeConditionPair`가 registry와 resolved threshold를 받아
+satisfiable 여부와 disjoint/equivalent/subset/superset/overlap 관계를 계산한다.
+
+<!-- guidebook-module: packages/condition-registry/src/constants.ts -->
+### `packages/condition-registry/src/constants.ts`
+
+generated contract provenance와 package identity에 쓰는
+`CONDITION_REGISTRY_PACKAGE_NAME`의 owner다.
+
+<!-- guidebook-module: packages/condition-registry/src/generated/reference-contracts.ts -->
+### `packages/condition-registry/src/generated/reference-contracts.ts`
+
+State/Condition schemas와 registries에서 생성된 ID union, registry와 expression type이다.
+source of truth가 아니며 `pnpm contracts:generate`로 재현한다.
+
+<!-- guidebook-module: packages/condition-registry/src/generated/reference-contracts.type-test.ts -->
+### `packages/condition-registry/src/generated/reference-contracts.type-test.ts`
+
+generated Condition type이 valid literal은 받고 invalid literal은 compile time에 거부하는지
+증명한다. runtime module도 public API도 아니다.
+
+<!-- guidebook-module: packages/condition-registry/src/index.ts -->
+### `packages/condition-registry/src/index.ts`
+
+generated State/Condition type과 analyzer API를 공개하는 entrypoint다.
+
+## 30. `@axiom/behavior-contracts` — Behavior criteria type surface
+
+React Aria 기반 behavior evidence와 component criteria의 generated TypeScript contract만
+제공한다. provider package를 import하거나 runtime behavior를 실행하지 않는다.
+
+<!-- guidebook-module: packages/behavior-contracts/src/constants.ts -->
+### `packages/behavior-contracts/src/constants.ts`
+
+generated provenance가 가리키는 `BEHAVIOR_CONTRACTS_PACKAGE_NAME`의 정적 owner다.
+
+<!-- guidebook-module: packages/behavior-contracts/src/generated/reference-contracts.ts -->
+### `packages/behavior-contracts/src/generated/reference-contracts.ts`
+
+behavior source manifest, evidence, component criteria profile과 관련 ID union을 schema에서
+생성한 compile-time projection이다.
+
+<!-- guidebook-module: packages/behavior-contracts/src/generated/reference-contracts.type-test.ts -->
+### `packages/behavior-contracts/src/generated/reference-contracts.type-test.ts`
+
+generated behavior type의 required tuple, provider literal, criteria shape를 compile time에
+확인한다.
+
+<!-- guidebook-module: packages/behavior-contracts/src/index.ts -->
+### `packages/behavior-contracts/src/index.ts`
+
+generated behavior type만 package 밖으로 재수출하는 entrypoint다. 실행 함수는 없다.
+
+## 31. `@axiom/recipe-kernel` — renderer-neutral Recipe structure
+
+slot, variant, default, State/Condition container와 compound rule의 구조를 검증하고 frozen
+snapshot으로 보존한다. CSS property, Token Domain, browser behavior는 알지 못한다.
+
+<!-- guidebook-module: packages/recipe-kernel/src/constants.ts -->
+### `packages/recipe-kernel/src/constants.ts`
+
+Recipe identifier limit/pattern, allowed top-level key, collection maximum과 structural diagnostic
+code/message를 소유한다.
+
+<!-- guidebook-module: packages/recipe-kernel/src/contracts.ts -->
+### `packages/recipe-kernel/src/contracts.ts`
+
+generic style fragment를 parameter로 받는 Recipe definition/snapshot/selection, source location,
+diagnostic, `RecipeKernelPort`, `RecipeKernelError` 계약을 정의한다.
+
+<!-- guidebook-module: packages/recipe-kernel/src/define.ts -->
+### `packages/recipe-kernel/src/define.ts`
+
+`createRecipeKernel`이 `validateRecipeDefinition`과 immutable copy를 묶어
+`define(definition) → DefinedRecipe` port를 만든다.
+
+<!-- guidebook-module: packages/recipe-kernel/src/definition.ts -->
+### `packages/recipe-kernel/src/definition.ts`
+
+authoring definition을 slot/variant/state/compound/condition별 deterministic snapshot으로
+구성한다. 입력 reference와 분리된 data를 downstream에 제공한다.
+
+<!-- guidebook-module: packages/recipe-kernel/src/index.ts -->
+### `packages/recipe-kernel/src/index.ts`
+
+Kernel contract와 `createRecipeKernel`만 공개하는 entrypoint다.
+
+<!-- guidebook-module: packages/recipe-kernel/src/recipe-kernel.type-test.ts -->
+### `packages/recipe-kernel/src/recipe-kernel.type-test.ts`
+
+literal slot/variant inference, valid selection과 JSON-safe style constraint를 compile time에
+증명한다. runtime output을 만들지 않는다.
+
+<!-- guidebook-module: packages/recipe-kernel/src/validation.ts -->
+### `packages/recipe-kernel/src/validation.ts`
+
+`validateRecipeDefinition`이 unknown key, duplicate/unknown slot, variant/default/state/condition
+shape와 JSON-safe data를 검사한다. `copyRecipeDefinition`은 detached immutable snapshot용
+copy를 만든다.
+
+## 32. `@axiom/appearance-authoring` — CSS-aware Recipe receipt
+
+Recipe Kernel 위에 property registry, CSS grammar, State/Condition registry, resolved Token과
+serializer/projector authority를 묶는다. 성공 결과는 authenticated authoring receipt이며 아직
+Appearance IR가 아니다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/appearance-authoring.type-test.ts -->
+### `packages/appearance-authoring/src/appearance-authoring.type-test.ts`
+
+`token`, `css`, `cssTemplate`, negation/projector helper가 literal type을 보존하고
+`defineRecipe`가 slot/variant inference를 유지하는지 compile time에 확인한다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/constants.ts -->
+### `packages/appearance-authoring/src/constants.ts`
+
+`axiom-css` profile ID, authoring phase, Token value kind/ID pattern과 Recipe/authority/binding
+diagnostic code를 소유한다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/contracts.ts -->
+### `packages/appearance-authoring/src/contracts.ts`
+
+CSS authoring value, serializer/projector execution port, authority digest, validated Token evidence,
+binding report, diagnostics/error와 authoring port type을 정의한다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/define-recipe.ts -->
+### `packages/appearance-authoring/src/define-recipe.ts`
+
+`createCSSRecipeAuthoring`이 explicit authorities를 먼저 검증하고 Kernel structural validation,
+CSS definition validation, Token binding validation을 한 `defineRecipe` 호출로 묶는다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/helpers.ts -->
+### `packages/appearance-authoring/src/helpers.ts`
+
+`token`, `negateToken`, `projectToken`, `css`, `cssTemplate`의 closed authoring object를
+만든다. 단순 string 대신 value kind를 명시하여 validator가 의도를 구분하게 한다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/index.ts -->
+### `packages/appearance-authoring/src/index.ts`
+
+contracts, diagnostic code, authoring factory, Token binding validator와 helper를 공개하는
+entrypoint다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/token-validation.ts -->
+### `packages/appearance-authoring/src/token-validation.ts`
+
+N21 semantic boundary다. authority shape/digest, context-complete Token entry, Domain/type,
+direct/template/projector policy, serializer output grammar를 검사하고 immutable binding
+evidence를 만든다.
+
+<!-- guidebook-module: packages/appearance-authoring/src/validation.ts -->
+### `packages/appearance-authoring/src/validation.ts`
+
+Recipe의 authoring property name을 canonical property로 찾고 value kind, raw CSS grammar,
+State/Condition registry와 stage별 style shape를 검사한다.
+
+## 33. `@axiom/appearance-normalizer` — receipt에서 Appearance IR로
+
+N21 receipt를 현재 authority로 다시 검증하고 source-oriented Recipe를 stage별 canonical
+declaration으로 낮춘다. 함께 반환하는 collision trace는 IR와 별도 evidence다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/conformance/button-authorities.test-support.ts -->
+### `packages/appearance-normalizer/src/conformance/button-authorities.test-support.ts`
+
+checked-in authorities를 읽고 Button appearance/motion conformance input, digest와 serializer
+port를 조립하는 test-support composition root다. production public API가 아니다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/conformance/button-foundation.type-test.ts -->
+### `packages/appearance-normalizer/src/conformance/button-foundation.type-test.ts`
+
+N24 Button definition, normalized Appearance와 Motion result가 generated contract와 literal
+identity를 만족하는지 compile time에 증명한다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/constants.ts -->
+### `packages/appearance-normalizer/src/constants.ts`
+
+Appearance profile/schema identity, normalization/collision diagnostic code와 trace ID 형식의
+owner다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/contracts.ts -->
+### `packages/appearance-normalizer/src/contracts.ts`
+
+normalizer input, accepted receipt, diagnostic과 `{ appearance?, trace, diagnostics }` result,
+`AppearanceNormalizer` port를 정의한다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/index.ts -->
+### `packages/appearance-normalizer/src/index.ts`
+
+normalizer contract, `createAppearanceNormalizer`, `serializeAppearanceIR`를 공개하는
+entrypoint다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/normalizer.ts -->
+### `packages/appearance-normalizer/src/normalizer.ts`
+
+base/variant/state/compound/condition을 canonical declarations로 낮추고 origin을 붙인다. Condition
+satisfiability와 same-property/shorthand/reset collision을 분석하며 error가 있으면 Appearance
+IR를 내지 않는다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/normalizer.type-test.ts -->
+### `packages/appearance-normalizer/src/normalizer.type-test.ts`
+
+normalizer public result가 generated `CSSAppearanceIR`와 `CollisionTrace` contract에 맞는지,
+invalid shape가 compile time에 거부되는지 확인한다.
+
+<!-- guidebook-module: packages/appearance-normalizer/src/serializer.ts -->
+### `packages/appearance-normalizer/src/serializer.ts`
+
+`serializeAppearanceIR`는 IR object key를 recursively 정렬해 canonical JSON text를 만든다.
+CSS stylesheet serialization과는 다른 경계다.
+
+## 34. `@axiom/motion-schema` — Motion authoring과 generated IR contracts
+
+Appearance/Collision/Motion schema의 generated types와 N23 Motion authoring normalization을
+소유한다. property/Token/State/Condition/Appearance authority를 주입받지만 animation을 실행하지
+않는다.
+
+<!-- guidebook-module: packages/motion-schema/src/authoring/authority-validation.ts -->
+### `packages/motion-schema/src/authoring/authority-validation.ts`
+
+property/Token/State/Condition/Appearance input이 closed schema-faithful shape인지 검사한다.
+`isClosedAppearanceAuthority`는 Motion이 임의의 forged Appearance를 믿지 않게 한다.
+
+<!-- guidebook-module: packages/motion-schema/src/authoring/contracts.ts -->
+### `packages/motion-schema/src/authoring/contracts.ts`
+
+Motion source phase/segment/track/keyframe, serializer port, expected digest, authority snapshot,
+diagnostic/error와 authoring port type을 정의한다.
+
+<!-- guidebook-module: packages/motion-schema/src/authoring/define-motion.ts -->
+### `packages/motion-schema/src/authoring/define-motion.ts`
+
+`defineMotion`은 literal source shape를 보존하고, `createMotionAuthoring`은 authorities를
+검사한 뒤 property grammar, Token timing/value, State applicability, reduced-motion을 검증해
+frozen Motion IR를 만든다.
+
+<!-- guidebook-module: packages/motion-schema/src/authoring/define-motion.type-test.ts -->
+### `packages/motion-schema/src/authoring/define-motion.type-test.ts`
+
+Motion phase/track/keyframe literal inference와 invalid definition rejection을 compile time에
+검사한다.
+
+<!-- guidebook-module: packages/motion-schema/src/constants.ts -->
+### `packages/motion-schema/src/constants.ts`
+
+Motion profile/schema ID, diagnostics, allowed DTCG type/theme/stage, token/property/serializer
+pattern과 template Token variable을 소유한다.
+
+<!-- guidebook-module: packages/motion-schema/src/generated/reference-contracts.ts -->
+### `packages/motion-schema/src/generated/reference-contracts.ts`
+
+CSS declaration, Appearance IR, Collision Trace, Motion IR와 관련 union을 normative schema에서
+생성한 TypeScript projection이다.
+
+<!-- guidebook-module: packages/motion-schema/src/generated/reference-contracts.type-test.ts -->
+### `packages/motion-schema/src/generated/reference-contracts.type-test.ts`
+
+generated Appearance/Motion/Collision conditional type이 incomplete or misplaced field를 compile
+time에 거부하는지 증명한다.
+
+<!-- guidebook-module: packages/motion-schema/src/index.ts -->
+### `packages/motion-schema/src/index.ts`
+
+generated types, Motion authoring contract/factory/error와 Token reference helper를 공개하는
+entrypoint다.
+
+<!-- guidebook-module: packages/motion-schema/src/index.type-test.ts -->
+### `packages/motion-schema/src/index.type-test.ts`
+
+public entrypoint에서 의도한 type과 helper만 접근 가능하고 representative literals가
+contract를 만족하는지 compile time에 검사한다.
+
+## 35. Repository policy scripts
+
+이 네 script는 package 바깥에서 repository-wide 구조를 검사한다. 결과는 `pnpm check`에
+포함되며 새 normative architecture를 선언하지 않는다.
+
 <!-- guidebook-module: scripts/check-boundaries.mjs -->
 ### `scripts/check-boundaries.mjs`
 
-`walk`와 `sorted`를 이용해 package manifest의 runtime dependency가 policy allowlist와
-정확히 같은지 비교하고, renderer-independent source가 React/Vue/Svelte 등 renderer를
-import하지 않는지 검사한다. package graph의 한 방향성을 CI에서 강제한다.
+workspace package manifest와 source import를 읽어 허용 dependency graph, renderer-independent
+package 제약, generated package의 spec-tooling 역의존 금지를 검사한다.
 
-<a id="module-script-guidebook-coverage"></a>
 <!-- guidebook-module: scripts/check-guidebook-coverage.mjs -->
 ### `scripts/check-guidebook-coverage.mjs`
 
-| API | Responsibility |
-| --- | --- |
-| `collectGuidebookModules(markdown)` | marker에서 문서화된 path 수집 |
-| `discoverGuidebookModules(repositoryRoot?)` | package non-test source와 root policy script 발견 |
-| `compareGuidebookModules(actual, documented)` | missing/stale/duplicate 정렬 진단 계산 |
-| `checkGuidebookCoverage(repositoryRoot?)` | guidebook 읽기부터 성공/실패 출력까지 조정 |
-| `sortPaths`, `toRepositoryPath`, `walkFiles`, `isTestModule` | internal deterministic traversal·normalization |
+package `src/`의 비-test module과 root policy script를 discovery하고 이 문서 marker의
+missing/stale/duplicate를 deterministic diagnostic으로 보고한다.
 
-이 checker는 설명의 품질을 자동 판정하지 않는다. 대신 새 모듈이 생겼는데 guidebook에서
-조용히 빠지는 문제를 막는다. test file은 구현 대상이 아니라 evidence이므로 제외한다.
+<!-- guidebook-module: scripts/check-source-standards.mjs -->
+### `scripts/check-source-standards.mjs`
 
-## 13. Normative data and generated artifacts
+version marker가 든 path/identifier, package constant ownership, exported constant naming과
+callable TSDoc 같은 source standard를 검사한다.
 
-### `tokens/`: 사람이 저작하는 Token source
+<!-- guidebook-module: scripts/workspace-policy.mjs -->
+### `scripts/workspace-policy.mjs`
 
-- `base/`는 theme과 무관한 primitive 및 semantic source를 소유한다.
-- `theme-light/`, `theme-dark/`는 theme context override를 소유한다.
-- 각 Token은 DTCG shape를 따르며 Domain Registry와 Foundation Policy가 허용하는 identity,
-  tier, type, unit, reference만 사용한다.
-- `tokens/README.md`가 authoring entrypoint다. generated manifest를 직접 고치지 않는다.
+repository root, package dependency allowlist, renderer-independent/generated package set, source
+extension/test suffix, naming pattern을 policy checker들이 공유하도록 정의한다.
 
-### `spec/`: machine-readable contract
+## 36. 다음에 무엇을 읽을지
 
-| Area | Responsibility |
-| --- | --- |
-| `spec/manifest.json` | schema, registry, fixture suite와 semantic validator 연결의 유일한 inventory |
-| `spec/common/` | 공통 provenance, diagnostic, expression building block |
-| `spec/token/` | Token source/profile/policy, Domain·semantic vocabulary, parsed/resolved manifest |
-| `spec/css/` | CSS input profile, sparse policy, binding catalog, effective registry와 coverage |
-| `spec/state/` | canonical State와 Variant vocabulary |
-| `spec/condition/` | Condition/container vocabulary와 expression |
-| `spec/fixtures/` | schema·semantic 계약의 positive/negative executable examples |
+- 전체 authority와 현재 package graph: `docs/README.md`, `docs/architecture.md`
+- Token identity, tier, context: `docs/ssot/01-foundation-and-domain-contracts.md`
+- compiler readiness와 N-step 경계: `docs/ssot/02-adapter-contract-readiness-and-governance.md`
+- CSS property와 binding: `docs/ssot/03-css-appearance-profile-and-property-policy.md`
+- Condition과 Motion: `docs/ssot/04-environment-conditions-and-motion.md`
+- Behavior projection과 public runtime: `docs/ssot/05-react-runtime-behavior-and-public-api.md`
+- 실제 기계 계약 inventory: `spec/README.md`, `spec/manifest.json`
 
-Schema는 JSON shape를, registry는 canonical vocabulary/정책을, fixture는 통과·실패해야 할
-행동을 말한다. 새 JSON 파일을 놓는 것만으로는 검증되지 않으며 manifest 등록이 필요하다.
-
-### `fixtures/token/dtcg/`: parser adapter corpus
-
-Terrazzo처럼 외부 parser를 교체하거나 업그레이드할 때 Axiom normalized output이 유지되는지
-검사한다. positive corpus는 지원하는 DTCG type과 alias/composite 사례를, negative corpus는
-unsupported type·unit·shape 사례를 고정한다.
-
-### 생성물: source가 아닌 projection
-
-| Artifact | Generator/source | Safe update command |
-| --- | --- | --- |
-| `packages/tokens/src/generated/token-paths.ts` | resolved Token manifests | `pnpm foundation:write` |
-| Foundation parsed/resolved manifests | authored `tokens/`, profile/policy/Domain | `pnpm foundation:write` |
-| effective CSS registry·coverage | Webref + CSS policy/bindings/Domain/projector | `pnpm css-profile:write` |
-| `packages/css-property-profile/src/generated/css-property-names.ts` | effective CSS registry | `pnpm css-profile:write` |
-
-`pnpm check`는 같은 generator를 write 없이 실행해 committed output과 새 계산 결과가 같은지
-검사한다. generated file의 수동 변경이 되돌아가는 이유가 바로 이 구조다.
-
-## 14. Change recipes
-
-### Token vocabulary나 Foundation을 바꿀 때
-
-1. owning ADR/SSOT와 `tokens/README.md`에서 identity·tier·context 규칙을 확인한다.
-2. authored `tokens/`와 필요하면 Token vocabulary/Domain/Foundation policy registry를 바꾼다.
-3. schema 의미가 달라졌다면 schema와 positive/negative fixture를 함께 바꾼다.
-4. `pnpm foundation:write`로 parsed/resolved manifest와 `TokenPath`를 재생성한다.
-5. `pnpm check && pnpm test && pnpm build`로 두 theme의 동일 Token 집합과 drift를 확인한다.
-
-### Schema 또는 registry를 추가할 때
-
-1. 가까운 기존 schema의 `$schema`, `$id`, version 정책을 따른다.
-2. `spec/manifest.json`에 schema/registry/fixture suite와 필요한 semantic validator를 등록한다.
-3. 최소 한 개 positive와 해당 규칙을 깨는 targeted negative fixture를 추가한다.
-4. JSON Schema가 shape, semantic validator가 cross-file meaning을 소유하도록 경계를 나눈다.
-5. `pnpm spec:check`와 전체 gate를 실행한다.
-
-### Parser adapter를 바꿀 때
-
-1. `TokenParserPort`와 normalized `ParsedDtcgDocument`를 계약으로 삼는다.
-2. vendor-specific shape는 adapter 내부에서 끝내고 core contract로 누출하지 않는다.
-3. `fixtures/token/dtcg`에 새 지원/거부 사례를 먼저 추가한다.
-4. deterministic source/Token ordering과 structured `TokenParseError`를 유지한다.
-5. focused parser test 후 Foundation generation과 전체 gate를 실행한다.
-
-### CSS property policy나 Token binding을 바꿀 때
-
-1. upstream 추가가 아니라면 Webref를 고치지 않고 sparse policy/binding catalog를 수정한다.
-2. Domain/projector reference가 registry에 존재하는지 확인한다.
-3. conflict·unknown reference·coverage 기대값을 generator test로 고정한다.
-4. `pnpm css-profile:write`로 effective registry, coverage, property types를 함께 재생성한다.
-5. profile diff를 검토하고 grammar/binding validation test와 전체 gate를 실행한다.
-
-### Semantic validator를 추가할 때
-
-1. diagnostic phase와 stable code를 constants에 정의한다.
-2. side-effect 없는 `readonly Diagnostic[]` 함수로 규칙을 작성한다.
-3. `SEMANTIC_VALIDATOR_IDS`, `runSemanticValidator` dispatch, manifest entry를 함께 연결한다.
-4. pointer가 정확한 positive/negative fixture와 focused unit test를 추가한다.
-5. `pnpm spec:check`가 실제 manifest를 통해 새 validator를 호출하는지 확인한다.
-
-### 새 source module을 추가할 때
-
-1. owning package의 dependency 방향과 `index.ts` public surface 필요 여부를 판단한다.
-2. exported function/class/method에 English TSDoc과 focused test를 작성한다.
-3. 이 guidebook에 정확한 `guidebook-module` marker와 role/API/failure behavior를 추가한다.
-4. `pnpm guidebook:check`로 missing/stale/duplicate marker가 없는지 확인한다.
-
-## 15. Failure guide
-
-| Symptom | Likely owner | First checks |
-| --- | --- | --- |
-| `foundation:check` drift | Token source/profile/generator | generated file을 고치지 말고 authored input과 `foundation:write` 결과 비교 |
-| light/dark Token ID mismatch | resolver context | theme override가 Token을 생성/삭제했는지 확인; override는 값만 바꿔야 함 |
-| schema fixture unexpectedly passes | schema/semantic split | rule이 cross-registry 의미라면 semantic validator와 manifest 연결 확인 |
-| unknown semantic validator | constants/dispatch/manifest | ID 세 위치가 같은지 확인 |
-| CSS profile digest mismatch | pinned input/provenance | Webref version, policy/binding canonical digest, profile manifest 확인 |
-| unknown projector/Domain | CSS binding registry | catalog reference가 canonical registry ID인지 확인 |
-| CSS value rejected | `CSSGrammarValidator` | status opt-in, raw CSS policy, delimiter/keyword, css-tree grammar 순서로 확인 |
-| Token binding rejected | `validateTokenBinding` | property alias/status, Domain, binding mode, negation policy 확인 |
-| boundary check failure | package graph | `package.json` dependency와 source import를 `workspace-policy.mjs`와 대조 |
-| guidebook coverage failure | documentation | missing은 새 모듈 설명, stale은 삭제/이동된 marker, duplicate는 중복 section을 수정 |
-| NodeNext import error | module boundary | relative TypeScript import가 runtime `.js` suffix를 쓰는지 확인 |
-
-## 16. Test and review map
-
-| Change area | Closest evidence |
-| --- | --- |
-| Token identity/resolution/serialization | `packages/tokens/src/*.test.ts` |
-| DTCG parsing/Foundation generation/OKLCH | `packages/token-tooling/src/*.test.ts` |
-| CSS generation, ordering, Webref, value/binding validation | `packages/css-property-profile/src/**/*.test.ts` |
-| canonical JSON, schema harness, State/Condition/Appearance semantics | `packages/spec-tooling/src/**/*.test.ts` + `spec/fixtures/` |
-| repository dependency/naming/documentation policy | `scripts/*.mjs`, `scripts/check-guidebook-coverage.test.mjs` |
-
-리뷰는 먼저 source-of-truth 변경을 읽고, generated diff는 그 projection인지 확인한다. 그 다음
-negative test가 새 규칙의 실패 경계를 정확히 고정하는지, diagnostic code와 JSON Pointer가
-소비자가 행동할 만큼 구체적인지 본다.
-
-## 17. “어디를 수정해야 하나?” 빠른 탐색표
-
-| Goal | Primary edit | Follow-up |
-| --- | --- | --- |
-| Token 값/alias 변경 | `tokens/` | Foundation regeneration |
-| Token family/path 정책 변경 | Token vocabulary/Foundation policy registry + SSOT | schema/fixtures/generated types |
-| 새 context 축 추가 | Token source profile + resolver contracts | manifests, serializers, tests |
-| CSS property 허용/차단 변경 | sparse CSS property policy | effective profile regeneration |
-| Token→CSS 매핑 변경 | Token binding catalog/projector registry | coverage and binding tests |
-| State/Variant/Condition identity 변경 | owning registry | semantic validators, Appearance IR fixtures |
-| Appearance IR 의미 규칙 변경 | appearance schema + validator | positive/negative fixture |
-| public import 추가 | owning `src/index.ts` | package exports/types build |
-| package dependency 추가 | `package.json` + `workspace-policy.mjs` | boundary rationale/test |
-| 새 문서상 authority 결정 | ADR/SSOT | derived guide/plan update |
-
-## 18. Glossary
-
-| Term | Meaning in Axiom |
-| --- | --- |
-| **authored source** | 사람이 직접 관리하는 Token/policy/registry 입력 |
-| **canonical identity** | renderer나 vendor 표현과 무관한 Axiom의 안정 ID |
-| **Condition** | 환경·container·preference처럼 rule 적용 여부를 결정하는 입력 |
-| **context** | 같은 Token path를 다른 resolved value로 평가하는 resolver 좌표; 현재 theme 포함 |
-| **diagnostic** | code, phase, severity, location, message를 가진 기계 판독 가능한 실패 |
-| **Domain** | Token의 의미·DTCG type·unit 제약을 묶는 범주 |
-| **effective profile** | sparse human policy를 전체 upstream inventory에 펼친 완전한 결과 |
-| **fixture** | 반드시 통과하거나 실패해야 하는 executable contract example |
-| **IR** | adapter가 소비하기 전 canonical intermediate representation |
-| **projection** | canonical source에서 결정적으로 생성되는 manifest/type/coverage |
-| **projector** | Token value를 CSS authoring form으로 변환하는 등록된 전략 |
-| **provenance** | output이 어떤 source/profile/digest/generator에서 왔는지 나타내는 identity |
-| **registry** | canonical vocabulary와 정책을 machine-readable하게 고정한 문서 |
-| **State** | component lifecycle/interaction 상태의 canonical identity |
-| **tier** | primitive/semantic 등 Token identity 안의 추상화 계층 |
-| **Variant** | component가 제공하는 유한한 author-selected option axis |
-
-## 19. 역할별 읽기 경로
-
-- **처음 온 기여자:** 1–7장 → 맡은 package 장 → 14–17장.
-- **Token 작업자:** 2, 5, 6장 → 8–9장 → 13–15장.
-- **CSS/adapter 작업자:** 2, 4, 6장 → 10장 → Condition/Appearance 항목이 있는 11장.
-- **schema/governance 작업자:** 1–3장 → 11–14장 → ADR/SSOT 원문.
-- **리뷰어:** 3, 6–7장 → 변경 package reference → 15–17장.
-
-이 guidebook을 다 읽은 뒤에는 코드가 답해야 하는 세 질문이 남는다. **어느 authority가 이
-identity를 소유하는가, 어느 pure transformation이 그것을 다음 contract로 바꾸는가, 어느
-fixture와 gate가 그 경계를 지키는가.** 이 세 질문으로 추적하면 Axiom의 새 기능도 기존
-mental model 안에서 위치를 찾을 수 있다.
+새 기능을 작업할 때는 Part II에서 edit source와 command를 고르고, Part IV에서 owner module을
+찾은 뒤, 변경하려는 규칙의 owning SSOT와 schema/fixture로 내려간다.

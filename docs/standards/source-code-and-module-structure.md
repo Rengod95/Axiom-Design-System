@@ -241,6 +241,21 @@ must not be the only machine-readable discriminator. A caught error MUST either
 be enriched and rethrown with `cause`, converted to a declared diagnostic, or
 handled completely.
 
+### 7.1 Documentation comments
+
+Every newly written or materially modified public or exported TypeScript
+function, class, or method MUST have a concise English TSDoc comment. Newly
+written or materially modified internal callables also require TSDoc when their
+contract, invariants, ordering,
+diagnostic or error behavior, side effects, mutation, or boundary assumptions
+are not evident from the name, signature, and adjacent types.
+
+Comments explain why a boundary or invariant exists and what callers may rely
+on. They MUST NOT merely restate identifiers, types, or obvious control flow.
+Use a short adjacent comment instead of TSDoc for a non-obvious local decision
+that is not part of the callable contract. Generated members inherit the
+generator's provenance comment and MUST NOT be hand-documented.
+
 ## 8. Tests, fixtures, and generated outputs
 
 Every normative rule implemented in code SHOULD have:

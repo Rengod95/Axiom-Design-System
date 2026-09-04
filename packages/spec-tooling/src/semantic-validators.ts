@@ -10,10 +10,17 @@ import {
 } from "./constants.js";
 import { validateCanonicalStateRegistry } from "./semantic/canonical-state-registry-validator.js";
 import { validateAppearanceIr } from "./semantic/appearance-ir-validator.js";
+import { validateCollisionTrace } from "./semantic/collision-trace-validator.js";
+import { validateMotionIr } from "./semantic/motion-ir-validator.js";
 import { validateConditionExpression } from "./semantic/condition-expression-validator.js";
 import { validateConditionRegistry } from "./semantic/condition-registry-validator.js";
 import { createSemanticDiagnosticFactory } from "./semantic/semantic-diagnostic.js";
 import { validateSemanticTokenVocabulary } from "./semantic/semantic-token-vocabulary-validator.js";
+import {
+  validateBehaviorCriteriaSourceManifest,
+  validateBehaviorCriteriaPair,
+  validateComponentBehaviorCriteriaProfile,
+} from "./semantic/behavior-criteria-validator.js";
 import type {
   Diagnostic,
   SemanticValidationContext,
@@ -344,6 +351,7 @@ const validateParsedTokenDocument = (value: unknown): readonly Diagnostic[] => {
   return diagnostics;
 };
 
+/** Dispatches a manifest-selected semantic validator after its JSON Schema has accepted the value. */
 export const runSemanticValidator = (
   id: SemanticValidatorId | undefined,
   value: unknown,
@@ -352,10 +360,23 @@ export const runSemanticValidator = (
   switch (id) {
     case undefined:
       return [];
+    case "behavior-criteria-source-manifest":
+      return validateBehaviorCriteriaSourceManifest(value);
+    case "component-behavior-criteria-profile":
+      return [
+        ...validateComponentBehaviorCriteriaProfile(value),
+        ...(context?.relatedFixtures?.["source"] === undefined
+          ? [{ code: SPEC_DIAGNOSTIC_CODE.BEHAVIOR_SOURCE_MANIFEST_MISSING, severity: "error" as const, phase: "behavior" as const, message: "Component criteria profiles require a related source manifest.", location: { file: "<memory>", pointer: "/" } }]
+          : validateBehaviorCriteriaPair(context.relatedFixtures["source"], value)),
+      ];
     case "canonical-state-registry":
       return validateCanonicalStateRegistry(value);
     case "css-appearance-ir":
       return validateAppearanceIr(value, context);
+    case "css-collision-trace":
+      return validateCollisionTrace(value, context);
+    case "motion-ir":
+      return validateMotionIr(value, context);
     case "condition-expression":
       return validateConditionExpression(value, context);
     case "condition-registry":

@@ -20,6 +20,12 @@ Mandatory source rules:
 - Keep package dependencies one-way and import other packages only through
   their declared public exports.
 - Keep core contracts serializable, deterministic, and renderer-independent.
+- Add concise English TSDoc to every newly written or materially modified public
+  or exported TypeScript function, class, or method. Add it to newly written or
+  materially modified internal callables when their contract, invariants,
+  ordering, diagnostics, side
+  effects, or boundary assumptions are not evident from the signature. Explain
+  maintained intent rather than restating identifiers or control flow.
 - Colocate unit tests; add normative positive and negative fixtures when a
   machine-readable contract changes.
 - Do not treat removed MVP packages or historical reviews as implementation

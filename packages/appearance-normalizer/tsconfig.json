@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmitOnError": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "src/**/*.test.ts", "src/**/*.test-support.ts", "src/**/*.type-test.ts"],
+  "references": [
+    { "path": "../appearance-authoring" },
+    { "path": "../condition-registry" },
+    { "path": "../motion-schema" }
+  ]
+}

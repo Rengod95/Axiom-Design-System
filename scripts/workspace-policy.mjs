@@ -9,8 +9,28 @@ export const PACKAGE_CONSTANTS_MODULE = "constants.ts";
 export const STABLE_SORT_LOCALE = "en";
 
 export const PACKAGE_RUNTIME_DEPENDENCIES = {
+  "appearance-normalizer": [
+    "@axiom/appearance-authoring",
+    "@axiom/condition-registry",
+    "@axiom/motion-schema",
+  ],
+  "appearance-authoring": [
+    "@axiom/condition-registry",
+    "@axiom/css-property-profile",
+    "@axiom/motion-schema",
+    "@axiom/recipe-kernel",
+    "@axiom/tokens",
+  ],
+  "behavior-contracts": [],
   "css-property-profile": ["@webref/css", "css-tree"],
-  "spec-tooling": ["ajv"],
+  "condition-registry": [],
+  "motion-schema": [
+    "@axiom/condition-registry",
+    "@axiom/css-property-profile",
+    "@axiom/tokens",
+  ],
+  "recipe-kernel": [],
+  "spec-tooling": ["@axiom/condition-registry", "@axiom/css-property-profile", "ajv"],
   "token-tooling": ["@axiom/tokens", "@terrazzo/parser"],
   tokens: [],
 };
@@ -19,6 +39,12 @@ export const RENDERER_INDEPENDENT_PACKAGES = Object.keys(
   PACKAGE_RUNTIME_DEPENDENCIES,
 );
 
+export const GENERATED_REFERENCE_PACKAGES = [
+  "behavior-contracts",
+  "condition-registry",
+  "motion-schema",
+];
+
 export const FORBIDDEN_RENDERER_IMPORT_PATTERNS = [
   /from\s+["']react(?:\/|["'])/,
   /from\s+["']react-aria/,
@@ -26,6 +52,8 @@ export const FORBIDDEN_RENDERER_IMPORT_PATTERNS = [
   /from\s+["']@base-ui/,
   /from\s+["']tailwindcss/,
 ];
+
+export const FORBIDDEN_SPEC_TOOLING_IMPORT_PATTERN = /from\s+["']@axiom\/spec-tooling(?:\/|["'])/;
 
 export const SOURCE_FILE_EXTENSIONS = new Set([".js", ".mjs", ".ts", ".tsx"]);
 export const TEST_FILE_SUFFIXES = [".test.ts", ".test.tsx"];

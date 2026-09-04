@@ -1,7 +1,13 @@
 {
   "files": [],
   "references": [
+    { "path": "./packages/behavior-contracts" },
     { "path": "./packages/css-property-profile" },
+    { "path": "./packages/condition-registry" },
+    { "path": "./packages/motion-schema" },
+    { "path": "./packages/recipe-kernel" },
+    { "path": "./packages/appearance-authoring" },
+    { "path": "./packages/appearance-normalizer" },
     { "path": "./packages/spec-tooling" },
     { "path": "./packages/token-tooling" },
     { "path": "./packages/tokens" }

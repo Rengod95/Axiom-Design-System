@@ -47,6 +47,34 @@ export interface TokenDomainDefinition {
   readonly root: string;
   readonly allowedDTCGTypes: readonly DtcgType[];
   readonly constraints?: readonly TokenDomainConstraint[];
+  readonly cssSerializers: readonly string[];
+}
+
+/** Carries the schema-faithful Domain Registry across authoring ports without reading `spec/`. */
+export interface TokenDomainRegistry {
+  readonly schemaVersion: typeof TOKEN_SCHEMA_VERSION;
+  readonly domains: readonly TokenDomainDefinition[];
+}
+
+/** Describes one registered composite Token projection and its exact output identity. */
+export interface CompositeTokenProjectorDescriptor {
+  readonly id: string;
+  readonly domain: string;
+  readonly dtcgType: DtcgType;
+  readonly outputProperties: readonly string[];
+  readonly version: string;
+}
+
+/** Carries the schema-faithful composite projector Registry across authoring ports. */
+export interface CompositeTokenProjectorRegistry {
+  readonly schemaVersion: typeof TOKEN_SCHEMA_VERSION;
+  readonly projectors: readonly CompositeTokenProjectorDescriptor[];
+}
+
+/** Lets a trusted caller provide deterministic canonical JSON digests without package I/O. */
+export interface CanonicalDigestPort {
+  /** Returns a deterministic digest for one already canonical JSON-safe value. */
+  digestCanonicalJson(value: TokenJsonValue): string;
 }
 
 export interface NormalizedTokenIdentity {
@@ -139,6 +167,21 @@ export interface ResolvedTokenManifest {
   readonly profileVersion: string;
   readonly sourceDigest: string;
   readonly contexts: readonly ResolvedTokenContext[];
+}
+
+/** Represents one Token's entries and contexts from a resolved manifest. */
+export interface IndexedResolvedToken {
+  readonly id: string;
+  readonly entries: readonly ResolvedTokenEntry[];
+  readonly contexts: readonly TokenContext[];
+}
+
+/** Provides deterministic lookup over a caller-supplied resolved Token Manifest. */
+export interface ResolvedTokenManifestIndex {
+  /** Finds the complete context-ordered evidence for one resolved Token identity. */
+  find(id: string): IndexedResolvedToken | undefined;
+  readonly tokens: readonly IndexedResolvedToken[];
+  readonly diagnostics: readonly TokenDiagnostic[];
 }
 
 export interface TokenResolutionResult {

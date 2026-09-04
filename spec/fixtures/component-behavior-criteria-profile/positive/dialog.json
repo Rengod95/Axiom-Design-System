@@ -1,0 +1,1 @@
+{"schemaVersion":"0.1","id":"react-aria.dialog","component":"dialog","sourceManifestDigest":"sha256:f0735cfd23b13c35a497ad8b35c5f91a466e3021bfcb14762c3e43c028ba8ddf","criteria":[{"id":"DLG-SEM-001","category":"semantics","part":"popup","requirement":"Fixture Dialog retains dialog semantics.","evidenceIds":["react-aria.dialog.fixture"],"verification":["schema"]}]}

@@ -1,8 +1,8 @@
 # Axiom Foundation Reconciliation & Implementation Plan
 
-**Date:** 2026-09-01; reconciled 2026-09-02 through N15 \
+**Date:** 2026-09-01; reconciled 2026-09-02 through N24 (Button Foundation conformance complete) \
 **Status:** ACTIVE PLAN \
-**Normative inputs:** ADR-0001 through ADR-0004, SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-02 v0.4.0, SSOT-03 v0.2.1, SSOT-04 v0.2.0, SSOT-05 v0.2.2, Token Domain & CSS Binding Catalog \
+**Normative inputs:** ADR-0001 through ADR-0005, SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-02 v0.6.0, SSOT-03 v0.3.0, SSOT-04 v0.3.0, SSOT-05 v0.2.3, Token Domain & CSS Binding Catalog \
 **Repository baseline:** pre-foundation MVP removed; SSOT-based specification
 harness and Token Foundation packages are the only live implementation baseline
 
@@ -468,15 +468,23 @@ Webref update diff fixture
 - support ordered declaration-array escape only for same-stage CSS cascade cases;
 - reject selectors, at-rules, functions, symbols, Maps/Sets, and React nodes.
 
+N20 configures the N19 Kernel with explicit effective Property, Canonical State,
+and Condition registries. It accepts generated camelCase object fragments or
+canonical kebab-case ordered declaration arrays, never mixed within one
+fragment. It validates property identity, allowed value kind, raw CSS grammar,
+and State/Condition membership. It deliberately does not emit Appearance IR,
+CSS, class output, collision traces, provider data, or Token semantic results.
+
 ### P4.4 Declaration validation
 
 - normalize camelCase to kebab-case;
 - resolve effective property policy;
 - validate CSS literal, Token Reference, or template path;
-- validate direct/template Token Domain, projector, negation permission, and
-  serializer;
-- attach source/provenance trace;
-- expand composite Token applications.
+- N20 attaches CSS authoring context and validates only structural Token/
+  template form; N21 validates direct/template Token Domain, projector,
+  negation permission, and serializer;
+- N21 expands composite Token applications; N22 attaches normalized
+  Declaration IR source/provenance traces.
 
 ### P4.5 Recipe normalization
 
@@ -560,6 +568,10 @@ Before Web compiler implementation:
 9. Compare prose SSOT against schemas with a checklist.
 10. Record unresolved warnings and classify P0/P1/P2.
 11. Declare Gate A only with zero P0/P1 blockers.
+
+N23 completion is not a Gate A declaration. N24 Button, N25 Select, N26
+Dialog, N27 negative/type/round-trip/determinism fixtures, and this review
+remain required before Gate A can close.
 
 Compiler inconvenience after Gate A is not enough reason to mutate Core. A
 demonstrated domain deficiency requires ADR and fixture evidence.
@@ -697,10 +709,14 @@ Gate B requires:
 
 ### P8.1 Behavioral Criteria Source
 
+Under ADR-0005, the N17 schema/structural-fixture boundary is complete
+in this branch. The following executable provider-source work belongs to N32.
+
 - generate a source manifest from exact lockfile-resolved
   `react-aria-components`, `react-aria`, and `react-stately` packages;
 - record integrity and official evidence-page digests;
-- add JSON Schemas for the source manifest and component criteria profiles;
+- populate the current source manifest and component criteria profiles under
+  the closed N17 schemas;
 - author Button, Select, and Dialog profiles for semantics, multi-modal
   interaction, focus, state, selection/collection, form/validation, overlay,
   and lifecycle;
@@ -973,14 +989,27 @@ Exact first sequence:
 14. [done] Add the Condition Registry schema and fixtures (N13).
 15. [done] Add ordered declaration/value schemas (N14).
 16. [done] Add the Appearance IR schema (N15).
-17. [next] Add the Motion IR schema (N16).
-18. Add Behavioral Criteria Source/Profile schemas (N17).
-19. Generate/reference the combined TypeScript contract surface (N18).
-20. Implement the Recipe Kernel port and structural conformance suite (N19).
-21. Implement the CSS-aware defineRecipe SDK (N20).
-22. Integrate the existing profile-level Token validators into declarations (N21).
-23. Implement the Recipe normalizer and collision trace (N22).
-24. Implement defineMotion authoring and normalization (N23).
+17. [done] Add the Motion IR schema (N16).
+18. [done, ADR-0005] Add Behavioral Criteria Source/Profile schemas and synthetic structural fixtures (N17); N32 owns current provider data.
+19. [done] Generate/reference the combined TypeScript contract surface (N18).
+20. [done] Implement the Recipe Kernel port and structural conformance suite (N19).
+21. [done] Implement the CSS-aware defineRecipe SDK (N20); N21 retains Token semantic validation.
+22. [done] Integrate profile policy with explicit resolved-manifest, digest,
+    serializer, and projector validation into declarations (N21); N22 consumes
+    the frozen binding receipt without duplicating Token semantic decisions.
+23. [done] Implement the Recipe normalizer and collision trace (N22), including
+    rich trace schema/semantic reconciliation and output round-trip evidence.
+24. [done] Implement defineMotion authoring and normalization (N23), including
+    a required trusted `MotionAuthorityValidationPort`, an exact deep-snapshotted
+    six-authority bundle and expected-digest set, fixed preloaded schema/semantic
+    checks against supplied cross-authority context, and authenticated N22
+    Appearance Recipe/Slot applicability. AXM2004 alone normalizes malformed
+    authority/serializer/validator failures; canonical-digest trust remains an
+    explicit composition-root assumption without a spec-tooling package edge.
+25. [done] Prove the Button vertical fixture (N24) through the public N20,
+    N21, N22, and N23 boundaries; compare the existing N15/N16 artifacts and
+    governed N22 collision trace, including schema/semantic JSON round trips.
+26. Next: prove the Select vertical fixture (N25).
 ```
 
 This produces the smallest vertical foundation proof without returning to the

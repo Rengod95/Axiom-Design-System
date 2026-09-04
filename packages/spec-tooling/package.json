@@ -11,9 +11,13 @@
   "files": ["dist"],
   "scripts": {
     "build": "tsc -b",
-    "check": "node --import tsx src/cli.ts"
+    "check": "node --import tsx src/cli.ts",
+    "contracts:check": "node --import tsx src/contracts-cli.ts",
+    "contracts:generate": "node --import tsx src/contracts-cli.ts --write"
   },
   "dependencies": {
+    "@axiom/condition-registry": "workspace:*",
+    "@axiom/css-property-profile": "workspace:*",
     "ajv": "8.20.0"
   },
   "devDependencies": {

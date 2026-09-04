@@ -31,16 +31,20 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 
 ## Start Here
 
-처음 저장소를 읽는 기여자는 아래 1번 guidebook으로 mental model을 만든 뒤, 필요한
-규범 문서 원문으로 이동한다. Guidebook은 탐색용 파생 문서이며 위 authority order를
-대체하지 않는다.
+처음 저장소를 읽는 기여자는 아래 guidebook의 Part I로 mental model을 만든 뒤,
+작업할 때 Part II, 설계 이유를 확인할 때 Part III, 정확한 파일/API를 찾을 때 Part IV를
+사용한다. Guidebook은 탐색용 파생 문서이며 위 authority order를 대체하지 않는다.
 
-1. [Axiom Repository Guidebook](guidebook.md)
-2. [Current implementation architecture](architecture.md)
-3. [ADR-0001 — CSS-Native Appearance Profile and Initial Scope](adr/0001-css-native-appearance-profile-and-scope.md)
-4. [ADR-0002 — React Aria Behavioral Criteria Source](adr/0002-react-aria-behavioral-criteria-source.md)
-5. [ADR-0003 — Recipe Authoring Kernel and Third-Party Boundary](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
-6. [ADR-0004 — Token Vocabulary and Perceptual Color Profile](adr/0004-token-vocabulary-and-color-profile.md)
+- [Axiom Repository Guidebook](guidebook.md)
+
+필요한 규범과 구현 근거는 다음 순서로 찾아간다.
+
+1. [Current implementation architecture](architecture.md)
+2. [ADR-0001 — CSS-Native Appearance Profile and Initial Scope](adr/0001-css-native-appearance-profile-and-scope.md)
+3. [ADR-0002 — React Aria Behavioral Criteria Source](adr/0002-react-aria-behavioral-criteria-source.md)
+4. [ADR-0003 — Recipe Authoring Kernel and Third-Party Boundary](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
+5. [ADR-0004 — Token Vocabulary and Perceptual Color Profile](adr/0004-token-vocabulary-and-color-profile.md)
+6. [ADR-0005 — Behavior Criteria Schema Sequencing](adr/0005-behavior-criteria-schema-sequencing.md)
 7. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
 8. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
 9. [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
@@ -61,6 +65,15 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 24. [Semantic Scales and Aspect Ratios](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
 25. [CSS Appearance IR](implementation/2026-09-02-appearance-ir.md)
 26. [N15 Documentation Reconciliation](implementation/2026-09-02-n15-document-reconciliation.md)
+27. [Motion IR](implementation/2026-09-02-motion-ir.md)
+28. [N17 Behavior Criteria Contracts](implementation/2026-09-02-n17-behavior-criteria-contracts.md)
+29. [N18 Generated Reference Contracts](implementation/2026-09-02-generated-reference-contracts.md)
+30. [N19 Recipe Kernel Reconciliation](implementation/2026-09-02-recipe-kernel-preparation.md)
+31. [N20 CSS Appearance Authoring](implementation/2026-09-02-css-appearance-authoring.md)
+32. [N21 Token Binding Validation](implementation/2026-09-02-token-binding-validation.md)
+33. [N22 Appearance Normalizer](plans/2026-09-02-n22-implementation-report.md)
+34. [N23 Motion Authoring](implementation/2026-09-02-motion-authoring.md)
+35. [N24 Button Foundation Conformance](implementation/2026-09-02-button-foundation-conformance.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
@@ -73,11 +86,11 @@ SSOT-00은 전체 모듈·권한·의존 방향을, implementation plan은
 | Document | Version | Owns |
 | --- | --- | --- |
 | [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md) | 0.3.1 | authority, layers, boundaries, frozen v0.1 scope |
-| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.4.0 | primitive/semantic/component tiers, production scales, semantic vocabulary, themes, resolver, manifests |
-| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.4.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
-| [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.2.1 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
-| [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.2.0 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
-| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.2 | React Aria criteria source, canonical state, projections, public API |
+| [SSOT-01 — Token Foundation & Domain Contracts](ssot/01-foundation-and-domain-contracts.md) | 0.4.1 | primitive/semantic/component tiers, production scales, semantic vocabulary, themes, resolver, manifests |
+| [SSOT-02 — Compiler Contracts, Readiness & Governance](ssot/02-adapter-contract-readiness-and-governance.md) | 0.6.0 | compiler contracts, artifacts, diagnostics, Gates A/B/C, implementation order |
+| [SSOT-03 — CSS Appearance Profile & Property Policy](ssot/03-css-appearance-profile-and-property-policy.md) | 0.3.0 | generated CSS registry, direct/template/projector policy, Recipe Kernel/Appearance IR |
+| [SSOT-04 — Environment Conditions & Motion](ssot/04-environment-conditions-and-motion.md) | 0.3.0 | responsive/container conditions, reduced motion, Motion DSL/IR/backend |
+| [SSOT-05 — React Runtime, Behavior Projection & Public API](ssot/05-react-runtime-behavior-and-public-api.md) | 0.2.3 | React Aria criteria source, canonical state, projections, public API |
 
 ## Normative Annexes
 
@@ -91,21 +104,22 @@ sparse Property Policy가 담당한다.
 
 ## Architecture at a Glance
 
-```text
-DTCG Token Sources ──→ Resolved Context Manifests ───────────────┐
-                                                               │
-Pinned Webref ──→ Generated CSS Registry ──→ Binding Catalog ──┼─→ Recipe Normalizer
-                                                               │          ↓
-Recipe + Condition Authoring ───────────────────────────────────┘   Appearance IR
-                                                                          ↓
-                                                              Web CSS Compiler
-                                                                          ↓
-                                                        CSS + evaluator + manifest
+현재 N24까지 실행되는 흐름은 다음과 같다.
 
-Motion Authoring ──→ Motion IR ──→ Motion backend
-
-React Aria ──→ Criteria Profile ──→ state/lifecycle projection ──→ React API
+```mermaid
+flowchart TD
+    T["DTCG Token sources"] --> RM["Resolved context manifest"]
+    W["Pinned Webref + CSS policy"] --> PR["Effective property registry"]
+    R["Recipe + authority inputs"] --> A["Validated authoring receipt"]
+    RM --> A
+    PR --> A
+    A --> IR["Appearance IR + collision trace"]
+    M["Motion authoring + authorities"] --> MIR["Motion IR"]
 ```
+
+N25 이후의 Select/Dialog conformance와 reconciliation을 거친 뒤, Web CSS compiler,
+Motion backend, React Aria state/lifecycle projection, React public API가 이어질 예정이다.
+이 planned output을 현재 package가 제공하는 것처럼 읽지 않는다.
 
 핵심 원칙은 다음과 같다.
 
@@ -141,6 +155,13 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [Semantic Scales and Aspect Ratios — 2026-09-02](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
 - [CSS Appearance IR — 2026-09-02](implementation/2026-09-02-appearance-ir.md)
 - [N15 Documentation Reconciliation — 2026-09-02](implementation/2026-09-02-n15-document-reconciliation.md)
+- [Motion IR — 2026-09-02](implementation/2026-09-02-motion-ir.md)
+- [N17 Behavior Criteria Contracts — 2026-09-02](implementation/2026-09-02-n17-behavior-criteria-contracts.md)
+- [N18 Generated Reference Contracts — 2026-09-02](implementation/2026-09-02-generated-reference-contracts.md)
+- [N19 Recipe Kernel Reconciliation — 2026-09-02](implementation/2026-09-02-recipe-kernel-preparation.md)
+- [N20 CSS Appearance Authoring — 2026-09-02](implementation/2026-09-02-css-appearance-authoring.md)
+- [N21 Token Binding Validation — 2026-09-02](implementation/2026-09-02-token-binding-validation.md)
+- [N22 Appearance Normalizer — 2026-09-02](plans/2026-09-02-n22-implementation-report.md)
 - [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
 - [N15 Documentation Reconciliation Design — 2026-09-02](superpowers/specs/2026-09-02-n15-document-reconciliation.md)
 - [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)

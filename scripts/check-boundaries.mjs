@@ -3,6 +3,8 @@ import { extname, join, relative } from "node:path";
 
 import {
   FORBIDDEN_RENDERER_IMPORT_PATTERNS,
+  FORBIDDEN_SPEC_TOOLING_IMPORT_PATTERN,
+  GENERATED_REFERENCE_PACKAGES,
   PACKAGE_MANIFEST_NAME,
   PACKAGE_RUNTIME_DEPENDENCIES,
   PACKAGES_DIRECTORY_NAME,
@@ -68,6 +70,24 @@ for (const packageName of RENDERER_INDEPENDENT_PACKAGES) {
       if (pattern.test(source)) {
         issues.push(`${relative(REPOSITORY_ROOT, path)}: forbidden renderer import ${pattern}`);
       }
+    }
+  }
+}
+
+for (const packageName of GENERATED_REFERENCE_PACKAGES) {
+  const sourceRoot = join(
+    REPOSITORY_ROOT,
+    PACKAGES_DIRECTORY_NAME,
+    packageName,
+    SOURCE_DIRECTORY_NAME,
+  );
+  const sourceFiles = (await walk(sourceRoot)).filter(
+    (path) => SOURCE_FILE_EXTENSIONS.has(extname(path)),
+  );
+  for (const path of sourceFiles) {
+    const source = await readFile(path, "utf8");
+    if (FORBIDDEN_SPEC_TOOLING_IMPORT_PATTERN.test(source)) {
+      issues.push(`${relative(REPOSITORY_ROOT, path)}: generated reference package imports @axiom/spec-tooling`);
     }
   }
 }

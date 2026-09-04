@@ -31,6 +31,16 @@ describe("CSS grammar and authoring policy validation", () => {
     expect(diagnosticCode(validator.validate("width", "revert-layer"))).toBe("AXP1101");
   });
 
+  it("allows a custom-property placeholder only when an explicit caller boundary permits it", () => {
+    const validator = new CSSGrammarValidator(registry);
+    expect(diagnosticCode(validator.validate("transition-duration", "var(--axiom-motion-token)")))
+      .toBe("AXP1201");
+    expect(new CSSGrammarValidator(registry, {
+      allowCustomPropertyReferences: true,
+    }).validate("transition-duration", "var(--axiom-motion-token)"))
+      .toEqual({ valid: true });
+  });
+
   it("enforces governed, blocked, and opt-in property authoring", () => {
     const validator = new CSSGrammarValidator(registry);
     expect(diagnosticCode(validator.validate("background-color", "red"))).toBe("AXP1101");

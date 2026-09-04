@@ -2,6 +2,7 @@ import { lexer } from "css-tree";
 
 import {
   BLOCKED_CSS_WIDE_KEYWORDS,
+  CSS_VARIABLE_MATCH_UNSUPPORTED_MESSAGE,
   CUSTOM_PROPERTY_PATTERN,
   CSS_WIDE_KEYWORDS,
   DECLARATION_DELIMITER_PATTERN,
@@ -25,6 +26,7 @@ const error = (code: string, message: string, property: string): PropertyDiagnos
   property,
 });
 
+/** Validates profile-governed CSS values without allowing callers to bypass property policy. */
 export class CSSGrammarValidator {
   readonly #registry: EffectiveCSSPropertyRegistry;
   readonly #properties: ReadonlyMap<
@@ -32,7 +34,9 @@ export class CSSGrammarValidator {
     EffectiveCSSPropertyRegistry["properties"][number]
   >;
   readonly #enabledExperimentalProperties: ReadonlySet<string>;
+  readonly #allowCustomPropertyReferences: boolean;
 
+  /** Captures the immutable profile and explicit validation allowances used for every value check. */
   constructor(
     registry: EffectiveCSSPropertyRegistry,
     options: CSSGrammarValidatorOptions = {},
@@ -42,8 +46,10 @@ export class CSSGrammarValidator {
     this.#enabledExperimentalProperties = new Set(
       options.enabledExperimentalProperties ?? [],
     );
+    this.#allowCustomPropertyReferences = options.allowCustomPropertyReferences ?? false;
   }
 
+  /** Validates one CSS value against canonical property identity, policy, and grammar. */
   validate(propertyName: string, value: string): CSSGrammarResult {
     const isCustomProperty = CUSTOM_PROPERTY_PATTERN.test(propertyName);
     if (isCustomProperty && !this.#registry.customProperties.includes(propertyName)) {
@@ -165,6 +171,10 @@ export class CSSGrammarValidator {
     if (isCustomProperty) return { valid: true };
     const match = lexer.matchProperty(canonicalName, normalizedValue);
     if (match.error !== null) {
+      if (
+        this.#allowCustomPropertyReferences &&
+        match.error.message === CSS_VARIABLE_MATCH_UNSUPPORTED_MESSAGE
+      ) return { valid: true };
       return {
         valid: false,
         diagnostics: [

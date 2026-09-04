@@ -1,9 +1,9 @@
 # Axiom Design System
 ## SSOT-04 — Environment Conditions & Motion
-### Version 0.2.0
+### Version 0.3.0
 
 **Status:** NORMATIVE \
-**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.0, SSOT-03 v0.2.1 \
+**Depends on:** SSOT-00 v0.3.1, SSOT-01 v0.4.1, SSOT-03 v0.3.0 \
 **Scope:** Responsive/environment conditions and serializable Motion semantics
 
 ---
@@ -388,20 +388,17 @@ state transitions, focus management, DOM queries, or component mounting policy.
 ```ts
 defineMotion({
   id: "dialog.popup",
-  profile: "axiom-css",
+  recipeId: "dialog",
   slot: "popup",
-  phases: {
-    enter: {
-      tracks: {
-        opacity: [
-          "0",
-          "1",
+  phases: [
+    {
+      phase: "enter",
+      sequence: [{
+        at: { kind: "afterPrevious" },
+        tracks: [
+          { property: "opacity", allowDiscrete: false, keyframes: ["0", "1"] },
+          { property: "transform", allowDiscrete: false, keyframes: ["translateY(8px) scale(0.96)", "translateY(0) scale(1)"] },
         ],
-        transform: [
-          "translateY(8px) scale(0.96)",
-          "translateY(0) scale(1)",
-        ],
-      },
       transition: {
         type: "spring",
         duration:
@@ -410,18 +407,16 @@ defineMotion({
           ),
         bounce: 0.16,
       },
+      }],
     },
-    exit: {
-      tracks: {
-        opacity: [
-          "1",
-          "0",
+    {
+      phase: "exit",
+      sequence: [{
+        at: { kind: "afterPrevious" },
+        tracks: [
+          { property: "opacity", allowDiscrete: false, keyframes: ["1", "0"] },
+          { property: "transform", allowDiscrete: false, keyframes: ["translateY(0) scale(1)", "translateY(4px) scale(0.98)"] },
         ],
-        transform: [
-          "translateY(0) scale(1)",
-          "translateY(4px) scale(0.98)",
-        ],
-      },
       transition: {
         type: "tween",
         duration:
@@ -433,22 +428,35 @@ defineMotion({
             "easing.semantic.exit",
           ),
       },
+      }],
     },
-  },
+  ],
   reducedMotion: {
     strategy: "replace",
-    phases: {
-      enter: {
-        tracks: {
-          opacity: ["0", "1"],
-        },
+    phases: [
+      {
+        phase: "enter",
+        sequence: [{
+          at: { kind: "afterPrevious" },
+          tracks: [{ property: "opacity", allowDiscrete: false, keyframes: ["0", "1"] }],
+        transition: {
+          type: "tween",
+          duration: token("duration.semantic.instant"),
+          easing: token("easing.semantic.productive"),
+        }],
       },
-      exit: {
-        tracks: {
-          opacity: ["1", "0"],
-        },
+      {
+        phase: "exit",
+        sequence: [{
+          at: { kind: "afterPrevious" },
+          tracks: [{ property: "opacity", allowDiscrete: false, keyframes: ["1", "0"] }],
+        transition: {
+          type: "tween",
+          duration: token("duration.semantic.instant"),
+          easing: token("easing.semantic.productive"),
+        }],
       },
-    },
+    ],
   },
 });
 ```
@@ -464,7 +472,30 @@ type MotionPhase =
 
 `stateChange` requires an explicit canonical state and from/to case.
 
-### 10.3 v0.1 transitions
+### 10.3 Keyframe authoring
+
+```ts
+type MotionKeyframesAuthoring =
+  | readonly [MotionValue, MotionValue]
+  | readonly MotionKeyframeAuthoring[];
+
+interface MotionKeyframeAuthoring {
+  offset: number;
+  value: MotionValue;
+}
+```
+
+`MotionValue` is one of a CSS literal string, a direct `TokenReference`, or a
+`CSSValueTemplate`; the normalizer converts a string to `{ kind: "css", value }`.
+The source form is not an IR escape hatch: raw values cannot include declaration
+delimiters or `!important`, and Tokens are retained rather than resolved.
+
+Exactly two shorthand `MotionValue` entries normalize to offsets `0` and `1`.
+Three or more keyframes MUST use the explicit form and contain at least three
+finite, strictly ascending offsets with `0` and `1` endpoints. Mixed shorthand
+and explicit forms are forbidden; there is no inferred interpolation policy.
+
+### 10.4 v0.1 transitions
 
 ```ts
 type MotionTransitionAuthoring =
@@ -484,8 +515,9 @@ type MotionTransitionAuthoring =
     };
 ```
 
-Physics spring fields are literal numbers with registered ranges. Functions and
-backend-specific easing objects are forbidden.
+`bounce` is a finite literal in `[0,1]`; `stiffness`, `damping`, and `mass` are
+finite literals greater than zero. Functions and backend-specific easing
+objects are forbidden.
 
 ---
 
@@ -500,6 +532,7 @@ interface MotionIR {
   profileInputDigest: string;
   conditionRegistryDigest: string;
   id: string;
+  // Explicit lexical identity; never inferred from a dotted Motion id.
   recipeId: string;
   slot: string;
   phases: readonly MotionPhaseIR[];
@@ -511,6 +544,34 @@ interface MotionIR {
 through `MotionCompilerInput`. The Motion compiler validates both the registry
 identity and digest before it validates reduced-motion policy. It cannot infer
 the registry from a Condition ID or read it from repository state.
+
+`recipeId` is explicit lexical identity at N16. N23 validates Recipe/Slot
+applicability against an explicit, closed N22 `CSSAppearanceIR` authority and
+its trusted canonical digest. Its required detached authority bundle is exactly
+the Effective Property Registry, two-context Resolved Token Manifest, Domain
+Registry, Canonical State Registry, Condition Registry, and N15 Appearance
+artifact; a deep snapshot includes this bundle and every expected digest.
+Before comparing any expected digest, the required trusted
+`MotionAuthorityValidationPort` validates each supplied authority's closed
+shape, normative array order, and registered semantics in the supplied bundle's
+cross-authority registry context. The port uses fixed internal
+schema/semantic identities for those six authorities and is created once by
+the composition root with asynchronous `createMotionAuthorityValidationPort()`
+preload before synchronous authoring begins.
+
+The Resolved Token Manifest check includes per-Token order and
+domain/tier/type identity across contexts. Appearance declaration origin `slot`
+and `stage` must equal their containing record/rule, and every selected
+Appearance State must apply to the artifact's Recipe. The artifact's `profile`,
+`profileInputDigest`, `recipeId`, and `slots` must match the N23 profile context
+and source before Motion IR is emitted. N23 does not import spec tooling or the
+Appearance normalizer: the serialized artifact and injected validator are its
+detached authority boundary. The injected validator has the same explicit trust
+assumption as the canonical-digest port; a pass-through unit stub is not
+conformance evidence. Any malformed authority/serializer input, validator
+rejection, or validator throw is reported only as AXM2004 before equality
+comparison. Authenticated equality/applicability mismatches retain AXM1010,
+AXM1011, or AXM1018 as applicable.
 
 ### 11.2 Phase
 
@@ -527,8 +588,21 @@ interface MotionPhaseIR {
 }
 ```
 
+N23 source authoring uses the same ordered `phases` and `sequence` arrays as
+the IR. Each source phase declares `phase`, requires `state` exactly when the
+phase is `stateChange`, and each source segment requires `at`, `tracks`, and
+`transition`. Profile identity and both provenance digests are supplied only by
+the explicit normalizer context. The source has no `when`/Condition expression;
+reduced-motion policy is bound to the registered `preference.reducedMotion`
+condition by the compiler boundary.
+
 One segment contains parallel property tracks. Multiple segments execute in
 serialized order.
+
+For `stateChange`, the named Canonical State MUST have `axis: "state"` and
+include `motion` in its registered usage. Source `recipeId` MUST equal the
+authenticated N22 Appearance `recipeId`, and source `slot` MUST be one of its
+authenticated `slots`.
 
 ### 11.3 Segment and track
 
@@ -552,6 +626,7 @@ interface MotionSegmentIR {
 
 interface MotionTrackIR {
   property: CSSPropertyName;
+  allowDiscrete: boolean;
   keyframes: readonly MotionKeyframeIR[];
 }
 
@@ -564,8 +639,16 @@ interface MotionKeyframeIR {
 }
 ```
 
+Each source track explicitly declares `property`, `allowDiscrete`, and
+`keyframes`. This preserves a deliberate discrete-animation decision and makes
+sequence order/position visible before normalization.
+
 Offsets are finite numbers in [0,1], sorted ascending, and include 0 and 1 after
-normalization.
+normalization. `allowDiscrete: true` preserves the authoring opt-in required
+for a discrete property; it is required even when the property is interpolable.
+Every segment, including every `reducedMotion.strategy: "replace"` segment,
+MUST declare its own transition. Replacement phases never inherit a normal
+phase or segment transition.
 
 ### 11.4 Reduced motion
 
@@ -714,12 +797,19 @@ IR does not create or retain DOM nodes by itself.
 ## 17. Diagnostics
 
 ```text
-AXC1001  unknown Condition ID
-AXC1002  invalid breakpoint Token Domain
-AXC1003  unregistered container
-AXC1004  contradictory condition expression
-AXC1005  raw query string forbidden
-AXC1101  overlapping condition winner unclear
+AXC1001  duplicate container ID
+AXC1002  container order invalid
+AXC1003  duplicate Condition ID
+AXC1004  Condition order invalid
+AXC1005  Condition ID kind mismatch
+AXC1006  unknown container
+AXC1007  invalid breakpoint reference
+AXC1008  unknown breakpoint Token
+AXC1009  invalid breakpoint Token
+AXC1010  theme Variant used as a breakpoint
+AXC1101  unknown Condition ID
+AXC1102  contradictory condition expression
+AXC1103  satisfiable Condition overlap has no explicit relation intent
 
 AXM1001  unknown Motion property
 AXM1002  property not animatable
@@ -730,7 +820,29 @@ AXM1006  unsupported backend transition
 AXM1007  reduced-motion strategy missing
 AXM1008  Token Domain mismatch
 AXM1009  provider lifecycle capability missing
+AXM1010  Motion profile identity mismatch
+AXM1011  Condition Registry digest mismatch
+AXM1012  Motion property requires backend capability validation
+AXM1013  unknown Motion state
+AXM1014  invalid Motion state value
+AXM1015  discrete Motion opt-in accepted (warning)
+AXM1016  Motion property does not allow the submitted value kind
+AXM1017  Motion Token binding does not match effective property policy
+AXM1018  N22 Appearance applicability or digest mismatch
+
+AXM2001  closed Motion authoring source shape invalid
+AXM2002  Motion authoring identifier invalid
+AXM2004  Motion authoring authority or serializer input is malformed, violates
+         its closed/schema-semantic contract, or throws during trusted digest/
+         serializer access; emitted before digest equality comparison
 ```
+
+When AXC1103 references a collision trace, the trace entry has relation
+`condition-overlap`, includes both closed Condition expressions in declaration
+applicability evidence, and records the computed non-disjoint relation as
+`equivalent`, `overlap`, `subset`, or `superset`. The field is required for
+Condition-overlap entries and forbidden for other collision relations. Semantic
+validation recomputes it from the authoritative Condition model.
 
 ---
 
@@ -761,14 +873,25 @@ Button pressed stateChange
 tween duration/easing Tokens
 spring configuration
 two-segment sequence
+direct Token keyframe
 CSS template keyframe
 reduced-motion replacement
 reduced-motion disable
-non-animatable property negative
-invalid keyframe grammar negative
-unsupported backend feature negative
+reduced-motion replacement transition is explicit (no inheritance)
+unknown property negative
+non-empty invalid keyframe grammar negative
+illegal Token binding negative
+invalid IR transition-kind negative
 JSON round trip
 ```
+
+The invalid IR transition-kind fixture proves only the closed Motion IR
+discriminant. Backend transition support remains AXM1006 work for N31; provider
+lifecycle capability remains AXM1009 work for N33.
+
+The generated profile currently exposes neither a discrete nor a not-animatable
+Motion property. Their policy branches are therefore covered by injected-profile
+validator tests rather than a registered profile fixture.
 
 ### Runtime
 

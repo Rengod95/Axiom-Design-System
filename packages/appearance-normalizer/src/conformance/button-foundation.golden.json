@@ -1,0 +1,140 @@
+{
+  "appearance": {
+    "base": [{
+      "declarations": [{
+        "important": false,
+        "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/base/root/border", "stage": "base" },
+        "property": "border",
+        "value": { "kind": "css", "value": "1px solid transparent" }
+      }, {
+        "important": false,
+        "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/base/root/display", "stage": "base" },
+        "property": "display",
+        "value": { "kind": "css", "value": "inline-flex" }
+      }],
+      "slot": "root"
+    }],
+    "compoundRules": [{
+      "apply": [{
+        "declarations": [{
+          "important": false,
+          "origin": { "recipeId": "button", "slot": "label", "source": "fixtures/button/appearance.ts#/compoundVariants/0/apply/label/color", "stage": "compound" },
+          "property": "color",
+          "value": { "kind": "token", "path": "color.semantic.text.onBrand" }
+        }],
+        "slot": "label"
+      }],
+      "when": { "states": { "root": { "pressed": true } }, "variants": { "tone": "brand" } }
+    }],
+    "conditionRules": [{
+      "apply": [{
+        "declarations": [{
+          "important": false,
+          "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/conditions/0/apply/root/transitionDuration", "stage": "condition" },
+          "property": "transition-duration",
+          "value": { "kind": "token", "path": "duration.semantic.instant" }
+        }],
+        "slot": "root"
+      }],
+      "variants": { "tone": ["neutral", "brand"] },
+      "when": { "all": ["preference.reducedMotion"] }
+    }],
+    "profile": "axiom-css",
+    "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+    "recipeId": "button",
+    "schemaVersion": "0.1",
+    "slots": ["root", "label"],
+    "stateRules": [{
+      "cases": [{
+        "apply": [{
+          "important": false,
+          "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/states/0/cases/0/apply/borderColor", "stage": "state" },
+          "property": "border-color",
+          "value": { "kind": "token", "path": "color.semantic.fill.brand.default" }
+        }, {
+          "important": false,
+          "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/states/0/cases/0/apply/transform", "stage": "state" },
+          "property": "transform",
+          "value": { "kind": "css", "value": "translateY(1px)" }
+        }],
+        "equals": true
+      }],
+      "slot": "root",
+      "state": "pressed"
+    }],
+    "variantAxes": [{
+      "defaultValue": "neutral",
+      "name": "tone",
+      "values": [{
+        "apply": [{
+          "declarations": [{
+            "important": false,
+            "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/variants/tone/neutral/root/opacity", "stage": "variant" },
+            "property": "opacity",
+            "value": { "kind": "css", "value": "1" }
+          }],
+          "slot": "root"
+        }],
+        "value": "neutral"
+      }, {
+        "apply": [{
+          "declarations": [{
+            "important": false,
+            "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/variants/tone/brand/root/backgroundColor", "stage": "variant" },
+            "property": "background-color",
+            "value": { "kind": "token", "path": "color.semantic.fill.brand.default" }
+          }],
+          "slot": "root"
+        }],
+        "value": "brand"
+      }]
+    }]
+  },
+  "motion": {
+    "conditionRegistryDigest": "sha256:19fe87b0b53011c4e4ce7b57a51aae66d306c46b3bc1bb512b20f6b29245916b",
+    "id": "button.root.pressed",
+    "phases": [{
+      "phase": "stateChange",
+      "sequence": [{
+        "at": { "kind": "afterPrevious" },
+        "tracks": [{
+          "allowDiscrete": false,
+          "keyframes": [{ "offset": 0, "value": { "kind": "css", "value": "translateY(0)" } }, { "offset": 1, "value": { "kind": "css", "value": "translateY(1px)" } }],
+          "property": "transform"
+        }],
+        "transition": { "bounce": 0.16, "damping": 20, "mass": 1, "stiffness": 220, "type": "spring" }
+      }],
+      "state": { "from": false, "name": "pressed", "to": true }
+    }],
+    "profile": "axiom-css",
+    "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+    "recipeId": "button",
+    "reducedMotion": { "strategy": "disable" },
+    "schemaVersion": "0.1",
+    "slot": "root"
+  },
+  "trace": {
+    "entries": [{
+      "affectedProperty": "border-color",
+      "earlier": {
+        "applicability": { "states": [], "variants": [] },
+        "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/base/root/border", "stage": "base" },
+        "policyProvenance": [{ "rule": "standard", "source": "status-default" }, { "rule": "border-composite", "source": "token-binding-catalog" }],
+        "property": "border"
+      },
+      "id": "collision-0001",
+      "later": {
+        "applicability": { "states": [{ "equals": true, "slot": "root", "state": "pressed" }], "variants": [] },
+        "origin": { "recipeId": "button", "slot": "root", "source": "fixtures/button/appearance.ts#/states/0/cases/0/apply/borderColor", "stage": "state" },
+        "policyProvenance": [{ "rule": "standard", "source": "status-default" }, { "rule": "paint", "source": "policy-group" }, { "rule": "color-paint", "source": "token-binding-catalog" }],
+        "property": "border-color"
+      },
+      "relation": "shorthand-longhand",
+      "winner": "later"
+    }],
+    "profile": "axiom-css",
+    "profileInputDigest": "sha256:b26a0501c6ee972ca343d2f91be620aaef0c719ec5602a2a70f317fd22135d75",
+    "recipeId": "button",
+    "schemaVersion": "0.1"
+  }
+}
