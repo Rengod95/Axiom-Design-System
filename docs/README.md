@@ -31,41 +31,49 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 
 ## Start Here
 
+처음 저장소를 읽는 기여자는 아래 guidebook의 Part I로 mental model을 만든 뒤,
+작업할 때 Part II, 설계 이유를 확인할 때 Part III, 정확한 파일/API를 찾을 때 Part IV를
+사용한다. Guidebook은 탐색용 파생 문서이며 위 authority order를 대체하지 않는다.
+
+- [Axiom Repository Guidebook](guidebook.md)
+
+필요한 규범과 구현 근거는 다음 순서로 찾아간다.
+
 1. [Current implementation architecture](architecture.md)
 2. [ADR-0001 — CSS-Native Appearance Profile and Initial Scope](adr/0001-css-native-appearance-profile-and-scope.md)
 3. [ADR-0002 — React Aria Behavioral Criteria Source](adr/0002-react-aria-behavioral-criteria-source.md)
 4. [ADR-0003 — Recipe Authoring Kernel and Third-Party Boundary](adr/0003-recipe-authoring-kernel-and-third-party-boundary.md)
-5. [ADR-0005 — Behavior Criteria Schema Sequencing](adr/0005-behavior-criteria-schema-sequencing.md)
 5. [ADR-0004 — Token Vocabulary and Perceptual Color Profile](adr/0004-token-vocabulary-and-color-profile.md)
-6. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
-7. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
-8. [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
-9. [Foundation Reconciliation & Implementation Plan](plans/2026-09-01-foundation-and-implementation-plan.md)
-10. [Source-code and Module-structure Standard](standards/source-code-and-module-structure.md)
-11. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
-12. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
-13. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
-14. [MVP Removal & Source Standards — Implementation Report](implementation/2026-09-01-mvp-removal-and-source-standards.md)
-15. [P2 Token Foundation Closeout — Implementation Report](implementation/2026-09-01-p2-token-foundation-closeout.md)
-16. [P3 CSS Property Profile — Implementation Report](implementation/2026-09-01-p3-css-property-profile.md)
-17. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
-18. [Token Foundation Scale Hardening](implementation/2026-09-01-token-foundation-scale-hardening.md)
-19. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
-20. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
-21. [Token Governance and Vocabulary Registry](implementation/2026-09-02-token-governance.md)
-22. [OKLCH and Semantic Color Migration](implementation/2026-09-02-oklch-semantic-colors.md)
-23. [Semantic Scales and Aspect Ratios](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
-24. [CSS Appearance IR](implementation/2026-09-02-appearance-ir.md)
-25. [N15 Documentation Reconciliation](implementation/2026-09-02-n15-document-reconciliation.md)
-26. [Motion IR](implementation/2026-09-02-motion-ir.md)
-27. [N17 Behavior Criteria Contracts](implementation/2026-09-02-n17-behavior-criteria-contracts.md)
-28. [N18 Generated Reference Contracts](implementation/2026-09-02-generated-reference-contracts.md)
-29. [N19 Recipe Kernel Reconciliation](implementation/2026-09-02-recipe-kernel-preparation.md)
-30. [N20 CSS Appearance Authoring](implementation/2026-09-02-css-appearance-authoring.md)
-31. [N21 Token Binding Validation](implementation/2026-09-02-token-binding-validation.md)
-32. [N22 Appearance Normalizer](plans/2026-09-02-n22-implementation-report.md)
-33. [N23 Motion Authoring](implementation/2026-09-02-motion-authoring.md)
-34. [N24 Button Foundation Conformance](implementation/2026-09-02-button-foundation-conformance.md)
+6. [ADR-0005 — Behavior Criteria Schema Sequencing](adr/0005-behavior-criteria-schema-sequencing.md)
+7. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
+8. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
+9. [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
+10. [Foundation Reconciliation & Implementation Plan](plans/2026-09-01-foundation-and-implementation-plan.md)
+11. [Source-code and Module-structure Standard](standards/source-code-and-module-structure.md)
+12. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
+13. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
+14. [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
+15. [MVP Removal & Source Standards — Implementation Report](implementation/2026-09-01-mvp-removal-and-source-standards.md)
+16. [P2 Token Foundation Closeout — Implementation Report](implementation/2026-09-01-p2-token-foundation-closeout.md)
+17. [P3 CSS Property Profile — Implementation Report](implementation/2026-09-01-p3-css-property-profile.md)
+18. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
+19. [Token Foundation Scale Hardening](implementation/2026-09-01-token-foundation-scale-hardening.md)
+20. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
+21. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
+22. [Token Governance and Vocabulary Registry](implementation/2026-09-02-token-governance.md)
+23. [OKLCH and Semantic Color Migration](implementation/2026-09-02-oklch-semantic-colors.md)
+24. [Semantic Scales and Aspect Ratios](implementation/2026-09-02-semantic-scales-and-aspect-ratios.md)
+25. [CSS Appearance IR](implementation/2026-09-02-appearance-ir.md)
+26. [N15 Documentation Reconciliation](implementation/2026-09-02-n15-document-reconciliation.md)
+27. [Motion IR](implementation/2026-09-02-motion-ir.md)
+28. [N17 Behavior Criteria Contracts](implementation/2026-09-02-n17-behavior-criteria-contracts.md)
+29. [N18 Generated Reference Contracts](implementation/2026-09-02-generated-reference-contracts.md)
+30. [N19 Recipe Kernel Reconciliation](implementation/2026-09-02-recipe-kernel-preparation.md)
+31. [N20 CSS Appearance Authoring](implementation/2026-09-02-css-appearance-authoring.md)
+32. [N21 Token Binding Validation](implementation/2026-09-02-token-binding-validation.md)
+33. [N22 Appearance Normalizer](plans/2026-09-02-n22-implementation-report.md)
+34. [N23 Motion Authoring](implementation/2026-09-02-motion-authoring.md)
+35. [N24 Button Foundation Conformance](implementation/2026-09-02-button-foundation-conformance.md)
 
 ADR-0001은 CSS-native Appearance Profile을, ADR-0002는 React Aria 기반
 Behavioral Criteria Source를, ADR-0003은 Recipe Kernel과 third-party 경계를,
@@ -96,21 +104,22 @@ sparse Property Policy가 담당한다.
 
 ## Architecture at a Glance
 
-```text
-DTCG Token Sources ──→ Resolved Context Manifests ───────────────┐
-                                                               │
-Pinned Webref ──→ Generated CSS Registry ──→ Binding Catalog ──┼─→ Recipe Normalizer
-                                                               │          ↓
-Recipe + Condition Authoring ───────────────────────────────────┘   Appearance IR
-                                                                          ↓
-                                                              Web CSS Compiler
-                                                                          ↓
-                                                        CSS + evaluator + manifest
+현재 N24까지 실행되는 흐름은 다음과 같다.
 
-Motion Authoring ──→ Motion IR ──→ Motion backend
-
-React Aria ──→ Criteria Profile ──→ state/lifecycle projection ──→ React API
+```mermaid
+flowchart TD
+    T["DTCG Token sources"] --> RM["Resolved context manifest"]
+    W["Pinned Webref + CSS policy"] --> PR["Effective property registry"]
+    R["Recipe + authority inputs"] --> A["Validated authoring receipt"]
+    RM --> A
+    PR --> A
+    A --> IR["Appearance IR + collision trace"]
+    M["Motion authoring + authorities"] --> MIR["Motion IR"]
 ```
+
+N25 이후의 Select/Dialog conformance와 reconciliation을 거친 뒤, Web CSS compiler,
+Motion backend, React Aria state/lifecycle projection, React public API가 이어질 예정이다.
+이 planned output을 현재 package가 제공하는 것처럼 읽지 않는다.
 
 핵심 원칙은 다음과 같다.
 

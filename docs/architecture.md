@@ -27,22 +27,31 @@ this rule through ADR-0004 and SSOT-01 v0.4.0.
 
 ## Current package graph
 
-```text
-@webref/css + css-tree → @axiom/css-property-profile → @axiom/spec-tooling
-                                                        │
-                                                        └→ generated reference contracts
-                                                           ├→ @axiom/condition-registry
-                                                           ├→ @axiom/motion-schema
-                                                           └→ @axiom/behavior-contracts
-
-@axiom/tokens ← @axiom/token-tooling ← @terrazzo/parser
+```mermaid
+flowchart TD
+    TT["@axiom/token-tooling"] --> T["@axiom/tokens"]
+    MS["@axiom/motion-schema"] --> T
+    MS --> CSS["@axiom/css-property-profile"]
+    MS --> CR["@axiom/condition-registry"]
+    AA["@axiom/appearance-authoring"] --> T
+    AA --> CSS
+    AA --> CR
+    AA --> MS
+    AA --> RK["@axiom/recipe-kernel"]
+    AN["@axiom/appearance-normalizer"] --> AA
+    AN --> CR
+    AN --> MS
+    ST["@axiom/spec-tooling"] --> CSS
+    ST --> CR
+    BC["@axiom/behavior-contracts"]
 ```
 
 - `@axiom/spec-tooling` is repository tooling. It consumes the public
-  `@axiom/css-property-profile` validation API one-way while validating
+  `@axiom/css-property-profile` and `@axiom/condition-registry` APIs one-way while validating
   cross-registry State, Condition, resolved Token, Appearance IR, and Motion IR
   invariants before generating drift-checked reference contracts. Generated
-  packages do not runtime-import `@axiom/spec-tooling`.
+  `@axiom/condition-registry`, `@axiom/motion-schema`, and
+  `@axiom/behavior-contracts` modules do not runtime-import `@axiom/spec-tooling`.
 - `@axiom/tokens` is target-neutral. It must not import React, renderer,
   Tailwind, browser, or framework concepts.
 - `@axiom/token-tooling` is an adapter boundary. Parser-specific values stop at
@@ -50,8 +59,18 @@ this rule through ADR-0004 and SSOT-01 v0.4.0.
 - `@axiom/css-property-profile` owns pinned Webref import, sparse policy
   resolution, Token Binding coverage, generated property types, and CSS grammar
   validation. It does not depend on Token runtime, Recipe, React, or a renderer.
-- Future packages must enter the graph only after the owning SSOT defines their
-  authority, input/output contracts, diagnostics, and release gate.
+- `@axiom/condition-registry` publishes generated State/Condition contracts and
+  analyzes bounded Condition relationships without reading browser state.
+- `@axiom/behavior-contracts` publishes generated Behavior criteria types and has
+  no runtime behavior or dependencies.
+- `@axiom/recipe-kernel` validates and snapshots renderer-neutral Recipe structure.
+- `@axiom/appearance-authoring` specializes the Kernel with CSS, State, Condition,
+  and Token Binding authorities; its result is not yet Appearance IR.
+- `@axiom/appearance-normalizer` revalidates an authenticated Recipe and lowers it
+  to Appearance IR plus a separate collision trace. It emits no CSS or classes.
+- `@axiom/motion-schema` owns generated Appearance/Motion contracts and N23 Motion
+  authoring normalization. Its trusted specification-validation port is injected
+  by the composition root rather than imported from spec tooling at runtime.
 
 ## Token package structure
 
@@ -67,7 +86,10 @@ packages/tokens/src/
 ├── resolution/
 │   ├── context-resolver.ts
 │   ├── context-resolver.test.ts
+│   ├── manifest-index.ts
 │   └── manifest-serializer.ts
+├── generated/
+│   └── token-paths.ts
 └── index.ts
 ```
 
@@ -89,19 +111,32 @@ point and contains exports rather than implementation.
 | Canonical State and Lifecycle identity | SSOT-05, Canonical State Registry | `@axiom/spec-tooling` semantic gate |
 | Environment conditions and responsive thresholds | SSOT-04, Condition Registry | `@axiom/spec-tooling` semantic gate |
 | Ordered declarations and Appearance IR | SSOT-03, declaration/Appearance schemas | `@axiom/spec-tooling` schema and semantic gates |
+| Renderer-neutral Recipe structure | ADR-0003, SSOT-03 | `@axiom/recipe-kernel` |
+| CSS-aware Recipe and Token receipt | SSOT-03, CSS/Token/State/Condition authorities | `@axiom/appearance-authoring` |
+| Appearance normalization and collision trace | SSOT-03, Appearance/collision schemas | `@axiom/appearance-normalizer` |
+| Motion authoring and Motion IR | SSOT-04, Motion schema | `@axiom/motion-schema` |
 | Generated State, Condition, Appearance, Motion, and Behavior references | completed schemas and registries | `@axiom/spec-tooling` generator and the three generated contract packages |
 | Positive and negative behavior | `spec/fixtures/`, `fixtures/` | package tests and spec harness |
 
-## Current N18 checkpoint
+## Current N24 checkpoint
 
-The `spec/manifest.json` inventory remains 36 schemas, 14 registries, and 26
-fixture suites with 40 positive and 78 negative files. N18 adds no new schema
-or fixture authority: it adds deterministic, provenance-stamped and
-drift-checked reference types for N12–N17 in three zero-runtime-dependency
-packages. Token generation emits the same 635 Token IDs for light and dark
-contexts. Under ADR-0005, N32 owns pinned React Aria source data and N33 owns
-behavior projection and cross-coverage. N22, not N18, owns the future collision
-trace schema and coverage.
+The `spec/manifest.json` inventory contains 37 schemas, 14 registries, 44
+positive fixtures, and 87 negative fixtures. Token generation emits the same
+635 Token IDs for light and dark contexts, and the effective CSS registry
+contains 818 properties.
+
+N19–N23 add the renderer-neutral Recipe Kernel, CSS-aware authoring, authenticated
+Token Binding receipts, Appearance normalization with a separate collision trace,
+and Motion authoring normalization. N24 proves one Button vertical slice through
+those public boundaries, schema and semantic validation, JSON transport, and
+deterministic canonical bytes.
+
+The current boundary does not emit CSS or class names and does not implement DOM,
+React, provider, or accessibility runtime behavior. N25–N26 own Select and Dialog
+vertical fixtures, N27 owns exhaustive negative/type/round-trip/determinism
+coverage, N28 is the Foundation reconciliation review, and N29 onward remain
+compiler/integration work. Later backend and provider capabilities remain planned
+under their owning sequence.
 
 ## Change gate
 
