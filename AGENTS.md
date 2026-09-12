@@ -2,39 +2,29 @@
 
 These instructions apply to every file in this repository.
 
-Before changing source code, read:
+## Current phase
 
-1. `docs/README.md` for authority order;
-2. the owning ADR and SSOT document;
-3. `docs/standards/source-code-and-module-structure.md`;
-4. the relevant schema, registry, and positive/negative fixtures in `spec/`.
+Read `docs/README.md`, ADR-0006 and ADR-0007 before changing this repository. The active tree contains lifecycle and planning documents, a reference inventory and a repository verifier. The earlier executable implementation is preserved only in Git at the commit recorded in `reference/pre-studio/snapshot.json`.
 
-Mandatory source rules:
+The owner authorized retirement separately from new product implementation. Follow the confirmation sequence: task decisions, document index and development direction, complete documentation baseline, then implementation. Do not create new product packages, schemas, renderers or adapters before the final gate.
 
-- Do not use version markers in identifiers, filenames, or directory names.
-  Compatibility versions belong in schema/profile data and provenance.
-- Put package-wide protocol, diagnostic, integration, and policy values in
-  `src/constants.ts`; exported constants use `CONSTANT_CASE`.
-- Do not introduce unexplained repeated numbers or strings. Name domain values
-  and keep one static owner for them.
-- Keep package dependencies one-way and import other packages only through
-  their declared public exports.
-- Keep core contracts serializable, deterministic, and renderer-independent.
-- Add concise English TSDoc to every newly written or materially modified public
-  or exported TypeScript function, class, or method. Add it to newly written or
-  materially modified internal callables when their contract, invariants,
-  ordering, diagnostics, side
-  effects, or boundary assumptions are not evident from the signature. Explain
-  maintained intent rather than restating identifiers or control flow.
-- Colocate unit tests; add normative positive and negative fixtures when a
-  machine-readable contract changes.
-- Do not treat removed MVP packages or historical reviews as implementation
-  authority.
+Do not interpret removed ADRs, SSOT, plans or passing reference tests as current Studio authority. Restore the full snapshot outside the active checkout for historical investigation. Do not cherry-pick historical instruction files into current authority without review.
 
-Before handing off a source change, run:
+## Documentation and maintenance rules
 
-```bash
-pnpm check
-pnpm test
-pnpm build
+- Keep owner responses, interpretations, proposals, open questions and verified evidence distinct.
+- Keep compatibility versions in data or metadata, not source identifiers or directory names.
+- Preserve LICENSE and `.gitignore` byte-for-byte during retirement.
+- Keep snapshot paths, blob identifiers, hashes and restoration evidence verifiable. The pinned commit is authoritative; a branch is movable.
+- Record removed manifests, schemas, fixtures, generators, locks and CI. Never report removed pnpm checks as passing here.
+- New planning Markdown and JSON may be added under `docs/`. Changing the phase guard requires an accepted ADR and the owner's implementation authorization.
+- Apply general engineering principles in `docs/standards/source-code-and-module-structure.md` to maintenance code. Its old package and NodeNext rules apply to the restored reference until a future implementation profile is approved.
+
+Before handing off changes, run:
+
+```sh
+python3 scripts/verify-retirement.py
+python3 scripts/verify-retirement.py --self-test
 ```
+
+These validate retirement and documentation integrity, not Studio behavior or platform readiness. Do not weaken the checks to allow unapproved product implementation.

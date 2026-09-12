@@ -1,63 +1,20 @@
-# Axiom Design System
+# Axiom
 
-Axiom is a contract-first design-system project. Normative documents and JSON
-Schemas define the architecture; packages implement those contracts without
-becoming an alternative source of truth.
+Axiom is being redesigned as a design-system builder in Axiom Studio. The active repository is a **documentation and product-definition workspace**. It does not currently contain an installable Studio, a token compiler, or an executable UI library.
 
-## Authority
+Start with the [documentation entry point](docs/README.md). The owner's sequence is: confirm product decisions, confirm the Foundation 1.0.0 document index and development direction, write and confirm that documentation, then implement the product. The version names an intended documentation baseline, not a released product.
 
-When sources disagree, use this order:
+The earlier implementation has been removed from the active tree as a complete source, specification, fixture, generator and build set. It remains recoverable at a pinned Git commit through the [pre-Studio reference guide](reference/pre-studio/README.md). That directory contains inventory and restoration instructions, not another executable copy. See the [retirement ledger](docs/maintenance/pre-studio-retirement.md).
 
-1. accepted ADRs;
-2. SSOT documents;
-3. normative schemas, registries, and pinned input manifests in `spec/`;
-4. conformance fixtures;
-5. generated definitions and artifacts;
-6. compiler and runtime packages;
-7. examples and historical reviews.
+## Current verification
 
-Start with the [documentation index](docs/README.md), the
-[current architecture](docs/architecture.md), and the
-[source-code and module standard](docs/standards/source-code-and-module-structure.md).
+Python 3.9+ and Git are the only requirements:
 
-## Current workspace
-
-| Package | Responsibility |
-| --- | --- |
-| `@axiom/spec-tooling` | Validate normative schemas, registries, fixtures, and canonical digests |
-| `@axiom/tokens` | Own token contracts, identity validation, context resolution, and manifest serialization |
-| `@axiom/token-tooling` | Adapt pinned DTCG parser output to Axiom token contracts |
-| `@axiom/css-property-profile` | Generate the pinned CSS registry, Token bindings, authoring types, and validation services |
-
-Renderer, recipe, appearance-normalization, and framework packages are intentionally absent
-until their implementation gates are satisfied by the SSOT and normative spec.
-The pre-foundation MVP packages are not migration authorities and must not be
-reintroduced as examples.
-
-## Repository layout
-
-| Path | Role |
-| --- | --- |
-| `docs/` | ADRs, SSOT, normative annexes, implementation reports, and standards |
-| `spec/` | Machine-readable normative schemas, registries, and conformance fixtures |
-| `fixtures/` | External-source fixtures such as DTCG token documents |
-| `tokens/` | Normative base and context-specific DTCG Token sources |
-| `packages/` | Capability-owned implementation packages with explicit public entry points |
-| `scripts/` | Repository policy and deterministic quality checks |
-
-Version numbers remain contract data where compatibility requires them, but
-they are not used in source identifiers, filenames, or directory names.
-
-## Local verification
-
-```bash
-pnpm install
-pnpm check
-pnpm test
-pnpm build
+```sh
+python3 scripts/verify-retirement.py
+python3 scripts/verify-retirement.py --self-test
 ```
 
-`pnpm check` also verifies that the resolved Token artifacts, generated Token
-path types, effective CSS registry, coverage report, and CSS authoring types have
-not drifted from their pinned inputs. Any source-level change must pass all
-three commands before review.
+These check snapshot integrity and restoration, retired-path absence, unchanged legal files and local document links. They are **not product tests**. Old pnpm checks are available only in a restored reference; earlier results retain their original revision scope.
+
+The existing [license](LICENSE) is unchanged. Future product licensing and distribution require their own documented approval.

@@ -1,0 +1,70 @@
+{
+  "date": "2026-09-12",
+  "status": "authorized retirement prepared in review branch; not a new product baseline",
+  "decision": "cleanup 3+4; reference directory contains manifest/guide, executable source only in Git",
+  "snapshotCommit": "1b7bd6843ac638fac89da424637afa755d076144",
+  "originalMain": "f368ae7d208424c922637ca625ab9687a85ed5b9",
+  "referenceBranch": "reference/pre-studio",
+  "inventory": "../../reference/pre-studio/snapshot.json",
+  "baselineFiles": 442,
+  "removedFromActive": 432,
+  "retainedUnchanged": [
+    ".gitignore",
+    "LICENSE"
+  ],
+  "retainedRevised": [
+    ".github/workflows/quality.yml",
+    "AGENTS.md",
+    "README.md",
+    "docs/README.md",
+    "docs/adr/0006-product-reset-and-reference-lifecycle.md",
+    "docs/maintenance/pre-studio-retirement.json",
+    "docs/maintenance/pre-studio-retirement.md",
+    "docs/standards/source-code-and-module-structure.md"
+  ],
+  "removedGroups": {
+    "historical-documentation": 42,
+    "integration-and-source-fixtures": 31,
+    "repository-controls": 9,
+    "implementation-packages": 162,
+    "normative-contracts-and-fixtures": 184,
+    "token-sources": 4
+  },
+  "sourceTypesRemoved": {
+    "typescriptIncludingTestsFixturesAndVitest": 131,
+    "javascriptPolicyScripts": 3
+  },
+  "verification": {
+    "snapshotAndArchive": {
+      "status": "passed",
+      "snapshotFiles": 442,
+      "archiveFilesRestored": 442,
+      "method": "git ls-tree metadata plus complete git archive restoration and Git-blob/SHA-256/byte verification"
+    },
+    "localLinksAndAbsence": {
+      "status": "passed",
+      "retiredPathsAbsent": 432,
+      "activeFilesChecked": 14,
+      "localLinksChecked": 23,
+      "unchangedPaths": [
+        ".gitignore",
+        "LICENSE"
+      ]
+    },
+    "negativeSelfTests": {
+      "status": "passed",
+      "rejectedCases": [
+        "snapshot-digest-corruption",
+        "retired-package-resurrection",
+        "broken-document-link",
+        "new-product-source"
+      ]
+    },
+    "oldPnpmSuite": "not applicable to active tree; not rerun",
+    "productImplementation": "not started; documentation confirmation required"
+  },
+  "openPullRequestsUntouched": [
+    12,
+    23
+  ]
+}

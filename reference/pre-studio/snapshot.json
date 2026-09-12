@@ -1,0 +1,3997 @@
+{
+  "format": "axiom-reference-snapshot",
+  "formatVersion": "1.0.0",
+  "date": "2026-09-12",
+  "repository": "https://github.com/Rengod95/Axiom-Design-System.git",
+  "referenceBranch": "reference/pre-studio",
+  "commit": "1b7bd6843ac638fac89da424637afa755d076144",
+  "tree": "81057ad115aa176d01e053b1bd11f9ab72b2556e",
+  "originalMain": "f368ae7d208424c922637ca625ab9687a85ed5b9",
+  "fileCount": 442,
+  "totalBytes": 3599511,
+  "dispositionCounts": {
+    "retain-revised": 8,
+    "retain-unchanged": 2,
+    "remove-from-active": 432
+  },
+  "files": [
+    {
+      "path": ".github/workflows/quality.yml",
+      "mode": "100644",
+      "gitBlob": "a0ab97237d27b92faf892e07cb5f81084758c8f6",
+      "sha256": "8944ce4b2b387f50ea8c9a69591235cf234344b2948e3353b7e13bd8c44f6e63",
+      "bytes": 640,
+      "group": "repository-controls",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "gitBlob": "7146c60f42de6181d92a3864307d9402821652a5",
+      "sha256": "8d5ea66082f874b069d9988a3128509ab251ca833cb99e995eae33903cd3985a",
+      "bytes": 60,
+      "group": "repository-controls",
+      "disposition": "retain-unchanged"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "gitBlob": "a8c0b6e32b79620a210b0529e98031549d523d01",
+      "sha256": "af2ab4b849c34ca0d715ea8d33b001f91618517d71142fd9e809f3cda528f0c4",
+      "bytes": 2080,
+      "group": "repository-controls",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "gitBlob": "43856748a52cf64e51f8cc5d22c990b261d9ca55",
+      "sha256": "f4b66bcc456602ff01cf3ed5dfad8921564c68c298d1db6ead3cd356322197f9",
+      "bytes": 1063,
+      "group": "repository-controls",
+      "disposition": "retain-unchanged"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "gitBlob": "9191c897bec0ad6497d0b57fa9fc013760e88390",
+      "sha256": "9a542a20c45b43408786f01f60701a212051a15dc84ba8873ec4ba68f1220a77",
+      "bytes": 3630,
+      "group": "repository-controls",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": "docs/README.md",
+      "mode": "100644",
+      "gitBlob": "eb8d4bdad2e128ba833e348b3ad6b6e2b6797dbc",
+      "sha256": "faa2418abaa313d955f31cebc2898eade7c43a0302c1f98027c95c793b50f1c5",
+      "bytes": 15175,
+      "group": "historical-documentation",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": "docs/adr/0001-css-native-appearance-profile-and-scope.md",
+      "mode": "100644",
+      "gitBlob": "0defda429eb46469d71eac5ebf83211527311d3d",
+      "sha256": "68f2ec8fb8db3bf52865563f00ccff56e62213e8e53dbd8540f36b51952a3856",
+      "bytes": 8637,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/adr/0002-react-aria-behavioral-criteria-source.md",
+      "mode": "100644",
+      "gitBlob": "18ca8d9a42ac1df01ebf1bcf960780e3238a2c34",
+      "sha256": "5037a4b361a051746635fc6b44ff952fb834fdc1a45adca2def804e8ffa50c0a",
+      "bytes": 6059,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/adr/0003-recipe-authoring-kernel-and-third-party-boundary.md",
+      "mode": "100644",
+      "gitBlob": "b09a891a330c3570b8c6826d0c1d51f7aa41ba96",
+      "sha256": "55bfc80562d506389b2fed7027805fc3efb36bfabad87917d4a379019dbfd396",
+      "bytes": 6517,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/adr/0004-token-vocabulary-and-color-profile.md",
+      "mode": "100644",
+      "gitBlob": "d1b774d4e0e95546023371f3b27e1898bc887429",
+      "sha256": "29a96162ea5d9b06453750ce600744f33721cdd88e1db2e25a0abbbf61c7f9ce",
+      "bytes": 7717,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/adr/0005-behavior-criteria-schema-sequencing.md",
+      "mode": "100644",
+      "gitBlob": "398370cd6057dcf03b8567138386e2ce4d793645",
+      "sha256": "28bfbb6fc0fa8f03d5c0e614cc0dbc5bb78a368e69e74024025759e4d8cb6862",
+      "bytes": 1666,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/adr/0006-product-reset-and-reference-lifecycle.md",
+      "mode": "100644",
+      "gitBlob": "568018301a3cefd5d7c7070eea0b444cc03b27c4",
+      "sha256": "5e833ce46044c3e7f45bd76949debebe7d23064a82c3e8ff1941b293c9549acf",
+      "bytes": 3904,
+      "group": "historical-documentation",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": "docs/architecture.md",
+      "mode": "100644",
+      "gitBlob": "24dc4d29de3249bdb5014d077d8016f77d1b084b",
+      "sha256": "b47d6606bf5af46cefb6fead10313db27a4461554bcb25fb2b01ebbedc4bbb84",
+      "bytes": 5952,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-mvp-removal-and-source-standards.md",
+      "mode": "100644",
+      "gitBlob": "b646b78e28a7d1106c6944573c9bd216abeb39ef",
+      "sha256": "66f96fe96d5c2dc90cb50fb782c09473b5a9d8a3fcf3340d98124b8b0888103c",
+      "bytes": 3168,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-p1-normative-spec-harness.md",
+      "mode": "100644",
+      "gitBlob": "af9bd7fffdad3f9a25b9e0dcbd3072d81f894349",
+      "sha256": "c14fe5c18da2c7e7bc7d9bd54d081e9d6f245ffabe35157956a609a67e464689",
+      "bytes": 9359,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-p2-tier-graph-and-context-resolver.md",
+      "mode": "100644",
+      "gitBlob": "1a3fef6992390243ef743b9660b8eb9db1abde99",
+      "sha256": "0879e77de5bcf6b08427fe2fb6b6ca9680e150291f63f48fe532124d858d496f",
+      "bytes": 8778,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-p2-token-foundation-closeout.md",
+      "mode": "100644",
+      "gitBlob": "708de187a59a0c87fcb7ebd9773e9e9d3743c573",
+      "sha256": "ea5bc8261bd81da39ea2872081c06622b0cdd53fd707912827ace82745034f70",
+      "bytes": 4026,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-p2-token-parser-and-normalization.md",
+      "mode": "100644",
+      "gitBlob": "4b737ac7b91924843a5bc4bee2aa461ae804d596",
+      "sha256": "587ce80f39f71a14efb6f5b1cc421fc79f2922fb372b2e59ea09d82b85956a6d",
+      "bytes": 8415,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-p3-css-property-profile.md",
+      "mode": "100644",
+      "gitBlob": "5f57d3cabdc09047cfaffbbf77b1afd2c61a8ed2",
+      "sha256": "df8e14a28a01cb7e3ba78546e9520f7f6cd55350244e28ba5e38231489a49824",
+      "bytes": 4402,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-state-and-condition-registries.md",
+      "mode": "100644",
+      "gitBlob": "5f1fb341c35e55cd453bd80f9aa6814845915cda",
+      "sha256": "3864dc98aa2f5e155d0ce301630e5a730f67b9aed57e63bf6d76b75877d2f0ec",
+      "bytes": 3578,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-01-token-foundation-scale-hardening.md",
+      "mode": "100644",
+      "gitBlob": "a569ae612e0ba9e81f45094cc627e23213b52a0b",
+      "sha256": "ee65415e9d370ff6cb8b32971df869ba69f68a5090fddc802855ba0fd0eb6f7e",
+      "bytes": 4138,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-appearance-ir.md",
+      "mode": "100644",
+      "gitBlob": "63b5250ed781ebaeac9f3d5dff533809c18d3eac",
+      "sha256": "1d44dd323b7f47eb0ae6213a2a755339c7ea3d5bf572a8d023771d413946c0c9",
+      "bytes": 4077,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-button-foundation-conformance.md",
+      "mode": "100644",
+      "gitBlob": "e3471a6434c8e2fba449adddca1efa5abd54b9b0",
+      "sha256": "0913fe2640b619b37ed6edd069ec7db70894d6e36f8925c9f85ef6affc99aa05",
+      "bytes": 4067,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-css-appearance-authoring.md",
+      "mode": "100644",
+      "gitBlob": "63f00465eba628e47c8a7fe10500f8a7e29b517c",
+      "sha256": "61e723868b32b22915652d1e0afe95fb1f6c25f4990e34d8db1d6acbcf40f6b1",
+      "bytes": 3182,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-generated-reference-contracts.md",
+      "mode": "100644",
+      "gitBlob": "1b94c57e96a7a756ae5c3d34f9dc37e21eaea5e9",
+      "sha256": "df5b516cf2407d759b3f5201038be57e5577d4f16107c614dee34c51a83c48a4",
+      "bytes": 3550,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-motion-authoring.md",
+      "mode": "100644",
+      "gitBlob": "a806e5e82d33b9fbc47f33e49aef34fffda6708c",
+      "sha256": "6d9a640a7d619e30d895a5bf28ae1fa4958f051517ca249a2089bfe93b4fde23",
+      "bytes": 4674,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-motion-ir.md",
+      "mode": "100644",
+      "gitBlob": "61f3e4c37fe9332c1d9711556805e71a1b6dfdcf",
+      "sha256": "2b39122a1c313cbf9898c5c4e896149e635ebb6453ad868c3db1652b70eb0d09",
+      "bytes": 3560,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-n15-document-reconciliation.md",
+      "mode": "100644",
+      "gitBlob": "0a7562904731a7d6d78d45ffda1242954d49a81a",
+      "sha256": "a11b97c3baf41e31ad43b3469eae4383542a008785862e4a0a35e0ec5e75f099",
+      "bytes": 3292,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-n17-behavior-criteria-contracts.md",
+      "mode": "100644",
+      "gitBlob": "792f32e2efddff22db192162018191e3a9276594",
+      "sha256": "3dc3443853e2cec21aa1c20e42f03d94bfcfb7aa592f6a76c06d3c103f064731",
+      "bytes": 1683,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-oklch-semantic-colors.md",
+      "mode": "100644",
+      "gitBlob": "69c02121e2c28ef91c6b70ee2a8a8a85d444e902",
+      "sha256": "7e5654787381e8980365d6ecdc8a19edb49d4e9a85178c0f1be68c456458f310",
+      "bytes": 2458,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-ordered-declaration-contracts.md",
+      "mode": "100644",
+      "gitBlob": "7038f164dd448d4a49093b7c7bceaa86f9074410",
+      "sha256": "09090ddd361bc4b4b79ea9936b0dea12f17f6b4ed637c77b11fb7a6f450bb61a",
+      "bytes": 4002,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-recipe-kernel-preparation.md",
+      "mode": "100644",
+      "gitBlob": "57567dcc78103d6d4bc62de57c0028d52be83a66",
+      "sha256": "0c6ccbef4be888e5ea703e7dcc6ba46f03b29e40ac1ad279c248944b8425d2fa",
+      "bytes": 2511,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-semantic-scales-and-aspect-ratios.md",
+      "mode": "100644",
+      "gitBlob": "6dcbc67c32f75c948650ea09ea926af562ff9164",
+      "sha256": "31a5a7d9d69788b7e33fe90da9f37e37e19a177a180e07d9ee30590fe7e3e127",
+      "bytes": 2789,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-token-binding-validation.md",
+      "mode": "100644",
+      "gitBlob": "9b0265d036b4137eb809f027c23105e4751b4acf",
+      "sha256": "96ca410295ae063e42e6be1838f1047b7dd3504df7858534b76a63a1163fc1d4",
+      "bytes": 2238,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/implementation/2026-09-02-token-governance.md",
+      "mode": "100644",
+      "gitBlob": "c836fd3f5f316c0dcfa46d972f8272a58ab52161",
+      "sha256": "2482c9187ca15316142c01fafd12946a8e8f40f42e35aa60093c9fea7eee1e4a",
+      "bytes": 2351,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/maintenance/pre-studio-retirement.json",
+      "mode": "100644",
+      "gitBlob": "44603af703adb07e83b78c41d23ebd79b3d332fc",
+      "sha256": "5dd306e09bd43c125c8ebae21ca2e395704b939477eb0de6f621c2bcab117136",
+      "bytes": 73684,
+      "group": "historical-documentation",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": "docs/maintenance/pre-studio-retirement.md",
+      "mode": "100644",
+      "gitBlob": "02779944a3dea21386939841797ae1e72158828b",
+      "sha256": "ea8552dd73e95ca9d42fcf3714bdc80d349037b3444c59ababbf60e41d4582b5",
+      "bytes": 8610,
+      "group": "historical-documentation",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": "docs/plans/2026-09-02-n22-implementation-report.md",
+      "mode": "100644",
+      "gitBlob": "18ec6374903c26583c296737d86dfc04c0759635",
+      "sha256": "ce002c6a2d8911dd4a648203a1b7270191a277f344fa33327bdf3a83d07363ec",
+      "bytes": 1486,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/reviews/2026-08-31-foundation-gap-analysis-and-stabilization-plan.md",
+      "mode": "100644",
+      "gitBlob": "72494c54d04165607656cd5652e3a586bea116d3",
+      "sha256": "477837267fb7797b18610ddbe622d3a9763b73d6fa6cc1802d8849c2db4d4808",
+      "bytes": 26342,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/reviews/2026-09-01-recipe-authoring-third-party-evaluation.md",
+      "mode": "100644",
+      "gitBlob": "7790e930bb5a738d74af124a68fe0ebd23c58f3a",
+      "sha256": "03362b949376c5e796d36ea00401084553a6f6dc38cc66a620e904ceb0f72eb4",
+      "bytes": 9159,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/specs/react-aria-behavioral-criteria.md",
+      "mode": "100644",
+      "gitBlob": "674fd4f128e1ff61b646bedc7af37cfca052c960",
+      "sha256": "4845e602bce96644e9755dc8385cc366c4bde95a1cc1c6117464aba149aadf14",
+      "bytes": 13238,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/specs/token-domain-and-css-binding-catalog.md",
+      "mode": "100644",
+      "gitBlob": "095451a796219dbd48193793bd5d8a9bda1375a1",
+      "sha256": "f1d62c571d0718a14d238f5388d5178a0422d41a47baac7dddb40eea57dc3d4d",
+      "bytes": 21818,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/ssot/00-system-architecture-and-standards-profile.md",
+      "mode": "100644",
+      "gitBlob": "8089b6ad6131778c997ed56ab808d60298383c9f",
+      "sha256": "7e55deffff9e00d37a5ecf4e4b1d10daf3f725324d5fe57f94fe9a9e2467857e",
+      "bytes": 18430,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/ssot/01-foundation-and-domain-contracts.md",
+      "mode": "100644",
+      "gitBlob": "2c1d4aefc3b64c2e907530c9d6db92cf428f54a2",
+      "sha256": "738c1b0a35492bf789e2bdeb6176488b85c7dca3075112562438a89124c76b4f",
+      "bytes": 25420,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/ssot/02-adapter-contract-readiness-and-governance.md",
+      "mode": "100644",
+      "gitBlob": "a2490b518a7bfb014ad32cbf11ad4895da054d75",
+      "sha256": "36fb87a881fc65ade4d145bc06f048d38877c9a238e15f8e5f1c0029f0a9cc41",
+      "bytes": 21049,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/ssot/03-css-appearance-profile-and-property-policy.md",
+      "mode": "100644",
+      "gitBlob": "b3e40b4630282cae0acac70c31b32beaa6aff11f",
+      "sha256": "99654ccd0c4cffc788ee343906d1868f3d1e7323e43ce8d50daf86cdef945af6",
+      "bytes": 29685,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/ssot/04-environment-conditions-and-motion.md",
+      "mode": "100644",
+      "gitBlob": "27035022408314ffad8843a5de7a677ed7b6d7eb",
+      "sha256": "31f837c1cffa553741b7f201b2c4c397cc56a90afa47aa179489ae0a9950e5c7",
+      "bytes": 25407,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/ssot/05-react-runtime-behavior-and-public-api.md",
+      "mode": "100644",
+      "gitBlob": "5e620baebce8ccf45bafc0000e3a786e854117c7",
+      "sha256": "cc2bc816108d4ed9f3abfa535d73e55b083f10eced1ca942cf6a07ddb92f6714",
+      "bytes": 23140,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/standards/source-code-and-module-structure.md",
+      "mode": "100644",
+      "gitBlob": "9229fc1f0a6e2b7297f0fb785b0087a999417949",
+      "sha256": "6e55ded77431ad76b5843e3551073384f2cf4cb2b1a3a7bb71d2ad9899419217",
+      "bytes": 13170,
+      "group": "historical-documentation",
+      "disposition": "retain-revised"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-02-gate-a-n16-n24.md",
+      "mode": "100644",
+      "gitBlob": "ff175c2e8eb0daa5899497996db99b45d7bccc44",
+      "sha256": "8042d1eeb0700177a9fc0cf4950186333ac22a0151aaa9085f7448de5456ce38",
+      "bytes": 9323,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-02-n15-document-reconciliation.md",
+      "mode": "100644",
+      "gitBlob": "6d061384d3f35c377f3e6f82ce7c6047beea883e",
+      "sha256": "8ca1cb0baa814d3c97ab620a64c2cb0eed70dc85882b16af6a45a5e36a3c6ad7",
+      "bytes": 3880,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-02-token-clean-break.md",
+      "mode": "100644",
+      "gitBlob": "27ad0517390d77bde61e72f1d92aeaafb108334e",
+      "sha256": "e223b54768e9dbc54e440ed1ee47773943abe5f964d776fadf7b6dfea51e89d7",
+      "bytes": 4156,
+      "group": "historical-documentation",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/behavior-evidence/button.fixture.html",
+      "mode": "100644",
+      "gitBlob": "e473f7d08d8559863bd6638030080c01f7d8b0e3",
+      "sha256": "4639fb2ca0eef99003c8d4d0cfcf2715b9563f677df65152261dd772fff249d5",
+      "bytes": 56,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/behavior-evidence/dialog.fixture.html",
+      "mode": "100644",
+      "gitBlob": "459503e6ca7a06ebb1fe08feb5d14b356e51a9f5",
+      "sha256": "7a5980d22d4eca41f094ac53465787d4e3ce3c1b4d20d12eda217f747f9723f2",
+      "bytes": 56,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/behavior-evidence/select.fixture.html",
+      "mode": "100644",
+      "gitBlob": "89410dbbd0d1e382a026616ac1690bdd24aa1c8f",
+      "sha256": "b04b595b6ba54aba51352553a0659b15375d964cf5919470624c6bc5a94d5251",
+      "bytes": 56,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/button/appearance.ts",
+      "mode": "100644",
+      "gitBlob": "d8d06b326aa53b6522908364f8993448cdffcc52",
+      "sha256": "c712203e6452885966f46e311f9f448ff545216450f15bd34de28b45236072b5",
+      "bytes": 1353,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/button/motion.ts",
+      "mode": "100644",
+      "gitBlob": "252545fb63fbef686f743cf3a840a11b26945ce5",
+      "sha256": "cfd800ae11a71672c9c0a811063bee7992c5f4625a92f47aaad372c121208e47",
+      "bytes": 650,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/button/negative/invalid-token.ts",
+      "mode": "100644",
+      "gitBlob": "452c5eb6eadd5552c331790f104da62c9a2158fa",
+      "sha256": "338a2f6fd3c02c4db628b7a7e51ca1584c40477a679c07b7e4125fc94aedf480",
+      "bytes": 358,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/button/negative/reset-longhand.ts",
+      "mode": "100644",
+      "gitBlob": "5a499d36581de383be8a5550324cf8fc484eaf3e",
+      "sha256": "9c15b8f8c85ff26a72dd20d91105be0917280344c6f9f5ec528edb51d4cd1e1a",
+      "bytes": 453,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/button/negative/unknown-slot-motion.ts",
+      "mode": "100644",
+      "gitBlob": "ebafbd5b161767f588df5ce4149d4fc837f1ea8a",
+      "sha256": "e73a004080a196d47648b7e631ae21922d358d2437f9f055e0ad95e5e5454465",
+      "bytes": 673,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/domain-type-mismatch.tokens.json",
+      "mode": "100644",
+      "gitBlob": "05c4cc7ec5ac60aa2c7a6b7ea0d6c03046c968da",
+      "sha256": "aa6a1ef820fe6fbb5c937c0ccc3192c7d6139a896b1c1ceaeec36391404c68e4",
+      "bytes": 219,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/invalid-dimension.tokens.json",
+      "mode": "100644",
+      "gitBlob": "d34555e22298e8328dcb70c598ab7256f547f07e",
+      "sha256": "6ffd0013c549669d84eadf8c1a6506ca8c85084078190b7c7651b573ee53a4b5",
+      "bytes": 217,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/invalid-layer-integer.tokens.json",
+      "mode": "100644",
+      "gitBlob": "d6fc002fe6dfdf78d18b8cad21fd0070a75375a2",
+      "sha256": "989e63ade52ebf3076aaf954936860b7ae9691d0e6f9b3cbbd7307245ee8f3e6",
+      "bytes": 121,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/invalid-opacity-range.tokens.json",
+      "mode": "100644",
+      "gitBlob": "b0f4c05d818353b6d155b67415877aa13e8c1e7c",
+      "sha256": "acbac0ffb3db0d4647c195054717d5a7bb088f2139c9c2e3e5713b15d49e97a8",
+      "bytes": 123,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/missing-tier.tokens.json",
+      "mode": "100644",
+      "gitBlob": "7fe8bda06a9f0c698a2ba3938a0c49552a642716",
+      "sha256": "f4c7a95629e2109a777673df539fc9c7714d3c666dcc991c9f451553a6f4fe55",
+      "bytes": 250,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/negative-space.tokens.json",
+      "mode": "100644",
+      "gitBlob": "d38e6f1c01fca59bad28b2cdd74a28ca649c5832",
+      "sha256": "6ed2c52ceb37e476ecdf6c3a9a7d90ddf8c60f3ea03c6d19d7b80011ab330d26",
+      "bytes": 178,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/terrazzo-extension-em.tokens.json",
+      "mode": "100644",
+      "gitBlob": "2928c0e822aa4dba7c6937bbb053fe48d4ce55bd",
+      "sha256": "fca790c4212be75513ef4f22a546513c537f42dd39851df56f9f2e6b7ca17407",
+      "bytes": 176,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/unknown-domain.tokens.json",
+      "mode": "100644",
+      "gitBlob": "526637a36bb7c7296d9c23f8f02e7e92e6164981",
+      "sha256": "c281a274a51af6616a33e5acda01b12697dbdcb157440ca018dda8810179ae4a",
+      "bytes": 291,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/negative/unsupported-extension-type.tokens.json",
+      "mode": "100644",
+      "gitBlob": "aaea56990a55b7d1c930a4a1daa4c13467ba2a1f",
+      "sha256": "277b2c01f0b7d6063ccbef9d3fa0d8690680f7fff233f9a715e56cd9843b7755",
+      "bytes": 125,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/alias.tokens.json",
+      "mode": "100644",
+      "gitBlob": "b4f223cd41b4f2c326204572975eb89871369c8e",
+      "sha256": "870461c5f1d2437b5521723eb7d239d7680540f88260a181e456aafd26842d4b",
+      "bytes": 411,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/border.tokens.json",
+      "mode": "100644",
+      "gitBlob": "e0b4e465170c9d1890274fddd94470d7712cf5c7",
+      "sha256": "7c383a49276471a8ad7ed3d857a19023fc9e040f55fcbe75f06d66021a53773c",
+      "bytes": 409,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/color.tokens.json",
+      "mode": "100644",
+      "gitBlob": "f1793019fefba5170bf6197f5bd7b14cd07e3092",
+      "sha256": "a7f89617d3b06e7a0093a2adece2e8bf23d62e0a2d93a61d8240abcf3443bd32",
+      "bytes": 291,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/cubic-bezier.tokens.json",
+      "mode": "100644",
+      "gitBlob": "89fded2859fc9aa9f3d1d65a457ad2863d2c1b25",
+      "sha256": "f1d0a5a597be041289a83401c94b206f8a1cc1746c08b7e6599d6a5871b1bc7a",
+      "bytes": 207,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/dimension.tokens.json",
+      "mode": "100644",
+      "gitBlob": "6464158c8d812f3394e42bb551f9acb8aecd2ad2",
+      "sha256": "7dd92cbc48b6e28055b2f116045d849bb1650726fab653b0209f33da323448f6",
+      "bytes": 218,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/duration.tokens.json",
+      "mode": "100644",
+      "gitBlob": "24a4489d15cf031eb042f24387f807f585687fe0",
+      "sha256": "54874e1396357c895a480ff376d759565699159a6fa43dc83cb942cffe8a9b8a",
+      "bytes": 222,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/font-family.tokens.json",
+      "mode": "100644",
+      "gitBlob": "774d5d72557bd191b274ee60231969f119be0fb9",
+      "sha256": "46583eaa6683253a1018e05aae3215982963d8c3799e0598b9a5b2f9807f91cd",
+      "bytes": 219,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/font-weight.tokens.json",
+      "mode": "100644",
+      "gitBlob": "df6de29bd78bde49e4ca8efc83df2c41dc8acc4d",
+      "sha256": "0778f79bb51caa2dff32c87a5210c76b9d9b950a14a0696e890aa3b6c4058fce",
+      "bytes": 199,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/gradient.tokens.json",
+      "mode": "100644",
+      "gitBlob": "1a4a58573c90c5ae85259df52ff84d8f3d68d8bb",
+      "sha256": "a33dc6dd5227508f7e48ec619ea8b9007f5227d23c58af31061c15ced718dcbf",
+      "bytes": 590,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/number.tokens.json",
+      "mode": "100644",
+      "gitBlob": "75748b48685363646331c3602e576f0d11b73e18",
+      "sha256": "36b840434f3771228ba032f07faa2f7d0a947c34b45f8013da999120ca44829d",
+      "bytes": 205,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/shadow.tokens.json",
+      "mode": "100644",
+      "gitBlob": "e7335c21c97ef84845d6f46278103c4d985f7cde",
+      "sha256": "025d0abcbe7b95ed62e655f1ede414b06ab63f1cfe4a997cbf16316f04ed5d85",
+      "bytes": 556,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/stroke-style.tokens.json",
+      "mode": "100644",
+      "gitBlob": "4c29ba117e2526776a55f519db0fe0b0e87afd9a",
+      "sha256": "06bb9c6aaf6a6e6492f4e0cac5995bff6c55cdb7ea9b2d1bbf6c94987fec09bb",
+      "bytes": 205,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/transition.tokens.json",
+      "mode": "100644",
+      "gitBlob": "4c0721a4e162b091d0accd133ed2da1e60290d9d",
+      "sha256": "cbdb54bd3f1192830b7536ea36b3c67030e958a18434f0cabffe2d44e14e5ddb",
+      "bytes": 353,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "fixtures/token/dtcg/positive/typography.tokens.json",
+      "mode": "100644",
+      "gitBlob": "adfb3a42776f2dec4b489613f01c21c8c262ad9b",
+      "sha256": "a7a5da16703d4a197f26682f91448210df09c00e53e5a7212a1e7547bacb4fa6",
+      "bytes": 423,
+      "group": "integration-and-source-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "package.json",
+      "mode": "100644",
+      "gitBlob": "5b4b91d437568bb0a46d257e591ecb956a7a1a1e",
+      "sha256": "0850a42541b9c6458e2fba509a024f2e702e728fdb28204229aecba7b74007b4",
+      "bytes": 1759,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/README.md",
+      "mode": "100644",
+      "gitBlob": "5f8a5ddc0fa8a2b1680def08cf42d15c68709a03",
+      "sha256": "c79d3fd9caeef43888e60f9b8f15b5abaedbacf7e978534706961dd5ea224418",
+      "bytes": 839,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/package.json",
+      "mode": "100644",
+      "gitBlob": "3b66741036273d07901473d3f42ba8fc0a319c31",
+      "sha256": "29966dd504f9bf413692008f26af034d5ec4a692da143226f42d33171ddc2162",
+      "bytes": 654,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/appearance-authoring.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "63bbf74462ba01f6716c90a6f62ad3c73d0e31af",
+      "sha256": "cc178e71a9b0c1ff323a142727e9cfe8734a65e9065a30271d01572fe7375260",
+      "bytes": 4191,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "95fafb86dfb2ca1d804bae479fad946d7f3a1ed3",
+      "sha256": "cbd788931a419b471daf3a86511135eaa205b55f100d561d2c0fd62d04d1cf5d",
+      "bytes": 2946,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/contracts.ts",
+      "mode": "100644",
+      "gitBlob": "754df95714a89e212444f8044d2a548e2e06e4a5",
+      "sha256": "3497bd97149e1a0ed92683af02ea0facd38ed278059e508259b9a05a0e472915",
+      "bytes": 10938,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/define-recipe.test.ts",
+      "mode": "100644",
+      "gitBlob": "0bd652f1396df4e21642dbb0fdc2fad69330096c",
+      "sha256": "0f8d318ec3307fa47979904c7613fa74947a4995583f4ad94032fc6cdb42f320",
+      "bytes": 15670,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/define-recipe.ts",
+      "mode": "100644",
+      "gitBlob": "e4c1874eb204b729d0dd63194163fc5b910569df",
+      "sha256": "dda6b89a4678236db80685f7ef0cd9b40257bec58eeaceb56981bc327f8adbf3",
+      "bytes": 2457,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/helpers.ts",
+      "mode": "100644",
+      "gitBlob": "a2effd1bce3c7bf9f1f51956ce8c2f831958c824",
+      "sha256": "6c76b0fa27376859e9cde6e91c5c739f29f180f6dcfec2f4d9d3366fdef2dc89",
+      "bytes": 3604,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "d7158066e7e4f03fe430f5f88e317df723d7c3b9",
+      "sha256": "5b7675be6f80126aa2ab2c9ea735062d5f031c83d2e244499db72bb0dcb27472",
+      "bytes": 1230,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/token-binding.test.ts",
+      "mode": "100644",
+      "gitBlob": "beff9362a8ebc16040e0d7673512744b31cfc097",
+      "sha256": "02b21752b011ed54185cb6250c9bd9731c9165cf98e8d18cca9b4275dd3a648d",
+      "bytes": 30555,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/token-validation.ts",
+      "mode": "100644",
+      "gitBlob": "e4ffd19d900954b11087851b81dc5bc2b549dc24",
+      "sha256": "d1d80411a790b0856c312b960aaa188443f4996a377755315f52b4e3b643774d",
+      "bytes": 52078,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/src/validation.ts",
+      "mode": "100644",
+      "gitBlob": "3deecb7b7f5db3a98678e3ded17cacf5cddafa05",
+      "sha256": "563c44d6425a969c36aa2f40a26f1bc898adc8cc981590df553b6785d538a740",
+      "bytes": 15877,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "46191e86c3f1a97f7a58133c0f5a6adaaf83775e",
+      "sha256": "ba341b5747b426ecc88a9c7542b2c1b677d6d85b0fdc823486de9cff0d5dcdea",
+      "bytes": 491,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-authoring/tsconfig.type-test.json",
+      "mode": "100644",
+      "gitBlob": "d4cfb663b5715aa6dc6794f402b226cfdbe6d99d",
+      "sha256": "2d912783512625b859e71c703d60b2a78d32ce2a43c4e0e4258cb981381efaff",
+      "bytes": 169,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/README.md",
+      "mode": "100644",
+      "gitBlob": "4e64cd54c569b6ef12f4f3dd1e843a0cd13ff9bc",
+      "sha256": "61cfa01276c860efee20f331ecf6036f0f02f690951c70cfd18c566c106b5d56",
+      "bytes": 848,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/package.json",
+      "mode": "100644",
+      "gitBlob": "3336c5dd32cc03d75afb8761324f73339229c41e",
+      "sha256": "222c4ca6119b1b3a73c3d8bd01f3bb61f30fa4fd562a74dc19a36a2c121ea174",
+      "bytes": 654,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/conformance/button-authorities.test-support.ts",
+      "mode": "100644",
+      "gitBlob": "fac696c3912ab3a34d2d45bad54715e95e8341cf",
+      "sha256": "0b0ffd928cda42182498631158437f3f6cd88f1b0df0df43df381f42006192f0",
+      "bytes": 5795,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/conformance/button-foundation.golden.json",
+      "mode": "100644",
+      "gitBlob": "ed29da5ec7208f248d3020528144296c7cfc0c35",
+      "sha256": "1e5772a3d31a0c8ab8fa245210109f8a7d2bb1247471bd9cb58793c8d1779678",
+      "bytes": 5944,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/conformance/button-foundation.test.ts",
+      "mode": "100644",
+      "gitBlob": "a49f8384b80956ee9c934b0dc8b2fe1b5982c489",
+      "sha256": "a2005cf686e9960dc9803521b575ab0777f16fc4e4ff1bb1926f2eb1152eecf1",
+      "bytes": 9920,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/conformance/button-foundation.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "a6c865c7eb2d06c93e3346c99b9a700f42cd2b39",
+      "sha256": "9c22ccbae401a6499810d6945fded36d8ca09fcbe535c956ef38a51e980cdf1f",
+      "bytes": 2675,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "d4344749799f15a62d63962d9986781fadaf2aa3",
+      "sha256": "18cb5d456be6531725ee58451696df54d2dca975731fd1673976aaf922656080",
+      "bytes": 1113,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/contracts.ts",
+      "mode": "100644",
+      "gitBlob": "44b95b07220a2d11d73c1a2b912ff00e19e47e61",
+      "sha256": "66f6efe8ed1ee1c924403495f894260177930a5f1e5bc086eec45f69854a165f",
+      "bytes": 1793,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "6d1cc2c79c706763f78d79d133ff2232297ac7e7",
+      "sha256": "2bfd8a5bff0eb4d42abe57b983b1630f6724e737e8ae873d3e09f2fc6de653a8",
+      "bytes": 281,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/normalizer.test.ts",
+      "mode": "100644",
+      "gitBlob": "3e4233ae86357b83f9c541337a14ec3d862fe0c8",
+      "sha256": "4cb1c8fcbbd1a4de915d41219c1463f9a320a388e81231840b7ce72202ff11d6",
+      "bytes": 23212,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/normalizer.ts",
+      "mode": "100644",
+      "gitBlob": "537ae77263e3ca9284a5f894c00ca1345f35620f",
+      "sha256": "be2df46dd65ada5103dd4623ecc2dd06d85287a32ccdc6a304b623c20e564b02",
+      "bytes": 27312,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/normalizer.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "3a4f00bb15d1adb66974e3ebb68f345f11c20c10",
+      "sha256": "02bf1b374f7decf4803909e23f8c5e36a677c088edd62c058a3170ab4b2991e4",
+      "bytes": 231,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/src/serializer.ts",
+      "mode": "100644",
+      "gitBlob": "bb689659b7dac572a4384447d7612c3bcaee0fd7",
+      "sha256": "4806d3dc513709294f6fc6f8ec03cd1e158648459f47e4f8a795274194dc9eee",
+      "bytes": 755,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "e186959d58a1df1957c9572b9b3ff1f765de553a",
+      "sha256": "9e3c980d008f3c7a52bb067004e533ef3db438c20ac2de13df24839a43239d9d",
+      "bytes": 454,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/appearance-normalizer/tsconfig.type-test.json",
+      "mode": "100644",
+      "gitBlob": "a2af5461ad3243f9853bf6c6d67edcf40387930f",
+      "sha256": "a83a1fa9e5d86e88be80ac9fcb9d37a2707f06dc1d4fdd8b0a7050975055c2d1",
+      "bytes": 226,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/README.md",
+      "mode": "100644",
+      "gitBlob": "f7eee28d5c61b6f7c7fd19c5a8c57ffe18fa3485",
+      "sha256": "96a69f4f6ceab26fedc9aa3a31ae7fab41958899f012731bbd309c67f7247af6",
+      "bytes": 834,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/package.json",
+      "mode": "100644",
+      "gitBlob": "b49061c74db745a5db1fff893db6dd7d2be0bcc5",
+      "sha256": "16e5a4080229040c5132629940040d455d4ab83b8223089074208356ac431de9",
+      "bytes": 366,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "0486cddfbfa7e39e88a5d3b074240cbd53804300",
+      "sha256": "9f34c721668a92a8eb9c6a92e6fe3d2fc8ab62296cacd1d0bf0c51cfd1a60783",
+      "bytes": 172,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/src/generated/reference-contracts.ts",
+      "mode": "100644",
+      "gitBlob": "6ad38bf6838852dcee63911edfd57bae45a07f2e",
+      "sha256": "30b9c141460f8adb7fdb55f533e82c066e0b047e3f73447ea83d3783558dbeef",
+      "bytes": 2339,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/src/generated/reference-contracts.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "cf7c59f4e51995b9f02c2498f8882e6adc3fd720",
+      "sha256": "12e617fe4e983aec6661396dac675e1ed6c1c668d6bda7051418db6a214dc0a1",
+      "bytes": 1354,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "671d371e1a8c454ba27a6ae2129eac89010d40d0",
+      "sha256": "d119212aabc8bbceab2e007bb8d404fde574b411b42c58ad303edcb55673b081",
+      "bytes": 222,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "25868322e6207e65a62791548f198c071938283a",
+      "sha256": "fdba57cd0f998b635176c16c7d0a3fcbae4164d67e0a799df81b30ba06c64ba6",
+      "bytes": 246,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/behavior-contracts/tsconfig.type-test.json",
+      "mode": "100644",
+      "gitBlob": "8a8259ffd40d64c0c09e816624f67c1549de1d5e",
+      "sha256": "2e2e597945651cbfbc907e197c8cb43179186c9a29bee073ca52cfbd56e40d4a",
+      "bytes": 198,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/README.md",
+      "mode": "100644",
+      "gitBlob": "59b976f47ec8ccecde0c5d0a407ac62b661f5ccc",
+      "sha256": "9104154b5c057693a5bc0d52fcecf46cef71b547ccbd3d5c6c6c3f2578de5efb",
+      "bytes": 835,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/package.json",
+      "mode": "100644",
+      "gitBlob": "892efde2dc8d32f205d6c7e5814e7ca17d7f2379",
+      "sha256": "b3f70178c7fe5bc4f1c8265351fa58296cfa0fe30735883495d0feea945f3791",
+      "bytes": 366,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/src/condition-analyzer.test.ts",
+      "mode": "100644",
+      "gitBlob": "a463aebd56835768ba5cc21f5c8cf204de3c617f",
+      "sha256": "4ed5f660e0db0b2ce33a9e679544fb2caef1fdccacfbd60b596c7eb9f0610e7f",
+      "bytes": 2559,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/src/condition-analyzer.ts",
+      "mode": "100644",
+      "gitBlob": "d0552c5449ee788404295930683301534aa480bb",
+      "sha256": "1cbe93bb0322f952611461d9f44a5ad098a1df28129853703d66f853adb14fb0",
+      "bytes": 7771,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "c7ac18e696a3143dd031bb3e7a7224b8e27d8919",
+      "sha256": "cf160ae90e23446e7f6ef025730ba1004beaaa778df2b0efadaeb78466da96cd",
+      "bytes": 182,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/src/generated/reference-contracts.ts",
+      "mode": "100644",
+      "gitBlob": "51d3f70f6d802231403ea5f2b9fc965df7906246",
+      "sha256": "8c21966f30601b8a3207faf000e6f1eddd7ef27a2b4875ad9ffbf1923f98f46e",
+      "bytes": 4114,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/src/generated/reference-contracts.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "7a24a73fb280cd8e7a74754c0036109fc2e47e7c",
+      "sha256": "f65e22d9c12f94432686591b10a1f4f3bc0e82c4da7d71699088b8bfc342be35",
+      "bytes": 1538,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "d10456c2ba7403c966e41b5088c9de74fc2b0751",
+      "sha256": "dfba1f2b6cecc37e31fa9e9249d9036d8b678e209647c275db6c4bf4de5d6a2a",
+      "bytes": 562,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "25868322e6207e65a62791548f198c071938283a",
+      "sha256": "fdba57cd0f998b635176c16c7d0a3fcbae4164d67e0a799df81b30ba06c64ba6",
+      "bytes": 246,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/condition-registry/tsconfig.type-test.json",
+      "mode": "100644",
+      "gitBlob": "8a8259ffd40d64c0c09e816624f67c1549de1d5e",
+      "sha256": "2e2e597945651cbfbc907e197c8cb43179186c9a29bee073ca52cfbd56e40d4a",
+      "bytes": 198,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/README.md",
+      "mode": "100644",
+      "gitBlob": "f4f1a154d13ca60c3ff95388c3e209acde1a8df5",
+      "sha256": "0929778703ab872c5bc134cb6328b5ca29eeb69172f3896d8ebef4dce44aefb2",
+      "bytes": 835,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/package.json",
+      "mode": "100644",
+      "gitBlob": "d9b5498a06b8be5031afa9ff61f4d21a5afccfb7",
+      "sha256": "5bd7f17584e7407aa04314d8ca11678406fd877d3b6d503943acf480b9588c2e",
+      "bytes": 506,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/cli.ts",
+      "mode": "100644",
+      "gitBlob": "08ee11cb0190283f359c0648767eb0874c29d196",
+      "sha256": "5a1aaacaabcbdc0a93bc79119c1a1f1ef70fd7acf94decb0cbb4eb203ce51941",
+      "bytes": 4127,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "2f6952de603a99fc0ab9d6acde64bdf6820bb615",
+      "sha256": "5974ada46a63d026be8f1aa3f4255c95d28268b9132f9b3f4a676d2461cd5073",
+      "bytes": 2506,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/contracts.ts",
+      "mode": "100644",
+      "gitBlob": "47517b4373dfc65e4c0ba262d1872e6e78ed92b6",
+      "sha256": "04583e33bbaedef80f801cd6bca5b8ef5f5b0dc8f20631926cf1c5d605739a04",
+      "bytes": 6579,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generated/css-property-names.ts",
+      "mode": "100644",
+      "gitBlob": "69149e99756b0e8e00dc94146b56724f99ff9c4d",
+      "sha256": "e236fe117cb4bbccfe0b351eb3edc35aa80a9d702710204c986305af00593f7a",
+      "bytes": 32724,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generation/canonical-json.ts",
+      "mode": "100644",
+      "gitBlob": "986ab74ad53208bf3c2052fd7a68d9e77e4db40b",
+      "sha256": "77db8cccefa3f88e26e65b6843818bde5b3ad793d29fb90f3d03bc01610f37a9",
+      "bytes": 981,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generation/profile-diff.ts",
+      "mode": "100644",
+      "gitBlob": "6ede66f14e94f354747e2cd9d7a4d9de13db2ad5",
+      "sha256": "45ac76d922b2d958a6b2330ba45a62a8da1135bf8171a383a874f6a75262e88a",
+      "bytes": 1312,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generation/profile-generator.test.ts",
+      "mode": "100644",
+      "gitBlob": "ac6cd9b07d4953a5cd228d4923efa28d7831fa54",
+      "sha256": "ac7d6494c77bc327b1110043c6a393d121742ffbb01cd7b0044f4c6e1232a7ca",
+      "bytes": 5685,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generation/profile-generator.ts",
+      "mode": "100644",
+      "gitBlob": "45b4a25ae10400a626e936698e01983dacc85f6d",
+      "sha256": "22021a30ff11db77686d812c0ea93945b67e43fa84608321208bb8e003256163",
+      "bytes": 12691,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generation/property-types.ts",
+      "mode": "100644",
+      "gitBlob": "d3f1c1e5994259812614d4f9c5dc907dc0428f38",
+      "sha256": "0e2975bf782dca55832e503e58e9855a2e4009e71682ba17437a9c3ea94d6e77",
+      "bytes": 1242,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generation/stable-string-order.test.ts",
+      "mode": "100644",
+      "gitBlob": "079f0e02a92dfab1ba230eef7eaa24badbd49779",
+      "sha256": "c29019fc2c584a56ca5059559a6f0301295f4b694b6a8b68e9344493fa5ef3e5",
+      "bytes": 542,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/generation/stable-string-order.ts",
+      "mode": "100644",
+      "gitBlob": "23fdbed4e5a3a5dbc191ba51f4ff1cdf1484dcdc",
+      "sha256": "33cb36cd5580652e6ce9e7c4ee301adf503eab112100683c1cc4a548c5c05d0a",
+      "bytes": 321,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "fc5fe59b8b4102c9e36291a967e817e7a1bb4ca5",
+      "sha256": "a06e625aa8a43a7c6c7a25db220e09acc8dc04292c084e428d02d4ddbcf44e0f",
+      "bytes": 1201,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/validation/css-grammar-validator.ts",
+      "mode": "100644",
+      "gitBlob": "f140c99cb17a6098f577053cb7e5149b2ebc8f94",
+      "sha256": "9131521354e9af65206a2a50234088b23bb859a4a8cd641b401748296d7e7f9b",
+      "bytes": 5988,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/validation/property-validation.test.ts",
+      "mode": "100644",
+      "gitBlob": "dd018fe6c663f1acc6a5eca04c7b1132f7288f62",
+      "sha256": "f0b9ce926a28a638009d601f269724f1b8a0fa7f2100b51a7cdd5a9b5517bd56",
+      "bytes": 5143,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/validation/token-binding-validator.ts",
+      "mode": "100644",
+      "gitBlob": "22fcfddddf62ec4192ca990f1d74da338bdb6f5a",
+      "sha256": "2cbb46fce27ad59e1fadf918fb46e0d3dfad4f14dcb94c88290167d7e0b79948",
+      "bytes": 2888,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/webref/webref-importer.test.ts",
+      "mode": "100644",
+      "gitBlob": "63fa4d6f95e3b58d83c703b76a8b99f199619c94",
+      "sha256": "343b2885365db3ceeee0677c2b8f84e93dc1d806cd51d7cf3c16d7bd3de242a4",
+      "bytes": 1140,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/src/webref/webref-importer.ts",
+      "mode": "100644",
+      "gitBlob": "32aec2106711d308088bdfaff47f61850abae035",
+      "sha256": "4385bbcb850f5923c789bc93f77639a3a96c815cfd2136ff3c6a8818a400feb9",
+      "bytes": 4093,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/css-property-profile/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "63b39b58bfacca38edf9d903bfbe08a6b873d7fa",
+      "sha256": "b9d6ef89db938c8bc68ea426ed545c31bc5b7927e4141b1e614d3e34c3051470",
+      "bytes": 262,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/README.md",
+      "mode": "100644",
+      "gitBlob": "b4c9515350fb47080d5b6452901358aaba5c3588",
+      "sha256": "727fc3bcbf60452b586fc8e172733a38e846eff327de17ea45e510e3ac921056",
+      "bytes": 840,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/n16-conformance.test.ts",
+      "mode": "100644",
+      "gitBlob": "554c0321996f9843072ae1172498bdd41fcbdb9a",
+      "sha256": "90fd7913bcd2ed2ac50d41d57d205714ab7d25a493e4ae3806fea0f7a7907fc5",
+      "bytes": 6419,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/n22-applicability.integration.test.ts",
+      "mode": "100644",
+      "gitBlob": "5b61f9086aab6b0633256eba34506d3981c9e42f",
+      "sha256": "3375080985de7bc5d6f130361592632be633d3035636979fc77001f21dd6708d",
+      "bytes": 23264,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/package.json",
+      "mode": "100644",
+      "gitBlob": "16ba988197e3c6d7b7e1687ad73eff7b938284b6",
+      "sha256": "58c50ce6364d5ec7013f17c3d49fd161dd2a95f50eff71bba394ccb7495f5587",
+      "bytes": 519,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/authoring/authority-validation.ts",
+      "mode": "100644",
+      "gitBlob": "c30d14fc55798eb7ca708e5c686bc33e5ad024ee",
+      "sha256": "5be4f884b353ccc30ad48bd2967d94cf4ccf97eadd3d07955805715c8afd0b3d",
+      "bytes": 31477,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/authoring/contracts.ts",
+      "mode": "100644",
+      "gitBlob": "32394a8441ec63307ca52b9bd39836de0e42ea02",
+      "sha256": "c8507ca625cccab6c56c799de354927c006302773b155c145b55bb902e4686c4",
+      "bytes": 8082,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/authoring/define-motion.test.ts",
+      "mode": "100644",
+      "gitBlob": "b93436326e39bfb8b6ebac294f912e258c0ecb29",
+      "sha256": "a14352d12399461a472bd59edfdfdf788ce23073213c4181866ee6f3ed53e802",
+      "bytes": 34058,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/authoring/define-motion.ts",
+      "mode": "100644",
+      "gitBlob": "0ac17997526f5751bb2641a07e167426ad1547fc",
+      "sha256": "bee8df884d048746dc9fa7435e5f655a346da40c3ec9e774ed85c38cc6c0b728",
+      "bytes": 38673,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/authoring/define-motion.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "71ae74879aa649758e0e59a26b8646d26261c0b0",
+      "sha256": "95163841dc3b11f55800aebcac0eea7a7fe8f2ed9254b8fbb1b66b34b10edc3b",
+      "bytes": 1161,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "178b0f469b2b191215251ca9cddf4acc7b8a4575",
+      "sha256": "de07308e2053ab604af45a8374837cee2d982b58e6316f6e090622717ad9d737",
+      "bytes": 3532,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/generated/reference-contracts.ts",
+      "mode": "100644",
+      "gitBlob": "bd5350884fa801f6daf835e8dc387b9c7c0f37ca",
+      "sha256": "e909da2a731b8ad48ac854097618069b34a87a434ab1d27fd9fa530f682a9c87",
+      "bytes": 8700,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/generated/reference-contracts.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "92a10648fad3453b4e3f061aa8a9bddcf71c336d",
+      "sha256": "6441bccf4e44b07f7027f19200447c62bad3865b61649eedd7544dfff437f59e",
+      "bytes": 3418,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "f49a5519c41877a429b2d3c2cd9bd9a735cabda3",
+      "sha256": "38d9972593781b5292ac8482215ad7384b20be576dbbaf085512564826ede919",
+      "bytes": 1921,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/src/index.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "0052b438111b00b704c5d593512b8c0e06270d71",
+      "sha256": "afa8e7566996400e83b26717bb064eba712df4026c6f117cfad2f558b001958c",
+      "bytes": 592,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "59b8581afd0ae8e6be36cfb876a3b2c7f6d00c0e",
+      "sha256": "4cb213724ebe19488aeea3026ae858c488445cb466bef932bc1cc809b81758aa",
+      "bytes": 401,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/motion-schema/tsconfig.type-test.json",
+      "mode": "100644",
+      "gitBlob": "604279c20fdf2b55f687bcceb4665a5ddbfb7706",
+      "sha256": "c34dc512d97be4070e7f7a989f763c4ccfb1bf51d651d1919f1f5e0dfaf5d228",
+      "bytes": 169,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/README.md",
+      "mode": "100644",
+      "gitBlob": "4ee6ee6432f1c2e64fcd3f6cbed47cf48193248b",
+      "sha256": "bb1990e98b6564c81ab2827eaeea23801c4fa7516adbe8a0d85a536ea1823b0f",
+      "bytes": 842,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/package.json",
+      "mode": "100644",
+      "gitBlob": "2455337be90f9b49bb43f30c240eed6809d103d5",
+      "sha256": "eacaf86dbb1f912bb5867a80192cbb07a9f1763fe022455588aa73146ca78592",
+      "bytes": 454,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/conformance/recipe-kernel-conformance.test.ts",
+      "mode": "100644",
+      "gitBlob": "6e574daa3bedcee02ddb4981cb681610efad950b",
+      "sha256": "885795ad99a669a2e1a90bbd132fd4dae89e082ad994b083eda82617184f681c",
+      "bytes": 4154,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "88c7b2614b0df8ba71c4b17d787db18f87cbff87",
+      "sha256": "ead3fc249b9004cd9b8f565eead8913a81cf630aea369db53d9b7e424c06ce6c",
+      "bytes": 1277,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/contracts.ts",
+      "mode": "100644",
+      "gitBlob": "e722b809216aa4f19eb16267efa39d43ab89c8be",
+      "sha256": "be10c8ed13267c772faa44ade0e4cc4f3bd255e86e1d87793d24ba172e381fc0",
+      "bytes": 15465,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/define.ts",
+      "mode": "100644",
+      "gitBlob": "ce74f7f6bf10bb7c0544005ccc7f1121ea969d25",
+      "sha256": "900f1302c613627c92ba63f9e5fa0fc0ac0f46875d787dc99dcb403d1c1afcde",
+      "bytes": 1167,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/definition.ts",
+      "mode": "100644",
+      "gitBlob": "602c18f68a406cadf50dbb25336dbfb6d8a46b42",
+      "sha256": "5cb62724ad480c9949f3d0af2676e5b94bebeb8f5e9d2627ac7b7e13e6e883e5",
+      "bytes": 3453,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/hardening.test.ts",
+      "mode": "100644",
+      "gitBlob": "19f105a00959eff625209ccefd312d28fcc41de6",
+      "sha256": "d0a59aa8d308c6d7fec69f844fcb49dc2ec21f4759d2d05c3f37763c073b90ce",
+      "bytes": 7403,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "5910def2441fd5f984b9e9d5db552c9c182b5541",
+      "sha256": "cc9901dfafaa17fd52ec4f7fe415d1398930ed6dc1dcbfa64beb308aee2a45fb",
+      "bytes": 812,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/recipe-kernel.test.ts",
+      "mode": "100644",
+      "gitBlob": "e22c4e4bb57888811f8d8480721f41a5da9e238b",
+      "sha256": "eeec378ab948b70a4400bb870e76c9cbe9c30a09f3b644eb619f0238891cb1aa",
+      "bytes": 4179,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/recipe-kernel.type-test.ts",
+      "mode": "100644",
+      "gitBlob": "6840eaa14efd5bce658e28514871fd4cf382d51e",
+      "sha256": "baae131a6e5cb978a5fdf11f00d92060fafa6a589cf21ee69ca4723f9e1c1e11",
+      "bytes": 4962,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/src/validation.ts",
+      "mode": "100644",
+      "gitBlob": "2152e12cecbc82b40abb23f3d09de643ce736bf1",
+      "sha256": "7feaa20cb3e49a8425ed6babe00fd690d15fbe89a20ae5c22a4ffbe55e1edbbd",
+      "bytes": 24074,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "39210e2d11594f07a526efff0207d523ca9631d0",
+      "sha256": "0722d0cb219d070aeeab829b183f691a1470e0d7702cfb573fa7ce8e327f6d42",
+      "bytes": 339,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/recipe-kernel/tsconfig.type-tests.json",
+      "mode": "100644",
+      "gitBlob": "d4cfb663b5715aa6dc6794f402b226cfdbe6d99d",
+      "sha256": "2d912783512625b859e71c703d60b2a78d32ce2a43c4e0e4258cb981381efaff",
+      "bytes": 169,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/README.md",
+      "mode": "100644",
+      "gitBlob": "9952e29cef5ef4cc1d44e1235946be99bfb7dc22",
+      "sha256": "e65f83cb38f14d94e567ea259e5095998bdcfe11dbb7fe7f3011523e66b807e7",
+      "bytes": 856,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/package.json",
+      "mode": "100644",
+      "gitBlob": "ab3cda63ebea035cbda8557e3b4fd4f5c20338a0",
+      "sha256": "32406cb3b0d46c925f8010156349f98cf1a739590508586d60cea90469656950",
+      "bytes": 709,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/canonical-json.test.ts",
+      "mode": "100644",
+      "gitBlob": "982eba509247381a07f3d593a575b9bcc24de3b4",
+      "sha256": "adae6e7a518b28a18b1a8fd7d633b23b19fb1027ca4af22fb1c7543424d822ab",
+      "bytes": 961,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/canonical-json.ts",
+      "mode": "100644",
+      "gitBlob": "49921239b184bbc73138396602deb38f0086bb29",
+      "sha256": "f7d8f318f03e1b56b1fe39ab4a4478956f940069099e4692adefa49b9e1dd539",
+      "bytes": 2237,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/cli.ts",
+      "mode": "100644",
+      "gitBlob": "760c6b763e5e20e6e133b8500c799a5489ee1050",
+      "sha256": "53e9937c1d81b12efdc7fe75aad74883f96dc26430f72234fa451decf87e530b",
+      "bytes": 998,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "5db94da04cb7af180c015af533ce999173a4843a",
+      "sha256": "3f5675387f591756828e2d0f5d8ee025ac12d8fac5aec84136d902135576c6c4",
+      "bytes": 8684,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/contracts-cli.ts",
+      "mode": "100644",
+      "gitBlob": "64e597fe03d402241971696fdfc28c61dd11899a",
+      "sha256": "45e3a864d812925581406c629b3eb694f7b27e93392d5b1961c85de9ad6e6fec",
+      "bytes": 962,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/contracts-generator.test.ts",
+      "mode": "100644",
+      "gitBlob": "8287ccd05596fce6d0ef05251038d6900136f048",
+      "sha256": "7608a97ac18a5a6ef35bc62e9f8ba197a78587c0966b1787bbf021efccc217c6",
+      "bytes": 4801,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/contracts-generator.ts",
+      "mode": "100644",
+      "gitBlob": "358eef1b7b4dcfac556220fc2c9d4dc1636a5afe",
+      "sha256": "1739bfbec1990631a3862d371e45e4211f3f6e8046ede77efc8caf389dafbfae",
+      "bytes": 22009,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "c2041868d98bb2ef22a389d651c56e300880bf60",
+      "sha256": "a3c58b75323b649a73a28c5bd546da0ca42541aef7ffe3c448f175d0285f2ce4",
+      "bytes": 589,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic-validators.test.ts",
+      "mode": "100644",
+      "gitBlob": "51116b900a195b6b3deb75db371d85ba34cfe476",
+      "sha256": "d19750e4bc3cf8727544df5913621c1efbc75a571b61698b2f27b93cc2278aa4",
+      "bytes": 4024,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic-validators.ts",
+      "mode": "100644",
+      "gitBlob": "789cad2433f5b2fb15c1a62c91fc20c50d66e015",
+      "sha256": "278bdd9d150a09817b89e10b9c4982e3781efc42dc8e959a0249a05ccde864e8",
+      "bytes": 13491,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/appearance-ir-validator.test.ts",
+      "mode": "100644",
+      "gitBlob": "13d017cd0fdf9a7edb476a16f7cceffb6d3156c4",
+      "sha256": "9535cef841cfd091b358fed1f9cd59fe117c76dd7c90d1293e2c72656518fced",
+      "bytes": 6243,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/appearance-ir-validator.ts",
+      "mode": "100644",
+      "gitBlob": "35d42bfc1c8bf1c9e9ecfa9d7e46bf16b8e6d5f9",
+      "sha256": "5d48740d3be13c8ff0dbc8de72b16d0a773be2d0a4513ed16c6dcca421eca703",
+      "bytes": 13779,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/behavior-criteria-validator.test.ts",
+      "mode": "100644",
+      "gitBlob": "2f6c458f1dd6436f0662d91ab1544c06791d0c4c",
+      "sha256": "6e1e68b9a6d37d43970bf5f134d329fbb1bdbbdc5a71053e33e3b3ca77e119e0",
+      "bytes": 7267,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/behavior-criteria-validator.ts",
+      "mode": "100644",
+      "gitBlob": "705dafc0bd81b2c823e203af1fb8527c4d1260cb",
+      "sha256": "ff12e6517df483d3374bad64196a8447594a7a1b29954434233986fc2e7085b2",
+      "bytes": 6437,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/canonical-state-registry-validator.ts",
+      "mode": "100644",
+      "gitBlob": "b1bdc8764d006059f317958dc624bf827dbf654c",
+      "sha256": "e20048e49151670f5d197573d3092ab00b1ea1bd4ee7d6e7c165615b7a65a179",
+      "bytes": 1471,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/collision-trace-validator.test.ts",
+      "mode": "100644",
+      "gitBlob": "5700f41253f9278aa398964d2a041ca3c50fac90",
+      "sha256": "faff815646a3c5f262c99ee515b8b04bf0629f2275cc3ea2e663434a4efafb6b",
+      "bytes": 2586,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/collision-trace-validator.ts",
+      "mode": "100644",
+      "gitBlob": "f11d025a812023c4e9be3e7289936a46aeff4acd",
+      "sha256": "c0588cbc4d078c8b01f94fe2f08354906186fdb77e0e3b5c4c782b70a224b253",
+      "bytes": 12885,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/condition-expression-validator.ts",
+      "mode": "100644",
+      "gitBlob": "93fdf0a785a299ada45bd6f8b3c5c5b146815341",
+      "sha256": "a7d71ca46f13ce073ca72a11337b77d384c69934ff0829c8b0fe694fb97b652f",
+      "bytes": 4541,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/condition-model.ts",
+      "mode": "100644",
+      "gitBlob": "ebe3c42478bac0e29b542eaf56f6f3c1e56ea31a",
+      "sha256": "340a2bc63805943dcbc9eba71c063c656a7146ce1b8f9848660cc4b50fc58ba4",
+      "bytes": 3256,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/condition-registry-validator.ts",
+      "mode": "100644",
+      "gitBlob": "a27f1c6ce1df57beb976befb6c47fd92a8a24232",
+      "sha256": "57e9c35a1d2f4ebe2f54425d3751907d792cd658c00fa33635617045e0d11a3a",
+      "bytes": 6003,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/motion-ir-validator.test.ts",
+      "mode": "100644",
+      "gitBlob": "4663c1ff20cc41dfe3bf4a17214c5940b3521969",
+      "sha256": "e45d5cc06f80c313fd75ff18e1a42d4c1ee401de93fc1d469fa29d4ed5fce6f7",
+      "bytes": 8493,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/motion-ir-validator.ts",
+      "mode": "100644",
+      "gitBlob": "f8cb6428bfc420b1ccbf207bf9a3dc5d7d9e19f5",
+      "sha256": "464d3feec741b39814575c0ffc761525c2786e90a2b23d24ba6bb8be3df84f00",
+      "bytes": 17795,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/semantic-diagnostic.test.ts",
+      "mode": "100644",
+      "gitBlob": "635a9917ab46ff06970563caaa49233d25e8cb14",
+      "sha256": "ca85062479cbd821c693af77505ad01c5f0cf9d49dba801f1c232a82930e0fcc",
+      "bytes": 685,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/semantic-diagnostic.ts",
+      "mode": "100644",
+      "gitBlob": "c8f788b4ebefd36debeba444e766285e8b8d25cd",
+      "sha256": "55c1df1b4ab6577b5cde833853bc6b065fa179fc5ea9a37151b1be4730597f67",
+      "bytes": 551,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/semantic-token-vocabulary-validator.test.ts",
+      "mode": "100644",
+      "gitBlob": "b2e6997600225065451d6741b44aab16927f59d5",
+      "sha256": "12c652a7975b251765fc08cc618a371ae1a5e80e4faab09598aa4a43b43b51f3",
+      "bytes": 1929,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/semantic/semantic-token-vocabulary-validator.ts",
+      "mode": "100644",
+      "gitBlob": "4749ebc70ccec0006a44418b28ceae4c082f1f08",
+      "sha256": "d1d822bf8196725fbb84e7f6334007cf35969b5d4c4a26594ce743dffe16423f",
+      "bytes": 2646,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/spec-harness.test.ts",
+      "mode": "100644",
+      "gitBlob": "6055022235ab349e451c382b225a7e26c0c82992",
+      "sha256": "fd4d7b1a9b3aad87bf43dc4b01cd634d755a035e61a6a344de5c54c4513f20b9",
+      "bytes": 8696,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/spec-harness.ts",
+      "mode": "100644",
+      "gitBlob": "a1f92038cbb4f8f81a11fa347987e4ce16b60aa6",
+      "sha256": "bcfec3f20d017cb3cb40b7b55692b9e55818ed5564893e0d6e818d80b88ce57b",
+      "bytes": 20046,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/types.ts",
+      "mode": "100644",
+      "gitBlob": "d40ac870ab2edf03895efc5af99595baffaeb145",
+      "sha256": "6c2412b443c26a392b03b6ae8c1606107b178cbd4c528e3c51c4b1198f1148c3",
+      "bytes": 2577,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/validation/unknown-record.test.ts",
+      "mode": "100644",
+      "gitBlob": "c8b7b2eb902c9fbf54faab328e79f0626ed41fdd",
+      "sha256": "27502ce8a50e6183b3833832ce49e912d4837136a2ea251573d649a55164bd0c",
+      "bytes": 463,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/src/validation/unknown-record.ts",
+      "mode": "100644",
+      "gitBlob": "7564ecae19210f99711137ff2f128032f4cd5b99",
+      "sha256": "3d4090e3e0a34357866b354b2096d0c57d5f359ea59a8f2986b7f1e52b7b7f3a",
+      "bytes": 211,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/spec-tooling/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "7afbc985165d011106797af9208c2b9e9bd683f0",
+      "sha256": "908308b04884b5423b4095ab2d0146c5e6886f072a5d29bceddbde1a7957efdf",
+      "bytes": 327,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/README.md",
+      "mode": "100644",
+      "gitBlob": "2a48e7a4c5a54936c309e42985063eaee56802e3",
+      "sha256": "2f1867735ecd688dd8a7d9f39a67f9237297ae45f8ade757821385285cb40dd0",
+      "bytes": 863,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/package.json",
+      "mode": "100644",
+      "gitBlob": "9cf2a1671252f0b2354bec4c9daad666410567e5",
+      "sha256": "07c0af0e6cebaef94ca78d513306e12595da8c4033459f1cfbbb5ffd162e679f",
+      "bytes": 581,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "e27cb6403eb71b3c5ead7aaeba7ab7916c5e34ca",
+      "sha256": "f2e9474a293206e54e625e11132d52653a33e52dc89b79ad163ea6791277c93a",
+      "bytes": 3190,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/dtcg-value-validator.ts",
+      "mode": "100644",
+      "gitBlob": "a293f1d1ab7ad541f6a63a6b2adf361785ba9225",
+      "sha256": "caf53222d3514201c99629e1f37ef6eefc57b1001f18c8f46ae40c3be8aa4579",
+      "bytes": 4939,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/foundation-artifacts.test.ts",
+      "mode": "100644",
+      "gitBlob": "25b5c08669e3ff0aa06ede1bc8372eadd958aa81",
+      "sha256": "12895544b03376d2f16a16d98e58ad71d4a8a1c02db2db39bb7771bdc9b3ad4e",
+      "bytes": 1972,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/foundation-artifacts.ts",
+      "mode": "100644",
+      "gitBlob": "d8e1cbd2adcbb8f46478ec4d04ff8fb86e8ec907",
+      "sha256": "2bea3d24b27f2103c0931b26d9a0ff587a0f7c3600d2c998d5d20683918ffe57",
+      "bytes": 2720,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/foundation-policy.test.ts",
+      "mode": "100644",
+      "gitBlob": "cd8a0c5ed32f070227bae320b84f25c686c2b779",
+      "sha256": "b61ac232dd8b41b34ce20ac0e4deb805340ce736a4a014e65907c187a7682aaa",
+      "bytes": 13251,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/foundation-policy.ts",
+      "mode": "100644",
+      "gitBlob": "2923bed22de64765420c6f67dda0a22b29e9854d",
+      "sha256": "b5ea2a00f70d87750babae3bca4567a81a3ddb183344929c4aa27add43667383",
+      "bytes": 24682,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/generate-foundation-artifacts.ts",
+      "mode": "100644",
+      "gitBlob": "f8e41da9b058045927d87bd1fccf0798abe9edd3",
+      "sha256": "6feb70accdd9be78748af6d27c18f7c25f9c2ada236a4630031321a11a2083fa",
+      "bytes": 4814,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "ed8c89fdd1484018d8ecaa66e1889d67ac07693e",
+      "sha256": "8e7a83f8a500afa76ce523333c494c9c2c604ffe9f5663c9feae7cbd24e73a1b",
+      "bytes": 674,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/oklch-color.test.ts",
+      "mode": "100644",
+      "gitBlob": "07e4d645d4559196718bf49ab7b191ee5a769c12",
+      "sha256": "9c0582015377b7f05b02f8d7e01ffb468043289d49bffdddfbebc63a76f550ed",
+      "bytes": 2219,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/oklch-color.ts",
+      "mode": "100644",
+      "gitBlob": "b80494a75e7819a467db3f4ef0ee54a546e4b461",
+      "sha256": "41b5a5b5a54ecbcb184ade60d0d3bfbbeaa184dcf477467299d4f56e94ee9f74",
+      "bytes": 7232,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/terrazzo-token-parser.test.ts",
+      "mode": "100644",
+      "gitBlob": "f726d14bc29cd60e52f5c528bad6d3218b422fab",
+      "sha256": "255725ba5db2a67d7d968972b2e7f01d8dd84cc900055c98e034131595fc70b8",
+      "bytes": 4212,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/src/terrazzo-token-parser.ts",
+      "mode": "100644",
+      "gitBlob": "d3227539ca4867b1660441b81c8013b25b37c7ba",
+      "sha256": "a12578f2cdc35da13fdf588d621ca6a1f0328f69d95ee0228c1eb61d3c3d488a",
+      "bytes": 7967,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/token-tooling/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "a09fbdac61db08fcec4695707c33c186eb88f6ed",
+      "sha256": "6466531982f330b64b70c3aadc5c6c9f4b14d2c5bee56222bc28a4c38baeae77",
+      "bytes": 305,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/README.md",
+      "mode": "100644",
+      "gitBlob": "aeebcdc00d9943e9ad2537f77aa077749241f5f6",
+      "sha256": "df41277692dec85db18c3aaa8c7a86f7d4417a48d8ddadb63c3e31428e339a45",
+      "bytes": 837,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/package.json",
+      "mode": "100644",
+      "gitBlob": "943038756b02d777fb9fabfcd3f79b63106ead35",
+      "sha256": "cf32713437fc26980eca02cea03132a60a0a40b4fe724563a7e787cf8445173f",
+      "bytes": 320,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/constants.ts",
+      "mode": "100644",
+      "gitBlob": "5e703d9044a37ea1b3bcdc4aee2198797720b01c",
+      "sha256": "a44bca1b1c4bcc4cf87e9d4727c1eb6d18a2035ffda85390670a9e0876745f69",
+      "bytes": 2174,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/contracts.ts",
+      "mode": "100644",
+      "gitBlob": "7831a1d32f681b6cf6643754b8d7a634ac371e1e",
+      "sha256": "81fd05236177920ab3a34a86d0376810bb653eb933e9ebf6786b9dd97b651fa5",
+      "bytes": 6698,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/domain/identity.test.ts",
+      "mode": "100644",
+      "gitBlob": "c998f5921e72189d4fb750e194aba22dfe4248c4",
+      "sha256": "93ecffa15488bd82428976a4a89e90633559dbcaf54229b8e5a2772134d54246",
+      "bytes": 2458,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/domain/identity.ts",
+      "mode": "100644",
+      "gitBlob": "1f688d41a64d537318a7afbf6a6a32ea9c8c5134",
+      "sha256": "e68a567bded7f8d0ad35005481444c7c63715a8ef35488ccca9181bb2b923b3a",
+      "bytes": 5693,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/domain/token-json-value.test.ts",
+      "mode": "100644",
+      "gitBlob": "803a60fa01cfd52683be32a1d3ae4733a0639ecc",
+      "sha256": "d1b3b3afbc092ccc58796a9f71a11d8e450fd658470657f0fbd12b85caecd124",
+      "bytes": 412,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/domain/token-json-value.ts",
+      "mode": "100644",
+      "gitBlob": "71a02558c70cd0cfe06d4c27e6f41c2d5b524a6d",
+      "sha256": "cdee3e28707253600d6d26c920b7b718c02cd255daea1b4a1a278f2c58e8f49e",
+      "bytes": 236,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/generated/token-paths.ts",
+      "mode": "100644",
+      "gitBlob": "768c7f26e84b788e38d538bc491eccce02a39ad1",
+      "sha256": "c309043048e21e1381624123cc7873c0b06cfa29995313f6d4e9a6a04fbfeb62",
+      "bytes": 25937,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/index.ts",
+      "mode": "100644",
+      "gitBlob": "2f89c00b87549540f20c8f6b298662d5accfdaf1",
+      "sha256": "c3a101b8bc718b2494b4bb796dd4e20a264e0141b7baec51d62c0f41c2984151",
+      "bytes": 1512,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/resolution/context-resolver.test.ts",
+      "mode": "100644",
+      "gitBlob": "a24cf506a9044b64bc8070c8f83135812eea710a",
+      "sha256": "b3d6f90c4f97fe11984b0f596c9ff4341cf5164a49e841ef8b82ba81b7ff72ce",
+      "bytes": 10543,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/resolution/context-resolver.ts",
+      "mode": "100644",
+      "gitBlob": "8c703fa63d270156b21f1110a17c62eb16face3c",
+      "sha256": "690fc56b09a3a4432dc006b3fcb0a6b5d04049a0bd91ec30189e60e1e7dfb0da",
+      "bytes": 15916,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/resolution/manifest-index.test.ts",
+      "mode": "100644",
+      "gitBlob": "232b749c690d631a227d903dbaaffe3b69a1b03a",
+      "sha256": "a11f0c1db217923e32a3607221b692b11fa5bb8f81070685e700adcd7841e4a9",
+      "bytes": 1540,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/resolution/manifest-index.ts",
+      "mode": "100644",
+      "gitBlob": "cc0d3d2604d0d46c9ebe36566cf5a0c4f1a6c56e",
+      "sha256": "865c2242a19970b2b80023d742348e85df27a7700c67a27b51f6cc5ca5e8e17d",
+      "bytes": 3521,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/src/resolution/manifest-serializer.ts",
+      "mode": "100644",
+      "gitBlob": "13fe77aa466f792853ceaacd9216b254c5628231",
+      "sha256": "0db5fc97ec8080598b552476986008f7e60a24a375e06cb0fd928bdc9c7648ee",
+      "bytes": 850,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "packages/tokens/tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "4b8a62348bba75c2fac79b03caa836e55745732e",
+      "sha256": "8a1bf4d98fcd0e19190665a2ddac7be9ac1552d6a984f01d6d4d2ba65e339cbc",
+      "bytes": 284,
+      "group": "implementation-packages",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "mode": "100644",
+      "gitBlob": "6bd4d0987a9ed1daf5d6377299231f10b274ffcb",
+      "sha256": "052942bf3dac99b819990881cd330587a6e5cd1b920d0ba3ac4f9b2bd64457ab",
+      "bytes": 49615,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "mode": "100644",
+      "gitBlob": "79d80d7ea6e5ec931244e1cad273b6f67cf78649",
+      "sha256": "f4f54f77688715942f6fccfb6f6bac0788f93988e3af7f6278d717e075bc3ecd",
+      "bytes": 149,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "scripts/check-boundaries.mjs",
+      "mode": "100644",
+      "gitBlob": "9bb0df837e0685047d77bab3e7a07cd327a8867c",
+      "sha256": "a3b5855bd0efd2d740b3aa113b5ba94e6e26f15961eab9d1eb83ea3e5d55bf32",
+      "bytes": 3056,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "scripts/check-source-standards.mjs",
+      "mode": "100644",
+      "gitBlob": "4c7d95485a17db11a8e0ca9415dc9ce65a00c134",
+      "sha256": "9c2f51ad119ade5e9522d989f5f679e825acf912102eb6534c7d5031558b349f",
+      "bytes": 2656,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "scripts/workspace-policy.mjs",
+      "mode": "100644",
+      "gitBlob": "ab53e9146792f9b7a1ea5c2590a1af0a26942930",
+      "sha256": "ddf2d6a74baf8762ee7df1ec9875ab9cc31f8a1c68691f1ddcdb7ef6b01860b1",
+      "bytes": 2317,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/README.md",
+      "mode": "100644",
+      "gitBlob": "45187e74ce317ba92bf0ac09c6e4c5902e6e3fbb",
+      "sha256": "b355ed94c3449e5fd274ca131631efdb78c28036db96c5bf74bc60c65ae4c66a",
+      "bytes": 1761,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/behavior/behavior-criteria-source-manifest.schema.json",
+      "mode": "100644",
+      "gitBlob": "dca36c8853a28f56a81adf3ffb52d53618776637",
+      "sha256": "f43993bbda5a9d76ad841038ba95d765c2093cfe397f51a2085aa0e004a2c16a",
+      "bytes": 1771,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/behavior/component-behavior-criteria-profile.schema.json",
+      "mode": "100644",
+      "gitBlob": "1e3dea84256a184196360d3d1df8752fc34bb21b",
+      "sha256": "8db214213530be32f99c48f0de3a8aa29116c70c2822c36c06f825ae105c16b7",
+      "bytes": 1882,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/common/diagnostic.schema.json",
+      "mode": "100644",
+      "gitBlob": "30f229c4d94105e1b55c50506b87775bd85b6d39",
+      "sha256": "ee2b103293c637f5f74929126972928568330a72d1d8220f479daa6ec88ad8e4",
+      "bytes": 922,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/common/identifier.schema.json",
+      "mode": "100644",
+      "gitBlob": "6be58eafc288e12a2d4f4ae19ca0619f496ca86d",
+      "sha256": "92878b1ef10b378da6b3cad49ba0c4477bf3ab663a0ee7d205517ea7eb5295bd",
+      "bytes": 285,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/common/source-location.schema.json",
+      "mode": "100644",
+      "gitBlob": "2e80098731a1de6beaf61ab7c9311de0bc81a8f8",
+      "sha256": "0dcd79c195c1cdae638f90f98e81535146af97172f119755bd320f2d00b16292",
+      "bytes": 488,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/common/token-reference.schema.json",
+      "mode": "100644",
+      "gitBlob": "0f54c221463bf44edca1bd38b20f2580a2aa525f",
+      "sha256": "cbf8b63d754c59cb19fb142504cfa1c9ff345ea80136ac625108df10c454c133",
+      "bytes": 384,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/condition/condition-expression.schema.json",
+      "mode": "100644",
+      "gitBlob": "6654e879aa9a13a278ee9c03dc7d50b274cff275",
+      "sha256": "be7d1baf7537e57cbbdbb993d1011915d0d43a9acc13295fb4e9c4a6fbc4ceef",
+      "bytes": 938,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/condition/condition-registry.json",
+      "mode": "100644",
+      "gitBlob": "90c323c775b0df8456d0dc0171df84feb35880e4",
+      "sha256": "31ff6796979b2336f9ebe2a6e40a2bacbb598b5d210a73fd497268c369c1e644",
+      "bytes": 3283,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/condition/condition-registry.schema.json",
+      "mode": "100644",
+      "gitBlob": "ef60c28b2a2d84773137b8348becb8279315d04c",
+      "sha256": "f8a8ab195bbca359675a911b6618eb3a6f2edb274a61e004a0b59e921dcaed27",
+      "bytes": 2769,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/appearance-ir.schema.json",
+      "mode": "100644",
+      "gitBlob": "d925fa617a61889e926391d70dd530d08993b494",
+      "sha256": "a96542d8d888782b2ddabac360de6faaa8c0edde55f3a1852c6a80394df5b3ed",
+      "bytes": 5910,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/collision-trace.schema.json",
+      "mode": "100644",
+      "gitBlob": "2875f69ce20f08d20df87ce3487e50f69354dce7",
+      "sha256": "40bf676f06a21087b6f71e197be18ba1321759a51daca9108319524942108b7f",
+      "bytes": 3972,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/declaration-origin.schema.json",
+      "mode": "100644",
+      "gitBlob": "15ae0c4fb963c659fce5e0693fb20f4fa24bd37e",
+      "sha256": "6abb3aa1a7cb66b56451c30e1de39ccd7a5412abe108266ab81ca277c06622ea",
+      "bytes": 637,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/declaration-value.schema.json",
+      "mode": "100644",
+      "gitBlob": "bf1068e93c804e4e602f69598875b244c7d984ed",
+      "sha256": "9950cb9b44a5330df4a0058dea6fad40d85f776743c949effd1db7d5f7a15eee",
+      "bytes": 1247,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/declaration.schema.json",
+      "mode": "100644",
+      "gitBlob": "ee837d0a2702c3cad14859d03e608e8904a03990",
+      "sha256": "4d4c70ff89aaa7a319aa9df8e9fac1bb7220c5d5c20e2900e9192293799885a2",
+      "bytes": 605,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/effective-property-registry.json",
+      "mode": "100644",
+      "gitBlob": "9686191147d1812033a25cc70ef70e409e1d2f7a",
+      "sha256": "1666dba96523c6723fb5ba35ea4b165aa36bd125984217019b045a682ba602de",
+      "bytes": 907349,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/effective-property-registry.schema.json",
+      "mode": "100644",
+      "gitBlob": "6c2d431d410373091524541e14f18c9fa6c559b8",
+      "sha256": "1e5978d49884cf778ac93d15949c82942d170c3eaffa6704085da933f37911bf",
+      "bytes": 4226,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/ordered-declaration-list.schema.json",
+      "mode": "100644",
+      "gitBlob": "cb9636720d7ed3635ce03f1bdb19cc79fdb8cd4f",
+      "sha256": "e667249e12f51ec8823322b9b3434d481ff6a2805804f3a0717f8771d1dc350b",
+      "bytes": 281,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/profile-input-manifest.json",
+      "mode": "100644",
+      "gitBlob": "3616fd5b3e979a889dd8d846f6ee8cd354bd4789",
+      "sha256": "dc5990fb7838df8dcb13bdcdae01a520537b9697f5b235c97f8c003cdf32d122",
+      "bytes": 346,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/profile-input-manifest.schema.json",
+      "mode": "100644",
+      "gitBlob": "c07fd7e73a8d0448df60adb0e95c666a9a9c19a0",
+      "sha256": "60f28dfcbced05740da0c9f95a4da485238feefaa14287ba91e066e36588daf9",
+      "bytes": 903,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/property-name.schema.json",
+      "mode": "100644",
+      "gitBlob": "6bc9bb6775cfaa077a80913e7d36329dab86789e",
+      "sha256": "f8612e0eca7d2c07d2f63c04da7ae23503345e3a617785748fc161736e1996cb",
+      "bytes": 267,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/sparse-property-policy.json",
+      "mode": "100644",
+      "gitBlob": "ba8fc8a9dce1194bf9c6e12929bb3389db97d17b",
+      "sha256": "187a5ca355b2216f14a338009c3cda75f2a482c9fac1110f9a30cb881fe60922",
+      "bytes": 2231,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/sparse-property-policy.schema.json",
+      "mode": "100644",
+      "gitBlob": "aecd4c197a7210aa3ae3ba7b244c998425da5b77",
+      "sha256": "51a211ebe1a622ba0b6ab929ad07e3b778cadd05d0efa192f50a0287e2a4ffc3",
+      "bytes": 3030,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/token-binding-catalog.json",
+      "mode": "100644",
+      "gitBlob": "6bf8c7dd2666869c475a902e893c831c119d9172",
+      "sha256": "80a0b2af3c6d3fd9d34de5b59a82b31e7e64656f29748d629a1e7a6094d222f4",
+      "bytes": 8449,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/token-binding-catalog.schema.json",
+      "mode": "100644",
+      "gitBlob": "0be7fcfd8fd1ccd6d16c81e46e923059ada1eb49",
+      "sha256": "eec6613c83d7351b4011f258e052c39d9d78e7877d5cee10479fe4924593414b",
+      "bytes": 2127,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/token-binding-coverage.json",
+      "mode": "100644",
+      "gitBlob": "4829c7a02fc814805c881df337a656051bebac4c",
+      "sha256": "f1ee98804025be78fb5a639e68dfc204231a8e4d6fabe2e1c3bc5c9cd1d3213c",
+      "bytes": 46492,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/css/token-binding-coverage.schema.json",
+      "mode": "100644",
+      "gitBlob": "9bb57c4a173ec88c0390d26159299a95de0e4e93",
+      "sha256": "e5df4b1fad309aa6c7fc2c453cd06129a5d2519c577ca29443d758a63c86321c",
+      "bytes": 1632,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/artifact-digest-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "dd2fd32b9407b7d77ecacf92c002b340641ef433",
+      "sha256": "9864c985ca5d29a8b55a5aa82406713044946dd54bffd50ec96752c1c3bdb997",
+      "bytes": 811,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/artifact-unavailable.json",
+      "mode": "100644",
+      "gitBlob": "20d21305fb618e3c52d226e57b350f1158a9d28a",
+      "sha256": "db81ef2e223cc0479bb42796d4f561e3beea7f2d443b2d6c98a4b16a91053335",
+      "bytes": 816,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/invalid-integrity.json",
+      "mode": "100644",
+      "gitBlob": "010cfd3ecbc0394b8baad03c9aaf683bf6dcd30d",
+      "sha256": "3de26a6099bf56295e0db063ce070f449d09249c5998fd70a1368e43e40f60e2",
+      "bytes": 458,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/invalid-package-set.json",
+      "mode": "100644",
+      "gitBlob": "ecca0f1bd38129017963277bb151790363b80c32",
+      "sha256": "5cd5f12f4a797aabcb0e2547793f06d31032bb0b223aaca6ca8887b3735dd980",
+      "bytes": 822,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/manifest-digest-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "7f6002bf5f252173650aae1ceddb097eb74de9dd",
+      "sha256": "f008ef0f529a4956c882d546a3ea8236cd538519379f310167f5bd6777c71b04",
+      "bytes": 811,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/missing-artifact.json",
+      "mode": "100644",
+      "gitBlob": "836421b3c6923a23b1122222586676fa32c74b7a",
+      "sha256": "3a964d372a825363c71ab719c54dc1b66ff7e2d19da8a5a846fe06ee8d00cc90",
+      "bytes": 593,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/unordered-evidence.json",
+      "mode": "100644",
+      "gitBlob": "cbb3a57a9be1f2b1de6351b62945448ba58b40a4",
+      "sha256": "666acb79e28ce7c94f1ed3af9b57d0292746aaac4c4728137a0740e759bd5019",
+      "bytes": 1123,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/negative/unordered-packages.json",
+      "mode": "100644",
+      "gitBlob": "8ec274aa0c24677814fda560a15fd85e443557b2",
+      "sha256": "53d6c536f5010e5fabd27fca982ea7938885e977d401144482a8c09a186dd602",
+      "bytes": 811,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/behavior-criteria-source-manifest/positive/structurally-valid.json",
+      "mode": "100644",
+      "gitBlob": "b5de732a0b7c5a7a5ba12f1894229338aa654261",
+      "sha256": "4c6af5e1e620583936af6934df578b7d53b79bec8b9c8d78d53a7d63913437ab",
+      "bytes": 1435,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/canonical-state-registry/negative/duplicate-state.json",
+      "mode": "100644",
+      "gitBlob": "de99b4d179dfefc11743de168c71c5dde2687656",
+      "sha256": "e1d86887d7fe91ef6b39b74521e1b152babdbc2436bf200a1ea9c6318778cf42",
+      "bytes": 395,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/canonical-state-registry/negative/enum-without-values.json",
+      "mode": "100644",
+      "gitBlob": "f33334f67acd84fd9ce0d4ddb565de2e8559c350",
+      "sha256": "50951cc26b0e8d045900c10a37312169e5d953f73051dd2dddd72eab1ef041d5",
+      "bytes": 221,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/canonical-state-registry/negative/out-of-order.json",
+      "mode": "100644",
+      "gitBlob": "58bd29b49755269bb22ef506af9f47e3320c5fb7",
+      "sha256": "1fa5a341475204cc2dc8fc6c12cdd31cf69c619ca4fde25dcc50806449d6f41a",
+      "bytes": 394,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/canonical-state-registry/positive/minimal.json",
+      "mode": "100644",
+      "gitBlob": "3d4da819d777a947d778a5e1051f6049c815c37d",
+      "sha256": "4e6fc53b37ced7e087c968f42fe71889e770bda2c982a03d323ba243e219f36c",
+      "bytes": 427,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/common-diagnostic/negative/invalid-code.json",
+      "mode": "100644",
+      "gitBlob": "7d9730eb579641dac3b6ce6bec60c4032c9248f4",
+      "sha256": "41c75b11ca2b9d3dfcb17ed9b61c4876aed52b604e534c7930251f579d8a8e37",
+      "bytes": 132,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/common-diagnostic/positive/valid.json",
+      "mode": "100644",
+      "gitBlob": "10048c6e546cc5ba97cf67a4fceb92d62ae4497e",
+      "sha256": "755fad764bc490921a1497f445faf1d0208dc34e255a05d76bf465fd5ddac751",
+      "bytes": 235,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/common-token-reference/negative/missing-tier.json",
+      "mode": "100644",
+      "gitBlob": "9499b4bd6ff5206c30778479c967f380a1176d7e",
+      "sha256": "08baf6864505a20c1f05383a7765bf7357e34ade0bfb91337b507b3b8eaed913",
+      "bytes": 64,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/common-token-reference/positive/semantic-color.json",
+      "mode": "100644",
+      "gitBlob": "b0f72c99800d1f289acad54dbc09d9115ff77cb9",
+      "sha256": "afc65daa968324bbe4de2bbb83c91c35ff2d6a766bbf89e1b80306001d356a89",
+      "bytes": 69,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/criterion-namespace-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "d7806699a84c773329fc4b28cbeb69a1ee849dd7",
+      "sha256": "fede751a201cf3aa9842df5fa7f16286783c58ea07f045c55187e7fcb717a6f4",
+      "bytes": 351,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/duplicate-criterion.json",
+      "mode": "100644",
+      "gitBlob": "28538971793c5c9cd5641786895b53b6c6a2ef42",
+      "sha256": "338612e59abe623afa2608c623a4661a4a9af580489d7aa3d35c091603569055",
+      "bytes": 506,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/empty-evidence.json",
+      "mode": "100644",
+      "gitBlob": "db9060d98556f18f5a5f4cf2ce61dc5b15d11098",
+      "sha256": "200363ce96e330c4b27fccfe4c7c0d42472c02ef37385792f99adf47f7865154",
+      "bytes": 306,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/empty-verification.json",
+      "mode": "100644",
+      "gitBlob": "0d9a376ce326958af128719f381aa578b30a62fb",
+      "sha256": "f891bdac158ca6c0861b17158c1b2bce7ca9543247bfdde7164bb2da5652ae11",
+      "bytes": 316,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/identity-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "80bbf868accc5607d195ca45b570eda2790c26eb",
+      "sha256": "c95ab5fc48e35aacbf58e26b462eecc864827284be5c1322a861553935d8fa0b",
+      "bytes": 365,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/source-digest-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "1ce8fd974fb3c6397243472595f226de08a41bd6",
+      "sha256": "d349c6c5deab2bb691a3ae6c45ef405d825f6a91230197fb420264793c943988",
+      "bytes": 365,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/unknown-evidence.json",
+      "mode": "100644",
+      "gitBlob": "0bee037d07d31c10b1c3741f87e8540e15c52814",
+      "sha256": "3da4fa7337d6db15582f65c897909141639a0e1e80f9e1bc7804d04c464c282e",
+      "bytes": 366,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/negative/unordered-criteria.json",
+      "mode": "100644",
+      "gitBlob": "2776bd1b27ecc495030c33613c0bf41bbafa9d5c",
+      "sha256": "e025c8711fc405ee24b0eca5b6e3396c7cfc580dcde27cd765b0d916c77e098c",
+      "bytes": 503,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/positive/button.json",
+      "mode": "100644",
+      "gitBlob": "b93808e52f7c6da6f4671149c14f71a5153b2d6c",
+      "sha256": "f6417506ec2fcb60aa5ad60b7175b214c642b16bdf35b3f15d4913d054581101",
+      "bytes": 365,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/positive/dialog.json",
+      "mode": "100644",
+      "gitBlob": "2815b3c1ab857a281bb67580cccfe3eb58ecfcc7",
+      "sha256": "907b33545cee379640d0260682a631fc791e0fbeb6d4152371a4f8becf0698ff",
+      "bytes": 366,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/component-behavior-criteria-profile/positive/select.json",
+      "mode": "100644",
+      "gitBlob": "9aa5544e35d16083f93a106beca1f985b1dfbbe1",
+      "sha256": "6839577262cdfbff6737bac43afb5e7e43affc5bfce80b3cef11b5983ec79565",
+      "bytes": 369,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/composite-token-projector-registry/negative/missing-output.json",
+      "mode": "100644",
+      "gitBlob": "54980b4cca3249a16ef8cc95356a52eecf9fd034",
+      "sha256": "78f240150d9916280bd8005c98703e927810c99a0b4729b70f76cec936e85953",
+      "bytes": 224,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/composite-token-projector-registry/positive/valid.json",
+      "mode": "100644",
+      "gitBlob": "07be80bf170cd285e25676006dbff93b3f35c4a2",
+      "sha256": "d0bb1d24faacfba2757f47a162afd453dbb053aff9add3e726276e318064097a",
+      "bytes": 250,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-expression/negative/contradictory-range.json",
+      "mode": "100644",
+      "gitBlob": "7a92191685a8111ea2b008f3d97a2ec0b0b4c808",
+      "sha256": "d09a3a71816e38c08cda222b429bfb5d57dc12d0a9bc218c26e56c9aaeef7d4c",
+      "bytes": 61,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-expression/negative/raw-media-query.json",
+      "mode": "100644",
+      "gitBlob": "281aa2cbdc8b80eec5b3359b1fc34f7a2d9d9474",
+      "sha256": "d99b027dd63ec1036ae09ea2598706811cdf1339615dc92a8d08183b700edb6d",
+      "bytes": 41,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-expression/negative/unknown-condition.json",
+      "mode": "100644",
+      "gitBlob": "b0f713d1f7cb6752356b7165f89a6926497b86b8",
+      "sha256": "b0b7788a5d0b1c7ac0c63bca5f6eb6e612c908a6211291d11deaa5ad3ebdd85d",
+      "bytes": 40,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-expression/positive/responsive-reduced-motion.json",
+      "mode": "100644",
+      "gitBlob": "3f4a3ddaf45becc31da80895dc5bcd9cf27cba25",
+      "sha256": "1a3e052d31e9ac45b10b1cbf1be4f88a90f253f4ef403aa984b023d73e738eb0",
+      "bytes": 126,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-registry/negative/non-breakpoint-token.json",
+      "mode": "100644",
+      "gitBlob": "5523ff4329451b76e6c63d8f27ca2c82facb911f",
+      "sha256": "df3c9d2c840d857f638bd369573754957b03606004683629a6e68f25e74710be",
+      "bytes": 362,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-registry/negative/out-of-order.json",
+      "mode": "100644",
+      "gitBlob": "822a285039baa4f9cc5a08e6f2d1508459d4739c",
+      "sha256": "1721af27f3650ae837bb96d74e8e4ecc1dd34f60dc5229675571e94308f105e6",
+      "bytes": 519,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-registry/negative/unknown-container.json",
+      "mode": "100644",
+      "gitBlob": "d78a5d43e6dc82b726dc9d8bccbb0980e7de548e",
+      "sha256": "4ba7aec9d6347401b2047d723d7d297f65bcdb1ac2e602dcec52040a7e19f38a",
+      "bytes": 420,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/condition-registry/positive/minimal.json",
+      "mode": "100644",
+      "gitBlob": "eed8e31ad6281ade5708c58c4902c683f4b8ce7e",
+      "sha256": "546c06a4b0d901c420a423cbbf436dfba0c755d0cf527ca26212d6bb1cc61af7",
+      "bytes": 790,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-appearance-ir/negative/invalid-default.json",
+      "mode": "100644",
+      "gitBlob": "6219b07c184f55ac9b5291e9c129164d640f7c2f",
+      "sha256": "3ed4d7269249359afda322323704d747aed29a6e5adb44276b789caf5c75405a",
+      "bytes": 424,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-appearance-ir/negative/invalid-state-value.json",
+      "mode": "100644",
+      "gitBlob": "36d590702ce8fdf436cc72b90c09e74a3c022b85",
+      "sha256": "56e62540486e0bf78a6d9469b0a1aa5d4466c774f5efca9101826b94831a5bb0",
+      "bytes": 417,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-appearance-ir/negative/profile-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "a50e1889a69c64516569bfb8b74e93adbf554c4e",
+      "sha256": "7fbe9e4f070b559459467ba292da41414d8aff05c6ec006e83d8b9490bbea240",
+      "bytes": 301,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-appearance-ir/negative/unknown-condition.json",
+      "mode": "100644",
+      "gitBlob": "cf6041f21a7e2c73fd12bf150128f7acd54b2b69",
+      "sha256": "05d696761d6648702b10545c148483113594f6a53b0fc47164f2f455fa85415a",
+      "bytes": 421,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-appearance-ir/negative/unknown-slot.json",
+      "mode": "100644",
+      "gitBlob": "5e803e4d1ea343b8fb6e0b0fd25bd5c212c59525",
+      "sha256": "80901e64a95a0fda40aba878cf7e8411750f4b83b52df3dcc36a645ffe8bb23a",
+      "bytes": 340,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-appearance-ir/negative/unknown-state.json",
+      "mode": "100644",
+      "gitBlob": "5eb8e4467287ada9f7fdadc51566cd8c0e6ea2e8",
+      "sha256": "a7643c98f61c1a465795acc19a5a4f73efb20dc90f7fc6202818ffb576c8110b",
+      "bytes": 415,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-appearance-ir/positive/button.json",
+      "mode": "100644",
+      "gitBlob": "13d79559f4dde35a131f3b977be25f6f4cc4bbcd",
+      "sha256": "513c971b00548663fb189542fe09b6e1c40ff9e95b7384e3e974f871dbe4f9cf",
+      "bytes": 4789,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/affected-property-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "067c6a9949ff7b10a5ac6854542ecbdbb6c85f70",
+      "sha256": "e1ea940b8cd898b576ea0be54e18d36b276d8a682870f9424075887c6b1ab7e2",
+      "bytes": 1107,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/duplicate-id.json",
+      "mode": "100644",
+      "gitBlob": "6cd58768bd7033ad37894dc303f81b1f4b3e5952",
+      "sha256": "8c8315bc6207eb09a2c70d2a2d478811e62369025f71ddf48ff158ffba231fae",
+      "bytes": 2189,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/forged-applicability.json",
+      "mode": "100644",
+      "gitBlob": "df91c275a686d6323346a0f377d3ceab960cdbef",
+      "sha256": "c9872b63832ed11c3c1c7f3cb83eb54f48c3c3262e8adf39613ea410ef2fd1dd",
+      "bytes": 1168,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/forged-profile-identity.json",
+      "mode": "100644",
+      "gitBlob": "716e28db663fb2fb525b2e62aa8f95888b271470",
+      "sha256": "a01ad22a478de4826a9c90306e2d5fac8aee716dd5a06caabbb39625d02997b1",
+      "bytes": 195,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/incorrect-condition-relation.json",
+      "mode": "100644",
+      "gitBlob": "092ede7b8303b101fc5d2f3e4d692e937b74fc9e",
+      "sha256": "5f91e616438f5632a11bf31a9f90a5527e0ccf903201a759fa270c0e35d0b970",
+      "bytes": 1240,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/missing-condition-relation.json",
+      "mode": "100644",
+      "gitBlob": "87c46d2543f26fba524b11ef26b7f707b3b6fbbe",
+      "sha256": "c4e05a018e67831c463dd90cee45e30b6d9b66fd681ba9ba1737bd3bc9806214",
+      "bytes": 1208,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/recipe-id-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "6da22df9bbd600f32ce9d5933ec4074363f49b62",
+      "sha256": "7b1b7a3445da7e2478c3ff4d34050b862d20e1e662e4f973ec5c5c6318a0f0bd",
+      "bytes": 1127,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/stale-policy-provenance.json",
+      "mode": "100644",
+      "gitBlob": "3c6090c0faee155701a886323477841af193e090",
+      "sha256": "666e1074f1a5787be0020379aa120bc20af4642509d169f9fbc22768d4142209",
+      "bytes": 1011,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/negative/unknown-relation.json",
+      "mode": "100644",
+      "gitBlob": "43ee558cad73004c283e5f843ddb6ce9c4c16962",
+      "sha256": "d9a1a23317592ac6702a4c603d0f97a43160f1c25d92a3bf64e1ebabec97dab9",
+      "bytes": 1318,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/positive/button-shorthand-longhand.json",
+      "mode": "100644",
+      "gitBlob": "c9b34bb5c3354f9eb5268354275bf45bedc502f8",
+      "sha256": "3da9b22fd6ff9c381cb2da8c89b9a6b8db383f3bd3e0c97ca763180246e3f627",
+      "bytes": 1307,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/positive/condition-overlap.json",
+      "mode": "100644",
+      "gitBlob": "8191550648f04926fd832162067e4940406d13d9",
+      "sha256": "8f1b6b75c9d6b6be8be68c934b2086bac11c913386169027749882745a721ba2",
+      "bytes": 1241,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/positive/empty.json",
+      "mode": "100644",
+      "gitBlob": "8ddd9a71a656d84c8e6452d3cdf5bac43164ee68",
+      "sha256": "7f63c6ca45adc5c63eb6aca0be153d7072672260e06228f1045ad8cc444fd59b",
+      "bytes": 195,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-collision-trace/positive/shorthand-longhand.json",
+      "mode": "100644",
+      "gitBlob": "ddfcd3b388bdde779133dfa4d4e3a78a1fca92d4",
+      "sha256": "57e5803594abcf05915bacd471b454599585547560180f4a1dc032b08a0b5762",
+      "bytes": 1318,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration-value/negative/empty-literal.json",
+      "mode": "100644",
+      "gitBlob": "ea69ff9699632fc18a72b667b8f8bbbe7c0ac200",
+      "sha256": "f7c290556b875dc94b4319eff26bb80e466dca4769bf0babc7049ad612b3859d",
+      "bytes": 35,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration-value/negative/invalid-kind.json",
+      "mode": "100644",
+      "gitBlob": "31919b4e22008a5f63869f5d5ba1b27874fdd886",
+      "sha256": "b5e451503b6ba0fa91d9534c36b1dd49305a6bf6f355eb40e039e30045a68441",
+      "bytes": 46,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration-value/negative/invalid-token-reference.json",
+      "mode": "100644",
+      "gitBlob": "4c8460b8e188961d51bde05333661bf2ac656215",
+      "sha256": "f71517d84bc9183f5bfd63a6ae760de1b625e5ab9ae857dc0db21522e4e7715a",
+      "bytes": 73,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration-value/negative/template-without-token.json",
+      "mode": "100644",
+      "gitBlob": "5b70f3b2d22adb77d5189c140b610cb272098cfa",
+      "sha256": "5a97c92ccff5c1fb4cb17c8424f7017cc0e20057b0cc7350d547086d1c2c7c70",
+      "bytes": 63,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration-value/positive/literal.json",
+      "mode": "100644",
+      "gitBlob": "44ea272502287f91515405810ff9ac5e5db4b0ea",
+      "sha256": "37a55cf6fffc581d208a6437f27c9076a31a745a72a7869741be819df23b0538",
+      "bytes": 46,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration-value/positive/template.json",
+      "mode": "100644",
+      "gitBlob": "7938aea3b619856fa316d5cd716d6a9cfda5d1d9",
+      "sha256": "6153834e3edee30fd77187d31d52cbe2b217596f0e9cd4b5034653e83ad8813f",
+      "bytes": 159,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration-value/positive/token.json",
+      "mode": "100644",
+      "gitBlob": "b0f72c99800d1f289acad54dbc09d9115ff77cb9",
+      "sha256": "afc65daa968324bbe4de2bbb83c91c35ff2d6a766bbf89e1b80306001d356a89",
+      "bytes": 69,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/negative/important-true.json",
+      "mode": "100644",
+      "gitBlob": "ce3db8b9d0477865ab889ea8ddb209896552275e",
+      "sha256": "265be4af7b27b9145037efd6d32728b06267abc626c2b36d257ec2dea25be31e",
+      "bytes": 252,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/negative/invalid-custom-property.json",
+      "mode": "100644",
+      "gitBlob": "6d2e03e3bf83fc3227268e0f2389f3810342f785",
+      "sha256": "f84b51fd659a39358ea4098ae8eeaff89b634c6a31144d5ae67a08a2559828a7",
+      "bytes": 273,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/negative/invalid-property.json",
+      "mode": "100644",
+      "gitBlob": "6fb49b58a78174c985f5a1214a2d6e9561b8b311",
+      "sha256": "86f8992f69e8cc691927741329618a6168dd3cbdf5fd395d9ecbe5dbb8148422",
+      "bytes": 269,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/negative/missing-origin.json",
+      "mode": "100644",
+      "gitBlob": "4adb9757e7663dfc8ba38f5e3827721a78a16aef",
+      "sha256": "cec0dbdad64ac164538bbbbf78f6976e75ede5ce2f18e97c2ac2b09590b86c2c",
+      "bytes": 114,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/negative/unknown-stage.json",
+      "mode": "100644",
+      "gitBlob": "07fb54e8cbde2e89986e0f94fbf1d76f07c94b4d",
+      "sha256": "5dcca04a26998bd7e2ab4bf7f2fda16670b6740ca1434e14716da30e3a95a45e",
+      "bytes": 257,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/negative/vendor-prefixed-property.json",
+      "mode": "100644",
+      "gitBlob": "243d4feea04ded2f81f70905ffc0d318e70a5bd8",
+      "sha256": "be6074d7a8a165283deed35008f6133b5859dd9c6afd994f2e7902906e8e23eb",
+      "bytes": 264,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/positive/custom-property.json",
+      "mode": "100644",
+      "gitBlob": "dbd487431d8b37adc08c28258560ee3c33e6ecd4",
+      "sha256": "834a5d9a652f6235b9356b87f0ceb5edb0f2042dc239cca621d4199b6e714e92",
+      "bytes": 280,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-declaration/positive/variant-token.json",
+      "mode": "100644",
+      "gitBlob": "f726b58557711efef76c45f5743edcf513061802",
+      "sha256": "0ff56a440e033e0f09ea4684b13e68d7caf39b95a6b90caae282bce5fb0509e5",
+      "bytes": 313,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-effective-property-registry/negative/missing-properties.json",
+      "mode": "100644",
+      "gitBlob": "b353d91c2074ba681d8de2fc4732318ecd25d196",
+      "sha256": "dcdf80d537987ecb35bac46e66773b7007039bbe51aa74f02d46eb122330b9f2",
+      "bytes": 96,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-effective-property-registry/positive/minimal.json",
+      "mode": "100644",
+      "gitBlob": "3cd014954e16ff12c2a79e09833a9436618db743",
+      "sha256": "ed297eaab594628942106b5eda53a8851f3cc2b43cdfb654039efa4ecc01a3b2",
+      "bytes": 1399,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-ordered-declaration-list/negative/missing-item-origin.json",
+      "mode": "100644",
+      "gitBlob": "f5f0de2bc8debd09a53f52b9a41068d973ecab2b",
+      "sha256": "a560722076b1ceafe5891bf3a529d3621d0249c48c909fb71c8fd0de7a035d2f",
+      "bytes": 128,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-ordered-declaration-list/negative/property-map.json",
+      "mode": "100644",
+      "gitBlob": "d645089544184198616403f7b1a00a3dab3b7c47",
+      "sha256": "434eed77d80ccacadbcd2ffcd0eb8dccca5b8093926010c6f74f3849a7e97ff3",
+      "bytes": 78,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-ordered-declaration-list/positive/ordered-fallback.json",
+      "mode": "100644",
+      "gitBlob": "e76d3c8a89bbe2d4ff133319ba23f5e9d956d865",
+      "sha256": "3b8ab94bb4df27366257e53836f625eb4f1a209cac455d5703f3712fe89aad90",
+      "bytes": 631,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-profile-input/negative/unpinned-input.json",
+      "mode": "100644",
+      "gitBlob": "d67731e32dd567855c8180d9b1c3e429789735ef",
+      "sha256": "e54b0cdd5ce973dcd2160dfdf48e6dc151e14917646735840eb96093b66e94fc",
+      "bytes": 347,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-profile-input/positive/valid.json",
+      "mode": "100644",
+      "gitBlob": "7309f8e5700429e4a584f558667ff12acdd40b80",
+      "sha256": "fc301b1fc849147b13f8de6711b12d2dfed378ad7ff4e4e70d6eab9db6a6d492",
+      "bytes": 346,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-sparse-property-policy/negative/invalid-custom-property.json",
+      "mode": "100644",
+      "gitBlob": "c5ed25f200af51581f8e4a8d583dc4ee54023e7e",
+      "sha256": "fdbb5c80a123ec8d81c29741b4e445d1ae44153cf191b825e4da15e2d37f486b",
+      "bytes": 374,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-sparse-property-policy/positive/minimal.json",
+      "mode": "100644",
+      "gitBlob": "c534acc815aa6dd862a09df7095a0abff800564d",
+      "sha256": "fd8aac8f5d6ae49ec59a54e323a243a555890ee519180a5ea0693ff7483d2aeb",
+      "bytes": 381,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-token-binding-catalog/negative/missing-property-selector.json",
+      "mode": "100644",
+      "gitBlob": "cb9e08b89746fbf7fedd3de4b54d80193e039518",
+      "sha256": "ce1d87439781a95c971ba878fee7bb04256a4f58bf071af29c8c96f15f55e4b2",
+      "bytes": 235,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-token-binding-catalog/positive/direct-color.json",
+      "mode": "100644",
+      "gitBlob": "9665482c002bb0356acdfb8ec21351e991fa93ec",
+      "sha256": "f38fd375e228b0cf723f8935baf432f1757e9212d24f6a36abae97ea6d930e36",
+      "bytes": 289,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-token-binding-coverage/negative/missing-profile-digest.json",
+      "mode": "100644",
+      "gitBlob": "e3fef39d58334aeacd5bf7fe9de89c6049831aa0",
+      "sha256": "c270d1bdaf4a4afee616bbd7235b8c1ca7458cf66089bd6270f1706bc9e8ece0",
+      "bytes": 103,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/css-token-binding-coverage/positive/minimal.json",
+      "mode": "100644",
+      "gitBlob": "bf4cc2d95c249951b3fb7d632d74c72e36661edc",
+      "sha256": "6071336f96bd597e643fed5c1d802e8c761b5d166796d4104d2ef9e8aa3d5b72",
+      "bytes": 392,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/foundation-token-policy/negative/incomplete-color-scales.json",
+      "mode": "100644",
+      "gitBlob": "8f5dc9bcb051a964cb9bad031550e0d2db978e7c",
+      "sha256": "1676e813362aa39bf8f96e5e0806c3c818c7c4d74e0d74e859af730fb832ccfc",
+      "bytes": 7221,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/foundation-token-policy/negative/invalid-color-profile.json",
+      "mode": "100644",
+      "gitBlob": "010add29b9b587b965fa91830603086075cfe5bf",
+      "sha256": "cebb6a35edcc595c8336695f764a06c1d8f36f8fe5a32dd7913b56e5b4f3d35c",
+      "bytes": 7414,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/foundation-token-policy/negative/invalid-units.json",
+      "mode": "100644",
+      "gitBlob": "eea1dbb161b90b82123cb24daf7eee2da4e5ec72",
+      "sha256": "6f9158b3bdb4fc3aa12116d005e961ce7d5f827d211239c86ba8f500b256a049",
+      "bytes": 7425,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/foundation-token-policy/negative/wrong-vocabulary.json",
+      "mode": "100644",
+      "gitBlob": "00da6dac8e8157e153116ea9b0bfaedc5af6bf7f",
+      "sha256": "224c78d8f7db364c33bdbc782cb080f24bd27c8a3b7880cad5d2530cfb119fec",
+      "bytes": 7407,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/foundation-token-policy/positive/valid.json",
+      "mode": "100644",
+      "gitBlob": "0d9a4de6aaa3ff0116664e2cf9e3ae97cc54a533",
+      "sha256": "5fc8627ff604818f67280ddc9c769afbbc5c519a69f7e9ec42818e7d18055a13",
+      "bytes": 7415,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/negative/illegal-token-binding.json",
+      "mode": "100644",
+      "gitBlob": "485b26ae02421baf845b6fa89b9a25d8de7a0ed5",
+      "sha256": "eeacd16a51ef3207b1019ca75c9576f2ff526c6ff4c081f01f3aed61afe95c7a",
+      "bytes": 874,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/negative/invalid-ir-transition-kind.json",
+      "mode": "100644",
+      "gitBlob": "c05e2d592a568ee7a0191f1344da868343cdb68c",
+      "sha256": "55241506da470584a4f250d76b0bf28452d68a7d36c33e176f0bc6e600269c42",
+      "bytes": 687,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/negative/invalid-keyframe-grammar.json",
+      "mode": "100644",
+      "gitBlob": "45ad39c002ff9579e519da0c8f0670eeaa868d2a",
+      "sha256": "60e3d8e22116f46203544710413cab714e8d988789ef188d421433b85b23c410",
+      "bytes": 824,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/negative/reduced-motion-replace-missing-transition.json",
+      "mode": "100644",
+      "gitBlob": "469361076e8ec80e760d865f1c8a4fe9da94c852",
+      "sha256": "e3266ec0bf158c81deffe7cdf65773ecdeb211ce87e265e9df7b837da7c1298d",
+      "bytes": 1109,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/negative/unknown-property.json",
+      "mode": "100644",
+      "gitBlob": "b0099011b13091b275cf9b7fa4e5d5fc0c2bee69",
+      "sha256": "1cb7d5a03e5949e54e213a83d5c52ba675e71959a157e30f5b8fa7410706b633",
+      "bytes": 830,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/button-pressed-state-change.json",
+      "mode": "100644",
+      "gitBlob": "ffbf913f681b4fa1b608ffc6e43a5ede6fd3bdaa",
+      "sha256": "7d34eec665558f2307093d30b3ce8e968c832a17be116d1c8f4d5a408e9745f7",
+      "bytes": 837,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/dialog-backdrop-tween.json",
+      "mode": "100644",
+      "gitBlob": "e5e57d71d9d5a02587c83d432b8cd3ab5e4b2bb6",
+      "sha256": "0fcbb2f0de50114f13fb17892557fc57f7151285da98de6644185ff295444290",
+      "bytes": 901,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/dialog-popup-enter-exit.json",
+      "mode": "100644",
+      "gitBlob": "88ea584256c98a1cb1f71ae5f013010a56d18f52",
+      "sha256": "668d9cc1e24658bf5e910cd8d6e1c727838d1eec2a5965215a3f3e8a509885ca",
+      "bytes": 1284,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/direct-token-keyframe.json",
+      "mode": "100644",
+      "gitBlob": "e48df8a6887d04c1f7b33de6ed46f881489e64b7",
+      "sha256": "fa8a0b507016c163772f91c1cf61a65ead909ca1c42d6d55bbeb010b42b9e647",
+      "bytes": 873,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/reduced-motion-disable.json",
+      "mode": "100644",
+      "gitBlob": "45e81ce157d641eca714106a36595703bad441ae",
+      "sha256": "8a98b158c4dd69f77e392b04e1c70d26ed5962f2afc7a27d70bdcc2fbf78ff35",
+      "bytes": 819,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/reduced-motion-replace.json",
+      "mode": "100644",
+      "gitBlob": "a68c3c1b067826d8968399d876cc348c08d2594b",
+      "sha256": "82c3c333569bdcd2fcb3887fd7e503d8f406c8ee575566619fb3071451497d2f",
+      "bytes": 1217,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/spring-configuration.json",
+      "mode": "100644",
+      "gitBlob": "843afd202d759678160cbd92f70383b1bb7136e3",
+      "sha256": "0f7884ae671d75cd96e74b84bcf2cedfa29a98c30b1812d83244c86469a60633",
+      "bytes": 832,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/template-keyframe.json",
+      "mode": "100644",
+      "gitBlob": "d6179087490257aa817f5ed8f19e69cc7c9b36bc",
+      "sha256": "968b0c99e2e068bb28f4fe8b0a2178b5aa793c5bdd0126705764f54560a397a8",
+      "bytes": 894,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/tween-duration-easing-tokens.json",
+      "mode": "100644",
+      "gitBlob": "8e218c8557008640bc8d135a858aee7de0cc63ea",
+      "sha256": "7fad8baaf7f100c904af395c809f5bdb8fa86a8f172b0e80695c60edb32ce6b9",
+      "bytes": 818,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/motion-ir/positive/two-segment-sequence.json",
+      "mode": "100644",
+      "gitBlob": "49b1c47c3d861ad46cfd10dc072670963f426887",
+      "sha256": "155eefaf5e9fa6f65b1ad36575efc27920f742b956b64ff7bc45a28e13ff6d75",
+      "bytes": 1172,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/parsed-token-document/negative/domain-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "60923667c8cb986e1e5389b38b7e6a76d894c4c7",
+      "sha256": "61c46f12fce8552cbd20a5749a9051ad9c691610fb3378eec683edea2dc4a4f5",
+      "bytes": 352,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/parsed-token-document/negative/duplicate-id.json",
+      "mode": "100644",
+      "gitBlob": "35e7b387eb06fdc26d352c5715f4c782dd7ae00e",
+      "sha256": "d54109983712e2cec03a59eaff4594a7355920d795e4f85777ce57e2021bd2ed",
+      "bytes": 629,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/parsed-token-document/negative/parser-object-leak.json",
+      "mode": "100644",
+      "gitBlob": "27eccee6aa868c622b96c744a57c10ef30ee3e15",
+      "sha256": "db83d1c9df4d5ba1a549068f36543cf47516c85badca5917f662a3e57d343116",
+      "bytes": 458,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/parsed-token-document/positive/color.json",
+      "mode": "100644",
+      "gitBlob": "b57ae4dbbc3fa9b358feb41e83a1751842589da8",
+      "sha256": "5151069989b2f1463a92f4ecbcba87084c63abe65650d481865379bcb35780f3",
+      "bytes": 420,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/resolved-token-manifest/negative/missing-dark-context.json",
+      "mode": "100644",
+      "gitBlob": "ddea37404cc062d14fade5ff758553a0d8a29fc7",
+      "sha256": "c54f5e50faa7e1a86d2c316b118bc3a498b3cd7fb65aa43b343a7ac0b1f19572",
+      "bytes": 610,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/resolved-token-manifest/negative/unknown-dependency.json",
+      "mode": "100644",
+      "gitBlob": "7e760a872f93ee0393d13925fc6ce27c5000616b",
+      "sha256": "4a8dc44a3954a0b22222c1f5638aa5e6a2d70fe647d8b289258e091c4975647d",
+      "bytes": 1102,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/resolved-token-manifest/negative/unresolved-alias.json",
+      "mode": "100644",
+      "gitBlob": "8d842c78391e50747fe24b3f7fdd0a7a15d112a7",
+      "sha256": "dbe73ed689941c9120f14efe03a89d7ea2048c7202fb54c1af69ae6f15e9caa6",
+      "bytes": 1102,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/resolved-token-manifest/positive/light-dark.json",
+      "mode": "100644",
+      "gitBlob": "f3e466f7bc925f8286511a852861b190de509cb1",
+      "sha256": "571afeaff4ee178a13cfa28b2969a45b33c64b8093ed3e4b9dfc00a767935de6",
+      "bytes": 2400,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/semantic-token-vocabulary/negative/duplicate-space-path.json",
+      "mode": "100644",
+      "gitBlob": "eb2833a644f476cff93b5583738439c227c039fa",
+      "sha256": "7492c2fd1efc1ad86217527641d02d0959ccd6a1eba9bf2ecdb0c14594872814",
+      "bytes": 1234,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/semantic-token-vocabulary/negative/long-form-size.json",
+      "mode": "100644",
+      "gitBlob": "4603d726686cff3a20342ecdf20d93ca94ed5570",
+      "sha256": "6c89faff98f10e88ca31d77749b91ed45df5a52162d8a6d3a7be690971fdc6bd",
+      "bytes": 1171,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/semantic-token-vocabulary/negative/out-of-order-space-path.json",
+      "mode": "100644",
+      "gitBlob": "70e4a462fa938a7c3b35cf188360ace042151e56",
+      "sha256": "c7cc582ce2b358d3862f32531cb2e003f48773a6fc9e68397d8340b0bb4362db",
+      "bytes": 1233,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/semantic-token-vocabulary/positive/valid.json",
+      "mode": "100644",
+      "gitBlob": "1ba23896207172dd18ce41777242b15544118bff",
+      "sha256": "128ad028944115169187aa58e9b6ea9bddc74b6396b32e0628db5243c59ebb3d",
+      "bytes": 1153,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-context-override/negative/primitive-override.json",
+      "mode": "100644",
+      "gitBlob": "468c3ccab42a4163b4e26b06f7591c5af1ed0c15",
+      "sha256": "0f6a5c896cf65876b0490af05e22857de5b17e83273b8b53f4e2af058c4e0e54",
+      "bytes": 457,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-context-override/negative/unknown-theme.json",
+      "mode": "100644",
+      "gitBlob": "6b3dc333648fc6d2bd8a83712195529fd6fb9779",
+      "sha256": "9ccfdf45e66174c3b91c74a9fe1895ded1dc2429dddb3c216e1ca8892c3e5166",
+      "bytes": 87,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-context-override/positive/dark-semantic.json",
+      "mode": "100644",
+      "gitBlob": "b9c961253c2c1eb62ab9559bca564ce4613339a8",
+      "sha256": "16089a649a0cb7de0012d054d91e07e6cec3cfd835e76a96a4ef9d7d1968d8a1",
+      "bytes": 454,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-domain-registry/negative/ambiguous-range.json",
+      "mode": "100644",
+      "gitBlob": "20b6cc071baa5d9125f95874ec999ead4deb5fa9",
+      "sha256": "a1463cd132ecb6d48b792b7934e448afd64d973873af87d177eead9e91feed93",
+      "bytes": 330,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-domain-registry/negative/duplicate-domain.json",
+      "mode": "100644",
+      "gitBlob": "607174a737022b6d63d92689427d6baad5c16ca9",
+      "sha256": "e65f77aa377e4c35cf100b13b0e6566c05cef8ca5f29f6e5ea59de3fc2235f33",
+      "bytes": 318,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-domain-registry/negative/root-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "8437171b0c10131789a11aa7de1f72799c02c784",
+      "sha256": "25ef535d7b92b52c1714a70e69e8b8bff67afab2d0440f97303eb4118c7116e0",
+      "bytes": 185,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-domain-registry/negative/unknown-dtcg-type.json",
+      "mode": "100644",
+      "gitBlob": "3ea4224cb43ea7c8d26a3c316b7dc5ef0eba9dd0",
+      "sha256": "3c0ddbc3c0f1ffc9f1fe0cbdd9ed21506f54c6b503014c5ad284b7b4cbd72cc8",
+      "bytes": 183,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-domain-registry/positive/minimal.json",
+      "mode": "100644",
+      "gitBlob": "82cbd7fc1135628dfd9a407ab9111161ed1b5590",
+      "sha256": "fa7b4b58f646f1bd100ead98d396f9fe8e05e02918d4fd7da7c38a60e5e40f56",
+      "bytes": 183,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-identity/negative/domain-mismatch.json",
+      "mode": "100644",
+      "gitBlob": "30dce86d4c9a24ec2e677ca2823ae2bb1277806e",
+      "sha256": "2750274e19a5b34ca0735d1073b860a46484dac6b17cc0f87dae207a9110d1f1",
+      "bytes": 95,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-identity/negative/missing-tier.json",
+      "mode": "100644",
+      "gitBlob": "ea792a0189d55a91361b1f5b24a3c4cb93fe8afa",
+      "sha256": "707028a408826a32dd73fc540d502077357e5b819f5e9b5441fb9eba07f31515",
+      "bytes": 69,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-identity/positive/semantic-color.json",
+      "mode": "100644",
+      "gitBlob": "5522b12ce532c5924ed843e3a87a9fb63cbd0a24",
+      "sha256": "678bcc158bac469d31b43cb3351a72a843b1db1f38814fdeeb8becfba88b5f25",
+      "bytes": 91,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-source-profile/negative/unpinned-parser.json",
+      "mode": "100644",
+      "gitBlob": "676d14d7407eca20f9fdc9d6c62ab4fe3f7238d5",
+      "sha256": "0f4a7218391743cde3c1b3109719791088e5dd17b2d3e3c1ed319272b482f3ce",
+      "bytes": 704,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/fixtures/token-source-profile/positive/valid.json",
+      "mode": "100644",
+      "gitBlob": "5601b7b0c350d89a59f93a77a2bf3d30ca54cee6",
+      "sha256": "0c9df492dc1b3d2fc88b2eb8946ebf76b3c8a2b90e4111ce0112b35dbbe49695",
+      "bytes": 703,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/manifest.json",
+      "mode": "100644",
+      "gitBlob": "282051778340916e7e808be57bc517628fc1dbdd",
+      "sha256": "f1e4657315663def433d38c917c5c3be268bbc7dc8459373be03d0fde56fea68",
+      "bytes": 16230,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/motion/motion-ir.schema.json",
+      "mode": "100644",
+      "gitBlob": "9213db9cbcb5a9ae65410c67685466cc13c7022e",
+      "sha256": "51636c09361ce93081fd0e625051c96f60b1d78706b9a10c75f251044ddf33cf",
+      "bytes": 5388,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/spec-manifest.schema.json",
+      "mode": "100644",
+      "gitBlob": "3896f38edf3c5888a3c244d03c27ce916b04ccf1",
+      "sha256": "fa3b2b1fa562ebe73d1a392dc19bf9835494a3acabf916dcb4c50f66d80f4d69",
+      "bytes": 4629,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/state/canonical-state-registry.json",
+      "mode": "100644",
+      "gitBlob": "45b9178921046acfbcdd66ca60d704ab0b281b66",
+      "sha256": "4cb59e5dfc8eb10c8b584d8ce54da497b4613c4a165f799b25647a9dfc10539c",
+      "bytes": 3379,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/state/canonical-state-registry.schema.json",
+      "mode": "100644",
+      "gitBlob": "208e663cd7abd8327fdc5e7304a148d4529d58b0",
+      "sha256": "30a095c4e40fecca70dd452d85bc8e4697063993297a8025097b659e9e909982",
+      "bytes": 2134,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/composite-token-projector-registry.json",
+      "mode": "100644",
+      "gitBlob": "cbeb61ab6b1805207984e53b7ebfa0ba8051785d",
+      "sha256": "29da50d3347ec8cdeb883c95c15da0c41865fc2ae06918a2b2f59053abe9a173",
+      "bytes": 1198,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/composite-token-projector-registry.schema.json",
+      "mode": "100644",
+      "gitBlob": "c7c4de7b475122f8bd703bd4289a2eac7c5e4eaa",
+      "sha256": "306d9a04b265a7f83da9e5bb80e6ad39f1ea84925399937ec534cba0e0b2c47b",
+      "bytes": 1323,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/foundation-resolved-token-manifest.json",
+      "mode": "100644",
+      "gitBlob": "e7d4b3bfc6427b8ebb39839a6989ae240baa9057",
+      "sha256": "4333dfcc3310da7e2c2d6e714a3c1145eef2dbf28811e20646adf52bf202bdc0",
+      "bytes": 788482,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/foundation-token-policy.json",
+      "mode": "100644",
+      "gitBlob": "e2994eadbdcd5ef49b51aa834d8c4372b640078e",
+      "sha256": "13df4ca019e1da8d1465db35b90dbc328e7cff3b28de5a9df09fcc1896ba1a37",
+      "bytes": 9852,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/foundation-token-policy.schema.json",
+      "mode": "100644",
+      "gitBlob": "ade7fbaba12c8d3e6f44813d99717137986144d4",
+      "sha256": "18fa353aa5bf5c516ce44effcf2c4f5a6260c85bbe37df7ede775b70d7016574",
+      "bytes": 9157,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/normalized-token-record.schema.json",
+      "mode": "100644",
+      "gitBlob": "8c84d5de5c5bc1166223b62b452bc98b306b285e",
+      "sha256": "4362f4e20cf7191766a16679f76ad2f98672cf0a13e106d47e5d841addf40083",
+      "bytes": 1238,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/parsed-token-document.schema.json",
+      "mode": "100644",
+      "gitBlob": "9da5e8d7f5ef07874807d0c23771e8b983c92861",
+      "sha256": "67cf7c6fe499b48d872401fab7c3ede241310add20469dbae9960d7f7cd3b74c",
+      "bytes": 464,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/resolved-token-manifest.schema.json",
+      "mode": "100644",
+      "gitBlob": "b08853a92d7deb8aff79fa8844ba72a04d9eb0c9",
+      "sha256": "a695883f625939923878318b9d514112addec3405c53193bdefb9f772b0c18f1",
+      "bytes": 2441,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/resolver-modifier-registry.json",
+      "mode": "100644",
+      "gitBlob": "dd762a8d2d06d07451e8974896fa475b913c37f3",
+      "sha256": "5c682346d810b8e17f475de0b10cdb1d08bc13677e19ac4d9a05c9188464b2b5",
+      "bytes": 118,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/resolver-modifier-registry.schema.json",
+      "mode": "100644",
+      "gitBlob": "e6f1243c3b261edc1b9db1eaecd5b2d7adf553aa",
+      "sha256": "bf74c9045936b32edf668dc3c29bcfe97f32feda6babeee5dd07b13c0dadfbb8",
+      "bytes": 931,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/semantic-token-vocabulary.json",
+      "mode": "100644",
+      "gitBlob": "c27d7c2a5d74c5b06be8931f69eec252ea1eecb0",
+      "sha256": "b1ac68572ad1b0cd3bf42d90c977fc1133a9869aa4b25db9296d0306bbfc3539",
+      "bytes": 3816,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/semantic-token-vocabulary.schema.json",
+      "mode": "100644",
+      "gitBlob": "0cd2053cbf70cb195b6efdc75d337012262371c7",
+      "sha256": "7a37cd9c812aae207394fed5f1be6dd4b370c6bc05d3834ba22f6f9a6ae577eb",
+      "bytes": 3081,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-context-override.schema.json",
+      "mode": "100644",
+      "gitBlob": "df9a362cc7fe1a359e760029c28bff3a7df14153",
+      "sha256": "6413c83226875503cbc1a699592d3855f9a5a0b5dad028be999bd77e849dcccc",
+      "bytes": 557,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-context.schema.json",
+      "mode": "100644",
+      "gitBlob": "4c477b22fc075644a55030d816f7d4acfc7c92db",
+      "sha256": "fa16a52c082d0bf49bdcd648587c105d6220023551b759c3b7bba329107f1148",
+      "bytes": 308,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-domain-registry.json",
+      "mode": "100644",
+      "gitBlob": "00b67251607d62f343c423a7eeaa544c872a955b",
+      "sha256": "cd1c3e53bdc7b7e8e762b5718db3da34c9f37e85135d999338c05d58f60e27ab",
+      "bytes": 4546,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-domain-registry.schema.json",
+      "mode": "100644",
+      "gitBlob": "0f23cb3cb708739cdf1a217750d2993bda158e5f",
+      "sha256": "0387b8a92e9d33345a567c6f4415133ded8821c69ec133e45994ffd19e6dbb65",
+      "bytes": 2815,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-id.schema.json",
+      "mode": "100644",
+      "gitBlob": "6a9988f79db25d65440d47c2f50a33dd8ca27e2a",
+      "sha256": "b117b72585710b3f05981d4a60a7632c45527d1f0e487bc9e195f0225b8d9fa3",
+      "bytes": 286,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-identity.schema.json",
+      "mode": "100644",
+      "gitBlob": "d131b7a76fd20e65cbb6b771ea722ef8b5ad6e97",
+      "sha256": "18bec2700595fee9745fee9672409f28a8be6c861b8c0196f938da14bae5a865",
+      "bytes": 492,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-source-profile.json",
+      "mode": "100644",
+      "gitBlob": "5601b7b0c350d89a59f93a77a2bf3d30ca54cee6",
+      "sha256": "0c9df492dc1b3d2fc88b2eb8946ebf76b3c8a2b90e4111ce0112b35dbbe49695",
+      "bytes": 703,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-source-profile.schema.json",
+      "mode": "100644",
+      "gitBlob": "2c04f9ef0c2c6a750a3a05763b702ecab13598fd",
+      "sha256": "a91335932b98d068f628c55c51ddabc3edd3f31b6b75878d835517df14f2d318",
+      "bytes": 1916,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "spec/token/token-tier.schema.json",
+      "mode": "100644",
+      "gitBlob": "f5f668293882492b94dadf6d7bf733880be2d2ef",
+      "sha256": "b93ace35f3c8147df9ea4dd8bd7b393d06daa0181a5c4df996dbd9c1502cd6c7",
+      "bytes": 198,
+      "group": "normative-contracts-and-fixtures",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "tokens/README.md",
+      "mode": "100644",
+      "gitBlob": "c03730af46d26f37acf7fcd9b8c1195e03b1f7a7",
+      "sha256": "f27eee3b3230d03e23b32d1b2d6e9b9aa976d7f7e2373e8cb9ec51da8e2274fa",
+      "bytes": 2203,
+      "group": "token-sources",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "tokens/base.tokens.json",
+      "mode": "100644",
+      "gitBlob": "403a25d6e58e6c43938f4815165a8d2d31c10515",
+      "sha256": "d961fce62d3727677c5678a576fe2ffc2a083466c92d1c76b3f8642535c6b341",
+      "bytes": 131254,
+      "group": "token-sources",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "tokens/theme-dark.tokens.json",
+      "mode": "100644",
+      "gitBlob": "0c4cfb08284d412a4f5b1c5ec4b53d0c4a04dfbf",
+      "sha256": "a5948177eb886b57e0b1f0b21914f9dd4507154d5a32f7c5591aa6c2e493370d",
+      "bytes": 7077,
+      "group": "token-sources",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "tokens/theme-light.tokens.json",
+      "mode": "100644",
+      "gitBlob": "453277202b649e4779d58e4bd3708ea634fbd0b9",
+      "sha256": "0be98dcad6796631adc0bef0acfd67cd45cd54990f08bd431a9903cc9fb06362",
+      "bytes": 7076,
+      "group": "token-sources",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "mode": "100644",
+      "gitBlob": "7c3cbd5d5ce0181b95794dca0b7e7ec4167759cf",
+      "sha256": "a4b24a203ab6721f39e394ab718688a416ff939cf9b9e87c3ce9b4ca2c888ca1",
+      "bytes": 616,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "tsconfig.json",
+      "mode": "100644",
+      "gitBlob": "59b20a8fa251102635ec9dcd6d50f309bdb9a810",
+      "sha256": "37ca8eeb1b424213c145d4d53faa98841d8bdc856f0805e90ab24798f74adf6b",
+      "bytes": 504,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    },
+    {
+      "path": "vitest.config.ts",
+      "mode": "100644",
+      "gitBlob": "5224221b877c060a2f675df03a71908e7fd340bd",
+      "sha256": "fce58e05b46b5dbc6f4900c89f61caac0cc044a0dc0cf78cbf6d43d7f0da2177",
+      "bytes": 339,
+      "group": "repository-controls",
+      "disposition": "remove-from-active"
+    }
+  ]
+}

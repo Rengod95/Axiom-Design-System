@@ -1,6 +1,0 @@
-# Capability packages are discovered by workspace membership, never by version directories.
-packages:
-  - "packages/*"
-
-allowBuilds:
-  esbuild: true
