@@ -2,6 +2,8 @@
 
 Axiom is being redesigned as a design-system builder in Axiom Studio. The active repository is a **documentation and product-definition workspace**. It does not currently contain an installable Studio, a token compiler, or an executable UI library.
 
+The product direction has been confirmed. Review the [Foundation 1.0.0 document index proposal](docs/foundation/README.md), which maps 129 decisions to 56 planned documents in 12 areas. The index is awaiting owner confirmation; the planned document bodies have not been written.
+
 Start with the [documentation entry point](docs/README.md). The owner's sequence is: confirm product decisions, confirm the Foundation 1.0.0 document index and development direction, write and confirm that documentation, then implement the product. The version names an intended documentation baseline, not a released product.
 
 The earlier implementation has been removed from the active tree as a complete source, specification, fixture, generator and build set. It remains recoverable at a pinned Git commit through the [pre-Studio reference guide](reference/pre-studio/README.md). That directory contains inventory and restoration instructions, not another executable copy. See the [retirement ledger](docs/maintenance/pre-studio-retirement.md).

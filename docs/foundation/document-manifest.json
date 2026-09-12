@@ -1,0 +1,2811 @@
+{
+  "kind": "axiom-foundation-document-index-proposal",
+  "targetFoundationVersion": "1.0.0",
+  "status": "PROPOSED_AWAITING_OWNER_CONFIRMATION",
+  "preparedAt": "2026-09-12T10:16:34.560299+00:00",
+  "approvedAt": null,
+  "directionApproval": "docs/decisions/axiom-foundation-direction-approval.json",
+  "domains": [
+    {
+      "id": "GOV",
+      "path": "governance",
+      "title": "결정·문서 운영",
+      "ownerRole": "제품 책임자"
+    },
+    {
+      "id": "PRD",
+      "path": "product",
+      "title": "제품 기획",
+      "ownerRole": "제품 기획자"
+    },
+    {
+      "id": "BIZ",
+      "path": "business",
+      "title": "사업·마케팅·시장 검증",
+      "ownerRole": "사업/마케팅 담당"
+    },
+    {
+      "id": "BRD",
+      "path": "brand",
+      "title": "브랜드·자산",
+      "ownerRole": "브랜드 담당"
+    },
+    {
+      "id": "SYN",
+      "path": "syntax",
+      "title": "ADS·DSF·표준",
+      "ownerRole": "문법/도메인 설계자"
+    },
+    {
+      "id": "CMP",
+      "path": "components",
+      "title": "컴포넌트 계약",
+      "ownerRole": "컴포넌트 설계자"
+    },
+    {
+      "id": "UX",
+      "path": "experience",
+      "title": "디자인·UX/UI",
+      "ownerRole": "UX/UI 설계자"
+    },
+    {
+      "id": "ARC",
+      "path": "architecture",
+      "title": "시스템 아키텍처",
+      "ownerRole": "시스템 설계자"
+    },
+    {
+      "id": "AI",
+      "path": "ai",
+      "title": "AI 작성·실현",
+      "ownerRole": "AI 통합 담당"
+    },
+    {
+      "id": "DLV",
+      "path": "delivery",
+      "title": "플랫폼 출력·설치",
+      "ownerRole": "플랫폼 담당"
+    },
+    {
+      "id": "QAL",
+      "path": "quality",
+      "title": "품질·검증·출시",
+      "ownerRole": "품질 책임자"
+    },
+    {
+      "id": "OPS",
+      "path": "operations",
+      "title": "개발·보안·운영",
+      "ownerRole": "개발/운영 담당"
+    }
+  ],
+  "documentCount": 56,
+  "documents": [
+    {
+      "id": "GOV01",
+      "domain": "GOV",
+      "path": "docs/foundation/governance/authority-and-change-control.md",
+      "title": "문서 권위와 변경 승인",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "제품 책임자",
+      "owns": "사용자 결정·규범·설계안·증거의 권위, 변경 제안과 승인 단계",
+      "boundary": "개별 도메인의 세부 규칙은 해당 문서가 소유",
+      "upstreamDocumentIds": [],
+      "primaryDecisionIds": [
+        "D01-01",
+        "D01-03"
+      ],
+      "completionCriteria": [
+        "충돌 문서 발견 시 정정·재확인 흐름을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "GOV02",
+      "domain": "GOV",
+      "path": "docs/foundation/governance/glossary-and-naming.md",
+      "title": "제품·도메인 용어와 이름",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "제품 책임자",
+      "owns": "Studio/Builder/ADS/DSF, Part·slot·state·condition·theme, 한국어/영어 용어",
+      "boundary": "사용자 화면의 모든 도움말 카피를 여기서 중복 관리하지 않음",
+      "upstreamDocumentIds": [
+        "GOV01"
+      ],
+      "primaryDecisionIds": [
+        "D01-02",
+        "D36-01"
+      ],
+      "completionCriteria": [
+        "같은 말의 기술 의미·사용자 표현·금지된 혼용을 대조",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "GOV03",
+      "domain": "GOV",
+      "path": "docs/foundation/governance/version-and-compatibility.md",
+      "title": "버전·호환·deprecated 정책",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "제품 책임자",
+      "owns": "안정 판본 지원, 원본 보존·migration, breaking change와 deprecation",
+      "boundary": "파일 변환 절차는 SYN04, 출력 코드 업그레이드는 DLV04",
+      "upstreamDocumentIds": [
+        "GOV01"
+      ],
+      "primaryDecisionIds": [
+        "D05-01"
+      ],
+      "completionCriteria": [
+        "과거 파일·확장·컴포넌트·소비 라이브러리 버전의 차이를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "PRD01",
+      "domain": "PRD",
+      "path": "docs/foundation/product/purpose-and-users.md",
+      "title": "제품 목적·대상 사용자·핵심 문제",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "제품 기획자",
+      "owns": "DS 분산과 동기화, 원칙 유지 비용, Agent 컨텍스트, 첫 사용자 가치",
+      "boundary": "기술 스택이나 가격을 제품 목적에서 확정하지 않음",
+      "upstreamDocumentIds": [
+        "GOV01"
+      ],
+      "primaryDecisionIds": [],
+      "completionCriteria": [
+        "1인/작은 제품 팀·UX Engineer·코드 친숙 디자이너의 성공 작업을 구별",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "PRD02",
+      "domain": "PRD",
+      "path": "docs/foundation/product/journeys-and-acceptance.md",
+      "title": "처음부터 설치까지의 사용자 시나리오",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "제품 기획자",
+      "owns": "토큰 생성→컴포넌트 편집→검증 화면→출력→init/doctor→업그레이드의 인수 조건",
+      "boundary": "개별 패널의 조작 규칙은 UX 문서",
+      "upstreamDocumentIds": [
+        "PRD01",
+        "GOV02"
+      ],
+      "primaryDecisionIds": [],
+      "completionCriteria": [
+        "정상·실패·오프라인·AI·업그레이드 흐름을 실제 사용 작업으로 표현",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "PRD03",
+      "domain": "PRD",
+      "path": "docs/foundation/product/scope-catalog-and-roadmap.md",
+      "title": "초기 범위·카탈로그·제품 확장 경계",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "제품 기획자",
+      "owns": "고유 component/part/template/family 목록, 초기 필수·후속·제외, Builder/Studio/CMS 경계",
+      "boundary": "목록 노출을 구현·검증 완료로 표시하지 않음",
+      "upstreamDocumentIds": [
+        "PRD01",
+        "PRD02"
+      ],
+      "primaryDecisionIds": [
+        "D02-01",
+        "D02-02",
+        "D02-03",
+        "D02-04"
+      ],
+      "completionCriteria": [
+        "약330개 참조 행을 중복 제거해 검증 가능한 카탈로그로 정의하고 필수 타깃을 보존",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "BIZ01",
+      "domain": "BIZ",
+      "path": "docs/foundation/business/open-core-and-rights.md",
+      "title": "오픈 코어·소스·산출물 권리",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "사업/마케팅 담당",
+      "owns": "공개 코어·Studio·기업 소스·SDK·템플릿·사용자 출력의 권리와 라이선스 선정 조건",
+      "boundary": "법적 권리와 실행 entitlement는 구별하고 미선정 라이선스를 채택 처리하지 않음",
+      "upstreamDocumentIds": [
+        "GOV01",
+        "PRD01"
+      ],
+      "primaryDecisionIds": [
+        "D03-02",
+        "D39-04"
+      ],
+      "completionCriteria": [
+        "Studio 보호와 공개 코어 수정 제공 의무, 제3자 라이선스 영향과 공개 전 확인 조건을 비교",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "BIZ02",
+      "domain": "BIZ",
+      "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+      "title": "무료·유료 경계와 운영 원가",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "사업/마케팅 담당",
+      "owns": "개인 무료·편집 좌석·유료 자원·AI 원가, 수익 가설·측정·중단 기준",
+      "boundary": "가격·사용량 숫자를 실측 없이 확정하지 않음",
+      "upstreamDocumentIds": [
+        "BIZ01",
+        "PRD01"
+      ],
+      "primaryDecisionIds": [
+        "D39-01",
+        "D39-02",
+        "D39-03",
+        "D39-07"
+      ],
+      "completionCriteria": [
+        "사용권 단위·무료 가치·비용 발생 주체·실험 후 가격 결정 절차를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "BIZ03",
+      "domain": "BIZ",
+      "path": "docs/foundation/business/positioning-and-go-to-market.md",
+      "title": "포지셔닝·마케팅·출시 메시지",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "사업/마케팅 담당",
+      "owns": "대상별 문제 언어, 비교 대상과 차별점, 채널·소개 메시지·검증 표시 사용",
+      "boundary": "미구현 기능을 홍보에서 정식 지원이라고 쓰지 않음",
+      "upstreamDocumentIds": [
+        "PRD01",
+        "PRD03",
+        "BIZ01"
+      ],
+      "primaryDecisionIds": [
+        "D39-06"
+      ],
+      "completionCriteria": [
+        "메시지 가설별 대상·근거·검증 방법과 공개 주장 심사 기준을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "BIZ04",
+      "domain": "BIZ",
+      "path": "docs/foundation/business/research-and-customer-feedback.md",
+      "title": "사용자 조사·제품 검증·고객 피드백",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "사업/마케팅 담당",
+      "owns": "자가 사용 후 목표 사용자 시험, 관찰·지원 피드백의 우선순위 반영",
+      "boundary": "성능 계측 수치는 QAL03, 장애 대응은 OPS02",
+      "upstreamDocumentIds": [
+        "PRD02",
+        "BIZ02"
+      ],
+      "primaryDecisionIds": [
+        "D38-03"
+      ],
+      "completionCriteria": [
+        "첫 성공·반복 사용·출력 적용의 성공/실패를 수집하고 개선 결정을 추적",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "BRD01",
+      "domain": "BRD",
+      "path": "docs/foundation/brand/library-and-guidelines.md",
+      "title": "Brand Library와 사용 지침",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "브랜드 담당",
+      "owns": "로고·폰트·이미지·가이드·버전 참조, DS와 분리 관리 후 실제 디자인에서 결합",
+      "boundary": "자산 편집기 구현은 UX04, 파일 권리는 BRD02",
+      "upstreamDocumentIds": [
+        "PRD01",
+        "GOV03"
+      ],
+      "primaryDecisionIds": [
+        "D35-01",
+        "D35-02"
+      ],
+      "completionCriteria": [
+        "범용 DS 정책과 브랜드 지침의 서로 다른 적용·경고 사례를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "BRD02",
+      "domain": "BRD",
+      "path": "docs/foundation/brand/assets-and-provenance.md",
+      "title": "자산 저장·출처·권리·배포",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "브랜드 담당",
+      "owns": "필요 자산의 실제 복사, 전체 라이브러리 선택 복사, hash·권리·버전·경로",
+      "boundary": "로고 제작·정밀 벡터 편집을 자산 관리 의무로 확대하지 않음",
+      "upstreamDocumentIds": [
+        "BRD01",
+        "BIZ01"
+      ],
+      "primaryDecisionIds": [
+        "D35-03"
+      ],
+      "completionCriteria": [
+        "외부 자산 누락·재연결·중복·폰트 권한·폐쇄망 준비 사례를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "SYN01",
+      "domain": "SYN",
+      "path": "docs/foundation/syntax/standard-strategy.md",
+      "title": "ADS와 토큰 표준 선정 계약",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "문법/도메인 설계자",
+      "owns": "DTCG 비교 기준, 내부 ADS 표현 후보, 자체 표준 이점 판정과 fallback",
+      "boundary": "ADS 컴포넌트 기능을 토큰 규격 대체의 증거로 취급하지 않음",
+      "upstreamDocumentIds": [
+        "GOV02",
+        "GOV03",
+        "PRD03"
+      ],
+      "primaryDecisionIds": [
+        "D06-03"
+      ],
+      "completionCriteria": [
+        "기능·보존·편집·렌더링·유지보수 비교 항목, 증거 시점과 재선정 절차를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "SYN02",
+      "domain": "SYN",
+      "path": "docs/foundation/syntax/project-documents-and-identity.md",
+      "title": "프로젝트 문서·ID·참조·수명",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "문법/도메인 설계자",
+      "owns": "읽기 쉬운 JSON 분할, 이름과 안정 ID, 자산 연결·복사·삭제·deprecated",
+      "boundary": "소비 앱 코드 역수입과 프로젝트 설치 진단을 저장 모델에 섞지 않음",
+      "upstreamDocumentIds": [
+        "SYN01",
+        "GOV03",
+        "BRD02"
+      ],
+      "primaryDecisionIds": [
+        "D04-01",
+        "D04-02",
+        "D04-03"
+      ],
+      "completionCriteria": [
+        "이름 변경·참조 분리·삭제 영향·원본 유지·문서 경계와 검토용 예제를 제공",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "SYN03",
+      "domain": "SYN",
+      "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+      "title": "DSF·토큰·테마·사용자 정책",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "문법/도메인 설계자",
+      "owns": "타입·도메인·tier·alias·context·테마·binding·정책 예외·타깃 값 차이",
+      "boundary": "UI 편집 도구는 UX05, component state는 CMP04",
+      "upstreamDocumentIds": [
+        "SYN01",
+        "SYN02"
+      ],
+      "primaryDecisionIds": [
+        "D07-01",
+        "D07-02",
+        "D07-03",
+        "D08-01",
+        "D08-03"
+      ],
+      "completionCriteria": [
+        "타입/참조/테마의 정상·오류 규칙과 확장 가능 범위를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "SYN04",
+      "domain": "SYN",
+      "path": "docs/foundation/syntax/interchange-and-migration.md",
+      "title": "가져오기·원문 보존·migration",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "문법/도메인 설계자",
+      "owns": "부분 오류 초안, 알려지지 않은 정보, 원문과 정규화 출력, 변환·손실 진단",
+      "boundary": "임의 React 소스와 ADS의 반복 동기화를 다시 포함하지 않음",
+      "upstreamDocumentIds": [
+        "SYN01",
+        "SYN02",
+        "SYN03",
+        "GOV03"
+      ],
+      "primaryDecisionIds": [
+        "D05-02",
+        "D06-01",
+        "D06-02"
+      ],
+      "completionCriteria": [
+        "원문/편집본/재출력의 차이와 migration 실패 시 복구 예제를 제공",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP01",
+      "domain": "CMP",
+      "path": "docs/foundation/components/definition-and-designs.md",
+      "title": "컴포넌트 정의 계층과 디자인 범주",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "목적·정의·archetype·공통 계약·Web/Mobile appearance 관계",
+      "boundary": "비즈니스 규칙이나 DOM 트리를 공통 의미와 동일시하지 않음",
+      "upstreamDocumentIds": [
+        "GOV02",
+        "PRD03",
+        "SYN02",
+        "SYN03"
+      ],
+      "primaryDecisionIds": [
+        "D09-01",
+        "D09-02",
+        "D09-03"
+      ],
+      "completionCriteria": [
+        "Button·Card·Toast를 같은 계층으로 설명하고 별도 Mobile 외형을 표현",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP02",
+      "domain": "CMP",
+      "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+      "title": "trait·role·유형과 조합",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "목적 중심 기능 사전, trait 버전 공존, 실제 충돌 판정, 확장/독립 유형",
+      "boundary": "모든 컴포넌트를 하나의 상속 트리에 강제로 넣지 않음",
+      "upstreamDocumentIds": [
+        "CMP01",
+        "GOV03"
+      ],
+      "primaryDecisionIds": [
+        "D05-03",
+        "D11-01",
+        "D11-02",
+        "D11-03"
+      ],
+      "completionCriteria": [
+        "카탈로그 매핑·금지 조합·공유 연결 호환성과 전문가 분기 예제를 제공",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP03",
+      "domain": "CMP",
+      "path": "docs/foundation/components/values-events-and-expressions.md",
+      "title": "값·이벤트·props·UI 표현식",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "타입/record/list/nullable/key, 공개 interface·타깃 API, 제한된 UI 식",
+      "boundary": "앱의 결제·가격·권한 판단이나 임의 JS 실행을 포함하지 않음",
+      "upstreamDocumentIds": [
+        "CMP01",
+        "SYN03"
+      ],
+      "primaryDecisionIds": [
+        "D10-01",
+        "D10-02",
+        "D10-03"
+      ],
+      "completionCriteria": [
+        "공개 값·요청·상태 차이, 비즈니스 입력 경계와 타입 오류를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP04",
+      "domain": "CMP",
+      "path": "docs/foundation/components/state-and-request-lifecycle.md",
+      "title": "상태 소유권과 요청 수명",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "controlled/uncontrolled, 요청·확정값, 동시 요청·취소·queue profile",
+      "boundary": "모든 컴포넌트에 동일 FIFO 또는 업무 상태를 강제하지 않음",
+      "upstreamDocumentIds": [
+        "CMP02",
+        "CMP03"
+      ],
+      "primaryDecisionIds": [
+        "D14-01",
+        "D14-02",
+        "D14-03"
+      ],
+      "completionCriteria": [
+        "query/selected 분리·외부 제어·빠른 재입력·미응답/취소 시 상태를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP05",
+      "domain": "CMP",
+      "path": "docs/foundation/components/parts-slots-and-instances.md",
+      "title": "Part·slot·인스턴스·override",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "논리 부품, 콘텐츠 슬롯, 교체 가능 부품·공개 override와 원본 연결",
+      "boundary": "Part와 DOM/native 노드의 일대일 대응을 강제하지 않음",
+      "upstreamDocumentIds": [
+        "CMP01",
+        "CMP02",
+        "CMP03"
+      ],
+      "primaryDecisionIds": [
+        "D13-01",
+        "D13-02",
+        "D13-03"
+      ],
+      "completionCriteria": [
+        "Card 조합·slot 개수/종류·인스턴스 충돌·타깃 대체 노드 사례를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP06",
+      "domain": "CMP",
+      "path": "docs/foundation/components/behavior-and-input-profiles.md",
+      "title": "동작·입력·기반 라이브러리 계약",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "interaction 의미, 키보드/포커스/입력 profile, 보호·전문가 모드",
+      "boundary": "라이브러리 이름을 모든 플랫폼에서 직접 쓸 수 있다고 보지 않음",
+      "upstreamDocumentIds": [
+        "CMP02",
+        "CMP03",
+        "CMP04",
+        "CMP05"
+      ],
+      "primaryDecisionIds": [
+        "D15-01",
+        "D15-02"
+      ],
+      "completionCriteria": [
+        "기반 교체·의무 변경·금지 부품 혼합·독립 유형의 판정 규칙을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP07",
+      "domain": "CMP",
+      "path": "docs/foundation/components/coordinators-and-hosts.md",
+      "title": "공동 UI 호스트와 조정자",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "queue/overlay/focus 등 필요한 scope·연결·중첩·수명",
+      "boundary": "앱 루트 Provider·부품 Context·AI 공급자를 같은 개념으로 합치지 않음",
+      "upstreamDocumentIds": [
+        "CMP04",
+        "CMP05",
+        "CMP06"
+      ],
+      "primaryDecisionIds": [
+        "D16-01",
+        "D16-02",
+        "D16-03"
+      ],
+      "completionCriteria": [
+        "호스트 자동 제안·수동 연결·실제 경로·누락·모호함을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP08",
+      "domain": "CMP",
+      "path": "docs/foundation/components/accessibility-contracts.md",
+      "title": "접근성 의미·관계·준수 계약",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "명명·역할·관계·읽기/포커스 순서·타깃별 의무·전문가 예외",
+      "boundary": "자동 검사만으로 모든 보조기술 준수를 보장하지 않음",
+      "upstreamDocumentIds": [
+        "CMP05",
+        "CMP06",
+        "CMP07"
+      ],
+      "primaryDecisionIds": [
+        "D17-02",
+        "D17-03"
+      ],
+      "completionCriteria": [
+        "의무와 수동 확인 대상·확인 환경, 브랜드 충돌의 판정과 표시를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP09",
+      "domain": "CMP",
+      "path": "docs/foundation/components/motion-and-transitions.md",
+      "title": "모션·전환·중단 의미",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "enter/exit·state 전환·spring/tween·delay/stagger·keyframe, 감소 모션",
+      "boundary": "논리 상태·focus·cleanup 전체를 애니메이션 완료에 종속시키지 않음",
+      "upstreamDocumentIds": [
+        "CMP04",
+        "CMP06",
+        "CMP08",
+        "SYN03"
+      ],
+      "primaryDecisionIds": [
+        "D18-02",
+        "D18-03"
+      ],
+      "completionCriteria": [
+        "finish-then-next 기본·다른 중단 policy·퇴장 후 제거·reduced motion을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": [
+        "D18-01"
+      ]
+    },
+    {
+      "id": "CMP10",
+      "domain": "CMP",
+      "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+      "title": "외형 규칙·조건·우선순위",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "variant×Part×state, theme/condition/override, 결과·출처·충돌",
+      "boundary": "콘텐츠 slot을 외형 부위의 이름으로 혼용하지 않음",
+      "upstreamDocumentIds": [
+        "CMP01",
+        "CMP04",
+        "CMP05",
+        "CMP09",
+        "SYN03"
+      ],
+      "primaryDecisionIds": [
+        "D19-01",
+        "D19-02",
+        "D19-03"
+      ],
+      "completionCriteria": [
+        "한 속성의 최종값 계산과 타깃 제약·reset·공통 승격을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "CMP11",
+      "domain": "CMP",
+      "path": "docs/foundation/components/custom-definition-registry.md",
+      "title": "사용자 확장·등록·승격",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "컴포넌트 설계자",
+      "owns": "로컬→프로젝트→라이브러리의 trait/role/policy·선언형 Inspector 메타데이터",
+      "boundary": "사용자 확장으로 코어 schema/검증기/권한을 덮어쓰게 하지 않음",
+      "upstreamDocumentIds": [
+        "CMP02",
+        "CMP03",
+        "CMP05",
+        "CMP08"
+      ],
+      "primaryDecisionIds": [
+        "D12-01",
+        "D12-03"
+      ],
+      "completionCriteria": [
+        "미지 확장·충돌·버전 고정·승격·미검증 실행 능력의 표시를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX01",
+      "domain": "UX",
+      "path": "docs/foundation/experience/onboarding-and-inspector.md",
+      "title": "작업 공간·온보딩·Inspector·도움말",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "기본 DS/템플릿으로 첫 성공, 점진 노출·전문가 보기·AI 대화·학습",
+      "boundary": "일반 사용자 화면에서 내부 구현 세부를 강요하지 않음",
+      "upstreamDocumentIds": [
+        "PRD02",
+        "PRD03",
+        "GOV02",
+        "CMP11"
+      ],
+      "primaryDecisionIds": [
+        "D26-01",
+        "D26-02",
+        "D26-03",
+        "D36-03"
+      ],
+      "completionCriteria": [
+        "토큰 변경→Card 편집→preview→출력의 첫 실행 동선과 빈/오류 상태를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX02",
+      "domain": "UX",
+      "path": "docs/foundation/experience/canvas-and-direct-manipulation.md",
+      "title": "Canvas 선택·좌표·직접 조작",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "frame/group·중첩 선택·drag/resize/rotate·정렬/snap·lock/hide·편집/실행 전환",
+      "boundary": "Canvas 엔진의 자료구조를 ADS 저장 의미로 고정하지 않음",
+      "upstreamDocumentIds": [
+        "CMP05",
+        "CMP10"
+      ],
+      "primaryDecisionIds": [
+        "D23-01",
+        "D23-02",
+        "D23-03"
+      ],
+      "completionCriteria": [
+        "선택 깊이·다중 조작·좌표 변환·키보드 조작·Undo 묶음을 예시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX03",
+      "domain": "UX",
+      "path": "docs/foundation/experience/layout-authoring.md",
+      "title": "시각적 레이아웃 편집",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "hug/fill/fixed·자동 배치·크기 규칙·재정렬과 타깃 대체 UX",
+      "boundary": "브라우저 근사를 native 레이아웃 보장으로 표시하지 않음",
+      "upstreamDocumentIds": [
+        "CMP05",
+        "CMP10",
+        "UX02"
+      ],
+      "primaryDecisionIds": [
+        "D24-01",
+        "D24-02",
+        "D24-03"
+      ],
+      "completionCriteria": [
+        "부모 규칙 안의 drag/resize와 불가능한 타깃 표현을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX04",
+      "domain": "UX",
+      "path": "docs/foundation/experience/text-and-asset-editing.md",
+      "title": "텍스트·폰트·벡터·이미지 편집",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "기본 라벨/문단/서식/링크/목록, IME, 외부 자산 배치·크기/crop/교체",
+      "boundary": "고급 벡터 제작·CMS 페이지 텍스트 엔진을 초기 범위에 추가하지 않음",
+      "upstreamDocumentIds": [
+        "BRD02",
+        "UX02",
+        "SYN03"
+      ],
+      "primaryDecisionIds": [
+        "D25-01",
+        "D25-02",
+        "D25-03"
+      ],
+      "completionCriteria": [
+        "커서/선택/Undo와 폰트·이미지 누락 시 제한·대체·복구 흐름을 예시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX05",
+      "domain": "UX",
+      "path": "docs/foundation/experience/foundation-editor.md",
+      "title": "토큰·테마·정책 편집 UX",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "기본 분류 안내, 참조/테마 편집·즉시 preview·영향·경고·되돌리기",
+      "boundary": "토큰 의미와 validation 규칙은 SYN03/SYN04에서 가져옴",
+      "upstreamDocumentIds": [
+        "SYN03",
+        "SYN04",
+        "UX01"
+      ],
+      "primaryDecisionIds": [
+        "D08-02"
+      ],
+      "completionCriteria": [
+        "JSON을 직접 쓰는 것보다 쉬운 생성·리네임·대량 수정 흐름을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX06",
+      "domain": "UX",
+      "path": "docs/foundation/experience/component-editing-panels.md",
+      "title": "컴포넌트·동작·접근성·모션 편집 UX",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "속성·값/이벤트·state·interaction·의미 관계·모션 keyframe의 시연과 편집",
+      "boundary": "범용 Card에 업무 맥락 상태를 자동 추가하지 않음",
+      "upstreamDocumentIds": [
+        "CMP06",
+        "CMP07",
+        "CMP08",
+        "CMP09",
+        "CMP10",
+        "CMP11",
+        "UX01"
+      ],
+      "primaryDecisionIds": [
+        "D15-03",
+        "D17-01",
+        "D18-01"
+      ],
+      "completionCriteria": [
+        "Card/Toast의 보호·전문가 모드와 preset/AI/직접 편집을 연결",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX07",
+      "domain": "UX",
+      "path": "docs/foundation/experience/preview-and-prototypes.md",
+      "title": "즉시 preview·검증 화면·프로토타입",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "최신 디자인/마지막 실제 구현 비교, 모의 state·화면 이동·공유·실행 예제",
+      "boundary": "CMS 운영 기능과 실데이터 업무 로직을 초기 Builder 범위로 확장하지 않음",
+      "upstreamDocumentIds": [
+        "PRD02",
+        "CMP04",
+        "CMP10",
+        "UX03",
+        "UX06"
+      ],
+      "primaryDecisionIds": [
+        "D27-01",
+        "D27-02",
+        "D27-03",
+        "D34-01",
+        "D34-02",
+        "D34-03"
+      ],
+      "completionCriteria": [
+        "미구현 동작과 native 근사/실제 실행을 표시하고 prototype 전환을 예시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "UX08",
+      "domain": "UX",
+      "path": "docs/foundation/experience/editor-accessibility-and-language.md",
+      "title": "Studio 접근성·언어·입력 품질",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "UX/UI 설계자",
+      "owns": "영어/한국어 UI, 실제 한글 IME, 키보드/screen reader, 오류·학습 카피",
+      "boundary": "출력 컴포넌트 준수와 편집기 자체 준수를 같은 결과로 합치지 않음",
+      "upstreamDocumentIds": [
+        "GOV02",
+        "UX01",
+        "UX02",
+        "UX04",
+        "UX06"
+      ],
+      "primaryDecisionIds": [
+        "D36-02"
+      ],
+      "completionCriteria": [
+        "주요 작업 전체의 입력·포커스·읽기 흐름과 확인 환경을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "ARC01",
+      "domain": "ARC",
+      "path": "docs/foundation/architecture/system-and-domain-boundaries.md",
+      "title": "시스템 문맥·도메인·핵심 흐름",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "시스템 설계자",
+      "owns": "Builder·DSF·Brand·문서 코어·preview·실현·검증·전달의 책임과 데이터 흐름",
+      "boundary": "계층 수를 늘리기 위해 네트워크 서비스를 분리하지 않음",
+      "upstreamDocumentIds": [
+        "PRD02",
+        "PRD03",
+        "SYN02",
+        "CMP01",
+        "BIZ01"
+      ],
+      "primaryDecisionIds": [],
+      "completionCriteria": [
+        "정상/실패 흐름과 모든 I/O·권한·소유 경계를 하나의 시스템 지도로 연결",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "ARC02",
+      "domain": "ARC",
+      "path": "docs/foundation/architecture/modules-and-dependencies.md",
+      "title": "모듈·저장소·의존 방향",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "시스템 설계자",
+      "owns": "1인 모노레포, 공개 코어/비공개 Studio 배포 경계, 빌드·public exports; Canvas/렌더·레이아웃·텍스트·문법 검증 등 기반 기술 선정표와 교체 책임",
+      "boundary": "과거 10개 패키지 구조를 재사용한다는 이유로 복원하지 않음",
+      "upstreamDocumentIds": [
+        "ARC01",
+        "BIZ01"
+      ],
+      "primaryDecisionIds": [
+        "D03-01"
+      ],
+      "completionCriteria": [
+        "각 모듈의 입력/출력·금지 의존성·교체 지점과 공개 유출 검사를 정의; 기존 Builder.io/UXPin/Plasmic/pen.dev 및 Canvas·Yoga 조사 근거를 현재 요구와 대조",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "ARC03",
+      "domain": "ARC",
+      "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+      "title": "명령·트랜잭션·revision·Undo",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "시스템 설계자",
+      "owns": "GUI/AI 공통 검증 명령, 원자성·idempotency·충돌·연속 편집·재시도",
+      "boundary": "도구별 별도 데이터 수정 경로를 만들지 않음",
+      "upstreamDocumentIds": [
+        "SYN02",
+        "CMP11",
+        "ARC01"
+      ],
+      "primaryDecisionIds": [
+        "D20-01",
+        "D20-02",
+        "D20-03"
+      ],
+      "completionCriteria": [
+        "동시 AI/사람 편집·부분 충돌·작업 취소·재전송을 단계별 예시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "ARC04",
+      "domain": "ARC",
+      "path": "docs/foundation/architecture/storage-offline-and-recovery.md",
+      "title": "저장·오프라인 팩·복구",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "시스템 설계자",
+      "owns": "브라우저/로컬 폴더 동등 시작, 변경 감지·backup·자산/도구 준비·내부 AI",
+      "boundary": "준비되지 않은 의존성이나 외부 AI의 무조건적 offline 실행을 약속하지 않음",
+      "upstreamDocumentIds": [
+        "SYN02",
+        "SYN04",
+        "ARC03",
+        "BRD02"
+      ],
+      "primaryDecisionIds": [
+        "D21-01",
+        "D21-02",
+        "D21-03"
+      ],
+      "completionCriteria": [
+        "끊김·파일 충돌·브라우저 보관 실패·준비 팩 누락·복구 시나리오를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "ARC05",
+      "domain": "ARC",
+      "path": "docs/foundation/architecture/collaboration-readiness.md",
+      "title": "후속 실시간 협업을 위한 구조",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "시스템 설계자",
+      "owns": "문서 identity/변경 이력·충돌 병합·선택 잠금·개인 Undo와 공유 되돌리기",
+      "boundary": "실제 공동 편집 서비스 구현을 초기 필수로 변경하지 않음",
+      "upstreamDocumentIds": [
+        "ARC03",
+        "ARC04",
+        "CMP05"
+      ],
+      "primaryDecisionIds": [
+        "D22-01",
+        "D22-02",
+        "D22-03"
+      ],
+      "completionCriteria": [
+        "비충돌·같은 속성 충돌·일시 invalid·삭제 경쟁에 대한 기록 모델을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "ARC06",
+      "domain": "ARC",
+      "path": "docs/foundation/architecture/browser-host-and-execution.md",
+      "title": "브라우저·로컬 Host·실행 경계",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "시스템 설계자",
+      "owns": "Mac/Windows·Chromium, 폴더/작업 범위·페어링·설치·실행·폐쇄망 준비",
+      "boundary": "Windows에서 Apple native 도구 사용이 가능하다고 가정하지 않음",
+      "upstreamDocumentIds": [
+        "ARC01",
+        "ARC03",
+        "ARC04"
+      ],
+      "primaryDecisionIds": [
+        "D37-01",
+        "D37-02",
+        "D37-03",
+        "D37-04"
+      ],
+      "completionCriteria": [
+        "브라우저 단독→Host 연결·권한 확장·내부 AI·native 실행 경로를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "ARC07",
+      "domain": "ARC",
+      "path": "docs/foundation/architecture/public-api-mcp-and-entitlements.md",
+      "title": "공식 API·MCP·확장·사용권 경계",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "시스템 설계자",
+      "owns": "versioned API/MCP, 호출 권한·capability·entitlement·확장 인터페이스",
+      "boundary": "외부 Agent의 호출권을 코어 API/검증기/권한 구현 수정권으로 확대하지 않음",
+      "upstreamDocumentIds": [
+        "ARC03",
+        "ARC06",
+        "BIZ01",
+        "BIZ02"
+      ],
+      "primaryDecisionIds": [
+        "D03-03"
+      ],
+      "completionCriteria": [
+        "HTTP/로컬 호출·권한 부족·버전 불일치·사용자 컴포넌트 API 변경을 예시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": [
+        "D28-01",
+        "D28-02"
+      ]
+    },
+    {
+      "id": "AI01",
+      "domain": "AI",
+      "path": "docs/foundation/ai/authoring-context-and-providers.md",
+      "title": "AI 작성·컨텍스트·공급자 연결",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "AI 통합 담당",
+      "owns": "내장/외부 Agent의 선택 범위·필요 참조·변경 검토·BYOK·지원 연결",
+      "boundary": "특정 계정의 범용 API 사용권이나 무료 실행을 검증 없이 약속하지 않음",
+      "upstreamDocumentIds": [
+        "ARC07",
+        "UX01",
+        "SYN02",
+        "CMP11"
+      ],
+      "primaryDecisionIds": [
+        "D28-01",
+        "D28-02",
+        "D28-03",
+        "D39-05"
+      ],
+      "completionCriteria": [
+        "컨텍스트 계산·공유 토큰 검토·국소 편집·모호한 지시와 연결 실패를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "AI02",
+      "domain": "AI",
+      "path": "docs/foundation/ai/realization-and-independent-verification.md",
+      "title": "AI 코드 실현·후보·독립 판정",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "AI 통합 담당",
+      "owns": "템플릿/기계적 변환 재사용, AI 후보·고정 oracle·예산·재시도·부분 출력",
+      "boundary": "구현 Agent가 테스트 기준·코어 검증기·성공 기록을 바꾸지 못함",
+      "upstreamDocumentIds": [
+        "AI01",
+        "CMP06",
+        "CMP08",
+        "CMP09"
+      ],
+      "primaryDecisionIds": [
+        "D12-02",
+        "D29-01",
+        "D29-02",
+        "D29-03"
+      ],
+      "completionCriteria": [
+        "Card와 Toast의 생성 실패·계약 변경 제안·검증본 유지와 재시도를 예시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "DLV01",
+      "domain": "DLV",
+      "path": "docs/foundation/delivery/target-and-style-profiles.md",
+      "title": "타깃·스타일·동작 기반 지원표",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "플랫폼 담당",
+      "owns": "React/RN/Swift/Android, CSS/SCSS/Tailwind/CSS-in-JS의 성립하는 조합과 대응",
+      "boundary": "미완성을 N/A로 숨기거나 Mobile=RN으로 축소하지 않음",
+      "upstreamDocumentIds": [
+        "PRD03",
+        "CMP06",
+        "CMP10",
+        "SYN03",
+        "AI02"
+      ],
+      "primaryDecisionIds": [
+        "D30-01",
+        "D30-02",
+        "D30-03",
+        "D30-04"
+      ],
+      "completionCriteria": [
+        "Expo/bare와 native toolkit 후보, 버전·차이·검증 의무·대응 의존성을 표로 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "DLV02",
+      "domain": "DLV",
+      "path": "docs/foundation/delivery/project-init-and-doctor.md",
+      "title": "소비 프로젝트 init·doctor",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "플랫폼 담당",
+      "owns": "환경·디렉터리·alias·토큰/테마·기반/peer deps·설치 변경과 복구",
+      "boundary": "앱 전체 소스를 ADS로 복원하는 기능으로 확대하지 않음",
+      "upstreamDocumentIds": [
+        "DLV01",
+        "ARC06",
+        "BRD02"
+      ],
+      "primaryDecisionIds": [
+        "D32-02",
+        "D32-03",
+        "D32-04"
+      ],
+      "completionCriteria": [
+        "프로젝트 허용 기반 목록·목록 확장 diff·설정 drift·누락/충돌 진단을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": [
+        "D04-02",
+        "D03-03",
+        "D37-01",
+        "D37-02"
+      ]
+    },
+    {
+      "id": "DLV03",
+      "domain": "DLV",
+      "path": "docs/foundation/delivery/user-owned-library-and-packaging.md",
+      "title": "사용자 소유 코드·패키지·배포",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "플랫폼 담당",
+      "owns": "소스 폴더·직접 복사·사용자 npm·Git UI 패키지의 동등 전달과 provenance",
+      "boundary": "Studio 구독 종료로 이미 내보낸 사용자 코드를 사용 불가로 만들지 않음",
+      "upstreamDocumentIds": [
+        "DLV01",
+        "DLV02",
+        "BIZ01",
+        "BRD02"
+      ],
+      "primaryDecisionIds": [
+        "D32-01"
+      ],
+      "completionCriteria": [
+        "출력 manifest·공개 타입·license notice·의존성·네 경로 설치 검증을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "DLV04",
+      "domain": "DLV",
+      "path": "docs/foundation/delivery/diff-upgrades-and-rollback.md",
+      "title": "사용자 수정 diff·업그레이드·rollback",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "플랫폼 담당",
+      "owns": "새 출력/현재 파일 비교·구간 선택·기준 없음·다중 프로젝트 버전 고정",
+      "boundary": "반복 React 역수입이나 사용자 수정의 무조건적 자동 병합을 약속하지 않음",
+      "upstreamDocumentIds": [
+        "GOV03",
+        "DLV02",
+        "DLV03",
+        "ARC03"
+      ],
+      "primaryDecisionIds": [
+        "D33-01",
+        "D33-02",
+        "D33-03",
+        "D33-04"
+      ],
+      "completionCriteria": [
+        "이동/삭제/의존성 충돌·시험 적용·개별 rollback·AI 해결안 검토를 예시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "QAL01",
+      "domain": "QAL",
+      "path": "docs/foundation/quality/conformance-and-test-plans.md",
+      "title": "검증 요구·oracle·자동/수동 검사",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "품질 책임자",
+      "owns": "공통 계약과 target profile의 정상/오류/경계 테스트·수동 확인 요구",
+      "boundary": "검사 0개·skip·근사 preview·AI self-report를 완전 준수로 세지 않음",
+      "upstreamDocumentIds": [
+        "CMP08",
+        "CMP09",
+        "DLV01",
+        "AI02"
+      ],
+      "primaryDecisionIds": [
+        "D31-01",
+        "D31-02",
+        "D31-04"
+      ],
+      "completionCriteria": [
+        "대표 유형과 전체 카탈로그의 커버리지·접근성 수동 검사 범위를 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": [
+        "D17-02",
+        "D36-02"
+      ]
+    },
+    {
+      "id": "QAL02",
+      "domain": "QAL",
+      "path": "docs/foundation/quality/evidence-and-freshness.md",
+      "title": "검증 증거·freshness·추적성",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "품질 책임자",
+      "owns": "문서/계약/코드/의존성/환경 hash, 증거 수명·영향·재검증",
+      "boundary": "전체 profile 재실행과 필수 요구에 따른 배포 판정을 혼동하지 않음",
+      "upstreamDocumentIds": [
+        "QAL01",
+        "GOV03",
+        "DLV03"
+      ],
+      "primaryDecisionIds": [
+        "D31-03"
+      ],
+      "completionCriteria": [
+        "디자인 변경·코드 수정·의존성 업데이트 후 기존 성공 결과가 무효화되는 조건을 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "QAL03",
+      "domain": "QAL",
+      "path": "docs/foundation/quality/performance-capacity-and-budgets.md",
+      "title": "성능·규모·비용 예산",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "품질 책임자",
+      "owns": "작은/큰 DS 데이터셋·기준 장비·편집 지연·회복·생성 비용·중단 한도",
+      "boundary": "실측 전 성능 수치나 개발 일정을 확정된 성과로 표기하지 않음",
+      "upstreamDocumentIds": [
+        "PRD02",
+        "ARC04",
+        "UX07",
+        "AI02",
+        "BIZ02"
+      ],
+      "primaryDecisionIds": [
+        "D38-01",
+        "D38-05"
+      ],
+      "completionCriteria": [
+        "측정 계획·표본/장비·percentile·허용 한도 설정과 초과 시 대안을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "QAL04",
+      "domain": "QAL",
+      "path": "docs/foundation/quality/release-readiness.md",
+      "title": "제품 출시 기준과 전체 지원",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "품질 책임자",
+      "owns": "기능/카탈로그/타깃/환경 전체범위와 독립 증거에 따른 출시 판정",
+      "boundary": "문서 1.0.0 완료를 제품 출시 완료로 취급하지 않음",
+      "upstreamDocumentIds": [
+        "PRD03",
+        "QAL01",
+        "QAL02",
+        "QAL03",
+        "BIZ01",
+        "UX08"
+      ],
+      "primaryDecisionIds": [
+        "D38-02"
+      ],
+      "completionCriteria": [
+        "필수 항목 미완료·수동 미확인·지원 차이 공개·출시 보류 조건을 명시",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [
+        "Button",
+        "Card",
+        "Toast"
+      ],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "OPS01",
+      "domain": "OPS",
+      "path": "docs/foundation/operations/security-and-data-boundaries.md",
+      "title": "보안·데이터·비밀정보 관리",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "개발/운영 담당",
+      "owns": "명령/Host/Agent 경계 위협, 자격 증명·출력 실행 격리·데이터 보존/삭제",
+      "boundary": "UI에서 도구 숨기기를 권한 강제로 대신하지 않음",
+      "upstreamDocumentIds": [
+        "ARC06",
+        "ARC07",
+        "AI02",
+        "BIZ01"
+      ],
+      "primaryDecisionIds": [],
+      "completionCriteria": [
+        "외부 입력·의존성 실행·키 유출·검증 위조·폐쇄망 경계별 대응과 확인 계획을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "OPS02",
+      "domain": "OPS",
+      "path": "docs/foundation/operations/hosting-observability-and-support.md",
+      "title": "호스팅·운영·진단·장애·지원",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "개발/운영 담당",
+      "owns": "로컬 진단 기본, 선택 오류 보고, SaaS/self-host 업그레이드·backup·지원",
+      "boundary": "미정 enterprise installer를 초기 제공 완료로 표시하지 않음",
+      "upstreamDocumentIds": [
+        "ARC04",
+        "ARC06",
+        "OPS01",
+        "BIZ02"
+      ],
+      "primaryDecisionIds": [
+        "D38-04"
+      ],
+      "completionCriteria": [
+        "장애·복구·자원 한도·지원 요청·사용권 연결 실패 runbook의 필수 항목을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": [
+        "D37-04"
+      ]
+    },
+    {
+      "id": "OPS03",
+      "domain": "OPS",
+      "path": "docs/foundation/operations/release-and-supply-chain.md",
+      "title": "릴리스·배포·의존성 공급망",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "개발/운영 담당",
+      "owns": "재현 빌드·패키지/앱 배포·의존성 고정·자산 고지·변경 이력·rollback",
+      "boundary": "공개 코어 권리와 기업용 소스 제공 조건을 임의 변경하지 않음",
+      "upstreamDocumentIds": [
+        "ARC02",
+        "DLV03",
+        "DLV04",
+        "QAL02",
+        "BIZ01"
+      ],
+      "primaryDecisionIds": [],
+      "completionCriteria": [
+        "배포 채널별 버전·출처·검증·사용자 수정 보존·폐기 절차를 설명",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    },
+    {
+      "id": "OPS04",
+      "domain": "OPS",
+      "path": "docs/foundation/operations/development-and-maintenance.md",
+      "title": "지속 개발·유지보수·인수인계",
+      "status": "PLANNED_NOT_WRITTEN",
+      "ownerRole": "개발/운영 담당",
+      "owns": "1인 개발 작업 단위, 요구→문서→계약→구현→검증→배포 변경 절차",
+      "boundary": "후속 개발자의 편의로 사용자 승인 범위를 자동 확대하지 않음",
+      "upstreamDocumentIds": [
+        "GOV01",
+        "ARC02",
+        "QAL04",
+        "OPS03",
+        "BIZ04"
+      ],
+      "primaryDecisionIds": [],
+      "completionCriteria": [
+        "변경 사례별 영향 문서·코드·검사·승인 범위와 다음 작업 선택 규칙을 정의",
+        "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+        "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+      ],
+      "reviewExamples": [],
+      "source": "docs/decisions/axiom-foundation-direction-approval.json",
+      "updateTriggers": [
+        "소유한 계약·지원 범위·사용자 흐름이 바뀔 때",
+        "관련 upstream의 호환성 또는 의미가 바뀔 때"
+      ],
+      "supportingDecisionIds": []
+    }
+  ],
+  "decisionCoverage": [
+    {
+      "id": "D01-01",
+      "taskId": "D01",
+      "primaryDocumentId": "GOV01"
+    },
+    {
+      "id": "D01-02",
+      "taskId": "D01",
+      "primaryDocumentId": "GOV02"
+    },
+    {
+      "id": "D01-03",
+      "taskId": "D01",
+      "primaryDocumentId": "GOV01"
+    },
+    {
+      "id": "D02-01",
+      "taskId": "D02",
+      "primaryDocumentId": "PRD03"
+    },
+    {
+      "id": "D02-02",
+      "taskId": "D02",
+      "primaryDocumentId": "PRD03"
+    },
+    {
+      "id": "D02-03",
+      "taskId": "D02",
+      "primaryDocumentId": "PRD03"
+    },
+    {
+      "id": "D02-04",
+      "taskId": "D02",
+      "primaryDocumentId": "PRD03"
+    },
+    {
+      "id": "D03-01",
+      "taskId": "D03",
+      "primaryDocumentId": "ARC02"
+    },
+    {
+      "id": "D03-02",
+      "taskId": "D03",
+      "primaryDocumentId": "BIZ01"
+    },
+    {
+      "id": "D03-03",
+      "taskId": "D03",
+      "primaryDocumentId": "ARC07"
+    },
+    {
+      "id": "D04-01",
+      "taskId": "D04",
+      "primaryDocumentId": "SYN02"
+    },
+    {
+      "id": "D04-02",
+      "taskId": "D04",
+      "primaryDocumentId": "SYN02"
+    },
+    {
+      "id": "D04-03",
+      "taskId": "D04",
+      "primaryDocumentId": "SYN02"
+    },
+    {
+      "id": "D05-01",
+      "taskId": "D05",
+      "primaryDocumentId": "GOV03"
+    },
+    {
+      "id": "D05-02",
+      "taskId": "D05",
+      "primaryDocumentId": "SYN04"
+    },
+    {
+      "id": "D05-03",
+      "taskId": "D05",
+      "primaryDocumentId": "CMP02"
+    },
+    {
+      "id": "D06-01",
+      "taskId": "D06",
+      "primaryDocumentId": "SYN04"
+    },
+    {
+      "id": "D06-02",
+      "taskId": "D06",
+      "primaryDocumentId": "SYN04"
+    },
+    {
+      "id": "D06-03",
+      "taskId": "D06",
+      "primaryDocumentId": "SYN01"
+    },
+    {
+      "id": "D07-01",
+      "taskId": "D07",
+      "primaryDocumentId": "SYN03"
+    },
+    {
+      "id": "D07-02",
+      "taskId": "D07",
+      "primaryDocumentId": "SYN03"
+    },
+    {
+      "id": "D07-03",
+      "taskId": "D07",
+      "primaryDocumentId": "SYN03"
+    },
+    {
+      "id": "D08-01",
+      "taskId": "D08",
+      "primaryDocumentId": "SYN03"
+    },
+    {
+      "id": "D08-02",
+      "taskId": "D08",
+      "primaryDocumentId": "UX05"
+    },
+    {
+      "id": "D08-03",
+      "taskId": "D08",
+      "primaryDocumentId": "SYN03"
+    },
+    {
+      "id": "D09-01",
+      "taskId": "D09",
+      "primaryDocumentId": "CMP01"
+    },
+    {
+      "id": "D09-02",
+      "taskId": "D09",
+      "primaryDocumentId": "CMP01"
+    },
+    {
+      "id": "D09-03",
+      "taskId": "D09",
+      "primaryDocumentId": "CMP01"
+    },
+    {
+      "id": "D10-01",
+      "taskId": "D10",
+      "primaryDocumentId": "CMP03"
+    },
+    {
+      "id": "D10-02",
+      "taskId": "D10",
+      "primaryDocumentId": "CMP03"
+    },
+    {
+      "id": "D10-03",
+      "taskId": "D10",
+      "primaryDocumentId": "CMP03"
+    },
+    {
+      "id": "D11-01",
+      "taskId": "D11",
+      "primaryDocumentId": "CMP02"
+    },
+    {
+      "id": "D11-02",
+      "taskId": "D11",
+      "primaryDocumentId": "CMP02"
+    },
+    {
+      "id": "D11-03",
+      "taskId": "D11",
+      "primaryDocumentId": "CMP02"
+    },
+    {
+      "id": "D12-01",
+      "taskId": "D12",
+      "primaryDocumentId": "CMP11"
+    },
+    {
+      "id": "D12-02",
+      "taskId": "D12",
+      "primaryDocumentId": "AI02"
+    },
+    {
+      "id": "D12-03",
+      "taskId": "D12",
+      "primaryDocumentId": "CMP11"
+    },
+    {
+      "id": "D13-01",
+      "taskId": "D13",
+      "primaryDocumentId": "CMP05"
+    },
+    {
+      "id": "D13-02",
+      "taskId": "D13",
+      "primaryDocumentId": "CMP05"
+    },
+    {
+      "id": "D13-03",
+      "taskId": "D13",
+      "primaryDocumentId": "CMP05"
+    },
+    {
+      "id": "D14-01",
+      "taskId": "D14",
+      "primaryDocumentId": "CMP04"
+    },
+    {
+      "id": "D14-02",
+      "taskId": "D14",
+      "primaryDocumentId": "CMP04"
+    },
+    {
+      "id": "D14-03",
+      "taskId": "D14",
+      "primaryDocumentId": "CMP04"
+    },
+    {
+      "id": "D15-01",
+      "taskId": "D15",
+      "primaryDocumentId": "CMP06"
+    },
+    {
+      "id": "D15-02",
+      "taskId": "D15",
+      "primaryDocumentId": "CMP06"
+    },
+    {
+      "id": "D15-03",
+      "taskId": "D15",
+      "primaryDocumentId": "UX06"
+    },
+    {
+      "id": "D16-01",
+      "taskId": "D16",
+      "primaryDocumentId": "CMP07"
+    },
+    {
+      "id": "D16-02",
+      "taskId": "D16",
+      "primaryDocumentId": "CMP07"
+    },
+    {
+      "id": "D16-03",
+      "taskId": "D16",
+      "primaryDocumentId": "CMP07"
+    },
+    {
+      "id": "D17-01",
+      "taskId": "D17",
+      "primaryDocumentId": "UX06"
+    },
+    {
+      "id": "D17-02",
+      "taskId": "D17",
+      "primaryDocumentId": "CMP08"
+    },
+    {
+      "id": "D17-03",
+      "taskId": "D17",
+      "primaryDocumentId": "CMP08"
+    },
+    {
+      "id": "D18-01",
+      "taskId": "D18",
+      "primaryDocumentId": "UX06"
+    },
+    {
+      "id": "D18-02",
+      "taskId": "D18",
+      "primaryDocumentId": "CMP09"
+    },
+    {
+      "id": "D18-03",
+      "taskId": "D18",
+      "primaryDocumentId": "CMP09"
+    },
+    {
+      "id": "D19-01",
+      "taskId": "D19",
+      "primaryDocumentId": "CMP10"
+    },
+    {
+      "id": "D19-02",
+      "taskId": "D19",
+      "primaryDocumentId": "CMP10"
+    },
+    {
+      "id": "D19-03",
+      "taskId": "D19",
+      "primaryDocumentId": "CMP10"
+    },
+    {
+      "id": "D20-01",
+      "taskId": "D20",
+      "primaryDocumentId": "ARC03"
+    },
+    {
+      "id": "D20-02",
+      "taskId": "D20",
+      "primaryDocumentId": "ARC03"
+    },
+    {
+      "id": "D20-03",
+      "taskId": "D20",
+      "primaryDocumentId": "ARC03"
+    },
+    {
+      "id": "D21-01",
+      "taskId": "D21",
+      "primaryDocumentId": "ARC04"
+    },
+    {
+      "id": "D21-02",
+      "taskId": "D21",
+      "primaryDocumentId": "ARC04"
+    },
+    {
+      "id": "D21-03",
+      "taskId": "D21",
+      "primaryDocumentId": "ARC04"
+    },
+    {
+      "id": "D22-01",
+      "taskId": "D22",
+      "primaryDocumentId": "ARC05"
+    },
+    {
+      "id": "D22-02",
+      "taskId": "D22",
+      "primaryDocumentId": "ARC05"
+    },
+    {
+      "id": "D22-03",
+      "taskId": "D22",
+      "primaryDocumentId": "ARC05"
+    },
+    {
+      "id": "D23-01",
+      "taskId": "D23",
+      "primaryDocumentId": "UX02"
+    },
+    {
+      "id": "D23-02",
+      "taskId": "D23",
+      "primaryDocumentId": "UX02"
+    },
+    {
+      "id": "D23-03",
+      "taskId": "D23",
+      "primaryDocumentId": "UX02"
+    },
+    {
+      "id": "D24-01",
+      "taskId": "D24",
+      "primaryDocumentId": "UX03"
+    },
+    {
+      "id": "D24-02",
+      "taskId": "D24",
+      "primaryDocumentId": "UX03"
+    },
+    {
+      "id": "D24-03",
+      "taskId": "D24",
+      "primaryDocumentId": "UX03"
+    },
+    {
+      "id": "D25-01",
+      "taskId": "D25",
+      "primaryDocumentId": "UX04"
+    },
+    {
+      "id": "D25-02",
+      "taskId": "D25",
+      "primaryDocumentId": "UX04"
+    },
+    {
+      "id": "D25-03",
+      "taskId": "D25",
+      "primaryDocumentId": "UX04"
+    },
+    {
+      "id": "D26-01",
+      "taskId": "D26",
+      "primaryDocumentId": "UX01"
+    },
+    {
+      "id": "D26-02",
+      "taskId": "D26",
+      "primaryDocumentId": "UX01"
+    },
+    {
+      "id": "D26-03",
+      "taskId": "D26",
+      "primaryDocumentId": "UX01"
+    },
+    {
+      "id": "D27-01",
+      "taskId": "D27",
+      "primaryDocumentId": "UX07"
+    },
+    {
+      "id": "D27-02",
+      "taskId": "D27",
+      "primaryDocumentId": "UX07"
+    },
+    {
+      "id": "D27-03",
+      "taskId": "D27",
+      "primaryDocumentId": "UX07"
+    },
+    {
+      "id": "D28-01",
+      "taskId": "D28",
+      "primaryDocumentId": "AI01"
+    },
+    {
+      "id": "D28-02",
+      "taskId": "D28",
+      "primaryDocumentId": "AI01"
+    },
+    {
+      "id": "D28-03",
+      "taskId": "D28",
+      "primaryDocumentId": "AI01"
+    },
+    {
+      "id": "D29-01",
+      "taskId": "D29",
+      "primaryDocumentId": "AI02"
+    },
+    {
+      "id": "D29-02",
+      "taskId": "D29",
+      "primaryDocumentId": "AI02"
+    },
+    {
+      "id": "D29-03",
+      "taskId": "D29",
+      "primaryDocumentId": "AI02"
+    },
+    {
+      "id": "D30-01",
+      "taskId": "D30",
+      "primaryDocumentId": "DLV01"
+    },
+    {
+      "id": "D30-02",
+      "taskId": "D30",
+      "primaryDocumentId": "DLV01"
+    },
+    {
+      "id": "D30-03",
+      "taskId": "D30",
+      "primaryDocumentId": "DLV01"
+    },
+    {
+      "id": "D30-04",
+      "taskId": "D30",
+      "primaryDocumentId": "DLV01"
+    },
+    {
+      "id": "D31-01",
+      "taskId": "D31",
+      "primaryDocumentId": "QAL01"
+    },
+    {
+      "id": "D31-02",
+      "taskId": "D31",
+      "primaryDocumentId": "QAL01"
+    },
+    {
+      "id": "D31-03",
+      "taskId": "D31",
+      "primaryDocumentId": "QAL02"
+    },
+    {
+      "id": "D31-04",
+      "taskId": "D31",
+      "primaryDocumentId": "QAL01"
+    },
+    {
+      "id": "D32-01",
+      "taskId": "D32",
+      "primaryDocumentId": "DLV03"
+    },
+    {
+      "id": "D32-02",
+      "taskId": "D32",
+      "primaryDocumentId": "DLV02"
+    },
+    {
+      "id": "D32-03",
+      "taskId": "D32",
+      "primaryDocumentId": "DLV02"
+    },
+    {
+      "id": "D32-04",
+      "taskId": "D32",
+      "primaryDocumentId": "DLV02"
+    },
+    {
+      "id": "D33-01",
+      "taskId": "D33",
+      "primaryDocumentId": "DLV04"
+    },
+    {
+      "id": "D33-02",
+      "taskId": "D33",
+      "primaryDocumentId": "DLV04"
+    },
+    {
+      "id": "D33-03",
+      "taskId": "D33",
+      "primaryDocumentId": "DLV04"
+    },
+    {
+      "id": "D33-04",
+      "taskId": "D33",
+      "primaryDocumentId": "DLV04"
+    },
+    {
+      "id": "D34-01",
+      "taskId": "D34",
+      "primaryDocumentId": "UX07"
+    },
+    {
+      "id": "D34-02",
+      "taskId": "D34",
+      "primaryDocumentId": "UX07"
+    },
+    {
+      "id": "D34-03",
+      "taskId": "D34",
+      "primaryDocumentId": "UX07"
+    },
+    {
+      "id": "D35-01",
+      "taskId": "D35",
+      "primaryDocumentId": "BRD01"
+    },
+    {
+      "id": "D35-02",
+      "taskId": "D35",
+      "primaryDocumentId": "BRD01"
+    },
+    {
+      "id": "D35-03",
+      "taskId": "D35",
+      "primaryDocumentId": "BRD02"
+    },
+    {
+      "id": "D36-01",
+      "taskId": "D36",
+      "primaryDocumentId": "GOV02"
+    },
+    {
+      "id": "D36-02",
+      "taskId": "D36",
+      "primaryDocumentId": "UX08"
+    },
+    {
+      "id": "D36-03",
+      "taskId": "D36",
+      "primaryDocumentId": "UX01"
+    },
+    {
+      "id": "D37-01",
+      "taskId": "D37",
+      "primaryDocumentId": "ARC06"
+    },
+    {
+      "id": "D37-02",
+      "taskId": "D37",
+      "primaryDocumentId": "ARC06"
+    },
+    {
+      "id": "D37-03",
+      "taskId": "D37",
+      "primaryDocumentId": "ARC06"
+    },
+    {
+      "id": "D37-04",
+      "taskId": "D37",
+      "primaryDocumentId": "ARC06"
+    },
+    {
+      "id": "D38-01",
+      "taskId": "D38",
+      "primaryDocumentId": "QAL03"
+    },
+    {
+      "id": "D38-02",
+      "taskId": "D38",
+      "primaryDocumentId": "QAL04"
+    },
+    {
+      "id": "D38-03",
+      "taskId": "D38",
+      "primaryDocumentId": "BIZ04"
+    },
+    {
+      "id": "D38-04",
+      "taskId": "D38",
+      "primaryDocumentId": "OPS02"
+    },
+    {
+      "id": "D38-05",
+      "taskId": "D38",
+      "primaryDocumentId": "QAL03"
+    },
+    {
+      "id": "D39-01",
+      "taskId": "D39",
+      "primaryDocumentId": "BIZ02"
+    },
+    {
+      "id": "D39-02",
+      "taskId": "D39",
+      "primaryDocumentId": "BIZ02"
+    },
+    {
+      "id": "D39-03",
+      "taskId": "D39",
+      "primaryDocumentId": "BIZ02"
+    },
+    {
+      "id": "D39-04",
+      "taskId": "D39",
+      "primaryDocumentId": "BIZ01"
+    },
+    {
+      "id": "D39-05",
+      "taskId": "D39",
+      "primaryDocumentId": "AI01"
+    },
+    {
+      "id": "D39-06",
+      "taskId": "D39",
+      "primaryDocumentId": "BIZ03"
+    },
+    {
+      "id": "D39-07",
+      "taskId": "D39",
+      "primaryDocumentId": "BIZ02"
+    }
+  ],
+  "followupCoverage": [
+    {
+      "id": "DQ01",
+      "primaryDocumentIds": [
+        "CMP02"
+      ]
+    },
+    {
+      "id": "DQ02",
+      "primaryDocumentIds": [
+        "SYN02"
+      ]
+    },
+    {
+      "id": "DQ03",
+      "primaryDocumentIds": [
+        "CMP06",
+        "DLV02",
+        "SYN02"
+      ]
+    },
+    {
+      "id": "DQ04",
+      "primaryDocumentIds": [
+        "GOV03"
+      ]
+    },
+    {
+      "id": "DQ05",
+      "primaryDocumentIds": [
+        "PRD03",
+        "SYN01"
+      ]
+    },
+    {
+      "id": "DQ06",
+      "primaryDocumentIds": [
+        "SYN03"
+      ]
+    },
+    {
+      "id": "DQ07",
+      "primaryDocumentIds": [
+        "CMP07"
+      ]
+    },
+    {
+      "id": "DQ08",
+      "primaryDocumentIds": [
+        "UX06"
+      ]
+    },
+    {
+      "id": "DQ09",
+      "primaryDocumentIds": [
+        "AI01"
+      ]
+    },
+    {
+      "id": "DQ10",
+      "primaryDocumentIds": [
+        "DLV01",
+        "PRD03"
+      ]
+    },
+    {
+      "id": "DQ11",
+      "primaryDocumentIds": [
+        "AI01",
+        "ARC04",
+        "ARC06"
+      ]
+    },
+    {
+      "id": "DQ12",
+      "primaryDocumentIds": [
+        "AI01",
+        "ARC07"
+      ]
+    },
+    {
+      "id": "DQ13",
+      "primaryDocumentIds": [
+        "BIZ01"
+      ]
+    },
+    {
+      "id": "DQ14",
+      "primaryDocumentIds": [
+        "BIZ01",
+        "BIZ02"
+      ]
+    }
+  ],
+  "suggestedDependencyOrder": [
+    "GOV01",
+    "GOV02",
+    "GOV03",
+    "PRD01",
+    "PRD02",
+    "BIZ01",
+    "BRD01",
+    "PRD03",
+    "BIZ02",
+    "BRD02",
+    "BIZ03",
+    "BIZ04",
+    "SYN01",
+    "SYN02",
+    "SYN03",
+    "SYN04",
+    "CMP01",
+    "CMP02",
+    "CMP03",
+    "ARC01",
+    "CMP04",
+    "CMP05",
+    "ARC02",
+    "CMP06",
+    "CMP07",
+    "CMP08",
+    "CMP09",
+    "CMP11",
+    "CMP10",
+    "UX01",
+    "ARC03",
+    "UX02",
+    "UX05",
+    "UX06",
+    "ARC04",
+    "UX03",
+    "UX04",
+    "ARC05",
+    "ARC06",
+    "UX07",
+    "UX08",
+    "ARC07",
+    "AI01",
+    "AI02",
+    "DLV01",
+    "QAL03",
+    "OPS01",
+    "DLV02",
+    "QAL01",
+    "OPS02",
+    "DLV03",
+    "DLV04",
+    "QAL02",
+    "QAL04",
+    "OPS03",
+    "OPS04"
+  ],
+  "documentationGate": "Complete and confirm 56 documents plus governed annexes before new product implementation; executed runtime evidence belongs to implementation/release gates",
+  "governedAnnexes": [
+    "stable catalog of unique components and target obligations",
+    "definition vocabulary/traits/roles/policies and compatibility tables",
+    "schema field tables and illustrative JSON",
+    "command/API/MCP and diagnostics catalog",
+    "target/dependency/test/environment matrix",
+    "test scenario and evidence requirement register",
+    "license/asset provenance and package notice list",
+    "terminology/translation/copy inventory",
+    "technology/reference decision register for canvas/render/layout/text/schema/runtime and licenses"
+  ],
+  "implementationAssetsLater": [
+    "production schemas and validators",
+    "runnable fixtures and generated test harness",
+    "Studio, Host, renderers and target implementations"
+  ],
+  "historicalEvidencePolicy": "Earlier local studies and frozen Git code are research sources, not inherited normative product contracts."
+}

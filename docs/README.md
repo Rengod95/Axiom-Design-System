@@ -1,6 +1,8 @@
 # Axiom documentation
 
-**Current phase: decision reconciliation and Foundation planning.** No Foundation 1.0.0 document index, complete documentation baseline or new product implementation is approved by this cleanup.
+**Current phase: product direction confirmed; document index and development approach proposed for owner review.** Full documentation and new product implementation have not started.
+
+Start with the [Foundation 1.0.0 index proposal](foundation/README.md), the [56-document responsibility index](foundation/document-index.md), and the [129-decision mapping](foundation/decision-coverage.md). The [owner direction approval](decisions/axiom-foundation-direction-approval.md) records what is confirmed and which technology, licensing and evidence decisions remain conditional.
 
 1. [Product phase and confirmation sequence — ADR-0006](adr/0006-product-reset-and-reference-lifecycle.md)
 2. [Git-only source preservation and active-tree retirement — ADR-0007](adr/0007-git-reference-and-documentation-phase.md)
@@ -8,7 +10,7 @@
 4. [Frozen source reference and restoration](../reference/pre-studio/README.md)
 5. [Engineering rules and their current scope](standards/source-code-and-module-structure.md)
 
-The owner is answering D01–D39 and follow-up questions. Responses, interpretations, technical proposals and unresolved comparisons must remain distinguishable until overall confirmation. Planning Markdown and JSON may be added under `docs/`; adding them does not make proposals accepted.
+The owner confirmed the D01–D39 directions, follow-up interpretations, delegated defaults and conditional selection procedures. Unselected technologies, exact licenses/prices and runtime evidence are not made final by that confirmation. The proposed index still needs its own confirmation. Planning Markdown and JSON may be added under `docs/`; adding them does not make proposals accepted.
 
 ## Required progression
 
