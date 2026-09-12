@@ -1,5 +1,7 @@
 # Axiom Normative Specifications
 
+> **Lifecycle: frozen reference corpus.** These inputs describe the retained pre-Studio implementation and default-system template. They are not the universal user-system contract for the new Builder. See [ADR-0006](../docs/adr/0006-product-reset-and-reference-lifecycle.md).
+
 `spec/` contains the machine-readable authority subordinate to the prose SSOT.
 Generated TypeScript and runtime implementations must derive from these inputs.
 

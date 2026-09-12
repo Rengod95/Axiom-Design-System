@@ -1,5 +1,7 @@
 # N21 Token Binding Validation
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](../adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 Status: **COMPLETE — declaration-aware Token semantic boundary**.
 
 `@axiom/appearance-authoring` requires explicit resolved Token, Domain,

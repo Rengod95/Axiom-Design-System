@@ -1,5 +1,7 @@
 # N20 CSS Appearance Authoring
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](../adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 Status: **COMPLETE — CSS-aware structural authoring boundary**.
 
 `@axiom/appearance-authoring` configures the N19 renderer-neutral Recipe Kernel

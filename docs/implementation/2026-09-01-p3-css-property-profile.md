@@ -1,10 +1,12 @@
 # P3 CSS Property Profile — implementation report
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](../adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 **Date:** 2026-09-01  
 **Status:** COMPLETE for the property-profile gate  
 **Scope:** pinned CSS metadata, sparse policy, effective registry, Token Binding
 coverage, generated authoring types, snapshot diff, and CSS validation  
-**Related plan:** [Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-foundation-and-implementation-plan.md)
+**Related plan:** [Foundation Reconciliation & Implementation Plan](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-foundation-and-implementation-plan.md)
 
 ## Outcome
 

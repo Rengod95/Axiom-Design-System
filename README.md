@@ -1,63 +1,66 @@
 # Axiom Design System
 
-Axiom is a contract-first design-system project. Normative documents and JSON
-Schemas define the architecture; packages implement those contracts without
-becoming an alternative source of truth.
+Axiom is being redesigned around **Design System Builder in Axiom Studio**.
+This repository currently contains a deprecated pre-Studio reference implementation,
+not a released Studio product.
 
-## Authority
+Start with [ADR-0006](docs/adr/0006-product-reset-and-reference-lifecycle.md)
+and the [retirement ledger](docs/maintenance/pre-studio-retirement.md).
 
-When sources disagree, use this order:
+## Current development phase
 
-1. accepted ADRs;
-2. SSOT documents;
-3. normative schemas, registries, and pinned input manifests in `spec/`;
-4. conformance fixtures;
-5. generated definitions and artifacts;
-6. compiler and runtime packages;
-7. examples and historical reviews.
+The owner will confirm D01–D39 decisions first, then the Foundation 1.0.0
+document index and development direction, then the complete documentation.
+New product implementation follows those confirmations. Repository retirement
+is a separately authorized task; it does not approve new product architecture.
 
-Start with the [documentation index](docs/README.md), the
-[current architecture](docs/architecture.md), and the
-[source-code and module standard](docs/standards/source-code-and-module-structure.md).
+Initial authoring is GUI plus built-in AI. External React import and repeated
+code-to-GUI synchronization are outside initial scope. Common component meaning
+and Foundation tokens can be shared while Web and Mobile designs differ.
+Exported source remains user-owned.
 
-## Current workspace
+## Reference packages
 
-| Package | Responsibility |
+All ten packages below are frozen reuse candidates. Existing algorithms and tests
+may be reused only after checking their new ownership and contract. The lifecycle
+label is not an npm deprecation and does not make the packages part of the new
+Studio architecture.
+
+| Package | Retained reference purpose |
 | --- | --- |
-| `@axiom/spec-tooling` | Validate normative schemas, registries, fixtures, and canonical digests |
-| `@axiom/tokens` | Own token contracts, identity validation, context resolution, and manifest serialization |
-| `@axiom/token-tooling` | Adapt pinned DTCG parser output to Axiom token contracts |
-| `@axiom/css-property-profile` | Generate the pinned CSS registry, Token bindings, authoring types, and validation services |
+| [@axiom/tokens](packages/tokens/README.md) | token validation, serializable values, context resolution, manifest fixtures |
+| [@axiom/token-tooling](packages/token-tooling/README.md) | pinned parser boundary, default-system template, policy and negative fixtures |
+| [@axiom/recipe-kernel](packages/recipe-kernel/README.md) | style structure, order, normalization and type fixtures |
+| [@axiom/css-property-profile](packages/css-property-profile/README.md) | pinned Web CSS grammar, registry, binding and validation |
+| [@axiom/appearance-authoring](packages/appearance-authoring/README.md) | Web style and token-binding validation |
+| [@axiom/appearance-normalizer](packages/appearance-normalizer/README.md) | ordered declarations, provenance, collision traces and fixtures |
+| [@axiom/condition-registry](packages/condition-registry/README.md) | environment condition analysis and regression cases |
+| [@axiom/motion-schema](packages/motion-schema/README.md) | Web motion grammar, authority checks and regression fixtures |
+| [@axiom/behavior-contracts](packages/behavior-contracts/README.md) | generated criteria and source-evidence contracts |
+| [@axiom/spec-tooling](packages/spec-tooling/README.md) | schema harness, positive/negative fixtures, generators and digests |
 
-Renderer, recipe, appearance-normalization, and framework packages are intentionally absent
-until their implementation gates are satisfied by the SSOT and normative spec.
-The pre-foundation MVP packages are not migration authorities and must not be
-reintroduced as examples.
+The earlier runtime/Tailwind MVP packages were already removed before this change.
+The current Recipe and appearance-normalization packages do exist; the old README
+statement that they were absent was stale. No Studio renderer or complete platform
+realization pipeline is claimed here.
 
-## Repository layout
+## Reference authority and verification
 
-| Path | Role |
-| --- | --- |
-| `docs/` | ADRs, SSOT, normative annexes, implementation reports, and standards |
-| `spec/` | Machine-readable normative schemas, registries, and conformance fixtures |
-| `fixtures/` | External-source fixtures such as DTCG token documents |
-| `tokens/` | Normative base and context-specific DTCG Token sources |
-| `packages/` | Capability-owned implementation packages with explicit public entry points |
-| `scripts/` | Repository policy and deterministic quality checks |
+For the retained implementation, use the scoped authority order in the
+[documentation index](docs/README.md). Historical contracts remain available to
+interpret its fixtures and generated artifacts, not to prescribe new product work.
 
-Version numbers remain contract data where compatibility requires them, but
-they are not used in source identifiers, filenames, or directory names.
-
-## Local verification
+`spec/`, `fixtures/`, `tokens/`, package manifests, generated files and the lockfile
+remain connected to the current reference checks. Generated files must not be
+edited independently to hide an incompatibility.
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 pnpm check
 pnpm test
 pnpm build
 ```
 
-`pnpm check` also verifies that the resolved Token artifacts, generated Token
-path types, effective CSS registry, coverage report, and CSS authoring types have
-not drifted from their pinned inputs. Any source-level change must pass all
-three commands before review.
+See [source standards](docs/standards/source-code-and-module-structure.md).
+Version numbers belong in contract data and provenance, not source identifiers,
+filenames or directories.

@@ -2,6 +2,8 @@
 
 These instructions apply to every file in this repository.
 
+Current product phase: read [ADR-0006](docs/adr/0006-product-reset-and-reference-lifecycle.md) before treating existing ADRs, SSOT or packages as instructions for new work. The current packages are frozen reference/reuse candidates. Follow the owner's decision, document-index, documentation and implementation confirmation sequence. The separately authorized retirement work does not authorize new product implementation.
+
 Before changing source code, read:
 
 1. `docs/README.md` for authority order;

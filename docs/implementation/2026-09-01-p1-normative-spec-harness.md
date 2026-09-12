@@ -1,9 +1,11 @@
 # P1 Normative Specification Harness — Implementation Report
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](../adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 **Date:** 2026-09-01 \
 **Status:** IMPLEMENTED — first Foundation code entry point \
 **Scope:** P1 plus the first P2 identity/domain slice \
-**Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-foundation-and-implementation-plan.md)
+**Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-foundation-and-implementation-plan.md)
 
 **Subsequent checkpoint:** [P2.1 DTCG Parser & Normalization Boundary](2026-09-01-p2-token-parser-and-normalization.md)
 

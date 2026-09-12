@@ -1,10 +1,19 @@
 # Axiom Documentation
 
-이 디렉터리는 Axiom의 규범, 결정 기록, 구현 계획, 소스 표준, 역사적 자료를
-분리한다. 현재 패키지는 아래 SSOT와 machine-readable spec을 단계적으로
-구현하며, 구현 자체가 별도의 authority가 되지 않는다.
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
 
-## Authority Order
+## Current Product Phase
+
+현재 작업은 D01–D39 결정 취합입니다. 이후 Foundation 1.0.0 문서 인덱스·개발 방향,
+전체 문서 기준선을 각각 확인받은 뒤 새 제품 구현으로 진행합니다.
+[ADR-0006](adr/0006-product-reset-and-reference-lifecycle.md)과
+[정리 대장](maintenance/pre-studio-retirement.md)을 먼저 읽습니다.
+
+아래 문서는 남겨 둔 기존 구현을 해석하고 재현하기 위한 기준입니다.
+이전 실행 계획은 활성 checkout에서 제거하고 고정 Git 원문으로 연결했습니다.
+새 Studio의 아키텍처·지원 범위·구현 순서를 지시하는 현재 계획으로 사용하지 않습니다.
+
+## Authority Order for the Retained Reference
 
 문서와 구현이 충돌할 때 다음 순서를 적용한다.
 
@@ -29,7 +38,7 @@ reconciliation한다.
 위 authority order가 다시 유일한 기준이며 구현 자체가 authority가 되지는 않는다.
 ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결과다.
 
-## Start Here
+## Retained Reference Index
 
 1. [Current implementation architecture](architecture.md)
 2. [ADR-0001 — CSS-Native Appearance Profile and Initial Scope](adr/0001-css-native-appearance-profile-and-scope.md)
@@ -40,7 +49,7 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 6. [SSOT-00 — System Architecture & Standards Profile](ssot/00-system-architecture-and-standards-profile.md)
 7. [Token Domain & CSS Binding Catalog](specs/token-domain-and-css-binding-catalog.md)
 8. [React Aria Behavioral Criteria Profile](specs/react-aria-behavioral-criteria.md)
-9. [Foundation Reconciliation & Implementation Plan](plans/2026-09-01-foundation-and-implementation-plan.md)
+9. [Foundation Reconciliation & Implementation Plan](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-foundation-and-implementation-plan.md)
 10. [Source-code and Module-structure Standard](standards/source-code-and-module-structure.md)
 11. [P1 Normative Specification Harness — Implementation Report](implementation/2026-09-01-p1-normative-spec-harness.md)
 12. [P2.1 DTCG Parser & Normalization Boundary — Implementation Report](implementation/2026-09-01-p2-token-parser-and-normalization.md)
@@ -48,7 +57,7 @@ ADR-0004와 SSOT-01 v0.4.0은 Token clean break에 이 절차를 적용한 결�
 14. [MVP Removal & Source Standards — Implementation Report](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 15. [P2 Token Foundation Closeout — Implementation Report](implementation/2026-09-01-p2-token-foundation-closeout.md)
 16. [P3 CSS Property Profile — Implementation Report](implementation/2026-09-01-p3-css-property-profile.md)
-17. [Post-P3 Foundation Review and Next Sequence](plans/2026-09-01-post-p3-foundation-review.md)
+17. [Post-P3 Foundation Review and Next Sequence](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-post-p3-foundation-review.md)
 18. [Token Foundation Scale Hardening](implementation/2026-09-01-token-foundation-scale-hardening.md)
 19. [Canonical State and Condition Registries](implementation/2026-09-01-state-and-condition-registries.md)
 20. [Ordered CSS Declaration Contracts](implementation/2026-09-02-ordered-declaration-contracts.md)
@@ -73,7 +82,7 @@ ADR-0004는 Token vocabulary와 perceptual color profile을 기록한다.
 SSOT-00은 전체 모듈·권한·의존 방향을, implementation plan은
 실제 파일과 작업 순서·검증 gate를 정의한다.
 
-## Normative Specifications
+## Normative Specifications of the Retained Reference
 
 | Document | Version | Owns |
 | --- | --- | --- |
@@ -94,7 +103,7 @@ allowlist가 아니다. 전체 표준 property authoring은 generated registry�
 Token을 직접·template·projector 방식으로 연결할 수 있는지는 Catalog와
 sparse Property Policy가 담당한다.
 
-## Architecture at a Glance
+## Earlier Architecture at a Glance
 
 ```text
 DTCG Token Sources ──→ Resolved Context Manifests ───────────────┐
@@ -129,15 +138,15 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - Recipe authoring은 Panda Slot Recipes의 검증된 구조를 참고하지만 Axiom
   Recipe Kernel이 IR과 provenance를 소유한다.
 
-## Active Plan
+## Historical Plan and Implementation Records
 
-- [Foundation Reconciliation & Implementation Plan — 2026-09-01](plans/2026-09-01-foundation-and-implementation-plan.md)
+- [Foundation Reconciliation & Implementation Plan — 2026-09-01](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-foundation-and-implementation-plan.md)
 - [P1 Normative Specification Harness — Implementation Report — 2026-09-01](implementation/2026-09-01-p1-normative-spec-harness.md)
 - [P2.1 DTCG Parser & Normalization Boundary — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-token-parser-and-normalization.md)
 - [P2.3/P2.4 Tier Graph & Context Resolver — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-tier-graph-and-context-resolver.md)
 - [P2 Token Foundation Closeout — Implementation Report — 2026-09-01](implementation/2026-09-01-p2-token-foundation-closeout.md)
 - [P3 CSS Property Profile — Implementation Report — 2026-09-01](implementation/2026-09-01-p3-css-property-profile.md)
-- [Post-P3 Foundation Review and Next Sequence — 2026-09-01](plans/2026-09-01-post-p3-foundation-review.md)
+- [Post-P3 Foundation Review and Next Sequence — 2026-09-01](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-post-p3-foundation-review.md)
 - [Token Foundation Scale Hardening — 2026-09-01](implementation/2026-09-01-token-foundation-scale-hardening.md)
 - [Canonical State and Condition Registries — 2026-09-01](implementation/2026-09-01-state-and-condition-registries.md)
 - [Ordered CSS Declaration Contracts — 2026-09-02](implementation/2026-09-02-ordered-declaration-contracts.md)
@@ -155,11 +164,11 @@ React Aria ──→ Criteria Profile ──→ state/lifecycle projection ─�
 - [N22 Appearance Normalizer — 2026-09-02](plans/2026-09-02-n22-implementation-report.md)
 - [Token Clean-Break Design — 2026-09-02](superpowers/specs/2026-09-02-token-clean-break.md)
 - [N15 Documentation Reconciliation Design — 2026-09-02](superpowers/specs/2026-09-02-n15-document-reconciliation.md)
-- [Token Governance Plan — 2026-09-02](superpowers/plans/2026-09-02-token-governance.md)
-- [OKLCH and Semantic Color Plan — 2026-09-02](superpowers/plans/2026-09-02-oklch-semantic-colors.md)
-- [Semantic Scale and Aspect-Ratio Plan — 2026-09-02](superpowers/plans/2026-09-02-semantic-scales-and-ratios.md)
-- [Appearance IR Plan — 2026-09-02](superpowers/plans/2026-09-02-appearance-ir.md)
-- [N15 Documentation Reconciliation Plan — 2026-09-02](superpowers/plans/2026-09-02-n15-document-reconciliation.md)
+- [Token Governance Plan — 2026-09-02](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/superpowers/plans/2026-09-02-token-governance.md)
+- [OKLCH and Semantic Color Plan — 2026-09-02](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/superpowers/plans/2026-09-02-oklch-semantic-colors.md)
+- [Semantic Scale and Aspect-Ratio Plan — 2026-09-02](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/superpowers/plans/2026-09-02-semantic-scales-and-ratios.md)
+- [Appearance IR Plan — 2026-09-02](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/superpowers/plans/2026-09-02-appearance-ir.md)
+- [N15 Documentation Reconciliation Plan — 2026-09-02](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/superpowers/plans/2026-09-02-n15-document-reconciliation.md)
 - [MVP Removal & Source Standards — Implementation Report — 2026-09-01](implementation/2026-09-01-mvp-removal-and-source-standards.md)
 - [Recipe Authoring Third-Party Evaluation — 2026-09-01](reviews/2026-09-01-recipe-authoring-third-party-evaluation.md)
 

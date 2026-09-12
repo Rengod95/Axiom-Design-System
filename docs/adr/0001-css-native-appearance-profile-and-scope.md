@@ -1,5 +1,7 @@
 # ADR-0001 — CSS-Native Appearance Profile and Initial Scope
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 **Status:** ACCEPTED \
 **Date:** 2026-09-01 \
 **Decision owners:** Axiom Foundation \

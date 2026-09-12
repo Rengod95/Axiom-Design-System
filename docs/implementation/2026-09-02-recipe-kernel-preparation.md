@@ -1,5 +1,7 @@
 # N19 Recipe Kernel reconciliation
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](../adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 Status: **COMPLETE — reconciled against N18**.
 
 `@axiom/recipe-kernel` is reconciled onto the completed N16--N18 contract baseline as a

@@ -1,5 +1,7 @@
 # Axiom Token sources
 
+> **Lifecycle: frozen reference corpus.** These inputs describe the retained pre-Studio implementation and default-system template. They are not the universal user-system contract for the new Builder. See [ADR-0006](../docs/adr/0006-product-reset-and-reference-lifecycle.md).
+
 These DTCG 2025.10 documents are the normative public Token corpus used to
 generate the resolved Foundation manifest and public Token path types.
 

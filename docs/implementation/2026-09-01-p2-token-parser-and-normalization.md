@@ -1,10 +1,12 @@
 # P2.1 DTCG Parser & Normalization Boundary — Implementation Report
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](../adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 **Date:** 2026-09-01 \
 **Status:** IMPLEMENTED — P2.1 complete, bounded P2.2 slice complete \
 **Scope:** parser port, DTCG source profile, normalized token document,
 identity/Domain/type/range validation \
-**Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](../plans/2026-09-01-foundation-and-implementation-plan.md)
+**Related plan:** [Axiom Foundation Reconciliation & Implementation Plan](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-foundation-and-implementation-plan.md)
 
 **Subsequent checkpoints:** [P2.3/P2.4 Tier Graph & Context Resolver](2026-09-01-p2-tier-graph-and-context-resolver.md),
 [P2 Token Foundation Closeout](2026-09-01-p2-token-foundation-closeout.md)

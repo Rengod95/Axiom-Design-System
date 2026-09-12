@@ -1,5 +1,7 @@
 # Axiom Foundation Gap Analysis & Stabilization Plan
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](../adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 **Date:** 2026-08-31
 **Reviewed commit:** `c48d292`
 **Status:** HISTORICAL REVIEW / SUPERSEDED PLAN
@@ -10,7 +12,7 @@
 > [ADR-0001](../adr/0001-css-native-appearance-profile-and-scope.md)에서
 > 대체되었다. 현재 규범과 실행 순서는
 > [docs index](../README.md)와
-> [2026-09-01 active implementation plan](../plans/2026-09-01-foundation-and-implementation-plan.md)을 따른다.
+> [2026-09-01 active implementation plan](https://github.com/Rengod95/Axiom-Design-System/blob/f368ae7d208424c922637ca625ab9687a85ed5b9/docs/plans/2026-09-01-foundation-and-implementation-plan.md)을 따른다.
 
 ---
 

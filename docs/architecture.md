@@ -1,5 +1,7 @@
 # Axiom implementation architecture
 
+> **Lifecycle: pre-Studio reference.** This document describes the retained earlier implementation. Its architecture and execution sequence are deprecated as directions for new Studio development. Use [ADR-0006](adr/0006-product-reset-and-reference-lifecycle.md) for the current product phase and approval gates. Its original contracts and results remain scoped evidence for the reference code.
+
 This document is the implementation map for the repository. Normative behavior
 is owned by the accepted ADRs, SSOT documents, and `spec/`; this map explains
 where implementations belong and which dependency directions are legal.
