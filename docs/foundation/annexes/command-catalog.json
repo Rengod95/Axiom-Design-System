@@ -1,0 +1,1122 @@
+{
+  "kind": "documentation-api-contract",
+  "version": "review-1",
+  "status": "DESIGN_REVIEW_READY",
+  "transport": "versioned RPC/HTTP and MCP mapping to the same command service; concrete routes selected in implementation",
+  "queries": [
+    {
+      "id": "project.describe",
+      "kind": "query",
+      "inputFields": [
+        "projectId"
+      ],
+      "outputFields": [
+        "manifest",
+        "revision",
+        "capabilities"
+      ],
+      "scope": "project.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "document.get",
+      "kind": "query",
+      "inputFields": [
+        "documentRef",
+        "revision"
+      ],
+      "outputFields": [
+        "document",
+        "opaqueRegions",
+        "diagnostics"
+      ],
+      "scope": "project.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "registry.describe",
+      "kind": "query",
+      "inputFields": [
+        "entryRef",
+        "version"
+      ],
+      "outputFields": [
+        "type",
+        "ports",
+        "obligations",
+        "capabilities"
+      ],
+      "scope": "registry.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "context.resolve",
+      "kind": "query",
+      "inputFields": [
+        "selectedRefs",
+        "revision",
+        "targetProfile",
+        "limits"
+      ],
+      "outputFields": [
+        "ContextBundle",
+        "closure",
+        "incompleteReasons"
+      ],
+      "scope": "project.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "diagnostics.list",
+      "kind": "query",
+      "inputFields": [
+        "refs",
+        "revision",
+        "targetProfile",
+        "cursor"
+      ],
+      "outputFields": [
+        "diagnostics",
+        "nextCursor"
+      ],
+      "scope": "project.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "impact.preview",
+      "kind": "query",
+      "inputFields": [
+        "baseRevision",
+        "typedOperations"
+      ],
+      "outputFields": [
+        "affectedRefs",
+        "reviewClass",
+        "invalidatedEvidence"
+      ],
+      "scope": "project.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "target.capabilities",
+      "kind": "query",
+      "inputFields": [
+        "targetProfileRef",
+        "contractRef"
+      ],
+      "outputFields": [
+        "declared",
+        "implemented",
+        "verified",
+        "limitations"
+      ],
+      "scope": "profile.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "job.status",
+      "kind": "query",
+      "inputFields": [
+        "jobId"
+      ],
+      "outputFields": [
+        "stage",
+        "receipts",
+        "diagnostics",
+        "resourceUse"
+      ],
+      "scope": "job.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "history.list",
+      "kind": "query",
+      "inputFields": [
+        "projectId",
+        "cursor"
+      ],
+      "outputFields": [
+        "revisions",
+        "origins",
+        "transactions"
+      ],
+      "scope": "project.read",
+      "revisionPinned": true
+    },
+    {
+      "id": "connection.describe",
+      "kind": "query",
+      "inputFields": [
+        "connectionId"
+      ],
+      "outputFields": [
+        "authorizedRoots",
+        "tools",
+        "doctorState"
+      ],
+      "scope": "connection.read",
+      "revisionPinned": true
+    }
+  ],
+  "commands": [
+    {
+      "id": "project.create",
+      "kind": "command",
+      "payloadFields": [
+        "name",
+        "storageChoice",
+        "templateRef"
+      ],
+      "resultFields": [
+        "projectId",
+        "revision"
+      ],
+      "scope": "project.write",
+      "reviewClass": "new-project",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "document.import",
+      "kind": "command",
+      "payloadFields": [
+        "sourceRefs",
+        "formatProfile",
+        "importMode"
+      ],
+      "resultFields": [
+        "draftRefs",
+        "originalHashes",
+        "diagnostics"
+      ],
+      "scope": "project.write",
+      "reviewClass": "dependency-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "document.copy",
+      "kind": "command",
+      "payloadFields": [
+        "refs",
+        "destination",
+        "identityMode",
+        "foundationLink"
+      ],
+      "resultFields": [
+        "copyPlan",
+        "refMap"
+      ],
+      "scope": "project.write",
+      "reviewClass": "shared-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "document.migrate",
+      "kind": "command",
+      "payloadFields": [
+        "sourceRefs",
+        "migrationProfile"
+      ],
+      "resultFields": [
+        "migrationCandidate",
+        "lossReport"
+      ],
+      "scope": "project.write",
+      "reviewClass": "meaning-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "entity.delete",
+      "kind": "command",
+      "payloadFields": [
+        "refs",
+        "replacementPlan",
+        "draftPolicy"
+      ],
+      "resultFields": [
+        "impact",
+        "changes"
+      ],
+      "scope": "project.write",
+      "reviewClass": "deletion",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "entity.deprecate",
+      "kind": "command",
+      "payloadFields": [
+        "refs",
+        "replacementRef",
+        "reason"
+      ],
+      "resultFields": [
+        "changes"
+      ],
+      "scope": "project.write",
+      "reviewClass": "shared-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "token.create",
+      "kind": "command",
+      "payloadFields": [
+        "foundationRef",
+        "tokenDefinition"
+      ],
+      "resultFields": [
+        "tokenRef"
+      ],
+      "scope": "foundation.write",
+      "reviewClass": "shared-token",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "token.update",
+      "kind": "command",
+      "payloadFields": [
+        "tokenRef",
+        "typedChanges"
+      ],
+      "resultFields": [
+        "changes",
+        "usageImpact"
+      ],
+      "scope": "foundation.write",
+      "reviewClass": "shared-token",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "token.rebind",
+      "kind": "command",
+      "payloadFields": [
+        "tokenRef",
+        "newTargetRef"
+      ],
+      "resultFields": [
+        "changes",
+        "aliasClosure"
+      ],
+      "scope": "foundation.write",
+      "reviewClass": "shared-token",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "theme.update",
+      "kind": "command",
+      "payloadFields": [
+        "foundationRef",
+        "axesOrSets"
+      ],
+      "resultFields": [
+        "resolvedImpact"
+      ],
+      "scope": "foundation.write",
+      "reviewClass": "shared-token",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "policy.update",
+      "kind": "command",
+      "payloadFields": [
+        "scopeRef",
+        "ruleOrException"
+      ],
+      "resultFields": [
+        "effectiveRules",
+        "impact"
+      ],
+      "scope": "contract.write",
+      "reviewClass": "obligation-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "component.define",
+      "kind": "command",
+      "payloadFields": [
+        "definition",
+        "designs"
+      ],
+      "resultFields": [
+        "componentRef",
+        "diagnostics"
+      ],
+      "scope": "component.write",
+      "reviewClass": "contract-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "component.contract.update",
+      "kind": "command",
+      "payloadFields": [
+        "componentRef",
+        "values",
+        "events",
+        "exposure"
+      ],
+      "resultFields": [
+        "apiDiff",
+        "impact"
+      ],
+      "scope": "contract.write",
+      "reviewClass": "public-api",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "trait.bind",
+      "kind": "command",
+      "payloadFields": [
+        "componentRef",
+        "traitRef",
+        "configuration",
+        "portBindings"
+      ],
+      "resultFields": [
+        "binding",
+        "obligations",
+        "conflicts"
+      ],
+      "scope": "contract.write",
+      "reviewClass": "behavior-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "part.create",
+      "kind": "command",
+      "payloadFields": [
+        "componentRef",
+        "parent",
+        "roleRefs"
+      ],
+      "resultFields": [
+        "partRef"
+      ],
+      "scope": "component.write",
+      "reviewClass": "meaning-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "part.move",
+      "kind": "command",
+      "payloadFields": [
+        "partRef",
+        "parent",
+        "position"
+      ],
+      "resultFields": [
+        "structureDiff"
+      ],
+      "scope": "component.write",
+      "reviewClass": "meaning-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "part.update",
+      "kind": "command",
+      "payloadFields": [
+        "partRef",
+        "relationships",
+        "configuration"
+      ],
+      "resultFields": [
+        "changes"
+      ],
+      "scope": "component.write",
+      "reviewClass": "meaning-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "slot.update",
+      "kind": "command",
+      "payloadFields": [
+        "slotRef",
+        "contentKinds",
+        "cardinality",
+        "exposure"
+      ],
+      "resultFields": [
+        "slotDiff",
+        "instanceImpact"
+      ],
+      "scope": "contract.write",
+      "reviewClass": "public-api",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "instance.create",
+      "kind": "command",
+      "payloadFields": [
+        "componentRef",
+        "designRef",
+        "parent",
+        "values",
+        "contents"
+      ],
+      "resultFields": [
+        "instanceRef"
+      ],
+      "scope": "component.write",
+      "reviewClass": "local",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "instance.override",
+      "kind": "command",
+      "payloadFields": [
+        "instanceRef",
+        "allowedProperties"
+      ],
+      "resultFields": [
+        "overrideDiff"
+      ],
+      "scope": "component.write",
+      "reviewClass": "local-or-shared",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "appearance.update",
+      "kind": "command",
+      "payloadFields": [
+        "designRef",
+        "partRef",
+        "rules"
+      ],
+      "resultFields": [
+        "computedValues",
+        "provenance"
+      ],
+      "scope": "design.write",
+      "reviewClass": "local-or-shared",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "layout.update",
+      "kind": "command",
+      "payloadFields": [
+        "designRef",
+        "partRef",
+        "rules"
+      ],
+      "resultFields": [
+        "layoutDiff",
+        "diagnostics"
+      ],
+      "scope": "design.write",
+      "reviewClass": "local-or-shared",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "motion.update",
+      "kind": "command",
+      "payloadFields": [
+        "componentRef",
+        "definitions"
+      ],
+      "resultFields": [
+        "motionDiff",
+        "invalidations"
+      ],
+      "scope": "contract.write",
+      "reviewClass": "behavior-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "behavior.update",
+      "kind": "command",
+      "payloadFields": [
+        "componentRef",
+        "states",
+        "transitions",
+        "profile"
+      ],
+      "resultFields": [
+        "obligationDiff",
+        "conflicts"
+      ],
+      "scope": "contract.write",
+      "reviewClass": "behavior-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "accessibility.update",
+      "kind": "command",
+      "payloadFields": [
+        "componentRef",
+        "relationships",
+        "requirements"
+      ],
+      "resultFields": [
+        "a11yDiff",
+        "diagnostics"
+      ],
+      "scope": "contract.write",
+      "reviewClass": "obligation-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "registry.register",
+      "kind": "command",
+      "payloadFields": [
+        "scope",
+        "entry"
+      ],
+      "resultFields": [
+        "entryRef",
+        "unsupportedCapabilities"
+      ],
+      "scope": "registry.write",
+      "reviewClass": "extension",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "registry.promote",
+      "kind": "command",
+      "payloadFields": [
+        "entryRef",
+        "destinationScope",
+        "version"
+      ],
+      "resultFields": [
+        "newRef",
+        "migrationPlan"
+      ],
+      "scope": "registry.write",
+      "reviewClass": "shared-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "host.bind",
+      "kind": "command",
+      "payloadFields": [
+        "clientRef",
+        "hostRef",
+        "searchRule"
+      ],
+      "resultFields": [
+        "resolvedPath",
+        "diagnostics"
+      ],
+      "scope": "component.write",
+      "reviewClass": "behavior-change",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "asset.import",
+      "kind": "command",
+      "payloadFields": [
+        "sourceRef",
+        "rights",
+        "storageScope"
+      ],
+      "resultFields": [
+        "assetRef",
+        "integrity",
+        "limitations"
+      ],
+      "scope": "asset.write",
+      "reviewClass": "external-data",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "asset.reconnect",
+      "kind": "command",
+      "payloadFields": [
+        "assetRef",
+        "candidateSource"
+      ],
+      "resultFields": [
+        "identityOrReplacementDiff"
+      ],
+      "scope": "asset.write",
+      "reviewClass": "shared-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "scenario.update",
+      "kind": "command",
+      "payloadFields": [
+        "screenRef",
+        "scenario",
+        "prototypeLinks"
+      ],
+      "resultFields": [
+        "scenarioDiff",
+        "loopDiagnostics"
+      ],
+      "scope": "scenario.write",
+      "reviewClass": "local-or-shared",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "transaction.review",
+      "kind": "command",
+      "payloadFields": [
+        "candidateId",
+        "patchDigest",
+        "decision"
+      ],
+      "resultFields": [
+        "boundApprovalOrRejection"
+      ],
+      "scope": "review.apply",
+      "reviewClass": "review",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "transaction.apply",
+      "kind": "command",
+      "payloadFields": [
+        "candidateId",
+        "approvalToken",
+        "expectedRevision"
+      ],
+      "resultFields": [
+        "CommandResult"
+      ],
+      "scope": "project.write",
+      "reviewClass": "checked-at-commit",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "transaction.undo",
+      "kind": "command",
+      "payloadFields": [
+        "undoHandle",
+        "expectedRevision"
+      ],
+      "resultFields": [
+        "inverseCandidate",
+        "conflicts"
+      ],
+      "scope": "project.write",
+      "reviewClass": "current-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "project.revert",
+      "kind": "command",
+      "payloadFields": [
+        "targetRevision",
+        "expectedRevision"
+      ],
+      "resultFields": [
+        "sharedRevertCandidate"
+      ],
+      "scope": "project.write",
+      "reviewClass": "shared-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "generation.plan",
+      "kind": "command",
+      "payloadFields": [
+        "snapshotRef",
+        "targetProfile",
+        "budget"
+      ],
+      "resultFields": [
+        "RealizationJobPlan",
+        "expectedCost"
+      ],
+      "scope": "generation.plan",
+      "reviewClass": "job-plan",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "generation.start",
+      "kind": "command",
+      "payloadFields": [
+        "planId",
+        "planDigest",
+        "approval"
+      ],
+      "resultFields": [
+        "jobId"
+      ],
+      "scope": "generation.execute",
+      "reviewClass": "execution",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "job.cancel",
+      "kind": "command",
+      "payloadFields": [
+        "jobId"
+      ],
+      "resultFields": [
+        "cancelRequested",
+        "knownEffects"
+      ],
+      "scope": "job.cancel",
+      "reviewClass": "execution",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "doctor.plan",
+      "kind": "command",
+      "payloadFields": [
+        "connectionRef",
+        "deliveryRef"
+      ],
+      "resultFields": [
+        "diagnosticAndInstallPlan"
+      ],
+      "scope": "connection.read",
+      "reviewClass": "read-only-plan",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "doctor.apply",
+      "kind": "command",
+      "payloadFields": [
+        "planRef",
+        "selectedActions",
+        "approval"
+      ],
+      "resultFields": [
+        "installationReceipt",
+        "diagnostics"
+      ],
+      "scope": "connection.execute",
+      "reviewClass": "filesystem-dependency",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "delivery.plan",
+      "kind": "command",
+      "payloadFields": [
+        "releaseRefs",
+        "deliveryMode",
+        "destination"
+      ],
+      "resultFields": [
+        "manifestCandidate",
+        "filePlan"
+      ],
+      "scope": "delivery.plan",
+      "reviewClass": "read-only-plan",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "delivery.export",
+      "kind": "command",
+      "payloadFields": [
+        "planRef",
+        "approval"
+      ],
+      "resultFields": [
+        "artifactRefs",
+        "hashes",
+        "limitations"
+      ],
+      "scope": "delivery.write",
+      "reviewClass": "artifact-write",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "delivery.publish",
+      "kind": "command",
+      "payloadFields": [
+        "planRef",
+        "version",
+        "destination",
+        "approval"
+      ],
+      "resultFields": [
+        "publicationReceipt"
+      ],
+      "scope": "delivery.publish",
+      "reviewClass": "external-publication",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "upgrade.plan",
+      "kind": "command",
+      "payloadFields": [
+        "connectionRef",
+        "newReleaseRef"
+      ],
+      "resultFields": [
+        "threeWayDiff",
+        "conflicts",
+        "rollbackPlan"
+      ],
+      "scope": "connection.read",
+      "reviewClass": "read-only-plan",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "upgrade.apply",
+      "kind": "command",
+      "payloadFields": [
+        "planRef",
+        "selectedActions",
+        "approval"
+      ],
+      "resultFields": [
+        "consumerReceipt"
+      ],
+      "scope": "connection.execute",
+      "reviewClass": "filesystem-dependency",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    },
+    {
+      "id": "upgrade.rollback",
+      "kind": "command",
+      "payloadFields": [
+        "receiptRef",
+        "expectedFileHashes",
+        "approval"
+      ],
+      "resultFields": [
+        "rollbackReceipt",
+        "conflicts"
+      ],
+      "scope": "connection.execute",
+      "reviewClass": "filesystem-dependency",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": true
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "AUTH_SCOPE",
+      "meaning": "권한 범위 부족",
+      "recovery": "연결·역할의 허용 범위를 확인"
+    },
+    {
+      "code": "ENTITLEMENT_LIMIT",
+      "meaning": "서비스 사용권/자원 한도",
+      "recovery": "허용한 자원·로컬 대안 확인"
+    },
+    {
+      "code": "REVISION_STALE",
+      "meaning": "기준 revision이 바뀜",
+      "recovery": "현재/제안 diff 재계획"
+    },
+    {
+      "code": "IDEMPOTENCY_CONFLICT",
+      "meaning": "같은 key에 다른 입력",
+      "recovery": "새 의도로 새 key 생성"
+    },
+    {
+      "code": "REVIEW_REQUIRED",
+      "meaning": "중요 변경 검토 필요",
+      "recovery": "영향·patch 검토"
+    },
+    {
+      "code": "APPROVAL_STALE",
+      "meaning": "승인한 patch/base와 다름",
+      "recovery": "새 변경안 확인"
+    },
+    {
+      "code": "REF_MISSING",
+      "meaning": "참조 대상 없음",
+      "recovery": "대체·재연결·미해결 초안"
+    },
+    {
+      "code": "REF_KIND",
+      "meaning": "참조 종류 불일치",
+      "recovery": "올바른 대상 선택"
+    },
+    {
+      "code": "ID_DUPLICATE",
+      "meaning": "불변 ID 중복",
+      "recovery": "독립 복사·ID mapping"
+    },
+    {
+      "code": "STRUCTURE_CYCLE",
+      "meaning": "금지된 구조 순환",
+      "recovery": "관계 경로 수정"
+    },
+    {
+      "code": "TYPE_MISMATCH",
+      "meaning": "값·port 타입 불일치",
+      "recovery": "type 또는 binding 수정"
+    },
+    {
+      "code": "OWNER_CONFLICT",
+      "meaning": "값 확정 주체 중복",
+      "recovery": "owner 하나 선택"
+    },
+    {
+      "code": "INPUT_CLAIM_CONFLICT",
+      "meaning": "동일 입력 의무 충돌",
+      "recovery": "scope/profile/유형 조합 수정"
+    },
+    {
+      "code": "REQUIRED_ROLE_MISSING",
+      "meaning": "필수 부품 의미 누락",
+      "recovery": "역할·관계 복구"
+    },
+    {
+      "code": "SLOT_CONTRACT",
+      "meaning": "콘텐츠 종류·개수 불일치",
+      "recovery": "slot 내용/계약 비교"
+    },
+    {
+      "code": "RULE_AMBIGUOUS",
+      "meaning": "외형 규칙 동점 충돌",
+      "recovery": "명시 priority/refinement"
+    },
+    {
+      "code": "HOST_UNRESOLVED",
+      "meaning": "호스트 누락·모호함",
+      "recovery": "실제 경로 확인·지정·생성"
+    },
+    {
+      "code": "STANDARD_UNSUPPORTED",
+      "meaning": "표준 의미 미지원",
+      "recovery": "원형 보존·지원 제한 확인"
+    },
+    {
+      "code": "TARGET_UNSUPPORTED",
+      "meaning": "선택 타깃 mapping 없음",
+      "recovery": "대안/별도 구현/부분 출력"
+    },
+    {
+      "code": "ASSET_MISSING",
+      "meaning": "파일·폰트 누락",
+      "recovery": "대체 preview·재연결"
+    },
+    {
+      "code": "RIGHTS_UNVERIFIED",
+      "meaning": "자산/코드 권리 미확인",
+      "recovery": "해당 배포 보류·대체"
+    },
+    {
+      "code": "STORAGE_FULL",
+      "meaning": "저장 용량 부족",
+      "recovery": "export·위치 변경·공간 확보"
+    },
+    {
+      "code": "FILE_DRIFT",
+      "meaning": "외부 파일 변경",
+      "recovery": "현재/제안/기준 비교"
+    },
+    {
+      "code": "BUDGET_EXCEEDED",
+      "meaning": "실행 예산 초과",
+      "recovery": "중단·후보 보존·재계획"
+    },
+    {
+      "code": "EVIDENCE_STALE",
+      "meaning": "현재 후보의 증거 아님",
+      "recovery": "해당 profile 재검증"
+    },
+    {
+      "code": "TEST_DISCOVERY_EMPTY",
+      "meaning": "기대 시험 누락",
+      "recovery": "oracle/발견 범위 복구"
+    },
+    {
+      "code": "SANDBOX_UNAVAILABLE",
+      "meaning": "필요 격리 보장 없음",
+      "recovery": "해당 실행 제한·안전 경로"
+    },
+    {
+      "code": "HOST_DISCONNECTED",
+      "meaning": "연결 끊김",
+      "recovery": "job 재조회·재연결"
+    },
+    {
+      "code": "JOB_PARTIAL_EFFECT",
+      "meaning": "일부 외부 효과 발생",
+      "recovery": "receipt 확인·보상/복구"
+    },
+    {
+      "code": "EXPRESSION_LIMIT",
+      "meaning": "표현식 타입/평가 한도",
+      "recovery": "식 단순화·오류 수정"
+    }
+  ]
+}

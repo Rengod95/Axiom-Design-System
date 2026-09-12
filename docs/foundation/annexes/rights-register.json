@@ -1,0 +1,159 @@
+{
+  "kind": "documentation-rights-register",
+  "status": "DESIGN_REVIEW_READY",
+  "existingRepositoryLicense": {
+    "name": "MIT",
+    "path": "LICENSE",
+    "sha256": "f4b66bcc456602ff01cf3ed5dfad8921564c68c298d1db6ead3cd356322197f9",
+    "changed": false
+  },
+  "newProductLicenseSelected": false,
+  "thirdParty": [
+    {
+      "name": "React",
+      "purpose": "Studio/Web runtime candidate",
+      "source": "https://react.dev/",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "React Aria",
+      "purpose": "Web behavior candidate",
+      "source": "https://react-aria.adobe.com/customization",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Base UI",
+      "purpose": "Web behavior candidate",
+      "source": "https://base-ui.com/react/overview/about",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "shadcn/ui",
+      "purpose": "source/template reference",
+      "source": "https://ui.shadcn.com/",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Mantine",
+      "purpose": "catalog/UX reference",
+      "source": "https://mantine.dev/",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Plasmic",
+      "purpose": "editor/source research",
+      "source": "https://github.com/plasmicapp/plasmic",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Yoga",
+      "purpose": "layout candidate",
+      "source": "https://www.yogalayout.dev/docs/about-yoga",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Motion",
+      "purpose": "Web motion candidate",
+      "source": "https://motion.dev/docs/react-animation",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Tiptap/ProseMirror",
+      "purpose": "text candidate",
+      "source": "https://tiptap.dev/docs/editor/getting-started/overview",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Lexical",
+      "purpose": "text candidate",
+      "source": "https://lexical.dev/",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Yjs",
+      "purpose": "collaboration candidate",
+      "source": "https://github.com/yjs/yjs",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Automerge",
+      "purpose": "collaboration candidate",
+      "source": "https://automerge.org/",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Ajv",
+      "purpose": "schema validation candidate",
+      "source": "https://ajv.js.org/guide/managing-schemas.html",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "tldraw",
+      "purpose": "last-resort editor candidate",
+      "source": "https://tldraw.dev/sdk-features/license-key",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "PixiJS Layout",
+      "purpose": "last-resort rendering/layout reference",
+      "source": "https://layout.pixijs.io/",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    },
+    {
+      "name": "Playwright/axe",
+      "purpose": "testing candidate",
+      "source": "https://playwright.dev/docs/accessibility-testing",
+      "selectedVersion": null,
+      "licenseReview": "REQUIRED_BEFORE_INCORPORATION",
+      "codeIncorporatedByThisDocumentationChange": false,
+      "noticeFiles": []
+    }
+  ],
+  "assets": [],
+  "assetStatus": "No production brand/font/image assets are included by this documentation change. User assets require per-asset rights records."
+}

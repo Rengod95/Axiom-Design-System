@@ -1,0 +1,17 @@
+{
+  "kind": "axiom-foundation-index-approval",
+  "recordedAt": "2026-09-12T11:33:41.281744+00:00",
+  "ownerMessage": "전체 문서화를 진행해줘",
+  "interpretation": "The owner authorized complete documentation following the proposed 56-document index and development direction. This approves the index for writing, not the as-yet unread full body baseline.",
+  "approvedProposal": {
+    "commit": "ff1bfc1cbb6f88d98ed287c432e973b072a811c3",
+    "manifestPath": "docs/foundation/document-manifest.json",
+    "manifestSha256": "9f81aa51facb3e2d5f5024423871a3b44cd94c9f6113034b0ce3f5edaa035687",
+    "documentCount": 56
+  },
+  "indexApproved": true,
+  "fullDocumentationWritingAuthorized": true,
+  "fullDocumentationApproved": false,
+  "newImplementationAuthorized": false,
+  "priorApprovalRecord": "axiom-foundation-direction-approval.json"
+}

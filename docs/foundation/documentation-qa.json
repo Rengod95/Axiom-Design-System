@@ -1,0 +1,2311 @@
+{
+  "kind": "foundation-documentation-qa",
+  "status": "PASS",
+  "scope": "Documentation structure, retained decisions, catalog and illustrative references only; no product runtime/schema conformance claim.",
+  "counts": {
+    "documents": 56,
+    "domains": 12,
+    "decisions": 129,
+    "followups": 14,
+    "catalogSourceRows": 330,
+    "normalizedCatalogEntries": 239,
+    "fieldRecords": 41,
+    "queries": 10,
+    "commands": 46,
+    "diagnostics": 30,
+    "scenarios": 50,
+    "boundedSelections": 23,
+    "messages": 75,
+    "localLinks": 905,
+    "fragments": 129,
+    "tables": 112,
+    "checks": 382
+  },
+  "errors": [],
+  "checks": [
+    {
+      "name": "56 unique document ids and paths",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "12 domains",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body GOV01",
+      "passed": true,
+      "detail": 1622
+    },
+    {
+      "name": "local/worktree parity GOV01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body GOV02",
+      "passed": true,
+      "detail": 2312
+    },
+    {
+      "name": "local/worktree parity GOV02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body GOV03",
+      "passed": true,
+      "detail": 1985
+    },
+    {
+      "name": "local/worktree parity GOV03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body PRD01",
+      "passed": true,
+      "detail": 1696
+    },
+    {
+      "name": "local/worktree parity PRD01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body PRD02",
+      "passed": true,
+      "detail": 2070
+    },
+    {
+      "name": "local/worktree parity PRD02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body PRD03",
+      "passed": true,
+      "detail": 2000
+    },
+    {
+      "name": "local/worktree parity PRD03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body BIZ01",
+      "passed": true,
+      "detail": 1994
+    },
+    {
+      "name": "local/worktree parity BIZ01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body BIZ02",
+      "passed": true,
+      "detail": 1909
+    },
+    {
+      "name": "local/worktree parity BIZ02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body BIZ03",
+      "passed": true,
+      "detail": 1675
+    },
+    {
+      "name": "local/worktree parity BIZ03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body BIZ04",
+      "passed": true,
+      "detail": 1645
+    },
+    {
+      "name": "local/worktree parity BIZ04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body BRD01",
+      "passed": true,
+      "detail": 1633
+    },
+    {
+      "name": "local/worktree parity BRD01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body BRD02",
+      "passed": true,
+      "detail": 1650
+    },
+    {
+      "name": "local/worktree parity BRD02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body SYN01",
+      "passed": true,
+      "detail": 1782
+    },
+    {
+      "name": "local/worktree parity SYN01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body SYN02",
+      "passed": true,
+      "detail": 2140
+    },
+    {
+      "name": "local/worktree parity SYN02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body SYN03",
+      "passed": true,
+      "detail": 2141
+    },
+    {
+      "name": "local/worktree parity SYN03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body SYN04",
+      "passed": true,
+      "detail": 1804
+    },
+    {
+      "name": "local/worktree parity SYN04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP01",
+      "passed": true,
+      "detail": 2163
+    },
+    {
+      "name": "local/worktree parity CMP01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP02",
+      "passed": true,
+      "detail": 2216
+    },
+    {
+      "name": "local/worktree parity CMP02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP03",
+      "passed": true,
+      "detail": 2278
+    },
+    {
+      "name": "local/worktree parity CMP03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP04",
+      "passed": true,
+      "detail": 2111
+    },
+    {
+      "name": "local/worktree parity CMP04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP05",
+      "passed": true,
+      "detail": 1896
+    },
+    {
+      "name": "local/worktree parity CMP05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP06",
+      "passed": true,
+      "detail": 2151
+    },
+    {
+      "name": "local/worktree parity CMP06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP07",
+      "passed": true,
+      "detail": 1996
+    },
+    {
+      "name": "local/worktree parity CMP07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP08",
+      "passed": true,
+      "detail": 2025
+    },
+    {
+      "name": "local/worktree parity CMP08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP09",
+      "passed": true,
+      "detail": 2023
+    },
+    {
+      "name": "local/worktree parity CMP09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP10",
+      "passed": true,
+      "detail": 2009
+    },
+    {
+      "name": "local/worktree parity CMP10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body CMP11",
+      "passed": true,
+      "detail": 1756
+    },
+    {
+      "name": "local/worktree parity CMP11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX01",
+      "passed": true,
+      "detail": 1541
+    },
+    {
+      "name": "local/worktree parity UX01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX02",
+      "passed": true,
+      "detail": 1762
+    },
+    {
+      "name": "local/worktree parity UX02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX03",
+      "passed": true,
+      "detail": 1734
+    },
+    {
+      "name": "local/worktree parity UX03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX04",
+      "passed": true,
+      "detail": 1711
+    },
+    {
+      "name": "local/worktree parity UX04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX05",
+      "passed": true,
+      "detail": 1664
+    },
+    {
+      "name": "local/worktree parity UX05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX06",
+      "passed": true,
+      "detail": 1732
+    },
+    {
+      "name": "local/worktree parity UX06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX07",
+      "passed": true,
+      "detail": 1806
+    },
+    {
+      "name": "local/worktree parity UX07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body UX08",
+      "passed": true,
+      "detail": 1552
+    },
+    {
+      "name": "local/worktree parity UX08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body ARC01",
+      "passed": true,
+      "detail": 2239
+    },
+    {
+      "name": "local/worktree parity ARC01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body ARC02",
+      "passed": true,
+      "detail": 2551
+    },
+    {
+      "name": "local/worktree parity ARC02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body ARC03",
+      "passed": true,
+      "detail": 2072
+    },
+    {
+      "name": "local/worktree parity ARC03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body ARC04",
+      "passed": true,
+      "detail": 1939
+    },
+    {
+      "name": "local/worktree parity ARC04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body ARC05",
+      "passed": true,
+      "detail": 1735
+    },
+    {
+      "name": "local/worktree parity ARC05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body ARC06",
+      "passed": true,
+      "detail": 1869
+    },
+    {
+      "name": "local/worktree parity ARC06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body ARC07",
+      "passed": true,
+      "detail": 2237
+    },
+    {
+      "name": "local/worktree parity ARC07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body AI01",
+      "passed": true,
+      "detail": 1803
+    },
+    {
+      "name": "local/worktree parity AI01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body AI02",
+      "passed": true,
+      "detail": 1981
+    },
+    {
+      "name": "local/worktree parity AI02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body DLV01",
+      "passed": true,
+      "detail": 2339
+    },
+    {
+      "name": "local/worktree parity DLV01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body DLV02",
+      "passed": true,
+      "detail": 1871
+    },
+    {
+      "name": "local/worktree parity DLV02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body DLV03",
+      "passed": true,
+      "detail": 2115
+    },
+    {
+      "name": "local/worktree parity DLV03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body DLV04",
+      "passed": true,
+      "detail": 1775
+    },
+    {
+      "name": "local/worktree parity DLV04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body QAL01",
+      "passed": true,
+      "detail": 2111
+    },
+    {
+      "name": "local/worktree parity QAL01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body QAL02",
+      "passed": true,
+      "detail": 1818
+    },
+    {
+      "name": "local/worktree parity QAL02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body QAL03",
+      "passed": true,
+      "detail": 1683
+    },
+    {
+      "name": "local/worktree parity QAL03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body QAL04",
+      "passed": true,
+      "detail": 1816
+    },
+    {
+      "name": "local/worktree parity QAL04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body OPS01",
+      "passed": true,
+      "detail": 1822
+    },
+    {
+      "name": "local/worktree parity OPS01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body OPS02",
+      "passed": true,
+      "detail": 1624
+    },
+    {
+      "name": "local/worktree parity OPS02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body OPS03",
+      "passed": true,
+      "detail": 1719
+    },
+    {
+      "name": "local/worktree parity OPS03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body OPS04",
+      "passed": true,
+      "detail": 1994
+    },
+    {
+      "name": "local/worktree parity OPS04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "dependency references",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "dependency DAG",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "129 decisions with one owner",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D01-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D01-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D01-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D36-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D05-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D02-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D02-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D02-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D02-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D03-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D39-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D39-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D39-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D39-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D39-07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D39-06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D38-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D35-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D35-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D35-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D06-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D04-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D04-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D04-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D07-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D07-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D07-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D08-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D08-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D05-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D06-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D06-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D09-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D09-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D09-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D05-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D11-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D11-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D11-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D10-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D10-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D10-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D14-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D14-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D14-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D13-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D13-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D13-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D15-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D15-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D16-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D16-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D16-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D17-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D17-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D18-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D18-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D19-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D19-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D19-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D12-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D12-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D26-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D26-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D26-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D36-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D23-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D23-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D23-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D24-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D24-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D24-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D25-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D25-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D25-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D08-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D15-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D17-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D18-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D27-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D27-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D27-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D34-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D34-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D34-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D36-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D03-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D20-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D20-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D20-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D21-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D21-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D21-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D22-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D22-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D22-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D37-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D37-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D37-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D37-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D03-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D28-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D28-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D28-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D39-05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D12-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D29-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D29-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D29-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D30-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D30-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D30-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D30-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D32-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D32-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D32-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D32-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D33-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D33-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D33-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D33-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D31-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D31-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D31-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D31-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D38-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D38-05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D38-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "decision text D38-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "14 followups",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "index approved, body not preapproved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all JSON parse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/README.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/axiom-design-baseline-index.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/adr/0006-product-reset-and-reference-lifecycle.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/adr/0007-git-reference-and-documentation-phase.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/development-direction.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/README.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/document-index.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/baseline-review.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/decision-coverage.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/decisions/axiom-foundation-index-approval.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/decisions/axiom-foundation-direction-approval.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/decisions/axiom-foundation-review-status.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/maintenance/pre-studio-retirement.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/standards/source-code-and-module-structure.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/component-editing-panels.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/foundation-editor.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/text-and-asset-editing.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/canvas-and-direct-manipulation.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/preview-and-prototypes.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/editor-accessibility-and-language.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/onboarding-and-inspector.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/experience/layout-authoring.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/quality/release-readiness.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/quality/conformance-and-test-plans.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/quality/evidence-and-freshness.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/quality/performance-capacity-and-budgets.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/brand/assets-and-provenance.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/brand/library-and-guidelines.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/business/pricing-entitlements-and-economics.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/business/positioning-and-go-to-market.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/business/research-and-customer-feedback.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/business/open-core-and-rights.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/product/purpose-and-users.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/product/journeys-and-acceptance.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/product/scope-catalog-and-roadmap.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/operations/hosting-observability-and-support.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/operations/release-and-supply-chain.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/operations/security-and-data-boundaries.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/operations/development-and-maintenance.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/traits-roles-and-archetypes.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/behavior-and-input-profiles.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/appearance-conditions-and-precedence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/custom-definition-registry.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/parts-slots-and-instances.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/accessibility-contracts.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/state-and-request-lifecycle.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/motion-and-transitions.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/coordinators-and-hosts.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/definition-and-designs.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/components/values-events-and-expressions.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/architecture/browser-host-and-execution.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/architecture/system-and-domain-boundaries.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/architecture/storage-offline-and-recovery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/architecture/commands-revisions-and-undo.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/architecture/collaboration-readiness.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/architecture/modules-and-dependencies.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/architecture/public-api-mcp-and-entitlements.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/ai/authoring-context-and-providers.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/ai/realization-and-independent-verification.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/governance/authority-and-change-control.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/governance/glossary-and-naming.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/governance/version-and-compatibility.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/delivery/target-and-style-profiles.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/delivery/user-owned-library-and-packaging.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/delivery/project-init-and-doctor.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/delivery/diff-upgrades-and-rollback.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/syntax/interchange-and-migration.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/syntax/standard-strategy.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/syntax/foundation-and-token-semantics.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/syntax/project-documents-and-identity.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/commands-and-diagnostics.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/selection-register.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/scenarios-and-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/rights-and-provenance.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/technology-and-references.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/catalog-and-obligations.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/targets-and-environments.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/language-and-messages.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/extension-vocabulary.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/document-contracts.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "closed fences docs/foundation/annexes/component-walkthroughs.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local links",
+      "passed": true,
+      "detail": 905
+    },
+    {
+      "name": "local fragments",
+      "passed": true,
+      "detail": 129
+    },
+    {
+      "name": "table column shapes",
+      "passed": true,
+      "detail": 112
+    },
+    {
+      "name": "330 source rows once",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "239 normalized catalog ids",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "catalog vocabulary resolves",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "registry counts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "catalog no fabricated runtime",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "API catalog ids unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "30 diagnostics unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "API excludes core mutation operations",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "50 scenarios and no executed evidence",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "23 bounded selections",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all required targets and 8 profile families",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "bilingual message ids",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "message parameters",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all diagnostics have ko/en",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "three components six designs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "design component references",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all example Part ids unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "part tree component.button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "slot owner component.button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "role vocabulary component.button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "trait vocabulary/targets component.button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "controlled requests component.button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "transition trigger component.button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "motion targets component.button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "appearance refs design.button.web",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "appearance refs design.button.mobile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "part tree component.card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "slot owner component.card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "role vocabulary component.card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "trait vocabulary/targets component.card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "controlled requests component.card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "transition trigger component.card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "motion targets component.card",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "appearance refs design.card.web",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "appearance refs design.card.mobile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "part tree component.toast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "slot owner component.toast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "role vocabulary component.toast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "trait vocabulary/targets component.toast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "controlled requests component.toast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "transition trigger component.toast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "motion targets component.toast",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "appearance refs design.toast.web",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "appearance refs design.toast.mobile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "plain Card no invented state",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Toast early close and exit motion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "41 field records",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "index approval pins reviewed proposal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "prior approval immutable",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "verifiedAt": "2026-09-12T11:45:16.413466+00:00",
+  "baseCommit": "ff1bfc1cbb6f88d98ed287c432e973b072a811c3",
+  "checkerProvenance": {
+    "type": "one-time documentation audit",
+    "sha256": "dddfd7831679ed1af1264723aa7d1b4fc805f1a3146d189c4e4cd972b74e868a",
+    "retainedProductTest": false,
+    "criteria": "Individual check results below describe the performed checks; no executable production schema or runtime harness is supplied."
+  },
+  "subjects": [
+    {
+      "path": "docs/decisions/axiom-foundation-index-approval.json",
+      "sha256": "4c558a87c8688880f4f39847c25dd7d95c0dcb9a52b2fa545225439f0df45157"
+    },
+    {
+      "path": "docs/decisions/axiom-foundation-index-approval.md",
+      "sha256": "398092e9dfa49af6a77302a0253ab7a7ad79759ebe99efe6c086cea46d35d77e"
+    },
+    {
+      "path": "docs/foundation/README.md",
+      "sha256": "d7966a0f68ba393613c63ab9742b13c825542ef3085db7f101aeb11dcde05371"
+    },
+    {
+      "path": "docs/foundation/ai/authoring-context-and-providers.md",
+      "sha256": "620578d4762f620d79f2e281901be3a981e0ae5e0a6cf18a3327e975ab56966f"
+    },
+    {
+      "path": "docs/foundation/ai/realization-and-independent-verification.md",
+      "sha256": "5198f77eed8e37023fe41605f586c702b74e63189b68502154fbd90edc2916ba"
+    },
+    {
+      "path": "docs/foundation/annexes/catalog-and-obligations.md",
+      "sha256": "79f6f6bd038f17610250d3e40ec6631a34c47cf4f60b07a8ec58ceb9dd24ae0f"
+    },
+    {
+      "path": "docs/foundation/annexes/command-catalog.json",
+      "sha256": "96dcc5a0c277cd3e1b6c8500d7cb0fbc06430c5b5599a24ce09d7c66e5e04223"
+    },
+    {
+      "path": "docs/foundation/annexes/commands-and-diagnostics.md",
+      "sha256": "e08a41957ccbb5f4c866bf1f9ed15f4cf5a063947c6f0ba0f8968c15e22b3a1f"
+    },
+    {
+      "path": "docs/foundation/annexes/component-catalog.json",
+      "sha256": "f0c06ab0d7e71c0bcda5a4aa278c0e5f2afc6de9a7fb950bf2d7cd08f1c05a2f"
+    },
+    {
+      "path": "docs/foundation/annexes/component-walkthroughs.md",
+      "sha256": "35923c34c7bec63b5d0c0e07c6ec8d1208eadc2b2ef24b1c76374c29f1d828b2"
+    },
+    {
+      "path": "docs/foundation/annexes/document-contracts.md",
+      "sha256": "7144966269e74b4ad2afb18932b6804886266d0200b8ef13dbb868f14d471988"
+    },
+    {
+      "path": "docs/foundation/annexes/examples/review-project.json",
+      "sha256": "91d3a2480f8f3bd4044f88448e8cf9be88888a9da42856922cdb91a17c515d9b"
+    },
+    {
+      "path": "docs/foundation/annexes/extension-registry.json",
+      "sha256": "6a601b264e557073858193895bb246e1d539c201ea754fb3ca6f3454f810fb8c"
+    },
+    {
+      "path": "docs/foundation/annexes/extension-vocabulary.md",
+      "sha256": "bffb8f39715dcd1f1c04369778695df7309fd2bdce1487377c25059eae492ec0"
+    },
+    {
+      "path": "docs/foundation/annexes/field-catalog.json",
+      "sha256": "dde2cbdec3b823c28f11969c5c516220c9486090dbcc49609ed13c9249964e5b"
+    },
+    {
+      "path": "docs/foundation/annexes/language-and-messages.md",
+      "sha256": "ff93f1b3cec2553a1419ab598893e8561bbd494d8c5c18df0693a390d89b2da9"
+    },
+    {
+      "path": "docs/foundation/annexes/message-catalog.json",
+      "sha256": "ed36b94da8c4c0045e19666ebb887624bcbcd7e1f4aa89688e845dcc8277b1bf"
+    },
+    {
+      "path": "docs/foundation/annexes/rights-and-provenance.md",
+      "sha256": "6ef4811151867ecd5063cfdc918ef747c806157329d042a1ff89993de3df2364"
+    },
+    {
+      "path": "docs/foundation/annexes/rights-register.json",
+      "sha256": "254bdfa564631abb1ea1b1fa6aafceb6597b67482b1eaceef93c4aaead32c731"
+    },
+    {
+      "path": "docs/foundation/annexes/scenario-catalog.json",
+      "sha256": "cdb2d0ee8b5927bd03b2b38da29c3a46d85b778d90f54a60b6820f4b38a6d273"
+    },
+    {
+      "path": "docs/foundation/annexes/scenarios-and-evidence.md",
+      "sha256": "7be420200e251b91d1bfb035321f4167ccf3efc0cdba6bbb49cb3921ca84f7bb"
+    },
+    {
+      "path": "docs/foundation/annexes/selection-register.json",
+      "sha256": "f23234f37e7b96b6ece5a3ff7faf34d48b32e9cbc043477c79b3276b84e76ca6"
+    },
+    {
+      "path": "docs/foundation/annexes/selection-register.md",
+      "sha256": "6d01e29b8ca3935446484d5457e74d726b520a7915759a6e60dda65547578047"
+    },
+    {
+      "path": "docs/foundation/annexes/source-register.json",
+      "sha256": "2f867f3c093a525eae9ba9b2784d06f24bb5aa4f43dd51cf221df2865284428d"
+    },
+    {
+      "path": "docs/foundation/annexes/target-matrix.json",
+      "sha256": "c03f64d37dd43de5548bf6a7706a5689408d1f9192618ff294099022e5336d40"
+    },
+    {
+      "path": "docs/foundation/annexes/targets-and-environments.md",
+      "sha256": "b29a2a2241b2b7bcf8815d63593594727d116bb3f5031c49c62cf2b13dcf38da"
+    },
+    {
+      "path": "docs/foundation/annexes/technology-and-references.md",
+      "sha256": "b7d9a7fe54a7d30873029ae04b54a91258a05ddab190959635f9aaa86affb5d7"
+    },
+    {
+      "path": "docs/foundation/architecture/browser-host-and-execution.md",
+      "sha256": "e6eed051d6f6257ced47809f510c42e39ddcc8893b3aedc50f785f61a4bca981"
+    },
+    {
+      "path": "docs/foundation/architecture/collaboration-readiness.md",
+      "sha256": "b0d70da34822bf9dbb28f5fee3715ed145d8f2dc48bc96c1dcb00bafb4a4401c"
+    },
+    {
+      "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+      "sha256": "6d834bb84101563f3b3f56f7787beb7132ce2b53a1c1c07395b00595ea49e300"
+    },
+    {
+      "path": "docs/foundation/architecture/modules-and-dependencies.md",
+      "sha256": "10cd647dacf5b36c9a7a1692db093cd6c47a45b17adca64b597f65f31b6b2480"
+    },
+    {
+      "path": "docs/foundation/architecture/public-api-mcp-and-entitlements.md",
+      "sha256": "38d600ac9fbf500bdc140e1c323976d92b69ad60227153917b8214f30c42e5b8"
+    },
+    {
+      "path": "docs/foundation/architecture/storage-offline-and-recovery.md",
+      "sha256": "b8c609afc51291fca22564dc327f624e98d40e3fa206e0c859ed1fe9de1b489a"
+    },
+    {
+      "path": "docs/foundation/architecture/system-and-domain-boundaries.md",
+      "sha256": "d3e1e249ddc5ac0ad499d997aba9db97974796f974960de86e3bc153b560bb78"
+    },
+    {
+      "path": "docs/foundation/baseline-review.md",
+      "sha256": "61288bd2d593e4ac3e69f3d55cc68bbc7f7f2dbce672c96e84aa93a114fb7358"
+    },
+    {
+      "path": "docs/foundation/brand/assets-and-provenance.md",
+      "sha256": "80467aed7e235e4c9a9d9e3f4541f4d31ceac79f21c7f82818e7a689681d57cf"
+    },
+    {
+      "path": "docs/foundation/brand/library-and-guidelines.md",
+      "sha256": "013f4a6d6b548dc90eda78e91927041f77a0b8c70eb92f04f7aa3a4e8f719dce"
+    },
+    {
+      "path": "docs/foundation/business/open-core-and-rights.md",
+      "sha256": "2081700ba52cfb1c0fe8f3b40b72954261b724f7c66fc0f524fa940280d56577"
+    },
+    {
+      "path": "docs/foundation/business/positioning-and-go-to-market.md",
+      "sha256": "6447f7ff923b51fb4febc66ddcfb3013123a64e213eb249da867aa91ecc58cf7"
+    },
+    {
+      "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+      "sha256": "39555b147b7ba2bd648e5c27f191f530195bb19897751bcc71b4587030498d4f"
+    },
+    {
+      "path": "docs/foundation/business/research-and-customer-feedback.md",
+      "sha256": "70f118dfe563486f0f6ec14733c5e23802be4ea6935b258826eae53929bcacc4"
+    },
+    {
+      "path": "docs/foundation/components/accessibility-contracts.md",
+      "sha256": "893c98773073b160b6ce61a955b5c8d682848b02535c13379871e530f340f55f"
+    },
+    {
+      "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+      "sha256": "f3d54fac9dba6097e68f99ae9a4c6945a77cb4b6578f23b2266a7d14a824e397"
+    },
+    {
+      "path": "docs/foundation/components/behavior-and-input-profiles.md",
+      "sha256": "02dacc440f1f7fa9aed4004f2f00d2d3d57a3c6ab4c607440e54c33993f2f763"
+    },
+    {
+      "path": "docs/foundation/components/coordinators-and-hosts.md",
+      "sha256": "cbbd318516bd0146625f2522eb4432696a2f15e537d5d0ea06400449b4604c82"
+    },
+    {
+      "path": "docs/foundation/components/custom-definition-registry.md",
+      "sha256": "db3150e2637fe6f51b7db1bbd3c42710949b1919795ea3a2aabd1c08fdaab818"
+    },
+    {
+      "path": "docs/foundation/components/definition-and-designs.md",
+      "sha256": "3206a476068f31431f54445eada9e0cdd0697ccc2384b3eb07b26c4ddb61c142"
+    },
+    {
+      "path": "docs/foundation/components/motion-and-transitions.md",
+      "sha256": "732e8c2ff398b4164ac25da412de65efa36e889bfa39681c98b0b9dcd93d8143"
+    },
+    {
+      "path": "docs/foundation/components/parts-slots-and-instances.md",
+      "sha256": "456db9dade8edf6c1d234c5e34acad83d6b385ba3b1c2db5db1dc99de315ba75"
+    },
+    {
+      "path": "docs/foundation/components/state-and-request-lifecycle.md",
+      "sha256": "d0b91bb2a3ea1d0e79c7aa4687dfd4e8a2335038f026126961041596723cbe9e"
+    },
+    {
+      "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+      "sha256": "52832717cb2a88d680451858fce82fe05678e01754249c82a050dd8eb1da70a2"
+    },
+    {
+      "path": "docs/foundation/components/values-events-and-expressions.md",
+      "sha256": "39371bc4d38b3b5bd983f514ed8e0fa6dc78fc20dc68b30bdfaf3a7026dbb3c9"
+    },
+    {
+      "path": "docs/foundation/decision-coverage.md",
+      "sha256": "075dcee0c72d2d1db42590637dbee9182bee0a77dfd8d38cdeb0d43fb11273d2"
+    },
+    {
+      "path": "docs/foundation/delivery/diff-upgrades-and-rollback.md",
+      "sha256": "f5fdf26caaabe624365ca72d9f9eb752ca2b7562526a739ef5634082e98cf489"
+    },
+    {
+      "path": "docs/foundation/delivery/project-init-and-doctor.md",
+      "sha256": "c8fd6737e784c54864de7438fd1cbf9a8871f4c695f439a55bcf8051bb4798b9"
+    },
+    {
+      "path": "docs/foundation/delivery/target-and-style-profiles.md",
+      "sha256": "7b57eea6b45c3c4e43c5b2450f45f0ac42a6ab7b0646907c2e7c4b9976a66621"
+    },
+    {
+      "path": "docs/foundation/delivery/user-owned-library-and-packaging.md",
+      "sha256": "6155944256d229546cfe9a50f69ab823772a7e6290a1023e2972c1ba1522a773"
+    },
+    {
+      "path": "docs/foundation/development-direction.md",
+      "sha256": "c2ac513e532fa9176da988e310bce65186ddeb5c1c14006f25e9a561ee019669"
+    },
+    {
+      "path": "docs/foundation/document-index.md",
+      "sha256": "c6cc017a7f84a271fb9b0448f49370e4adfe1d4840d5d59c7bbc6ad4cb6397c2"
+    },
+    {
+      "path": "docs/foundation/document-manifest.json",
+      "sha256": "47f35d0d9bced6c9dd5824c4993465121bb905224c8e235cc10337437fcd1c69"
+    },
+    {
+      "path": "docs/foundation/experience/canvas-and-direct-manipulation.md",
+      "sha256": "926f538967e569e8a9c90cc61e3817338da17d757392eb57c872e9c3b3b669ec"
+    },
+    {
+      "path": "docs/foundation/experience/component-editing-panels.md",
+      "sha256": "e99d023e8b37f106d3dc14eee3717b308d76be3195d164b0b54a84f7af65b822"
+    },
+    {
+      "path": "docs/foundation/experience/editor-accessibility-and-language.md",
+      "sha256": "2f913b56fb2782c56b457285ba19be6239fa7147ea89642e8c4a7330689ef222"
+    },
+    {
+      "path": "docs/foundation/experience/foundation-editor.md",
+      "sha256": "56c1c4e051a52db487d48ddeaad47dd2a9e48fee1b62ba243a2046ab4fc134cf"
+    },
+    {
+      "path": "docs/foundation/experience/layout-authoring.md",
+      "sha256": "6e266d641f15d77ff25c70c0755deea564e36897a1861c50fe3ec4b6066fa58d"
+    },
+    {
+      "path": "docs/foundation/experience/onboarding-and-inspector.md",
+      "sha256": "de3d7a36f99d88dcb5a28cb122850d917f7ae1c0cda276a4a7a5d9de059e76e7"
+    },
+    {
+      "path": "docs/foundation/experience/preview-and-prototypes.md",
+      "sha256": "01312e076ce226c6c741eabb5f099f53963f0d2dd4985c65325af8fef38c00f9"
+    },
+    {
+      "path": "docs/foundation/experience/text-and-asset-editing.md",
+      "sha256": "d87e9fa4892e4c66856d802ef5d42040b4165985d6ecc9339c1fe44cbc288c2f"
+    },
+    {
+      "path": "docs/foundation/governance/authority-and-change-control.md",
+      "sha256": "df850fa9dc2bc1275efe023d3ab4640d027e9527fba0bc008d72b0660ad1dddb"
+    },
+    {
+      "path": "docs/foundation/governance/glossary-and-naming.md",
+      "sha256": "0495b856b57fbce28a89648d05da30e10da3b72f99b82d7b71beb4ae309be91c"
+    },
+    {
+      "path": "docs/foundation/governance/version-and-compatibility.md",
+      "sha256": "b1f3d121e97f527b31f27343a3f8260d5e8e58f217355479bcd17a9cc7692d7e"
+    },
+    {
+      "path": "docs/foundation/operations/development-and-maintenance.md",
+      "sha256": "da6606d0cf5721fb0f3a8545d765b42a194c1167bbe6fe8a2aac6b6867cdc21c"
+    },
+    {
+      "path": "docs/foundation/operations/hosting-observability-and-support.md",
+      "sha256": "d0e89120645596951504aaabbc3490aeccdd7021ee3afa65a67d29a7de2dc9bc"
+    },
+    {
+      "path": "docs/foundation/operations/release-and-supply-chain.md",
+      "sha256": "8d6c6cfc86d8c853332eec0305392649637983c74a51ee42386f39b36dc0590f"
+    },
+    {
+      "path": "docs/foundation/operations/security-and-data-boundaries.md",
+      "sha256": "4ae7ac91e631865f71a52bcda1312a2d6d0890be1931a3a08c280037033373f1"
+    },
+    {
+      "path": "docs/foundation/product/journeys-and-acceptance.md",
+      "sha256": "5d7e1500506230ac5ad00790fca040cc6a20dbaa6d5fef1e5bb4f9a51a12b592"
+    },
+    {
+      "path": "docs/foundation/product/purpose-and-users.md",
+      "sha256": "51e54564a238de2e3028885c4971b2b0617410c888179263f53de8e22882c9f0"
+    },
+    {
+      "path": "docs/foundation/product/scope-catalog-and-roadmap.md",
+      "sha256": "19b1ca5de2a9e4887271f274dc22d34bf59ae9e3edb0d6cd9e1544bb2e2da467"
+    },
+    {
+      "path": "docs/foundation/quality/conformance-and-test-plans.md",
+      "sha256": "564a4e218f846c4d191f0aa8b59d5850b1a587a4ef0c2f2248165d72fa6922c2"
+    },
+    {
+      "path": "docs/foundation/quality/evidence-and-freshness.md",
+      "sha256": "952272c91fd065bf43f38bb70c0d4d52f2736df2a115677d8e80e45c22d47749"
+    },
+    {
+      "path": "docs/foundation/quality/performance-capacity-and-budgets.md",
+      "sha256": "a1558d53ad3b49acc1045174b2264652b1f5c154621b6e62207d137ec5d21365"
+    },
+    {
+      "path": "docs/foundation/quality/release-readiness.md",
+      "sha256": "470bc58959c9400a81b219e11d9f9e1ef3521a9336bbdf8cd8ea0af28923a5c8"
+    },
+    {
+      "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+      "sha256": "252a231b7ba867b27ed1696e49c7d7779303219e6a796d1370da17f84e65c214"
+    },
+    {
+      "path": "docs/foundation/syntax/interchange-and-migration.md",
+      "sha256": "a9957853f77f6d07ad83ec92825ad03dbd0d7a042bd45cd32af64b364dd832dd"
+    },
+    {
+      "path": "docs/foundation/syntax/project-documents-and-identity.md",
+      "sha256": "65929fde224c57429a08afd7feda9067b5c89d820f9e614fee64fe4b86f832d2"
+    },
+    {
+      "path": "docs/foundation/syntax/standard-strategy.md",
+      "sha256": "6c093d3ac77ef697cdc0b6fe8fb14fd4af2259faf584426374ca4aa3d844ba57"
+    }
+  ],
+  "subjectPolicy": "This evidence file is excluded from its own subject hashes. Hashes identify the document bytes, not implemented behavior.",
+  "retirementVerification": {
+    "snapshotCommit": "1b7bd6843ac638fac89da424637afa755d076144",
+    "snapshotFilesVerified": 442,
+    "archiveFilesRestoredAndVerified": 442,
+    "retiredPathsAbsent": 432,
+    "activeFilesChecked": 105,
+    "localLinksChecked": 913,
+    "preservedFilesUnchanged": [
+      ".gitignore",
+      "LICENSE"
+    ],
+    "scope": "retirement and documentation integrity; not product tests",
+    "negativeCasesRejected": [
+      "snapshot-digest-corruption",
+      "retired-package-resurrection",
+      "broken-document-link",
+      "new-product-source"
+    ]
+  }
+}

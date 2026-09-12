@@ -1,22 +1,11 @@
-# Axiom
+# Axiom Design System
 
-Axiom is being redesigned as a design-system builder in Axiom Studio. The active repository is a **documentation and product-definition workspace**. It does not currently contain an installable Studio, a token compiler, or an executable UI library.
+Axiom is being redesigned as a code-based Design System Builder in Axiom Studio. The active repository contains product foundations, design contracts and maintenance records. New product implementation follows owner confirmation of the full documentation baseline.
 
-The product direction has been confirmed. Review the [Foundation 1.0.0 document index proposal](docs/foundation/README.md), which maps 129 decisions to 56 planned documents in 12 areas. The index is awaiting owner confirmation; the planned document bodies have not been written.
+- [Foundation 1.0.0 — full documentation](docs/foundation/README.md)
+- [56-document index](docs/foundation/document-index.md)
+- [Baseline review and evidence boundaries](docs/foundation/baseline-review.md)
+- [Repository documentation and lifecycle](docs/README.md)
+- [Pinned pre-Studio reference](reference/pre-studio/README.md)
 
-Start with the [documentation entry point](docs/README.md). The owner's sequence is: confirm product decisions, confirm the Foundation 1.0.0 document index and development direction, write and confirm that documentation, then implement the product. The version names an intended documentation baseline, not a released product.
-
-The earlier implementation has been removed from the active tree as a complete source, specification, fixture, generator and build set. It remains recoverable at a pinned Git commit through the [pre-Studio reference guide](reference/pre-studio/README.md). That directory contains inventory and restoration instructions, not another executable copy. See the [retirement ledger](docs/maintenance/pre-studio-retirement.md).
-
-## Current verification
-
-Python 3.9+ and Git are the only requirements:
-
-```sh
-python3 scripts/verify-retirement.py
-python3 scripts/verify-retirement.py --self-test
-```
-
-These check snapshot integrity and restoration, retired-path absence, unchanged legal files and local document links. They are **not product tests**. Old pnpm checks are available only in a restored reference; earlier results retain their original revision scope.
-
-The existing [license](LICENSE) is unchanged. Future product licensing and distribution require their own documented approval.
+The full documentation has been written for review. It is not a claim of implemented or verified Studio/platform functionality. Existing LICENSE and Git history are preserved.

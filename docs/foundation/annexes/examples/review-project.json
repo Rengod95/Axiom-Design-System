@@ -1,0 +1,1862 @@
+{
+  "kind": "documentation-example-bundle",
+  "status": "DESIGN_REVIEW_READY",
+  "notExecutableSchema": true,
+  "notRuntimeEvidence": true,
+  "limitations": [
+    "Review-sized examples are not a complete generated UI library.",
+    "Default card slot content is supplied by instances; body slot is required.",
+    "Reopen is defined as a new generation after current instance completion; stale callbacks are ignored. Platform runtime remains unimplemented.",
+    "Token internal shape illustrates ADS proposal B, not proof of DTCG replacement."
+  ],
+  "project": {
+    "id": "project.review",
+    "kind": "project",
+    "schemaVersion": "review-1",
+    "revision": "review-r1",
+    "name": "Axiom review project",
+    "metadata": {
+      "exampleOnly": true
+    },
+    "extensions": {},
+    "documents": [
+      {
+        "id": "foundation.demo",
+        "expectedKind": "foundation"
+      },
+      {
+        "id": "component.button",
+        "expectedKind": "component"
+      },
+      {
+        "id": "component.card",
+        "expectedKind": "component"
+      },
+      {
+        "id": "component.toast",
+        "expectedKind": "component"
+      },
+      {
+        "id": "design.button.web",
+        "expectedKind": "design"
+      },
+      {
+        "id": "design.button.mobile",
+        "expectedKind": "design"
+      },
+      {
+        "id": "design.card.web",
+        "expectedKind": "design"
+      },
+      {
+        "id": "design.card.mobile",
+        "expectedKind": "design"
+      },
+      {
+        "id": "design.toast.web",
+        "expectedKind": "design"
+      },
+      {
+        "id": "design.toast.mobile",
+        "expectedKind": "design"
+      }
+    ],
+    "libraries": [
+      {
+        "id": "axiom.review-vocabulary",
+        "version": "1.0.0",
+        "status": "design-only"
+      }
+    ],
+    "targetProfiles": [
+      {
+        "id": "profile.review.web",
+        "expectedKind": "targetProfile"
+      },
+      {
+        "id": "profile.review.mobile",
+        "expectedKind": "targetProfile"
+      }
+    ],
+    "brandLibraries": [],
+    "connections": []
+  },
+  "foundation": {
+    "id": "foundation.demo",
+    "kind": "foundation",
+    "schemaVersion": "review-1",
+    "revision": "review-r1",
+    "name": "Review foundation",
+    "metadata": {
+      "exampleOnly": true
+    },
+    "extensions": {},
+    "tokens": [
+      {
+        "id": "token.surface",
+        "name": "surface",
+        "typeRef": {
+          "id": "color"
+        },
+        "value": {
+          "literal": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 1
+          }
+        }
+      },
+      {
+        "id": "token.content",
+        "name": "content",
+        "typeRef": {
+          "id": "color"
+        },
+        "value": {
+          "literal": {
+            "colorSpace": "srgb",
+            "components": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "alpha": 1
+          }
+        }
+      },
+      {
+        "id": "token.gap",
+        "name": "gap",
+        "typeRef": {
+          "id": "dimension"
+        },
+        "value": {
+          "literal": {
+            "value": 12,
+            "unit": "px"
+          }
+        }
+      },
+      {
+        "id": "token.enter-duration",
+        "name": "enter duration",
+        "typeRef": {
+          "id": "duration"
+        },
+        "value": {
+          "literal": {
+            "value": 160,
+            "unit": "ms"
+          }
+        }
+      }
+    ],
+    "domains": [],
+    "tiers": [],
+    "themeAxes": [
+      {
+        "id": "axis.scheme",
+        "contexts": [
+          "light"
+        ],
+        "default": "light",
+        "scope": {
+          "id": "foundation.demo",
+          "expectedKind": "foundation"
+        }
+      }
+    ],
+    "themeSets": [
+      {
+        "id": "theme.light",
+        "contexts": {
+          "axis.scheme": "light"
+        },
+        "resolutionProfile": {
+          "id": "review.resolver",
+          "expectedKind": "resolutionProfile",
+          "version": "1.0.0"
+        }
+      }
+    ],
+    "policies": [],
+    "originalSources": []
+  },
+  "components": [
+    {
+      "id": "component.button",
+      "kind": "component",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "Button",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "purpose": "범용 UI 활성화 요청",
+      "archetypeRef": {
+        "id": "axiom.family/command",
+        "expectedKind": "archetype",
+        "version": "1.0.0"
+      },
+      "traitBindings": [
+        {
+          "id": "binding.button.activation",
+          "traitRef": {
+            "id": "axiom.trait/activation",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.button.surface"
+          ],
+          "configuration": {
+            "inputProfile": {
+              "id": "profile.review.activation",
+              "expectedKind": "inputProfile",
+              "version": "1.0.0"
+            }
+          },
+          "portBindings": {
+            "activate": "event.button.activate"
+          },
+          "policyBindings": []
+        },
+        {
+          "id": "binding.button.naming",
+          "traitRef": {
+            "id": "axiom.trait/naming",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.button.surface"
+          ],
+          "configuration": {
+            "target": "part.button.surface",
+            "source": {
+              "kind": "part",
+              "id": "part.button.label"
+            }
+          },
+          "portBindings": {},
+          "policyBindings": []
+        },
+        {
+          "id": "binding.button.availability",
+          "traitRef": {
+            "id": "axiom.trait/availability",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.button.surface"
+          ],
+          "configuration": {
+            "mode": "disabled",
+            "focusPolicy": "profile"
+          },
+          "portBindings": {
+            "disabled": "value.button.disabled"
+          },
+          "policyBindings": []
+        }
+      ],
+      "publicContract": {
+        "values": [
+          {
+            "id": "value.button.disabled",
+            "name": "disabled",
+            "type": {
+              "kind": "boolean"
+            },
+            "ownership": "consumer",
+            "visibility": "public",
+            "defaultValue": false
+          },
+          {
+            "id": "value.button.pressed",
+            "name": "pressed",
+            "type": {
+              "kind": "boolean"
+            },
+            "ownership": "runtime",
+            "visibility": "internal",
+            "defaultValue": false
+          },
+          {
+            "id": "value.button.label",
+            "name": "label",
+            "type": {
+              "kind": "string"
+            },
+            "ownership": "consumer",
+            "visibility": "public",
+            "defaultValue": "실행"
+          }
+        ],
+        "events": [
+          {
+            "id": "event.button.activate",
+            "name": "onActivate",
+            "payloadType": {
+              "kind": "record",
+              "fields": {
+                "source": {
+                  "kind": "enum",
+                  "values": [
+                    "keyboard",
+                    "pointer",
+                    "assistive"
+                  ]
+                }
+              }
+            },
+            "phase": "intent",
+            "cancellable": false,
+            "visibility": "public"
+          }
+        ],
+        "exposedSlots": [],
+        "replaceableParts": [],
+        "allowedOverrides": [
+          {
+            "part": "part.button.surface",
+            "properties": [
+              "background",
+              "padding"
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "id": "variant.button.appearance",
+            "name": "appearance",
+            "options": [
+              "filled",
+              "outlined"
+            ],
+            "default": "filled"
+          }
+        ]
+      },
+      "parts": [
+        {
+          "id": "part.button.surface",
+          "parent": null,
+          "roleRefs": [
+            {
+              "id": "axiom.role/surface",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            },
+            {
+              "id": "axiom.role/control",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": []
+        },
+        {
+          "id": "part.button.label",
+          "parent": "part.button.surface",
+          "roleRefs": [
+            {
+              "id": "axiom.role/label",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": [
+            {
+              "kind": "contentFrom",
+              "from": "part.button.label",
+              "to": "value.button.label"
+            }
+          ]
+        }
+      ],
+      "slots": [],
+      "behavior": {
+        "states": [],
+        "transitions": [],
+        "hostBindings": []
+      },
+      "accessibility": {
+        "purpose": "범용 UI 활성화 요청",
+        "nameSources": [
+          {
+            "kind": "namedBy",
+            "from": "part.button.surface",
+            "to": "part.button.label"
+          }
+        ],
+        "descriptionSources": [],
+        "stateExposure": [],
+        "readingOrder": [
+          "part.button.surface"
+        ],
+        "focus": {
+          "strategy": "profile-owned"
+        },
+        "announcements": [],
+        "requirements": [
+          {
+            "id": "req.button.a11y",
+            "expectedKind": "requirement",
+            "version": "1.0.0"
+          }
+        ]
+      },
+      "motion": [],
+      "requirements": [
+        {
+          "id": "req.button.activation-once",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "component.card",
+      "kind": "component",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "Card",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "purpose": "범용 콘텐츠 묶음",
+      "archetypeRef": {
+        "id": "axiom.family/surface",
+        "expectedKind": "archetype",
+        "version": "1.0.0"
+      },
+      "traitBindings": [
+        {
+          "id": "binding.card.content",
+          "traitRef": {
+            "id": "axiom.trait/content",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.card.surface"
+          ],
+          "configuration": {
+            "exposure": "informative"
+          },
+          "portBindings": {},
+          "policyBindings": []
+        },
+        {
+          "id": "binding.card.layout",
+          "traitRef": {
+            "id": "axiom.trait/layout",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.card.surface"
+          ],
+          "configuration": {
+            "layoutProfile": {
+              "id": "profile.review.layout",
+              "expectedKind": "layoutProfile",
+              "version": "1.0.0"
+            }
+          },
+          "portBindings": {},
+          "policyBindings": []
+        }
+      ],
+      "publicContract": {
+        "values": [],
+        "events": [],
+        "exposedSlots": [
+          "slot.card.header",
+          "slot.card.body",
+          "slot.card.actions"
+        ],
+        "replaceableParts": [],
+        "allowedOverrides": [
+          {
+            "part": "part.card.surface",
+            "properties": [
+              "background",
+              "padding"
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "id": "variant.card.appearance",
+            "name": "appearance",
+            "options": [
+              "filled",
+              "outlined"
+            ],
+            "default": "filled"
+          }
+        ]
+      },
+      "parts": [
+        {
+          "id": "part.card.surface",
+          "parent": null,
+          "roleRefs": [
+            {
+              "id": "axiom.role/surface",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": []
+        },
+        {
+          "id": "part.card.header",
+          "parent": "part.card.surface",
+          "roleRefs": [
+            {
+              "id": "axiom.role/content",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": []
+        },
+        {
+          "id": "part.card.body",
+          "parent": "part.card.surface",
+          "roleRefs": [
+            {
+              "id": "axiom.role/content",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": []
+        },
+        {
+          "id": "part.card.actions",
+          "parent": "part.card.surface",
+          "roleRefs": [
+            {
+              "id": "axiom.role/content",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": []
+        }
+      ],
+      "slots": [
+        {
+          "id": "slot.card.header",
+          "ownerPartRef": "part.card.header",
+          "contentKinds": [
+            "text",
+            "component"
+          ],
+          "min": 0,
+          "max": "unbounded",
+          "defaultContent": [],
+          "allowedContractRefs": []
+        },
+        {
+          "id": "slot.card.body",
+          "ownerPartRef": "part.card.body",
+          "contentKinds": [
+            "text",
+            "component"
+          ],
+          "min": 1,
+          "max": "unbounded",
+          "defaultContent": [],
+          "allowedContractRefs": []
+        },
+        {
+          "id": "slot.card.actions",
+          "ownerPartRef": "part.card.actions",
+          "contentKinds": [
+            "text",
+            "component"
+          ],
+          "min": 0,
+          "max": "unbounded",
+          "defaultContent": [],
+          "allowedContractRefs": []
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "transitions": [],
+        "hostBindings": []
+      },
+      "accessibility": {
+        "purpose": "범용 콘텐츠 묶음",
+        "nameSources": [],
+        "descriptionSources": [],
+        "stateExposure": [],
+        "readingOrder": [
+          "part.card.header",
+          "part.card.body",
+          "part.card.actions"
+        ],
+        "focus": {
+          "strategy": "profile-owned"
+        },
+        "announcements": [],
+        "requirements": [
+          {
+            "id": "req.card.a11y",
+            "expectedKind": "requirement",
+            "version": "1.0.0"
+          }
+        ]
+      },
+      "motion": [],
+      "requirements": [
+        {
+          "id": "req.card.reading-order",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "component.toast",
+      "kind": "component",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "Toast",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "purpose": "일시 메시지 표시와 닫기",
+      "archetypeRef": {
+        "id": "axiom.family/toast-system",
+        "expectedKind": "archetype",
+        "version": "1.0.0"
+      },
+      "traitBindings": [
+        {
+          "id": "binding.toast.presence",
+          "traitRef": {
+            "id": "axiom.trait/presence",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.toast.surface"
+          ],
+          "configuration": {
+            "initial": "mounting"
+          },
+          "portBindings": {},
+          "policyBindings": []
+        },
+        {
+          "id": "binding.toast.announcement",
+          "traitRef": {
+            "id": "axiom.trait/announcement",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.toast.surface"
+          ],
+          "configuration": {
+            "priority": "polite",
+            "deduplication": "instance-generation"
+          },
+          "portBindings": {},
+          "policyBindings": []
+        },
+        {
+          "id": "binding.toast.dismissal",
+          "traitRef": {
+            "id": "axiom.trait/dismissal",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.toast.surface"
+          ],
+          "configuration": {
+            "sources": [
+              "close",
+              "external"
+            ]
+          },
+          "portBindings": {},
+          "policyBindings": []
+        },
+        {
+          "id": "binding.toast.motion",
+          "traitRef": {
+            "id": "axiom.trait/motion",
+            "expectedKind": "trait",
+            "version": "1.0.0"
+          },
+          "targetParts": [
+            "part.toast.surface"
+          ],
+          "configuration": {
+            "interruption": "finish-then-next",
+            "reduced": {
+              "kind": "snap"
+            }
+          },
+          "portBindings": {},
+          "policyBindings": []
+        }
+      ],
+      "publicContract": {
+        "values": [
+          {
+            "id": "value.toast.open",
+            "name": "open",
+            "type": {
+              "kind": "boolean"
+            },
+            "ownership": "consumer",
+            "visibility": "public",
+            "defaultValue": true,
+            "requestEventRef": "event.toast.close-request"
+          },
+          {
+            "id": "value.toast.presence",
+            "name": "presence",
+            "type": {
+              "kind": "enum",
+              "values": [
+                "mounting",
+                "presenting",
+                "exiting",
+                "removed"
+              ]
+            },
+            "ownership": "runtime",
+            "visibility": "internal",
+            "defaultValue": "mounting"
+          },
+          {
+            "id": "value.toast.content",
+            "name": "content",
+            "type": {
+              "kind": "string"
+            },
+            "ownership": "consumer",
+            "visibility": "public",
+            "defaultValue": "알림 내용"
+          }
+        ],
+        "events": [
+          {
+            "id": "event.toast.close-request",
+            "name": "onCloseRequest",
+            "payloadType": {
+              "kind": "record",
+              "fields": {
+                "reason": {
+                  "kind": "enum",
+                  "values": [
+                    "user",
+                    "external",
+                    "timeout"
+                  ]
+                }
+              }
+            },
+            "phase": "intent",
+            "cancellable": false,
+            "visibility": "public"
+          },
+          {
+            "id": "event.toast.present",
+            "name": "present",
+            "payloadType": {
+              "kind": "record",
+              "fields": {}
+            },
+            "phase": "notification",
+            "cancellable": false,
+            "visibility": "internal"
+          },
+          {
+            "id": "event.toast.open-committed-false",
+            "name": "openCommittedFalse",
+            "payloadType": {
+              "kind": "record",
+              "fields": {}
+            },
+            "phase": "notification",
+            "cancellable": false,
+            "visibility": "internal"
+          },
+          {
+            "id": "event.toast.exit-complete",
+            "name": "exitCompleteOrCleanupDeadline",
+            "payloadType": {
+              "kind": "record",
+              "fields": {}
+            },
+            "phase": "notification",
+            "cancellable": false,
+            "visibility": "internal"
+          }
+        ],
+        "exposedSlots": [],
+        "replaceableParts": [],
+        "allowedOverrides": [
+          {
+            "part": "part.toast.surface",
+            "properties": [
+              "background",
+              "padding"
+            ]
+          }
+        ],
+        "variants": []
+      },
+      "parts": [
+        {
+          "id": "part.toast.surface",
+          "parent": null,
+          "roleRefs": [
+            {
+              "id": "axiom.role/surface",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": []
+        },
+        {
+          "id": "part.toast.content",
+          "parent": "part.toast.surface",
+          "roleRefs": [
+            {
+              "id": "axiom.role/content",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": [
+            {
+              "kind": "contentFrom",
+              "from": "part.toast.content",
+              "to": "value.toast.content"
+            }
+          ]
+        },
+        {
+          "id": "part.toast.close",
+          "parent": "part.toast.surface",
+          "roleRefs": [
+            {
+              "id": "axiom.role/close",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            },
+            {
+              "id": "axiom.role/control",
+              "expectedKind": "role",
+              "version": "1.0.0"
+            }
+          ],
+          "required": true,
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "relationships": []
+        }
+      ],
+      "slots": [],
+      "behavior": {
+        "states": [
+          {
+            "id": "state.toast.presence",
+            "valueRef": "value.toast.presence",
+            "initial": "mounting",
+            "values": [
+              "mounting",
+              "presenting",
+              "exiting",
+              "removed"
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "transition.toast.1",
+            "domain": "state.toast.presence",
+            "from": "mounting",
+            "to": "presenting",
+            "trigger": "event.toast.present",
+            "effects": [],
+            "requirements": []
+          },
+          {
+            "id": "transition.toast.2",
+            "domain": "state.toast.presence",
+            "from": "presenting",
+            "to": "exiting",
+            "trigger": "event.toast.open-committed-false",
+            "effects": [],
+            "requirements": []
+          },
+          {
+            "id": "transition.toast.3",
+            "domain": "state.toast.presence",
+            "from": "exiting",
+            "to": "removed",
+            "trigger": "event.toast.exit-complete",
+            "effects": [
+              {
+                "kind": "cleanup"
+              }
+            ],
+            "requirements": []
+          },
+          {
+            "id": "transition.toast.early-close",
+            "domain": "state.toast.presence",
+            "from": "mounting",
+            "to": "removed",
+            "trigger": "event.toast.open-committed-false",
+            "effects": [
+              {
+                "kind": "cleanup"
+              }
+            ],
+            "requirements": []
+          }
+        ],
+        "hostBindings": [
+          {
+            "requiredCapability": "notification",
+            "searchRule": "nearest-compatible-explicit",
+            "explicitHostRef": "host.notifications",
+            "actualResolvedHostRef": "host.notifications",
+            "diagnostics": []
+          }
+        ]
+      },
+      "accessibility": {
+        "purpose": "일시 메시지 표시와 닫기",
+        "nameSources": [
+          {
+            "kind": "literalName",
+            "from": "part.toast.close",
+            "text": "닫기"
+          }
+        ],
+        "descriptionSources": [],
+        "stateExposure": [],
+        "readingOrder": [
+          "part.toast.content",
+          "part.toast.close"
+        ],
+        "focus": {
+          "strategy": "profile-owned"
+        },
+        "announcements": [
+          {
+            "hostRef": "host.notifications",
+            "contentPartRef": "part.toast.content",
+            "priority": "polite",
+            "deduplicateBy": "instance-generation"
+          }
+        ],
+        "requirements": [
+          {
+            "id": "req.toast.a11y",
+            "expectedKind": "requirement",
+            "version": "1.0.0"
+          }
+        ]
+      },
+      "motion": [
+        {
+          "id": "motion.toast.enter",
+          "trigger": "transition.toast.1",
+          "targetPartRef": "part.toast.surface",
+          "property": "opacity",
+          "keyframes": [
+            {
+              "offset": 0,
+              "value": 0
+            },
+            {
+              "offset": 1,
+              "value": 1
+            }
+          ],
+          "timing": {
+            "kind": "tween",
+            "duration": {
+              "tokenRef": "token.enter-duration"
+            },
+            "easing": "linear"
+          },
+          "interruption": "finish-then-next",
+          "reducedAlternative": {
+            "kind": "snap",
+            "value": 1
+          }
+        },
+        {
+          "id": "motion.toast.exit",
+          "trigger": "transition.toast.2",
+          "targetPartRef": "part.toast.surface",
+          "property": "opacity",
+          "keyframes": [
+            {
+              "offset": 0,
+              "value": 1
+            },
+            {
+              "offset": 1,
+              "value": 0
+            }
+          ],
+          "timing": {
+            "kind": "tween",
+            "duration": {
+              "tokenRef": "token.enter-duration"
+            },
+            "easing": "linear"
+          },
+          "interruption": "finish-then-next",
+          "reducedAlternative": {
+            "kind": "snap",
+            "value": 0
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "id": "req.toast.cleanup-once",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "id": "design.button.web",
+      "kind": "design",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "button Web",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "componentRef": {
+        "id": "component.button",
+        "expectedKind": "component"
+      },
+      "category": "Web",
+      "nodeMappings": [
+        {
+          "partRef": "part.button.surface",
+          "nodes": [
+            "part.button.surface.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.button.label",
+          "nodes": [
+            "part.button.label.node"
+          ],
+          "strategy": "target-profile"
+        }
+      ],
+      "layout": [
+        {
+          "targetPartRef": "part.button.surface",
+          "mode": "stack",
+          "axis": "horizontal",
+          "size": {
+            "inline": "hug",
+            "block": "hug"
+          },
+          "gap": {
+            "tokenRef": "token.gap"
+          },
+          "childOrder": [
+            "part.button.label"
+          ]
+        }
+      ],
+      "appearance": [
+        {
+          "id": "rule.button.web.base",
+          "targetPartRef": "part.button.surface",
+          "variants": {},
+          "states": {},
+          "declarations": {
+            "background": {
+              "tokenRef": "token.surface"
+            }
+          },
+          "explicitPriority": 0,
+          "refines": []
+        },
+        {
+          "id": "design.button.web.outlined",
+          "targetPartRef": "part.button.surface",
+          "variants": {
+            "variant.button.appearance": "outlined"
+          },
+          "states": {},
+          "declarations": {
+            "borderColor": {
+              "tokenRef": "token.content"
+            }
+          },
+          "explicitPriority": 10,
+          "refines": [
+            "rule.button.web.base"
+          ]
+        }
+      ],
+      "targetOverrides": []
+    },
+    {
+      "id": "design.button.mobile",
+      "kind": "design",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "button Mobile",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "componentRef": {
+        "id": "component.button",
+        "expectedKind": "component"
+      },
+      "category": "Mobile",
+      "nodeMappings": [
+        {
+          "partRef": "part.button.surface",
+          "nodes": [
+            "part.button.surface.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.button.label",
+          "nodes": [
+            "part.button.label.node"
+          ],
+          "strategy": "target-profile"
+        }
+      ],
+      "layout": [
+        {
+          "targetPartRef": "part.button.surface",
+          "mode": "stack",
+          "axis": "vertical",
+          "size": {
+            "inline": "hug",
+            "block": "hug"
+          },
+          "gap": {
+            "tokenRef": "token.gap"
+          },
+          "childOrder": [
+            "part.button.label"
+          ]
+        }
+      ],
+      "appearance": [
+        {
+          "id": "rule.button.mobile.base",
+          "targetPartRef": "part.button.surface",
+          "variants": {},
+          "states": {},
+          "declarations": {
+            "background": {
+              "tokenRef": "token.surface"
+            }
+          },
+          "explicitPriority": 0,
+          "refines": []
+        },
+        {
+          "id": "design.button.mobile.outlined",
+          "targetPartRef": "part.button.surface",
+          "variants": {
+            "variant.button.appearance": "outlined"
+          },
+          "states": {},
+          "declarations": {
+            "borderColor": {
+              "tokenRef": "token.content"
+            }
+          },
+          "explicitPriority": 10,
+          "refines": [
+            "rule.button.mobile.base"
+          ]
+        }
+      ],
+      "targetOverrides": []
+    },
+    {
+      "id": "design.card.web",
+      "kind": "design",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "card Web",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "componentRef": {
+        "id": "component.card",
+        "expectedKind": "component"
+      },
+      "category": "Web",
+      "nodeMappings": [
+        {
+          "partRef": "part.card.surface",
+          "nodes": [
+            "part.card.surface.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.card.header",
+          "nodes": [
+            "part.card.header.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.card.body",
+          "nodes": [
+            "part.card.body.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.card.actions",
+          "nodes": [
+            "part.card.actions.node"
+          ],
+          "strategy": "target-profile"
+        }
+      ],
+      "layout": [
+        {
+          "targetPartRef": "part.card.surface",
+          "mode": "stack",
+          "axis": "vertical",
+          "size": {
+            "inline": "hug",
+            "block": "hug"
+          },
+          "gap": {
+            "tokenRef": "token.gap"
+          },
+          "childOrder": [
+            "part.card.header",
+            "part.card.body",
+            "part.card.actions"
+          ]
+        }
+      ],
+      "appearance": [
+        {
+          "id": "rule.card.web.base",
+          "targetPartRef": "part.card.surface",
+          "variants": {},
+          "states": {},
+          "declarations": {
+            "background": {
+              "tokenRef": "token.surface"
+            }
+          },
+          "explicitPriority": 0,
+          "refines": []
+        },
+        {
+          "id": "design.card.web.outlined",
+          "targetPartRef": "part.card.surface",
+          "variants": {
+            "variant.card.appearance": "outlined"
+          },
+          "states": {},
+          "declarations": {
+            "borderColor": {
+              "tokenRef": "token.content"
+            }
+          },
+          "explicitPriority": 10,
+          "refines": [
+            "rule.card.web.base"
+          ]
+        }
+      ],
+      "targetOverrides": []
+    },
+    {
+      "id": "design.card.mobile",
+      "kind": "design",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "card Mobile",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "componentRef": {
+        "id": "component.card",
+        "expectedKind": "component"
+      },
+      "category": "Mobile",
+      "nodeMappings": [
+        {
+          "partRef": "part.card.surface",
+          "nodes": [
+            "part.card.surface.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.card.header",
+          "nodes": [
+            "part.card.header.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.card.body",
+          "nodes": [
+            "part.card.body.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.card.actions",
+          "nodes": [
+            "part.card.actions.node"
+          ],
+          "strategy": "target-profile"
+        }
+      ],
+      "layout": [
+        {
+          "targetPartRef": "part.card.surface",
+          "mode": "stack",
+          "axis": "vertical",
+          "size": {
+            "inline": "hug",
+            "block": "hug"
+          },
+          "gap": {
+            "tokenRef": "token.gap"
+          },
+          "childOrder": [
+            "part.card.header",
+            "part.card.body",
+            "part.card.actions"
+          ]
+        }
+      ],
+      "appearance": [
+        {
+          "id": "rule.card.mobile.base",
+          "targetPartRef": "part.card.surface",
+          "variants": {},
+          "states": {},
+          "declarations": {
+            "background": {
+              "tokenRef": "token.surface"
+            }
+          },
+          "explicitPriority": 0,
+          "refines": []
+        },
+        {
+          "id": "design.card.mobile.outlined",
+          "targetPartRef": "part.card.surface",
+          "variants": {
+            "variant.card.appearance": "outlined"
+          },
+          "states": {},
+          "declarations": {
+            "borderColor": {
+              "tokenRef": "token.content"
+            }
+          },
+          "explicitPriority": 10,
+          "refines": [
+            "rule.card.mobile.base"
+          ]
+        }
+      ],
+      "targetOverrides": []
+    },
+    {
+      "id": "design.toast.web",
+      "kind": "design",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "toast Web",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "componentRef": {
+        "id": "component.toast",
+        "expectedKind": "component"
+      },
+      "category": "Web",
+      "nodeMappings": [
+        {
+          "partRef": "part.toast.surface",
+          "nodes": [
+            "part.toast.surface.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.toast.content",
+          "nodes": [
+            "part.toast.content.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.toast.close",
+          "nodes": [
+            "part.toast.close.node"
+          ],
+          "strategy": "target-profile"
+        }
+      ],
+      "layout": [
+        {
+          "targetPartRef": "part.toast.surface",
+          "mode": "stack",
+          "axis": "vertical",
+          "size": {
+            "inline": "hug",
+            "block": "hug"
+          },
+          "gap": {
+            "tokenRef": "token.gap"
+          },
+          "childOrder": [
+            "part.toast.content",
+            "part.toast.close"
+          ]
+        }
+      ],
+      "appearance": [
+        {
+          "id": "rule.toast.web.base",
+          "targetPartRef": "part.toast.surface",
+          "variants": {},
+          "states": {},
+          "declarations": {
+            "background": {
+              "tokenRef": "token.surface"
+            }
+          },
+          "explicitPriority": 0,
+          "refines": []
+        }
+      ],
+      "targetOverrides": []
+    },
+    {
+      "id": "design.toast.mobile",
+      "kind": "design",
+      "schemaVersion": "review-1",
+      "revision": "review-r1",
+      "name": "toast Mobile",
+      "metadata": {
+        "exampleOnly": true
+      },
+      "extensions": {},
+      "componentRef": {
+        "id": "component.toast",
+        "expectedKind": "component"
+      },
+      "category": "Mobile",
+      "nodeMappings": [
+        {
+          "partRef": "part.toast.surface",
+          "nodes": [
+            "part.toast.surface.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.toast.content",
+          "nodes": [
+            "part.toast.content.node"
+          ],
+          "strategy": "target-profile"
+        },
+        {
+          "partRef": "part.toast.close",
+          "nodes": [
+            "part.toast.close.node"
+          ],
+          "strategy": "target-profile"
+        }
+      ],
+      "layout": [
+        {
+          "targetPartRef": "part.toast.surface",
+          "mode": "stack",
+          "axis": "vertical",
+          "size": {
+            "inline": "hug",
+            "block": "hug"
+          },
+          "gap": {
+            "tokenRef": "token.gap"
+          },
+          "childOrder": [
+            "part.toast.content",
+            "part.toast.close"
+          ]
+        }
+      ],
+      "appearance": [
+        {
+          "id": "rule.toast.mobile.base",
+          "targetPartRef": "part.toast.surface",
+          "variants": {},
+          "states": {},
+          "declarations": {
+            "background": {
+              "tokenRef": "token.surface"
+            }
+          },
+          "explicitPriority": 0,
+          "refines": []
+        }
+      ],
+      "targetOverrides": []
+    }
+  ],
+  "hosts": [
+    {
+      "id": "host.notifications",
+      "coordinatorRef": {
+        "id": "axiom.coordinator/notification",
+        "expectedKind": "coordinator",
+        "version": "1.0.0"
+      },
+      "scope": {
+        "id": "project.review",
+        "expectedKind": "project"
+      },
+      "configuration": {
+        "queuePolicy": "fifo",
+        "timeoutEnabled": false
+      },
+      "acceptedClients": [
+        "notification"
+      ],
+      "lifetime": "project-preview"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "req.button.activation-once",
+      "version": "1.0.0",
+      "ownerRef": {
+        "id": "component.button",
+        "expectedKind": "component"
+      },
+      "appliesWhen": {
+        "op": "literal",
+        "type": "boolean",
+        "value": true
+      },
+      "setup": {
+        "fixture": "button"
+      },
+      "stimulus": {
+        "scenario": "one valid activation and one cancelled activation"
+      },
+      "expected": {
+        "observation": "one emit for valid input; zero for cancellation"
+      },
+      "severity": "required",
+      "oracleRef": {
+        "id": "oracle.button",
+        "expectedKind": "oracle",
+        "version": "1.0.0"
+      },
+      "mode": "automatic",
+      "scope": [
+        {
+          "id": "profile.review.web",
+          "expectedKind": "targetProfile"
+        }
+      ]
+    },
+    {
+      "id": "req.button.a11y",
+      "version": "1.0.0",
+      "ownerRef": {
+        "id": "component.button",
+        "expectedKind": "component"
+      },
+      "appliesWhen": {
+        "op": "literal",
+        "type": "boolean",
+        "value": true
+      },
+      "setup": {
+        "fixture": "button"
+      },
+      "stimulus": {
+        "scenario": "keyboard and screen-reader walkthrough"
+      },
+      "expected": {
+        "observation": "profile-defined meaning, operation and focus"
+      },
+      "severity": "required",
+      "oracleRef": {
+        "id": "oracle.button.a11y",
+        "expectedKind": "oracle",
+        "version": "1.0.0"
+      },
+      "mode": "manual",
+      "scope": [
+        {
+          "id": "profile.review.web",
+          "expectedKind": "targetProfile"
+        }
+      ]
+    },
+    {
+      "id": "req.card.reading-order",
+      "version": "1.0.0",
+      "ownerRef": {
+        "id": "component.card",
+        "expectedKind": "component"
+      },
+      "appliesWhen": {
+        "op": "literal",
+        "type": "boolean",
+        "value": true
+      },
+      "setup": {
+        "fixture": "card"
+      },
+      "stimulus": {
+        "scenario": "render header/body/actions without adding interaction"
+      },
+      "expected": {
+        "observation": "content reading order; no invented selected or payment state"
+      },
+      "severity": "required",
+      "oracleRef": {
+        "id": "oracle.card",
+        "expectedKind": "oracle",
+        "version": "1.0.0"
+      },
+      "mode": "automatic",
+      "scope": [
+        {
+          "id": "profile.review.web",
+          "expectedKind": "targetProfile"
+        }
+      ]
+    },
+    {
+      "id": "req.card.a11y",
+      "version": "1.0.0",
+      "ownerRef": {
+        "id": "component.card",
+        "expectedKind": "component"
+      },
+      "appliesWhen": {
+        "op": "literal",
+        "type": "boolean",
+        "value": true
+      },
+      "setup": {
+        "fixture": "card"
+      },
+      "stimulus": {
+        "scenario": "keyboard and screen-reader walkthrough"
+      },
+      "expected": {
+        "observation": "profile-defined meaning, operation and focus"
+      },
+      "severity": "required",
+      "oracleRef": {
+        "id": "oracle.card.a11y",
+        "expectedKind": "oracle",
+        "version": "1.0.0"
+      },
+      "mode": "manual",
+      "scope": [
+        {
+          "id": "profile.review.web",
+          "expectedKind": "targetProfile"
+        }
+      ]
+    },
+    {
+      "id": "req.toast.cleanup-once",
+      "version": "1.0.0",
+      "ownerRef": {
+        "id": "component.toast",
+        "expectedKind": "component"
+      },
+      "appliesWhen": {
+        "op": "literal",
+        "type": "boolean",
+        "value": true
+      },
+      "setup": {
+        "fixture": "toast"
+      },
+      "stimulus": {
+        "scenario": "repeat close, unmount, delayed completion"
+      },
+      "expected": {
+        "observation": "idempotent removal; no stale callback affecting new generation"
+      },
+      "severity": "required",
+      "oracleRef": {
+        "id": "oracle.toast",
+        "expectedKind": "oracle",
+        "version": "1.0.0"
+      },
+      "mode": "automatic",
+      "scope": [
+        {
+          "id": "profile.review.web",
+          "expectedKind": "targetProfile"
+        }
+      ]
+    },
+    {
+      "id": "req.toast.a11y",
+      "version": "1.0.0",
+      "ownerRef": {
+        "id": "component.toast",
+        "expectedKind": "component"
+      },
+      "appliesWhen": {
+        "op": "literal",
+        "type": "boolean",
+        "value": true
+      },
+      "setup": {
+        "fixture": "toast"
+      },
+      "stimulus": {
+        "scenario": "keyboard and screen-reader walkthrough"
+      },
+      "expected": {
+        "observation": "profile-defined meaning, operation and focus"
+      },
+      "severity": "required",
+      "oracleRef": {
+        "id": "oracle.toast.a11y",
+        "expectedKind": "oracle",
+        "version": "1.0.0"
+      },
+      "mode": "manual",
+      "scope": [
+        {
+          "id": "profile.review.web",
+          "expectedKind": "targetProfile"
+        }
+      ]
+    }
+  ],
+  "externalReferences": {
+    "registry": "../extension-registry.json",
+    "profiles": [
+      "profile.review.web",
+      "profile.review.mobile"
+    ],
+    "resolutionProfiles": [
+      "review.resolver"
+    ],
+    "oracles": [
+      "oracle.button",
+      "oracle.button.a11y",
+      "oracle.card",
+      "oracle.card.a11y",
+      "oracle.toast",
+      "oracle.toast.a11y"
+    ],
+    "inputProfiles": [
+      "profile.review.activation"
+    ],
+    "layoutProfiles": [
+      "profile.review.layout"
+    ]
+  }
+}

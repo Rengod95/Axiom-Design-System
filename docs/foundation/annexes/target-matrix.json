@@ -1,0 +1,111 @@
+{
+  "kind": "documentation-target-matrix",
+  "status": "DESIGN_REVIEW_READY",
+  "initialRequiredCategories": [
+    "Web",
+    "Mobile"
+  ],
+  "initialRequiredOutputTechnologies": [
+    "React",
+    "React Native",
+    "Swift",
+    "Android"
+  ],
+  "profiles": [
+    {
+      "id": "target.web.react.css",
+      "category": "Web",
+      "technology": "React",
+      "style": "CSS",
+      "behavior": "동작 기반 선택 팩 또는 custom",
+      "environmentSelection": "대표 React 소비 앱·브라우저·SSR/RSC 경계 선정",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    },
+    {
+      "id": "target.web.react.scss",
+      "category": "Web",
+      "technology": "React",
+      "style": "SCSS",
+      "behavior": "검증된 Web behavior profile",
+      "environmentSelection": "Sass build·공개 변수·asset 경로",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    },
+    {
+      "id": "target.web.react.tailwind",
+      "category": "Web",
+      "technology": "React",
+      "style": "Tailwind",
+      "behavior": "검증된 Web behavior profile",
+      "environmentSelection": "정확한 major·build scan·theme 연결",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    },
+    {
+      "id": "target.web.react.css-in-js",
+      "category": "Web",
+      "technology": "React",
+      "style": "CSS-in-JS",
+      "behavior": "구체 library/version 미선정",
+      "environmentSelection": "runtime/compile-time·SSR/RSC·style injection",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    },
+    {
+      "id": "target.mobile.rn.expo",
+      "category": "Mobile",
+      "technology": "React Native",
+      "style": "native style",
+      "behavior": "RN 대응 또는 custom",
+      "environmentSelection": "Expo toolchain·실기기/개발 client",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    },
+    {
+      "id": "target.mobile.rn.bare",
+      "category": "Mobile",
+      "technology": "React Native",
+      "style": "native style",
+      "behavior": "RN 대응 또는 custom",
+      "environmentSelection": "bare install·provider·native module",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    },
+    {
+      "id": "target.mobile.swift",
+      "category": "Mobile",
+      "technology": "Swift",
+      "style": "native",
+      "behavior": "SwiftUI 우선 비교·보완 profile",
+      "environmentSelection": "macOS Xcode·simulator·실기기 범위",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    },
+    {
+      "id": "target.mobile.android",
+      "category": "Mobile",
+      "technology": "Kotlin/Android",
+      "style": "native",
+      "behavior": "Compose 우선 비교·보완 profile",
+      "environmentSelection": "Android toolchain·emulator·실기기 범위",
+      "status": "REQUIRED_NOT_IMPLEMENTED",
+      "exactVersions": null,
+      "evidence": []
+    }
+  ],
+  "unsupportedCartesianExamples": [
+    "Swift+CSS",
+    "Android+React Aria DOM",
+    "RN+arbitrary CSS Grid",
+    "Web preview counted as native execution"
+  ],
+  "releaseRule": "Run entire selected release profile; all mandatory automatic and manual requirements must pass."
+}

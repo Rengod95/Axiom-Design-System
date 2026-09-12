@@ -1,0 +1,1788 @@
+{
+  "kind": "documentation-field-catalog",
+  "status": "DESIGN_REVIEW_READY",
+  "notExecutableSchema": true,
+  "records": [
+    {
+      "name": "DocumentEnvelope",
+      "ownerDocumentId": "SYN02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "kind",
+          "type": "DocumentKind",
+          "required": true
+        },
+        {
+          "name": "schemaVersion",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "revision",
+          "type": "Revision",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "metadata",
+          "type": "record",
+          "required": false
+        },
+        {
+          "name": "extensions",
+          "type": "OpaqueExtensionMap",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "Ref",
+      "ownerDocumentId": "SYN02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "expectedKind",
+          "type": "Kind",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": false
+        },
+        {
+          "name": "revision",
+          "type": "Revision",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "Project",
+      "ownerDocumentId": "SYN02",
+      "fields": [
+        {
+          "name": "documents",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "libraries",
+          "type": "list<DependencyLock>",
+          "required": true
+        },
+        {
+          "name": "targetProfiles",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "brandLibraries",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "connections",
+          "type": "list<Ref>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Foundation",
+      "ownerDocumentId": "SYN03",
+      "fields": [
+        {
+          "name": "tokens",
+          "type": "list<Token>",
+          "required": true
+        },
+        {
+          "name": "domains",
+          "type": "list<Domain>",
+          "required": true
+        },
+        {
+          "name": "tiers",
+          "type": "list<Tier>",
+          "required": true
+        },
+        {
+          "name": "themeAxes",
+          "type": "list<ThemeAxis>",
+          "required": true
+        },
+        {
+          "name": "themeSets",
+          "type": "list<ThemeSet>",
+          "required": true
+        },
+        {
+          "name": "policies",
+          "type": "list<PolicyRule>",
+          "required": true
+        },
+        {
+          "name": "originalSources",
+          "type": "list<SourceRecord>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Token",
+      "ownerDocumentId": "SYN03",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "typeRef",
+          "type": "TypeRef",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "Literal | TokenRef",
+          "required": true
+        },
+        {
+          "name": "domain",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "tier",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "record",
+          "required": false
+        },
+        {
+          "name": "extensions",
+          "type": "OpaqueExtensionMap",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "ThemeAxis",
+      "ownerDocumentId": "SYN03",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "contexts",
+          "type": "nonempty list<string>",
+          "required": true
+        },
+        {
+          "name": "default",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "scope",
+          "type": "Ref",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ThemeSet",
+      "ownerDocumentId": "SYN03",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "contexts",
+          "type": "map<axisId,context>",
+          "required": true
+        },
+        {
+          "name": "resolutionProfile",
+          "type": "Ref",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ComponentDefinition",
+      "ownerDocumentId": "CMP01",
+      "fields": [
+        {
+          "name": "purpose",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "archetypeRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "traitBindings",
+          "type": "list<TraitBinding>",
+          "required": true
+        },
+        {
+          "name": "publicContract",
+          "type": "PublicContract",
+          "required": true
+        },
+        {
+          "name": "parts",
+          "type": "list<Part>",
+          "required": true
+        },
+        {
+          "name": "slots",
+          "type": "list<Slot>",
+          "required": true
+        },
+        {
+          "name": "behavior",
+          "type": "BehaviorContract",
+          "required": true
+        },
+        {
+          "name": "accessibility",
+          "type": "AccessibilityContract",
+          "required": true
+        },
+        {
+          "name": "motion",
+          "type": "list<MotionDefinition>",
+          "required": true
+        },
+        {
+          "name": "requirements",
+          "type": "list<RequirementRef>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "PublicContract",
+      "ownerDocumentId": "CMP03",
+      "fields": [
+        {
+          "name": "values",
+          "type": "list<ValuePort>",
+          "required": true
+        },
+        {
+          "name": "events",
+          "type": "list<EventPort>",
+          "required": true
+        },
+        {
+          "name": "exposedSlots",
+          "type": "list<StableId>",
+          "required": true
+        },
+        {
+          "name": "replaceableParts",
+          "type": "list<StableId>",
+          "required": true
+        },
+        {
+          "name": "allowedOverrides",
+          "type": "list<OverridePermission>",
+          "required": true
+        },
+        {
+          "name": "variants",
+          "type": "list<VariantAxis>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ValuePort",
+      "ownerDocumentId": "CMP04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "TypeExpr",
+          "required": true
+        },
+        {
+          "name": "ownership",
+          "type": "local | consumer | runtime",
+          "required": true
+        },
+        {
+          "name": "defaultValue",
+          "type": "TypedValue",
+          "required": false
+        },
+        {
+          "name": "requestEventRef",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "visibility",
+          "type": "public | internal",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "EventPort",
+      "ownerDocumentId": "CMP03",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "payloadType",
+          "type": "TypeExpr",
+          "required": true
+        },
+        {
+          "name": "phase",
+          "type": "intent | committed | notification",
+          "required": true
+        },
+        {
+          "name": "cancellable",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "queuePolicy",
+          "type": "PolicyBinding",
+          "required": false
+        },
+        {
+          "name": "visibility",
+          "type": "public | internal",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TraitBinding",
+      "ownerDocumentId": "CMP02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "traitRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "targetParts",
+          "type": "list<StableId>",
+          "required": true
+        },
+        {
+          "name": "configuration",
+          "type": "record",
+          "required": true
+        },
+        {
+          "name": "portBindings",
+          "type": "map<portName,StableId>",
+          "required": true
+        },
+        {
+          "name": "policyBindings",
+          "type": "list<PolicyBinding>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Part",
+      "ownerDocumentId": "CMP05",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "parent",
+          "type": "StableId | null",
+          "required": true
+        },
+        {
+          "name": "roleRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "cardinality",
+          "type": "Cardinality",
+          "required": true
+        },
+        {
+          "name": "relationships",
+          "type": "list<Relationship>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Slot",
+      "ownerDocumentId": "CMP05",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "ownerPartRef",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "contentKinds",
+          "type": "nonempty list<ContentKind>",
+          "required": true
+        },
+        {
+          "name": "min",
+          "type": "nonnegative integer",
+          "required": true
+        },
+        {
+          "name": "max",
+          "type": "nonnegative integer | unbounded",
+          "required": true
+        },
+        {
+          "name": "defaultContent",
+          "type": "list<ContentNode>",
+          "required": true
+        },
+        {
+          "name": "allowedContractRefs",
+          "type": "list<Ref>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Instance",
+      "ownerDocumentId": "CMP05",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "componentRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "designRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "values",
+          "type": "record",
+          "required": true
+        },
+        {
+          "name": "slotContents",
+          "type": "map<slotId,list<ContentNode>>",
+          "required": true
+        },
+        {
+          "name": "overrides",
+          "type": "list<Override>",
+          "required": true
+        },
+        {
+          "name": "provenance",
+          "type": "SourceRecord",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "BehaviorContract",
+      "ownerDocumentId": "CMP06",
+      "fields": [
+        {
+          "name": "states",
+          "type": "list<StateDomain>",
+          "required": true
+        },
+        {
+          "name": "transitions",
+          "type": "list<Transition>",
+          "required": true
+        },
+        {
+          "name": "inputProfileRef",
+          "type": "Ref",
+          "required": false
+        },
+        {
+          "name": "hostBindings",
+          "type": "list<HostBinding>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Transition",
+      "ownerDocumentId": "CMP04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "domain",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "from",
+          "type": "StateSelector",
+          "required": true
+        },
+        {
+          "name": "to",
+          "type": "StateValue",
+          "required": true
+        },
+        {
+          "name": "trigger",
+          "type": "EventRef",
+          "required": true
+        },
+        {
+          "name": "guard",
+          "type": "Expr",
+          "required": false
+        },
+        {
+          "name": "effects",
+          "type": "list<UIEffect>",
+          "required": true
+        },
+        {
+          "name": "requirements",
+          "type": "list<RequirementRef>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Request",
+      "ownerDocumentId": "CMP04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "ownerValueRef",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "desired",
+          "type": "TypedValue",
+          "required": true
+        },
+        {
+          "name": "baseValueRevision",
+          "type": "Revision",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "proposed | pending | accepted | rejected | cancelled | superseded",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "AccessibilityContract",
+      "ownerDocumentId": "CMP08",
+      "fields": [
+        {
+          "name": "purpose",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "nameSources",
+          "type": "list<Relationship>",
+          "required": true
+        },
+        {
+          "name": "descriptionSources",
+          "type": "list<Relationship>",
+          "required": true
+        },
+        {
+          "name": "stateExposure",
+          "type": "list<StateExposure>",
+          "required": true
+        },
+        {
+          "name": "readingOrder",
+          "type": "list<StableId>",
+          "required": true
+        },
+        {
+          "name": "focus",
+          "type": "FocusContract",
+          "required": true
+        },
+        {
+          "name": "announcements",
+          "type": "list<AnnouncementContract>",
+          "required": true
+        },
+        {
+          "name": "requirements",
+          "type": "list<RequirementRef>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "MotionDefinition",
+      "ownerDocumentId": "CMP09",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "trigger",
+          "type": "EventOrTransitionRef",
+          "required": true
+        },
+        {
+          "name": "targetPartRef",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "property",
+          "type": "TypedVisualProperty",
+          "required": true
+        },
+        {
+          "name": "keyframes",
+          "type": "list<Keyframe>",
+          "required": true
+        },
+        {
+          "name": "timing",
+          "type": "Tween | Spring",
+          "required": true
+        },
+        {
+          "name": "delay",
+          "type": "Duration",
+          "required": false
+        },
+        {
+          "name": "stagger",
+          "type": "Stagger",
+          "required": false
+        },
+        {
+          "name": "interruption",
+          "type": "MotionPolicy",
+          "required": true
+        },
+        {
+          "name": "reducedAlternative",
+          "type": "MotionAlternative",
+          "required": true
+        },
+        {
+          "name": "completionEffect",
+          "type": "UIEffect",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "DesignDefinition",
+      "ownerDocumentId": "CMP01",
+      "fields": [
+        {
+          "name": "componentRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "Web | Mobile",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "nodeMappings",
+          "type": "list<PartNodeMapping>",
+          "required": true
+        },
+        {
+          "name": "layout",
+          "type": "list<LayoutRule>",
+          "required": true
+        },
+        {
+          "name": "appearance",
+          "type": "list<AppearanceRule>",
+          "required": true
+        },
+        {
+          "name": "targetOverrides",
+          "type": "list<TargetOverride>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "AppearanceRule",
+      "ownerDocumentId": "CMP10",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "targetPartRef",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "variants",
+          "type": "record",
+          "required": true
+        },
+        {
+          "name": "states",
+          "type": "record",
+          "required": true
+        },
+        {
+          "name": "environment",
+          "type": "Expr",
+          "required": false
+        },
+        {
+          "name": "declarations",
+          "type": "map<property,TypedValueOrRef>",
+          "required": true
+        },
+        {
+          "name": "explicitPriority",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "refines",
+          "type": "list<StableId>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "LayoutRule",
+      "ownerDocumentId": "UX03",
+      "fields": [
+        {
+          "name": "targetPartRef",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "mode",
+          "type": "flow | stack | grid | free",
+          "required": true
+        },
+        {
+          "name": "axis",
+          "type": "horizontal | vertical",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "map<axis,SizePolicy>",
+          "required": true
+        },
+        {
+          "name": "gap",
+          "type": "DimensionOrRef",
+          "required": false
+        },
+        {
+          "name": "padding",
+          "type": "Edges",
+          "required": false
+        },
+        {
+          "name": "alignment",
+          "type": "Alignment",
+          "required": false
+        },
+        {
+          "name": "distribution",
+          "type": "Distribution",
+          "required": false
+        },
+        {
+          "name": "wrap",
+          "type": "WrapPolicy",
+          "required": false
+        },
+        {
+          "name": "overflow",
+          "type": "OverflowPolicy",
+          "required": false
+        },
+        {
+          "name": "childOrder",
+          "type": "list<StableId>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TraitDefinition",
+      "ownerDocumentId": "CMP02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "NamespacedId",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "configurationType",
+          "type": "TypeExpr",
+          "required": true
+        },
+        {
+          "name": "requires",
+          "type": "list<CapabilityRef>",
+          "required": true
+        },
+        {
+          "name": "provides",
+          "type": "list<CapabilityRef>",
+          "required": true
+        },
+        {
+          "name": "ports",
+          "type": "list<Port>",
+          "required": true
+        },
+        {
+          "name": "roleRequirements",
+          "type": "list<RoleRequirement>",
+          "required": true
+        },
+        {
+          "name": "inputClaims",
+          "type": "list<InputClaim>",
+          "required": true
+        },
+        {
+          "name": "obligations",
+          "type": "list<RequirementRef>",
+          "required": true
+        },
+        {
+          "name": "incompatibleBindings",
+          "type": "list<ConflictRule>",
+          "required": true
+        },
+        {
+          "name": "inspectorHints",
+          "type": "InspectorHints",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "RoleDefinition",
+      "ownerDocumentId": "CMP02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "NamespacedId",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "allowedKinds",
+          "type": "list<PartKind>",
+          "required": true
+        },
+        {
+          "name": "relations",
+          "type": "list<RelationshipRequirement>",
+          "required": true
+        },
+        {
+          "name": "cardinality",
+          "type": "Cardinality",
+          "required": true
+        },
+        {
+          "name": "obligations",
+          "type": "list<RequirementRef>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "PolicyDefinition",
+      "ownerDocumentId": "CMP02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "NamespacedId",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "appliesTo",
+          "type": "list<CapabilityRef>",
+          "required": true
+        },
+        {
+          "name": "configurationType",
+          "type": "TypeExpr",
+          "required": true
+        },
+        {
+          "name": "default",
+          "type": "TypedValue",
+          "required": false
+        },
+        {
+          "name": "invariants",
+          "type": "list<RequirementRef>",
+          "required": true
+        },
+        {
+          "name": "allowedChoices",
+          "type": "list<TypedValue>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "HostDefinition",
+      "ownerDocumentId": "CMP07",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "coordinatorRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "configuration",
+          "type": "record",
+          "required": true
+        },
+        {
+          "name": "acceptedClients",
+          "type": "list<CapabilityRef>",
+          "required": true
+        },
+        {
+          "name": "lifetime",
+          "type": "Lifetime",
+          "required": true
+        },
+        {
+          "name": "parentHostRef",
+          "type": "StableId",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "HostBinding",
+      "ownerDocumentId": "CMP07",
+      "fields": [
+        {
+          "name": "requiredCapability",
+          "type": "CapabilityRef",
+          "required": true
+        },
+        {
+          "name": "searchRule",
+          "type": "nearest-compatible-explicit | explicit-only | profile-rule",
+          "required": true
+        },
+        {
+          "name": "explicitHostRef",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "actualResolvedHostRef",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "diagnostics",
+          "type": "list<Diagnostic>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "AssetRecord",
+      "ownerDocumentId": "BRD02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "contentHash",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "mediaType",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "byteSize",
+          "type": "nonnegative integer",
+          "required": true
+        },
+        {
+          "name": "source",
+          "type": "SourceRecord",
+          "required": true
+        },
+        {
+          "name": "license",
+          "type": "LicenseRecord",
+          "required": true
+        },
+        {
+          "name": "variantOf",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "storageRef",
+          "type": "StorageRef",
+          "required": true
+        },
+        {
+          "name": "rightsStatus",
+          "type": "verified | unknown | restricted",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "CommandEnvelope",
+      "ownerDocumentId": "ARC03",
+      "fields": [
+        {
+          "name": "commandId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "actorId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "projectId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "baseRevision",
+          "type": "Revision",
+          "required": true
+        },
+        {
+          "name": "operation",
+          "type": "OperationId",
+          "required": true
+        },
+        {
+          "name": "payload",
+          "type": "TypedPayload",
+          "required": true
+        },
+        {
+          "name": "idempotencyKey",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "origin",
+          "type": "GUI | internalAI | externalAPI",
+          "required": true
+        },
+        {
+          "name": "transactionId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "requestedScopes",
+          "type": "list<Scope>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "CommandResult",
+      "ownerDocumentId": "ARC03",
+      "fields": [
+        {
+          "name": "status",
+          "type": "accepted | reviewRequired | conflict | rejected",
+          "required": true
+        },
+        {
+          "name": "revision",
+          "type": "Revision",
+          "required": false
+        },
+        {
+          "name": "diff",
+          "type": "list<Change>",
+          "required": true
+        },
+        {
+          "name": "diagnostics",
+          "type": "list<Diagnostic>",
+          "required": true
+        },
+        {
+          "name": "undoHandle",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "affectedRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "reviewToken",
+          "type": "OpaqueToken",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "Diagnostic",
+      "ownerDocumentId": "ARC03",
+      "fields": [
+        {
+          "name": "code",
+          "type": "DiagnosticCode",
+          "required": true
+        },
+        {
+          "name": "severity",
+          "type": "info | warning | error",
+          "required": true
+        },
+        {
+          "name": "sourceRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "relatedRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "parameters",
+          "type": "record",
+          "required": true
+        },
+        {
+          "name": "suggestedActions",
+          "type": "list<ActionDescriptor>",
+          "required": true
+        },
+        {
+          "name": "targetScope",
+          "type": "list<Ref>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ContextBundle",
+      "ownerDocumentId": "AI01",
+      "fields": [
+        {
+          "name": "selectedRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "revision",
+          "type": "Revision",
+          "required": true
+        },
+        {
+          "name": "referencedContracts",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "requirements",
+          "type": "list<RequirementRef>",
+          "required": true
+        },
+        {
+          "name": "allowedOperations",
+          "type": "list<OperationId>",
+          "required": true
+        },
+        {
+          "name": "capabilities",
+          "type": "list<Capability>",
+          "required": true
+        },
+        {
+          "name": "budget",
+          "type": "ResourceBudget",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "RealizationJob",
+      "ownerDocumentId": "AI02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "snapshotDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "targetProfileRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "dependencyLockDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "testPlanRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "candidateArea",
+          "type": "StorageRef",
+          "required": true
+        },
+        {
+          "name": "budget",
+          "type": "ResourceBudget",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "queued | running | blocked | failed | ready",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TargetProfile",
+      "ownerDocumentId": "DLV01",
+      "fields": [
+        {
+          "name": "id",
+          "type": "NamespacedId",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "Web | Mobile",
+          "required": true
+        },
+        {
+          "name": "toolchain",
+          "type": "ToolchainLock",
+          "required": true
+        },
+        {
+          "name": "styleStrategy",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "behaviorMapping",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "typeMapping",
+          "type": "list<Mapping>",
+          "required": true
+        },
+        {
+          "name": "capabilities",
+          "type": "list<Capability>",
+          "required": true
+        },
+        {
+          "name": "testEnvironments",
+          "type": "list<EnvironmentRef>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Requirement",
+      "ownerDocumentId": "QAL01",
+      "fields": [
+        {
+          "name": "id",
+          "type": "NamespacedId",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "ownerRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "appliesWhen",
+          "type": "Expr",
+          "required": true
+        },
+        {
+          "name": "setup",
+          "type": "TestSetup",
+          "required": true
+        },
+        {
+          "name": "stimulus",
+          "type": "InputTrace",
+          "required": true
+        },
+        {
+          "name": "expected",
+          "type": "Observable",
+          "required": true
+        },
+        {
+          "name": "severity",
+          "type": "required | recommended",
+          "required": true
+        },
+        {
+          "name": "oracleRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "mode",
+          "type": "automatic | manual",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "list<Ref>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "EvidenceRecord",
+      "ownerDocumentId": "QAL02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "requirementIds",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "snapshotDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "sourceDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "dependencyLockDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "profileRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "environment",
+          "type": "EnvironmentLock",
+          "required": true
+        },
+        {
+          "name": "runnerIdentity",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "oracleDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "result",
+          "type": "notRun | running | pass | fail | blocked | waived | stale",
+          "required": true
+        },
+        {
+          "name": "artifacts",
+          "type": "list<ArtifactRef>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectConnection",
+      "ownerDocumentId": "DLV02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "hostRef",
+          "type": "StableId",
+          "required": false
+        },
+        {
+          "name": "projectRoot",
+          "type": "AuthorizedPath",
+          "required": true
+        },
+        {
+          "name": "directories",
+          "type": "DirectoryMap",
+          "required": true
+        },
+        {
+          "name": "aliases",
+          "type": "AliasMap",
+          "required": true
+        },
+        {
+          "name": "providers",
+          "type": "list<ProviderBinding>",
+          "required": true
+        },
+        {
+          "name": "allowedBehaviorBases",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "installedRelease",
+          "type": "Ref",
+          "required": false
+        },
+        {
+          "name": "lastDoctorReceipt",
+          "type": "Ref",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "DeliveryManifest",
+      "ownerDocumentId": "DLV03",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "snapshotDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "profiles",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "dependencyLockDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "files",
+          "type": "list<FileDigest>",
+          "required": true
+        },
+        {
+          "name": "assets",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "notices",
+          "type": "list<LicenseRecord>",
+          "required": true
+        },
+        {
+          "name": "evidenceRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "limitations",
+          "type": "list<Diagnostic>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "UpgradePlan",
+      "ownerDocumentId": "DLV04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "connectionRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "oldRelease",
+          "type": "Ref",
+          "required": false
+        },
+        {
+          "name": "newRelease",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "baselineHashes",
+          "type": "map<path,Digest>",
+          "required": true
+        },
+        {
+          "name": "currentHashes",
+          "type": "map<path,Digest>",
+          "required": true
+        },
+        {
+          "name": "changes",
+          "type": "list<FileChange>",
+          "required": true
+        },
+        {
+          "name": "conflicts",
+          "type": "list<Conflict>",
+          "required": true
+        },
+        {
+          "name": "selectedActions",
+          "type": "list<ActionDescriptor>",
+          "required": true
+        },
+        {
+          "name": "rollbackRefs",
+          "type": "list<Ref>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "VariantAxis",
+      "ownerDocumentId": "CMP10",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": "nonempty list<string>",
+          "required": true
+        },
+        {
+          "name": "default",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  ]
+}
