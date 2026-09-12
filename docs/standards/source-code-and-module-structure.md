@@ -1,11 +1,13 @@
 # Axiom source-code and module-structure standard
 
-**Status:** Normative repository engineering standard
+**Status:** Engineering principles retained; implementation-specific profile frozen pending an approved implementation bootstrap
 
 **Applies to:** source, tests, scripts, package manifests, generated-code inputs,
 and source-level changes
 
-**Enforcement:** `pnpm check`, code review, and the repository root `AGENTS.md`
+**Current enforcement:** `python3 scripts/verify-retirement.py`, its self-tests, code review and repository `AGENTS.md`.
+
+[ADR-0007](../adr/0007-git-reference-and-documentation-phase.md) scopes former package layout, NodeNext and pnpm rules below to the restored reference. The active repository is documentation-only. General principles apply to maintenance; they do not authorize product implementation or settle the next layout.
 
 ## 1. Purpose and language
 
@@ -157,7 +159,7 @@ packages/<capability>/
 - A package MUST NOT depend on a higher presentation or framework layer.
 - Cyclic package dependencies are forbidden.
 
-Repository-level ownership is fixed:
+Repository ownership in the frozen reference was as follows. Future ownership requires an approved profile; these directories are absent from the current tree except documentation and its maintenance verifier:
 
 | Directory | Ownership rule |
 | --- | --- |
@@ -213,7 +215,7 @@ production code when they exercise the same boundary.
 
 ### 6.2 NodeNext relative imports
 
-Every package is an ES module and the repository compiles with both `module`
+In the frozen reference, every package is an ES module and the repository compiles with both `module`
 and `moduleResolution` set to `NodeNext`. Relative TypeScript imports MUST name
 the emitted `.js` file:
 
@@ -224,8 +226,8 @@ import { parseTokenIdentity } from "./identity.js";
 TypeScript resolves that specifier to `identity.ts` while type-checking and
 preserves `./identity.js` in emitted JavaScript. Node ESM requires the relative
 file extension at runtime. Relative `.ts` specifiers and extensionless relative
-imports MUST NOT be used unless the repository changes its compiler, emit, and
-runtime contract through an ADR.
+imports MUST NOT be used unless the restored reference changes its compiler, emit, and
+runtime contract through an ADR. The future product chooses an approved implementation profile.
 
 Package imports continue to use the package export, for example
 `@axiom/tokens`, without a file extension.
@@ -287,7 +289,7 @@ Reviewers evaluate, in order:
 4. tests and conformance evidence;
 5. complexity, naming, constants, comments, and documentation.
 
-Every source change MUST pass:
+When modifying the restored reference, every source change MUST pass its original checks:
 
 ```bash
 pnpm check
@@ -295,11 +297,13 @@ pnpm test
 pnpm build
 ```
 
-`pnpm check` rejects version-bearing source names, missing package constants
+In that reference, `pnpm check` rejects version-bearing source names, missing package constants
 modules, non-constant-case exported constants, package-boundary drift,
 specification failures, and TypeScript errors. Literal intent still requires
 review because a static rule cannot reliably distinguish every domain value
 from ordinary syntax.
+
+For the active documentation phase, run `python3 scripts/verify-retirement.py` and `python3 scripts/verify-retirement.py --self-test`. These are retirement/documentation checks. Old pnpm checks are not applicable here and are not reported as passing. Product checks return with an approved implementation-bootstrap ADR.
 
 ## 10. Public practice references
 

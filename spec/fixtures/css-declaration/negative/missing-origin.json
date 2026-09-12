@@ -1,8 +1,0 @@
-{
-  "property": "display",
-  "value": {
-    "kind": "css",
-    "value": "inline-flex"
-  },
-  "important": false
-}

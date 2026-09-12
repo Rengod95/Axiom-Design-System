@@ -1,8 +1,0 @@
-{
-  "all": [
-    {
-      "any": ["container.inline.compact", "viewport.width.sm"]
-    },
-    "preference.reducedMotion"
-  ]
-}
