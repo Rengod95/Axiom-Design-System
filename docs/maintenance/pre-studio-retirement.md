@@ -1,7 +1,7 @@
 # Pre-Studio Retirement Ledger
 
-Date: 2026-09-12  
-Baseline: [f368ae7d2084](https://github.com/Rengod95/Axiom-Design-System/commit/f368ae7d208424c922637ca625ab9687a85ed5b9)  
+Date: 2026-09-12 \
+Baseline: [f368ae7d2084](https://github.com/Rengod95/Axiom-Design-System/commit/f368ae7d208424c922637ca625ab9687a85ed5b9) \
 Status: deprecation prepared; executable-source retention and deletion remain pending.
 
 ## What changed

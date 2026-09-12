@@ -1,8 +1,8 @@
 # ADR-0006 — Product Reset and Reference Lifecycle
 
-**Status:** ACCEPTED for lifecycle and approval sequencing only  
-**Date:** 2026-09-12  
-**Decision input:** Product owner's explicit request to retire unnecessary earlier implementation and establish Foundation 1.0.0 through staged confirmations.  
+**Status:** ACCEPTED for lifecycle and approval sequencing only \
+**Date:** 2026-09-12 \
+**Decision input:** Product owner's explicit request to retire unnecessary earlier implementation and establish Foundation 1.0.0 through staged confirmations. \
 **Amends:** The scope of ADR-0001–0005, SSOT-00–05, old execution plans, and repository entry points as instructions for future product work.
 
 ## Decision
