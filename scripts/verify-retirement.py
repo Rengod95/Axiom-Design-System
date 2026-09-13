@@ -113,9 +113,9 @@ def implementation_profile(root: Path) -> dict | None:
             "Implementation bootstrap ADR mismatch")
     require("Status: ACCEPTED" in (root / profile["adr"]).read_text(encoding="utf-8"),
             "Implementation bootstrap ADR not accepted")
-    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md"]
-            and "Status: ACCEPTED" in (root / profile["extensionAdrs"][0]).read_text(encoding="utf-8"),
-            "Source authoring extension ADR not accepted")
+    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md", "docs/adr/0011-structural-domain-inspection-and-local-references.md", "docs/adr/0012-typed-values-and-project-bundles.md"]
+            and all("Status: ACCEPTED" in (root / adr).read_text(encoding="utf-8") for adr in profile["extensionAdrs"]),
+            "Implementation extension ADR not accepted")
     require(profile.get("approval") == "docs/decisions/axiom-foundation-baseline-approval.json",
             "Implementation approval path mismatch")
     approval = json.loads((root / profile["approval"]).read_text(encoding="utf-8"))

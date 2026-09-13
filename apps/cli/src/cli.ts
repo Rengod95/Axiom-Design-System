@@ -1,12 +1,13 @@
 import { createHash, randomUUID } from "node:crypto";
 import { resolve } from "node:path";
-import { CommandService, KernelError, parseDocument, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
+import { BUNDLE_FORMAT, CommandService, DOMAIN_FORMAT, KernelError, parseDocument, PROTOCOL_VERSION, STRUCTURAL_FORMAT } from "../../../modules/ads-core/src/index.ts";
 import type { Candidate, CommandEnvelope, CommandResult, JsonObject, ProjectSnapshot } from "../../../modules/ads-core/src/index.ts";
 import { FileStore } from "../../../modules/local-store/src/index.ts";
 import { CliUsageError, parseArguments, validateArguments } from "./arguments.ts";
 import { CLI_DIAGNOSTIC, CLI_DIAGNOSTIC_PHASE, CLI_HELP, CLI_OUTPUT_CONTEXT, EXIT_CODE, LOCAL_ID_PREFIX, LOCAL_PRINCIPAL } from "./constants.ts";
 import { loadSourceFiles } from "./source-files.ts";
 import { writeSourceExport } from "./source-export.ts";
+import { readProjectBundle, writeProjectBundle } from "./bundle-files.ts";
 
 const JSON_INDENT = 2;
 const IMPORT_FORMAT = "ads-envelope";
@@ -120,16 +121,31 @@ export async function runCli(args: readonly string[]): Promise<number> {
       writeResult({ ...await service.getDiagnostics(LOCAL_PRINCIPAL) });
       return EXIT_CODE.SUCCESS;
     }
+    if (input.command === "validate") {
+      await requireProject(service);
+      const structure = input.options.domain ? await service.inspectDomain(LOCAL_PRINCIPAL) : await service.inspectStructure(LOCAL_PRINCIPAL);
+      writeResult({ structure });
+      return structure.valid ? EXIT_CODE.SUCCESS : EXIT_CODE.FAILURE;
+    }
     if (input.command === "export") {
       const source = await service.exportDocument(input.positional[0]!, LOCAL_PRINCIPAL);
       if (!source) throw Object.assign(new Error(`Document not found: ${input.positional[0]}`), { code: CLI_DIAGNOSTIC.NOT_FOUND });
       writeResult({ status: "accepted", export: await writeSourceExport(String(input.options.out), source) });
       return EXIT_CODE.SUCCESS;
     }
+    if (input.command === "export-bundle") {
+      const bundle = await service.exportBundle(LOCAL_PRINCIPAL);
+      writeResult({ status: "accepted", export: await writeProjectBundle(String(input.options.out), bundle) });
+      return EXIT_CODE.SUCCESS;
+    }
 
     const project = await requireProject(service);
     let result: CommandResult;
-    if (input.command === "import" || input.command === "update") {
+    if (input.command === "import-bundle") {
+      const source = await readProjectBundle(input.positional[0]!);
+      result = await service.execute(makeEnvelope(project.id, project.revision, "document.import", { sourceRefs: [source], formatProfile: BUNDLE_FORMAT, importMode: "review" }), LOCAL_PRINCIPAL);
+      if (input.options.approve && result.status === "reviewRequired" && result.candidateId) result = await approveAndApply(service, store, result.candidateId);
+    } else if (input.command === "import" || input.command === "update") {
       const sources = await loadSourceFiles(input.positional);
       const sourceRefs = sources.map((source): JsonObject => {
         const ref: JsonObject = { ...source };
@@ -143,7 +159,8 @@ export async function runCli(args: readonly string[]): Promise<number> {
         return ref;
       });
       const importMode = input.command === "update" ? "update" : input.options.draft ? "draft" : "review";
-      result = await service.execute(makeEnvelope(project.id, project.revision, "document.import", { sourceRefs, formatProfile: IMPORT_FORMAT, importMode }), LOCAL_PRINCIPAL);
+      const formatProfile = input.options.domain ? DOMAIN_FORMAT : input.options.structural ? STRUCTURAL_FORMAT : IMPORT_FORMAT;
+      result = await service.execute(makeEnvelope(project.id, project.revision, "document.import", { sourceRefs, formatProfile, importMode }), LOCAL_PRINCIPAL);
       if (input.options.approve && result.status === "reviewRequired" && result.candidateId) result = await approveAndApply(service, store, result.candidateId);
     } else if (input.command === "delete") {
       const refs = input.positional.map((id) => {

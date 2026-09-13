@@ -1,10 +1,15 @@
-import type { Candidate, CommandEnvelope, CommandResult, Diagnostic, DocumentEntry, HistoryEntry, JsonObject, KernelServices, KernelState, Principal, ProjectSnapshot, SourceDraft, SourceExport, TransactionalStore, UndoEntry } from "./contracts.ts";
-import { CODE, KERNEL_FORMAT_VERSION, MAX_BATCH_DOCUMENTS, MAX_COMMAND_BYTES, OPERATION_SCOPES, PROTOCOL_VERSION } from "./constants.ts";
+import type { Candidate, CommandEnvelope, CommandResult, Diagnostic, DocumentEntry, HistoryEntry, JsonObject, KernelServices, KernelState, Principal, ProjectSnapshot, ProjectStructureReport, SourceDraft, SourceExport, TransactionalStore, UndoEntry } from "./contracts.ts";
+import { CODE, KERNEL_FORMAT_VERSION, MAX_BATCH_DOCUMENTS, MAX_COMMAND_BYTES, OPERATION_SCOPES, PROTOCOL_VERSION, DOMAIN_PROFILE, STRUCTURAL_PROFILE, VALIDATION_PROFILES } from "./constants.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { inspectDocument, isObject, isValidId, validateReferences } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
 import { ImportRejection, prepareImport } from "./source-import.ts";
 import { exportSource, validateSourceRecords } from "./source-records.ts";
+import { inspectDocumentStructure } from "./structural-validation.ts";
+import { inspectLocalReferences } from "./local-references.ts";
+import { inspectProfileDocument } from "./validation-profile.ts";
+import { exportProjectBundle } from "./project-bundle.ts";
+import type { ProjectBundle } from "./bundle-contracts.ts";
 
 const ENVELOPE_FIELDS = new Set(["protocolVersion", "commandId", "actorId", "projectId", "baseRevision", "operation", "payload", "idempotencyKey", "origin", "transactionId", "requestedScopes"]);
 const ORIGINS = new Set(["GUI", "internalAI", "externalAPI"]);
@@ -148,8 +153,37 @@ export class CommandService {
     const state = checkedState(await this.#store.read());
     const project = state.project;
     const diagnostics = project ? [...Object.values(project.documents).flatMap((entry) => inspectDocument(entry.currentText ?? entry.originalText, entry.currentSourceUri ?? entry.sourceUri).diagnostics), ...validateReferences(project.documents, project.id)] : [];
+    if (project) diagnostics.push(...this.#structuralDiagnostics(project.documents, project.id));
     diagnostics.push(...(state.drafts ?? []).filter((draft) => draft.actorId === actorId && draft.projectId === project?.id).flatMap((draft) => draft.diagnostics));
     return { revision: project?.revision ?? null, diagnostics: structuredClone(diagnostics) };
+  }
+
+  /** Inspect all adopted sources without changing their persisted validation policy or revision. */
+  async inspectStructure(principal: Principal): Promise<ProjectStructureReport> {
+    const project = await this.getProject(principal);
+    if (!project) throw new KernelError(CODE.PROJECT_MISSING, "Create a project before structural inspection.");
+    const documents = Object.values(project.documents).map((entry) => ({ id: entry.document.id, structure: inspectDocumentStructure(entry.document) }));
+    const references = inspectLocalReferences(project.documents, project.id);
+    const diagnostics = [...documents.flatMap((entry) => entry.structure.diagnostics), ...references.diagnostics];
+    return { revision: project.revision, profile: STRUCTURAL_PROFILE, valid: documents.every((entry) => entry.structure.valid) && references.valid, documents, references, diagnostics };
+  }
+
+  /** Inspect the implemented typed/content rules without promoting stored source policies. */
+  async inspectDomain(principal: Principal): Promise<ProjectStructureReport> {
+    const project = await this.getProject(principal);
+    if (!project) throw new KernelError(CODE.PROJECT_MISSING, "Create a project before domain inspection.");
+    const documents = Object.values(project.documents).map((entry) => ({ id: entry.document.id, structure: inspectProfileDocument(entry.document, DOMAIN_PROFILE) }));
+    const references = inspectLocalReferences(project.documents, project.id);
+    const diagnostics = [...documents.flatMap((entry) => entry.structure.diagnostics), ...references.diagnostics];
+    return { revision: project.revision, profile: DOMAIN_PROFILE, valid: documents.every((entry) => entry.structure.valid) && references.valid, documents, references, diagnostics };
+  }
+
+  /** One authorized snapshot supplies every source and the manifest revision. */
+  async exportBundle(principal: Principal): Promise<ProjectBundle> {
+    const project = await this.getProject(principal);
+    if (!project) throw new KernelError(CODE.PROJECT_MISSING, "Create a project before bundle export.");
+    this.#validateDocuments(project.documents, project.id);
+    return exportProjectBundle(project, (text) => this.#services.digest(text));
   }
 
   /** Return exact first-source text and separately hashed current normalized JSON. */
@@ -157,8 +191,29 @@ export class CommandService {
     const project = await this.getProject(principal);
     const entry = project && Object.hasOwn(project.documents, id) ? project.documents[id] : undefined;
     if (!project || !entry) return null;
-    const diagnostics = [...inspectDocument(entry.currentText ?? entry.originalText, entry.currentSourceUri ?? entry.sourceUri).diagnostics, ...validateReferences(project.documents, project.id).filter((diagnostic) => diagnostic.sourceRef === id)];
+    const diagnostics = [...inspectDocument(entry.currentText ?? entry.originalText, entry.currentSourceUri ?? entry.sourceUri).diagnostics, ...validateReferences(project.documents, project.id).filter((diagnostic) => diagnostic.sourceRef === id), ...this.#structuralDiagnostics(project.documents, project.id).filter((diagnostic) => diagnostic.sourceRef === id)];
     return exportSource(entry, project.revision, diagnostics, (text) => this.#services.digest(text));
+  }
+
+  /** Enforced profiles inspect the complete candidate graph, including unchanged dependents. */
+  #structuralDiagnostics(documents: Record<string, DocumentEntry>, projectId: string): Diagnostic[] {
+    const profiled = Object.values(documents).filter((entry) => VALIDATION_PROFILES.some((profile) => profile === entry.validationProfile));
+    if (!profiled.length) return [];
+    const structures = profiled.map((entry) => inspectProfileDocument(entry.document, entry.validationProfile!));
+    const references = inspectLocalReferences(documents, projectId, profiled.map((entry) => entry.document.id));
+    const diagnostics = [...structures.flatMap((structure) => structure.diagnostics), ...references.diagnostics];
+    // Diagnostic presentation may be truncated; validity must never depend on a visible error surviving the cap.
+    if ((!references.valid || structures.some((structure) => !structure.valid)) && !diagnostics.some((diagnostic) => diagnostic.severity === "error")) {
+      diagnostics.unshift({ code: CODE.STRUCTURE_INVALID, phase: "document", severity: "error", sourceRef: projectId, path: "", message: "Covered document or local-reference constraints failed; detailed diagnostics were truncated." });
+    }
+    return diagnostics;
+  }
+
+  /** Reject covered errors before candidate publication, adoption or history restoration. */
+  #validateDocuments(documents: Record<string, DocumentEntry>, projectId: string): Diagnostic[] {
+    const structural = this.#structuralDiagnostics(documents, projectId);
+    if (structural.some((diagnostic) => diagnostic.severity === "error")) throw new ImportRejection(structural);
+    return [...Object.values(documents).filter((entry) => !VALIDATION_PROFILES.some((profile) => profile === entry.validationProfile)).flatMap((entry) => entry.diagnostics), ...structural, ...validateReferences(documents, projectId)];
   }
 
   #id(): string {
@@ -198,7 +253,7 @@ export class CommandService {
   }
 
   #propose(state: KernelState, project: ProjectSnapshot, principal: Principal, documents: Record<string, DocumentEntry>, diff: CommandResult["diff"]): CommandResult {
-    const diagnostics = [...Object.values(documents).flatMap((entry) => entry.diagnostics), ...validateReferences(documents, project.id)];
+    const diagnostics = this.#validateDocuments(documents, project.id);
     const candidate: Candidate = { id: this.#id(), projectId: project.id, baseRevision: project.revision, digest: "", actorId: principal.id, documents, diff, diagnostics, status: "pending" };
     candidate.digest = this.#candidateDigest(candidate);
     if (state.candidates.some((item) => item.id === candidate.id)) throw new KernelError(CODE.STATE_INVALID, "Identity collision.");
@@ -267,14 +322,14 @@ export class CommandService {
     authorize(principal, "review.apply");
     if (candidate.status !== "approved" || !approval || approval.principalId !== principal.id || approval.token !== envelope.payload.approvalToken
       || approval.digest !== candidate.digest || approval.baseRevision !== project.revision) throw new KernelError(CODE.APPROVAL_INVALID, "A current principal-bound approval is required.");
-    validateReferences(candidate.documents, project.id);
+    const diagnostics = this.#validateDocuments(candidate.documents, project.id);
     const before = structuredClone(project.documents);
     const revision = this.#commit(state, project, envelope, principal, candidate.documents, candidate.diff.map((entry) => entry.id));
     const undoHandle = this.#id();
     state.undo.push({ handle: undoHandle, actorId: principal.id, applicableRevision: revision, before, after: structuredClone(project.documents) });
     state.redo = [];
     candidate.status = "applied";
-    return { ...result("accepted", revision), candidateId: candidate.id, patchDigest: candidate.digest, undoHandle, diff: candidate.diff, affectedRefs: candidate.diff.map((entry) => entry.id), diagnostics: candidate.diagnostics };
+    return { ...result("accepted", revision), candidateId: candidate.id, patchDigest: candidate.digest, undoHandle, diff: candidate.diff, affectedRefs: candidate.diff.map((entry) => entry.id), diagnostics };
   }
 
   #commit(state: KernelState, project: ProjectSnapshot, envelope: CommandEnvelope, principal: Principal, documents: Record<string, DocumentEntry>, affectedRefs: string[]): string {
@@ -299,7 +354,7 @@ export class CommandService {
     const expected = isRedo ? entry.before : entry.after;
     if (canonicalJson(expected) !== canonicalJson(project.documents)) return failure(CODE.HISTORY_CONFLICT, "Current documents differ from the expected history snapshot.", project.revision, true);
     const documents = isRedo ? entry.after : entry.before;
-    validateReferences(documents, project.id);
+    this.#validateDocuments(documents, project.id);
     const affectedRefs = [...new Set([...Object.keys(expected), ...Object.keys(documents)])].filter((id) => canonicalJson(expected[id] ?? null) !== canonicalJson(documents[id] ?? null));
     const revision = this.#commit(state, project, envelope, principal, documents, affectedRefs);
     from.pop();

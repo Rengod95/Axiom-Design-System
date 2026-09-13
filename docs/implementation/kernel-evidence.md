@@ -1,6 +1,6 @@
 # ADS document kernel: scope, evidence and next work
 
-Profile: [ADR-0009](../adr/0009-ads-kernel-implementation-bootstrap.md) and [ADR-0010](../adr/0010-source-preserving-draft-authoring.md), accepted 2026-09-13 after the audited Foundation merged in [PR #25](https://github.com/Rengod95/Axiom-Design-System/pull/25) and the owner requested continuation. This is a bounded I1 source-authoring implementation, not completion of I1 or the full Studio product.
+Profile: [ADR-0009](../adr/0009-ads-kernel-implementation-bootstrap.md), [ADR-0010](../adr/0010-source-preserving-draft-authoring.md) and [ADR-0011](../adr/0011-structural-domain-inspection-and-local-references.md), accepted after the audited Foundation and initial implementation merged in PRs #25 and #26 and the owner requested continuation. This is a bounded I1 source-authoring implementation, not completion of I1 or the full Studio product. The additional structural profile and selected local-reference checks have [separate evidence](structural-domain-evidence.md).
 
 ## Implemented user flow
 

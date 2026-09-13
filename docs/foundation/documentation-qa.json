@@ -2,7 +2,7 @@
   "kind": "foundation-documentation-qa",
   "status": "PASS",
   "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
-  "verifiedAt": "2026-09-13T07:42:45.848224+00:00",
+  "verifiedAt": "2026-09-13T08:21:11.018853+00:00",
   "checkerProvenance": "scripts/verify-foundation.py",
   "counts": {
     "documents": 56,
@@ -13,9 +13,9 @@
     "queries": 10,
     "commands": 52,
     "diagnostics": 30,
-    "localLinks": 1049,
+    "localLinks": 1065,
     "fragments": 129,
-    "checks": 2144
+    "checks": 2160
   },
   "errors": [],
   "checks": [
@@ -2890,6 +2890,21 @@
       "detail": null
     },
     {
+      "name": "local link: docs/adr/0011-structural-domain-inspection-and-local-references.md → ../foundation/syntax/project-documents-and-identity.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0011-structural-domain-inspection-and-local-references.md → ../foundation/annexes/document-contracts.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0011-structural-domain-inspection-and-local-references.md → ../foundation/annexes/field-catalog.json",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/axiom-design-baseline-index.md → foundation/README.md",
       "passed": true,
       "detail": null
@@ -3465,6 +3480,11 @@
       "detail": null
     },
     {
+      "name": "local link: docs/foundation/annexes/selection-register.md → ../../implementation/structural-domain-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/foundation/annexes/selection-register.md → ../syntax/project-documents-and-identity.md",
       "passed": true,
       "detail": null
@@ -3566,6 +3586,11 @@
     },
     {
       "name": "local link: docs/foundation/annexes/selection-register.md → ../../implementation/schema-selection-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/foundation/annexes/selection-register.md → ../../implementation/structural-domain-evidence.md",
       "passed": true,
       "detail": null
     },
@@ -8455,6 +8480,16 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../adr/0011-structural-domain-inspection-and-local-references.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → structural-domain-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/implementation/kernel-evidence.md → kernel-quickstart.md",
       "passed": true,
       "detail": null
@@ -8545,6 +8580,11 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/kernel-quickstart.md → ../adr/0011-structural-domain-inspection-and-local-references.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/implementation/schema-compiler-notice.md → ../adr/0010-source-preserving-draft-authoring.md",
       "passed": true,
       "detail": null
@@ -8571,6 +8611,36 @@
     },
     {
       "name": "local link: docs/implementation/schema-selection-evidence.md → ../../modules/ads-core/test/schema-validation.test.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/schema-selection-evidence.md → structural-domain-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/structural-domain-evidence.md → ../adr/0011-structural-domain-inspection-and-local-references.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/structural-domain-evidence.md → ../foundation/annexes/field-catalog.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/structural-domain-evidence.md → ../../scripts/generate-ads-validator.mjs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/structural-domain-evidence.md → ../../modules/ads-core/schema/catalog-structure.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/structural-domain-evidence.md → implementation-roadmap.json",
       "passed": true,
       "detail": null
     },
@@ -8665,12 +8735,22 @@
       "detail": null
     },
     {
+      "name": "local link: docs/README.md → implementation/structural-domain-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/README.md → adr/0006-product-reset-and-reference-lifecycle.md",
       "passed": true,
       "detail": null
     },
     {
       "name": "local link: docs/README.md → adr/0007-git-reference-and-documentation-phase.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → adr/0011-structural-domain-inspection-and-local-references.md",
       "passed": true,
       "detail": null
     },
@@ -10815,11 +10895,11 @@
     },
     {
       "path": "docs/foundation/annexes/selection-register.json",
-      "sha256": "a96884d5a179687e07b1ea4f8578378a827b88522a699ffe2d1c9690b1e8e10d"
+      "sha256": "c26da60e6237ea83807d73b4df45dfed9aaff5d3e353da72494c696b57625f22"
     },
     {
       "path": "docs/foundation/annexes/selection-register.md",
-      "sha256": "1134bb7290cb7b51a81ea4d961814c4faf40f713aea313eaa683c9ca406c0f8b"
+      "sha256": "72d805f0b5846cc964259eba9c40a288cfd505c039a915e67e563a641c0f555b"
     },
     {
       "path": "docs/foundation/annexes/source-register.json",
