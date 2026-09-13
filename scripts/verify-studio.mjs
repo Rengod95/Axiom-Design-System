@@ -142,11 +142,11 @@ try {
   await page.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", text: "\r", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
   await page.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
   await until(`${element("activation-count")}.textContent === "1"`);
-  await page.evaluate(`(()=>{const e=document.getElementById("close-response");e.value="decline";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await page.evaluate(`(()=>{const e=document.getElementById("component.toast-close-response");e.value="decline";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
   await click("runtime-toast-close");
   await until(`${element("close-request-count")}.textContent === "1"`);
   assert.equal(await page.evaluate(`${element("runtime-toast-close")} !== null`), true);
-  await page.evaluate(`(()=>{const e=document.getElementById("close-response");e.value="accept";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await page.evaluate(`(()=>{const e=document.getElementById("component.toast-close-response");e.value="accept";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
   await click("runtime-toast-close");
   await until(`${element("runtime-toast-close")} === null`);
   evidence.cases.runtime = { keyboardActivation: true, declinedCloseRetainsToast: true, acceptedCloseCleansUp: true };
