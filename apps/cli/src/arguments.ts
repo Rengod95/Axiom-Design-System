@@ -47,7 +47,8 @@ export function validateArguments(input: CliArguments): void {
     case "init": checkOptions(input, ["project", "name"], 0, 0); break;
     case "import":
     case "update":
-      checkOptions(input, input.command === "import" ? ["approve", "draft", "draft-id", "structural"] : ["approve", "draft-id", "structural"], 1, IMPORT_LIMITS.maxDocuments);
+      checkOptions(input, input.command === "import" ? ["approve", "draft", "draft-id", "structural", "domain"] : ["approve", "draft-id", "structural", "domain"], 1, IMPORT_LIMITS.maxDocuments);
+      if (input.options.structural && input.options.domain) throw new CliUsageError("Choose one adoption profile: --structural or --domain");
       if (input.options.draft && (input.options.approve || input.options["draft-id"])) throw new CliUsageError("--draft cannot combine with --approve or --draft-id");
       if (input.options["draft-id"] && input.positional.length !== 1) throw new CliUsageError("--draft-id binds exactly one source file");
       break;
@@ -59,9 +60,14 @@ export function validateArguments(input: CliArguments): void {
     case "draft": checkOptions(input, [], 1, 1); break;
     case "drafts":
     case "diagnostics":
-    case "validate":
     case "history":
     case "recover-lock": checkOptions(input, [], 0, 0); break;
+    case "validate": checkOptions(input, ["domain"], 0, 0); break;
+    case "import-bundle": checkOptions(input, ["approve"], 1, 1); break;
+    case "export-bundle":
+      checkOptions(input, ["out"], 0, 0);
+      if (typeof input.options.out !== "string") throw new CliUsageError("Choose a fresh bundle directory with --out <directory>");
+      break;
     case "export":
       checkOptions(input, ["out"], 1, 1);
       if (typeof input.options.out !== "string") throw new CliUsageError("Choose a fresh export directory with --out <directory>");

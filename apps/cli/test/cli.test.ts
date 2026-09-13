@@ -17,7 +17,7 @@ interface CliDiagnostic { code: string; phase: string; severity: string; message
 interface CliResponse {
   status: string; revision: string; candidateId: string; reviewToken: string;
   project: { documents: Record<string, unknown>; revision: string };
-  document: { originalText: string; validation: string; document: Record<string, unknown> };
+  document: { originalText: string; validation: string; validationProfile?: string; document: Record<string, unknown> };
   candidate: { status: string; diff: { change: string; fields?: { path: string }[] }[]; approval?: unknown };
   diagnostics: CliDiagnostic[];
   history: unknown[];
@@ -26,6 +26,7 @@ interface CliResponse {
   draftRefs: string[];
   drafts: { id: string; originalText?: string }[];
   draft: { id: string; originalText: string; sourceDigest: string; validation: string; diagnostics: CliDiagnostic[] };
+  export: { directory: string; manifestPath: string; bundleDigest: string };
   structure: {
     revision: string | null; profile: string; valid: boolean; diagnostics: CliDiagnostic[];
     documents: { id: string; structure: { valid: boolean; diagnostics: CliDiagnostic[]; unverifiedTypes: string[] } }[];
@@ -61,7 +62,7 @@ function document(id: string, extra: Record<string, unknown> = {}): string {
 test("help reports the bounded envelope-only workflow without creating a store", () => {
   const execution = spawnSync(process.execPath, [CLI_ENTRY, "help"], { encoding: "utf8" });
   assert.equal(execution.status, 0);
-  assert.match(execution.stdout, /semantics.*Studio/);
+  assert.match(execution.stdout, /semantics[\s\S]*Studio/);
   assert.match(execution.stdout, /recover-lock/);
 });
 
@@ -418,4 +419,65 @@ test("structural options are explicit and validate requires an existing project"
     await assert.rejects(stat(store), { code: "ENOENT" });
   }
   assert.equal(run(store, ["validate"], 1).diagnostics[0]?.code, "CLI_NOT_FOUND");
+});
+
+
+test("domain adoption survives reopen and rejects a weaker-format invalid update", async (t) => {
+  const { root, store } = await workspace(t);
+  const file = join(root, "domain-text.json");
+  const source = { id: "text.domain", kind: "text", schemaVersion: "1.0.0", revision: "source-r1", name: "Text", blocks: [{ id: "block.domain", kind: "paragraph", inlines: [{ id: "run.domain", text: "원문", marks: ["strong"] }] }], localeHints: {} };
+  await writeFile(file, JSON.stringify(source));
+  run(store, ["init", "--project", "domain-project"]);
+  run(store, ["import", file, "--domain", "--approve"]);
+  assert.equal(run(store, ["show", "text.domain"]).document.validationProfile, "foundation-domain");
+  assert.equal(run(store, ["validate", "--domain"]).structure.valid, true);
+  const before = run(store, ["show"]).project;
+  source.revision = "source-r2";
+  source.blocks[0]!.inlines[0]!.marks = ["unsupported"];
+  await writeFile(file, JSON.stringify(source));
+  assert.equal(run(store, ["update", file, "--structural", "--approve"], 1).status, "rejected");
+  assert.deepEqual(run(store, ["show"]).project, before);
+});
+
+test("CLI bundle restore requires review, preserves originals, and remains reversible across processes", async (t) => {
+  const { root, store } = await workspace(t);
+  const sourceFile = join(root, "text.json");
+  const original = "{ broken 원문";
+  await writeFile(sourceFile, original);
+  run(store, ["init", "--project", "bundle-project", "--name", "묶음"]);
+  const captured = run(store, ["import", sourceFile, "--draft", "--domain"]);
+  await writeFile(sourceFile, JSON.stringify({ id: "text.bundle", kind: "text", schemaVersion: "1.0.0", revision: "source-r1", name: "Text", blocks: [], localeHints: {} }));
+  run(store, ["import", sourceFile, "--draft-id", captured.draftRefs[0]!, "--approve"]);
+  const bundleDir = join(root, "bundle");
+  const exported = run(store, ["export-bundle", "--out", bundleDir]);
+  assert.equal(exported.export.manifestPath, join(bundleDir, "manifest.json"));
+  const target = join(root, "restore");
+  run(target, ["init", "--project", "bundle-project", "--name", "묶음"]);
+  const staged = run(target, ["import-bundle", exported.export.manifestPath]);
+  assert.equal(staged.status, "reviewRequired");
+  assert.deepEqual(run(target, ["show"]).project.documents, {});
+  run(target, ["apply", staged.candidateId, "--approve"]);
+  const restored = run(target, ["show", "text.bundle"]).document;
+  assert.equal(restored.originalText, original);
+  assert.equal(restored.validationProfile, "foundation-domain");
+  assert.equal(run(target, ["validate", "--domain"]).structure.valid, true);
+  assert.equal(run(target, ["drafts"]).drafts.length, 0);
+  run(target, ["undo"]);
+  assert.deepEqual(run(target, ["show"]).project.documents, {});
+  run(target, ["redo"]);
+  assert.equal(run(target, ["show", "text.bundle"]).document.originalText, original);
+  run(target, ["import-bundle", exported.export.manifestPath, "--approve"], 1);
+  const mismatch = join(root, "mismatch");
+  run(mismatch, ["init", "--project", "different", "--name", "묶음"]);
+  assert.equal(run(mismatch, ["import-bundle", exported.export.manifestPath, "--approve"], 1).diagnostics[0]!.code, "PROJECT_MISMATCH");
+  assert.deepEqual(run(mismatch, ["show"]).project.documents, {});
+});
+
+test("domain and bundle option mistakes fail before opening the store", async (t) => {
+  const { root } = await workspace(t);
+  for (const args of [["import", "source.json", "--structural", "--domain"], ["import-bundle", "manifest.json", "--draft"], ["export-bundle"], ["validate", "--structural"]]) {
+    const store = join(root, randomUUID());
+    assert.equal(run(store, args, 2).diagnostics[0]!.code, "CLI_USAGE");
+    await assert.rejects(stat(store), { code: "ENOENT" });
+  }
 });

@@ -1,12 +1,13 @@
 /** Browser-neutral contracts for the bounded document-kernel profile. */
-import type { STRUCTURAL_PROFILE } from "./constants.ts";
+import type { DOMAIN_PROFILE, STRUCTURAL_PROFILE } from "./constants.ts";
 import type { StructuralReport } from "./structural-contracts.ts";
+import type { DomainReport } from "./domain-contracts.ts";
 import type { LocalReferenceReport } from "./graph-contracts.ts";
 
-export type ValidationProfile = typeof STRUCTURAL_PROFILE;
+export type ValidationProfile = typeof STRUCTURAL_PROFILE | typeof DOMAIN_PROFILE;
 export interface ProjectStructureReport {
   revision: string | null; profile: ValidationProfile; valid: boolean;
-  documents: { id: string; structure: StructuralReport }[];
+  documents: { id: string; structure: StructuralReport | DomainReport }[];
   references: LocalReferenceReport; diagnostics: Diagnostic[];
 }
 export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };

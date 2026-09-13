@@ -103,6 +103,37 @@ Earlier Card envelopes in this guide deliberately lack complete component bodies
 
 `import --draft --structural` captures erroneous sources with structural diagnostics. Repairs linked to those drafts inherit the profile. An adopted structural document also keeps its policy when later `update` commands omit `--structural`. Missing required fields, duplicate covered identities, covered broken references and Part-parent cycles are rejected before adoption. To promote a complete envelope-only document, use `update <file> --structural --approve`; an otherwise unchanged source may retain its source revision. Undo restores the earlier policy and source snapshot together. Export includes the adopted validationProfile in its manifest.
 
+## Adopt typed and content constraints
+
+[ADR-0012](../adr/0012-typed-values-and-project-bundles.md) defines the explicit `foundation-domain` profile. `import` and `update` accept `--domain`; `import --draft --domain` preserves source diagnostics. `validate --domain` reads the current project and reports the implemented rules without changing any stored policy. Choose one of `--domain` and `--structural` when adopting. A repaired draft or updated document inherits its strongest previous profile even if the flag is omitted.
+
+This profile implements boolean, string, number, enum, record, list and nullable TypeExpr declarations, raw typed defaults, Variant/Theme default membership, Slot cardinality bounds, SizePolicy/Dimension constraints and the bounded InlineMark/ListMetadata/SafeLink encodings in ADR-0012. Nullable means a value may be null; optional record fields are separately declared. Unsupported TypeExpr declarations fail explicit domain adoption rather than silently accepting unimplemented constraints. Request/scenario value resolution, full registry semantics and all target rendering remain outside this profile.
+
+```powershell
+# Promote the complete Text source from the preceding example.
+pnpm axiom --store "$demoRoot/store" update $textFile --domain --approve
+pnpm axiom --store "$demoRoot/store" validate --domain
+```
+
+`validate --domain` still reports missing fields in the intentionally incomplete Card examples. It does not imply that every document in an older project can be promoted unchanged.
+
+## Export and restore a project bundle
+
+A native project bundle carries every active document's exact first original and canonical current JSON, with individual digests and a versioned manifest. It does not carry private drafts, approvals, receipts or Undo/history. The target must be an explicitly initialized empty project with the same ID and name; the source revision is provenance and restore creates a new local revision.
+
+```powershell
+pnpm axiom --store "$demoRoot/store" export-bundle --out "$demoRoot/project-bundle"
+pnpm axiom --store "$demoRoot/restored-store" init --project demo --name "Axiom demo"
+pnpm axiom --store "$demoRoot/restored-store" import-bundle "$demoRoot/project-bundle/manifest.json" --approve
+pnpm axiom --store "$demoRoot/restored-store" show
+pnpm axiom --store "$demoRoot/restored-store" undo
+pnpm axiom --store "$demoRoot/restored-store" redo
+```
+
+Without `--approve`, `import-bundle` stages one candidate for the entire bundle. The existing `candidate`, `review` and `apply` commands work with it. Stale approvals and nonempty/wrong-identity targets fail without replacing current documents. This operation restores the same project identity; creating an independent copy with rewritten internal IDs remains separate work.
+
+Bundles allow 64 documents, 1 MiB per file, 4 MiB combined original/normalized text and an 8 MiB canonical command payload. Export checks importability before disk writes. The destination must be fresh, its parent must exist, and `manifest.json` is written last. Numeric filenames avoid using IDs or source URIs as paths. Reading refuses missing, unlisted, duplicate JSON-key, changed, non-UTF-8 or symlink inputs and rejects file/manifest digest mismatches. Digests detect corruption; they do not authenticate an author. No referenced URI is fetched. The directory's local authority and partial-output behavior match the source-pair export above. Assets, registry dependency packages and offline preparation packs are not included.
+
 ## Delete, Undo and redo
 
 ```powershell

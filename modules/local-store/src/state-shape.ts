@@ -1,6 +1,6 @@
 import { DIGEST_PATTERN, STORE_ERROR } from "./constants.ts";
 import { FileStoreError } from "./storage-error.ts";
-import { STRUCTURAL_PROFILE } from "../../ads-core/src/index.ts";
+import { VALIDATION_PROFILES } from "../../ads-core/src/index.ts";
 
 /** Plain JSON objects only; this does not interpret ADS domain content. */
 export function isRecord(value: unknown): value is Record<string, unknown> {
@@ -41,5 +41,5 @@ function validateDocumentSources(documents: unknown): void {
 
 /** Persisted validation policy is additive, but unknown policies cannot silently downgrade. */
 function validateProfile(record: Record<string, unknown>): void {
-  if (Object.hasOwn(record, "validationProfile") && record.validationProfile !== STRUCTURAL_PROFILE) throw new FileStoreError(STORE_ERROR.state, "Unsupported source validation profile.");
+  if (Object.hasOwn(record, "validationProfile") && !VALIDATION_PROFILES.some((profile) => profile === record.validationProfile)) throw new FileStoreError(STORE_ERROR.state, "Unsupported source validation profile.");
 }

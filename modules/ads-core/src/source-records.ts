@@ -1,5 +1,5 @@
 import type { Diagnostic, DocumentEntry, KernelState, SourceExport } from "./contracts.ts";
-import { CANONICAL_PROFILE_VERSION, CODE, IMPORT_LIMITS, STRUCTURAL_PROFILE } from "./constants.ts";
+import { CANONICAL_PROFILE_VERSION, CODE, IMPORT_LIMITS, VALIDATION_PROFILES } from "./constants.ts";
 import { canonicalJson, utf8SourceBytes } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
@@ -17,7 +17,7 @@ function checkCurrentSources(documents: Record<string, DocumentEntry>): void {
   for (const entry of Object.values(documents)) {
     if (!isObject(entry) || entry.currentText !== undefined && typeof entry.currentText !== "string"
       || entry.currentSourceUri !== undefined && (typeof entry.currentSourceUri !== "string" || !entry.currentSourceUri.trim())
-      || entry.validationProfile !== undefined && entry.validationProfile !== STRUCTURAL_PROFILE) throw new KernelError(CODE.STATE_INVALID, "Invalid current source preservation fields.");
+      || entry.validationProfile !== undefined && !VALIDATION_PROFILES.some((profile) => profile === entry.validationProfile)) throw new KernelError(CODE.STATE_INVALID, "Invalid current source preservation fields.");
   }
 }
 
@@ -32,7 +32,7 @@ export function validateSourceRecords(state: KernelState): void {
         || utf8SourceBytes(draft.originalText, IMPORT_LIMITS.maxDocumentBytes) > IMPORT_LIMITS.maxDocumentBytes
         || typeof draft.sourceDigest !== "string" || !HASH_PATTERN.test(draft.sourceDigest)
         || (draft.validation !== "invalid" && draft.validation !== "envelope-only") || !Array.isArray(draft.diagnostics) || !draft.diagnostics.every(isDiagnostic)
-        || (draft.validationProfile !== undefined && draft.validationProfile !== STRUCTURAL_PROFILE)
+        || (draft.validationProfile !== undefined && !VALIDATION_PROFILES.some((profile) => profile === draft.validationProfile))
         || ids.has(draft.id)) throw new KernelError(CODE.STATE_INVALID, "Invalid or duplicated immutable source draft.");
       ids.add(draft.id);
     }

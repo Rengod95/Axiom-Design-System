@@ -17,7 +17,7 @@ export const CLI_OUTPUT_CONTEXT = { profile: "ads-kernel", validation: "envelope
 export const LOCAL_PRINCIPAL = { id: "local-owner", scopes: ["project.read", "project.write", "review.apply"] } as const;
 export const LOCAL_ID_PREFIX = "local";
 export const VALUE_OPTIONS = ["store", "project", "name", "token", "draft-id", "out"] as const;
-export const FLAG_OPTIONS = ["approve", "reject", "help", "draft", "structural"] as const;
+export const FLAG_OPTIONS = ["approve", "reject", "help", "draft", "structural", "domain"] as const;
 export const CLI_HELP = `Axiom ADS document kernel
 
 Usage: pnpm axiom --store <directory> <command> [arguments]
@@ -27,12 +27,16 @@ Usage: pnpm axiom --store <directory> <command> [arguments]
   import <file...> --draft              Preserve sources, even invalid JSON
   update <file...> [--approve]          Stage edits to existing document IDs
   import/update <file...> --structural Enforce known Foundation structures
+  import/update <file...> --domain     Also enforce typed values/content rules
   import/update <file> --draft-id <id>  Bind one repair to a preserved source
   drafts                              List this local principal's drafts
   draft <draft-id>                     Read preserved source and diagnostics
   diagnostics                         Read project and source draft diagnostics
   validate                            Inspect active structures and local refs
+  validate --domain                   Also inspect typed values/content rules
   export <document-id> --out <dir>     Write source pair to a fresh directory
+  export-bundle --out <dir>            Write all sources and a bundle manifest
+  import-bundle <manifest> [--approve] Restore into an empty same-ID/name project
   delete <document-id...> [--approve]   Stage reference-safe deletion
   candidate <candidate-id>             Inspect the proposed diff
   review <candidate-id> --approve      Approve the exact candidate
@@ -48,13 +52,15 @@ Usage: pnpm axiom --store <directory> <command> [arguments]
 
 Results are JSON. Import/update/delete without --approve only stage a candidate.
 --draft preserves an immutable source without changing the active project.
---structural also works with --draft to preserve structural diagnostics.
+--structural/--domain also work with --draft to preserve inspection diagnostics.
 Imports allow ${IMPORT_LIMITS.maxDocuments} files, ${IMPORT_LIMITS.maxDocumentBytes} bytes each,
 and ${IMPORT_LIMITS.maxBatchBytes} bytes total; UTF-8 only.
 --approve is an explicit review decision; the core still validates every step.
 Envelope checks are the default; --structural adds bounded known-field checks.
-Unknown types and registry semantics remain unverified. ADS domain
-semantics, Studio, token rendering and output targets remain unverified.
+--domain adds the implemented TypeExpr, default, text and size constraints.
+Bundles allow 64 documents, 1 MiB per file and 4 MiB combined source pairs.
+Unknown types, registry semantics and full ADS execution remain unverified.
+Studio, token rendering and output targets remain unimplemented.
 Exit codes: 0 success or staged review; 1 rejected/invalid structure/I/O;
 2 usage; 3 conflict/lock.
 `;

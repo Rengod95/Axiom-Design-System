@@ -4,6 +4,9 @@ export const KERNEL_FORMAT_VERSION = "0.1.0" as const;
 export const CANONICAL_PROFILE_VERSION = "1.0.0" as const;
 export const STRUCTURAL_PROFILE = "foundation-structural" as const;
 export const STRUCTURAL_FORMAT = "ads-structural" as const;
+export const DOMAIN_PROFILE = "foundation-domain" as const;
+export const DOMAIN_FORMAT = "ads-domain" as const;
+export const VALIDATION_PROFILES = Object.freeze([STRUCTURAL_PROFILE, DOMAIN_PROFILE]);
 export const MAX_STRUCTURE_DIAGNOSTICS = 128;
 export const MAX_JSON_DEPTH = 64;
 const INTERNAL_RECORD_DEPTH_ALLOWANCE = 16;
@@ -35,6 +38,8 @@ export const CODE = Object.freeze({
   DRAFT_MISSING: "DRAFT_MISSING", MIGRATION_UNSUPPORTED: "MIGRATION_UNSUPPORTED",
   STRUCTURE_INVALID: "STRUCTURE_INVALID", STRUCTURE_UNVERIFIED: "STRUCTURE_UNVERIFIED", STRUCTURE_LIMIT: "STRUCTURE_LIMIT",
   ENTITY_DUPLICATE: "ENTITY_DUPLICATE", STRUCTURE_CYCLE: "STRUCTURE_CYCLE",
+  TYPE_INVALID: "TYPE_INVALID", TYPE_UNSUPPORTED: "TYPE_UNSUPPORTED", VALUE_INVALID: "VALUE_INVALID", DOMAIN_INVALID: "DOMAIN_INVALID",
+  BUNDLE_INVALID: "BUNDLE_INVALID", BUNDLE_LIMIT: "BUNDLE_LIMIT",
 });
 
 /** Stable error meanings and their producing boundary. */
@@ -49,5 +54,7 @@ export const DIAGNOSTIC_PHASES: Readonly<Record<string, DiagnosticPhase>> = Obje
   DRAFT_MISSING: "document", MIGRATION_UNSUPPORTED: "document",
   STRUCTURE_INVALID: "document", STRUCTURE_UNVERIFIED: "document", STRUCTURE_LIMIT: "document",
   ENTITY_DUPLICATE: "reference", STRUCTURE_CYCLE: "reference",
+  TYPE_INVALID: "document", TYPE_UNSUPPORTED: "document", VALUE_INVALID: "document", DOMAIN_INVALID: "document",
+  BUNDLE_INVALID: "document", BUNDLE_LIMIT: "document",
 });
 import type { DiagnosticPhase } from "./contracts.ts";

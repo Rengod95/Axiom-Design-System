@@ -26,7 +26,7 @@ function checkSource(path, source) {
   const ownModule = MODULES.find((root) => within(root, path));
   const isCore = within(CORE_ROOT, path);
   const label = relative(ROOT, path);
-  if (/@ts-(?:nocheck|ignore)\b/.test(source) && !["generated/document-envelope.ts", "generated/catalog-structure.ts"].some((generated) => path === resolve(CORE_ROOT, generated))) throw new Error(`Unapproved type-check suppression: ${label}`);
+  if (/@ts-(?:nocheck|ignore)\b/.test(source) && !["generated/document-envelope.ts", "generated/catalog-structure.ts", "generated/type-expression.ts"].some((generated) => path === resolve(CORE_ROOT, generated))) throw new Error(`Unapproved type-check suppression: ${label}`);
   function dependency(target) {
     if (!target.startsWith(".")) {
       if (isCore || !NODE_BUILTINS.has(target)) throw new Error(`Unapproved dependency in ${label}: ${target}`);

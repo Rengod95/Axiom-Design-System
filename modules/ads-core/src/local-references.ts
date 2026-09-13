@@ -1,7 +1,7 @@
 import type { Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
 import type { LocalEntity, LocalReference, LocalReferenceReport } from "./graph-contracts.ts";
 import type { StructuralShape } from "./structural-contracts.ts";
-import { CODE, DOCUMENT_KINDS, MAX_STRUCTURE_DIAGNOSTICS, STRUCTURAL_PROFILE } from "./constants.ts";
+import { CODE, DOCUMENT_KINDS, MAX_STRUCTURE_DIAGNOSTICS, VALIDATION_PROFILES } from "./constants.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { inspectDocument, isObject, isValidId } from "./documents.ts";
 import { inspectDocumentStructure } from "./structural-validation.ts";
@@ -48,7 +48,7 @@ export function inspectLocalReferences(documents: Record<string, DocumentEntry>,
     const source = inspectDocument(entry.currentText ?? entry.originalText, entry.currentSourceUri ?? entry.sourceUri);
     let current = false;
     try { current = source.document !== undefined && canonicalJson(source.document) === canonicalJson(document); } catch { /* Inspection never adopts or repairs persisted bytes. */ }
-    const profiled = entry.validationProfile === STRUCTURAL_PROFILE && current && inspectDocumentStructure(document as DocumentEntry["document"]).valid;
+    const profiled = VALIDATION_PROFILES.some((profile) => profile === entry.validationProfile) && current && inspectDocumentStructure(document as DocumentEntry["document"]).valid;
     const owner: Owner = { document, id: document.id, revision: document.revision, profiled, selected: selected === undefined || selected.has(document.id), current };
     ownerData.push(owner);
     add({ id: owner.id, kind: document.kind, ownerDocumentId: owner.id, ownerRevision: owner.revision, path: "", source: "document", validation: profiled ? "structural" : current ? "envelope-only" : "unverified" });

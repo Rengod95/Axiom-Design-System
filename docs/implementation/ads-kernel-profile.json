@@ -40,10 +40,11 @@
     "typescript": "5.9.3",
     "nodeTypes": "24.13.4"
   },
-  "scope": "Native ADS envelope and explicit catalog-structural inspection, selected local nested references, source-preserving drafts and reviewed update/export with Node persistence; unresolved types and external library versions remain unverified",
+  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified",
   "extensionAdrs": [
     "docs/adr/0010-source-preserving-draft-authoring.md",
-    "docs/adr/0011-structural-domain-inspection-and-local-references.md"
+    "docs/adr/0011-structural-domain-inspection-and-local-references.md",
+    "docs/adr/0012-typed-values-and-project-bundles.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -55,6 +56,7 @@
   "generatedSources": [
     "modules/ads-core/src/generated/document-envelope.ts",
     "modules/ads-core/src/generated/catalog-structure.ts",
-    "modules/ads-core/src/generated/catalog-metadata.ts"
+    "modules/ads-core/src/generated/catalog-metadata.ts",
+    "modules/ads-core/src/generated/type-expression.ts"
   ]
 }

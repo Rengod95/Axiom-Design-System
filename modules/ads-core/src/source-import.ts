@@ -1,9 +1,11 @@
-import type { CommandResult, Diagnostic, DocumentEntry, JsonObject, JsonValue, KernelState, Principal, ProjectSnapshot, SourceDraft } from "./contracts.ts";
-import { CODE, IMPORT_LIMITS, STRUCTURAL_FORMAT, STRUCTURAL_PROFILE } from "./constants.ts";
+import type { CommandResult, Diagnostic, DocumentEntry, JsonObject, JsonValue, KernelState, Principal, ProjectSnapshot, SourceDraft, ValidationProfile } from "./contracts.ts";
+import { CODE, DOMAIN_FORMAT, DOMAIN_PROFILE, IMPORT_LIMITS, STRUCTURAL_FORMAT, STRUCTURAL_PROFILE } from "./constants.ts";
 import { canonicalJson, parseJson, utf8SourceBytes } from "./canonical-json.ts";
 import { inspectDocument, isObject, isValidId } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
-import { inspectDocumentStructure } from "./structural-validation.ts";
+import { inspectProfileDocument, strongestValidationProfile } from "./validation-profile.ts";
+import { BUNDLE_FORMAT } from "./bundle-constants.ts";
+import { decodeProjectBundle } from "./project-bundle.ts";
 
 interface ImportSource { uri: string; content: string; expectedRevision?: string; draftId?: string }
 type ImportMode = "review" | "draft" | "update";
@@ -24,10 +26,10 @@ function allowedFields(value: JsonObject, allowed: string[]): void {
 }
 
 /** Bound the complete transport before any immutable source is captured. */
-function sourcesFrom(payload: JsonObject): { mode: ImportMode; sources: ImportSource[]; structural: boolean } {
+function sourcesFrom(payload: JsonObject): { mode: ImportMode; sources: ImportSource[]; profile: ValidationProfile | undefined } {
   allowedFields(payload, ["sourceRefs", "formatProfile", "importMode"]);
   const mode = payload.importMode;
-  if ((payload.formatProfile !== "ads-envelope" && payload.formatProfile !== STRUCTURAL_FORMAT) || (mode !== "review" && mode !== "draft" && mode !== "update")
+  if ((payload.formatProfile !== "ads-envelope" && payload.formatProfile !== STRUCTURAL_FORMAT && payload.formatProfile !== DOMAIN_FORMAT) || (mode !== "review" && mode !== "draft" && mode !== "update")
     || !Array.isArray(payload.sourceRefs) || !payload.sourceRefs.length || payload.sourceRefs.length > IMPORT_LIMITS.maxDocuments) throw new KernelError(CODE.PAYLOAD_INVALID, "Import requires a bounded ads-envelope source batch and an explicit mode.");
   let bytes = 0;
   const sources = payload.sourceRefs.map((source): ImportSource => {
@@ -41,7 +43,7 @@ function sourcesFrom(payload: JsonObject): { mode: ImportMode; sources: ImportSo
     if (size > IMPORT_LIMITS.maxDocumentBytes || bytes > IMPORT_LIMITS.maxBatchBytes) throw new KernelError(CODE.JSON_LIMIT, "Import source or batch exceeds the profile byte limit.");
     return source as unknown as ImportSource;
   });
-  return { mode, sources, structural: payload.formatProfile === STRUCTURAL_FORMAT };
+  return { mode, sources, profile: payload.formatProfile === DOMAIN_FORMAT ? DOMAIN_PROFILE : payload.formatProfile === STRUCTURAL_FORMAT ? STRUCTURAL_PROFILE : undefined };
 }
 
 function draftFor(source: ImportSource, state: KernelState, project: ProjectSnapshot, principal: Principal): SourceDraft | undefined {
@@ -74,7 +76,13 @@ export function documentChanges(before: JsonObject, after: JsonObject): NonNulla
 
 /** Prepare only source data; the service owns candidate/receipt publication. */
 export function prepareImport(payload: JsonObject, state: KernelState, project: ProjectSnapshot, principal: Principal, services: ImportServices): PreparedImport {
-  const { mode, sources, structural } = sourcesFrom(payload);
+  if (payload.formatProfile === BUNDLE_FORMAT) {
+    allowedFields(payload, ["sourceRefs", "formatProfile", "importMode"]);
+    if (payload.importMode !== "review" || !Array.isArray(payload.sourceRefs) || payload.sourceRefs.length !== 1 || !isObject(payload.sourceRefs[0])) throw new KernelError(CODE.PAYLOAD_INVALID, "Bundle restore requires one complete source and explicit review mode.");
+    const documents = decodeProjectBundle(payload.sourceRefs[0], project, (text) => services.digest(text));
+    return { kind: "documents", documents, diff: Object.keys(documents).map((id) => ({ id, change: "created" })) };
+  }
+  const { mode, sources, profile } = sourcesFrom(payload);
   if (mode === "draft") {
     const ids = new Set(state.drafts?.map((draft) => draft.id));
     const drafts = sources.map((source): SourceDraft => {
@@ -83,12 +91,12 @@ export function prepareImport(payload: JsonObject, state: KernelState, project: 
       if (ids.has(id)) throw new KernelError(CODE.STATE_INVALID, "Source draft identity collision.");
       ids.add(id);
       let parsed: JsonValue | undefined = inspection.document;
-      if (structural && parsed === undefined) {
+      if (profile && parsed === undefined) {
         try { parsed = parseJson(source.content); }
         catch (error) { if (!(error instanceof KernelError)) throw error; }
       }
-      const structure = structural && parsed !== undefined ? inspectDocumentStructure(parsed, source.uri) : undefined;
-      return { id, projectId: project.id, actorId: principal.id, sourceUri: source.uri, originalText: source.content, sourceDigest: services.digest(source.content), diagnostics: [...inspection.diagnostics, ...(structure?.diagnostics ?? [])], validation: structure && !structure.valid ? "invalid" : inspection.validation, ...(structural ? { validationProfile: STRUCTURAL_PROFILE } : {}) };
+      const structure = profile && parsed !== undefined ? inspectProfileDocument(parsed, profile, source.uri) : undefined;
+      return { id, projectId: project.id, actorId: principal.id, sourceUri: source.uri, originalText: source.content, sourceDigest: services.digest(source.content), diagnostics: [...inspection.diagnostics, ...(structure?.diagnostics ?? [])], validation: structure && !structure.valid ? "invalid" : inspection.validation, ...(profile ? { validationProfile: profile } : {}) };
     });
     return { kind: "drafts", drafts };
   }
@@ -103,8 +111,8 @@ export function prepareImport(payload: JsonObject, state: KernelState, project: 
     if (imported.has(document.id)) throw new KernelError(CODE.DOCUMENT_EXISTS, "Import repeats a document identity.");
     imported.add(document.id);
     const existing = Object.hasOwn(documents, document.id) ? documents[document.id] : undefined;
-    const validationProfile = structural || original?.validationProfile === STRUCTURAL_PROFILE || existing?.validationProfile === STRUCTURAL_PROFILE ? STRUCTURAL_PROFILE : undefined;
-    const structure = validationProfile ? inspectDocumentStructure(document) : undefined;
+    const validationProfile = strongestValidationProfile(profile, original?.validationProfile, existing?.validationProfile);
+    const structure = validationProfile ? inspectProfileDocument(document, validationProfile) : undefined;
     if (structure && !structure.valid) throw new ImportRejection(structure.diagnostics);
     const diagnostics = [...inspection.diagnostics, ...(structure?.diagnostics ?? [])];
     if (mode === "review") {

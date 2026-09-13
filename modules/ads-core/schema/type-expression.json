@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:axiom:schema:type-expression",
+  "$comment": "ADR-0012 closed declaration encoding. Record required names must additionally be declared fields. TypedValue is raw JSON, checked by the bounded interpreter.",
+  "type": "object",
+  "properties": { "kind": { "enum": ["boolean", "string", "number", "enum", "record", "list", "nullable"] } },
+  "required": ["kind"],
+  "allOf": [
+    { "if": { "properties": { "kind": { "const": "boolean" } } }, "then": { "$ref": "#/$defs/boolean" } },
+    { "if": { "properties": { "kind": { "const": "string" } } }, "then": { "$ref": "#/$defs/string" } },
+    { "if": { "properties": { "kind": { "const": "number" } } }, "then": { "$ref": "#/$defs/number" } },
+    { "if": { "properties": { "kind": { "const": "enum" } } }, "then": { "$ref": "#/$defs/enum" } },
+    { "if": { "properties": { "kind": { "const": "record" } } }, "then": { "$ref": "#/$defs/record" } },
+    { "if": { "properties": { "kind": { "const": "list" } } }, "then": { "$ref": "#/$defs/list" } },
+    { "if": { "properties": { "kind": { "const": "nullable" } } }, "then": { "$ref": "#/$defs/nullable" } }
+  ],
+  "$defs": {
+    "boolean": { "type": "object", "properties": { "kind": { "const": "boolean" } }, "required": ["kind"], "additionalProperties": false },
+    "string": { "type": "object", "properties": { "kind": { "const": "string" } }, "required": ["kind"], "additionalProperties": false },
+    "number": { "type": "object", "properties": { "kind": { "const": "number" } }, "required": ["kind"], "additionalProperties": false },
+    "enum": {
+      "type": "object",
+      "properties": { "kind": { "const": "enum" }, "values": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true } },
+      "required": ["kind", "values"], "additionalProperties": false
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "kind": { "const": "record" },
+        "fields": { "type": "object", "additionalProperties": { "$ref": "#" } },
+        "required": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "additionalFields": { "enum": ["reject", "preserve-opaque"] }
+      },
+      "required": ["kind", "fields", "required", "additionalFields"], "additionalProperties": false
+    },
+    "list": {
+      "type": "object", "properties": { "kind": { "const": "list" }, "items": { "$ref": "#" } },
+      "required": ["kind", "items"], "additionalProperties": false
+    },
+    "nullable": {
+      "type": "object", "properties": { "kind": { "const": "nullable" }, "inner": { "$ref": "#" } },
+      "required": ["kind", "inner"], "additionalProperties": false
+    }
+  }
+}

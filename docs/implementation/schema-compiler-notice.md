@@ -1,6 +1,8 @@
-# Envelope schema compiler notice
+# Standalone schema compiler notice
 
 The common-envelope standalone validator is generated from the checked-in JSON Schema by Ajv 8.20.0. Ajv is a development dependency; the generated validator has no runtime dependency or dynamic code compilation. [ADR-0010](../adr/0010-source-preserving-draft-authoring.md) owns this bounded profile. Retain this notice with generated validator distributions.
+
+ADR-0011 extends this process to catalog structures; ADR-0012 adds the closed TypeExpr schema. In the pinned compiler, the optimized `uniqueItems` string lookup uses an ordinary object and fails to reject repeated `__proto__` strings. The generator asserts exactly two matching lookup declarations in the TypeExpr output and changes only those declarations to `Object.create(null)`. Compiler/output drift therefore fails regeneration instead of silently broadening the transformation. The normative schema retains its uniqueness constraints; browser-like VM and prototype-name regression tests verify the emitted result. User-supplied schemas or expressions are never dynamically compiled by the product.
 
 Ajv license, copied from the pinned package's LICENSE:
 

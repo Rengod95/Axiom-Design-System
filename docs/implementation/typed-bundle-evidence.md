@@ -1,0 +1,31 @@
+# Typed values, content and project-bundle evidence
+
+Authority: [ADR-0012](../adr/0012-typed-values-and-project-bundles.md), an explicit continuation of the bounded I1 profile. Existing envelope and structural sources retain their prior meaning. This increment does not complete the Foundation's type system, registry semantics or target realization.
+
+## Executable constraints
+
+The [closed TypeExpr schema](../../modules/ads-core/schema/type-expression.json) defines seven declaration kinds: boolean, string, number, enum, record, list and nullable. [Public type/value inspection](../../modules/ads-core/src/type-validation.ts) validates raw JSON values without defaults, coercion, expression execution or runtime compilation. Its own-data snapshot rejects accessors, custom prototypes, hidden/symbol fields, sparse arrays, cycles and nonfinite numbers. Each input is limited to 1 MiB and depth 64; a shared 65,536-step budget covers copying, declaration traversal and matching. Diagnostic truncation retains failed validity.
+
+Record required names must be declared; nullable is separate from optional presence. Unknown type kinds and declaration fields reject domain adoption. Extra values are rejected or retained as opaque according to the explicit record policy. Prototype-like field names remain legal data. The pinned compiler's string uniqueness optimization needed a narrowly asserted null-prototype lookup transformation; the schema retains `uniqueItems`, and regression tests include unique and duplicated `__proto__`, `constructor` and `prototype` strings. See [the compiler notice](schema-compiler-notice.md).
+
+[Domain inspection](../../modules/ads-core/src/domain-validation.ts) traverses generated catalog metadata, checks declared TypeExpr positions and validates applicable defaults. Known-record inspection covers PolicyDefinition and TraitDefinition without inventing an unapproved Registry body mapping. Request/scenario values without a resolved owning declaration stay unverified. Unknown extension content cannot manufacture typed values or references.
+
+The content subset checks Variant and optional Theme defaults, Slot maximum/minimum ordering, fixed/hug/fill SizePolicy, comparable Dimension bounds, InlineMark, ListMetadata and SafeLink. Definition defaultContent may be empty even when an instance must supply content. URL validation opens no URL and does not claim renderer/native-navigation support. FreePosition solving and arbitrary unit conversion remain unimplemented.
+
+## Authoring and storage boundaries
+
+`ads-domain` / CLI `--domain` select `foundation-domain`. Draft repairs and updates inherit the strongest selected profile. Review digests bind source records and their profile; candidate publication, apply and Undo/redo revalidate enforced constraints. Undo restores the earlier source and adoption policy together. Read-only `validate --domain` does not promote legacy sources or advance revisions. Both core and file-store shape checks accept the additive profile and reject unknown policies in active, candidate, draft and history records.
+
+[Bundle export and decoding](../../modules/ads-core/src/project-bundle.ts) work from one authorized snapshot. The manifest binds document identities, profiles, original and canonical source digests, project identity/name/revision and the format version. It excludes drafts, receipts, candidates, approval tokens and Undo/history. Invalid first originals remain exact UTF-8 text beside current canonical JSON. Original source URIs are inert provenance.
+
+Restore uses one reviewed `document.import` candidate and one commit into an empty same-ID/name project. Local source revision is provenance, while restore receives a new project revision. The decoder checks file inventory, hashes, canonical text, envelopes, profiles and references; export checks the same limits and validity before returning. Limits are 64 documents, 1 MiB per source file, 4 MiB combined source pairs and 8 MiB canonical import payload. Independent-copy ID retargeting, asset transport and registry dependency packages remain separate work.
+
+The [CLI adapter](../../apps/cli/src/bundle-files.ts) uses fixed numeric filenames, a fresh directory, manifest-last publication, bounded regular-file handles and UTF-8 decoding. It rejects traversal, symlink ancestors/files, missing or unlisted files, duplicate JSON keys, changed identities/content and digest mismatches. Local filesystem authority and partial-output behavior are stated in the [quickstart](kernel-quickstart.md); digests do not authenticate authors.
+
+## Verification
+
+Independent tests cover declaration/value failures, plain-JSON limits, prototype-like keys, bounded generated code in a browser-like VM, known-record defaults/content, compatibility and adoption inheritance. Command-service tests exercise cross-document restore, malformed first originals, read authority, stale approval, exact receipt replay after a lost response, one-step Undo/redo and re-exported source consistency. CLI tests launch fresh processes for profile persistence, explicit review, bundle restore and argument preflight. File-adapter tests cover transport corruption, limits and filesystem constraints. Existing storage crash, concurrency and recovery tests remain part of the complete suite.
+
+On the Windows host, all 177 tests passed with zero skipped; strict TypeScript, generated-source drift checks, all 46 source-module boundaries and eight negative boundary cases, and the emitted JavaScript build passed. Foundation integrity/negative cases and frozen-reference restoration/negative cases also passed.
+
+The emitted JavaScript CLI passed 16 separate process invocations covering a malformed-original repair, two referenced documents, domain adoption, bundle review/apply, Undo/redo, inherited invalid-update rejection and re-export. Independent SHA-256 checks confirmed both sets of source files and manifest digests. The current PR's exact-commit Windows and Ubuntu checks provide the combined automated result. Repository retirement and all 56 Foundation document integrity checks remain separate required evidence. The [implementation map](implementation-roadmap.json) keeps migration pairs/loss reports, remaining named types, Browser storage, registry/library resolution and the I2–I6 product work open.

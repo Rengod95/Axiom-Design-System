@@ -5,6 +5,7 @@
     "docs/adr/0009-ads-kernel-implementation-bootstrap.md",
     "docs/adr/0010-source-preserving-draft-authoring.md",
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
+    "docs/adr/0012-typed-values-and-project-bundles.md",
     "docs/foundation/operations/development-and-maintenance.md"
   ],
   "statusPolicy": "PARTIAL_PROFILE is implemented only in the bounded local I1 profile; PLANNED is not implemented. Neither denotes public conformance or release readiness.",
@@ -27,13 +28,16 @@
         "Node process-crash recovery",
         "catalog-derived structural projection with explicit unresolved types",
         "reviewed structural-profile adoption and inherited update guards",
-        "selected nested identities, local references and Part-parent cycle checks"
+        "selected nested identities, local references and Part-parent cycle checks",
+        "explicit bounded TypeExpr and typed default inspection",
+        "inherited domain policy with text and size constraints",
+        "atomic same-project source bundle export and reviewed restoration"
       ],
       "remaining": [
         "complete ADS domain schemas, unresolved named types and public generated types",
         "registered old/new schema migration pairs and loss reports",
         "domain-aware unresolved draft edits",
-        "multi-document native project interchange",
+        "independent-copy retargeting and asset/registry dependency interchange",
         "Browser storage adapter conformance",
         "history compaction and long-history capacity evidence"
       ]
@@ -381,13 +385,17 @@
     "listDrafts",
     "getDraft",
     "exportDocument",
-    "inspectStructure"
+    "inspectStructure",
+    "inspectDomain",
+    "exportBundle"
   ],
   "limitations": [
     "Source capture is bounded UTF-8 text, not arbitrary binary recovery.",
     "A common envelope pass does not validate domain semantics or schema-version support.",
     "Schema migration remains explicitly unsupported until a reviewed transform contract exists.",
     "Realtime collaboration is a later scope; initial release still includes React/RN/Swift/Android.",
-    "Catalog structural validation enforces known fields only; unresolved types, registry document bodies and external library versions remain unverified."
+    "Catalog structural validation enforces known fields only; unresolved types, registry document bodies and external library versions remain unverified.",
+    "The domain profile covers only ADR-0012 types/content; remaining type categories and full semantic execution stay unverified.",
+    "Project bundles restore the same identity into an empty store; independent-copy retargeting and asset/dependency transport remain separate."
   ]
 }
