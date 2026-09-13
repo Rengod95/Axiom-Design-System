@@ -60,7 +60,9 @@ def require(condition: bool, message: str) -> None:
 def git_output(repository: Path, *arguments: str) -> bytes:
     """Read the repository's existing Git objects; never fetch or mutate refs."""
     result = subprocess.run(
-        ["git", "-C", str(repository), *arguments], capture_output=True, check=False
+        # Git archive can apply host newline settings. Reference verification is
+        # against blob bytes, independent of a contributor's Windows defaults.
+        ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "-C", str(repository), *arguments], capture_output=True, check=False
     )
     require(result.returncode == 0,
             f"Git object read failed: {' '.join(arguments)}. "
