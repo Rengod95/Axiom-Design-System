@@ -7,7 +7,7 @@ import path from "node:path";
 import { test } from "node:test";
 import type { TestContext } from "node:test";
 import { CommandService, PROTOCOL_VERSION } from "../../ads-core/src/index.ts";
-import type { CommandEnvelope, CommandResult, JsonObject, KernelState, Principal } from "../../ads-core/src/index.ts";
+import type { CommandEnvelope, CommandResult, DocumentEntry, JsonObject, KernelState, Principal, SourceDraft } from "../../ads-core/src/index.ts";
 import { FileStore, FileStoreError } from "../src/index.ts";
 
 const TEST_PREFIX = "axiom-local-store-";
@@ -43,6 +43,10 @@ function acceptedState(): KernelState {
   };
   state.receipts.push({ projectId: "project", principalId: "owner", key: "request-key", requestDigest: "request-digest", result: { status: "accepted", revision: "revision-1", diagnostics: [], affectedRefs: ["doc"], diff: [{ id: "doc", change: "created" }], undoHandle: "undo-1" } });
   return state;
+}
+
+function sourceDraft(): SourceDraft {
+  return { id: "draft-1", projectId: "project", actorId: "owner", sourceUri: "memory:empty", originalText: "", sourceDigest: createHash("sha256").update("").digest("hex"), validation: "invalid", diagnostics: [{ code: "INVALID_JSON", phase: "parse", severity: "error", message: "Empty original source" }] };
 }
 
 async function persist(store: FileStore, state: KernelState): Promise<void> {
@@ -96,6 +100,50 @@ test("persists original text, opaque data and exact receipts across reopen witho
   assert.equal((await markerFiles(directory)).length, 1);
 });
 
+test("old state upgrades additively with draft and current source records committed alongside their receipt", async t => {
+  const directory = await directoryFor(t);
+  const old = acceptedState();
+  await persist(new FileStore(directory), old);
+  const evolved = (await new FileStore(directory).read())!;
+  assert.equal(Object.hasOwn(evolved, "drafts"), false);
+  evolved.drafts = [sourceDraft()];
+  const edited = evolved.project!.documents.doc!;
+  edited.currentText = '{"edited":"한글\\n\\t😀"}';
+  edited.currentSourceUri = "memory:edited";
+  evolved.candidates.push({ id: "candidate", projectId: "project", actorId: "owner", baseRevision: "revision-1", digest: "digest", status: "pending", documents: { doc: edited }, diff: [], diagnostics: [] });
+  evolved.undo.push({ handle: "undo", actorId: "owner", applicableRevision: "revision-1", before: old.project!.documents, after: evolved.project!.documents });
+  evolved.redo = structuredClone(evolved.undo);
+  evolved.receipts.push({ projectId: "project", principalId: "owner", key: "draft-request", requestDigest: "draft-request-digest", result: { status: "accepted", revision: "revision-1", diagnostics: [], affectedRefs: [], diff: [], draftRefs: ["draft-1"], originalHashes: [evolved.drafts[0]!.sourceDigest] } });
+  const faulty = new FileStore(directory, { fault(stage) { if (stage === "after-marker") throw new Error("response lost"); } });
+  await assert.rejects(persist(faulty, evolved), { code: "STORE_IO" });
+  assert.deepEqual(await new FileStore(directory).read(), evolved);
+  assert.equal((await new FileStore(directory).read())!.project!.documents.doc!.originalText, old.project!.documents.doc!.originalText);
+  assert.equal((await markerFiles(directory)).length, 2);
+});
+
+test("malformed optional draft and current source records reject without altering the previous state", async t => {
+  const directory = await directoryFor(t);
+  const store = new FileStore(directory);
+  await persist(store, acceptedState());
+  const draft = sourceDraft();
+  for (const drafts of [null, {}, [null], [{}], [{ ...draft, id: "" }], [{ ...draft, sourceDigest: 123 }], [{ ...draft, sourceDigest: "invalid" }], [{ ...draft, originalText: false }], [{ ...draft, validation: "trusted" }], [{ ...draft, diagnostics: [null] }], [{ ...draft, diagnostics: [{ code: "bad", phase: "parse", severity: "error", message: 1 }] }]]) {
+    await assert.rejects(persist(store, { ...acceptedState(), drafts } as unknown as KernelState), { code: "STORE_STATE" });
+  }
+  for (const location of ["project", "candidate", "undo-before", "undo-after", "redo-before", "redo-after"]) {
+    const state = acceptedState();
+    const documents = { doc: { ...state.project!.documents.doc, currentText: 123, currentSourceUri: "" } };
+    if (location === "project") state.project!.documents = documents as unknown as Record<string, DocumentEntry>;
+    if (location === "candidate") state.candidates = [{ documents }] as unknown as KernelState["candidates"];
+    if (location.startsWith("undo") || location.startsWith("redo")) {
+      const key = location.startsWith("undo") ? "undo" : "redo";
+      state[key] = [{ [location.endsWith("before") ? "before" : "after"]: documents }] as unknown as KernelState["undo"];
+    }
+    await assert.rejects(persist(store, state), { code: "STORE_STATE" });
+  }
+  assert.deepEqual(await store.read(), acceptedState());
+  assert.equal((await markerFiles(directory)).length, 1);
+});
+
 test("serializes complete callbacks on the same instance and preserves rejected-call recovery", async t => {
   const store = new FileStore(await directoryFor(t));
   await persist(store, stateNamed());
@@ -119,6 +167,11 @@ test("rejects lossy or malformed state before creating a visible commit", async 
   await assert.rejects(persist(store, accessor), { code: "STORE_STATE" });
   const cycle = stateNamed() as KernelState & { cycle?: unknown }; cycle.cycle = cycle;
   await assert.rejects(persist(store, cycle), { code: "STORE_STATE" });
+  const shared = { leaf: { value: 0 } };
+  let nested: object = shared;
+  for (let index = 0; index < 253; index++) nested = { nested };
+  const deepShared = { ...stateNamed(), extra: { shallow: shared, deep: nested } };
+  await assert.rejects(persist(store, deepShared), { code: "STORE_STATE" });
   let serializationCalls = 0;
   class HostArray extends Array {
     toJSON() { serializationCalls++; return []; }
@@ -209,6 +262,83 @@ test("CommandService preparation interruption leaves only the prior project and 
   assert.equal((await markerFiles(directory)).length, 2);
 });
 
+test("CommandService draft capture replays the same source identities and hashes after response loss", async t => {
+  const directory = await directoryFor(t);
+  const service = new CommandService(new FileStore(directory), KERNEL_SERVICES);
+  const created = await service.execute(commandFor("project.create", { name: "Drafts" }, null), OWNER);
+  const sourceRefs = [{ uri: "memory:empty", content: "" }, { uri: "memory:broken", content: '{\r\n"name":"한글",\r\n' }];
+  const command = commandFor("document.import", { sourceRefs, formatProfile: "ads-envelope", importMode: "draft" }, created.revision!);
+  const faulty = new CommandService(new FileStore(directory, { fault(stage) { if (stage === "after-marker") throw new Error("draft reply lost"); } }), KERNEL_SERVICES);
+  await assert.rejects(faulty.execute(command, OWNER), { code: "STORE_IO" });
+  const reopenedStore = new FileStore(directory);
+  const committed = (await reopenedStore.read())!;
+  const original = committed.receipts.find(receipt => receipt.key === command.idempotencyKey)!.result;
+  assert.equal(original.status, "accepted");
+  assert.equal(original.revision, created.revision);
+  assert.equal(original.draftRefs!.length, 2);
+  assert.deepEqual(original.originalHashes, sourceRefs.map(source => KERNEL_SERVICES.digest(source.content)));
+  const reopenedService = new CommandService(reopenedStore, KERNEL_SERVICES);
+  assert.deepEqual(await reopenedService.execute(command, OWNER), original);
+  assert.deepEqual(await reopenedStore.read(), committed);
+  assert.deepEqual((await reopenedService.listDrafts(OWNER)).map(draft => draft.originalText), sourceRefs.map(source => source.content));
+  assert.equal(committed.history.length, 1);
+  assert.equal(committed.receipts.length, 2);
+  assert.equal((await markerFiles(directory)).length, 2);
+});
+
+test("reviewed source updates preserve first originals through lost replies, reopen, Undo and redo", async t => {
+  const directory = await directoryFor(t);
+  const reopen = () => new CommandService(new FileStore(directory), KERNEL_SERVICES);
+  const lostReply = async (command: CommandEnvelope): Promise<CommandResult> => {
+    const faulty = new CommandService(new FileStore(directory, { fault(stage) { if (stage === "after-marker") throw new Error("response lost"); } }), KERNEL_SERVICES);
+    await assert.rejects(faulty.execute(command, OWNER), { code: "STORE_IO" });
+    const before = (await new FileStore(directory).read())!;
+    const receipt = before.receipts.find(entry => entry.key === command.idempotencyKey)!.result;
+    const count = (await markerFiles(directory)).length;
+    assert.deepEqual(await reopen().execute(command, OWNER), receipt);
+    assert.deepEqual(await new FileStore(directory).read(), before);
+    assert.equal((await markerFiles(directory)).length, count);
+    return receipt;
+  };
+  const created = await reopen().execute(commandFor("project.create", { name: "Repairs" }, null), OWNER);
+  const originalText = '{\r\n"name":"보존 원문",\r\n';
+  const captured = await reopen().execute(commandFor("document.import", { sourceRefs: [{ uri: "memory:original", content: originalText }], formatProfile: "ads-envelope", importMode: "draft" }, created.revision!), OWNER);
+  const repairedText = JSON.stringify({ id: "card", kind: "component", schemaVersion: "1.0.0", revision: "source-r1", name: "Repaired", extensions: { opaque: [1, true] } });
+  const repaired = await reopen().execute(commandFor("document.import", { sourceRefs: [{ uri: "memory:repair", content: repairedText, draftId: captured.draftRefs![0]! }], formatProfile: "ads-envelope", importMode: "review" }, created.revision!), OWNER);
+  const approved = await reopen().execute(commandFor("transaction.review", { candidateId: repaired.candidateId!, patchDigest: repaired.patchDigest!, decision: "approve" }, created.revision!), OWNER);
+  const adopted = await reopen().execute(commandFor("transaction.apply", { candidateId: repaired.candidateId!, approvalToken: approved.reviewToken!, expectedRevision: created.revision! }, created.revision!), OWNER);
+  assert.equal(adopted.status, "accepted");
+  const first = (await reopen().getDocument("card", OWNER))!;
+  const editedText = JSON.stringify({ ...JSON.parse(repairedText), revision: "source-r2", name: "Updated" });
+  const update = await lostReply(commandFor("document.import", { sourceRefs: [{ uri: "memory:update", content: editedText, expectedRevision: "source-r1" }], formatProfile: "ads-envelope", importMode: "update" }, adopted.revision!));
+  assert.equal(update.status, "reviewRequired");
+  assert.ok(update.diff[0]!.fields!.some(field => field.path === "/name" && field.before === "Repaired" && field.after === "Updated"));
+  assert.deepEqual(await reopen().getDocument("card", OWNER), first);
+  const reviewed = await reopen().execute(commandFor("transaction.review", { candidateId: update.candidateId!, patchDigest: update.patchDigest!, decision: "approve" }, adopted.revision!), OWNER);
+  const applyCommand = commandFor("transaction.apply", { candidateId: update.candidateId!, approvalToken: reviewed.reviewToken!, expectedRevision: adopted.revision! }, adopted.revision!);
+  const applied = await lostReply(applyCommand);
+  const current = (await reopen().getDocument("card", OWNER))!;
+  assert.equal(current.originalText, originalText);
+  assert.equal(current.sourceUri, "memory:original");
+  assert.equal(current.currentText, editedText);
+  assert.equal(current.currentSourceUri, "memory:update");
+  const exported = (await reopen().exportDocument("card", OWNER))!;
+  assert.equal(exported.original.text, originalText);
+  assert.equal(exported.original.digest, KERNEL_SERVICES.digest(originalText));
+  assert.equal(JSON.parse(exported.normalized.text).name, "Updated");
+  const undone = await reopen().execute(commandFor("transaction.undo", { undoHandle: applied.undoHandle!, expectedRevision: applied.revision! }, applied.revision!), OWNER);
+  assert.equal(undone.status, "accepted");
+  assert.deepEqual(await reopen().getDocument("card", OWNER), first);
+  const redone = await lostReply(commandFor("transaction.redo", { redoHandle: undone.redoHandle!, expectedRevision: undone.revision! }, undone.revision!));
+  assert.equal(redone.status, "accepted");
+  assert.deepEqual(await reopen().getDocument("card", OWNER), current);
+  assert.equal((await reopen().getDraft(captured.draftRefs![0]!, OWNER))!.originalText, originalText);
+  const final = await new FileStore(directory).read();
+  assert.deepEqual(await reopen().execute(applyCommand, OWNER), applied);
+  assert.deepEqual(await new FileStore(directory).read(), final);
+  assert.equal(final!.history.length, 5);
+});
+
 test("actual process crashes require explicit dead-PID lock recovery and respect marker commit state", async t => {
   for (const stage of ["after-prepare", "after-marker"] as const) {
     await t.test(stage, async inner => {
@@ -271,7 +401,7 @@ test("never removes live, foreign-host, incomplete or merely old writer locks", 
 });
 
 test("rejects corrupt committed payloads, markers, missing data and ambiguous chains", async t => {
-  for (const damage of ["payload-digest", "marker-json", "missing-marker", "missing-payload", "missing-identity", "invalid-state", "duplicate-key", "invalid-utf8", "branch", "marker-traversal"]) {
+  for (const damage of ["payload-digest", "marker-json", "missing-marker", "missing-payload", "missing-identity", "invalid-state", "invalid-drafts", "duplicate-key", "invalid-utf8", "branch", "marker-traversal"]) {
     await t.test(damage, async inner => {
       const directory = await directoryFor(inner);
       await persist(new FileStore(directory), stateNamed());
@@ -283,8 +413,8 @@ test("rejects corrupt committed payloads, markers, missing data and ambiguous ch
       if (damage === "missing-marker") await unlink(file);
       if (damage === "missing-payload") await unlink(payload);
       if (damage === "missing-identity") await unlink(path.join(directory, "store.json"));
-      if (damage === "invalid-state") {
-        const invalid = JSON.stringify({ formatVersion: "0.1.0", project: null });
+      if (damage === "invalid-state" || damage === "invalid-drafts") {
+        const invalid = JSON.stringify(damage === "invalid-state" ? { formatVersion: "0.1.0", project: null } : { ...stateNamed(), drafts: [{ ...sourceDraft(), sourceDigest: "bad" }] });
         const hash = createHash("sha256").update(invalid).digest("hex");
         await writeFile(path.join(directory, "objects", `${hash}.json`), invalid);
         marker.payloadHash = hash; await writeFile(file, JSON.stringify(marker));

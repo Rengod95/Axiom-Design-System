@@ -6,7 +6,7 @@ These instructions apply to every file in this repository.
 
 Read `docs/README.md`, ADR-0006 and ADR-0007 before changing this repository. The active tree contains the approved Foundation, maintenance records and the bounded implementation authorized below. The earlier executable implementation is preserved only in Git at the commit recorded in `reference/pre-studio/snapshot.json`.
 
-The owner authorized implementation after a successful 56-document quality review and PR #25 merge. That gate was fulfilled on 2026-09-13. Read accepted ADR-0009 and docs/implementation/ads-kernel-profile.json before changing product code. Only the bounded I1 document kernel, Node local storage adapter and CLI are bootstrapped. Additional implementation scope must follow the existing Foundation contracts and extend the profile explicitly.
+The owner authorized implementation after a successful 56-document quality review and PR #25 merge. That gate was fulfilled on 2026-09-13, followed by an explicit request to improve the initial implementation and continue the remaining work. Read accepted ADR-0009, ADR-0010 and docs/implementation/ads-kernel-profile.json before changing product code. The bounded I1 document kernel now includes source-preserving draft/update/export and the generated common-envelope schema. Additional scope follows the existing Foundation contracts and extends the profile explicitly.
 
 Do not interpret removed ADRs, SSOT, plans or passing reference tests as current Studio authority. Restore the full snapshot outside the active checkout for historical investigation. Do not cherry-pick historical instruction files into current authority without review.
 

@@ -5,7 +5,8 @@ import type { KernelState } from "../../ads-core/src/index.ts";
 import type { CommitMarker, StoreIdentity } from "./contracts.ts";
 import { DIGEST_PATTERN, STORAGE_FORMAT_VERSION, STORE_ERROR, STORE_FILES, UUID_PATTERN } from "./constants.ts";
 import { checkRootEntries, ensureDirectory, readRegular } from "./path-boundary.ts";
-import { decodeState, isRecord } from "./state-record.ts";
+import { decodeState } from "./state-record.ts";
+import { isRecord } from "./state-shape.ts";
 import { FileStoreError, hasCode } from "./storage-error.ts";
 
 export interface RecoveredStore { identity: StoreIdentity; head: CommitMarker | null; state: KernelState | null }
@@ -70,18 +71,12 @@ export async function recoverStore(directory: string): Promise<RecoveredStore> {
   for (const name of [STORE_FILES.objects, STORE_FILES.commits, STORE_FILES.pending]) await ensureDirectory(path.join(directory, name));
   const identity = await identityFor(directory);
   const markers = new Map<string, CommitMarker>();
-  const states = new Map<string, KernelState>();
   for (const name of await readdir(path.join(directory, STORE_FILES.commits))) {
     const id = name.slice(0, -5);
     if (!name.endsWith(".json") || !UUID_PATTERN.test(id)) throw new FileStoreError(STORE_ERROR.corrupt, "A commit filename is outside the storage format.");
     const record = await jsonRecord(path.join(directory, STORE_FILES.commits, name));
     if (record.storageFormatVersion !== STORAGE_FORMAT_VERSION || record.storeId !== identity.storeId || record.commitId !== id || typeof record.payloadHash !== "string" || !DIGEST_PATTERN.test(record.payloadHash) || (record.parentCommitId !== null && (typeof record.parentCommitId !== "string" || !UUID_PATTERN.test(record.parentCommitId)))) throw new FileStoreError(STORE_ERROR.corrupt, "A committed marker is invalid.");
-    const marker = record as unknown as CommitMarker;
-    let bytes: Buffer;
-    try { bytes = await readRegular(path.join(directory, STORE_FILES.objects, `${marker.payloadHash}.json`)); }
-    catch (cause) { if (cause instanceof FileStoreError) throw cause; throw new FileStoreError(STORE_ERROR.corrupt, "A committed payload is missing or unreadable.", { cause }); }
-    if (payloadDigest(bytes) !== marker.payloadHash) throw new FileStoreError(STORE_ERROR.corrupt, "A committed payload digest does not match.");
-    markers.set(id, marker); states.set(id, decodeState(bytes));
+    markers.set(id, record as unknown as CommitMarker);
   }
   const roots = [...markers.values()].filter(marker => marker.parentCommitId === null);
   if (markers.size && roots.length !== 1) throw new FileStoreError(STORE_ERROR.corrupt, "The committed history has no unique root.");
@@ -100,7 +95,22 @@ export async function recoverStore(directory: string): Promise<RecoveredStore> {
     const pointer = await jsonRecord(path.join(directory, STORE_FILES.head));
     if (pointer.storageFormatVersion !== STORAGE_FORMAT_VERSION || pointer.storeId !== identity.storeId || typeof pointer.commitId !== "string" || !markers.has(pointer.commitId)) throw new FileStoreError(STORE_ERROR.corrupt, "The active head refers to missing committed data.");
   } catch (error) { if (!hasCode(error, "ENOENT")) throw error; }
-  return { identity, head, state: head ? states.get(head.commitId)! : null };
+  // Every ancestor remains an integrity subject, but historical snapshots must
+  // not all stay alive in memory when the caller needs only the selected head.
+  let state: KernelState | null = null;
+  for (const marker of markers.values()) {
+    const snapshot = await readCommittedState(directory, marker);
+    if (marker.commitId === head?.commitId) state = snapshot;
+  }
+  return { identity, head, state };
+}
+
+async function readCommittedState(directory: string, marker: CommitMarker): Promise<KernelState> {
+  let bytes: Buffer;
+  try { bytes = await readRegular(path.join(directory, STORE_FILES.objects, `${marker.payloadHash}.json`)); }
+  catch (cause) { if (cause instanceof FileStoreError) throw cause; throw new FileStoreError(STORE_ERROR.corrupt, "A committed payload is missing or unreadable.", { cause }); }
+  if (payloadDigest(bytes) !== marker.payloadHash) throw new FileStoreError(STORE_ERROR.corrupt, "A committed payload digest does not match.");
+  return decodeState(bytes);
 }
 
 /** Prepare preserves a recoverable candidate without changing the visible committed chain. */

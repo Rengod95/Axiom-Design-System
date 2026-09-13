@@ -1,0 +1,387 @@
+{
+  "kind": "axiom-implementation-roadmap",
+  "updatedAt": "2026-09-13",
+  "authority": [
+    "docs/adr/0009-ads-kernel-implementation-bootstrap.md",
+    "docs/adr/0010-source-preserving-draft-authoring.md",
+    "docs/foundation/operations/development-and-maintenance.md"
+  ],
+  "statusPolicy": "PARTIAL_PROFILE is implemented only in the bounded local I1 profile; PLANNED is not implemented. Neither denotes public conformance or release readiness.",
+  "milestones": [
+    {
+      "id": "I1",
+      "status": "PARTIAL_PROFILE",
+      "owners": [
+        "SYN02",
+        "SYN04",
+        "ARC03",
+        "ARC04"
+      ],
+      "implemented": [
+        "common-envelope schema and source diagnostics",
+        "immutable erroneous-source drafts",
+        "reviewed new-ID import and same-ID update",
+        "durable receipts and Undo/redo",
+        "paired original and normalized source export",
+        "Node process-crash recovery"
+      ],
+      "remaining": [
+        "complete ADS domain schemas and public types",
+        "registered old/new schema migration pairs and loss reports",
+        "domain-aware unresolved draft edits",
+        "multi-document native project interchange",
+        "Browser storage adapter conformance",
+        "history compaction and long-history capacity evidence"
+      ]
+    },
+    {
+      "id": "I2",
+      "status": "PLANNED",
+      "owners": [
+        "SYN01",
+        "SYN03",
+        "UX05"
+      ],
+      "remaining": [
+        "SEL01 standard comparison and token profile",
+        "token/theme authoring",
+        "alias/context resolution and cycles",
+        "usage preview and preservation corpus"
+      ]
+    },
+    {
+      "id": "I3",
+      "status": "PLANNED",
+      "owners": [
+        "CMP01",
+        "CMP05",
+        "CMP06",
+        "CMP08",
+        "CMP09",
+        "UX01",
+        "UX06",
+        "UX07"
+      ],
+      "remaining": [
+        "Button/Card/Toast contracts",
+        "Studio selection and editing",
+        "Web/Mobile appearance and preview",
+        "behavior/accessibility/motion conformance"
+      ]
+    },
+    {
+      "id": "I4",
+      "status": "PLANNED",
+      "owners": [
+        "AI01",
+        "AI02",
+        "DLV01",
+        "DLV02",
+        "DLV03",
+        "DLV04"
+      ],
+      "remaining": [
+        "React/RN actual-project delivery",
+        "init and doctor",
+        "user-owned source and three-way upgrade/rollback",
+        "AI candidates and independent verification"
+      ]
+    },
+    {
+      "id": "I5",
+      "status": "PLANNED",
+      "owners": [
+        "PRD03",
+        "DLV01",
+        "QAL01"
+      ],
+      "remaining": [
+        "full approved catalog",
+        "compound components",
+        "Swift and Android native evidence"
+      ]
+    },
+    {
+      "id": "I6",
+      "status": "PLANNED",
+      "owners": [
+        "QAL02",
+        "QAL03",
+        "QAL04",
+        "OPS01",
+        "OPS02",
+        "OPS03",
+        "BIZ04"
+      ],
+      "remaining": [
+        "private-user product evidence",
+        "offline and rights",
+        "operations and resource budgets",
+        "release readiness"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "id": "project.create",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "document.import",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "document.copy",
+      "status": "PLANNED"
+    },
+    {
+      "id": "document.migrate",
+      "status": "PLANNED"
+    },
+    {
+      "id": "entity.delete",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "entity.deprecate",
+      "status": "PLANNED"
+    },
+    {
+      "id": "token.create",
+      "status": "PLANNED"
+    },
+    {
+      "id": "token.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "token.rebind",
+      "status": "PLANNED"
+    },
+    {
+      "id": "theme.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "policy.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "component.define",
+      "status": "PLANNED"
+    },
+    {
+      "id": "component.contract.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "trait.bind",
+      "status": "PLANNED"
+    },
+    {
+      "id": "part.create",
+      "status": "PLANNED"
+    },
+    {
+      "id": "part.move",
+      "status": "PLANNED"
+    },
+    {
+      "id": "part.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "slot.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "instance.create",
+      "status": "PLANNED"
+    },
+    {
+      "id": "instance.override",
+      "status": "PLANNED"
+    },
+    {
+      "id": "appearance.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "layout.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "motion.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "behavior.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "accessibility.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "registry.register",
+      "status": "PLANNED"
+    },
+    {
+      "id": "registry.promote",
+      "status": "PLANNED"
+    },
+    {
+      "id": "host.bind",
+      "status": "PLANNED"
+    },
+    {
+      "id": "asset.import",
+      "status": "PLANNED"
+    },
+    {
+      "id": "asset.reconnect",
+      "status": "PLANNED"
+    },
+    {
+      "id": "scenario.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "transaction.review",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "transaction.apply",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "transaction.undo",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "project.revert",
+      "status": "PLANNED"
+    },
+    {
+      "id": "generation.plan",
+      "status": "PLANNED"
+    },
+    {
+      "id": "generation.start",
+      "status": "PLANNED"
+    },
+    {
+      "id": "job.cancel",
+      "status": "PLANNED"
+    },
+    {
+      "id": "doctor.plan",
+      "status": "PLANNED"
+    },
+    {
+      "id": "doctor.apply",
+      "status": "PLANNED"
+    },
+    {
+      "id": "delivery.plan",
+      "status": "PLANNED"
+    },
+    {
+      "id": "delivery.export",
+      "status": "PLANNED"
+    },
+    {
+      "id": "delivery.publish",
+      "status": "PLANNED"
+    },
+    {
+      "id": "upgrade.plan",
+      "status": "PLANNED"
+    },
+    {
+      "id": "upgrade.apply",
+      "status": "PLANNED"
+    },
+    {
+      "id": "upgrade.rollback",
+      "status": "PLANNED"
+    },
+    {
+      "id": "instance.contents.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "text.create",
+      "status": "PLANNED"
+    },
+    {
+      "id": "text.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "screen.create",
+      "status": "PLANNED"
+    },
+    {
+      "id": "screen.update",
+      "status": "PLANNED"
+    },
+    {
+      "id": "transaction.redo",
+      "status": "PARTIAL_PROFILE"
+    }
+  ],
+  "queries": [
+    {
+      "id": "project.describe",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "document.get",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "registry.describe",
+      "status": "PLANNED"
+    },
+    {
+      "id": "context.resolve",
+      "status": "PLANNED"
+    },
+    {
+      "id": "diagnostics.list",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "impact.preview",
+      "status": "PLANNED"
+    },
+    {
+      "id": "target.capabilities",
+      "status": "PLANNED"
+    },
+    {
+      "id": "job.status",
+      "status": "PLANNED"
+    },
+    {
+      "id": "history.list",
+      "status": "PARTIAL_PROFILE"
+    },
+    {
+      "id": "connection.describe",
+      "status": "PLANNED"
+    }
+  ],
+  "localSourceProjections": [
+    "listDrafts",
+    "getDraft",
+    "exportDocument"
+  ],
+  "limitations": [
+    "Source capture is bounded UTF-8 text, not arbitrary binary recovery.",
+    "A common envelope pass does not validate domain semantics or schema-version support.",
+    "Schema migration remains explicitly unsupported until a reviewed transform contract exists.",
+    "Realtime collaboration is a later scope; initial release still includes React/RN/Swift/Android."
+  ]
+}

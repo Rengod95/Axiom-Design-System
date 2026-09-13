@@ -3,6 +3,7 @@ import { resolve, relative, dirname, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 import { builtinModules } from "node:module";
 import ts from "typescript";
+import { OPERATION_SCOPES } from "../modules/ads-core/src/constants.ts";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const MODULES = ["modules/ads-core", "modules/local-store", "apps/cli"].map((path) => resolve(ROOT, path));
@@ -25,6 +26,7 @@ function checkSource(path, source) {
   const ownModule = MODULES.find((root) => within(root, path));
   const isCore = within(CORE_ROOT, path);
   const label = relative(ROOT, path);
+  if (/@ts-(?:nocheck|ignore)\b/.test(source) && path !== resolve(CORE_ROOT, "generated/document-envelope.ts")) throw new Error(`Unapproved type-check suppression: ${label}`);
   function dependency(target) {
     if (!target.startsWith(".")) {
       if (isCore || !NODE_BUILTINS.has(target)) throw new Error(`Unapproved dependency in ${label}: ${target}`);
@@ -53,6 +55,7 @@ function checkSource(path, source) {
       dependency(node.arguments[0].text);
     }
     if (isCore && ts.isIdentifier(node) && NODE_GLOBALS.has(node.text)) throw new Error(`Node identifier in core: ${label}: ${node.text}`);
+    if (isCore && (ts.isCallExpression(node) || ts.isNewExpression(node)) && ts.isIdentifier(node.expression) && ["eval", "Function"].includes(node.expression.text)) throw new Error(`Runtime code generation in core: ${label}`);
     if (isCore && ts.isElementAccessExpression(node) && ts.isStringLiteral(node.argumentExpression) && NODE_GLOBALS.has(node.argumentExpression.text)) throw new Error(`Node global access in core: ${label}`);
     ts.forEachChild(node, visit);
   }
@@ -63,6 +66,16 @@ if (sources.filter((path) => within(CORE_ROOT, path)).length < 2) throw new Erro
 for (const path of sources) checkSource(path, readFileSync(path, "utf8"));
 const pkg = JSON.parse(readFileSync(resolve(ROOT, "package.json"), "utf8"));
 if (Object.keys(pkg.dependencies ?? {}).length) throw new Error("Runtime dependencies require a profile review");
+const catalog = JSON.parse(readFileSync(resolve(ROOT, "docs/foundation/annexes/command-catalog.json"), "utf8"));
+const roadmap = JSON.parse(readFileSync(resolve(ROOT, "docs/implementation/implementation-roadmap.json"), "utf8"));
+for (const kind of ["commands", "queries"]) {
+  const expected = catalog[kind].map((entry) => entry.id).sort();
+  const actual = roadmap[kind].map((entry) => entry.id).sort();
+  if (JSON.stringify(actual) !== JSON.stringify(expected) || new Set(actual).size !== actual.length) throw new Error(`Implementation roadmap ${kind} inventory drift`);
+  if (roadmap[kind].some((entry) => !["PARTIAL_PROFILE", "PLANNED"].includes(entry.status))) throw new Error(`Unsupported roadmap ${kind} completion claim`);
+}
+const partialCommands = roadmap.commands.filter((entry) => entry.status === "PARTIAL_PROFILE").map((entry) => entry.id).sort();
+if (JSON.stringify(partialCommands) !== JSON.stringify(Object.keys(OPERATION_SCOPES).sort())) throw new Error("Implemented command profile differs from roadmap");
 
 // Verify the guard itself without writing invalid source into the checkout.
 const cases = [
@@ -70,6 +83,8 @@ const cases = [
   [resolve(CORE_ROOT, "fixture.ts"), 'export type T = import("node:fs").Stats;'],
   [resolve(CORE_ROOT, "fixture.ts"), 'const x = import(target);'],
   [resolve(CORE_ROOT, "fixture.ts"), 'const x = globalThis["process"];'],
+  [resolve(CORE_ROOT, "fixture.ts"), 'const x = new Function("return 1");'],
+  [resolve(CORE_ROOT, "fixture.ts"), '// @ts-nocheck\nconst value = 1;'],
   [resolve(MODULES[2], "src/fixture.ts"), 'import x from "../../../modules/ads-core/src/contracts.ts";'],
   [resolve(MODULES[1], "src/fixture.ts"), 'import x from "../../../apps/cli/src/index.ts";'],
 ];

@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { canonicalJson, KernelError, parseDocument, parseJson } from "../src/index.ts";
 
 test("strict parsing rejects decoded duplicate keys before they can be overwritten", () => {
@@ -46,4 +47,37 @@ test("canonicalization rejects hidden and accessor data without invoking getters
   const arrayGetter = Object.defineProperty([1], "0", { enumerable: true, get() { reads += 1; return 1; } });
   for (const invalid of [accessor, hidden, symbol, sparse, extra, arrayGetter]) assert.throws(() => canonicalJson(invalid), KernelError);
   assert.equal(reads, 0);
+});
+
+test("canonical byte preflight counts escaped and Unicode text exactly before expansion", () => {
+  for (const value of [{ "é": "😊" }, ["\u0000\b\n\r\t\f\\\"", "\ud800", "\udc00"], { z: [1, false, null], a: -0 }]) {
+    const expected = canonicalJson(value);
+    const bytes = Buffer.byteLength(expected, "utf8");
+    assert.equal(canonicalJson(value, bytes), expected);
+    assert.throws(() => canonicalJson(value, bytes - 1), (error: unknown) => error instanceof KernelError && error.code === "JSON_LIMIT");
+  }
+  const shared = { nested: [1, 2, 3] };
+  assert.equal(canonicalJson([shared, shared]), '[{"nested":[1,2,3]},{"nested":[1,2,3]}]');
+  let nested: unknown = shared;
+  for (let depth = 0; depth < 79; depth += 1) nested = [nested];
+  assert.throws(() => canonicalJson([shared, nested]), (error: unknown) => error instanceof KernelError && error.code === "JSON_LIMIT");
+});
+
+test("a compact shared graph rejects within a small child heap before canonical or command expansion", () => {
+  const moduleUrl = new URL("../src/index.ts", import.meta.url).href;
+  const script = `import { canonicalJson, CommandService, MemoryStore } from ${JSON.stringify(moduleUrl)};
+    let value = { leaf: 'x' }; for (let level = 0; level < 30; level++) value = { left: value, right: value };
+    try { canonicalJson(value); process.exit(2); } catch (error) { if (error.code !== 'JSON_LIMIT') throw error; }
+    const service = new CommandService(new MemoryStore(), { createId: () => 'id', digest: () => 'digest' });
+    const result = await service.execute({ payload: value }, { id: 'owner', scopes: [] });
+    if (result.diagnostics[0]?.code !== 'JSON_LIMIT') process.exit(3);`;
+  const result = spawnSync(process.execPath, ["--max-old-space-size=64", "--input-type=module", "--eval", script], { encoding: "utf8", timeout: 5_000 });
+  assert.equal(result.status, 0, result.stderr || result.error?.message);
+});
+
+test("numeric parsing rejects decimal-value loss but permits equivalent notation and representable values", () => {
+  for (const input of ["1e-400", "-1e-400", "9007199254740993", "1.0000000000000001", "0.10000000000000001", "4.9406564584124654e-324"]) assert.throws(() => parseJson(input), (error: unknown) => error instanceof KernelError && error.code === "JSON_NUMBER");
+  for (const [input, expected] of [["1.0", 1], ["1e3", 1000], ["1.2300", 1.23], ["0.1", 0.1], ["5e-324", 5e-324], ["9007199254740992", 9007199254740992], ["0e9999999999999999999999", 0]] as const) assert.equal(parseJson(input), expected);
+  for (const input of ['"\ud800"', '"\udc00"']) assert.throws(() => parseJson(input), (error: unknown) => error instanceof KernelError && error.code === "JSON_INVALID");
+  assert.equal(parseJson('"\\ud800"'), "\ud800");
 });

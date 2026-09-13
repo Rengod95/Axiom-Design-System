@@ -1,12 +1,16 @@
 /** Versions identify the bounded profile, independently of Foundation. */
 export const PROTOCOL_VERSION = "0.1.0" as const;
 export const KERNEL_FORMAT_VERSION = "0.1.0" as const;
+export const CANONICAL_PROFILE_VERSION = "1.0.0" as const;
 export const MAX_JSON_DEPTH = 64;
 const INTERNAL_RECORD_DEPTH_ALLOWANCE = 16;
 export const MAX_CANONICAL_DEPTH = MAX_JSON_DEPTH + INTERNAL_RECORD_DEPTH_ALLOWANCE;
+export const MAX_CANONICAL_BYTES = 67_108_864;
 export const MAX_DOCUMENT_BYTES = 1_048_576;
 export const MAX_BATCH_DOCUMENTS = 64;
 export const MAX_BATCH_BYTES = 8_388_608;
+/** Adapters preflight sources against the same bounded import profile. */
+export const IMPORT_LIMITS = Object.freeze({ maxDocuments: MAX_BATCH_DOCUMENTS, maxDocumentBytes: MAX_DOCUMENT_BYTES, maxBatchBytes: MAX_BATCH_BYTES });
 export const MAX_COMMAND_BYTES = 9_437_184;
 export const ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/;
 export const RESERVED_IDS = new Set(["__proto__", "prototype", "constructor"]);
@@ -25,6 +29,7 @@ export const CODE = Object.freeze({
   REFERENCE_INVALID: "REFERENCE_INVALID", REFERENCE_MISSING: "REFERENCE_MISSING", REFERENCE_KIND: "REFERENCE_KIND", REFERENCE_REVISION: "REFERENCE_REVISION",
   DOMAIN_UNVERIFIED: "DOMAIN_UNVERIFIED", CANDIDATE_MISSING: "CANDIDATE_MISSING", CANDIDATE_STATE: "CANDIDATE_STATE",
   APPROVAL_INVALID: "APPROVAL_INVALID", DIGEST_MISMATCH: "DIGEST_MISMATCH", HISTORY_CONFLICT: "HISTORY_CONFLICT", STATE_INVALID: "STATE_INVALID",
+  DRAFT_MISSING: "DRAFT_MISSING", MIGRATION_UNSUPPORTED: "MIGRATION_UNSUPPORTED",
 });
 
 /** Stable error meanings and their producing boundary. */
@@ -36,5 +41,6 @@ export const DIAGNOSTIC_PHASES: Readonly<Record<string, DiagnosticPhase>> = Obje
   DOMAIN_UNVERIFIED: "document", CANDIDATE_MISSING: "review", CANDIDATE_STATE: "review", APPROVAL_INVALID: "review", DIGEST_MISMATCH: "review",
   HISTORY_CONFLICT: "history", STATE_INVALID: "state", OPERATION_UNSUPPORTED: "command", PAYLOAD_INVALID: "command", PROJECT_EXISTS: "command",
   PROJECT_MISSING: "command", PROJECT_MISMATCH: "command", REVISION_CONFLICT: "command", IDEMPOTENCY_CONFLICT: "command",
+  DRAFT_MISSING: "document", MIGRATION_UNSUPPORTED: "document",
 });
 import type { DiagnosticPhase } from "./contracts.ts";

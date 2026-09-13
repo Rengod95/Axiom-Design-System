@@ -1,7 +1,8 @@
-import type { AdsDocument, Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
+import type { AdsDocument, Diagnostic, DocumentEntry, DocumentInspection, JsonObject, JsonValue } from "./contracts.ts";
 import { CODE, DOCUMENT_KINDS, ID_PATTERN, OPAQUE_FIELDS, RESERVED_IDS } from "./constants.ts";
 import { parseJson } from "./canonical-json.ts";
 import { KernelError } from "./kernel-error.ts";
+import { envelopeDiagnostics } from "./schema-validation.ts";
 
 /** IDs are identities only; adapters must never interpret them as paths. */
 export function isValidId(value: unknown): value is string {
@@ -13,19 +14,29 @@ export function isObject(value: unknown): value is JsonObject {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-/** Validate only the native envelope, retaining the exact source separately. */
-export function parseDocument(originalText: string, sourceUri = "memory:document"): DocumentEntry {
-  const value = parseJson(originalText);
-  if (!isObject(value) || !isValidId(value.id) || typeof value.kind !== "string" || !DOCUMENT_KINDS.has(value.kind)
-    || !isValidId(value.revision) || typeof value.schemaVersion !== "string" || !value.schemaVersion.trim()
-    || typeof value.name !== "string" || !value.name.trim()) {
-    throw new KernelError(CODE.DOCUMENT_INVALID, "Document requires valid id, kind, schemaVersion, revision and name fields.");
+/** Report partial-source failures without treating malformed text as an active document. */
+export function inspectDocument(originalText: string, sourceUri = "memory:document"): DocumentInspection {
+  try {
+    if (typeof sourceUri !== "string" || !sourceUri.trim()) throw new KernelError(CODE.DOCUMENT_INVALID, "Document source URI is required.");
+    const value = parseJson(originalText);
+    const diagnostics = envelopeDiagnostics(value, sourceUri);
+    if (diagnostics.length) return { validation: "invalid", diagnostics };
+    const document = value as AdsDocument;
+    return { document, validation: "envelope-only", diagnostics: [{ code: CODE.DOMAIN_UNVERIFIED, phase: "document", severity: "warning", message: "Envelope only: domain semantics, opaque data and schema-version support are unverified.", sourceRef: document.id }] };
+  } catch (error) {
+    if (!(error instanceof KernelError)) throw error;
+    return { validation: "invalid", diagnostics: [{ ...error.toDiagnostic(), sourceRef: typeof sourceUri === "string" ? sourceUri : "memory:document" }] };
   }
-  if (typeof sourceUri !== "string" || !sourceUri.trim()) throw new KernelError(CODE.DOCUMENT_INVALID, "Document source URI is required.");
-  return {
-    document: value as AdsDocument, originalText, sourceUri, validation: "envelope-only",
-    diagnostics: [{ code: CODE.DOMAIN_UNVERIFIED, phase: "document", severity: "warning", message: "Envelope only: domain semantics, opaque data and runtime support are unverified.", sourceRef: value.id }],
-  };
+}
+
+/** Admit only a valid common envelope while preserving exact source text separately. */
+export function parseDocument(originalText: string, sourceUri = "memory:document"): DocumentEntry {
+  const report = inspectDocument(originalText, sourceUri);
+  if (!report.document) {
+    const diagnostic = report.diagnostics[0]!;
+    throw new KernelError(diagnostic.code, diagnostic.message, { ...(diagnostic.path === undefined ? {} : { path: diagnostic.path }), ...(diagnostic.sourceRef === undefined ? {} : { sourceRef: diagnostic.sourceRef }) });
+  }
+  return { document: report.document, originalText, sourceUri, validation: "envelope-only", diagnostics: report.diagnostics };
 }
 
 /** Validate recognized document Ref objects, never interpreting opaque areas. */
@@ -46,6 +57,7 @@ export function validateReferences(documents: Record<string, DocumentEntry>, pro
         if (!target && !isProjectScope) throw new KernelError(CODE.REFERENCE_MISSING, `Document ${owner} has a missing document reference.`);
         if (isProjectScope && (value.revision !== undefined || value.version !== undefined)) throw new KernelError(CODE.REFERENCE_REVISION, "Live project scope references cannot pin source revisions or public versions in this profile.");
         if (value.revision !== undefined && (typeof value.revision !== "string" || (target && value.revision !== target.document.revision))) throw new KernelError(CODE.REFERENCE_REVISION, `Document ${owner} has a mismatched reference revision.`);
+        if (value.version !== undefined) diagnostics.push({ code: CODE.DOMAIN_UNVERIFIED, phase: "reference", severity: "warning", message: "Library version pin is preserved but requires a versioned library resolver; local document identity does not verify this version.", sourceRef: owner });
       } else {
         diagnostics.push({ code: CODE.DOMAIN_UNVERIFIED, phase: "reference", severity: "warning", message: "Non-document reference is preserved but requires a domain resolver.", sourceRef: owner });
       }

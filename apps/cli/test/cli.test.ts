@@ -1,14 +1,14 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import type { TestContext } from "node:test";
 import { FileStore } from "../../../modules/local-store/src/index.ts";
-import { CommandService, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
+import { CommandService, IMPORT_LIMITS, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
 import type { CommandEnvelope } from "../../../modules/ads-core/src/index.ts";
 
 const CLI_ENTRY = fileURLToPath(new URL("../src/main.ts", import.meta.url));
@@ -17,11 +17,14 @@ interface CliResponse {
   status: string; revision: string; candidateId: string; reviewToken: string;
   project: { documents: Record<string, unknown>; revision: string };
   document: { originalText: string; validation: string; document: Record<string, unknown> };
-  candidate: { status: string; diff: unknown[]; approval?: unknown };
+  candidate: { status: string; diff: { change: string; fields?: { path: string }[] }[]; approval?: unknown };
   diagnostics: { code: string; phase: string }[];
   history: unknown[];
   validation: string;
   semantics: string;
+  draftRefs: string[];
+  drafts: { id: string; originalText?: string }[];
+  draft: { id: string; originalText: string; sourceDigest: string; validation: string };
 }
 
 /** Every command launches a fresh process, exercising persisted rather than in-memory state. */
@@ -134,7 +137,42 @@ test("a stale approval cannot overwrite an intervening applied document", async 
   run(store, ["import", second, "--approve"]);
   const stale = run(store, ["apply", staged.candidateId, "--token", approval.reviewToken], 3);
   assert.equal(stale.status, "conflict");
+  assert.equal(run(store, ["apply", staged.candidateId, "--approve"], 3).status, "conflict");
   assert.deepEqual(Object.keys(run(store, ["show"]).project.documents), ["doc-second"]);
+});
+
+test("explicit apply can resume an approval after its printed token is lost", async (t) => {
+  const { root, store } = await workspace(t);
+  const file = join(root, "resumable.json");
+  await writeFile(file, document("doc-resumable"));
+  run(store, ["init"]);
+  const staged = run(store, ["import", file]);
+  run(store, ["review", staged.candidateId, "--approve"]);
+  assert.equal(run(store, ["candidate", staged.candidateId]).candidate.approval, undefined);
+  assert.equal(run(store, ["apply", staged.candidateId, "--approve"]).status, "accepted");
+  assert.equal(run(store, ["show", "doc-resumable"]).document.document.id, "doc-resumable");
+});
+
+test("usage errors are checked before opening a missing store", async (t) => {
+  const { store } = await workspace(t);
+  for (const args of [["show", "--approve"], ["import"], ["apply", "candidate-x"], ["import", ...Array<string>(IMPORT_LIMITS.maxDocuments + 1).fill("missing.json")]]) {
+    assert.equal(run(store, args, 2).diagnostics[0]?.code, "CLI_USAGE");
+    await assert.rejects(stat(store), { code: "ENOENT" });
+  }
+});
+
+test("file type, per-file and aggregate byte limits reject before staging", async (t) => {
+  const { root, store } = await workspace(t);
+  const file = join(root, "large.json");
+  const initial = run(store, ["init"]);
+  await writeFile(file, Buffer.alloc(IMPORT_LIMITS.maxDocumentBytes + 1, 0x20));
+  assert.equal(run(store, ["import", file], 1).diagnostics[0]?.code, "CLI_IMPORT_LIMIT");
+  await writeFile(file, Buffer.alloc(IMPORT_LIMITS.maxDocumentBytes, 0x20));
+  const count = Math.floor(IMPORT_LIMITS.maxBatchBytes / IMPORT_LIMITS.maxDocumentBytes) + 1;
+  assert.equal(run(store, ["import", ...Array<string>(count).fill(file)], 1).diagnostics[0]?.code, "CLI_IMPORT_LIMIT");
+  assert.equal(run(store, ["import", root], 1).diagnostics[0]?.code, "CLI_SOURCE_TYPE");
+  assert.equal(run(store, ["show"]).project.revision, initial.revision);
+  assert.equal((await new FileStore(store).read())?.candidates.length, 0);
 });
 
 test("rejection preserves drafts and usage errors cannot imply approval", async (t) => {
@@ -200,4 +238,84 @@ test("persisted command receipts replay after CLI edits and still require curren
   assert.equal(revoked.diagnostics[0]?.code, "SCOPE_REQUIRED");
   assert.equal(run(store, ["history"]).history.length, 2);
   assert.deepEqual(Object.keys(run(store, ["show"]).project.documents), ["doc-later"]);
+});
+
+test("invalid capture, repaired import, reviewed update, restart Undo and paired export preserve source bytes", async (t) => {
+  const { root, store } = await workspace(t);
+  const file = join(root, "editable.json");
+  const original = "{\n  broken: 한글 원본\r\n";
+  await writeFile(file, original);
+  const initial = run(store, ["init"]);
+  const captured = run(store, ["import", file, "--draft"]);
+  assert.equal(captured.status, "accepted");
+  const draftId = captured.draftRefs[0]!;
+  assert.equal(run(store, ["show"]).project.revision, initial.revision);
+  const draft = run(store, ["draft", draftId]).draft;
+  assert.equal(draft.validation, "invalid");
+  assert.equal(draft.originalText, original);
+  assert.equal(draft.sourceDigest, createHash("sha256").update(original).digest("hex"));
+  assert.deepEqual(run(store, ["drafts"]).drafts.map((item) => item.id), [draftId]);
+  assert.equal(run(store, ["drafts"]).drafts[0]?.originalText, undefined);
+
+  const repair = document("doc-editable", { extensions: { vendor: { untouched: "opaque" } } });
+  await writeFile(file, repair);
+  const staged = run(store, ["import", file, "--draft-id", draftId]);
+  run(store, ["apply", staged.candidateId, "--approve"]);
+  assert.equal(run(store, ["show", "doc-editable"]).document.originalText, original);
+  const edited = document("doc-editable", { revision: "source-r2", name: "Reviewed new name", extensions: { vendor: { untouched: "opaque", newValue: 42 } } });
+  await writeFile(file, edited);
+  const update = run(store, ["update", file]);
+  const diff = run(store, ["candidate", update.candidateId]).candidate.diff;
+  assert.equal(diff[0]?.change, "updated");
+  assert.ok(diff[0]?.fields?.some((field) => field.path.includes("name")));
+  assert.equal(run(store, ["show", "doc-editable"]).document.document.revision, "source-r1");
+  run(store, ["apply", update.candidateId, "--approve"]);
+  assert.ok(run(store, ["diagnostics"]).diagnostics.some((item) => item.phase === "document"));
+
+  const output = join(root, "export-edited");
+  run(store, ["export", "doc-editable", "--out", output]);
+  const exportedOriginal = await readFile(join(output, "original.json"));
+  const exportedNormalized = await readFile(join(output, "normalized.json"));
+  const manifest = JSON.parse(await readFile(join(output, "manifest.json"), "utf8")) as { original: { digest: string }; normalized: { digest: string }; validation: string; semantics: string };
+  assert.deepEqual(exportedOriginal, Buffer.from(original));
+  assert.equal(manifest.original.digest, createHash("sha256").update(exportedOriginal).digest("hex"));
+  assert.equal(manifest.normalized.digest, createHash("sha256").update(exportedNormalized).digest("hex"));
+  assert.equal(JSON.parse(exportedNormalized.toString("utf8")).name, "Reviewed new name");
+  assert.equal(manifest.validation, "envelope-only");
+  assert.equal(manifest.semantics, "unverified");
+  assert.equal(run(store, ["export", "doc-editable", "--out", output], 1).diagnostics[0]?.code, "CLI_EXPORT_PATH");
+  assert.deepEqual(await readFile(join(output, "normalized.json")), exportedNormalized);
+
+  run(store, ["undo"]);
+  const undoOutput = join(root, "export-undone");
+  run(store, ["export", "doc-editable", "--out", undoOutput]);
+  assert.deepEqual(await readFile(join(undoOutput, "original.json")), Buffer.from(original));
+  assert.equal(JSON.parse(await readFile(join(undoOutput, "normalized.json"), "utf8")).revision, "source-r1");
+  run(store, ["redo"]);
+  assert.equal(run(store, ["show", "doc-editable"]).document.document.revision, "source-r2");
+  assert.equal(run(store, ["draft", draftId]).draft.originalText, original);
+});
+
+test("draft flags, update identities and output paths reject without changing adopted content", async (t) => {
+  const { root, store } = await workspace(t);
+  const file = join(root, "source.json");
+  await writeFile(file, document("doc-protected"));
+  run(store, ["init"]);
+  run(store, ["import", file, "--approve"]);
+  const revision = run(store, ["show"]).project.revision;
+  for (const args of [["import", file, "--draft", "--approve"], ["import", file, file, "--draft-id", "draft-x"], ["update", file, "--draft"], ["export", "doc-protected"]]) run(store, args, 2);
+  await writeFile(file, document("doc-protected", { name: "Changed without advancing source revision" }));
+  run(store, ["update", file, "--approve"], 3);
+  await writeFile(file, document("doc-missing", { revision: "source-r2" }));
+  assert.equal(run(store, ["update", file], 1).diagnostics[0]?.code, "CLI_NOT_FOUND");
+  assert.equal(run(store, ["show"]).project.revision, revision);
+  const traversal = `${root}/unused/../escaped`;
+  assert.equal(run(store, ["export", "doc-protected", "--out", traversal], 1).diagnostics[0]?.code, "CLI_EXPORT_PATH");
+  await assert.rejects(stat(join(root, "escaped")), { code: "ENOENT" });
+  const target = join(root, "target");
+  const link = join(root, "link");
+  await mkdir(target);
+  await symlink(target, link, "junction");
+  assert.equal(run(store, ["export", "doc-protected", "--out", join(link, "export")], 1).diagnostics[0]?.code, "CLI_EXPORT_PATH");
+  await assert.rejects(stat(join(target, "export")), { code: "ENOENT" });
 });

@@ -1,17 +1,15 @@
 import { createHash, randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
-import { CommandService, KernelError, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
+import { CommandService, KernelError, parseDocument, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
 import type { Candidate, CommandEnvelope, CommandResult, JsonObject, ProjectSnapshot } from "../../../modules/ads-core/src/index.ts";
 import { FileStore } from "../../../modules/local-store/src/index.ts";
-import { checkOptions, CliUsageError, parseArguments } from "./arguments.ts";
-import { CLI_DIAGNOSTIC, CLI_DIAGNOSTIC_PHASE, CLI_HELP, CLI_OUTPUT_CONTEXT, EXIT_CODE, LOCAL_ID_PREFIX, LOCAL_PRINCIPAL, SUPPORTED_COMMANDS } from "./constants.ts";
+import { CliUsageError, parseArguments, validateArguments } from "./arguments.ts";
+import { CLI_DIAGNOSTIC, CLI_DIAGNOSTIC_PHASE, CLI_HELP, CLI_OUTPUT_CONTEXT, EXIT_CODE, LOCAL_ID_PREFIX, LOCAL_PRINCIPAL } from "./constants.ts";
+import { loadSourceFiles } from "./source-files.ts";
+import { writeSourceExport } from "./source-export.ts";
 
 const JSON_INDENT = 2;
 const IMPORT_FORMAT = "ads-envelope";
-const IMPORT_MODE = "review";
-const MAX_ARGUMENTS = Number.MAX_SAFE_INTEGER;
 
 /** Tag locally generated UUID identities while retaining their random uniqueness. */
 function createLocalId(): string { return `${LOCAL_ID_PREFIX}-${randomUUID()}`; }
@@ -44,16 +42,20 @@ function candidateView(candidate: Candidate): Record<string, unknown> {
   return { id: candidate.id, baseRevision: candidate.baseRevision, patchDigest: candidate.digest, status: candidate.status, diff: candidate.diff, diagnostics: candidate.diagnostics };
 }
 
-/** The explicit --approve path still performs ordinary review and apply commands. */
+/** Explicit approval can resume a stored approval, always through the guarded apply command. */
 async function approveAndApply(service: CommandService, store: FileStore, candidateId: string): Promise<CommandResult> {
   const candidate = await inspectCandidate(store, candidateId);
   process.stderr.write(`${JSON.stringify({ review: candidateView(candidate) }, null, JSON_INDENT)}\n`);
-  const reviewed = await service.execute(makeEnvelope(candidate.projectId, candidate.baseRevision, "transaction.review", {
-    candidateId, patchDigest: candidate.digest, decision: "approve",
-  }), LOCAL_PRINCIPAL);
-  if (reviewed.status !== "accepted" || !reviewed.reviewToken) return reviewed;
+  let approvalToken = candidate.status === "approved" && candidate.approval?.principalId === LOCAL_PRINCIPAL.id ? candidate.approval.token : undefined;
+  if (!approvalToken) {
+    const reviewed = await service.execute(makeEnvelope(candidate.projectId, candidate.baseRevision, "transaction.review", {
+      candidateId, patchDigest: candidate.digest, decision: "approve",
+    }), LOCAL_PRINCIPAL);
+    if (reviewed.status !== "accepted" || !reviewed.reviewToken) return reviewed;
+    approvalToken = reviewed.reviewToken;
+  }
   return service.execute(makeEnvelope(candidate.projectId, candidate.baseRevision, "transaction.apply", {
-    candidateId, approvalToken: reviewed.reviewToken, expectedRevision: candidate.baseRevision,
+    candidateId, approvalToken, expectedRevision: candidate.baseRevision,
   }), LOCAL_PRINCIPAL);
 }
 
@@ -68,20 +70,18 @@ export async function runCli(args: readonly string[]): Promise<number> {
   try {
     const input = parseArguments(args);
     if (input.command === "help" || input.options.help) { process.stdout.write(CLI_HELP); return EXIT_CODE.SUCCESS; }
-    if (!SUPPORTED_COMMANDS.some((command) => command === input.command)) throw new CliUsageError(`Unknown command: ${input.command}`);
+    validateArguments(input);
     const storeDirectory = input.options.store;
     if (typeof storeDirectory !== "string") throw new CliUsageError("Choose a local project directory with --store <directory>");
     const store = new FileStore(resolve(storeDirectory));
     const service = new CommandService(store, { createId: createLocalId, digest: (text) => createHash("sha256").update(text, "utf8").digest("hex") });
 
     if (input.command === "recover-lock") {
-      checkOptions(input, [], 0, 0);
       await store.recoverLock();
       writeResult({ status: "accepted", action: "recover-lock" });
       return EXIT_CODE.SUCCESS;
     }
     if (input.command === "init") {
-      checkOptions(input, ["project", "name"], 0, 0);
       const id = typeof input.options.project === "string" ? input.options.project : createLocalId();
       const name = typeof input.options.name === "string" ? input.options.name : "Untitled Axiom project";
       const result = await service.execute(makeEnvelope(id, null, "project.create", { name }), LOCAL_PRINCIPAL);
@@ -89,7 +89,6 @@ export async function runCli(args: readonly string[]): Promise<number> {
       return resultExitCode(result);
     }
     if (input.command === "show") {
-      checkOptions(input, [], 0, 1);
       if (input.positional[0]) {
         const document = await service.getDocument(input.positional[0], LOCAL_PRINCIPAL);
         if (!document) throw Object.assign(new Error(`Document not found: ${input.positional[0]}`), { code: CLI_DIAGNOSTIC.NOT_FOUND });
@@ -98,57 +97,74 @@ export async function runCli(args: readonly string[]): Promise<number> {
       return EXIT_CODE.SUCCESS;
     }
     if (input.command === "history") {
-      checkOptions(input, [], 0, 0);
       await requireProject(service);
       writeResult({ history: await service.getHistory(LOCAL_PRINCIPAL) });
       return EXIT_CODE.SUCCESS;
     }
     if (input.command === "candidate") {
-      checkOptions(input, [], 1, 1);
       writeResult({ candidate: candidateView(await inspectCandidate(store, input.positional[0]!)) });
+      return EXIT_CODE.SUCCESS;
+    }
+    if (input.command === "drafts") {
+      const drafts = await service.listDrafts(LOCAL_PRINCIPAL);
+      writeResult({ drafts: drafts.map(({ originalText: _originalText, ...summary }) => summary) });
+      return EXIT_CODE.SUCCESS;
+    }
+    if (input.command === "draft") {
+      const draft = await service.getDraft(input.positional[0]!, LOCAL_PRINCIPAL);
+      if (!draft) throw Object.assign(new Error(`Draft not found: ${input.positional[0]}`), { code: CLI_DIAGNOSTIC.NOT_FOUND });
+      writeResult({ draft });
+      return EXIT_CODE.SUCCESS;
+    }
+    if (input.command === "diagnostics") {
+      writeResult({ ...await service.getDiagnostics(LOCAL_PRINCIPAL) });
+      return EXIT_CODE.SUCCESS;
+    }
+    if (input.command === "export") {
+      const source = await service.exportDocument(input.positional[0]!, LOCAL_PRINCIPAL);
+      if (!source) throw Object.assign(new Error(`Document not found: ${input.positional[0]}`), { code: CLI_DIAGNOSTIC.NOT_FOUND });
+      writeResult({ status: "accepted", export: await writeSourceExport(String(input.options.out), source) });
       return EXIT_CODE.SUCCESS;
     }
 
     const project = await requireProject(service);
     let result: CommandResult;
-    if (input.command === "import") {
-      checkOptions(input, ["approve"], 1, MAX_ARGUMENTS);
-      const sourceRefs = await Promise.all(input.positional.map(async (file) => {
-        const sourcePath = resolve(file);
-        const bytes = await readFile(sourcePath);
-        let content: string;
-        try { content = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes); }
-        catch (cause) { throw Object.assign(new Error(`Source is not valid UTF-8: ${sourcePath}`, { cause }), { code: CLI_DIAGNOSTIC.UTF8 }); }
-        return { uri: pathToFileURL(sourcePath).href, content };
-      }));
-      result = await service.execute(makeEnvelope(project.id, project.revision, "document.import", { sourceRefs, formatProfile: IMPORT_FORMAT, importMode: IMPORT_MODE }), LOCAL_PRINCIPAL);
+    if (input.command === "import" || input.command === "update") {
+      const sources = await loadSourceFiles(input.positional);
+      const sourceRefs = sources.map((source): JsonObject => {
+        const ref: JsonObject = { ...source };
+        if (typeof input.options["draft-id"] === "string") ref.draftId = input.options["draft-id"];
+        if (input.command === "update") {
+          const parsed = parseDocument(source.content, source.uri).document;
+          const existing = Object.hasOwn(project.documents, parsed.id) ? project.documents[parsed.id] : undefined;
+          if (!existing) throw Object.assign(new Error(`Document not found for update: ${parsed.id}`), { code: CLI_DIAGNOSTIC.NOT_FOUND });
+          ref.expectedRevision = existing.document.revision;
+        }
+        return ref;
+      });
+      const importMode = input.command === "update" ? "update" : input.options.draft ? "draft" : "review";
+      result = await service.execute(makeEnvelope(project.id, project.revision, "document.import", { sourceRefs, formatProfile: IMPORT_FORMAT, importMode }), LOCAL_PRINCIPAL);
       if (input.options.approve && result.status === "reviewRequired" && result.candidateId) result = await approveAndApply(service, store, result.candidateId);
     } else if (input.command === "delete") {
-      checkOptions(input, ["approve"], 1, MAX_ARGUMENTS);
-      const refs = await Promise.all(input.positional.map(async (id) => {
-        const entry = await service.getDocument(id, LOCAL_PRINCIPAL);
+      const refs = input.positional.map((id) => {
+        const entry = Object.hasOwn(project.documents, id) ? project.documents[id] : undefined;
         if (!entry) throw Object.assign(new Error(`Document not found: ${id}`), { code: CLI_DIAGNOSTIC.NOT_FOUND });
         return { id, expectedKind: entry.document.kind };
-      }));
+      });
       result = await service.execute(makeEnvelope(project.id, project.revision, "entity.delete", { refs }), LOCAL_PRINCIPAL);
       if (input.options.approve && result.status === "reviewRequired" && result.candidateId) result = await approveAndApply(service, store, result.candidateId);
     } else if (input.command === "review") {
-      checkOptions(input, ["approve", "reject"], 1, 1);
-      if (Boolean(input.options.approve) === Boolean(input.options.reject)) throw new CliUsageError("Choose exactly one of --approve or --reject for review");
       const candidate = await inspectCandidate(store, input.positional[0]!);
       process.stderr.write(`${JSON.stringify({ review: candidateView(candidate) }, null, JSON_INDENT)}\n`);
       result = await service.execute(makeEnvelope(project.id, candidate.baseRevision, "transaction.review", {
         candidateId: candidate.id, patchDigest: candidate.digest, decision: input.options.approve ? "approve" : "reject",
       }), LOCAL_PRINCIPAL);
     } else if (input.command === "apply") {
-      checkOptions(input, ["approve", "token"], 1, 1);
-      if (Boolean(input.options.approve) === Boolean(input.options.token)) throw new CliUsageError("Choose exactly one of --approve or --token for apply");
       const candidate = await inspectCandidate(store, input.positional[0]!);
       result = input.options.approve ? await approveAndApply(service, store, candidate.id) : await service.execute(makeEnvelope(project.id, candidate.baseRevision, "transaction.apply", {
         candidateId: candidate.id, approvalToken: String(input.options.token), expectedRevision: candidate.baseRevision,
       }), LOCAL_PRINCIPAL);
     } else if (input.command === "undo" || input.command === "redo") {
-      checkOptions(input, [], 0, 1);
       const state = await store.read();
       const handle = input.positional[0] ?? state?.[input.command].at(-1)?.handle;
       if (!handle) throw Object.assign(new Error(`No ${input.command} is available`), { code: CLI_DIAGNOSTIC.NOT_FOUND });

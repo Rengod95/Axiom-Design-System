@@ -7,9 +7,12 @@
   "baselineMergeCommit": "04c762c384bf41168a843649c542f5d69c04734b",
   "allowedSourceRoots": ["modules/ads-core", "modules/local-store", "apps/cli"],
   "allowedRootFiles": ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"],
-  "allowedMaintenanceFiles": ["scripts/run-tests.mjs", "scripts/check-implementation.mjs"],
+  "allowedMaintenanceFiles": ["scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs"],
   "reintroducedRetiredPaths": ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json"],
   "ignoredGeneratedDirectories": ["node_modules", "dist", "coverage"],
   "toolchain": {"node": "24.19.0", "pnpm": "11.19.0", "typescript": "5.9.3", "nodeTypes": "24.13.4"},
-  "scope": "Native ADS envelope draft authoring and Node local persistence; not complete ADS semantics, Studio, Browser storage, AI or target support"
+  "scope": "Native ADS envelope schema, source-preserving draft capture and reviewed update/export with Node local persistence; not complete ADS semantics, Studio, Browser storage, AI or target support",
+  "extensionAdrs": ["docs/adr/0010-source-preserving-draft-authoring.md"],
+  "schemaCompiler": {"dialect": "2020-12", "name": "ajv", "version": "8.20.0", "license": "MIT", "runtimeDependency": false},
+  "generatedSources": ["modules/ads-core/src/generated/document-envelope.ts"]
 }

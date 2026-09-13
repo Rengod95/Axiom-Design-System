@@ -1,6 +1,6 @@
 # Run the ADS document kernel
 
-This is the first I1 implementation under [ADR-0009](../adr/0009-ads-kernel-implementation-bootstrap.md). It creates a local project, preserves imported UTF-8 ADS document envelopes, stages and approves changes, protects recognized document references, and persists Undo/redo across processes.
+This is a bounded I1 implementation under [ADR-0009](../adr/0009-ads-kernel-implementation-bootstrap.md) and [ADR-0010](../adr/0010-source-preserving-draft-authoring.md). It creates a local project, captures original sources, stages repaired imports and existing-document updates, protects recognized document references, and persists Undo/redo across processes.
 
 Every JSON result reports `validation: "envelope-only"` and `semantics: "unverified"`. Component behavior, tokens, accessibility, rendering, Studio, Browser storage, AI and output platforms are later work. A successful import does not certify those contracts.
 
@@ -43,9 +43,49 @@ pnpm axiom --store "$demoRoot/store" show component.card
 pnpm axiom --store "$demoRoot/store" history
 ```
 
-Each invocation starts a new process and opens the same store. `show` returns the original source text beside the parsed envelope. Unknown extensions stay opaque and are never executed. A malformed envelope, invalid UTF-8 or invalid JSON rejects the complete import batch. The I1 JSON profile rejects a leading BOM instead of silently changing the original text.
+Each invocation starts a new process and opens the same store. `show` returns the original source text beside the parsed envelope. Unknown extensions stay opaque and are never executed. A malformed envelope, invalid UTF-8 or invalid JSON rejects the complete ordinary import batch. `import --draft` can preserve invalid JSON and envelopes as source drafts. The I1 JSON profile rejects a leading BOM as an active document instead of silently changing the original text.
 
-Without `--approve`, `import` and `delete` return `reviewRequired` and a `candidateId`; the active document revision does not change. Inspect that ID with `candidate <id>`, approve it with `review <id> --approve`, and use its returned token with `apply <id> --token <token>`. `review <id> --reject` discards the proposal. `apply <id> --approve` is the shorter explicit decision: it prints the exact proposed diff, calls the ordinary review command, then applies that approval. It does not bypass stale-revision or reference checks.
+Source loading accepts regular UTF-8 files only, at most 64 files, 1 MiB per file and 8 MiB per batch. These limits apply before unbounded file allocation; a source that changes during the read is rejected. Directories and invalid UTF-8 are not draft captures.
+
+Without `--approve`, ordinary `import`, `update` and `delete` return `reviewRequired` and a `candidateId`; the active document revision does not change. Inspect that ID with `candidate <id>`, approve it with `review <id> --approve`, and use its returned token with `apply <id> --token <token>`. `review <id> --reject` marks the stored proposal rejected. `apply <id> --approve` prints the proposed diff, reviews it and applies that approval. If this local principal already approved it but lost the printed token, this command resumes that stored approval through the same guarded apply operation. Stale revisions and invalid references still fail.
+
+## Capture, repair and update
+
+A source draft has its own generated identity. Capturing malformed JSON or an unknown envelope kind does not adopt an ADS document or advance the project revision. The immutable draft retains its original text, SHA-256 digest and diagnostics.
+
+```powershell
+$draftFile = Join-Path $demoRoot 'draft.json'
+[IO.File]::WriteAllText($draftFile, '{ broken: 원본', [Text.UTF8Encoding]::new($false))
+$capture = node apps/cli/src/main.ts --store "$demoRoot/store" import $draftFile --draft | ConvertFrom-Json
+$draftId = $capture.draftRefs[0]
+pnpm axiom --store "$demoRoot/store" drafts
+pnpm axiom --store "$demoRoot/store" draft $draftId
+
+$repairedDocument = @'
+{
+  "id": "component.repaired",
+  "kind": "component",
+  "schemaVersion": "1.0.0",
+  "revision": "source-r1",
+  "name": "Repaired Card",
+  "extensions": { "example.vendor": { "futureData": "preserved" } }
+}
+'@
+[IO.File]::WriteAllText($draftFile, $repairedDocument, [Text.UTF8Encoding]::new($false))
+pnpm axiom --store "$demoRoot/store" import $draftFile --draft-id $draftId --approve
+
+$editedDocument = $repairedDocument.Replace('"source-r1"', '"source-r2"').Replace('Repaired Card', 'Updated Card')
+[IO.File]::WriteAllText($draftFile, $editedDocument, [Text.UTF8Encoding]::new($false))
+pnpm axiom --store "$demoRoot/store" update $draftFile --approve
+pnpm axiom --store "$demoRoot/store" diagnostics
+pnpm axiom --store "$demoRoot/store" export component.repaired --out "$demoRoot/repaired-export"
+```
+
+`--draft-id` binds exactly one import/update file to a captured source owned by this principal. The capture remains unchanged. For a repaired new document, its first original text comes from that draft. Updates preserve that first original and store the current submitted text separately. `drafts` lists source summaries; `draft <id>` returns the complete original text. `diagnostics` includes both active-document findings and captured-source findings, so an immutable invalid original still has its original error after a repair is adopted.
+
+`update` requires an existing stable document ID, the same kind and schema version, and a new source `revision` when parsed JSON content changes. Formatting, object-key order or source-URI-only changes can be reviewed and adopted with the same source revision and an empty semantic field diff; the current source text/URI are still recorded. The CLI reads the current source revision and supplies it with the current project revision; the core rejects stale revisions. Review shows field paths and before/after values. A schema version string is preserved without certifying that version's domain semantics. Changing versions requires a registered migration; this slice has no migration transformer.
+
+Export writes `original.json`, `normalized.json` and `manifest.json` into one fresh directory whose parent already exists. `original.json` contains the exact first source text and may be malformed JSON; `normalized.json` contains canonical current document JSON. The manifest records both SHA-256 digests and the canonicalization profile. Existing destinations, parent traversal and symlink ancestors are refused, and existing files are never overwritten. The manifest is written last; an I/O failure can leave partial output without a completed manifest. This is a source pair, not a target delivery or release package. These filesystem operations assume the same local folder authority as the store; they do not defend against a hostile process replacing parent directories during the operation.
 
 ## Delete, Undo and redo
 
@@ -61,7 +101,7 @@ The optional Undo/redo handle selects an explicit applicable history entry. Inte
 
 ## Failure and recovery
 
-Standard output is JSON; explicit review diffs go to standard error. When capturing JSON through pnpm, use `pnpm --silent axiom ...`, or invoke the Node entry directly. Exit codes are `0` for success or a staged review, `1` for rejected input or I/O failure, `2` for CLI usage, and `3` for a revision conflict or active writer lock. Diagnostics carry stable codes, including `CLI_USAGE`, `CLI_UTF8`, `CLI_NOT_FOUND` and the store/core codes.
+Standard output is JSON; explicit review diffs go to standard error. When capturing JSON through pnpm, use `pnpm --silent axiom ...`, or invoke the Node entry directly. Exit codes are `0` for success, a captured source or a staged review, `1` for rejected input or I/O failure, `2` for CLI usage, and `3` for a revision conflict or active writer lock. Diagnostics carry stable codes and phases, including `CLI_USAGE`, `CLI_UTF8`, `CLI_IMPORT_LIMIT`, `CLI_SOURCE_TYPE`, `CLI_EXPORT_PATH`, `CLI_NOT_FOUND` and the store/core codes. Usage is checked before opening the store.
 
 The adapter uses an exclusive writer lock and complete commit records to recover interrupted processes. If a dead writer leaves a lock, inspect the failure and explicitly run:
 

@@ -65,6 +65,25 @@ test("actor, actual scope, requested scope and revoked receipt access fail witho
   await assert.rejects(h.service.getProject({ id: OWNER.id, scopes: [] }), { code: "SCOPE_REQUIRED" });
 });
 
+test("receipt identity canonicalizes object fields and binds the complete request contract", async () => {
+  const h = setup(); await h.create();
+  const revision = await h.current();
+  const source = { uri: "memory:card", content: document("card") };
+  const command = h.envelope("document.import", { sourceRefs: [source], formatProfile: "ads-envelope", importMode: "review" }, revision);
+  const candidate = await h.service.execute(command, OWNER);
+  const reordered = { ...command, commandId: "new-transport-id", origin: "externalAPI" as const, payload: { importMode: "review", formatProfile: "ads-envelope", sourceRefs: [{ content: source.content, uri: source.uri }] } };
+  assert.deepEqual(await h.service.execute(reordered, OWNER), candidate);
+  for (const changed of [
+    { ...command, transactionId: "different-transaction" },
+    { ...command, baseRevision: "different-base" },
+    { ...command, requestedScopes: ["project.write", "review.apply"] },
+  ]) assert.equal((await h.service.execute(changed, OWNER)).diagnostics[0]?.code, "IDEMPOTENCY_CONFLICT");
+  assert.equal((await h.store.read())?.candidates.length, 1);
+  const otherCommand = { ...command, actorId: OTHER.id };
+  assert.equal((await h.service.execute(otherCommand, OTHER)).status, "reviewRequired");
+  assert.equal((await h.store.read())?.candidates.length, 2);
+});
+
 test("invalid import batch leaves no partial document, candidate or receipt", async () => {
   const h = setup(); await h.create();
   const before = await h.store.read();
@@ -79,7 +98,7 @@ test("valid source depth remains importable when internal candidate wrappers add
   const h = setup(); await h.create();
   let metadata: JsonValue = null;
   for (let depth = 0; depth < 62; depth += 1) metadata = [metadata];
-  assert.equal((await h.importDocs([document("deep", { metadata })])).status, "reviewRequired");
+  assert.equal((await h.importDocs([document("deep", { metadata: { deep: metadata } })])).status, "reviewRequired");
 });
 
 test("candidate persists without revision then requires its private digest and opaque approval", async () => {
@@ -122,6 +141,50 @@ test("review scope revocation prevents new application of an approved candidate"
   const principal = { id: OWNER.id, scopes: ["project.read", "project.write"] };
   assert.equal((await h.apply(candidate, approval, principal)).diagnostics[0]?.code, "SCOPE_REQUIRED");
   assert.equal(await h.service.getDocument("card", OWNER), null);
+});
+
+test("review scope revocation also prevents disclosure of a prior apply receipt", async () => {
+  const h = setup(); await h.create();
+  const candidate = await h.importDocs([document("card")]);
+  const approval = await h.review(candidate);
+  const revision = await h.current();
+  const command = h.envelope("transaction.apply", { candidateId: candidate.candidateId!, approvalToken: approval.reviewToken!, expectedRevision: revision }, revision);
+  const applied = await h.service.execute(command, OWNER);
+  assert.equal(applied.status, "accepted");
+  const before = await h.store.read();
+  const revoked = { id: OWNER.id, scopes: ["project.read", "project.write"] };
+  assert.equal((await h.service.execute(command, revoked)).diagnostics[0]?.code, "SCOPE_REQUIRED");
+  assert.deepEqual(await h.store.read(), before);
+  assert.deepEqual(await h.service.execute(command, OWNER), applied);
+});
+
+test("late reducer failure rolls back the candidate, history, receipt and reported revision", async () => {
+  const h = setup(); await h.create();
+  const candidate = await h.importDocs([document("card")]);
+  const approval = await h.review(candidate);
+  const revision = await h.current();
+  const before = await h.store.read();
+  let generated = 0;
+  const service = new CommandService(h.store, { ...h.services, createId: () => ++generated === 1 ? "never-committed" : "" });
+  const command = h.envelope("transaction.apply", { candidateId: candidate.candidateId!, approvalToken: approval.reviewToken!, expectedRevision: revision }, revision);
+  const rejected = await service.execute(command, OWNER);
+  assert.equal(rejected.status, "rejected");
+  assert.equal(rejected.diagnostics[0]?.code, "STATE_INVALID");
+  assert.equal(rejected.revision, revision);
+  assert.deepEqual(await h.store.read(), before);
+  assert.equal((await h.service.execute(command, OWNER)).status, "accepted");
+});
+
+test("document library-version pins remain explicitly unresolved even when a local identity exists", async () => {
+  const h = setup(); await h.create();
+  const candidate = await h.importDocs([document("target"), document("consumer", { componentRef: { id: "target", expectedKind: "component", version: "9.9.9" } })]);
+  assert.equal(candidate.status, "reviewRequired");
+  const warning = candidate.diagnostics.find((diagnostic) => diagnostic.phase === "reference" && diagnostic.sourceRef === "consumer");
+  assert.equal(warning?.code, "DOMAIN_UNVERIFIED");
+  assert.match(warning!.message, /version/i);
+  const applied = await h.apply(candidate, await h.review(candidate));
+  assert.equal(applied.status, "accepted");
+  assert.deepEqual(applied.diagnostics, candidate.diagnostics);
 });
 
 test("recognized document refs protect deletion while opaque metadata remains uninterpreted", async () => {
@@ -179,6 +242,25 @@ test("concurrent same-base candidates serialize and only one apply can commit", 
   const outcomes = await Promise.all(commands.map((command) => h.service.execute(command, OWNER)));
   assert.deepEqual(outcomes.map((outcome) => outcome.status).sort(), ["accepted", "conflict"]);
   assert.equal(Object.keys((await h.service.getProject(OWNER))!.documents).length, 1);
+});
+
+test("consecutive personal undo and redo preserve the exact document and parent chain", async () => {
+  const h = setup(); await h.create();
+  const first = await h.commitDocs([document("first")]);
+  const second = await h.commitDocs([document("second", { ref: { id: "first", expectedKind: "component" } })]);
+  const undoneSecond = await h.service.execute(h.envelope("transaction.undo", { undoHandle: second.undoHandle!, expectedRevision: await h.current() }, await h.current()), OWNER);
+  const undoneFirst = await h.service.execute(h.envelope("transaction.undo", { undoHandle: first.undoHandle!, expectedRevision: await h.current() }, await h.current()), OWNER);
+  assert.equal(undoneSecond.status, "accepted");
+  assert.equal(undoneFirst.status, "accepted");
+  assert.deepEqual(Object.keys((await h.service.getProject(OWNER))!.documents), []);
+  const redoneFirst = await h.service.execute(h.envelope("transaction.redo", { redoHandle: undoneFirst.redoHandle!, expectedRevision: await h.current() }, await h.current()), OWNER);
+  const redoneSecond = await h.service.execute(h.envelope("transaction.redo", { redoHandle: undoneSecond.redoHandle!, expectedRevision: await h.current() }, await h.current()), OWNER);
+  assert.equal(redoneFirst.status, "accepted");
+  assert.equal(redoneSecond.status, "accepted");
+  assert.deepEqual(Object.keys((await h.service.getProject(OWNER))!.documents), ["first", "second"]);
+  const history = await h.service.getHistory(OWNER);
+  assert.equal(history.length, 7);
+  for (let index = 1; index < history.length; index += 1) assert.equal(history[index]!.parentRevision, history[index - 1]!.revision);
 });
 
 test("source and receipt results are isolated from caller mutation and raw patch is unsupported", async () => {

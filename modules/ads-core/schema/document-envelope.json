@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:axiom:schema:document-envelope",
+  "$comment": "SYN02 DocumentEnvelope only. Domain and schemaVersion semantics are unverified; preserve all additional properties.",
+  "type": "object",
+  "required": ["id", "kind", "schemaVersion", "revision", "name"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$", "not": {"enum": ["__proto__", "prototype", "constructor"]}},
+    "kind": {"enum": ["project", "foundation", "component", "design", "registry", "screen", "scenario", "connection", "text"]},
+    "schemaVersion": {"type": "string", "pattern": "\\S"},
+    "revision": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$", "not": {"enum": ["__proto__", "prototype", "constructor"]}},
+    "name": {"type": "string", "pattern": "\\S"},
+    "metadata": {"type": "object"},
+    "extensions": {"type": "object"}
+  },
+  "additionalProperties": true
+}

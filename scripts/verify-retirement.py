@@ -27,7 +27,7 @@ VERIFIER_PATH = "scripts/verify-retirement.py"
 IMPLEMENTATION_PROFILE = "docs/implementation/ads-kernel-profile.json"
 IMPLEMENTATION_ROOTS = {"modules/ads-core", "modules/local-store", "apps/cli"}
 IMPLEMENTATION_ROOT_FILES = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"}
-IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs"}
+IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs"}
 APPROVED_REPLACEMENTS = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json"}
 RETIRED_DIRECTORIES = {"packages", "spec", "fixtures", "tokens"}
 UNCHANGED_PATHS = {"LICENSE", ".gitignore"}
@@ -113,6 +113,9 @@ def implementation_profile(root: Path) -> dict | None:
             "Implementation bootstrap ADR mismatch")
     require("Status: ACCEPTED" in (root / profile["adr"]).read_text(encoding="utf-8"),
             "Implementation bootstrap ADR not accepted")
+    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md"]
+            and "Status: ACCEPTED" in (root / profile["extensionAdrs"][0]).read_text(encoding="utf-8"),
+            "Source authoring extension ADR not accepted")
     require(profile.get("approval") == "docs/decisions/axiom-foundation-baseline-approval.json",
             "Implementation approval path mismatch")
     approval = json.loads((root / profile["approval"]).read_text(encoding="utf-8"))

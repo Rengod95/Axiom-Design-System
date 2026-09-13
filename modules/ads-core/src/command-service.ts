@@ -1,8 +1,10 @@
-import type { Candidate, CommandEnvelope, CommandResult, DocumentEntry, HistoryEntry, JsonObject, KernelServices, KernelState, Principal, ProjectSnapshot, TransactionalStore, UndoEntry } from "./contracts.ts";
-import { CODE, KERNEL_FORMAT_VERSION, MAX_BATCH_BYTES, MAX_BATCH_DOCUMENTS, MAX_COMMAND_BYTES, OPERATION_SCOPES, PROTOCOL_VERSION } from "./constants.ts";
+import type { Candidate, CommandEnvelope, CommandResult, Diagnostic, DocumentEntry, HistoryEntry, JsonObject, KernelServices, KernelState, Principal, ProjectSnapshot, SourceDraft, SourceExport, TransactionalStore, UndoEntry } from "./contracts.ts";
+import { CODE, KERNEL_FORMAT_VERSION, MAX_BATCH_DOCUMENTS, MAX_COMMAND_BYTES, OPERATION_SCOPES, PROTOCOL_VERSION } from "./constants.ts";
 import { canonicalJson } from "./canonical-json.ts";
-import { isObject, isValidId, parseDocument, validateReferences } from "./documents.ts";
+import { inspectDocument, isObject, isValidId, validateReferences } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
+import { ImportRejection, prepareImport } from "./source-import.ts";
+import { exportSource, validateSourceRecords } from "./source-records.ts";
 
 const ENVELOPE_FIELDS = new Set(["protocolVersion", "commandId", "actorId", "projectId", "baseRevision", "operation", "payload", "idempotencyKey", "origin", "transactionId", "requestedScopes"]);
 const ORIGINS = new Set(["GUI", "internalAI", "externalAPI"]);
@@ -15,8 +17,8 @@ function result(status: CommandResult["status"], revision: string | null = null)
   return { status, revision, diagnostics: [], affectedRefs: [], diff: [] };
 }
 
-function failure(code: string, message: string, revision: string | null = null, conflict = false): CommandResult {
-  return { ...result(conflict ? "conflict" : "rejected", revision), diagnostics: [new KernelError(code, message).toDiagnostic()] };
+function failure(code: string, message: string, revision: string | null = null, conflict = false, diagnostics?: Diagnostic[]): CommandResult {
+  return { ...result(conflict ? "conflict" : "rejected", revision), diagnostics: diagnostics ?? [new KernelError(code, message).toDiagnostic()] };
 }
 
 function requirePayload(payload: JsonObject, keys: string[]): void {
@@ -35,8 +37,7 @@ function authorize(principal: Principal, requiredScope: string): void {
 }
 
 function validateEnvelope(envelope: CommandEnvelope, principal: Principal): string {
-  const canonical = canonicalJson(envelope);
-  if (new TextEncoder().encode(canonical).length > MAX_COMMAND_BYTES) throw new KernelError(CODE.JSON_LIMIT, "Command exceeds the profile byte limit.");
+  canonicalJson(envelope, MAX_COMMAND_BYTES);
   if (!isObject(envelope) || Object.keys(envelope).some((key) => !ENVELOPE_FIELDS.has(key))
     || !isValidId(envelope.commandId) || !isValidId(envelope.actorId) || !isValidId(envelope.projectId) || !isValidId(envelope.transactionId)
     || !(envelope.baseRevision === null || isValidId(envelope.baseRevision)) || !isObject(envelope.payload)
@@ -46,6 +47,7 @@ function validateEnvelope(envelope: CommandEnvelope, principal: Principal): stri
   const scope = Object.hasOwn(OPERATION_SCOPES, envelope.operation) ? OPERATION_SCOPES[envelope.operation] : undefined;
   if (!scope) throw new KernelError(CODE.OPERATION_UNSUPPORTED, "Operation is not implemented by the document-kernel profile.");
   authorize(principal, scope);
+  if (envelope.operation === "transaction.apply") authorize(principal, "review.apply");
   if (envelope.actorId !== principal.id) throw new KernelError(CODE.ACTOR_MISMATCH, "Envelope actor must match the authenticated principal.");
   if (!envelope.requestedScopes.includes(scope) || envelope.requestedScopes.some((requested) => !principal.scopes.includes(requested))) throw new KernelError(CODE.SCOPE_REQUIRED, "Requested scopes are missing or not currently authorized.");
   if (envelope.operation !== "project.create") authorize(principal, "project.read");
@@ -58,6 +60,7 @@ function checkedState(state: KernelState | null): KernelState {
   if (state.formatVersion !== KERNEL_FORMAT_VERSION || !Array.isArray(state.candidates) || !Array.isArray(state.receipts)
     || !Array.isArray(state.undo) || !Array.isArray(state.redo) || !Array.isArray(state.history)) throw new KernelError(CODE.STATE_INVALID, "Invalid or unsupported kernel state.");
   if (state.project && (!isValidId(state.project.id) || !isValidId(state.project.revision) || !isObject(state.project.documents))) throw new KernelError(CODE.STATE_INVALID, "Invalid project snapshot.");
+  validateSourceRecords(state);
   return structuredClone(state);
 }
 
@@ -78,7 +81,7 @@ export class CommandService {
       principal = structuredClone(identity);
       digest = this.#services.digest(request);
     } catch (error) {
-      if (error instanceof KernelError) return failure(error.code, error.message);
+      if (error instanceof KernelError) return failure(error.code, error.message, null, false, [error.toDiagnostic()]);
       throw error;
     }
     return this.#store.transact((stored) => {
@@ -88,7 +91,7 @@ export class CommandService {
         try { authorize(principal, "project.read"); }
         catch (error) {
           if (!(error instanceof KernelError)) throw error;
-          return { state, changed: false, value: failure(error.code, error.message) };
+          return { state, changed: false, value: failure(error.code, error.message, null, false, [error.toDiagnostic()]) };
         }
         return { state, changed: false, value: old.requestDigest === digest ? structuredClone(old.result) : failure(CODE.IDEMPOTENCY_CONFLICT, "Idempotency key belongs to a different request.", state.project?.revision ?? null, true) };
       }
@@ -97,7 +100,9 @@ export class CommandService {
       catch (error) {
         if (!(error instanceof KernelError)) throw error;
         // A rejected reducer must never publish partially modified candidates or state.
-        return { state: checkedState(stored), changed: false, value: failure(error.code, error.message, state.project?.revision ?? null, error.code === CODE.REVISION_CONFLICT) };
+        const unchanged = checkedState(stored);
+        const diagnostics = error instanceof ImportRejection ? error.diagnostics : [error.toDiagnostic()];
+        return { state: unchanged, changed: false, value: failure(error.code, error.message, unchanged.project?.revision ?? null, error.code === CODE.REVISION_CONFLICT, diagnostics) };
       }
       if (!state.project) return { state, changed: false, value: outcome };
       state.receipts.push({ projectId: envelope.projectId, principalId: principal.id, key: envelope.idempotencyKey, requestDigest: digest, result: structuredClone(outcome) });
@@ -121,6 +126,39 @@ export class CommandService {
   async getHistory(principal: Principal): Promise<HistoryEntry[]> {
     authorize(principal, "project.read");
     return structuredClone(checkedState(await this.#store.read()).history);
+  }
+
+  /** Immutable source captures remain private to their authenticated author. */
+  async listDrafts(principal: Principal): Promise<SourceDraft[]> {
+    authorize(principal, "project.read");
+    const actorId = principal.id;
+    const state = checkedState(await this.#store.read());
+    return structuredClone((state.drafts ?? []).filter((draft) => draft.actorId === actorId && draft.projectId === state.project?.id));
+  }
+
+  /** An unavailable or another author's draft is indistinguishable from absence. */
+  async getDraft(id: string, principal: Principal): Promise<SourceDraft | null> {
+    return (await this.listDrafts(principal)).find((draft) => draft.id === id) ?? null;
+  }
+
+  /** Combine adopted document diagnostics and this author's captured source reports. */
+  async getDiagnostics(principal: Principal): Promise<{ revision: string | null; diagnostics: Diagnostic[] }> {
+    authorize(principal, "project.read");
+    const actorId = principal.id;
+    const state = checkedState(await this.#store.read());
+    const project = state.project;
+    const diagnostics = project ? [...Object.values(project.documents).flatMap((entry) => inspectDocument(entry.currentText ?? entry.originalText, entry.currentSourceUri ?? entry.sourceUri).diagnostics), ...validateReferences(project.documents, project.id)] : [];
+    diagnostics.push(...(state.drafts ?? []).filter((draft) => draft.actorId === actorId && draft.projectId === project?.id).flatMap((draft) => draft.diagnostics));
+    return { revision: project?.revision ?? null, diagnostics: structuredClone(diagnostics) };
+  }
+
+  /** Return exact first-source text and separately hashed current normalized JSON. */
+  async exportDocument(id: string, principal: Principal): Promise<SourceExport | null> {
+    const project = await this.getProject(principal);
+    const entry = project && Object.hasOwn(project.documents, id) ? project.documents[id] : undefined;
+    if (!project || !entry) return null;
+    const diagnostics = [...inspectDocument(entry.currentText ?? entry.originalText, entry.currentSourceUri ?? entry.sourceUri).diagnostics, ...validateReferences(project.documents, project.id).filter((diagnostic) => diagnostic.sourceRef === id)];
+    return exportSource(entry, project.revision, diagnostics, (text) => this.#services.digest(text));
   }
 
   #id(): string {
@@ -169,27 +207,12 @@ export class CommandService {
   }
 
   #import(state: KernelState, project: ProjectSnapshot, envelope: CommandEnvelope, principal: Principal): CommandResult {
-    const payload = envelope.payload;
-    requirePayload(payload, ["sourceRefs", "formatProfile", "importMode"]);
-    if (payload.formatProfile !== "ads-envelope" || payload.importMode !== "review" || !Array.isArray(payload.sourceRefs)
-      || !payload.sourceRefs.length || payload.sourceRefs.length > MAX_BATCH_DOCUMENTS) throw new KernelError(CODE.PAYLOAD_INVALID, "Import requires a bounded ads-envelope source batch in review mode.");
-    const documents = structuredClone(project.documents);
-    const diff: CommandResult["diff"] = [];
-    let bytes = 0;
-    for (const source of payload.sourceRefs) {
-      if (!isObject(source)) throw new KernelError(CODE.PAYLOAD_INVALID, "Import source must contain URI and content.");
-      requirePayload(source, ["uri", "content"]);
-      const content = requireText(source.content, "Source content");
-      const uri = requireText(source.uri, "Source URI");
-      bytes += new TextEncoder().encode(content).length;
-      if (bytes > MAX_BATCH_BYTES) throw new KernelError(CODE.JSON_LIMIT, "Import batch exceeds the profile byte limit.");
-      const entry = parseDocument(content, uri);
-      const id = entry.document.id;
-      if (id === project.id || Object.hasOwn(documents, id)) throw new KernelError(CODE.DOCUMENT_EXISTS, "Duplicate document identity; implicit overwrite is not supported.");
-      documents[id] = entry;
-      diff.push({ id, change: "created" });
+    const prepared = prepareImport(envelope.payload, state, project, principal, { createId: () => this.#id(), digest: (text) => this.#services.digest(text) });
+    if (prepared.kind === "drafts") {
+      state.drafts = [...(state.drafts ?? []), ...prepared.drafts];
+      return { ...result("accepted", project.revision), draftRefs: prepared.drafts.map((draft) => draft.id), originalHashes: prepared.drafts.map((draft) => draft.sourceDigest), diagnostics: prepared.drafts.flatMap((draft) => draft.diagnostics) };
     }
-    return this.#propose(state, project, principal, documents, diff);
+    return this.#propose(state, project, principal, prepared.documents, prepared.diff);
   }
 
   #delete(state: KernelState, project: ProjectSnapshot, envelope: CommandEnvelope, principal: Principal): CommandResult {

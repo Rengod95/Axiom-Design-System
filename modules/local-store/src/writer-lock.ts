@@ -6,7 +6,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import type { LockRecord } from "./contracts.ts";
 import { LOCK_POLL_MS, STORE_ERROR, STORE_FILES, UUID_PATTERN } from "./constants.ts";
 import { readRegular } from "./path-boundary.ts";
-import { isRecord } from "./state-record.ts";
+import { isRecord } from "./state-shape.ts";
 import { FileStoreError, hasCode } from "./storage-error.ts";
 
 /** Missing is distinct from an unreadable, symlinked or malformed lock. */

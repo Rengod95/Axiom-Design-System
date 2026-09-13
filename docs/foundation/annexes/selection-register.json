@@ -52,7 +52,16 @@
       "fallback": "공개 교환 schema와 의미 validator 분리 유지",
       "accountable": "문법 책임자",
       "status": "BOUNDED_SELECTION_PENDING_EVIDENCE",
-      "evidence": []
+      "evidence": [
+        {
+          "scope": "Common DocumentEnvelope only; full ADS domain and public type-generation choice remains open",
+          "status": "PARTIAL_IMPLEMENTATION_EVIDENCE",
+          "path": "docs/implementation/schema-selection-evidence.md",
+          "adr": "docs/adr/0010-source-preserving-draft-authoring.md",
+          "compiler": "ajv@8.20.0",
+          "runtimeDependency": false
+        }
+      ]
     },
     {
       "id": "SEL05",
