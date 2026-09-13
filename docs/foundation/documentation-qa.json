@@ -2,7 +2,7 @@
   "kind": "foundation-documentation-qa",
   "status": "PASS",
   "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
-  "verifiedAt": "2026-09-13T06:11:31.442064+00:00",
+  "verifiedAt": "2026-09-13T06:21:37.473218+00:00",
   "checkerProvenance": "scripts/verify-foundation.py",
   "counts": {
     "documents": 56,
@@ -10941,6 +10941,7 @@
     "annex-drift",
     "heading-slug-collisions",
     "fence-close-with-info",
-    "literal-html-anchors"
+    "literal-html-anchors",
+    "canonical-root-alias"
   ]
 }
