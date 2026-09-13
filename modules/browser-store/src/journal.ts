@@ -20,6 +20,8 @@ function validateHead(value: unknown): BrowserHead {
   return value as unknown as BrowserHead;
 }
 export type ValidatedBrowserSnapshots = Map<string, { projectId: string | null; revision: string | null }>;
+const MAX_CACHED_IDENTITIES = 1024;
+const MAX_CACHED_IDENTITY_CHARACTERS = 1024;
 function decodeCommit(value: unknown, key: IDBValidKey, parent: BrowserHead | null, validated: ValidatedBrowserSnapshots): { commit: BrowserCommit; state: KernelState | null } {
   exact(value, ["storageFormatVersion", "sequence", "parentDigest", "projectId", "revision", "stateText", "stateDigest", "commitDigest"]);
   if (value.storageFormatVersion !== BROWSER_STORAGE_VERSION || !sequence(value.sequence) || value.sequence !== key || value.sequence !== (parent?.sequence ?? 0) + 1
@@ -38,8 +40,11 @@ function decodeCommit(value: unknown, key: IDBValidKey, parent: BrowserHead | nu
     try { state = decodeKernelState(commit.stateText); }
     catch (cause) { return corrupt("Browser commit contains invalid or noncanonical kernel state.", cause); }
     identity = { projectId: state.project?.id ?? null, revision: state.project?.revision ?? null };
-    if (validated.size >= BROWSER_MAX_COMMITS) validated.delete(validated.keys().next().value!);
-    validated.set(commit.stateDigest, identity);
+    // Oversized compatible identities remain valid; only their optimization is skipped.
+    if ((identity.projectId?.length ?? 0) + (identity.revision?.length ?? 0) <= MAX_CACHED_IDENTITY_CHARACTERS) {
+      if (validated.size >= MAX_CACHED_IDENTITIES) validated.delete(validated.keys().next().value!);
+      validated.set(commit.stateDigest, identity);
+    }
   }
   if (identity.projectId !== commit.projectId || identity.revision !== commit.revision) corrupt("Browser commit project metadata does not match its snapshot.");
   return { commit, state };
