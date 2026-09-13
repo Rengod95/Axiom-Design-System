@@ -8,7 +8,8 @@
   "allowedSourceRoots": [
     "modules/ads-core",
     "modules/local-store",
-    "apps/cli"
+    "apps/cli",
+    "modules/browser-store"
   ],
   "allowedRootFiles": [
     "package.json",
@@ -21,7 +22,12 @@
   "allowedMaintenanceFiles": [
     "scripts/run-tests.mjs",
     "scripts/check-implementation.mjs",
-    "scripts/generate-ads-validator.mjs"
+    "scripts/generate-ads-validator.mjs",
+    "scripts/verify-browser-store.mjs"
+  ],
+  "allowedBrowserTestAssets": [
+    "modules/browser-store/test/browser-harness.html",
+    "modules/browser-store/test/browser-harness.js"
   ],
   "reintroducedRetiredPaths": [
     "package.json",
@@ -40,11 +46,12 @@
     "typescript": "5.9.3",
     "nodeTypes": "24.13.4"
   },
-  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified",
+  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance",
   "extensionAdrs": [
     "docs/adr/0010-source-preserving-draft-authoring.md",
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
-    "docs/adr/0012-typed-values-and-project-bundles.md"
+    "docs/adr/0012-typed-values-and-project-bundles.md",
+    "docs/adr/0013-browser-transactional-storage.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -58,5 +65,23 @@
     "modules/ads-core/src/generated/catalog-structure.ts",
     "modules/ads-core/src/generated/catalog-metadata.ts",
     "modules/ads-core/src/generated/type-expression.ts"
-  ]
+  ],
+  "browserStorage": {
+    "databaseVersion": 1,
+    "storageFormatVersion": "0.1.0",
+    "runtimeDependencies": {
+      "@noble/hashes": {
+        "version": "2.4.0",
+        "license": "MIT",
+        "entry": "sha2.js"
+      }
+    },
+    "testDependencies": {
+      "fake-indexeddb": {
+        "version": "6.2.5",
+        "license": "Apache-2.0"
+      }
+    },
+    "browserEvidence": "real Chromium; other engines and hardware durability remain unverified"
+  }
 }

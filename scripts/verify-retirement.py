@@ -25,9 +25,10 @@ EXPECTED_REMOVED_COUNT = 432
 SNAPSHOT_PATH = "reference/pre-studio/snapshot.json"
 VERIFIER_PATH = "scripts/verify-retirement.py"
 IMPLEMENTATION_PROFILE = "docs/implementation/ads-kernel-profile.json"
-IMPLEMENTATION_ROOTS = {"modules/ads-core", "modules/local-store", "apps/cli"}
+IMPLEMENTATION_ROOTS = {"modules/ads-core", "modules/local-store", "apps/cli", "modules/browser-store"}
 IMPLEMENTATION_ROOT_FILES = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"}
-IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs"}
+IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs", "scripts/verify-browser-store.mjs"}
+BROWSER_TEST_ASSETS = {"modules/browser-store/test/browser-harness.html", "modules/browser-store/test/browser-harness.js"}
 APPROVED_REPLACEMENTS = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json"}
 RETIRED_DIRECTORIES = {"packages", "spec", "fixtures", "tokens"}
 UNCHANGED_PATHS = {"LICENSE", ".gitignore"}
@@ -107,13 +108,15 @@ def implementation_profile(root: Path) -> dict | None:
             "Unapproved implementation root files")
     require(set(profile.get("allowedMaintenanceFiles", [])) == IMPLEMENTATION_SCRIPTS,
             "Unapproved implementation maintenance files")
+    require(set(profile.get("allowedBrowserTestAssets", [])) == BROWSER_TEST_ASSETS,
+            "Unapproved browser test assets")
     require(set(profile.get("reintroducedRetiredPaths", [])) == APPROVED_REPLACEMENTS,
             "Unapproved retired path replacement")
     require(profile.get("adr") == "docs/adr/0009-ads-kernel-implementation-bootstrap.md",
             "Implementation bootstrap ADR mismatch")
     require("Status: ACCEPTED" in (root / profile["adr"]).read_text(encoding="utf-8"),
             "Implementation bootstrap ADR not accepted")
-    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md", "docs/adr/0011-structural-domain-inspection-and-local-references.md", "docs/adr/0012-typed-values-and-project-bundles.md"]
+    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md", "docs/adr/0011-structural-domain-inspection-and-local-references.md", "docs/adr/0012-typed-values-and-project-bundles.md", "docs/adr/0013-browser-transactional-storage.md"]
             and all("Status: ACCEPTED" in (root / adr).read_text(encoding="utf-8") for adr in profile["extensionAdrs"]),
             "Implementation extension ADR not accepted")
     require(profile.get("approval") == "docs/decisions/axiom-foundation-baseline-approval.json",
@@ -218,7 +221,7 @@ def verify_active_tree(root: Path, records: dict) -> tuple[int, int]:
         relative = path.relative_to(root).as_posix()
         permitted_document = relative.startswith("docs/") and path.suffix in {".md", ".json"}
         permitted_implementation = bool(profile) and (
-            relative in IMPLEMENTATION_ROOT_FILES | IMPLEMENTATION_SCRIPTS or
+            relative in IMPLEMENTATION_ROOT_FILES | IMPLEMENTATION_SCRIPTS | BROWSER_TEST_ASSETS or
             any(relative.startswith(prefix + "/") for prefix in IMPLEMENTATION_ROOTS)
             and path.suffix in {".ts", ".json", ".md"})
         require(relative in FIXED_ACTIVE_PATHS or permitted_document or permitted_implementation,
@@ -261,7 +264,7 @@ def run_self_tests(root: Path, repository: Path) -> list[str]:
     verified = []
     cases = ["snapshot-digest-corruption", "retired-package-resurrection", "broken-document-link", "new-product-source"]
     if implementation_profile(root):
-        cases += ["unapproved-profile-root", "missing-implementation-authorization", "frozen-manifest-resurrection"]
+        cases += ["unapproved-profile-root", "missing-implementation-authorization", "frozen-manifest-resurrection", "unapproved-browser-harness"]
     for case in cases:
         with tempfile.TemporaryDirectory(prefix="axiom-retirement-negative-") as directory:
             candidate = Path(directory)
@@ -299,6 +302,9 @@ def run_self_tests(root: Path, repository: Path) -> list[str]:
             elif case == "frozen-manifest-resurrection":
                 (candidate / "package.json").write_bytes(git_output(repository, "show", SNAPSHOT_COMMIT + ":package.json"))
                 expected_message = "Frozen manifest resurrected"
+            elif case == "unapproved-browser-harness":
+                (candidate / "modules/browser-store/test/unapproved.html").write_text("<!doctype html>", encoding="utf-8")
+                expected_message = "Unapproved active file"
             else:
                 path = candidate / "src/unapproved.ts"
                 path.parent.mkdir(parents=True)

@@ -28,7 +28,7 @@ The tests include real FileStore response loss, exact draft/update receipt repla
 
 ## Remaining implementation order
 
-1. Finish I1 domain schemas, registry/ref resolution and partial-draft domain editing, then select an approved old/new schema pair and implement reversible or source-restoring migration candidates with loss reports. Complete native multi-document project interchange and Browser storage conformance.
+1. Finish I1 domain schemas, distinct library snapshot/entry version resolution and partial-draft domain editing, then select an approved old/new schema pair and implement reversible or source-restoring migration candidates with loss reports. Same-project source bundles and bounded Chromium storage are implemented; independent-copy/asset interchange, other browser engines, eviction and compaction evidence remain. No approved schema migration pair exists yet.
 2. I2 implements token/theme editing after the SEL01 standard comparison, including aliases, contexts, cycles, original/opaque preservation and usage preview.
 3. I3 implements Button/Card/Toast definition, editing and preview with Parts, behavior, accessibility, motion and distinct Web/Mobile appearances.
 4. I4 proves React/RN project init, user-owned output, upgrade diff/rollback and independently verified AI candidates.

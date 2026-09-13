@@ -6,9 +6,10 @@
     "docs/adr/0010-source-preserving-draft-authoring.md",
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
     "docs/adr/0012-typed-values-and-project-bundles.md",
+    "docs/adr/0013-browser-transactional-storage.md",
     "docs/foundation/operations/development-and-maintenance.md"
   ],
-  "statusPolicy": "PARTIAL_PROFILE is implemented only in the bounded local I1 profile; PLANNED is not implemented. Neither denotes public conformance or release readiness.",
+  "statusPolicy": "PARTIAL_PROFILE is implemented only in the bounded I1 kernel profile; PLANNED is not implemented. Neither denotes public conformance or release readiness.",
   "milestones": [
     {
       "id": "I1",
@@ -31,14 +32,17 @@
         "selected nested identities, local references and Part-parent cycle checks",
         "explicit bounded TypeExpr and typed default inspection",
         "inherited domain policy with text and size constraints",
-        "atomic same-project source bundle export and reviewed restoration"
+        "atomic same-project source bundle export and reviewed restoration",
+        "IndexedDB atomic snapshot journal with canonical state integrity",
+        "real Chromium two-tab conflicts, abort boundaries, receipt replay and process restart"
       ],
       "remaining": [
         "complete ADS domain schemas, unresolved named types and public generated types",
+        "distinct library snapshot pins and entry public-version registry resolution contracts",
         "registered old/new schema migration pairs and loss reports",
         "domain-aware unresolved draft edits",
         "independent-copy retargeting and asset/registry dependency interchange",
-        "Browser storage adapter conformance",
+        "browser-engine coverage, eviction and complete offline preparation evidence",
         "history compaction and long-history capacity evidence"
       ]
     },
@@ -396,6 +400,7 @@
     "Realtime collaboration is a later scope; initial release still includes React/RN/Swift/Android.",
     "Catalog structural validation enforces known fields only; unresolved types, registry document bodies and external library versions remain unverified.",
     "The domain profile covers only ADR-0012 types/content; remaining type categories and full semantic execution stay unverified.",
-    "Project bundles restore the same identity into an empty store; independent-copy retargeting and asset/dependency transport remain separate."
+    "Project bundles restore the same identity into an empty store; independent-copy retargeting and asset/dependency transport remain separate.",
+    "Browser storage evidence is bounded to Chromium; physical quota, power loss, eviction, Safari/Firefox and collaborative merge remain unverified."
   ]
 }

@@ -15,3 +15,4 @@ export type { DomainReport } from "./domain-contracts.ts";
 export { exportProjectBundle, decodeProjectBundle, validateProjectBundleManifest } from "./project-bundle.ts";
 export type { ProjectBundle, ProjectBundleManifest, ProjectBundleDocument, ProjectBundleSource, DigestService } from "./bundle-contracts.ts";
 export { BUNDLE_FORMAT, BUNDLE_LIMITS, BUNDLE_MANIFEST_FILE } from "./bundle-constants.ts";
+export { encodeKernelState, decodeKernelState } from "./kernel-state-codec.ts";

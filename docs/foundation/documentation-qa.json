@@ -2,7 +2,7 @@
   "kind": "foundation-documentation-qa",
   "status": "PASS",
   "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
-  "verifiedAt": "2026-09-13T08:21:11.018853+00:00",
+  "verifiedAt": "2026-09-13T09:59:22.337896+00:00",
   "checkerProvenance": "scripts/verify-foundation.py",
   "counts": {
     "documents": 56,
@@ -13,9 +13,9 @@
     "queries": 10,
     "commands": 52,
     "diagnostics": 30,
-    "localLinks": 1065,
+    "localLinks": 1095,
     "fragments": 129,
-    "checks": 2160
+    "checks": 2190
   },
   "errors": [],
   "checks": [
@@ -2905,6 +2905,36 @@
       "detail": null
     },
     {
+      "name": "local link: docs/adr/0012-typed-values-and-project-bundles.md → ../foundation/components/values-events-and-expressions.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0012-typed-values-and-project-bundles.md → ../foundation/annexes/document-contracts.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0012-typed-values-and-project-bundles.md → ../foundation/annexes/examples/review-project.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0012-typed-values-and-project-bundles.md → ../foundation/syntax/interchange-and-migration.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0012-typed-values-and-project-bundles.md → ../foundation/architecture/storage-offline-and-recovery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0013-browser-transactional-storage.md → ../foundation/architecture/storage-offline-and-recovery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/axiom-design-baseline-index.md → foundation/README.md",
       "passed": true,
       "detail": null
@@ -3486,6 +3516,16 @@
     },
     {
       "name": "local link: docs/foundation/annexes/selection-register.md → ../syntax/project-documents-and-identity.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/foundation/annexes/selection-register.md → ../../adr/0013-browser-transactional-storage.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/foundation/annexes/selection-register.md → ../../implementation/browser-storage-evidence.md",
       "passed": true,
       "detail": null
     },
@@ -8445,6 +8485,16 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/browser-storage-evidence.md → ../adr/0013-browser-transactional-storage.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/browser-storage-evidence.md → browser-dependency-notice.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/implementation/initial-kernel-review.md → ../adr/0010-source-preserving-draft-authoring.md",
       "passed": true,
       "detail": null
@@ -8560,6 +8610,11 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/kernel-evidence.md → browser-storage-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/implementation/kernel-evidence.md → ../foundation/operations/development-and-maintenance.md",
       "passed": true,
       "detail": null
@@ -8575,12 +8630,27 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/kernel-quickstart.md → browser-storage-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/implementation/kernel-quickstart.md → ads-kernel-profile.json",
       "passed": true,
       "detail": null
     },
     {
       "name": "local link: docs/implementation/kernel-quickstart.md → ../adr/0011-structural-domain-inspection-and-local-references.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-quickstart.md → ../adr/0012-typed-values-and-project-bundles.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-quickstart.md → browser-storage-evidence.md",
       "passed": true,
       "detail": null
     },
@@ -8640,7 +8710,67 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/structural-domain-evidence.md → typed-bundle-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/structural-domain-evidence.md → browser-storage-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/implementation/structural-domain-evidence.md → implementation-roadmap.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → ../adr/0012-typed-values-and-project-bundles.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → ../../modules/ads-core/schema/type-expression.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → ../../modules/ads-core/src/type-validation.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → schema-compiler-notice.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → ../../modules/ads-core/src/domain-validation.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → ../../modules/ads-core/src/project-bundle.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → ../../apps/cli/src/bundle-files.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → kernel-quickstart.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → implementation-roadmap.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/typed-bundle-evidence.md → browser-storage-evidence.md",
       "passed": true,
       "detail": null
     },
@@ -8740,6 +8870,16 @@
       "detail": null
     },
     {
+      "name": "local link: docs/README.md → implementation/typed-bundle-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → implementation/browser-storage-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/README.md → adr/0006-product-reset-and-reference-lifecycle.md",
       "passed": true,
       "detail": null
@@ -8751,6 +8891,16 @@
     },
     {
       "name": "local link: docs/README.md → adr/0011-structural-domain-inspection-and-local-references.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → adr/0012-typed-values-and-project-bundles.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → adr/0013-browser-transactional-storage.md",
       "passed": true,
       "detail": null
     },
@@ -10895,11 +11045,11 @@
     },
     {
       "path": "docs/foundation/annexes/selection-register.json",
-      "sha256": "c26da60e6237ea83807d73b4df45dfed9aaff5d3e353da72494c696b57625f22"
+      "sha256": "e2ad21bef01f0f335077800f5bb13d1b271ec0a30803ff768e2f3a6245870787"
     },
     {
       "path": "docs/foundation/annexes/selection-register.md",
-      "sha256": "72d805f0b5846cc964259eba9c40a288cfd505c039a915e67e563a641c0f555b"
+      "sha256": "fe0b987d7da84a5a4138fc3abd9a1197e72c0894dd8ab8d5c613a59daef20378"
     },
     {
       "path": "docs/foundation/annexes/source-register.json",
