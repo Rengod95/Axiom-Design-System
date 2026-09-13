@@ -27,7 +27,7 @@ function foundation(): AdsDocument {
     "token.accent": { literal: color(.25, .37, .84) },
   } } }], themeSets: ["light", "dark"].map(context => ({ id: `theme.${context}`, contexts: { "axis.scheme": context }, resolutionProfile: { ...STUDIO_RESOLVER } })) };
 }
-function component(archetype: StudioArchetype): AdsDocument {
+function component(archetype: Exclude<StudioArchetype, "catalog">): AdsDocument {
   const id = `component.${archetype}`;
   const part = (role: string): string => `${id}.${role}`;
   const roles = STUDIO_PART_ROLES[archetype];
@@ -55,7 +55,7 @@ function component(archetype: StudioArchetype): AdsDocument {
     previewContent: { label: "계속하기", title: "작은 변화, 같은 시스템", body: "토큰 하나를 바꾸면 모든 컴포넌트에 같은 의미가 이어집니다.", actionLabel: "자세히 보기", closeLabel: "알림 닫기" } };
 }
 function design(document: AdsDocument, category: StudioCategory): AdsDocument {
-  const archetype = document.id.slice("component.".length) as StudioArchetype;
+  const archetype = document.id.slice("component.".length) as Exclude<StudioArchetype, "catalog">;
   const roles = STUDIO_PART_ROLES[archetype];
   const part = (role: string): string => `${document.id}.${role}`;
   const id = `design.${archetype}.${category.toLowerCase()}`;
@@ -76,6 +76,6 @@ function design(document: AdsDocument, category: StudioCategory): AdsDocument {
 /** Create independent editable sources; adoption still requires ordinary reviewed import. */
 export function createStudioStarter(projectId: string): AdsDocument[] {
   if (!isValidId(projectId) || projectId === FOUNDATION_ID || projectId.startsWith("component.") || projectId.startsWith("design.")) throw new KernelError(CODE.PAYLOAD_INVALID, "Starter requires a distinct valid project identity.");
-  const components = (Object.keys(STUDIO_ARCHETYPES) as StudioArchetype[]).map(component);
+  const components = (Object.keys(STUDIO_ARCHETYPES) as Exclude<StudioArchetype, "catalog">[]).map(component);
   return [foundation(), ...components, ...components.flatMap(item => STUDIO_CATEGORIES.map(category => design(item, category)))];
 }

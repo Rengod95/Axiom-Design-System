@@ -27,10 +27,10 @@ VERIFIER_PATH = "scripts/verify-retirement.py"
 IMPLEMENTATION_PROFILE = "docs/implementation/ads-kernel-profile.json"
 IMPLEMENTATION_ROOTS = {"modules/ads-core", "modules/local-store", "apps/cli", "modules/browser-store", "modules/target-packs", "apps/studio", "apps/delivery"}
 IMPLEMENTATION_ROOT_FILES = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"}
-IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs", "scripts/verify-browser-store.mjs", "scripts/build-studio.mjs", "scripts/serve-studio.mjs", "scripts/verify-studio.mjs", "scripts/verify-targets.mjs", "scripts/browser-driver.mjs"}
+IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs", "scripts/verify-browser-store.mjs", "scripts/build-studio.mjs", "scripts/serve-studio.mjs", "scripts/verify-studio.mjs", "scripts/verify-targets.mjs", "scripts/browser-driver.mjs", "scripts/verify-workbench.mjs"}
 BROWSER_TEST_ASSETS = {"modules/browser-store/test/browser-harness.html", "modules/browser-store/test/browser-harness.js"}
 TARGET_TEST_ASSETS = {"modules/target-packs/test/expo-consumer.lock.yaml"}
-STUDIO_ASSETS = {"apps/studio/index.html", "apps/studio/src/styles.css"}
+STUDIO_ASSETS = {'apps/studio/.impeccable/surfaces/workbench.md', 'apps/studio/.impeccable/design.json', 'apps/studio/DESIGN.md', 'apps/studio/index.html', 'apps/studio/src/styles.css', 'apps/studio/.impeccable/config.json', 'apps/studio/PRODUCT.md'}
 APPROVED_REPLACEMENTS = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json"}
 RETIRED_DIRECTORIES = {"packages", "spec", "fixtures", "tokens"}
 UNCHANGED_PATHS = {"LICENSE", ".gitignore"}
@@ -120,7 +120,7 @@ def implementation_profile(root: Path) -> dict | None:
             "Implementation bootstrap ADR mismatch")
     require("Status: ACCEPTED" in (root / profile["adr"]).read_text(encoding="utf-8"),
             "Implementation bootstrap ADR not accepted")
-    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md", "docs/adr/0011-structural-domain-inspection-and-local-references.md", "docs/adr/0012-typed-values-and-project-bundles.md", "docs/adr/0013-browser-transactional-storage.md", "docs/adr/0014-studio-authoring-and-target-delivery.md"]
+    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md", "docs/adr/0011-structural-domain-inspection-and-local-references.md", "docs/adr/0012-typed-values-and-project-bundles.md", "docs/adr/0013-browser-transactional-storage.md", "docs/adr/0014-studio-authoring-and-target-delivery.md", "docs/adr/0015-studio-workbench-and-catalog-authoring.md"]
             and all("Status: ACCEPTED" in (root / adr).read_text(encoding="utf-8") for adr in profile["extensionAdrs"]),
             "Implementation extension ADR not accepted")
     require(profile.get("approval") == "docs/decisions/axiom-foundation-baseline-approval.json",

@@ -4,8 +4,8 @@ import type { AdsDocument, Diagnostic, JsonObject, JsonValue } from "./contracts
 export type FoundationTokenType = "color" | "dimension" | "fontFamily" | "fontWeight" | "duration" | "cubicBezier" | "number" | "strokeStyle" | "border" | "transition" | "shadow" | "gradient" | "typography";
 export type FoundationTokenValue = { literal: JsonValue } | { ref: { id: string; expectedKind: "token" } };
 export interface FoundationToken { id: string; name: string; typeRef: { id: FoundationTokenType }; value: FoundationTokenValue; description?: string; domain?: string; tier?: string; metadata?: JsonObject; extensions?: JsonObject }
-export interface FoundationAxis { id: string; contexts: string[]; scope: { id: string; expectedKind: "foundation"; revision?: string }; default?: string; overrides?: Record<string, Record<string, FoundationTokenValue>> }
-export interface FoundationThemeSet { id: string; contexts: Record<string, string>; resolutionProfile: { id: "axiom.resolver.explicit-order"; expectedKind: "resolutionProfile"; version: "1.0.0" } }
+export interface FoundationAxis { id: string; name?: string; description?: string; contexts: string[]; scope: { id: string; expectedKind: "foundation"; revision?: string }; default?: string; overrides?: Record<string, Record<string, FoundationTokenValue>> }
+export interface FoundationThemeSet { id: string; name?: string; description?: string; contexts: Record<string, string>; resolutionProfile: { id: "axiom.resolver.explicit-order"; expectedKind: "resolutionProfile"; version: "1.0.0" } }
 export type FoundationDocument = AdsDocument & { studioProfile: { id: "axiom.studio"; version: "0.1.0" }; tokens: FoundationToken[]; domains: JsonValue[]; tiers: JsonValue[]; themeAxes: FoundationAxis[]; themeSets: FoundationThemeSet[]; policies: JsonValue[]; originalSources: JsonValue[]; resolutionOrder: string[] };
 export interface FoundationSelection { themeSetId?: string; contexts?: Record<string, string> }
 export interface FoundationReport { valid: boolean; diagnostics: Diagnostic[] }

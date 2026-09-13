@@ -2,6 +2,7 @@ import type { KernelState, StoreUpdate, TransactionalStore } from "../../ads-cor
 import type { BrowserFaultPhase, IndexedDbStoreOptions, RecoveredBrowserState } from "./contracts.ts";
 import { BROWSER_DATABASE_VERSION, BROWSER_MAX_DATABASE_NAME_LENGTH, BROWSER_MAX_OPEN_TIMEOUT_MS, BROWSER_OPEN_TIMEOUT_MS, BROWSER_STORE_ERROR, BROWSER_STORES } from "./constants.ts";
 import { createBrowserCommit, readBrowserJournal } from "./journal.ts";
+import type { ValidatedBrowserSnapshots } from "./journal.ts";
 import { BrowserStoreError, browserStorageError } from "./storage-error.ts";
 
 function synchronous(value: unknown, label: string): void {
@@ -21,6 +22,7 @@ export class IndexedDbStore implements TransactionalStore {
   private opening: Promise<IDBDatabase> | null = null;
   private database: IDBDatabase | null = null;
   private closed = false;
+  private readonly validatedSnapshots: ValidatedBrowserSnapshots = new Map();
 
   /** Open only an explicitly named origin database; injected factories/faults are trusted test capabilities. */
   constructor(databaseName: string, options: IndexedDbStoreOptions = {}) {
@@ -61,7 +63,7 @@ export class IndexedDbStore implements TransactionalStore {
   }
 
   /** Pending native transactions finish normally; new calls are rejected immediately. */
-  close(): void { this.closed = true; this.database?.close(); this.database = null; }
+  close(): void { this.closed = true; this.database?.close(); this.database = null; this.validatedSnapshots.clear(); }
 
   private inject(phase: BrowserFaultPhase): void { synchronous(this.fault?.(phase), "Fault hook"); }
 
@@ -85,7 +87,7 @@ export class IndexedDbStore implements TransactionalStore {
         try { if (outcome.changed) this.inject("after-complete"); resolve(outcome.value); }
         catch (cause) { reject(browserStorageError(cause)); }
       };
-      try { readBrowserJournal(transaction, (recovered) => { try { outcome = work(recovered, transaction); } catch (cause) { abort(cause); } }, abort); }
+      try { readBrowserJournal(transaction, (recovered) => { try { outcome = work(recovered, transaction); } catch (cause) { abort(cause); } }, abort, this.validatedSnapshots); }
       catch (cause) { abort(cause); }
     });
   }

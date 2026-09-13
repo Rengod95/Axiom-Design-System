@@ -1,0 +1,49 @@
+# Axiom Studio
+
+<!-- impeccable:product-schema 1 -->
+
+## Platform
+
+web
+
+## Users
+
+Design-system authors and product developers create foundations and reusable component definitions, then consume their own generated UI source. The owner works locally on Windows, with Korean and English authoring. These facts are carried from the approved Foundation and the owner's implementation requests in this task, rather than a new audience hypothesis.
+
+## Product Purpose
+
+Axiom is a Design System Builder. Its work product is a coherent foundation and component library with shared meaning across Web and Mobile designs and React, React Native, SwiftUI and Compose output. Canvas scenes demonstrate and validate the system; arbitrary application business logic is outside the initial product boundary.
+
+## Positioning
+
+ADS source is authoritative. GUI, public commands and future agent integrations share validation, review, revision, impact, commit and Undo. A visual change must remain explainable as a source change and deliver user-owned code.
+
+## Operating Context
+
+The existing React/TypeScript app stores projects through the transactional IndexedDB adapter. This is a local browser workflow with source export and an independent filesystem delivery CLI. No hosted account, collaboration service or AI connection is currently configured. The Windows computer remains the work host.
+
+## Capabilities and Constraints
+
+Foundation token types, aliases, classification and theme contexts are distinct from component design properties. Component identity, parts, values, events, states, accessibility and motion follow the approved Foundation contracts. Unsaved editing, reviewed source and generated output must have distinct states. Preserve existing documents, rejected/invalid buffers, source provenance, recovery and Undo. Do not imply that generating native source proves native execution.
+
+The current owner request authorizes a complete editor-gap audit, catalog expansion, token creation/management/classification, individual selection editing, zoom/pan and expected design-editor operations, a replacement visual system, and Axiom's own reusable UI foundation. General-purpose UI libraries may be adopted with explicit dependency ownership and evidence.
+
+## Brand Commitments
+
+Name: Axiom Studio. User-pinned references: Linear, Geist, Figma and Apple. Base typeface: Geist or SUIT. The owner explicitly rejects the current green sidebar, weak editing affordances and overall visual quality; the incumbent appearance is evidence of what to replace.
+
+## Evidence on Hand
+
+Foundation 1.0.0 has 56 approved bodies and governed annexes. ADR-0014 and studio-delivery-evidence.md document the current bounded implementation. PR #29 passed Windows and Ubuntu CI on ca6a23e7 and merged at e72dfb11. Three sample components and four source generators exist. Native compilation and device execution are not established by those tests.
+
+## Product Principles
+
+- Let people find, create and edit the object they intended without opening raw JSON.
+- Make identity, inheritance and affected usage visible at the point of change.
+- Keep authoring responsive while retaining the common reviewed transaction boundary.
+- Make every shipped control perform its stated operation; show unsupported obligations explicitly.
+- Preserve user work, original source and recoverability.
+
+## Accessibility & Inclusion
+
+Keyboard operation, visible focus, target-size and contrast requirements, reduced motion, Korean IME, English localization and clear error recovery are required by the Foundation. The editor is desktop-first; smaller web viewports must retain access to navigation, canvas and inspector without horizontal document overflow.

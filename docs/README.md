@@ -19,3 +19,5 @@ Current lifecycle authority remains [ADR-0006](adr/0006-product-reset-and-refere
 [Engineering principles](standards/source-code-and-module-structure.md), [retirement ledger](maintenance/pre-studio-retirement.md), and [reference restoration](../reference/pre-studio/README.md) continue to govern the preserved history. The new core, Node store, browser store, CLI, Studio, target generators and delivery adapter are allowed only within the [implementation profile](implementation/ads-kernel-profile.json). The earlier package graph, full ADS schemas and output target packages have not been restored.
 
 11. [Studio quickstart](implementation/studio-quickstart.md), [editor/target evidence](implementation/studio-delivery-evidence.md) and [dependency decisions](implementation/studio-dependency-notice.md)
+
+12. [Workbench extension](adr/0015-studio-workbench-and-catalog-authoring.md), [complete editor audit](implementation/editor-completeness-audit.md), [workbench evidence](implementation/workbench-evidence.md), and [Axiom UI design system](../apps/studio/DESIGN.md)

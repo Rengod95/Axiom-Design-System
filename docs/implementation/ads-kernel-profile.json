@@ -31,7 +31,8 @@
     "scripts/serve-studio.mjs",
     "scripts/verify-studio.mjs",
     "scripts/verify-targets.mjs",
-    "scripts/browser-driver.mjs"
+    "scripts/browser-driver.mjs",
+    "scripts/verify-workbench.mjs"
   ],
   "allowedBrowserTestAssets": [
     "modules/browser-store/test/browser-harness.html",
@@ -54,13 +55,14 @@
     "typescript": "5.9.3",
     "nodeTypes": "24.13.4"
   },
-  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance; bounded Foundation resolver, Studio reviewed authoring and four target source delivery under ADR-0014",
+  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance; bounded Foundation resolver, Studio reviewed authoring and four target source delivery under ADR-0014; ADR-0015 typed Foundation management, catalog authoring, reviewed mixed document changes and token-based dual-theme editor workbench",
   "extensionAdrs": [
     "docs/adr/0010-source-preserving-draft-authoring.md",
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
     "docs/adr/0012-typed-values-and-project-bundles.md",
     "docs/adr/0013-browser-transactional-storage.md",
-    "docs/adr/0014-studio-authoring-and-target-delivery.md"
+    "docs/adr/0014-studio-authoring-and-target-delivery.md",
+    "docs/adr/0015-studio-workbench-and-catalog-authoring.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -95,7 +97,12 @@
   },
   "allowedStudioAssets": [
     "apps/studio/index.html",
-    "apps/studio/src/styles.css"
+    "apps/studio/src/styles.css",
+    "apps/studio/PRODUCT.md",
+    "apps/studio/DESIGN.md",
+    "apps/studio/.impeccable/config.json",
+    "apps/studio/.impeccable/design.json",
+    "apps/studio/.impeccable/surfaces/workbench.md"
   ],
   "studio": {
     "profile": "axiom.studio",
@@ -121,7 +128,21 @@
         "postinstall": "only esbuild@0.28.2 is allowed by pnpm-workspace; CI installs with ignore-scripts"
       }
     },
-    "nativeExecution": "UNVERIFIED"
+    "nativeExecution": "UNVERIFIED",
+    "maxThemeContextCombinations": 128,
+    "catalog": {
+      "inventoryEntries": 239,
+      "authorableComponents": 209,
+      "profile": "axiom.catalog-authoring",
+      "version": "0.1.0",
+      "semantics": "Dedicated complex interactions and native execution remain separately verified."
+    },
+    "fontAsset": {
+      "package": "@sun-typeface/suit",
+      "version": "2.0.5",
+      "license": "OFL-1.1",
+      "file": "fonts/variable/woff2/SUIT-Variable.woff2"
+    }
   },
   "allowedTargetTestAssets": [
     "modules/target-packs/test/expo-consumer.lock.yaml"

@@ -8,6 +8,7 @@ import { resolveFoundationTokens } from "./foundation-resolution.ts";
 import { projectStudioDesign } from "./studio-presentation.ts";
 import { MAX_DOCUMENT_BYTES, MAX_STRUCTURE_DIAGNOSTICS, STUDIO_PROFILE } from "./constants.ts";
 import { STUDIO_ARCHETYPES, STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_ERROR, STUDIO_MAX_COMPONENTS, STUDIO_MAX_DIMENSION, STUDIO_MAX_RULES, STUDIO_MAX_THEME_SETS, STUDIO_PART_ROLES, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE, STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
+import { hasCatalogProfile, inspectCatalogComponent, inspectCatalogLayout, inspectCatalogPin, inspectEditorFrame } from "./studio-catalog-validation.ts";
 
 const ENVELOPE_KEYS = ["id", "kind", "schemaVersion", "revision", "name", "metadata", "extensions", "studioProfile"];
 const SAMPLE_FIELDS = ["label", "title", "body", "actionLabel", "closeLabel"];
@@ -22,15 +23,17 @@ function boundedNumber(value: unknown, maximum: number, minimum = 0): value is n
 
 /** Resolve only the exact builtin archetype pin, never a similarly named external registry entry. */
 export function studioArchetype(document: JsonObject): StudioArchetype | null {
+  if (hasCatalogProfile(document)) return "catalog";
   if (!isObject(document.archetypeRef)) return null;
   for (const [name, id] of Object.entries(STUDIO_ARCHETYPES)) if (same(document.archetypeRef, { id, expectedKind: "archetype", version: STUDIO_ARCHETYPE_VERSION })) return name as StudioArchetype;
   return null;
 }
 
 function componentErrors(document: JsonObject, add: (path: string, message: string) => void): void {
+  if (hasCatalogProfile(document)) { inspectCatalogComponent(document, add); return; }
   if (!keys(document, [...ENVELOPE_KEYS, "purpose", "archetypeRef", "traitBindings", "publicContract", "parts", "slots", "behavior", "accessibility", "motion", "requirements", "studioMotion", "previewContent"])) add("", "Unknown executable component fields require a supported profile.");
   const archetype = studioArchetype(document);
-  if (!archetype) { add("/archetypeRef", "Only the pinned Button, plain Card and controlled Toast archetypes are executable."); return; }
+  if (!archetype || archetype === "catalog") { add("/archetypeRef", "Only pinned builtin or explicit catalog authoring archetypes are accepted."); return; }
   const roles = STUDIO_PART_ROLES[archetype];
   const parts = objects(document.parts);
   const byRole = new Map(parts.map(part => [part.studioRole, part]));
@@ -86,17 +89,21 @@ function isDimensionSource(value: unknown): boolean {
     || keys(value, ["value", "unit"]) && value.unit === "px" && boundedNumber(value.value, STUDIO_MAX_DIMENSION));
 }
 function designErrors(document: JsonObject, add: (path: string, message: string) => void): void {
-  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides"])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  const catalog = hasCatalogProfile(document);
+  if (catalog) inspectCatalogPin(document, add);
+  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides", "editorFrame", ...(catalog ? ["catalogProfile"] : [])])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  inspectEditorFrame(document.editorFrame, add);
   for (const [field, kind] of [["foundationRef", "foundation"], ["componentRef", "component"]] as const) {
     const ref = document[field];
     if (!isObject(ref) || ref.expectedKind !== kind || !isValidId(ref.id) || !keys(ref, ["id", "expectedKind", "revision"]) || ref.revision !== undefined && !isValidId(ref.revision)) add(`/${field}`, `A design needs an explicit local ${kind} with an optional valid revision pin.`);
   }
   if (!STUDIO_CATEGORIES.some(category => category === document.category) || !empty(document.targetOverrides)) add("/category", "Use an explicit Web/Mobile design without unsupported target overrides.");
   for (const [index, mapping] of objects(document.nodeMappings).entries()) if (!keys(mapping, ["partRef", "role"]) || !isValidId(mapping.partRef)
-    || typeof mapping.role !== "string" || !["root", "label", "header", "body", "actions", "close"].includes(mapping.role)) add(`/nodeMappings/${index}`, "Invalid builtin part mapping.");
+    || typeof mapping.role !== "string" || (catalog ? !/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(mapping.role) : !["root", "label", "header", "body", "actions", "close"].includes(mapping.role))) add(`/nodeMappings/${index}`, "Invalid semantic part mapping.");
   for (const [index, layout] of objects(document.layout).entries()) {
-    if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder"]) || layout.mode !== "stack" || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
-      || !isObject(layout.size) || Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/token dimensions is executable.");
+    if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder", ...(catalog ? ["alignment"] : [])]) || layout.mode !== "stack" || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
+      || !isObject(layout.size) || !catalog && Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/token dimensions is executable.");
+    if (catalog) inspectCatalogLayout(layout, `/layout/${index}`, add);
   }
   const rules = objects(document.appearance);
   if (rules.length > STUDIO_MAX_RULES) add("/appearance", "Too many appearance rules for the bounded profile.");
@@ -157,6 +164,7 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
     const owner = isObject(componentRef) && typeof componentRef.id === "string" ? documents[componentRef.id] : undefined;
     const foundation = isObject(foundationRef) && typeof foundationRef.id === "string" ? documents[foundationRef.id] : undefined;
     if (!owner || owner.validationProfile !== STUDIO_PROFILE || owner.document.kind !== "component") { add(document.id, "/componentRef", "Design owner must be a Studio component."); continue; }
+    if (hasCatalogProfile(document) !== hasCatalogProfile(owner.document) || hasCatalogProfile(document) && !same(document.catalogProfile, owner.document.catalogProfile)) add(document.id, "/catalogProfile", "Design and component must use the same catalog authoring profile.");
     if (!foundation || foundation.validationProfile !== STUDIO_PROFILE || foundation.document.kind !== "foundation") add(document.id, "/foundationRef", "Design Foundation must have an executable Studio policy.");
     for (const [field, ref, entry, kind] of [["componentRef", componentRef, owner, "component"], ["foundationRef", foundationRef, foundation, "foundation"]] as const) {
       if (!isObject(ref) || !entry || ref.expectedKind !== kind || ref.id !== entry.document.id || !keys(ref, ["id", "expectedKind", "revision"]) || ref.revision !== undefined && ref.revision !== entry.document.revision) add(document.id, `/${field}`, "Local reference kind, identity and optional revision pin must match the adopted document.");
@@ -179,7 +187,7 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
         diagnostics.push(...resolved.diagnostics.filter(item => item.severity === "error"));
         if (resolved.valid) projectStudioDesign(document, { id: owner.document.id, archetype, parts: studioParts(owner.document) }, resolved, diagnostics, Object.create(null));
       }
-      if (archetype !== "button" && objects(document.appearance).some(rule => isObject(rule.states) && Object.keys(rule.states).length)) add(document.id, "/appearance", "Only Button has pressed/disabled states in the builtin profile.");
+      if (archetype !== "button" && archetype !== "catalog" && objects(document.appearance).some(rule => isObject(rule.states) && Object.keys(rule.states).length)) add(document.id, "/appearance", "Only Button has pressed/disabled states in the builtin profile.");
     }
   }
   for (const component of components) for (const category of STUDIO_CATEGORIES) {

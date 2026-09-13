@@ -8,6 +8,8 @@ import { projectStudioDesign } from "./studio-presentation.ts";
 import { CODE, MAX_BATCH_BYTES, STUDIO_PROFILE } from "./constants.ts";
 import { KernelError } from "./kernel-error.ts";
 import { inspectLocalReferences } from "./local-references.ts";
+import { catalogIdentity } from "./studio-catalog-validation.ts";
+import { getStudioCatalogRecipe } from "./studio-catalog.ts";
 
 function list(value: JsonValue | undefined): JsonObject[] { return Array.isArray(value) ? value.filter(isObject) : []; }
 function copiedProject(value: ProjectSnapshot): ProjectSnapshot {
@@ -50,9 +52,10 @@ function inspectCapturedProject(input: ProjectSnapshot, selection: StudioSelecti
     const parts = studioParts(document);
     const contract = document.publicContract as JsonObject;
     const values = list(contract.values), variants = list(contract.variants);
+    const catalog = archetype === "catalog" ? getStudioCatalogRecipe(catalogIdentity(document)!) : null;
     const metadata = { id: document.id, archetype, parts };
     const design = (category: "Web" | "Mobile") => entries.find(item => item.document.kind === "design" && item.document.category === category && isObject(item.document.componentRef) && item.document.componentRef.id === document.id)!.document;
-    components.push({ ...metadata, name: document.name, purpose: String(document.purpose), sampleContent: document.previewContent as unknown as StudioComponent["sampleContent"],
+    components.push({ ...metadata, ...(catalog ? { catalog: { catalogId: catalog.entry.id, kind: catalog.entry.kind, familyIds: catalog.entry.familyIds, semantic: catalog.semantic, values, events: list(contract.events), variants, slots: list(document.slots), accessibility: document.accessibility as JsonObject, behavior: document.behavior as JsonObject } } : {}), name: document.name, purpose: String(document.purpose), sampleContent: document.previewContent as unknown as StudioComponent["sampleContent"],
       defaults: { disabled: values.find(item => item.name === "disabled")?.defaultValue === true, open: values.find(item => item.name === "open")?.defaultValue !== false, variant: variants[0]?.default === "outlined" ? "outlined" : "filled" },
       motion: document.studioMotion as unknown as StudioComponent["motion"],
       web: projectStudioDesign(design("Web"), metadata, foundation, diagnostics, usages), mobile: projectStudioDesign(design("Mobile"), metadata, foundation, diagnostics, usages) });

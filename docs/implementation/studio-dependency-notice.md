@@ -15,3 +15,7 @@ The Web and RN React versions are intentionally different because the selected R
 Primary selection references: [React versions](https://react.dev/versions), [esbuild API](https://esbuild.github.io/api/), [Expo SDK 57](https://expo.dev/changelog/sdk-57), [AGP 9.0 compatibility](https://developer.android.com/build/releases/agp-9-0-0-release-notes), [Compose BOM mapping](https://developer.android.com/develop/ui/compose/bom/bom-mapping), [Swift installation](https://www.swift.org/install/). AGP 9's built-in Kotlin is used; the generated project does not add a second Kotlin Android plugin. These pins define a source/build candidate, not proof of native support on this Windows host.
 
 Generated archives include `NOTICE.md`, source/context/profile metadata and package dependency declarations. No external font, raster asset or icon package is embedded. Dependency licenses remain in the consuming package manager's distributions; this implementation does not replace those notices or publish third-party packages.
+
+## Studio font asset
+
+ADR-0015 adds the official [SUIT](https://github.com/sun-typeface/SUIT) publisher package `@sun-typeface/suit` 2.0.5 under OFL-1.1. esbuild includes the variable WOFF2 as a local asset; the build distributes its original license alongside it as `SUIT-OFL.txt`. Generated consumer archives do not gain this Studio-only asset dependency. The local font is loaded with `font-display: swap` and no remote font service.

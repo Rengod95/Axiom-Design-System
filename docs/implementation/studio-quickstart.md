@@ -1,6 +1,6 @@
 # Run Studio and deliver source
 
-The [ADR-0014 profile](../adr/0014-studio-authoring-and-target-delivery.md) implements a local editor for shared tokens, named themes and Button/Card/Toast. Use Node 24.19.0 and pnpm 11.19.0 from the repository root.
+The [ADR-0015 workbench](../adr/0015-studio-workbench-and-catalog-authoring.md) extends the local editor with typed Foundation management, catalog component authoring and a navigable canvas. Use Node 24.19.0 and pnpm 11.19.0 from the repository root.
 
 ```sh
 pnpm install --frozen-lockfile --ignore-scripts
@@ -11,7 +11,7 @@ Open `http://127.0.0.1:4317`. Create a design system, select a shared token in t
 
 Edits first produce a transient preview. Review changes shows affected documents and source field differences. Applying the reviewed candidate creates one revision and one Undo entry. Closing the review keeps its candidate available for resumption; rejecting discards it. Undo/redo use the same persisted command service as the Node adapter. Export is disabled while a buffer or proposal is unapplied. The project-source button downloads the source-preserving project bundle. The Export dialog downloads an owned source ZIP for React/CSS, React Native/Expo, SwiftUI or Compose. Each archive carries exact source/context/profile pins and per-file hashes. A generated badge is separate from platform execution.
 
-Browser storage is origin-scoped IndexedDB. Keep the same hostname and port to reopen this local workspace. Different origins, private profiles, cleared site data and eviction do not share it. The server serves only built HTML/JS/CSS on loopback; no network backend or remote account is involved. A saved document survives process restart in the tested Chromium profile. Unsaved field buffers are not automatically durable: capture a source draft or download the source before leaving. Safari, Firefox, full offline installation and eviction recovery are not certified by this increment.
+Browser storage is origin-scoped IndexedDB. Keep the same hostname and port to reopen this local workspace. Different origins, private profiles, cleared site data and eviction do not share it. The server serves only built HTML/JS/CSS and the pinned SUIT font/license on loopback; no network backend or remote account is involved. A saved document survives process restart in the tested Chromium profile. Unsaved field buffers are not automatically durable: capture a source draft or download the source before leaving. Safari, Firefox, full offline installation and eviction recovery are not certified by this increment.
 
 ## Node delivery and upgrades
 
@@ -38,7 +38,18 @@ pnpm test
 pnpm build
 pnpm test:browser
 pnpm test:studio
+pnpm test:workbench
 pnpm test:targets
 ```
 
 The Studio runner launches a dedicated Chromium profile, uses real keyboard/pointer/composition input, checks reviewed mutation and recovery, and downloads all four archives. The target runner consumes emitted source in a Web SSR/hydration app and a separate locked Expo application. It emits evidence under `dist/evidence` and `dist/target-verification`; generated files are excluded from the active source tree. These checks fail if their required browser/compiler cannot run; native SwiftUI/Compose compilation remains explicitly unverified.
+
+## Workbench operations
+
+The Library lists all 239 catalog identities, including 209 component entries that create independent component and Web/Mobile design documents. Parts, templates and utilities remain visibly separate reference entries. Adding an entry creates editable source; unsupported dedicated interactions and target contracts produce explicit diagnostics instead of unrelated fallback controls.
+
+Foundation supports 13 structured value types, aliases, name/description, domain and tier classification, search/filter/sort, selected-token bulk edits, and guarded deletion with a compatible replacement. Themes edit axes, contexts, named sets, resolution order and token overrides. Apply an inspector form to the preview, then review the combined source change. Incomplete numeric/hex input remains in its form and blocks navigation/export until reset or repaired.
+
+Use V/H for select/pan, Space-drag to pan, Ctrl/Command-wheel or +/- to zoom, 0 for 100%, Shift-1 for all frames and Shift-2 for selection. Frame labels support shift-selection and drag; empty-canvas drag selects an area. Resize handles, keyboard arrows and multi-selection alignment/distribution update explicit frame geometry. Viewport navigation does not change source revisions. Ctrl/Command-K finds commands and project objects.
+
+The right inspector edits component content, selected Part layout/appearance and compatible token bindings. Catalog definitions additionally expose part/value lifecycle, sizing policies, accessibility labels/descriptions and motion easing where the source profile permits them. Existing builtin semantic profiles retain their bounded fields. Light/dark UI preferences and Korean/English labels are independent from the project’s authored themes. At narrow widths, Browse/Workspace/Inspect keep each panel accessible. Axiom UI in the sidebar shows the shared UI tokens and working controls.

@@ -7,6 +7,7 @@ import { checkAliasCycles, evaluateFoundation } from "./foundation-evaluation.ts
 import { STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
 
 const tokenType = (value: unknown): value is FoundationTokenType => typeof value === "string" && (FOUNDATION_TOKEN_TYPES as readonly string[]).includes(value);
+export const MAX_FOUNDATION_CONTEXT_COMBINATIONS = 128;
 
 function tokenValue(value: JsonValue | undefined, type: FoundationTokenType, path: string, tokens: ReadonlyMap<string, JsonObject>, check: FoundationCheck): void {
   check.step(path);
@@ -35,6 +36,18 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   if (!lists.every(key => Array.isArray(snapshot[key]))) return;
   const tokens = new Map<string, JsonObject>();
   const entities = new Set<string>([snapshot.id as string]);
+  const names = new Map<string, Set<string>>();
+  const displayFields = (item: JsonObject, path: string, collection: string): void => {
+    if (own(item, "name")) {
+      if (!nonblank(item.name)) check.error(pointer(path, "name"), "Expected a nonblank display name.");
+      else {
+        const collectionNames = names.get(collection) ?? new Set<string>();
+        if (collectionNames.has(item.name)) check.error(pointer(path, "name"), "A name already exists in this Foundation collection.");
+        collectionNames.add(item.name); names.set(collection, collectionNames);
+      }
+    }
+    if (own(item, "description") && typeof item.description !== "string") check.error(pointer(path, "description"), "Expected a description string.");
+  };
   const identity = (item: JsonObject, path: string): void => {
     if (!stableId(item.id)) check.error(pointer(path, "id"), "Expected a stable ID.");
     else if (entities.has(item.id)) check.error(pointer(path, "id"), "Duplicate Foundation entity ID.");
@@ -43,22 +56,29 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   for (const key of ["domains", "tiers", "policies", "originalSources"]) (snapshot[key] as JsonValue[]).forEach((item, index) => {
     const path = `/${key}/${index}`; check.step(path);
     if (!record(item)) check.error(path, "Expected a source/classification record.");
-    else if (key === "domains" || key === "tiers") identity(item, path);
+    else if (key === "domains" || key === "tiers") {
+      identity(item, path); displayFields(item, path, key);
+      if (key === "domains" && own(item, "allowedTypes") && (!Array.isArray(item.allowedTypes) || !item.allowedTypes.length || !item.allowedTypes.every(tokenType) || new Set(item.allowedTypes).size !== item.allowedTypes.length)) check.error(pointer(path, "allowedTypes"), "Allowed types must be a nonempty unique list of supported token types.");
+    }
     if (key === "policies") check.error(path, "Policy execution is not supported by this authoring profile.", FOUNDATION_CODES.UNSUPPORTED);
   });
   const domainIds = new Set((snapshot.domains as JsonValue[]).filter(record).map(item => item.id));
+  const domains = new Map((snapshot.domains as JsonValue[]).filter(record).map(item => [item.id, item]));
   const tierIds = new Set((snapshot.tiers as JsonValue[]).filter(record).map(item => item.id));
   (snapshot.tokens as JsonValue[]).forEach((item, index) => {
     const path = `/tokens/${index}`; check.step(path);
     if (!record(item)) { check.error(path, "Expected a token record."); return; }
     fields(item, ["id", "name", "typeRef", "value"], ["domain", "tier", "description", "metadata", "extensions"], path, check);
     identity(item, path);
+    displayFields(item, path, "tokens");
     if (stableId(item.id)) tokens.set(item.id, item);
     if (!nonblank(item.name)) check.error(pointer(path, "name"), "Expected a nonblank token name.");
     if (!record(item.typeRef) || !tokenType(item.typeRef.id) || Object.keys(item.typeRef).length !== 1) check.error(pointer(path, "typeRef"), "Expected one of the thirteen DTCG types.");
     if (own(item, "description") && typeof item.description !== "string") check.error(pointer(path, "description"), "Expected a description string.");
     for (const key of ["metadata", "extensions"]) if (own(item, key) && !record(item[key])) check.error(pointer(path, key), "Expected an opaque JSON object.");
     if (own(item, "domain") && (!stableId(item.domain) || !domainIds.has(item.domain))) check.error(pointer(path, "domain"), "Unknown token domain.");
+    const domain = domains.get(item.domain);
+    if (domain && Array.isArray(domain.allowedTypes) && record(item.typeRef) && !domain.allowedTypes.includes(item.typeRef.id!)) check.error(pointer(path, "domain"), "The token type is not allowed by its declared domain.");
     if (own(item, "tier") && (!stableId(item.tier) || !tierIds.has(item.tier))) check.error(pointer(path, "tier"), "Unknown token tier.");
   });
   (snapshot.tokens as JsonValue[]).forEach((item, index) => { if (record(item) && record(item.typeRef) && tokenType(item.typeRef.id)) tokenValue(item.value, item.typeRef.id, `/tokens/${index}/value`, tokens, check); });
@@ -66,7 +86,8 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   (snapshot.themeAxes as JsonValue[]).forEach((item, index) => {
     const path = `/themeAxes/${index}`; check.step(path);
     if (!record(item)) { check.error(path, "Expected a ThemeAxis record."); return; }
-    fields(item, ["id", "contexts", "scope"], ["default", "overrides"], path, check);
+    fields(item, ["id", "contexts", "scope"], ["default", "overrides", "name", "description"], path, check);
+    displayFields(item, path, "themeAxes");
     identity(item, path); if (stableId(item.id)) axes.set(item.id, item);
     if (!Array.isArray(item.contexts) || item.contexts.length === 0 || !item.contexts.every(nonblank) || new Set(item.contexts).size !== item.contexts.length) check.error(pointer(path, "contexts"), "Expected a nonempty list of unique context names.");
     if (own(item, "default") && (!nonblank(item.default) || !Array.isArray(item.contexts) || !item.contexts.includes(item.default))) check.error(pointer(path, "default"), "Default must name a declared context.");
@@ -91,7 +112,8 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   (snapshot.themeSets as JsonValue[]).forEach((item, index) => {
     const path = `/themeSets/${index}`; check.step(path);
     if (!record(item)) { check.error(path, "Expected a ThemeSet record."); return; }
-    fields(item, ["id", "contexts", "resolutionProfile"], [], path, check);
+    fields(item, ["id", "contexts", "resolutionProfile"], ["name", "description"], path, check);
+    displayFields(item, path, "themeSets");
     identity(item, path);
     if (!record(item.contexts)) check.error(pointer(path, "contexts"), "Expected a complete context selection.");
     else {
@@ -107,8 +129,23 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   if (!check.valid) return;
   const document = snapshot as unknown as FoundationDocument;
   checkAliasCycles(new Map(document.tokens.map(token => [token.id, token.value as FoundationTokenValue])), check, "/tokens");
-  for (const theme of document.themeSets) evaluateFoundation(document, { themeSetId: theme.id }, check, false);
-  if (document.themeAxes.every(axis => axis.default !== undefined)) evaluateFoundation(document, {}, check, false);
+  let combinations = 1n;
+  for (const axis of document.themeAxes) combinations *= BigInt(axis.contexts.length);
+  if (combinations > BigInt(MAX_FOUNDATION_CONTEXT_COMBINATIONS)) {
+    check.error("/themeAxes", `Declared theme axes produce ${combinations} context combinations; the supported limit is ${MAX_FOUNDATION_CONTEXT_COMBINATIONS}. Remove an axis or context to reduce the product.`, FOUNDATION_CODES.LIMIT);
+    return;
+  }
+  const positions = document.themeAxes.map(() => 0);
+  for (let combination = 0; combination < Number(combinations); combination++) {
+    const contexts: Record<string, string> = Object.create(null);
+    document.themeAxes.forEach((axis, index) => { check.step(`/themeAxes/${index}`); Object.defineProperty(contexts, axis.id, { value: axis.contexts[positions[index]!]!, enumerable: true }); });
+    evaluateFoundation(document, { contexts }, check, false);
+    for (let index = positions.length - 1; index >= 0; index--) {
+      positions[index] = positions[index]! + 1;
+      if (positions[index]! < document.themeAxes[index]!.contexts.length) break;
+      positions[index] = 0;
+    }
+  }
   return check.valid ? document : undefined;
 }
 

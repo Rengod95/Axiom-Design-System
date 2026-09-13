@@ -51,6 +51,8 @@ jobs:
         run: pnpm test:browser
       - name: Verify actual Studio editing and recovery in Chromium
         run: pnpm test:studio
+      - name: Verify expanded workbench in Chromium
+        run: pnpm test:workbench
       - name: Consume emitted Web and React Native target source
         run: pnpm test:targets
       - name: Retain actual browser and consumer evidence

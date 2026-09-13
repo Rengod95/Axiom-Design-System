@@ -7,6 +7,8 @@ import { BROWSER_MAX_COMMITS, BROWSER_STORE_ERROR } from "../src/constants.ts";
 import { createBrowserCommit } from "../src/journal.ts";
 import type { BrowserCommit, BrowserFaultPhase, IndexedDbStoreOptions } from "../src/contracts.ts";
 import type { KernelState, StoreUpdate } from "../../ads-core/src/index.ts";
+import { canonicalJson } from "../../ads-core/src/index.ts";
+import { MAX_CANONICAL_BYTES } from "../../ads-core/src/constants.ts";
 
 function state(name = "Initial"): KernelState {
   return { formatVersion: "0.1.0", project: { id: "project", name, revision: "revision", documents: {} }, candidates: [], receipts: [], history: [], undo: [], redo: [] };
@@ -43,6 +45,49 @@ async function records(factory: IDBFactory): Promise<BrowserCommit[]> {
   finally { database.close(); }
 }
 function code(expected: string) { return (error: unknown) => error instanceof BrowserStoreError && error.code === expected; }
+
+test("oversized stored state is rejected by the codec preflight before digest byte allocation", async (t) => {
+  const { factory, store } = setup(t), current = store();
+  await current.transact(() => ({ state: state(), value: null, changed: true }));
+  const commit = (await records(factory))[0]!;
+  commit.stateText = "x".repeat(MAX_CANONICAL_BYTES + 1);
+  await raw(factory, transaction => transaction.objectStore("commits").put(commit, commit.sequence));
+  await assert.rejects(() => current.read(), (error: unknown) => error instanceof BrowserStoreError && error.code === BROWSER_STORE_ERROR.corrupt && error.message.includes("UTF-8 bound"));
+});
+
+test("warm and cold readers reject a malformed-surrogate ancestor even when UTF-8 replacement preserves its digest", async (t) => {
+  const { factory, store } = setup(t), warm = store();
+  await warm.transact(() => ({ state: state("\uFFFD"), value: null, changed: true }));
+  await warm.transact(() => ({ state: state("Latest"), value: null, changed: true }));
+  assert.equal((await warm.read())!.project!.name, "Latest");
+  const ancestor = (await records(factory))[0]!;
+  const malformed = ancestor.stateText.replace("\uFFFD", "\uD800");
+  assert.notEqual(malformed, ancestor.stateText);
+  assert.equal(browserDigest(malformed), ancestor.stateDigest);
+  ancestor.stateText = malformed;
+  await raw(factory, transaction => transaction.objectStore("commits").put(ancestor, ancestor.sequence));
+  await assert.rejects(() => warm.read(), code(BROWSER_STORE_ERROR.corrupt));
+  await assert.rejects(() => store().read(), code(BROWSER_STORE_ERROR.corrupt));
+});
+
+test("cached historical validation still rejects changed bytes and digest-valid invalid state on the same connection", async (t) => {
+  for (const rehash of [false, true]) {
+    const { factory, store } = setup(t), current = store();
+    await current.transact(() => ({ state: state(), value: null, changed: true }));
+    const detached = await current.read(); detached!.project!.name = "Caller mutation";
+    assert.equal((await current.read())!.project!.name, "Initial");
+    const commit = (await records(factory))[0]!;
+    commit.stateText = canonicalJson({ ...state(), formatVersion: "invalid" });
+    if (rehash) {
+      commit.stateDigest = browserDigest(commit.stateText);
+      const { stateText: _stateText, commitDigest: _commitDigest, ...metadata } = commit;
+      commit.commitDigest = browserDigest(canonicalJson(metadata));
+    }
+    await raw(factory, transaction => { transaction.objectStore("commits").put(commit, commit.sequence); transaction.objectStore("meta").put({ storageFormatVersion: "0.1.0", sequence: commit.sequence, commitDigest: commit.commitDigest }, "head"); });
+    await assert.rejects(() => current.read(), code(BROWSER_STORE_ERROR.corrupt));
+    await assert.rejects(() => current.transact(() => ({ state: state("Overwrite"), value: null, changed: true })), code(BROWSER_STORE_ERROR.corrupt));
+  }
+});
 
 test("empty/read/reopen/close distinguish absence from committed state and return isolated values", async (t) => {
   const { store } = setup(t);

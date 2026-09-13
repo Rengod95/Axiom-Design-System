@@ -33,13 +33,13 @@ test("rejects missing, mismatched, duplicate and cyclic token identities", () =>
   for (const document of cases) { const report = resolveFoundationTokens(document); assert.equal(report.valid, false); assert.deepEqual(report.tokens, []); }
 });
 
-test("validates all named themes and checks arbitrary runtime combinations without enumerating products", () => {
+test("rejects cycles in unnamed context combinations before authoring adoption", () => {
   const document = foundation([token("token.a"), token("token.b")]);
   document.themeAxes = [
     { id: "axis.a", contexts: ["off", "on"], default: "off", scope: { id: document.id!, expectedKind: "foundation" }, overrides: { on: { "token.a": ref("token.b") } } },
     { id: "axis.b", contexts: ["off", "on"], default: "off", scope: { id: document.id!, expectedKind: "foundation" }, overrides: { on: { "token.b": ref("token.a") } } },
   ]; document.resolutionOrder = ["axis.a", "axis.b"];
-  assert.equal(inspectFoundationDocument(document).valid, true);
+  assert.equal(inspectFoundationDocument(document).valid, false);
   assert.equal(resolveFoundationTokens(document, { contexts: { "axis.a": "on", "axis.b": "on" } }).valid, false);
   document.themeSets = [{ id: "theme.cycle", contexts: { "axis.a": "on", "axis.b": "on" }, resolutionProfile: profile }];
   assert.equal(inspectFoundationDocument(document).valid, false);

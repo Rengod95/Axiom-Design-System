@@ -76,6 +76,7 @@ export function documentChanges(before: JsonObject, after: JsonObject): NonNulla
 
 /** Prepare only source data; the service owns candidate/receipt publication. */
 export function prepareImport(payload: JsonObject, state: KernelState, project: ProjectSnapshot, principal: Principal, services: ImportServices): PreparedImport {
+  if (payload.importMode === "change") return prepareStudioChanges(payload, state, project, principal, services);
   if (payload.formatProfile === BUNDLE_FORMAT) {
     allowedFields(payload, ["sourceRefs", "formatProfile", "importMode"]);
     if (payload.importMode !== "review" || !Array.isArray(payload.sourceRefs) || payload.sourceRefs.length !== 1 || !isObject(payload.sourceRefs[0])) throw new KernelError(CODE.PAYLOAD_INVALID, "Bundle restore requires one complete source and explicit review mode.");
@@ -130,6 +131,55 @@ export function prepareImport(payload: JsonObject, state: KernelState, project: 
       documents[document.id] = { document, originalText: existing.originalText, sourceUri: existing.sourceUri, currentText: source.content, currentSourceUri: source.uri, validation: "envelope-only", diagnostics, ...(validationProfile ? { validationProfile } : {}) };
       diff.push({ id: document.id, change: "updated", fields: documentChanges(existing.document, document) });
     }
+  }
+  return { kind: "documents", documents, diff };
+}
+
+/** A reviewed Studio source transaction may create/update/delete whole documents together. */
+function prepareStudioChanges(payload: JsonObject, state: KernelState, project: ProjectSnapshot, principal: Principal, services: ImportServices): PreparedImport {
+  allowedFields(payload, ["sourceRefs", "deleteRefs", "formatProfile", "importMode"]);
+  if (payload.formatProfile !== STUDIO_FORMAT || !Array.isArray(payload.sourceRefs) || !Array.isArray(payload.deleteRefs)
+    || payload.sourceRefs.length + payload.deleteRefs.length < 1 || payload.sourceRefs.length + payload.deleteRefs.length > IMPORT_LIMITS.maxDocuments) {
+    throw new KernelError(CODE.PAYLOAD_INVALID, "Studio change requires 1–64 explicit whole-document sources and deletion references.");
+  }
+  let bytes = 0;
+  const changes: { source: JsonObject; id: string }[] = [];
+  const identities = new Set<string>();
+  for (const source of payload.sourceRefs) {
+    if (!isObject(source)) throw new KernelError(CODE.PAYLOAD_INVALID, "Studio source requires URI, content and an expected revision for updates.");
+    allowedFields(source, ["uri", "content", "expectedRevision"]);
+    if (typeof source.content !== "string" || typeof source.uri !== "string" || !source.uri.trim()) throw new KernelError(CODE.PAYLOAD_INVALID, "Invalid Studio source transport.");
+    bytes += utf8SourceBytes(source.content, IMPORT_LIMITS.maxDocumentBytes);
+    if (bytes > IMPORT_LIMITS.maxBatchBytes) throw new KernelError(CODE.JSON_LIMIT, "Studio change source batch exceeds its byte limit.");
+    const inspection = inspectDocument(source.content, source.uri);
+    if (!inspection.document) throw new ImportRejection(inspection.diagnostics);
+    const { id, kind } = inspection.document;
+    if (!["foundation", "component", "design"].includes(kind)) throw new KernelError(CODE.PAYLOAD_INVALID, "Studio changes only address Foundation, Component and Design sources.");
+    if (identities.has(id)) throw new KernelError(CODE.DOCUMENT_EXISTS, "A Studio change cannot repeat or both replace and delete an identity.");
+    identities.add(id);
+    const existing = Object.hasOwn(project.documents, id) ? project.documents[id] : undefined;
+    if (existing ? !isValidId(source.expectedRevision) : source.expectedRevision !== undefined) throw new KernelError(CODE.PAYLOAD_INVALID, "Creates omit expectedRevision; updates require the exact existing source revision.");
+    changes.push({ source, id });
+  }
+  const documents = structuredClone(project.documents), diff: CommandResult["diff"] = [];
+  for (const ref of payload.deleteRefs) {
+    if (!isObject(ref)) throw new KernelError(CODE.REFERENCE_INVALID, "Deletion requires a pinned typed reference.");
+    allowedFields(ref, ["id", "expectedKind", "revision"]);
+    if (!isValidId(ref.id) || !isValidId(ref.revision) || typeof ref.expectedKind !== "string") throw new KernelError(CODE.REFERENCE_INVALID, "Studio deletion requires identity, kind and exact source revision.");
+    if (identities.has(ref.id)) throw new KernelError(CODE.DOCUMENT_EXISTS, "A Studio change cannot repeat or both replace and delete an identity.");
+    identities.add(ref.id);
+    const existing = Object.hasOwn(documents, ref.id) ? documents[ref.id] : undefined;
+    if (!existing) throw new KernelError(CODE.DOCUMENT_MISSING, "Studio deletion target does not exist.");
+    if (existing.validationProfile !== STUDIO_PROFILE || !["foundation", "component", "design"].includes(existing.document.kind)) throw new KernelError(CODE.PAYLOAD_INVALID, "Studio changes cannot delete unrelated document profiles.");
+    if (ref.expectedKind !== existing.document.kind) throw new KernelError(CODE.REFERENCE_KIND, "Studio deletion kind does not match.");
+    if (ref.revision !== existing.document.revision) throw new KernelError(CODE.REVISION_CONFLICT, "Studio deletion expected source revision is stale.");
+    delete documents[ref.id]; diff.push({ id: ref.id, change: "deleted" });
+  }
+  for (const { source, id } of changes) {
+    const mode = Object.hasOwn(project.documents, id) ? "update" : "review";
+    const prepared = prepareImport({ sourceRefs: [source], formatProfile: STUDIO_FORMAT, importMode: mode }, state, { ...project, documents }, principal, services);
+    if (prepared.kind !== "documents") throw new KernelError(CODE.STATE_INVALID, "Studio changes must prepare complete active sources.");
+    Object.assign(documents, prepared.documents); diff.push(...prepared.diff);
   }
   return { kind: "documents", documents, diff };
 }

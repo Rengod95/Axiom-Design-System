@@ -1,11 +1,12 @@
 import type { AdsDocument, Diagnostic, JsonValue, ProjectSnapshot } from "./contracts.ts";
 import type { FoundationResolution, FoundationSelection } from "./foundation-contracts.ts";
+import type { StudioCatalogProjection, StudioSizePolicy } from "./studio-catalog-contracts.ts";
 
 /** Executable editor profile; unrelated Foundation contracts remain separately tracked. */
-export type StudioArchetype = "button" | "card" | "toast";
+export type StudioArchetype = "button" | "card" | "toast" | "catalog";
 export interface StudioDocumentReport { profile: "foundation-studio"; valid: boolean; diagnostics: Diagnostic[]; checkedRecords: string[]; unverifiedTypes: string[] }
 export type StudioCategory = "Web" | "Mobile";
-export type StudioPartRole = "root" | "label" | "header" | "body" | "actions" | "close";
+export type StudioPartRole = string;
 export type StudioVisualProperty = "background" | "color" | "borderColor" | "borderWidth" | "borderRadius" | "fontSize" | "opacity";
 export interface StudioStyle { background?: string; color?: string; borderColor?: string; borderWidth?: number; borderRadius?: number; fontSize?: number; opacity?: number }
 export interface StudioPart { id: string; name: string; parent: string | null; role: StudioPartRole }
@@ -17,17 +18,20 @@ export interface StudioPartPresentation {
 export interface StudioLayout {
   axis: "horizontal" | "vertical"; gap: number; padding: number; minHeight: number;
   childOrder: string[];
+  width?: StudioSizePolicy; height?: StudioSizePolicy; alignment?: "start" | "center" | "end" | "stretch";
 }
 export interface StudioDesign {
   id: string; category: StudioCategory;
   parts: Record<string, StudioPartPresentation>;
   layout: Record<string, StudioLayout>;
+  editorFrame?: { x: number; y: number; width: number; height?: number };
 }
 export interface StudioComponent {
   id: string; name: string; archetype: StudioArchetype; purpose: string; parts: StudioPart[];
+  catalog?: StudioCatalogProjection;
   sampleContent: { label: string; title: string; body: string; actionLabel: string; closeLabel: string };
   defaults: { disabled: boolean; open: boolean; variant: "filled" | "outlined" };
-  motion: { durationMs: number; reducedDurationMs: number; cleanupMs: number };
+  motion: { durationMs: number; reducedDurationMs: number; cleanupMs: number; easing?: string };
   web: StudioDesign; mobile: StudioDesign;
 }
 export interface StudioUsage { componentId: string; partId: string; documentId: string; path: string }

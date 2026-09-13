@@ -2,8 +2,10 @@ import type { StudioComponent, StudioProjection } from "../../ads-core/src/index
 import type { SourceFile } from "./contracts.ts";
 import { componentSymbol } from "./generator-input.ts";
 import { REACT_LIFECYCLE_SOURCE } from "./react-runtime.ts";
+import { catalogNativeReactComponent } from "./catalog-native-react-generator.ts";
 
 function nativeComponent(component: StudioComponent): string {
+  if (component.archetype === "catalog") return catalogNativeReactComponent(component);
   const name = componentSymbol(component); const root = component.parts.find((part) => part.role === "root")!;
   const part = (role: string) => component.parts.find((item) => item.role === role)?.id ?? root.id;
   const data = JSON.stringify(component.mobile); const sample = JSON.stringify(component.sampleContent);
@@ -40,18 +42,18 @@ export function ${name}({open, message = ${sample}.body, closeLabel = ${sample}.
 export function generateNativeReactSources(projection: StudioProjection): SourceFile[] {
   return [{ path: "src/index.tsx", text: `// Generated from ADS; dependency and evidence pins are in axiom.delivery.json.
 import * as React from "react";
-import { AccessibilityInfo, Animated, Platform, Pressable, Text, View } from "react-native";
-import type { TextProps, TextStyle, ViewStyle } from "react-native";
+import { AccessibilityInfo, Animated, Platform, Pressable, Text, View, TextInput as NativeTextInput, Switch as NativeSwitch, ActivityIndicator as NativeActivityIndicator, Modal as NativeModal } from "react-native";
+import type { TextProps, TextStyle, ViewStyle, DimensionValue } from "react-native";
 export { tokens, themeContexts } from "./tokens";
 export interface AxiomButtonProps { label?: string; disabled?: boolean; variant?: "filled" | "outlined"; onActivate: () => void }
 export interface AxiomCardProps { body: React.ReactNode; header?: React.ReactNode; actions?: React.ReactNode; variant?: "filled" | "outlined" }
 export interface AxiomToastProps { open: boolean; message?: string; closeLabel?: string; onCloseRequest: () => void }
 type Visual = Record<string,string | number>;
-type Design = { parts: Record<string,{base:Visual;outlined:Visual;disabled:Visual;pressed:Visual;combinations:Record<string,Visual>;provenance:unknown}>;layout:Record<string,{axis:string;gap:number;padding:number;minHeight:number;childOrder:string[]}>;id:string;category:string };
+type Design = { parts: Record<string,{base:Visual;outlined:Visual;disabled:Visual;pressed:Visual;combinations:Record<string,Visual>;provenance:unknown}>;layout:Record<string,{axis:string;gap:number;padding:number;minHeight:number;childOrder:string[];width?:{mode:string;value?:number};height?:{mode:string;value?:number};alignment?:string}>;id:string;category:string;editorFrame?:unknown };
 function visual(design:Design,id:string,variant = "filled",disabled = false,pressed = false): ViewStyle & TextStyle {
  const part = design.parts[id]!; const values = part.combinations[variant + (disabled ? "-disabled" : pressed ? "-pressed" : "")]!;
  const result: ViewStyle & TextStyle = {}; for (const [key,value] of Object.entries(values)) Object.assign(result,{[key === "background" ? "backgroundColor" : key]:value});
- const layout = design.layout[id]; if (layout) Object.assign(result,{flexDirection:layout.axis === "horizontal" ? "row" : "column",gap:layout.gap,padding:layout.padding,minHeight:layout.minHeight}); return result;
+ const layout = design.layout[id]; if (layout) {Object.assign(result,{flexDirection:layout.axis === "horizontal" ? "row" : "column",gap:layout.gap,padding:layout.padding,minHeight:layout.minHeight});for(const axis of ["width","height"] as const){const policy=layout[axis];if(policy)Object.assign(result,{[axis]:policy.mode==="fixed"?policy.value:policy.mode==="fill"?"100%":"auto"});}if(layout.alignment)Object.assign(result,{alignItems:layout.alignment==="start"?"flex-start":layout.alignment==="end"?"flex-end":layout.alignment});} return result;
 }
 function textVisual(design:Design,id:string,root:string,variant = "filled",disabled = false,pressed = false):TextStyle {
  const parent=visual(design,root,variant,disabled,pressed);const child=visual(design,id,variant,disabled,pressed);const style:TextStyle={};const color=child.color??parent.color;const fontSize=child.fontSize??parent.fontSize;if(color!==undefined)style.color=color;if(fontSize!==undefined)style.fontSize=fontSize;return style;

@@ -71,6 +71,7 @@ try {
   await click("token-token.accent");
   const originalColor = await page.evaluate(`${element("token-value-input")}.value`);
   await fill("token-value-input", "#7451e8");
+  await click("foundation-token-apply");
   await until(`${element("review-changes")} && !${element("review-changes")}.disabled`);
   assert.equal(await page.evaluate(`${element("project-revision")}.title`), initialRevision);
   assert.equal(await page.evaluate(`${element("open-export")}.disabled`), true);
@@ -87,19 +88,24 @@ try {
   await until(`${element("token-value-input")}.value === "#7451e8"`);
   evidence.cases.reviewUndoRedo = { transientPreviewKeptRevision: true, exportBlockedUntilApply: true, oneUndoRestoresToken: true };
   await fill("token-value-input", "#123456");
+  await click("foundation-token-apply");
   await click("review-changes");
   await click("review-reject");
   await until(`!${element("review-dialog")} && ${element("token-value-input")}.value === "#7451e8"`);
   evidence.cases.reject = true;
+  await click("view-canvas");
   const lightPaint = await page.evaluate(`getComputedStyle(${element("runtime-button")}).backgroundColor`);
   await select("theme-select", "theme.dark");
   await until(`getComputedStyle(${element("runtime-button")}).backgroundColor !== ${JSON.stringify(lightPaint)}`);
+  await click("token-token.accent");
   // Base authoring intentionally stays on its stored value; context editing shows the override.
   assert.equal(await page.evaluate(`${element("token-value-input")}.value`), "#7451e8");
-  await page.evaluate(`(()=>{const e=document.getElementById("token-scope");e.value="theme";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await page.evaluate(`(()=>{const e=document.querySelector('[data-testid="foundation-token-scope"]');e.value=[...e.options].find(option=>option.textContent.includes("dark")).value;e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
   await until(`${element("token-value-input")}.value !== "#7451e8"`);
-  await page.evaluate(`(()=>{const e=document.getElementById("token-scope");e.value="base";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await select("foundation-token-scope", "base");
+  await click("view-canvas");
   await select("theme-select", "theme.light");
+  await click("token-token.accent");
   await until(`${element("token-value-input")}.value === "#7451e8"`);
   await click("component-component.card");
   const cardBody = "한글 입력을 보존하는 디자인 시스템";
@@ -131,7 +137,7 @@ try {
   evidence.cases.invalidSource = { exactBufferPreserved: true, capturedAsDraft: true, adoptedSourceUnchanged: true };
   await click("mode-run");
   await until(`${element("activation-count")}?.textContent === "0"`);
-  assert.ok(await page.evaluate(`(()=>{const r=${element("runtime-toast-close")}.getBoundingClientRect();return r.width>=44&&r.height>=44})()`));
+  assert.ok(await page.evaluate(`(()=>{const r=getComputedStyle(${element("runtime-toast-close")});return parseFloat(r.width)>=44&&parseFloat(r.height)>=44})()`));
   await page.evaluate(`${element("runtime-button")}.focus()`);
   await page.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", text: "\r", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
   await page.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });

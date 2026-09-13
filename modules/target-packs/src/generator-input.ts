@@ -1,6 +1,8 @@
 import type { StudioComponent, StudioDesign, StudioProjection, StudioStyle } from "../../ads-core/src/index.ts";
 import { TARGET_CODE } from "./constants.ts";
 import { TargetError } from "./target-error.ts";
+import { inspectCatalogTarget } from "./catalog-capabilities.ts";
+import type { TargetId } from "./contracts.ts";
 
 const COLOR_PATTERN = /^rgba\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*\)$/;
 const SAFE_SYMBOL = /^[A-Za-z][A-Za-z0-9_]*$/;
@@ -22,10 +24,11 @@ export function colorChannels(color: string): [number, number, number, number] {
 }
 
 /** Reject unsupported part structure and conversion before emitting any target files. */
-export function inspectGeneratorProjection(projection: StudioProjection): void {
+export function inspectGeneratorProjection(projection: StudioProjection, target: TargetId): void {
   if (!projection.valid || !projection.foundation.valid || projection.components.length === 0) throw new TargetError(TARGET_CODE.INVALID, "Source project has no valid executable Studio projection");
   const symbols = new Set<string>();
   for (const component of projection.components) {
+    if (component.archetype === "catalog") inspectCatalogTarget(component, target);
     const symbol = componentSymbol(component);
     if (symbols.has(symbol)) throw new TargetError(TARGET_CODE.INVALID, "Component identifiers collide in source output", component.id);
     symbols.add(symbol);
