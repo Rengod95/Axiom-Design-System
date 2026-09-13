@@ -8,13 +8,22 @@ import { DeliveryError } from "./delivery-error.ts";
 /** Test ENOENT only; permission failures never masquerade as a missing file. */
 export function missing(error: unknown): boolean { return error !== null && typeof error === "object" && "code" in error && error.code === "ENOENT"; }
 
-/** Check every existing ancestor to reject junction/symlink redirection before file I/O. */
-export async function safeRoot(input: string): Promise<string> {
+interface DirectoryReader {
+  lstat(path:string):Promise<{isDirectory():boolean;isSymbolicLink():boolean}>;
+  realpath(path:string):Promise<string>;
+}
+
+/** Reject links on the supplied ancestor chain, then expand its nearest existing directory's canonical spelling. */
+export async function safeRoot(input: string, reader:DirectoryReader={lstat,realpath}): Promise<string> {
   if (typeof input !== "string" || !input.trim() || input.includes("\0")) throw new DeliveryError(DELIVERY_CODE.PATH,"Delivery requires an explicit directory");
   const root=resolve(input); if(root===parse(root).root) throw new DeliveryError(DELIVERY_CODE.PATH,"A filesystem root is not a delivery directory");
   const ancestors:string[]=[]; for(let path=root;;path=dirname(path)){ancestors.push(path);if(path===dirname(path))break;}
-  for(const path of ancestors.reverse()) { try { const info=await lstat(path); if(info.isSymbolicLink() || !info.isDirectory()) throw new DeliveryError(DELIVERY_CODE.PATH,"Delivery ancestors must be ordinary directories"); const actual=await realpath(path); if(actual.toLowerCase()!==path.toLowerCase()) throw new DeliveryError(DELIVERY_CODE.PATH,"Delivery path resolves through an alias"); } catch(error) {if(!missing(error))throw error;} }
-  return root;
+  let nearest:string|undefined;
+  for(const path of ancestors.reverse()) { try { const info=await reader.lstat(path); if(info.isSymbolicLink() || !info.isDirectory()) throw new DeliveryError(DELIVERY_CODE.PATH,"Delivery ancestors must be ordinary directories");nearest=path; } catch(error) {if(!missing(error))throw error;} }
+  if(nearest===undefined)throw new DeliveryError(DELIVERY_CODE.PATH,"Delivery path has no existing filesystem ancestor");
+  // Windows 8.3 names identify ordinary directories; their expanded spelling is not a symlink.
+  // Resolve only the observed ancestor and append missing components, so fresh output roots work too.
+  return resolve(await reader.realpath(nearest),relative(nearest,root));
 }
 
 /** Resolve a portable relative source path inside its explicitly selected root. */
