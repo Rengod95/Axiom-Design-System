@@ -11,18 +11,27 @@
   "scripts": {
     "check": "node scripts/generate-ads-validator.mjs --check && tsc --noEmit && node scripts/check-implementation.mjs",
     "generate": "node scripts/generate-ads-validator.mjs",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node scripts/build-studio.mjs",
     "test": "node scripts/run-tests.mjs",
     "axiom": "node apps/cli/src/main.ts",
-    "test:browser": "node scripts/verify-browser-store.mjs"
+    "test:browser": "node scripts/verify-browser-store.mjs",
+    "studio": "node scripts/build-studio.mjs && node scripts/serve-studio.mjs",
+    "delivery": "node apps/delivery/src/main.ts",
+    "test:studio": "node scripts/verify-studio.mjs",
+    "test:targets": "node scripts/verify-targets.mjs"
   },
   "devDependencies": {
     "@types/node": "24.13.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "ajv": "8.20.0",
+    "esbuild": "0.28.2",
     "fake-indexeddb": "6.2.5",
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@noble/hashes": "2.4.0"
+    "@noble/hashes": "2.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   }
 }

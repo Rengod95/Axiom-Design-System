@@ -2,7 +2,7 @@
   "kind": "foundation-documentation-qa",
   "status": "PASS",
   "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
-  "verifiedAt": "2026-09-13T09:59:22.337896+00:00",
+  "verifiedAt": "2026-09-13T11:12:04.602104+00:00",
   "checkerProvenance": "scripts/verify-foundation.py",
   "counts": {
     "documents": 56,
@@ -13,9 +13,9 @@
     "queries": 10,
     "commands": 52,
     "diagnostics": 30,
-    "localLinks": 1095,
+    "localLinks": 1105,
     "fragments": 129,
-    "checks": 2190
+    "checks": 2200
   },
   "errors": [],
   "checks": [
@@ -2931,6 +2931,11 @@
     },
     {
       "name": "local link: docs/adr/0013-browser-transactional-storage.md → ../foundation/architecture/storage-offline-and-recovery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0014-studio-authoring-and-target-delivery.md → ../implementation/studio-dependency-notice.md",
       "passed": true,
       "detail": null
     },
@@ -8725,6 +8730,31 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/studio-delivery-evidence.md → ../adr/0014-studio-authoring-and-target-delivery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/studio-delivery-evidence.md → implementation-roadmap.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/studio-dependency-notice.md → ../adr/0014-studio-authoring-and-target-delivery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/studio-quickstart.md → ../adr/0014-studio-authoring-and-target-delivery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/studio-quickstart.md → kernel-quickstart.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/implementation/typed-bundle-evidence.md → ../adr/0012-typed-values-and-project-bundles.md",
       "passed": true,
       "detail": null
@@ -8905,6 +8935,11 @@
       "detail": null
     },
     {
+      "name": "local link: docs/README.md → adr/0014-studio-authoring-and-target-delivery.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/README.md → standards/source-code-and-module-structure.md",
       "passed": true,
       "detail": null
@@ -8921,6 +8956,21 @@
     },
     {
       "name": "local link: docs/README.md → implementation/ads-kernel-profile.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → implementation/studio-quickstart.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → implementation/studio-delivery-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → implementation/studio-dependency-notice.md",
       "passed": true,
       "detail": null
     },
@@ -11045,7 +11095,7 @@
     },
     {
       "path": "docs/foundation/annexes/selection-register.json",
-      "sha256": "e2ad21bef01f0f335077800f5bb13d1b271ec0a30803ff768e2f3a6245870787"
+      "sha256": "0a796ba4c7b9630f262fff8ca3bba72316e2d0b90660d392d5828d54006c453c"
     },
     {
       "path": "docs/foundation/annexes/selection-register.md",
@@ -11057,7 +11107,7 @@
     },
     {
       "path": "docs/foundation/annexes/target-matrix.json",
-      "sha256": "c03f64d37dd43de5548bf6a7706a5689408d1f9192618ff294099022e5336d40"
+      "sha256": "b75444c9833b810274337303792e4233492307befc4718f3e2b3e3c2958d9f57"
     },
     {
       "path": "docs/foundation/annexes/targets-and-environments.md",

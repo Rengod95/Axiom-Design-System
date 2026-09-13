@@ -7,9 +7,10 @@
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
     "docs/adr/0012-typed-values-and-project-bundles.md",
     "docs/adr/0013-browser-transactional-storage.md",
+    "docs/adr/0014-studio-authoring-and-target-delivery.md",
     "docs/foundation/operations/development-and-maintenance.md"
   ],
-  "statusPolicy": "PARTIAL_PROFILE is implemented only in the bounded I1 kernel profile; PLANNED is not implemented. Neither denotes public conformance or release readiness.",
+  "statusPolicy": "PARTIAL_PROFILE implements explicitly bounded ADR profiles; PLANNED is not implemented. Neither denotes full conformance or release readiness.",
   "milestones": [
     {
       "id": "I1",
@@ -48,22 +49,25 @@
     },
     {
       "id": "I2",
-      "status": "PLANNED",
+      "status": "PARTIAL_PROFILE",
       "owners": [
         "SYN01",
         "SYN03",
         "UX05"
       ],
       "remaining": [
-        "SEL01 standard comparison and token profile",
-        "token/theme authoring",
-        "alias/context resolution and cycles",
-        "usage preview and preservation corpus"
+        "Complete SEL01 comparison and DTCG group/property/resolver interchange",
+        "Full preservation and cross-target corpus; domain-specific commands"
+      ],
+      "implemented": [
+        "Thirteen DTCG literal types and source-preserving flat interchange subset",
+        "Stable token IDs, aliases/cycles, ordered contexts and named themes",
+        "Reviewed token/theme authoring, usage and provenance"
       ]
     },
     {
       "id": "I3",
-      "status": "PLANNED",
+      "status": "PARTIAL_PROFILE",
       "owners": [
         "CMP01",
         "CMP05",
@@ -75,15 +79,20 @@
         "UX07"
       ],
       "remaining": [
-        "Button/Card/Toast contracts",
-        "Studio selection and editing",
-        "Web/Mobile appearance and preview",
-        "behavior/accessibility/motion conformance"
+        "Complete archetype/catalog/trait and compound obligations",
+        "Rich text, free layout, overrides and large-scene evidence",
+        "Full behavior/accessibility/motion and AT matrix"
+      ],
+      "implemented": [
+        "Pinned Button/plain Card/controlled Toast and logical Part obligations",
+        "React Studio direct Part selection, source buffers and reviewed edits",
+        "Web/Mobile stack/appearance and six variant/state combinations",
+        "Korean IME, ko/en UI, run simulation and persisted recovery"
       ]
     },
     {
       "id": "I4",
-      "status": "PLANNED",
+      "status": "PARTIAL_PROFILE",
       "owners": [
         "AI01",
         "AI02",
@@ -93,24 +102,32 @@
         "DLV04"
       ],
       "remaining": [
-        "React/RN actual-project delivery",
-        "init and doctor",
-        "user-owned source and three-way upgrade/rollback",
-        "AI candidates and independent verification"
+        "Native install/execution and verified-release transitions",
+        "Connection detection and partial hunk selection",
+        "AI realization and independent verification"
+      ],
+      "implemented": [
+        "Four deterministic owned source archives and pinned manifests",
+        "React strict source/SSR/hydration/browser consumer",
+        "Locked Expo strict consumer and Android/iOS Hermes bundles",
+        "Reviewed source init, integrity doctor, three-way full-file upgrades and rollback"
       ]
     },
     {
       "id": "I5",
-      "status": "PLANNED",
+      "status": "PARTIAL_PROFILE",
       "owners": [
         "PRD03",
         "DLV01",
         "QAL01"
       ],
       "remaining": [
-        "full approved catalog",
-        "compound components",
-        "Swift and Android native evidence"
+        "Complete catalog and compound components",
+        "Native compiler, simulator/device and assistive-technology evidence",
+        "Other Web style and bare RN profiles"
+      ],
+      "implemented": [
+        "SwiftUI iOS and Compose Android source/package generation"
       ]
     },
     {

@@ -1,13 +1,14 @@
 /** Browser-neutral contracts for the bounded document-kernel profile. */
-import type { DOMAIN_PROFILE, STRUCTURAL_PROFILE } from "./constants.ts";
+import type { DOMAIN_PROFILE, STRUCTURAL_PROFILE, STUDIO_PROFILE } from "./constants.ts";
 import type { StructuralReport } from "./structural-contracts.ts";
 import type { DomainReport } from "./domain-contracts.ts";
 import type { LocalReferenceReport } from "./graph-contracts.ts";
+import type { StudioDocumentReport } from "./studio-contracts.ts";
 
-export type ValidationProfile = typeof STRUCTURAL_PROFILE | typeof DOMAIN_PROFILE;
+export type ValidationProfile = typeof STRUCTURAL_PROFILE | typeof DOMAIN_PROFILE | typeof STUDIO_PROFILE;
 export interface ProjectStructureReport {
   revision: string | null; profile: ValidationProfile; valid: boolean;
-  documents: { id: string; structure: StructuralReport | DomainReport }[];
+  documents: { id: string; structure: StructuralReport | DomainReport | StudioDocumentReport }[];
   references: LocalReferenceReport; diagnostics: Diagnostic[];
 }
 export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
@@ -41,6 +42,12 @@ export interface Candidate {
   documents: Record<string, DocumentEntry>; diff: CommandResult["diff"]; diagnostics: Diagnostic[];
   status: "pending" | "approved" | "applied" | "rejected";
   approval?: { principalId: string; token: string; digest: string; baseRevision: string };
+}
+/** Current actor's resumable work only; private approvals and full candidate sources are excluded. */
+export interface StudioAuthoringState {
+  revision: string | null;
+  pendingCandidates: Pick<Candidate, "id" | "baseRevision" | "digest" | "status" | "diff" | "diagnostics">[];
+  undoHandle?: string; redoHandle?: string;
 }
 export interface UndoEntry { handle: string; actorId: string; applicableRevision: string; before: Record<string, DocumentEntry>; after: Record<string, DocumentEntry> }
 export interface HistoryEntry { revision: string; parentRevision: string | null; actorId: string; operation: string; transactionId: string; affectedRefs: string[] }

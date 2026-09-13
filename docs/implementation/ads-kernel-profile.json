@@ -1,7 +1,7 @@
 {
   "kind": "axiom-implementation-profile",
   "status": "ACCEPTED",
-  "phase": "I1_DOCUMENT_KERNEL",
+  "phase": "I1_I5_STUDIO_VERTICAL",
   "adr": "docs/adr/0009-ads-kernel-implementation-bootstrap.md",
   "approval": "docs/decisions/axiom-foundation-baseline-approval.json",
   "baselineMergeCommit": "04c762c384bf41168a843649c542f5d69c04734b",
@@ -9,7 +9,10 @@
     "modules/ads-core",
     "modules/local-store",
     "apps/cli",
-    "modules/browser-store"
+    "modules/browser-store",
+    "modules/target-packs",
+    "apps/studio",
+    "apps/delivery"
   ],
   "allowedRootFiles": [
     "package.json",
@@ -23,7 +26,12 @@
     "scripts/run-tests.mjs",
     "scripts/check-implementation.mjs",
     "scripts/generate-ads-validator.mjs",
-    "scripts/verify-browser-store.mjs"
+    "scripts/verify-browser-store.mjs",
+    "scripts/build-studio.mjs",
+    "scripts/serve-studio.mjs",
+    "scripts/verify-studio.mjs",
+    "scripts/verify-targets.mjs",
+    "scripts/browser-driver.mjs"
   ],
   "allowedBrowserTestAssets": [
     "modules/browser-store/test/browser-harness.html",
@@ -46,12 +54,13 @@
     "typescript": "5.9.3",
     "nodeTypes": "24.13.4"
   },
-  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance",
+  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance; bounded Foundation resolver, Studio reviewed authoring and four target source delivery under ADR-0014",
   "extensionAdrs": [
     "docs/adr/0010-source-preserving-draft-authoring.md",
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
     "docs/adr/0012-typed-values-and-project-bundles.md",
-    "docs/adr/0013-browser-transactional-storage.md"
+    "docs/adr/0013-browser-transactional-storage.md",
+    "docs/adr/0014-studio-authoring-and-target-delivery.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -83,5 +92,38 @@
       }
     },
     "browserEvidence": "real Chromium; other engines and hardware durability remain unverified"
-  }
+  },
+  "allowedStudioAssets": [
+    "apps/studio/index.html",
+    "apps/studio/src/styles.css"
+  ],
+  "studio": {
+    "profile": "axiom.studio",
+    "version": "0.1.0",
+    "validationPolicy": "foundation-studio",
+    "importFormat": "ads-studio",
+    "maxThemeSets": 32,
+    "maxComponents": 64,
+    "runtimeDependencies": {
+      "react": {
+        "version": "19.3.0",
+        "license": "MIT"
+      },
+      "react-dom": {
+        "version": "19.3.0",
+        "license": "MIT"
+      }
+    },
+    "buildDependency": {
+      "esbuild": {
+        "version": "0.28.2",
+        "license": "MIT",
+        "postinstall": "only esbuild@0.28.2 is allowed by pnpm-workspace; CI installs with ignore-scripts"
+      }
+    },
+    "nativeExecution": "UNVERIFIED"
+  },
+  "allowedTargetTestAssets": [
+    "modules/target-packs/test/expo-consumer.lock.yaml"
+  ]
 }

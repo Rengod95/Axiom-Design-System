@@ -1,5 +1,5 @@
 import type { CommandResult, Diagnostic, DocumentEntry, JsonObject, JsonValue, KernelState, Principal, ProjectSnapshot, SourceDraft, ValidationProfile } from "./contracts.ts";
-import { CODE, DOMAIN_FORMAT, DOMAIN_PROFILE, IMPORT_LIMITS, STRUCTURAL_FORMAT, STRUCTURAL_PROFILE } from "./constants.ts";
+import { CODE, DOMAIN_FORMAT, DOMAIN_PROFILE, IMPORT_LIMITS, STRUCTURAL_FORMAT, STRUCTURAL_PROFILE, STUDIO_FORMAT, STUDIO_PROFILE } from "./constants.ts";
 import { canonicalJson, parseJson, utf8SourceBytes } from "./canonical-json.ts";
 import { inspectDocument, isObject, isValidId } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
@@ -29,7 +29,7 @@ function allowedFields(value: JsonObject, allowed: string[]): void {
 function sourcesFrom(payload: JsonObject): { mode: ImportMode; sources: ImportSource[]; profile: ValidationProfile | undefined } {
   allowedFields(payload, ["sourceRefs", "formatProfile", "importMode"]);
   const mode = payload.importMode;
-  if ((payload.formatProfile !== "ads-envelope" && payload.formatProfile !== STRUCTURAL_FORMAT && payload.formatProfile !== DOMAIN_FORMAT) || (mode !== "review" && mode !== "draft" && mode !== "update")
+  if ((payload.formatProfile !== "ads-envelope" && payload.formatProfile !== STRUCTURAL_FORMAT && payload.formatProfile !== DOMAIN_FORMAT && payload.formatProfile !== STUDIO_FORMAT) || (mode !== "review" && mode !== "draft" && mode !== "update")
     || !Array.isArray(payload.sourceRefs) || !payload.sourceRefs.length || payload.sourceRefs.length > IMPORT_LIMITS.maxDocuments) throw new KernelError(CODE.PAYLOAD_INVALID, "Import requires a bounded ads-envelope source batch and an explicit mode.");
   let bytes = 0;
   const sources = payload.sourceRefs.map((source): ImportSource => {
@@ -43,7 +43,7 @@ function sourcesFrom(payload: JsonObject): { mode: ImportMode; sources: ImportSo
     if (size > IMPORT_LIMITS.maxDocumentBytes || bytes > IMPORT_LIMITS.maxBatchBytes) throw new KernelError(CODE.JSON_LIMIT, "Import source or batch exceeds the profile byte limit.");
     return source as unknown as ImportSource;
   });
-  return { mode, sources, profile: payload.formatProfile === DOMAIN_FORMAT ? DOMAIN_PROFILE : payload.formatProfile === STRUCTURAL_FORMAT ? STRUCTURAL_PROFILE : undefined };
+  return { mode, sources, profile: payload.formatProfile === STUDIO_FORMAT ? STUDIO_PROFILE : payload.formatProfile === DOMAIN_FORMAT ? DOMAIN_PROFILE : payload.formatProfile === STRUCTURAL_FORMAT ? STRUCTURAL_PROFILE : undefined };
 }
 
 function draftFor(source: ImportSource, state: KernelState, project: ProjectSnapshot, principal: Principal): SourceDraft | undefined {

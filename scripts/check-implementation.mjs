@@ -6,7 +6,7 @@ import ts from "typescript";
 import { OPERATION_SCOPES } from "../modules/ads-core/src/constants.ts";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const MODULES = ["modules/ads-core", "modules/local-store", "apps/cli", "modules/browser-store"].map((path) => resolve(ROOT, path));
+const MODULES = ["modules/ads-core", "modules/local-store", "apps/cli", "modules/browser-store", "modules/target-packs", "apps/studio", "apps/delivery"].map((path) => resolve(ROOT, path));
 const CORE_ROOT = resolve(MODULES[0], "src");
 const BROWSER_ROOT = resolve(MODULES[3], "src");
 const NODE_BUILTINS = new Set(builtinModules.flatMap((name) => [name, `node:${name}`]));
@@ -27,12 +27,14 @@ function checkSource(path, source) {
   const ownModule = MODULES.find((root) => within(root, path));
   const isCore = within(CORE_ROOT, path);
   const isBrowser = within(BROWSER_ROOT, path);
-  const neutral = isCore || isBrowser;
+  const isStudio = ownModule === MODULES[5];
+  const neutral = isCore || isBrowser || ownModule === MODULES[4] || isStudio;
   const label = relative(ROOT, path);
   if (/@ts-(?:nocheck|ignore)\b/.test(source) && !["generated/document-envelope.ts", "generated/catalog-structure.ts", "generated/type-expression.ts"].some((generated) => path === resolve(CORE_ROOT, generated))) throw new Error(`Unapproved type-check suppression: ${label}`);
   function dependency(target) {
     if (!target.startsWith(".")) {
       if (path === resolve(BROWSER_ROOT, "browser-services.ts") && target === "@noble/hashes/sha2.js") return;
+      if (isStudio && ["react", "react-dom/client"].includes(target)) return;
       if (neutral || !NODE_BUILTINS.has(target)) throw new Error(`Unapproved dependency in ${label}: ${target}`);
       return;
     }
@@ -41,11 +43,10 @@ function checkSource(path, source) {
     if (!targetModule) throw new Error(`Dependency escapes implementation modules: ${label} → ${target}`);
     if (isCore && !within(CORE_ROOT, destination)) throw new Error(`Core dependency escapes its source boundary: ${label} → ${target}`);
     if (targetModule !== ownModule && destination !== resolve(targetModule, "src/index.ts")) throw new Error(`Cross-module dependency must use the public barrel: ${label} → ${target}`);
-    if (isBrowser && targetModule !== MODULES[0] && targetModule !== MODULES[3]) throw new Error(`Browser adapter depends on a Node adapter: ${label}`);
-    if (!isBrowser && targetModule === MODULES[3]) throw new Error(`Node adapter depends on browser storage: ${label}`);
-    if (ownModule === MODULES[1] && targetModule === MODULES[2]) throw new Error(`Storage adapter depends on CLI: ${label}`);
+    const permitted = [[0], [0, 1], [0, 1, 2], [0, 3], [0, 4], [0, 3, 4, 5], [0, 1, 4, 6]][MODULES.indexOf(ownModule)];
+    if (!permitted.includes(MODULES.indexOf(targetModule))) throw new Error(`Dependency violates ADR-0014 ownership: ${label} → ${target}`);
   }
-  const tree = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const tree = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, path.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
   function visit(node) {
     if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier) {
       if (!ts.isStringLiteral(node.moduleSpecifier)) throw new Error(`Nonliteral dependency: ${label}`);
@@ -67,12 +68,13 @@ function checkSource(path, source) {
   }
   visit(tree);
 }
-const sources = MODULES.flatMap((root) => files(resolve(root, "src"))).filter((path) => path.endsWith(".ts"));
+const sources = MODULES.flatMap((root) => files(resolve(root, "src"))).filter((path) => /\.tsx?$/.test(path));
 if (sources.filter((path) => within(CORE_ROOT, path)).length < 2) throw new Error("Core implementation is missing");
 for (const path of sources) checkSource(path, readFileSync(path, "utf8"));
 const pkg = JSON.parse(readFileSync(resolve(ROOT, "package.json"), "utf8"));
-if (JSON.stringify(pkg.dependencies) !== JSON.stringify({ "@noble/hashes": "2.4.0" })) throw new Error("Runtime dependencies differ from ADR-0013");
+if (JSON.stringify(pkg.dependencies) !== JSON.stringify({ "@noble/hashes": "2.4.0", "react": "19.3.0", "react-dom": "19.3.0" })) throw new Error("Runtime dependencies differ from ADR-0014");
 if (pkg.devDependencies["fake-indexeddb"] !== "6.2.5") throw new Error("Browser test emulator differs from ADR-0013");
+for (const [name, version] of Object.entries({ "@types/react": "19.3.0", "@types/react-dom": "19.3.0", "esbuild": "0.28.2" })) if (pkg.devDependencies[name] !== version) throw new Error(`Studio tooling pin differs: ${name}`);
 const catalog = JSON.parse(readFileSync(resolve(ROOT, "docs/foundation/annexes/command-catalog.json"), "utf8"));
 const roadmap = JSON.parse(readFileSync(resolve(ROOT, "docs/implementation/implementation-roadmap.json"), "utf8"));
 for (const kind of ["commands", "queries"]) {
@@ -86,6 +88,12 @@ if (JSON.stringify(partialCommands) !== JSON.stringify(Object.keys(OPERATION_SCO
 
 // Verify the guard itself without writing invalid source into the checkout.
 const cases = [
+  [resolve(MODULES[4], "src/fixture.ts"), 'import x from "react";'],
+  [resolve(MODULES[4], "src/fixture.ts"), 'import x from "../../browser-store/src/index.ts";'],
+  [resolve(MODULES[5], "src/fixture.tsx"), 'import x from "../../../modules/local-store/src/index.ts";'],
+  [resolve(MODULES[5], "src/fixture.tsx"), 'const value = <div>{process.env.VALUE}</div>;'],
+  [resolve(MODULES[6], "src/fixture.ts"), 'import x from "../../studio/src/index.ts";'],
+  [resolve(CORE_ROOT, "fixture.ts"), 'import x from "../../target-packs/src/index.ts";'],
   [resolve(BROWSER_ROOT, "fixture.ts"), 'import fs from "node:fs";'],
   [resolve(BROWSER_ROOT, "fixture.ts"), 'import x from "@noble/hashes/sha2.js";'],
   [resolve(BROWSER_ROOT, "browser-services.ts"), 'import x from "@noble/hashes/utils.js";'],

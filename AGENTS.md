@@ -6,7 +6,7 @@ These instructions apply to every file in this repository.
 
 Read `docs/README.md`, ADR-0006 and ADR-0007 before changing this repository. The active tree contains the approved Foundation, maintenance records and the bounded implementation authorized below. The earlier executable implementation is preserved only in Git at the commit recorded in `reference/pre-studio/snapshot.json`.
 
-The owner authorized implementation after a successful 56-document quality review and PR #25 merge. That gate was fulfilled on 2026-09-13, followed by an explicit request to improve the initial implementation and continue the remaining work. Read accepted ADR-0009, ADR-0010, ADR-0011, ADR-0012, ADR-0013 and docs/implementation/ads-kernel-profile.json before changing product code. The bounded I1 document kernel now includes source-preserving draft/update/export and the generated common-envelope schema. ADR-0011 adds explicit catalog structural inspection and selected local nested references. ADR-0012 adds explicit typed/content validation and same-project source bundles. ADR-0013 adds bounded IndexedDB storage, a narrowly owned SHA-256 dependency and real Chromium conformance. Additional scope follows the existing Foundation contracts and extends the profile explicitly.
+The owner authorized implementation after a successful 56-document quality review and PR #25 merge. That gate was fulfilled on 2026-09-13, followed by an explicit request to improve the initial implementation and continue the remaining work. Read accepted ADR-0009, ADR-0010, ADR-0011, ADR-0012, ADR-0013, ADR-0014 and docs/implementation/ads-kernel-profile.json before changing product code. The bounded I1 document kernel now includes source-preserving draft/update/export and the generated common-envelope schema. ADR-0011 adds explicit catalog structural inspection and selected local nested references. ADR-0012 adds explicit typed/content validation and same-project source bundles. ADR-0013 adds bounded IndexedDB storage, a narrowly owned SHA-256 dependency and real Chromium conformance. ADR-0014 adds the bounded token/theme engine, Studio, target source packs and delivery upgrade workflow. Additional scope follows the existing Foundation contracts and extends the profile explicitly.
 
 Do not interpret removed ADRs, SSOT, plans or passing reference tests as current Studio authority. Restore the full snapshot outside the active checkout for historical investigation. Do not cherry-pick historical instruction files into current authority without review.
 
@@ -30,6 +30,8 @@ pnpm check
 pnpm test
 pnpm build
 pnpm test:browser
+pnpm test:studio
+pnpm test:targets
 ```
 
-The Python checks validate retirement and documentation integrity; the pnpm checks validate the bounded kernel implementation. Neither proves Studio behavior or platform readiness. Do not weaken the checks to allow implementation outside the accepted profile.
+The Python checks validate retirement and documentation integrity; the pnpm checks validate the bounded kernel and Studio implementation. Browser/consumer evidence is separate from native platform readiness. Do not weaken the checks to allow implementation outside the accepted profile.
