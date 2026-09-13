@@ -46,6 +46,7 @@ export async function writeSourceExport(requested: string, source: SourceExport)
     original: { file: EXPORT_FILES.original, uri: source.original.uri, digest: source.original.digest },
     normalized: { file: EXPORT_FILES.normalized, digest: source.normalized.digest },
     diagnostics: source.diagnostics, validation: source.validation, semantics: source.semantics,
+    ...(source.validationProfile === undefined ? {} : { validationProfile: source.validationProfile }),
   };
   await writeFresh(EXPORT_FILES.manifest, `${JSON.stringify(manifest, null, JSON_INDENT)}\n`);
   return { directory, ...manifest };

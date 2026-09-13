@@ -1,5 +1,5 @@
 import type { Diagnostic, DocumentEntry, KernelState, SourceExport } from "./contracts.ts";
-import { CANONICAL_PROFILE_VERSION, CODE, IMPORT_LIMITS } from "./constants.ts";
+import { CANONICAL_PROFILE_VERSION, CODE, IMPORT_LIMITS, STRUCTURAL_PROFILE } from "./constants.ts";
 import { canonicalJson, utf8SourceBytes } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
@@ -16,7 +16,8 @@ function checkCurrentSources(documents: Record<string, DocumentEntry>): void {
   if (!isObject(documents)) throw new KernelError(CODE.STATE_INVALID, "Invalid document source map.");
   for (const entry of Object.values(documents)) {
     if (!isObject(entry) || entry.currentText !== undefined && typeof entry.currentText !== "string"
-      || entry.currentSourceUri !== undefined && (typeof entry.currentSourceUri !== "string" || !entry.currentSourceUri.trim())) throw new KernelError(CODE.STATE_INVALID, "Invalid current source preservation fields.");
+      || entry.currentSourceUri !== undefined && (typeof entry.currentSourceUri !== "string" || !entry.currentSourceUri.trim())
+      || entry.validationProfile !== undefined && entry.validationProfile !== STRUCTURAL_PROFILE) throw new KernelError(CODE.STATE_INVALID, "Invalid current source preservation fields.");
   }
 }
 
@@ -31,6 +32,7 @@ export function validateSourceRecords(state: KernelState): void {
         || utf8SourceBytes(draft.originalText, IMPORT_LIMITS.maxDocumentBytes) > IMPORT_LIMITS.maxDocumentBytes
         || typeof draft.sourceDigest !== "string" || !HASH_PATTERN.test(draft.sourceDigest)
         || (draft.validation !== "invalid" && draft.validation !== "envelope-only") || !Array.isArray(draft.diagnostics) || !draft.diagnostics.every(isDiagnostic)
+        || (draft.validationProfile !== undefined && draft.validationProfile !== STRUCTURAL_PROFILE)
         || ids.has(draft.id)) throw new KernelError(CODE.STATE_INVALID, "Invalid or duplicated immutable source draft.");
       ids.add(draft.id);
     }
@@ -48,6 +50,6 @@ export function exportSource(entry: DocumentEntry, projectRevision: string, diag
     canonicalProfile: CANONICAL_PROFILE_VERSION, hashAlgorithm: "sha256",
     original: { uri: entry.sourceUri, text: entry.originalText, digest: digest(entry.originalText) },
     normalized: { text: normalized, digest: digest(normalized) }, diagnostics,
-    validation: "envelope-only", semantics: "unverified",
+    validation: "envelope-only", semantics: "unverified", ...(entry.validationProfile ? { validationProfile: entry.validationProfile } : {}),
   };
 }

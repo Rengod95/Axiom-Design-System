@@ -1,0 +1,3535 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:axiom:schema:foundation-structural",
+  "$comment": "ADR-0011 bounded Foundation field projection. Registry body, unknown named types, extra fields and schemaVersion semantics remain unverified.",
+  "$ref": "#/$defs/DocumentEnvelope",
+  "$defs": {
+    "DocumentEnvelope": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "kind": {
+          "enum": [
+            "project",
+            "foundation",
+            "component",
+            "design",
+            "registry",
+            "screen",
+            "scenario",
+            "connection",
+            "text"
+          ]
+        },
+        "schemaVersion": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "name": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "schemaVersion",
+        "revision",
+        "name"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation SYN02 / DocumentEnvelope; unresolved names are explicitly unverified."
+    },
+    "Ref": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "expectedKind": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "expectedKind"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation SYN02 / Ref; unresolved names are explicitly unverified."
+    },
+    "Project": {
+      "type": "object",
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "libraries": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: DependencyLock. Preserve without interpretation."
+          }
+        },
+        "targetProfiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "brandLibraries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "connections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        }
+      },
+      "required": [
+        "documents",
+        "libraries",
+        "targetProfiles",
+        "brandLibraries",
+        "connections"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation SYN02 / Project; unresolved names are explicitly unverified."
+    },
+    "Foundation": {
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Token"
+          }
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Domain. Preserve without interpretation."
+          }
+        },
+        "tiers": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Tier. Preserve without interpretation."
+          }
+        },
+        "themeAxes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThemeAxis"
+          }
+        },
+        "themeSets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThemeSet"
+          }
+        },
+        "policies": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: PolicyRule. Preserve without interpretation."
+          }
+        },
+        "originalSources": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: SourceRecord. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "tokens",
+        "domains",
+        "tiers",
+        "themeAxes",
+        "themeSets",
+        "policies",
+        "originalSources"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation SYN03 / Foundation; unresolved names are explicitly unverified."
+    },
+    "Token": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "typeRef": {
+          "$comment": "Unverified named type: TypeRef. Preserve without interpretation."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$comment": "Unverified named type: Literal. Preserve without interpretation."
+            },
+            {
+              "$comment": "Unverified named type: TokenRef. Preserve without interpretation."
+            }
+          ]
+        },
+        "domain": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "tier": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "extensions": {
+          "type": "object",
+          "$comment": "Unverified named type: OpaqueExtensionMap. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "typeRef",
+        "value"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation SYN03 / Token; unresolved names are explicitly unverified."
+    },
+    "ThemeAxis": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "contexts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "default": {
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "id",
+        "contexts",
+        "scope"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation SYN03 / ThemeAxis; unresolved names are explicitly unverified."
+    },
+    "ThemeSet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "contexts": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: context. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning axisId is not interpreted by this profile."
+        },
+        "resolutionProfile": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "id",
+        "contexts",
+        "resolutionProfile"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation SYN03 / ThemeSet; unresolved names are explicitly unverified."
+    },
+    "ComponentDefinition": {
+      "type": "object",
+      "properties": {
+        "purpose": {
+          "type": "string"
+        },
+        "archetypeRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "traitBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TraitBinding"
+          }
+        },
+        "publicContract": {
+          "$ref": "#/$defs/PublicContract"
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Part"
+          }
+        },
+        "slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Slot"
+          }
+        },
+        "behavior": {
+          "$ref": "#/$defs/BehaviorContract"
+        },
+        "accessibility": {
+          "$ref": "#/$defs/AccessibilityContract"
+        },
+        "motion": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MotionDefinition"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "purpose",
+        "archetypeRef",
+        "traitBindings",
+        "publicContract",
+        "parts",
+        "slots",
+        "behavior",
+        "accessibility",
+        "motion",
+        "requirements"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP01 / ComponentDefinition; unresolved names are explicitly unverified."
+    },
+    "PublicContract": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ValuePort"
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventPort"
+          }
+        },
+        "exposedSlots": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "replaceableParts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "allowedOverrides": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: OverridePermission. Preserve without interpretation."
+          }
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VariantAxis"
+          }
+        }
+      },
+      "required": [
+        "values",
+        "events",
+        "exposedSlots",
+        "replaceableParts",
+        "allowedOverrides",
+        "variants"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP03 / PublicContract; unresolved names are explicitly unverified."
+    },
+    "ValuePort": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$comment": "Unverified named type: TypeExpr. Preserve without interpretation."
+        },
+        "ownership": {
+          "enum": [
+            "local",
+            "consumer",
+            "runtime"
+          ]
+        },
+        "defaultValue": {
+          "$comment": "Unverified named type: TypedValue. Preserve without interpretation."
+        },
+        "requestEventRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "visibility": {
+          "enum": [
+            "public",
+            "internal"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type",
+        "ownership",
+        "visibility"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP04 / ValuePort; unresolved names are explicitly unverified."
+    },
+    "EventPort": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "payloadType": {
+          "$comment": "Unverified named type: TypeExpr. Preserve without interpretation."
+        },
+        "phase": {
+          "enum": [
+            "intent",
+            "committed",
+            "notification"
+          ]
+        },
+        "cancellable": {
+          "type": "boolean"
+        },
+        "queuePolicy": {
+          "$comment": "Unverified named type: PolicyBinding. Preserve without interpretation."
+        },
+        "visibility": {
+          "enum": [
+            "public",
+            "internal"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "payloadType",
+        "phase",
+        "cancellable",
+        "visibility"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP03 / EventPort; unresolved names are explicitly unverified."
+    },
+    "TraitBinding": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "traitRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "targetParts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "configuration": {
+          "type": "object"
+        },
+        "portBindings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          },
+          "$comment": "Map key meaning portName is not interpreted by this profile."
+        },
+        "policyBindings": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: PolicyBinding. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "traitRef",
+        "targetParts",
+        "configuration",
+        "portBindings",
+        "policyBindings"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP02 / TraitBinding; unresolved names are explicitly unverified."
+    },
+    "Part": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+              "not": {
+                "enum": [
+                  "__proto__",
+                  "prototype",
+                  "constructor"
+                ]
+              }
+            },
+            {
+              "enum": [
+                null
+              ]
+            }
+          ]
+        },
+        "roleRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "cardinality": {
+          "$comment": "Unverified named type: Cardinality. Preserve without interpretation."
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Relationship. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "parent",
+        "roleRefs",
+        "required",
+        "cardinality",
+        "relationships"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP05 / Part; unresolved names are explicitly unverified."
+    },
+    "Slot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "ownerPartRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "contentKinds": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ContentKind. Preserve without interpretation."
+          },
+          "minItems": 1
+        },
+        "min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "enum": [
+                "unbounded"
+              ]
+            }
+          ]
+        },
+        "defaultContent": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ContentNode. Preserve without interpretation."
+          }
+        },
+        "allowedContractRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "ownerPartRef",
+        "contentKinds",
+        "min",
+        "max",
+        "defaultContent",
+        "allowedContractRefs"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP05 / Slot; unresolved names are explicitly unverified."
+    },
+    "Instance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "componentRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "designRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "values": {
+          "type": "object"
+        },
+        "slotContents": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$comment": "Unverified named type: ContentNode. Preserve without interpretation."
+            }
+          },
+          "$comment": "Map key meaning slotId is not interpreted by this profile."
+        },
+        "overrides": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Override. Preserve without interpretation."
+          }
+        },
+        "provenance": {
+          "$comment": "Unverified named type: SourceRecord. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "componentRef",
+        "designRef",
+        "values",
+        "slotContents",
+        "overrides",
+        "provenance"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP05 / Instance; unresolved names are explicitly unverified."
+    },
+    "BehaviorContract": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: StateDomain. Preserve without interpretation."
+          }
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Transition"
+          }
+        },
+        "inputProfileRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "hostBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HostBinding"
+          }
+        }
+      },
+      "required": [
+        "states",
+        "transitions",
+        "hostBindings"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP06 / BehaviorContract; unresolved names are explicitly unverified."
+    },
+    "Transition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "domain": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "from": {
+          "$comment": "Unverified named type: StateSelector. Preserve without interpretation."
+        },
+        "to": {
+          "$comment": "Unverified named type: StateValue. Preserve without interpretation."
+        },
+        "trigger": {
+          "$comment": "Unverified named type: EventRef. Preserve without interpretation."
+        },
+        "guard": {
+          "$comment": "Unverified named type: Expr. Preserve without interpretation."
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: UIEffect. Preserve without interpretation."
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "domain",
+        "from",
+        "to",
+        "trigger",
+        "effects",
+        "requirements"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP04 / Transition; unresolved names are explicitly unverified."
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "ownerValueRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "desired": {
+          "$comment": "Unverified named type: TypedValue. Preserve without interpretation."
+        },
+        "baseValueRevision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "pending",
+            "accepted",
+            "rejected",
+            "cancelled",
+            "superseded"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "ownerValueRef",
+        "desired",
+        "baseValueRevision",
+        "status"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP04 / Request; unresolved names are explicitly unverified."
+    },
+    "AccessibilityContract": {
+      "type": "object",
+      "properties": {
+        "purpose": {
+          "type": "string"
+        },
+        "nameSources": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Relationship. Preserve without interpretation."
+          }
+        },
+        "descriptionSources": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Relationship. Preserve without interpretation."
+          }
+        },
+        "stateExposure": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: StateExposure. Preserve without interpretation."
+          }
+        },
+        "readingOrder": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "focus": {
+          "$comment": "Unverified named type: FocusContract. Preserve without interpretation."
+        },
+        "announcements": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: AnnouncementContract. Preserve without interpretation."
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "purpose",
+        "nameSources",
+        "descriptionSources",
+        "stateExposure",
+        "readingOrder",
+        "focus",
+        "announcements",
+        "requirements"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP08 / AccessibilityContract; unresolved names are explicitly unverified."
+    },
+    "MotionDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "trigger": {
+          "$comment": "Unverified named type: EventOrTransitionRef. Preserve without interpretation."
+        },
+        "targetPartRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "property": {
+          "$comment": "Unverified named type: TypedVisualProperty. Preserve without interpretation."
+        },
+        "keyframes": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Keyframe. Preserve without interpretation."
+          }
+        },
+        "timing": {
+          "anyOf": [
+            {
+              "$comment": "Unverified named type: Tween. Preserve without interpretation."
+            },
+            {
+              "$comment": "Unverified named type: Spring. Preserve without interpretation."
+            }
+          ]
+        },
+        "delay": {
+          "$comment": "Unverified named type: Duration. Preserve without interpretation."
+        },
+        "stagger": {
+          "$comment": "Unverified named type: Stagger. Preserve without interpretation."
+        },
+        "interruption": {
+          "$comment": "Unverified named type: MotionPolicy. Preserve without interpretation."
+        },
+        "reducedAlternative": {
+          "$comment": "Unverified named type: MotionAlternative. Preserve without interpretation."
+        },
+        "completionEffect": {
+          "$comment": "Unverified named type: UIEffect. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "trigger",
+        "targetPartRef",
+        "property",
+        "keyframes",
+        "timing",
+        "interruption",
+        "reducedAlternative"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP09 / MotionDefinition; unresolved names are explicitly unverified."
+    },
+    "DesignDefinition": {
+      "type": "object",
+      "properties": {
+        "componentRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "category": {
+          "enum": [
+            "Web",
+            "Mobile"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nodeMappings": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: PartNodeMapping. Preserve without interpretation."
+          }
+        },
+        "layout": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LayoutRule"
+          }
+        },
+        "appearance": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AppearanceRule"
+          }
+        },
+        "targetOverrides": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: TargetOverride. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "componentRef",
+        "category",
+        "name",
+        "nodeMappings",
+        "layout",
+        "appearance",
+        "targetOverrides"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP01 / DesignDefinition; unresolved names are explicitly unverified."
+    },
+    "AppearanceRule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "targetPartRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "variants": {
+          "type": "object"
+        },
+        "states": {
+          "type": "object"
+        },
+        "environment": {
+          "$comment": "Unverified named type: Expr. Preserve without interpretation."
+        },
+        "declarations": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: TypedValueOrRef. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning property is not interpreted by this profile."
+        },
+        "explicitPriority": {
+          "type": "integer"
+        },
+        "refines": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "targetPartRef",
+        "variants",
+        "states",
+        "declarations",
+        "explicitPriority",
+        "refines"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP10 / AppearanceRule; unresolved names are explicitly unverified."
+    },
+    "LayoutRule": {
+      "type": "object",
+      "properties": {
+        "targetPartRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "mode": {
+          "enum": [
+            "flow",
+            "stack",
+            "grid",
+            "free"
+          ]
+        },
+        "axis": {
+          "enum": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "size": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/SizePolicy"
+          },
+          "$comment": "Map key meaning axis is not interpreted by this profile."
+        },
+        "gap": {
+          "$comment": "Unverified named type: DimensionOrRef. Preserve without interpretation."
+        },
+        "padding": {
+          "$comment": "Unverified named type: Edges. Preserve without interpretation."
+        },
+        "alignment": {
+          "$comment": "Unverified named type: Alignment. Preserve without interpretation."
+        },
+        "distribution": {
+          "$comment": "Unverified named type: Distribution. Preserve without interpretation."
+        },
+        "wrap": {
+          "$comment": "Unverified named type: WrapPolicy. Preserve without interpretation."
+        },
+        "overflow": {
+          "$comment": "Unverified named type: OverflowPolicy. Preserve without interpretation."
+        },
+        "childOrder": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "freePosition": {
+          "$ref": "#/$defs/FreePosition"
+        }
+      },
+      "required": [
+        "targetPartRef",
+        "mode",
+        "size",
+        "childOrder"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX03 / LayoutRule; unresolved names are explicitly unverified."
+    },
+    "TraitDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "configurationType": {
+          "$comment": "Unverified named type: TypeExpr. Preserve without interpretation."
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: CapabilityRef. Preserve without interpretation."
+          }
+        },
+        "provides": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: CapabilityRef. Preserve without interpretation."
+          }
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Port. Preserve without interpretation."
+          }
+        },
+        "roleRequirements": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RoleRequirement. Preserve without interpretation."
+          }
+        },
+        "inputClaims": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: InputClaim. Preserve without interpretation."
+          }
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        },
+        "incompatibleBindings": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ConflictRule. Preserve without interpretation."
+          }
+        },
+        "inspectorHints": {
+          "$comment": "Unverified named type: InspectorHints. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "purpose",
+        "configurationType",
+        "requires",
+        "provides",
+        "ports",
+        "roleRequirements",
+        "inputClaims",
+        "obligations",
+        "incompatibleBindings",
+        "inspectorHints"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP02 / TraitDefinition; unresolved names are explicitly unverified."
+    },
+    "RoleDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "allowedKinds": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: PartKind. Preserve without interpretation."
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RelationshipRequirement. Preserve without interpretation."
+          }
+        },
+        "cardinality": {
+          "$comment": "Unverified named type: Cardinality. Preserve without interpretation."
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "allowedKinds",
+        "relations",
+        "cardinality",
+        "obligations"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP02 / RoleDefinition; unresolved names are explicitly unverified."
+    },
+    "PolicyDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "appliesTo": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: CapabilityRef. Preserve without interpretation."
+          }
+        },
+        "configurationType": {
+          "$comment": "Unverified named type: TypeExpr. Preserve without interpretation."
+        },
+        "default": {
+          "$comment": "Unverified named type: TypedValue. Preserve without interpretation."
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        },
+        "allowedChoices": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: TypedValue. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "appliesTo",
+        "configurationType",
+        "invariants",
+        "allowedChoices"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP02 / PolicyDefinition; unresolved names are explicitly unverified."
+    },
+    "HostDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "coordinatorRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "scope": {
+          "$ref": "#/$defs/Ref"
+        },
+        "configuration": {
+          "type": "object"
+        },
+        "acceptedClients": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: CapabilityRef. Preserve without interpretation."
+          }
+        },
+        "lifetime": {
+          "$comment": "Unverified named type: Lifetime. Preserve without interpretation."
+        },
+        "parentHostRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "coordinatorRef",
+        "scope",
+        "configuration",
+        "acceptedClients",
+        "lifetime"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP07 / HostDefinition; unresolved names are explicitly unverified."
+    },
+    "HostBinding": {
+      "type": "object",
+      "properties": {
+        "requiredCapability": {
+          "$comment": "Unverified named type: CapabilityRef. Preserve without interpretation."
+        },
+        "searchRule": {
+          "enum": [
+            "nearest-compatible-explicit",
+            "explicit-only",
+            "profile-rule"
+          ]
+        },
+        "explicitHostRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "actualResolvedHostRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Diagnostic"
+          }
+        }
+      },
+      "required": [
+        "requiredCapability",
+        "searchRule",
+        "diagnostics"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP07 / HostBinding; unresolved names are explicitly unverified."
+    },
+    "AssetRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "contentHash": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "mediaType": {
+          "type": "string"
+        },
+        "byteSize": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$comment": "Unverified named type: SourceRecord. Preserve without interpretation."
+        },
+        "license": {
+          "$comment": "Unverified named type: LicenseRecord. Preserve without interpretation."
+        },
+        "variantOf": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "storageRef": {
+          "$comment": "Unverified named type: StorageRef. Preserve without interpretation."
+        },
+        "rightsStatus": {
+          "enum": [
+            "verified",
+            "unknown",
+            "restricted"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "contentHash",
+        "mediaType",
+        "byteSize",
+        "source",
+        "license",
+        "storageRef",
+        "rightsStatus",
+        "version"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation BRD02 / AssetRecord; unresolved names are explicitly unverified."
+    },
+    "CommandEnvelope": {
+      "type": "object",
+      "properties": {
+        "commandId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "actorId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "projectId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "baseRevision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+              "not": {
+                "enum": [
+                  "__proto__",
+                  "prototype",
+                  "constructor"
+                ]
+              }
+            },
+            {
+              "enum": [
+                null
+              ]
+            }
+          ]
+        },
+        "operation": {
+          "$comment": "Unverified named type: OperationId. Preserve without interpretation."
+        },
+        "payload": {
+          "$comment": "Unverified named type: TypedPayload. Preserve without interpretation."
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "GUI",
+            "internalAI",
+            "externalAPI"
+          ]
+        },
+        "transactionId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "requestedScopes": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Scope. Preserve without interpretation."
+          }
+        },
+        "protocolVersion": {
+          "type": "string",
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "commandId",
+        "actorId",
+        "projectId",
+        "baseRevision",
+        "operation",
+        "payload",
+        "idempotencyKey",
+        "origin",
+        "transactionId",
+        "requestedScopes",
+        "protocolVersion"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation ARC03 / CommandEnvelope; unresolved names are explicitly unverified."
+    },
+    "CommandResult": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "accepted",
+            "reviewRequired",
+            "conflict",
+            "rejected"
+          ]
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "diff": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Change. Preserve without interpretation."
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Diagnostic"
+          }
+        },
+        "undoHandle": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "affectedRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "reviewToken": {
+          "$comment": "Unverified named type: OpaqueToken. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "status",
+        "diff",
+        "diagnostics",
+        "affectedRefs"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation ARC03 / CommandResult; unresolved names are explicitly unverified."
+    },
+    "Diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$comment": "Unverified named type: DiagnosticCode. Preserve without interpretation."
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "warning",
+            "error"
+          ]
+        },
+        "sourceRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "relatedRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "suggestedActions": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ActionDescriptor. Preserve without interpretation."
+          }
+        },
+        "targetScope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "sourceRef",
+        "relatedRefs",
+        "parameters",
+        "suggestedActions",
+        "targetScope"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation ARC03 / Diagnostic; unresolved names are explicitly unverified."
+    },
+    "ContextBundle": {
+      "type": "object",
+      "properties": {
+        "selectedRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "referencedContracts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        },
+        "allowedOperations": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: OperationId. Preserve without interpretation."
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Capability. Preserve without interpretation."
+          }
+        },
+        "budget": {
+          "$comment": "Unverified named type: ResourceBudget. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "selectedRefs",
+        "revision",
+        "referencedContracts",
+        "requirements",
+        "allowedOperations",
+        "capabilities",
+        "budget"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation AI01 / ContextBundle; unresolved names are explicitly unverified."
+    },
+    "RealizationJob": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "snapshotDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "targetProfileRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "dependencyLockDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "testPlanRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "candidateArea": {
+          "$comment": "Unverified named type: StorageRef. Preserve without interpretation."
+        },
+        "budget": {
+          "$comment": "Unverified named type: ResourceBudget. Preserve without interpretation."
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "running",
+            "blocked",
+            "failed",
+            "ready"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "snapshotDigest",
+        "targetProfileRef",
+        "dependencyLockDigest",
+        "testPlanRef",
+        "candidateArea",
+        "budget",
+        "status"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation AI02 / RealizationJob; unresolved names are explicitly unverified."
+    },
+    "TargetProfile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "category": {
+          "enum": [
+            "Web",
+            "Mobile"
+          ]
+        },
+        "toolchain": {
+          "$comment": "Unverified named type: ToolchainLock. Preserve without interpretation."
+        },
+        "styleStrategy": {
+          "$ref": "#/$defs/Ref"
+        },
+        "behaviorMapping": {
+          "$ref": "#/$defs/Ref"
+        },
+        "typeMapping": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Mapping. Preserve without interpretation."
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Capability. Preserve without interpretation."
+          }
+        },
+        "testEnvironments": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: EnvironmentRef. Preserve without interpretation."
+          }
+        },
+        "runtimeDependencies": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: DependencyLock. Preserve without interpretation."
+          }
+        },
+        "valueMapping": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Mapping. Preserve without interpretation."
+          }
+        },
+        "publicApiMapping": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: PublicApiMapping. Preserve without interpretation."
+          }
+        },
+        "requiredHosts": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: CapabilityRef. Preserve without interpretation."
+          }
+        },
+        "supportMatrix": {
+          "$comment": "Unverified named type: SupportMatrix. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "category",
+        "toolchain",
+        "styleStrategy",
+        "behaviorMapping",
+        "typeMapping",
+        "capabilities",
+        "testEnvironments",
+        "runtimeDependencies",
+        "valueMapping",
+        "publicApiMapping",
+        "requiredHosts",
+        "supportMatrix"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation DLV01 / TargetProfile; unresolved names are explicitly unverified."
+    },
+    "Requirement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "ownerRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "appliesWhen": {
+          "$comment": "Unverified named type: Expr. Preserve without interpretation."
+        },
+        "setup": {
+          "$comment": "Unverified named type: TestSetup. Preserve without interpretation."
+        },
+        "stimulus": {
+          "$comment": "Unverified named type: InputTrace. Preserve without interpretation."
+        },
+        "expected": {
+          "$comment": "Unverified named type: Observable. Preserve without interpretation."
+        },
+        "severity": {
+          "enum": [
+            "required",
+            "recommended"
+          ]
+        },
+        "oracleRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "mode": {
+          "enum": [
+            "automatic",
+            "manual"
+          ]
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "ownerRef",
+        "appliesWhen",
+        "setup",
+        "stimulus",
+        "expected",
+        "severity",
+        "oracleRef",
+        "mode",
+        "scope"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation QAL01 / Requirement; unresolved names are explicitly unverified."
+    },
+    "EvidenceRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "requirementIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "snapshotDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "sourceDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "dependencyLockDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "profileRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "environment": {
+          "$comment": "Unverified named type: EnvironmentLock. Preserve without interpretation."
+        },
+        "runnerIdentity": {
+          "type": "string"
+        },
+        "oracleDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "result": {
+          "enum": [
+            "notRun",
+            "running",
+            "pass",
+            "fail",
+            "blocked",
+            "waived",
+            "stale"
+          ]
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+          }
+        },
+        "subjectRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "fixtureDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "timestamps": {
+          "$comment": "Unverified named type: RunTimestamps. Preserve without interpretation."
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Observable. Preserve without interpretation."
+          }
+        },
+        "manualObservation": {
+          "$comment": "Unverified named type: ManualObservation. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "requirementIds",
+        "snapshotDigest",
+        "sourceDigest",
+        "dependencyLockDigest",
+        "profileRef",
+        "environment",
+        "runnerIdentity",
+        "oracleDigest",
+        "result",
+        "artifacts",
+        "subjectRefs",
+        "fixtureDigest",
+        "timestamps",
+        "observations"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation QAL02 / EvidenceRecord; unresolved names are explicitly unverified."
+    },
+    "ProjectConnection": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "hostRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "projectRoot": {
+          "$comment": "Unverified named type: AuthorizedPath. Preserve without interpretation."
+        },
+        "directories": {
+          "$comment": "Unverified named type: DirectoryMap. Preserve without interpretation."
+        },
+        "aliases": {
+          "$comment": "Unverified named type: AliasMap. Preserve without interpretation."
+        },
+        "providers": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ProviderBinding. Preserve without interpretation."
+          }
+        },
+        "allowedBehaviorBases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "installedRelease": {
+          "$ref": "#/$defs/Ref"
+        },
+        "lastDoctorReceipt": {
+          "$ref": "#/$defs/Ref"
+        },
+        "declaredEnvironment": {
+          "$ref": "#/$defs/EnvironmentSnapshot"
+        },
+        "detectedEnvironment": {
+          "$ref": "#/$defs/EnvironmentSnapshot"
+        },
+        "dependencyLockDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "targetRelease": {
+          "$ref": "#/$defs/Ref"
+        },
+        "installationState": {
+          "enum": [
+            "none",
+            "complete",
+            "mixed",
+            "failed"
+          ]
+        },
+        "lastInstallReceipt": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "id",
+        "projectRoot",
+        "directories",
+        "aliases",
+        "providers",
+        "allowedBehaviorBases",
+        "declaredEnvironment",
+        "installationState"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation DLV02 / ProjectConnection; unresolved names are explicitly unverified."
+    },
+    "DeliveryManifest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "snapshotDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "dependencyLockDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: FileDigest. Preserve without interpretation."
+          }
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "notices": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: LicenseRecord. Preserve without interpretation."
+          }
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Diagnostic"
+          }
+        },
+        "subjectRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "testPlanRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "publicApiMap": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: PublicApiMapping. Preserve without interpretation."
+          }
+        },
+        "consumerInstructions": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "snapshotDigest",
+        "profiles",
+        "dependencyLockDigest",
+        "files",
+        "assets",
+        "notices",
+        "evidenceRefs",
+        "limitations",
+        "subjectRefs",
+        "testPlanRefs",
+        "publicApiMap",
+        "consumerInstructions"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation DLV03 / DeliveryManifest; unresolved names are explicitly unverified."
+    },
+    "UpgradePlan": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "connectionRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "oldRelease": {
+          "$ref": "#/$defs/Ref"
+        },
+        "newRelease": {
+          "$ref": "#/$defs/Ref"
+        },
+        "baselineHashes": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: Digest. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning path is not interpreted by this profile."
+        },
+        "currentHashes": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: Digest. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning path is not interpreted by this profile."
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: FileChange. Preserve without interpretation."
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Conflict. Preserve without interpretation."
+          }
+        },
+        "selectedActions": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ActionDescriptor. Preserve without interpretation."
+          }
+        },
+        "rollbackRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "generatedBaselineRefs": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning path is not interpreted by this profile."
+        },
+        "newGeneratedRefs": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning path is not interpreted by this profile."
+        },
+        "deferredActions": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ActionDescriptor. Preserve without interpretation."
+          }
+        },
+        "dependencyChanges": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Change. Preserve without interpretation."
+          }
+        },
+        "providerChanges": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Change. Preserve without interpretation."
+          }
+        },
+        "validationPlanRef": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "id",
+        "connectionRef",
+        "newRelease",
+        "baselineHashes",
+        "currentHashes",
+        "changes",
+        "conflicts",
+        "selectedActions",
+        "rollbackRefs",
+        "generatedBaselineRefs",
+        "newGeneratedRefs",
+        "deferredActions",
+        "dependencyChanges",
+        "providerChanges",
+        "validationPlanRef"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation DLV04 / UpgradePlan; unresolved names are explicitly unverified."
+    },
+    "VariantAxis": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "default": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "options",
+        "default"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP10 / VariantAxis; unresolved names are explicitly unverified."
+    },
+    "RecordTypeExpr": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "record"
+          ]
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: TypeExpr. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning fieldName is not interpreted by this profile."
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: fieldName. Preserve without interpretation."
+          }
+        },
+        "additionalFields": {
+          "enum": [
+            "reject",
+            "preserve-opaque"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "fields",
+        "required",
+        "additionalFields"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP03 / RecordTypeExpr; unresolved names are explicitly unverified."
+    },
+    "ArchetypeDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "familyRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "requiredTraitRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "requiredRoleRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: RequirementRef. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "familyRef",
+        "purpose",
+        "requiredTraitRefs",
+        "requiredRoleRefs",
+        "requirements"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation CMP02 / ArchetypeDefinition; unresolved names are explicitly unverified."
+    },
+    "TextDocument": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TextBlock"
+          }
+        },
+        "localeHints": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: LocaleTag. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning scope is not interpreted by this profile."
+        }
+      },
+      "required": [
+        "id",
+        "blocks",
+        "localeHints"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX04 / TextDocument; unresolved names are explicitly unverified."
+    },
+    "TextBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "kind": {
+          "enum": [
+            "paragraph",
+            "list-item"
+          ]
+        },
+        "inlines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InlineRun"
+          }
+        },
+        "list": {
+          "$comment": "Unverified named type: ListMetadata. Preserve without interpretation."
+        },
+        "typographyRef": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "inlines"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX04 / TextBlock; unresolved names are explicitly unverified."
+    },
+    "InlineRun": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "text": {
+          "type": "string"
+        },
+        "marks": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: InlineMark. Preserve without interpretation."
+          }
+        },
+        "link": {
+          "$comment": "Unverified named type: SafeLink. Preserve without interpretation."
+        },
+        "typographyRef": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "marks"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX04 / InlineRun; unresolved names are explicitly unverified."
+    },
+    "SizePolicy": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "hug",
+            "fill",
+            "fixed"
+          ]
+        },
+        "value": {
+          "$comment": "Unverified named type: Dimension. Preserve without interpretation."
+        },
+        "min": {
+          "$comment": "Unverified named type: Dimension. Preserve without interpretation."
+        },
+        "max": {
+          "$comment": "Unverified named type: Dimension. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX03 / SizePolicy; unresolved names are explicitly unverified."
+    },
+    "FreePosition": {
+      "type": "object",
+      "properties": {
+        "relativeTo": {
+          "enum": [
+            "parent-content-box"
+          ]
+        },
+        "x": {
+          "$comment": "Unverified named type: Dimension. Preserve without interpretation."
+        },
+        "y": {
+          "$comment": "Unverified named type: Dimension. Preserve without interpretation."
+        },
+        "anchors": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: Dimension. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning edge is not interpreted by this profile."
+        }
+      },
+      "required": [
+        "relativeTo",
+        "x",
+        "y",
+        "anchors"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX03 / FreePosition; unresolved names are explicitly unverified."
+    },
+    "Screen": {
+      "type": "object",
+      "properties": {
+        "instances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Instance"
+          }
+        },
+        "themeSetRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "brandAssetRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "layout": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: InstanceLayoutRule. Preserve without interpretation."
+          }
+        }
+      },
+      "required": [
+        "instances",
+        "themeSetRef",
+        "brandAssetRefs",
+        "layout"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX07 / Screen; unresolved names are explicitly unverified."
+    },
+    "Scenario": {
+      "type": "object",
+      "properties": {
+        "screenRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "initialMockValues": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: TypedValue. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning valueId is not interpreted by this profile."
+        },
+        "initialMockStates": {
+          "type": "object",
+          "additionalProperties": {
+            "$comment": "Unverified named type: TypedValue. Preserve without interpretation."
+          },
+          "$comment": "Map key meaning stateId is not interpreted by this profile."
+        },
+        "eventBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScenarioEventBinding"
+          }
+        },
+        "prototypeLinks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PrototypeLink"
+          }
+        },
+        "inputTrace": {
+          "$comment": "Unverified named type: InputTrace. Preserve without interpretation."
+        },
+        "expectations": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: Observable. Preserve without interpretation."
+          }
+        },
+        "stepBudget": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "clock": {
+          "$comment": "Unverified named type: VirtualClockPolicy. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "screenRef",
+        "initialMockValues",
+        "initialMockStates",
+        "eventBindings",
+        "prototypeLinks",
+        "inputTrace",
+        "expectations",
+        "stepBudget",
+        "clock"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX07 / Scenario; unresolved names are explicitly unverified."
+    },
+    "ScenarioEventBinding": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "eventRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "mockAction": {
+          "$comment": "Unverified named type: MockAction. Preserve without interpretation."
+        },
+        "response": {
+          "enum": [
+            "accept",
+            "reject",
+            "delay"
+          ]
+        },
+        "delay": {
+          "$comment": "Unverified named type: Duration. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "eventRef",
+        "mockAction",
+        "response"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX07 / ScenarioEventBinding; unresolved names are explicitly unverified."
+    },
+    "PrototypeLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "fromScreenRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "eventRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "toScreenRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "guard": {
+          "$comment": "Unverified named type: Expr. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "fromScreenRef",
+        "eventRef",
+        "toScreenRef"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation UX07 / PrototypeLink; unresolved names are explicitly unverified."
+    },
+    "EnvironmentSnapshot": {
+      "type": "object",
+      "properties": {
+        "framework": {
+          "$comment": "Unverified named type: VersionedTool. Preserve without interpretation."
+        },
+        "toolchain": {
+          "$comment": "Unverified named type: ToolchainLock. Preserve without interpretation."
+        },
+        "packageManager": {
+          "$comment": "Unverified named type: VersionedTool. Preserve without interpretation."
+        },
+        "dependencyLockDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "configurationDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "observedAt": {
+          "$comment": "Unverified named type: Timestamp. Preserve without interpretation."
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Diagnostic"
+          }
+        }
+      },
+      "required": [
+        "framework",
+        "toolchain",
+        "packageManager",
+        "configurationDigest",
+        "diagnostics"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation DLV02 / EnvironmentSnapshot; unresolved names are explicitly unverified."
+    },
+    "InstalledFileRecord": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "$comment": "Unverified named type: AuthorizedRelativePath. Preserve without interpretation."
+        },
+        "generatedBaselineRef": {
+          "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+        },
+        "generatedBaselineDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "generatedReleaseRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "newGeneratedRef": {
+          "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+        },
+        "installedHash": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "appliedActions": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ActionDescriptor. Preserve without interpretation."
+          }
+        },
+        "deferredActions": {
+          "type": "array",
+          "items": {
+            "$comment": "Unverified named type: ActionDescriptor. Preserve without interpretation."
+          }
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "preserved",
+            "partial",
+            "deleted",
+            "unresolved"
+          ]
+        },
+        "provenance": {
+          "$comment": "Unverified named type: SourceRecord. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "path",
+        "appliedActions",
+        "deferredActions",
+        "status",
+        "provenance"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation DLV04 / InstalledFileRecord; unresolved names are explicitly unverified."
+    },
+    "UpgradeReceipt": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "planRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "connectionRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "targetReleaseRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InstalledFileRecord"
+          }
+        },
+        "installationState": {
+          "enum": [
+            "complete",
+            "mixed",
+            "failed"
+          ]
+        },
+        "validationEvidenceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "rollbackRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "createdAt": {
+          "$comment": "Unverified named type: Timestamp. Preserve without interpretation."
+        },
+        "environmentBeforeRef": {
+          "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+        },
+        "environmentAfterRef": {
+          "$comment": "Unverified named type: ArtifactRef. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "planRef",
+        "connectionRef",
+        "targetReleaseRef",
+        "files",
+        "installationState",
+        "validationEvidenceRefs",
+        "rollbackRefs",
+        "createdAt",
+        "environmentBeforeRef",
+        "environmentAfterRef"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation DLV04 / UpgradeReceipt; unresolved names are explicitly unverified."
+    },
+    "TransactionReceipt": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "projectId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "transactionId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "authenticatedPrincipalId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "requestDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "protocolVersion": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "result": {
+          "$ref": "#/$defs/CommandResult"
+        },
+        "createdAt": {
+          "$comment": "Unverified named type: Timestamp. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "id",
+        "projectId",
+        "transactionId",
+        "authenticatedPrincipalId",
+        "idempotencyKey",
+        "requestDigest",
+        "protocolVersion",
+        "result",
+        "createdAt"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation ARC03 / TransactionReceipt; unresolved names are explicitly unverified."
+    },
+    "StorageCommitRecord": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "not": {
+            "enum": [
+              "__proto__",
+              "prototype",
+              "constructor"
+            ]
+          }
+        },
+        "parentRevision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+              "not": {
+                "enum": [
+                  "__proto__",
+                  "prototype",
+                  "constructor"
+                ]
+              }
+            },
+            {
+              "enum": [
+                null
+              ]
+            }
+          ]
+        },
+        "snapshotDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "fileManifestDigest": {
+          "$comment": "Unverified named type: Digest. Preserve without interpretation."
+        },
+        "transactionReceiptRef": {
+          "$ref": "#/$defs/Ref"
+        },
+        "undoStateRef": {
+          "$comment": "Unverified named type: StorageRef. Preserve without interpretation."
+        },
+        "redoStateRef": {
+          "$comment": "Unverified named type: StorageRef. Preserve without interpretation."
+        },
+        "storageFormatVersion": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "committedAt": {
+          "$comment": "Unverified named type: Timestamp. Preserve without interpretation."
+        }
+      },
+      "required": [
+        "projectId",
+        "revision",
+        "parentRevision",
+        "snapshotDigest",
+        "fileManifestDigest",
+        "transactionReceiptRef",
+        "undoStateRef",
+        "redoStateRef",
+        "storageFormatVersion",
+        "committedAt"
+      ],
+      "additionalProperties": true,
+      "$comment": "Foundation ARC04 / StorageCommitRecord; unresolved names are explicitly unverified."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "project"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/Project"
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "foundation"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/Foundation"
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "component"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/ComponentDefinition"
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "design"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/DesignDefinition"
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "screen"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/Screen"
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "scenario"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/Scenario"
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "connection"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/ProjectConnection"
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "text"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/TextDocument"
+      }
+    }
+  ]
+}

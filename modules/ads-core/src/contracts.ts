@@ -1,15 +1,25 @@
 /** Browser-neutral contracts for the bounded document-kernel profile. */
+import type { STRUCTURAL_PROFILE } from "./constants.ts";
+import type { StructuralReport } from "./structural-contracts.ts";
+import type { LocalReferenceReport } from "./graph-contracts.ts";
+
+export type ValidationProfile = typeof STRUCTURAL_PROFILE;
+export interface ProjectStructureReport {
+  revision: string | null; profile: ValidationProfile; valid: boolean;
+  documents: { id: string; structure: StructuralReport }[];
+  references: LocalReferenceReport; diagnostics: Diagnostic[];
+}
 export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 export type JsonObject = { [key: string]: JsonValue };
 export type AdsDocument = JsonObject & { id: string; kind: string; schemaVersion: string; revision: string; name: string };
 
 export type DiagnosticPhase = "parse" | "envelope" | "authorization" | "command" | "reference" | "review" | "history" | "document" | "state";
 export interface Diagnostic { code: string; phase: DiagnosticPhase; severity: "info" | "warning" | "error"; message: string; sourceRef?: string; path?: string }
-export interface DocumentEntry { document: AdsDocument; originalText: string; sourceUri: string; validation: "envelope-only"; diagnostics: Diagnostic[]; currentText?: string; currentSourceUri?: string }
+export interface DocumentEntry { document: AdsDocument; originalText: string; sourceUri: string; validation: "envelope-only"; diagnostics: Diagnostic[]; currentText?: string; currentSourceUri?: string; validationProfile?: ValidationProfile }
 export interface DocumentInspection { validation: "invalid" | "envelope-only"; diagnostics: Diagnostic[]; document?: AdsDocument }
 /** Immutable source capture; malformed content is never an active ADS document. */
-export interface SourceDraft { id: string; projectId: string; actorId: string; sourceUri: string; originalText: string; sourceDigest: string; diagnostics: Diagnostic[]; validation: "invalid" | "envelope-only" }
-export interface SourceExport { documentId: string; revision: string; projectRevision: string; canonicalProfile: string; hashAlgorithm: "sha256"; original: { uri: string; text: string; digest: string }; normalized: { text: string; digest: string }; diagnostics: Diagnostic[]; validation: "envelope-only"; semantics: "unverified" }
+export interface SourceDraft { id: string; projectId: string; actorId: string; sourceUri: string; originalText: string; sourceDigest: string; diagnostics: Diagnostic[]; validation: "invalid" | "envelope-only"; validationProfile?: ValidationProfile }
+export interface SourceExport { documentId: string; revision: string; projectRevision: string; canonicalProfile: string; hashAlgorithm: "sha256"; original: { uri: string; text: string; digest: string }; normalized: { text: string; digest: string }; diagnostics: Diagnostic[]; validation: "envelope-only"; semantics: "unverified"; validationProfile?: ValidationProfile }
 export interface ProjectSnapshot { id: string; name: string; revision: string; documents: Record<string, DocumentEntry> }
 export interface Principal { id: string; scopes: readonly string[] }
 export interface CommandEnvelope {

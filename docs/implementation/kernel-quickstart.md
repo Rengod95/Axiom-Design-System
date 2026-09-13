@@ -87,6 +87,22 @@ pnpm axiom --store "$demoRoot/store" export component.repaired --out "$demoRoot/
 
 Export writes `original.json`, `normalized.json` and `manifest.json` into one fresh directory whose parent already exists. `original.json` contains the exact first source text and may be malformed JSON; `normalized.json` contains canonical current document JSON. The manifest records both SHA-256 digests and the canonicalization profile. Existing destinations, parent traversal and symlink ancestors are refused, and existing files are never overwritten. The manifest is written last; an I/O failure can leave partial output without a completed manifest. This is a source pair, not a target delivery or release package. These filesystem operations assume the same local folder authority as the store; they do not defend against a hostile process replacing parent directories during the operation.
 
+## Inspect and adopt structural validation
+
+[ADR-0011](../adr/0011-structural-domain-inspection-and-local-references.md) adds a selectable check of known Foundation fields and local references. Existing envelope-only files remain readable. `validate` inspects the current project without changing its revision or adoption policy; an enforced error returns exit code 1. The separate `structure` result lists checked records, unresolved types and graph findings. Its success still leaves full domain semantics and schema-version support unverified.
+
+```powershell
+$textFile = Join-Path $demoRoot 'text.json'
+$textSource = '{"id":"text.welcome","kind":"text","schemaVersion":"1.0.0","revision":"source-r1","name":"Welcome","blocks":[{"id":"block.welcome","kind":"paragraph","inlines":[{"id":"run.welcome","text":"안녕하세요","marks":[]}]}],"localeHints":{}}'
+[IO.File]::WriteAllText($textFile, $textSource, [Text.UTF8Encoding]::new($false))
+pnpm axiom --store "$demoRoot/store" import $textFile --structural --approve
+pnpm axiom --store "$demoRoot/store" validate
+```
+
+Earlier Card envelopes in this guide deliberately lack complete component bodies; `validate` reports their missing structural fields. A fresh project containing only the complete Text example passes the implemented structural subset. Unknown InlineMark or SafeLink details remain preservation boundaries with warnings, so passing this check is not a rendering, accessibility or link-safety certification.
+
+`import --draft --structural` captures erroneous sources with structural diagnostics. Repairs linked to those drafts inherit the profile. An adopted structural document also keeps its policy when later `update` commands omit `--structural`. Missing required fields, duplicate covered identities, covered broken references and Part-parent cycles are rejected before adoption. To promote a complete envelope-only document, use `update <file> --structural --approve`; an otherwise unchanged source may retain its source revision. Undo restores the earlier policy and source snapshot together. Export includes the adopted validationProfile in its manifest.
+
 ## Delete, Undo and redo
 
 ```powershell

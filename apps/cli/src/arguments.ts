@@ -47,7 +47,7 @@ export function validateArguments(input: CliArguments): void {
     case "init": checkOptions(input, ["project", "name"], 0, 0); break;
     case "import":
     case "update":
-      checkOptions(input, input.command === "import" ? ["approve", "draft", "draft-id"] : ["approve", "draft-id"], 1, IMPORT_LIMITS.maxDocuments);
+      checkOptions(input, input.command === "import" ? ["approve", "draft", "draft-id", "structural"] : ["approve", "draft-id", "structural"], 1, IMPORT_LIMITS.maxDocuments);
       if (input.options.draft && (input.options.approve || input.options["draft-id"])) throw new CliUsageError("--draft cannot combine with --approve or --draft-id");
       if (input.options["draft-id"] && input.positional.length !== 1) throw new CliUsageError("--draft-id binds exactly one source file");
       break;
@@ -59,6 +59,7 @@ export function validateArguments(input: CliArguments): void {
     case "draft": checkOptions(input, [], 1, 1); break;
     case "drafts":
     case "diagnostics":
+    case "validate":
     case "history":
     case "recover-lock": checkOptions(input, [], 0, 0); break;
     case "export":

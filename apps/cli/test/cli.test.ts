@@ -13,18 +13,23 @@ import type { CommandEnvelope } from "../../../modules/ads-core/src/index.ts";
 
 const CLI_ENTRY = fileURLToPath(new URL("../src/main.ts", import.meta.url));
 const TEMP_PREFIX = "axiom-cli-test-";
+interface CliDiagnostic { code: string; phase: string; severity: string; message: string; path?: string }
 interface CliResponse {
   status: string; revision: string; candidateId: string; reviewToken: string;
   project: { documents: Record<string, unknown>; revision: string };
   document: { originalText: string; validation: string; document: Record<string, unknown> };
   candidate: { status: string; diff: { change: string; fields?: { path: string }[] }[]; approval?: unknown };
-  diagnostics: { code: string; phase: string }[];
+  diagnostics: CliDiagnostic[];
   history: unknown[];
   validation: string;
   semantics: string;
   draftRefs: string[];
   drafts: { id: string; originalText?: string }[];
-  draft: { id: string; originalText: string; sourceDigest: string; validation: string };
+  draft: { id: string; originalText: string; sourceDigest: string; validation: string; diagnostics: CliDiagnostic[] };
+  structure: {
+    revision: string | null; profile: string; valid: boolean; diagnostics: CliDiagnostic[];
+    documents: { id: string; structure: { valid: boolean; diagnostics: CliDiagnostic[]; unverifiedTypes: string[] } }[];
+  };
 }
 
 /** Every command launches a fresh process, exercising persisted rather than in-memory state. */
@@ -276,13 +281,14 @@ test("invalid capture, repaired import, reviewed update, restart Undo and paired
   run(store, ["export", "doc-editable", "--out", output]);
   const exportedOriginal = await readFile(join(output, "original.json"));
   const exportedNormalized = await readFile(join(output, "normalized.json"));
-  const manifest = JSON.parse(await readFile(join(output, "manifest.json"), "utf8")) as { original: { digest: string }; normalized: { digest: string }; validation: string; semantics: string };
+  const manifest = JSON.parse(await readFile(join(output, "manifest.json"), "utf8")) as { original: { digest: string }; normalized: { digest: string }; validation: string; semantics: string; validationProfile?: string };
   assert.deepEqual(exportedOriginal, Buffer.from(original));
   assert.equal(manifest.original.digest, createHash("sha256").update(exportedOriginal).digest("hex"));
   assert.equal(manifest.normalized.digest, createHash("sha256").update(exportedNormalized).digest("hex"));
   assert.equal(JSON.parse(exportedNormalized.toString("utf8")).name, "Reviewed new name");
   assert.equal(manifest.validation, "envelope-only");
   assert.equal(manifest.semantics, "unverified");
+  assert.equal(manifest.validationProfile, undefined);
   assert.equal(run(store, ["export", "doc-editable", "--out", output], 1).diagnostics[0]?.code, "CLI_EXPORT_PATH");
   assert.deepEqual(await readFile(join(output, "normalized.json")), exportedNormalized);
 
@@ -318,4 +324,98 @@ test("draft flags, update identities and output paths reject without changing ad
   await symlink(target, link, "junction");
   assert.equal(run(store, ["export", "doc-protected", "--out", join(link, "export")], 1).diagnostics[0]?.code, "CLI_EXPORT_PATH");
   await assert.rejects(stat(join(target, "export")), { code: "ENOENT" });
+});
+
+test("validate reports known structural errors without changing the envelope import default", async (t) => {
+  const { root, store } = await workspace(t);
+  const file = join(root, "envelope-only-text.json");
+  await writeFile(file, document("text-incomplete", { kind: "text" }));
+  run(store, ["init"]);
+  run(store, ["import", file, "--approve"]);
+  const before = await new FileStore(store).read();
+  const report = run(store, ["validate"], 1).structure;
+  assert.equal(report.profile, "foundation-structural");
+  assert.equal(report.valid, false);
+  assert.equal(report.documents[0]?.id, "text-incomplete");
+  assert.ok(report.diagnostics.some((item) => item.severity === "error"));
+  assert.deepEqual(await new FileStore(store).read(), before);
+});
+
+test("structural draft repair, inherited validation, stale approval and Undo survive restart", async (t) => {
+  const { root, store } = await workspace(t);
+  const validFile = join(root, "valid-text.json");
+  const sourceFile = join(root, "repair-text.json");
+  const validText = (revision: string, name: string): string => document("text-repair", {
+    kind: "text", revision, name, localeHints: {},
+    blocks: [{ id: "text-block", kind: "paragraph", inlines: [{ id: "text-run", text: "안녕하세요\nAxiom", marks: [] }] }],
+  });
+  const invalidOriginal = document("text-repair", { kind: "text", blocks: [], localeHints: [] });
+  await writeFile(validFile, document("text-valid", { kind: "text", blocks: [], localeHints: {} }));
+  await writeFile(sourceFile, invalidOriginal);
+  const initial = run(store, ["init"]);
+  assert.equal(run(store, ["import", validFile, sourceFile, "--structural", "--approve"], 1).status, "rejected");
+  assert.deepEqual(run(store, ["show"]).project.documents, {});
+  assert.equal((await new FileStore(store).read())?.candidates.length, 0);
+  const capture = run(store, ["import", sourceFile, "--draft", "--structural"]);
+  assert.equal(capture.status, "accepted");
+  assert.ok(capture.diagnostics.some((item) => item.severity === "error"));
+  const draftId = capture.draftRefs[0]!;
+  assert.deepEqual(run(store, ["draft", draftId]).draft.diagnostics, capture.diagnostics);
+  assert.equal(run(store, ["show"]).project.revision, initial.revision);
+  assert.equal(run(store, ["validate"]).structure.valid, true);
+
+  await writeFile(sourceFile, validText("source-r1", "Repaired text"));
+  run(store, ["import", sourceFile, "--draft-id", draftId, "--structural", "--approve"]);
+  assert.equal(run(store, ["validate"]).structure.valid, true);
+  const adopted = run(store, ["show"]).project.revision;
+  await writeFile(sourceFile, document("text-repair", { kind: "text", revision: "source-r2", blocks: null, localeHints: {} }));
+  for (const options of [[], ["--structural"]]) {
+    assert.equal(run(store, ["update", sourceFile, ...options, "--approve"], 1).status, "rejected");
+    assert.equal(run(store, ["show"]).project.revision, adopted);
+  }
+  await writeFile(sourceFile, validText("source-r2", "Staged text"));
+  const staged = run(store, ["update", sourceFile, "--structural"]);
+  const approved = run(store, ["review", staged.candidateId, "--approve"]);
+  await writeFile(sourceFile, validText("source-r3", "Intervening text"));
+  run(store, ["update", sourceFile, "--approve"]);
+  assert.equal(run(store, ["apply", staged.candidateId, "--token", approved.reviewToken], 3).status, "conflict");
+  run(store, ["undo"]);
+  assert.equal(run(store, ["show", "text-repair"]).document.document.revision, "source-r1");
+  assert.equal(run(store, ["validate"]).structure.valid, true);
+  run(store, ["redo"]);
+  assert.equal(run(store, ["show", "text-repair"]).document.document.revision, "source-r3");
+  const output = join(root, "structural-export");
+  run(store, ["export", "text-repair", "--out", output]);
+  const manifest = JSON.parse(await readFile(join(output, "manifest.json"), "utf8")) as { validationProfile?: string };
+  assert.equal(manifest.validationProfile, "foundation-structural");
+  assert.equal(await readFile(join(output, "original.json"), "utf8"), invalidOriginal);
+});
+
+test("structural inspection preserves unknown named types as unverified data", async (t) => {
+  const { root, store } = await workspace(t);
+  const file = join(root, "unknown-mark.json");
+  const unknownMark = { futureMark: { expectedKind: "text", id: "not-an-active-reference" } };
+  await writeFile(file, document("text-opaque", {
+    kind: "text", localeHints: {},
+    blocks: [{ id: "opaque-block", kind: "paragraph", inlines: [{ id: "opaque-run", text: "Future mark", marks: [unknownMark] }] }],
+    extensions: { "example.vendor": { expectedKind: "component", id: "also-opaque" } },
+  }));
+  run(store, ["init"]);
+  run(store, ["import", file, "--structural", "--approve"]);
+  const report = run(store, ["validate"]).structure;
+  assert.equal(report.valid, true);
+  assert.ok(report.documents[0]?.structure.unverifiedTypes.includes("InlineMark"));
+  assert.ok(report.diagnostics.some((item) => item.severity === "warning"));
+  assert.deepEqual(run(store, ["show", "text-opaque"]).document.document.blocks, [
+    { id: "opaque-block", kind: "paragraph", inlines: [{ id: "opaque-run", text: "Future mark", marks: [unknownMark] }] },
+  ]);
+});
+
+test("structural options are explicit and validate requires an existing project", async (t) => {
+  const { store } = await workspace(t);
+  for (const args of [["validate", "document-id"], ["validate", "--approve"], ["validate", "--structural"], ["delete", "document-id", "--structural"], ["init", "--structural"]]) {
+    assert.equal(run(store, args, 2).diagnostics[0]?.code, "CLI_USAGE");
+    await assert.rejects(stat(store), { code: "ENOENT" });
+  }
+  assert.equal(run(store, ["validate"], 1).diagnostics[0]?.code, "CLI_NOT_FOUND");
 });

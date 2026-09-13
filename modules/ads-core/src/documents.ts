@@ -1,5 +1,5 @@
 import type { AdsDocument, Diagnostic, DocumentEntry, DocumentInspection, JsonObject, JsonValue } from "./contracts.ts";
-import { CODE, DOCUMENT_KINDS, ID_PATTERN, OPAQUE_FIELDS, RESERVED_IDS } from "./constants.ts";
+import { CODE, DOCUMENT_KINDS, ID_PATTERN, OPAQUE_FIELDS, RESERVED_IDS, STRUCTURAL_PROFILE } from "./constants.ts";
 import { parseJson } from "./canonical-json.ts";
 import { KernelError } from "./kernel-error.ts";
 import { envelopeDiagnostics } from "./schema-validation.ts";
@@ -64,6 +64,6 @@ export function validateReferences(documents: Record<string, DocumentEntry>, pro
     }
     for (const [key, child] of Object.entries(value)) if (!OPAQUE_FIELDS.has(key)) visit(child, owner);
   };
-  for (const entry of Object.values(documents)) visit(entry.document, entry.document.id);
+  for (const entry of Object.values(documents)) if (entry.validationProfile !== STRUCTURAL_PROFILE) visit(entry.document, entry.document.id);
   return diagnostics;
 }

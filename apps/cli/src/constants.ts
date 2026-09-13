@@ -17,7 +17,7 @@ export const CLI_OUTPUT_CONTEXT = { profile: "ads-kernel", validation: "envelope
 export const LOCAL_PRINCIPAL = { id: "local-owner", scopes: ["project.read", "project.write", "review.apply"] } as const;
 export const LOCAL_ID_PREFIX = "local";
 export const VALUE_OPTIONS = ["store", "project", "name", "token", "draft-id", "out"] as const;
-export const FLAG_OPTIONS = ["approve", "reject", "help", "draft"] as const;
+export const FLAG_OPTIONS = ["approve", "reject", "help", "draft", "structural"] as const;
 export const CLI_HELP = `Axiom ADS document kernel
 
 Usage: pnpm axiom --store <directory> <command> [arguments]
@@ -26,10 +26,12 @@ Usage: pnpm axiom --store <directory> <command> [arguments]
   import <file...> [--approve]          Stage new UTF-8 ADS documents
   import <file...> --draft              Preserve sources, even invalid JSON
   update <file...> [--approve]          Stage edits to existing document IDs
+  import/update <file...> --structural Enforce known Foundation structures
   import/update <file> --draft-id <id>  Bind one repair to a preserved source
   drafts                              List this local principal's drafts
   draft <draft-id>                     Read preserved source and diagnostics
   diagnostics                         Read project and source draft diagnostics
+  validate                            Inspect active structures and local refs
   export <document-id> --out <dir>     Write source pair to a fresh directory
   delete <document-id...> [--approve]   Stage reference-safe deletion
   candidate <candidate-id>             Inspect the proposed diff
@@ -46,10 +48,13 @@ Usage: pnpm axiom --store <directory> <command> [arguments]
 
 Results are JSON. Import/update/delete without --approve only stage a candidate.
 --draft preserves an immutable source without changing the active project.
+--structural also works with --draft to preserve structural diagnostics.
 Imports allow ${IMPORT_LIMITS.maxDocuments} files, ${IMPORT_LIMITS.maxDocumentBytes} bytes each,
 and ${IMPORT_LIMITS.maxBatchBytes} bytes total; UTF-8 only.
 --approve is an explicit review decision; the core still validates every step.
-Only envelope structure and recognized references are checked. ADS domain
+Envelope checks are the default; --structural adds bounded known-field checks.
+Unknown types and registry semantics remain unverified. ADS domain
 semantics, Studio, token rendering and output targets remain unverified.
-Exit codes: 0 success or staged review; 1 rejected/I/O; 2 usage; 3 conflict/lock.
+Exit codes: 0 success or staged review; 1 rejected/invalid structure/I/O;
+2 usage; 3 conflict/lock.
 `;

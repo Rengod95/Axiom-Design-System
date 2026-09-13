@@ -60,6 +60,14 @@
           "adr": "docs/adr/0010-source-preserving-draft-authoring.md",
           "compiler": "ajv@8.20.0",
           "runtimeDependency": false
+        },
+        {
+          "scope": "Known structure from 57 catalog records and selected local references; unresolved types and full domain semantics remain unverified",
+          "status": "PARTIAL_IMPLEMENTATION_EVIDENCE",
+          "path": "docs/implementation/structural-domain-evidence.md",
+          "adr": "docs/adr/0011-structural-domain-inspection-and-local-references.md",
+          "compiler": "ajv@8.20.0",
+          "runtimeDependency": false
         }
       ]
     },

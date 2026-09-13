@@ -10,6 +10,8 @@ The current product direction and document index are confirmed. All 56 Foundatio
 6. [Kernel quickstart](implementation/kernel-quickstart.md) and [implementation evidence](implementation/kernel-evidence.md)
 7. [Initial self-review and continuation](implementation/initial-kernel-review.md), [schema evidence](implementation/schema-selection-evidence.md) and [remaining implementation map](implementation/implementation-roadmap.json)
 
-Current lifecycle authority remains [ADR-0006](adr/0006-product-reset-and-reference-lifecycle.md), [ADR-0007](adr/0007-git-reference-and-documentation-phase.md) and the explicit implementation amendments in ADR-0009 and ADR-0010. Documentation QA and reference restoration checks do not prove product runtime support.
+8. [Structural domain and local-reference evidence](implementation/structural-domain-evidence.md)
+
+Current lifecycle authority remains [ADR-0006](adr/0006-product-reset-and-reference-lifecycle.md), [ADR-0007](adr/0007-git-reference-and-documentation-phase.md) and the explicit implementation amendments in ADR-0009, ADR-0010 and [ADR-0011](adr/0011-structural-domain-inspection-and-local-references.md). Documentation QA and reference restoration checks do not prove product runtime support.
 
 [Engineering principles](standards/source-code-and-module-structure.md), [retirement ledger](maintenance/pre-studio-retirement.md), and [reference restoration](../reference/pre-studio/README.md) continue to govern the preserved history. The new core, Node store and CLI are allowed only within the [implementation profile](implementation/ads-kernel-profile.json). The earlier package graph, full ADS schemas and output target packages have not been restored.

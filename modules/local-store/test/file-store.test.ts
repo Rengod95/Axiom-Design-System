@@ -6,7 +6,7 @@ import { hostname, tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import type { TestContext } from "node:test";
-import { CommandService, PROTOCOL_VERSION } from "../../ads-core/src/index.ts";
+import { CommandService, PROTOCOL_VERSION, STRUCTURAL_PROFILE } from "../../ads-core/src/index.ts";
 import type { CommandEnvelope, CommandResult, DocumentEntry, JsonObject, KernelState, Principal, SourceDraft } from "../../ads-core/src/index.ts";
 import { FileStore, FileStoreError } from "../src/index.ts";
 
@@ -471,5 +471,32 @@ test("rejects root and controlled-directory symlinks where the OS allows their c
       catch (error) { if (error instanceof Error && "code" in error && ["EPERM", "ENOSYS", "EACCES"].includes(String(error.code))) { inner.skip("The OS denied symlink creation."); return; } throw error; }
       await assert.rejects(new FileStore(scope === "root" ? link : directory).read(), error => error instanceof FileStoreError && error.code === "STORE_PATH");
     });
+  }
+});
+
+
+test("source validation policy round-trips and unknown policies reject atomically in every stored projection", async (t) => {
+  const directory = await directoryFor(t);
+  const store = new FileStore(directory);
+  const state = acceptedState();
+  state.project!.documents.doc!.validationProfile = STRUCTURAL_PROFILE;
+  const draft = sourceDraft();
+  draft.validationProfile = STRUCTURAL_PROFILE;
+  state.drafts = [draft];
+  await store.transact(() => ({ state, value: undefined, changed: true }));
+  const reopened = new FileStore(directory);
+  assert.equal((await reopened.read())!.project!.documents.doc!.validationProfile, STRUCTURAL_PROFILE);
+  assert.equal((await reopened.read())!.drafts![0]!.validationProfile, STRUCTURAL_PROFILE);
+  const before = await reopened.read();
+  for (const target of ["document", "draft", "candidate", "undo", "redo"]) {
+    await assert.rejects(reopened.transact((current) => {
+      const invalid = { ...current!.project!.documents.doc!, validationProfile: "unknown-policy" } as unknown as DocumentEntry;
+      if (target === "document") current!.project!.documents.doc = invalid;
+      if (target === "draft") current!.drafts![0]!.validationProfile = "unknown-policy" as typeof STRUCTURAL_PROFILE;
+      if (target === "candidate") current!.candidates = [{ id: "candidate", projectId: "project", baseRevision: "revision-1", digest: "digest", actorId: "owner", documents: { doc: invalid }, diff: [], diagnostics: [], status: "pending" }];
+      if (target === "undo" || target === "redo") current![target] = [{ handle: "handle", actorId: "owner", applicableRevision: "revision-1", before: { doc: invalid }, after: {} }];
+      return { state: current!, value: undefined, changed: true };
+    }), { code: "STORE_STATE" });
+    assert.deepEqual(await reopened.read(), before);
   }
 });

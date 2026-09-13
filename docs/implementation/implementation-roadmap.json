@@ -4,6 +4,7 @@
   "authority": [
     "docs/adr/0009-ads-kernel-implementation-bootstrap.md",
     "docs/adr/0010-source-preserving-draft-authoring.md",
+    "docs/adr/0011-structural-domain-inspection-and-local-references.md",
     "docs/foundation/operations/development-and-maintenance.md"
   ],
   "statusPolicy": "PARTIAL_PROFILE is implemented only in the bounded local I1 profile; PLANNED is not implemented. Neither denotes public conformance or release readiness.",
@@ -23,10 +24,13 @@
         "reviewed new-ID import and same-ID update",
         "durable receipts and Undo/redo",
         "paired original and normalized source export",
-        "Node process-crash recovery"
+        "Node process-crash recovery",
+        "catalog-derived structural projection with explicit unresolved types",
+        "reviewed structural-profile adoption and inherited update guards",
+        "selected nested identities, local references and Part-parent cycle checks"
       ],
       "remaining": [
-        "complete ADS domain schemas and public types",
+        "complete ADS domain schemas, unresolved named types and public generated types",
         "registered old/new schema migration pairs and loss reports",
         "domain-aware unresolved draft edits",
         "multi-document native project interchange",
@@ -376,12 +380,14 @@
   "localSourceProjections": [
     "listDrafts",
     "getDraft",
-    "exportDocument"
+    "exportDocument",
+    "inspectStructure"
   ],
   "limitations": [
     "Source capture is bounded UTF-8 text, not arbitrary binary recovery.",
     "A common envelope pass does not validate domain semantics or schema-version support.",
     "Schema migration remains explicitly unsupported until a reviewed transform contract exists.",
-    "Realtime collaboration is a later scope; initial release still includes React/RN/Swift/Android."
+    "Realtime collaboration is a later scope; initial release still includes React/RN/Swift/Android.",
+    "Catalog structural validation enforces known fields only; unresolved types, registry document bodies and external library versions remain unverified."
   ]
 }
