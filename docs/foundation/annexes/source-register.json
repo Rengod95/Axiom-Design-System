@@ -1,0 +1,461 @@
+{
+  "kind": "documentation-source-register",
+  "recordedDate": "2026-09-12",
+  "policy": "Official sources only for technology claims; catalog rows preserve the 2026-09-11 research snapshot. Page access is not product execution verification.",
+  "entries": [
+    {
+      "url": "https://ajv.js.org/guide/managing-schemas.html",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md",
+        "docs/foundation/architecture/modules-and-dependencies.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://automerge.org/",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://base-ui.com/react/overview/about",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/components/behavior-and-input-profiles.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://base-ui.com/react/overview/quick-start",
+      "referencedBy": [
+        "docs/foundation/annexes/catalog-and-obligations.md"
+      ],
+      "evidenceKind": "historical-catalog-source",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://developer.android.com/compose",
+      "referencedBy": [
+        "docs/foundation/delivery/target-and-style-profiles.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://developer.apple.com/swiftui/",
+      "referencedBy": [
+        "docs/foundation/delivery/target-and-style-profiles.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/File_System_API",
+      "referencedBy": [
+        "docs/foundation/architecture/storage-offline-and-recovery.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://developers.webflow.com/code-components/introduction",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://docs.pen.dev/core-concepts/design-as-code",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://docs.pen.dev/core-concepts/slots",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://docs.plasmic.app/learn/code-components-ref/",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://docs.plasmic.app/learn/code-components/",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://fabricjs.com/docs/",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://github.com/plasmicapp/plasmic",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://github.com/plasmicapp/plasmic/blob/master/packages/react-web/package.json",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://github.com/yjs/yjs",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md",
+        "docs/foundation/architecture/collaboration-readiness.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://json-schema.org/draft/2020-12",
+      "referencedBy": [
+        "docs/foundation/architecture/modules-and-dependencies.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://konvajs.org/docs/overview.html",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://layout.pixijs.io/",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://lexical.dev/",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://mantine.dev/",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://mantine.dev/charts/getting-started/",
+      "referencedBy": [
+        "docs/foundation/annexes/catalog-and-obligations.md"
+      ],
+      "evidenceKind": "historical-catalog-source",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://mantine.dev/core/package/",
+      "referencedBy": [
+        "docs/foundation/annexes/catalog-and-obligations.md"
+      ],
+      "evidenceKind": "historical-catalog-source",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://mantine.dev/dates/getting-started/",
+      "referencedBy": [
+        "docs/foundation/annexes/catalog-and-obligations.md"
+      ],
+      "evidenceKind": "historical-catalog-source",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+      "referencedBy": [
+        "docs/foundation/architecture/public-api-mcp-and-entitlements.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://motion.dev/docs/react-animation",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/components/motion-and-transitions.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://opensource.org/license/agpl-3.0",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/business/open-core-and-rights.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://opensource.org/osd",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/business/open-core-and-rights.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://playwright.dev/docs/accessibility-testing",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/components/accessibility-contracts.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://react-aria.adobe.com/Button",
+      "referencedBy": [
+        "docs/foundation/annexes/catalog-and-obligations.md"
+      ],
+      "evidenceKind": "historical-catalog-source",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://react-aria.adobe.com/customization",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/components/behavior-and-input-profiles.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://react.dev/",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://reactnative.dev/docs/platform-specific-code",
+      "referencedBy": [
+        "docs/foundation/delivery/target-and-style-profiles.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://skia.org/docs/user/modules/canvaskit/",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://tiptap.dev/docs/editor/getting-started/overview",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://tldraw.dev/sdk-features/license-key",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://ui.shadcn.com/",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://ui.shadcn.com/docs/components",
+      "referencedBy": [
+        "docs/foundation/annexes/catalog-and-obligations.md"
+      ],
+      "evidenceKind": "historical-catalog-source",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.builder.io/c/docs/how-builder-works-technical",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.builder.io/pricing",
+      "referencedBy": [
+        "docs/foundation/business/pricing-entitlements-and-economics.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.designtokens.org/TR/2025.10/color/",
+      "referencedBy": [
+        "docs/foundation/annexes/targets-and-environments.md",
+        "docs/foundation/syntax/standard-strategy.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.designtokens.org/TR/2025.10/format/",
+      "referencedBy": [
+        "docs/foundation/annexes/targets-and-environments.md",
+        "docs/foundation/syntax/standard-strategy.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.designtokens.org/TR/2025.10/resolver/",
+      "referencedBy": [
+        "docs/foundation/annexes/targets-and-environments.md",
+        "docs/foundation/syntax/foundation-and-token-semantics.md",
+        "docs/foundation/syntax/standard-strategy.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.figma.com/blog/building-a-professional-design-tool-on-the-web/",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.figma.com/blog/webassembly-cut-figmas-load-time-by-3x/",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.framer.com/developers/components-introduction",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.mozilla.org/en-US/MPL/2.0/",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.mozilla.org/en-US/MPL/2.0/FAQ/",
+      "referencedBy": [
+        "docs/foundation/business/open-core-and-rights.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.plasmic.app/pricing",
+      "referencedBy": [
+        "docs/foundation/business/pricing-entitlements-and-economics.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.uxpin.com/docs/merge/what-is-uxpin-merge/",
+      "referencedBy": [
+        "docs/foundation/annexes/technology-and-references.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.uxpin.com/pricing",
+      "referencedBy": [
+        "docs/foundation/business/pricing-entitlements-and-economics.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "referencedBy": [
+        "docs/foundation/components/accessibility-contracts.md",
+        "docs/foundation/experience/editor-accessibility-and-language.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/",
+      "referencedBy": [
+        "docs/foundation/components/accessibility-contracts.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    },
+    {
+      "url": "https://www.yogalayout.dev/docs/about-yoga",
+      "referencedBy": [
+        "docs/foundation/annexes/rights-and-provenance.md",
+        "docs/foundation/annexes/technology-and-references.md",
+        "docs/foundation/experience/layout-authoring.md"
+      ],
+      "evidenceKind": "official-document-or-source-reference",
+      "runtimeEvidence": false
+    }
+  ]
+}

@@ -1,0 +1,3860 @@
+{
+  "kind": "foundation-completeness-and-quality-review",
+  "status": "PASS",
+  "reviewedAt": "2026-09-13T05:45:27.241799+00:00",
+  "sourceBaselineCommit": "08a2c031f377e4d2da4bb0851a7c649392b6fea3",
+  "scope": "All 56 manifest bodies, ownership/completion criteria, approved decisions and governed structured annexes; product implementation and later technology experiments are separate gates.",
+  "counts": {
+    "documents": 56,
+    "domains": 12,
+    "resolvedFindingGroups": 22,
+    "openMaterialFindings": 0,
+    "fields": 57,
+    "commands": 52
+  },
+  "documents": [
+    {
+      "id": "GOV01",
+      "path": "docs/foundation/governance/authority-and-change-control.md",
+      "bodySha256": "38435dcbebc9f4f14fb569bcf0d97f67f0735795e95913a63cfed318123d44c5",
+      "status": "PASS",
+      "originalReview": {
+        "id": "GOV01",
+        "path": "docs/foundation/governance/authority-and-change-control.md",
+        "status": "PASS_AFTER_SAFE_FIX",
+        "assessment": "Authority order, conditional authorization, accepted bootstrap gate, and normative ownership versus summaries/annex projections are explicit.",
+        "findingIds": [
+          "GP01"
+        ],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "GOV02",
+      "path": "docs/foundation/governance/glossary-and-naming.md",
+      "bodySha256": "d2e0d9be73fc746ebf169025ccd73e4b9520e8421400e5801ea81177dc6c7c69",
+      "status": "PASS",
+      "originalReview": {
+        "id": "GOV02",
+        "path": "docs/foundation/governance/glossary-and-naming.md",
+        "status": "PASS",
+        "assessment": "Studio/Builder/ADS/DSF and UI meaning are separated; stable IDs, five provider meanings, ko/en ownership and rename checks are coherent.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "GOV03",
+      "path": "docs/foundation/governance/version-and-compatibility.md",
+      "bodySha256": "f1a910cc57f73e79050c2877135bace124154d1a546e82750bbb59d11ba44aea",
+      "status": "PASS",
+      "originalReview": {
+        "id": "GOV03",
+        "path": "docs/foundation/governance/version-and-compatibility.md",
+        "status": "PASS",
+        "assessment": "Format, contract, revision and delivery versions are distinct; breaking changes, migration/original retention, unknown extension preservation and deprecation are covered.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "PRD01",
+      "path": "docs/foundation/product/purpose-and-users.md",
+      "bodySha256": "2c26015ccf61eaffca993f10f6a94c839c33f8edd1691dc695e83f1620fc77b3",
+      "status": "PASS",
+      "originalReview": {
+        "id": "PRD01",
+        "path": "docs/foundation/product/purpose-and-users.md",
+        "status": "PASS",
+        "assessment": "Four user groups have distinct success tasks; UI and consumer business logic boundary and observed value metrics are concrete.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "PRD02",
+      "path": "docs/foundation/product/journeys-and-acceptance.md",
+      "bodySha256": "afa01139400a7f88a3f65c9b2507fa87cc8c22441c5d4cadf37bb550a37c84c9",
+      "status": "PASS",
+      "originalReview": {
+        "id": "PRD02",
+        "path": "docs/foundation/product/journeys-and-acceptance.md",
+        "status": "PASS",
+        "assessment": "J01-J08 cover authoring, AI, installation, upgrades, offline and stale changes with observable success and failure recovery.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "PRD03",
+      "path": "docs/foundation/product/scope-catalog-and-roadmap.md",
+      "bodySha256": "2a6e7ecd9c80e7eae61e4f1b6acefa3b68cdb0a0a1f0b4c07b60cea7ed1313b7",
+      "status": "PASS",
+      "originalReview": {
+        "id": "PRD03",
+        "path": "docs/foundation/product/scope-catalog-and-roadmap.md",
+        "status": "PASS",
+        "assessment": "Initial/later/excluded scope remains explicit; 330 source rows/239 names preserve provider variants; full catalog and four target release scope are retained.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "BIZ01",
+      "path": "docs/foundation/business/open-core-and-rights.md",
+      "bodySha256": "6fca6da1a7a2834794ba1c3bb0ad557ecc42bdabbf3ac74ec283391fa3b57a81",
+      "status": "PASS",
+      "originalReview": {
+        "id": "BIZ01",
+        "path": "docs/foundation/business/open-core-and-rights.md",
+        "status": "PASS",
+        "assessment": "Open core, protected Studio, enterprise source, output rights and third-party conditions are separated; candidate licensing is not declared adopted.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "BIZ02",
+      "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+      "bodySha256": "49adba1942b4977e3f4d27c49a4f75b7af7d015bfee4e92070873f382a55d6ee",
+      "status": "PASS",
+      "originalReview": {
+        "id": "BIZ02",
+        "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+        "status": "PASS_AFTER_SAFE_FIX",
+        "assessment": "Free value, seats/resources, user/Axiom cost, measurement and selection gates remain hypotheses; reservation, charged attempt identity, reconciliation and unknown-charge recovery are now explicit.",
+        "findingIds": [
+          "GP03"
+        ],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "BIZ03",
+      "path": "docs/foundation/business/positioning-and-go-to-market.md",
+      "bodySha256": "de6d26dd6b3f08d8b99c7629323088772cf1e51468d67a188078072e60b94ed5",
+      "status": "PASS",
+      "originalReview": {
+        "id": "BIZ03",
+        "path": "docs/foundation/business/positioning-and-go-to-market.md",
+        "status": "PASS",
+        "assessment": "Audience/message/evidence mapping, channel experiments, public claim review and no unsupported two-way-code claims are coherent.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "BIZ04",
+      "path": "docs/foundation/business/research-and-customer-feedback.md",
+      "bodySha256": "a128f57210804e6b601bf3aff537edb1b0eae8b535fe917bbb48cf7210ec1244",
+      "status": "PASS",
+      "originalReview": {
+        "id": "BIZ04",
+        "path": "docs/foundation/business/research-and-customer-feedback.md",
+        "status": "PASS",
+        "assessment": "ResearchSession consent/observation context, success/dropout/help, issue prioritization and change/retest trace fulfill the stated review criteria.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "BRD01",
+      "path": "docs/foundation/brand/library-and-guidelines.md",
+      "bodySha256": "eb4ae2c2fd119a8b8cd14b8e4edda32e9d1e306cca0f4a8085a0060eba0dda03",
+      "status": "PASS",
+      "originalReview": {
+        "id": "BRD01",
+        "path": "docs/foundation/brand/library-and-guidelines.md",
+        "status": "PASS",
+        "assessment": "Version-pinned brand library, optional measurable guidance, a11y non-exemption and asset change impact are explicit.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "BRD02",
+      "path": "docs/foundation/brand/assets-and-provenance.md",
+      "bodySha256": "65737095a94b47c685b91d2ee4ece02167588393404eab095146b224b34591af",
+      "status": "PASS",
+      "originalReview": {
+        "id": "BRD02",
+        "path": "docs/foundation/brand/assets-and-provenance.md",
+        "status": "PASS_AFTER_SAFE_FIX",
+        "assessment": "Asset closure, import security, missing assets/relinking, rights, offline copy and cleanup are covered; blob and acquisition/rights record identity are now distinguished with a negative case.",
+        "findingIds": [
+          "GP04"
+        ],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "SYN01",
+      "path": "docs/foundation/syntax/standard-strategy.md",
+      "bodySha256": "35cc6a249f40e896b57ce6e89939a6dc69a9eb6f258915fe2fde1edabf8214cb",
+      "status": "PASS",
+      "originalReview": {
+        "id": "SYN01",
+        "path": "docs/foundation/syntax/standard-strategy.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "기능·보존·편집·렌더링·유지보수 비교 항목, 증거 시점과 재선정 절차를 정의",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/standard-strategy.md",
+                "heading": "기능과 렌더링의 전체 지원",
+                "line": 19
+              },
+              {
+                "path": "docs/foundation/syntax/standard-strategy.md",
+                "heading": "비교 실험과 채택 문턱",
+                "line": 27
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/standard-strategy.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/standard-strategy.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "기능/보존/편집/렌더링/유지 비용의 A/B/C 비교, corpus, 판정 책임과 첫 문법 고정 전 재선정 절차가 명시됨. DTCG 2025.10 Format/Resolver/Color 공식 페이지를 확인했고 본문과 배치되는 표준 주장을 찾지 못함.",
+        "primaryDecisionIdsCompared": [
+          "D06-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [],
+        "bodySha256": "6c093d3ac77ef697cdc0b6fe8fb14fd4af2259faf584426374ca4aa3d844ba57",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "SYN02",
+      "path": "docs/foundation/syntax/project-documents-and-identity.md",
+      "bodySha256": "fb036e991c2713dd74decf82bb48722d7f195841d9e4b38edf1e93bf9fe39808",
+      "status": "PASS",
+      "originalReview": {
+        "id": "SYN02",
+        "path": "docs/foundation/syntax/project-documents-and-identity.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "이름 변경·참조 분리·삭제 영향·원본 유지·문서 경계와 검토용 예제를 제공",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                "heading": "ID·참조·revision",
+                "line": 23
+              },
+              {
+                "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                "heading": "복사·연결·삭제",
+                "line": 29
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "이름/ID/revision, 독립 복사 closure, 삭제 선택과 원문 보존이 구분됨. 부록의 문서 Ref를 실제 예시 revision에 고정하고 자산 ID/version과 bytes의 권리 경계를 연계함.",
+        "primaryDecisionIdsCompared": [
+          "D04-01",
+          "D04-02",
+          "D04-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA07",
+          "CROSS01"
+        ],
+        "bodySha256": "65929fde224c57429a08afd7feda9067b5c89d820f9e614fee64fe4b86f832d2",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "SYN03",
+      "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+      "bodySha256": "89edcad98074c2694eca0e0d743cd922c3e1d7a07f9bea16d9ca0eb24e2845b0",
+      "status": "PASS",
+      "originalReview": {
+        "id": "SYN03",
+        "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "타입/참조/테마의 정상·오류 규칙과 확장 가능 범위를 설명",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                "heading": "타입·alias·사용 위치",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                "heading": "테마와 최종 값의 출처",
+                "line": 19
+              },
+              {
+                "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                "heading": "시스템 정책과 예외",
+                "line": 25
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "type/domain/tier, typed alias와 순환 오류, theme context/provenance, DTCG Resolver의 별도 순서, 정책 예외와 접근성 의무, 타깃 변환·증거 만료가 충돌 없이 정의됨. 표준 선정/실제 renderer 지원은 의도된 구현 gate임.",
+        "primaryDecisionIdsCompared": [
+          "D07-01",
+          "D07-02",
+          "D07-03",
+          "D08-01",
+          "D08-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [],
+        "bodySha256": "252a231b7ba867b27ed1696e49c7d7779303219e6a796d1370da17f84e65c214",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "SYN04",
+      "path": "docs/foundation/syntax/interchange-and-migration.md",
+      "bodySha256": "eb050a515ae1ca3dcd622e8f6de855720e03ce7061e67e1cac4030082761882d",
+      "status": "PASS",
+      "originalReview": {
+        "id": "SYN04",
+        "path": "docs/foundation/syntax/interchange-and-migration.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "원문/편집본/재출력의 차이와 migration 실패 시 복구 예제를 제공",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/interchange-and-migration.md",
+                "heading": "정규화와 migration 계약",
+                "line": 23
+              },
+              {
+                "path": "docs/foundation/syntax/interchange-and-migration.md",
+                "heading": "migration 실패와 복구 예",
+                "line": 29
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/interchange-and-migration.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/syntax/interchange-and-migration.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "원문/정규화/손실 출력은 분리되어 있었으나 요구된 migration 실패 복구 예가 없었음. 실패 후보 비채택, 원본 hash 보존, alias mapping 재시도, 후속 편집 비교와 새 복구 revision 예를 추가함.",
+        "primaryDecisionIdsCompared": [
+          "D05-02",
+          "D06-01",
+          "D06-02"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA05"
+        ],
+        "bodySha256": "1cd008aaa9a8e48769a43e38c0b4a61a6eb47a6ed79c917ab4745aa39e80eb4a",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP01",
+      "path": "docs/foundation/components/definition-and-designs.md",
+      "bodySha256": "921376782416bda1a355c7767abded88a2051d983215ce223435851727509643",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP01",
+        "path": "docs/foundation/components/definition-and-designs.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "Button·Card·Toast를 같은 계층으로 설명하고 별도 Mobile 외형을 표현",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/definition-and-designs.md",
+                "heading": "컴포넌트를 일곱 관점으로 정의한다",
+                "line": 7
+              },
+              {
+                "path": "docs/foundation/components/definition-and-designs.md",
+                "heading": "공통 정의와 여러 디자인의 관계",
+                "line": 23
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/definition-and-designs.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/definition-and-designs.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "Button/Card/Toast를 같은 일곱 관점으로 설명하며 Web/Mobile 의미와 표현 차이를 보존함. 예시의 family-as-archetype 참조를 분리하고 Card Web/Mobile 방향 차이를 실제 JSON과 맞춤.",
+        "primaryDecisionIdsCompared": [
+          "D09-01",
+          "D09-02",
+          "D09-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA03",
+          "SCA06"
+        ],
+        "bodySha256": "3206a476068f31431f54445eada9e0cdd0697ccc2384b3eb07b26c4ddb61c142",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP02",
+      "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+      "bodySha256": "6c216742f1228b7dcca57b9037cfe1b3a8c8b3cca2c0b2c1318bb07efe1dbdc9",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP02",
+        "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "카탈로그 매핑·금지 조합·공유 연결 호환성과 전문가 분기 예제를 제공",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                "heading": "등록 계약",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                "heading": "조합과 충돌",
+                "line": 21
+              },
+              {
+                "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                "heading": "확장과 라이브러리 예",
+                "line": 27
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "38 trait/31 role/36 policy/45 family 어휘 및 조합표를 읽고 단일 owner, 입력 claim 충돌, 독립 버전 공존과 공유 port 호환성, 독립 유형 분기를 확인함. family 후보를 archetype으로 가장하던 예시 참조를 명시적 세 ArchetypeDefinition으로 수정함.",
+        "primaryDecisionIdsCompared": [
+          "D05-03",
+          "D11-01",
+          "D11-02",
+          "D11-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA06"
+        ],
+        "bodySha256": "52832717cb2a88d680451858fce82fe05678e01754249c82a050dd8eb1da70a2",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP03",
+      "path": "docs/foundation/components/values-events-and-expressions.md",
+      "bodySha256": "42c1a1306c3bbce5ad19bc54c8066dc41f4d0df06ad6891ab0d25f41696137d0",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP03",
+        "path": "docs/foundation/components/values-events-and-expressions.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "공개 값·요청·상태 차이, 비즈니스 입력 경계와 타입 오류를 설명",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/values-events-and-expressions.md",
+                "heading": "타입 설계",
+                "line": 15
+              },
+              {
+                "path": "docs/foundation/components/values-events-and-expressions.md",
+                "heading": "제한 UI 표현식",
+                "line": 31
+              },
+              {
+                "path": "docs/foundation/components/values-events-and-expressions.md",
+                "heading": "이벤트와 타깃 API",
+                "line": 37
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/values-events-and-expressions.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/values-events-and-expressions.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "공개 값/의도/확정 이벤트와 비즈니스 입력 경계 및 bounded typed AST는 충족함. 모든 record payload의 필수/추가 필드 정책 누락을 고치고 record/nullable 의미와 실패 사례를 명시함.",
+        "primaryDecisionIdsCompared": [
+          "D10-01",
+          "D10-02",
+          "D10-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA01"
+        ],
+        "bodySha256": "989f0f1827d63d16f235bb74cb77a5764b3c4670842274a393b414654fce4380",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP04",
+      "path": "docs/foundation/components/state-and-request-lifecycle.md",
+      "bodySha256": "14e1cf77191dfbf4e1fc4aaa295dd9c61051dc71c463a795f5dfa9b9c4503eef",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP04",
+        "path": "docs/foundation/components/state-and-request-lifecycle.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "query/selected 분리·외부 제어·빠른 재입력·미응답/취소 시 상태를 정의",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                "heading": "요청 수명 계약",
+                "line": 20
+              },
+              {
+                "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                "heading": "중복·큐·취소",
+                "line": 26
+              },
+              {
+                "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                "heading": "Toast와 Card 사례",
+                "line": 32
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "controlled/uncontrolled owner, query/active/selected 분리, request terminal 상태와 취소/timeout, profile별 큐, 논리 닫힘과 exit 구분을 확인함. Toast 예시에 open=true guard와 공개된 presence/content/closeRequest binding을 연결함. 기타 runtime specialization은 미실현으로 명시 유지.",
+        "primaryDecisionIdsCompared": [
+          "D14-01",
+          "D14-02",
+          "D14-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA07"
+        ],
+        "bodySha256": "d0b91bb2a3ea1d0e79c7aa4687dfd4e8a2335038f026126961041596723cbe9e",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP05",
+      "path": "docs/foundation/components/parts-slots-and-instances.md",
+      "bodySha256": "75716b2f1cb9ce92ff6221d74d46353c1968da88ac412818d5306067b8492e1e",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP05",
+        "path": "docs/foundation/components/parts-slots-and-instances.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "Card 조합·slot 개수/종류·인스턴스 충돌·타깃 대체 노드 사례를 설명",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/parts-slots-and-instances.md",
+                "heading": "공개 편집 범위",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/parts-slots-and-instances.md",
+                "heading": "인스턴스와 원본",
+                "line": 25
+              },
+              {
+                "path": "docs/foundation/components/parts-slots-and-instances.md",
+                "heading": "구조와 collection",
+                "line": 31
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/parts-slots-and-instances.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/parts-slots-and-instances.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "Card Part/slot 종류·개수/필수성, 중첩 조작, stable key, 원본 삭제와 override 충돌, 타깃 대체 node 규칙은 충족함. walkthrough가 허용하는 gap override가 예시 permission 목록에 없던 모순을 수정함.",
+        "primaryDecisionIdsCompared": [
+          "D13-01",
+          "D13-02",
+          "D13-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA03"
+        ],
+        "bodySha256": "456db9dade8edf6c1d234c5e34acad83d6b385ba3b1c2db5db1dc99de315ba75",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP06",
+      "path": "docs/foundation/components/behavior-and-input-profiles.md",
+      "bodySha256": "94672cac56db1288ac122d1a86ff0e8c5c4e200c2650385e42e61c3362efee9c",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP06",
+        "path": "docs/foundation/components/behavior-and-input-profiles.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "기반 교체·의무 변경·금지 부품 혼합·독립 유형의 판정 규칙을 정의",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                "heading": "BehaviorProfile 계약",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                "heading": "입력을 의미로 바꾼다",
+                "line": 19
+              },
+              {
+                "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                "heading": "보호 모드와 전문가 모드",
+                "line": 25
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "BehaviorProfile lock, 허용 기반 목록, 교체 영향, input normalization/claims, 보호·전문가 의미 변경과 독립 분기, Select 공유 context 혼합 금지 사례가 충족됨. React Aria/Base UI는 후보이며 미검증 상태를 유지함.",
+        "primaryDecisionIdsCompared": [
+          "D15-01",
+          "D15-02"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [],
+        "bodySha256": "02dacc440f1f7fa9aed4004f2f00d2d3d57a3c6ab4c607440e54c33993f2f763",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP07",
+      "path": "docs/foundation/components/coordinators-and-hosts.md",
+      "bodySha256": "ac09fc7ee881b09c9e469922f6adfa798c4bd263d5310f8ce5d5026facfc26a6",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP07",
+        "path": "docs/foundation/components/coordinators-and-hosts.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "호스트 자동 제안·수동 연결·실제 경로·누락·모호함을 설명",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/coordinators-and-hosts.md",
+                "heading": "초기 조정자 유형과 역산",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/coordinators-and-hosts.md",
+                "heading": "연결 계약",
+                "line": 28
+              },
+              {
+                "path": "docs/foundation/components/coordinators-and-hosts.md",
+                "heading": "수명·중첩·복구",
+                "line": 34
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/coordinators-and-hosts.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/coordinators-and-hosts.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "8개 coordinator 범주, Host/Client binding, 최근접 호환 명시적 host 제안, 수동/누락/모호함, scope·generation·멱등 정리가 충족됨. 검토 JSON의 외부 coordinator 참조를 design-only 외부 선언 목록에 명시함.",
+        "primaryDecisionIdsCompared": [
+          "D16-01",
+          "D16-02",
+          "D16-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [],
+        "bodySha256": "cbbd318516bd0146625f2522eb4432696a2f15e537d5d0ea06400449b4604c82",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP08",
+      "path": "docs/foundation/components/accessibility-contracts.md",
+      "bodySha256": "c835c6397cf0b084ec133dc7585c0383a3e61b84e0e260e26625adfb4fe71326",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP08",
+        "path": "docs/foundation/components/accessibility-contracts.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "의무와 수동 확인 대상·확인 환경, 브랜드 충돌의 판정과 표시를 정의",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/accessibility-contracts.md",
+                "heading": "계약 필드와 관계",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/accessibility-contracts.md",
+                "heading": "충돌과 사용자 경험",
+                "line": 28
+              },
+              {
+                "path": "docs/foundation/components/accessibility-contracts.md",
+                "heading": "자동·수동 검증의 분담",
+                "line": 34
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/accessibility-contracts.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/accessibility-contracts.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "이름/관계/읽기/포커스/공지 의무, Axiom role과 platform role 구분, 브랜드 충돌 시 미준수 유지, 자동/수동 분담과 environment record가 충족됨. APG Button 공식 페이지의 기본 입력·이름 의미와 모순을 찾지 못함.",
+        "primaryDecisionIdsCompared": [
+          "D17-02",
+          "D17-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [],
+        "bodySha256": "893c98773073b160b6ce61a955b5c8d682848b02535c13379871e530f340f55f",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP09",
+      "path": "docs/foundation/components/motion-and-transitions.md",
+      "bodySha256": "cd8cf782c9ba2b605663427484a85bcce97d19c7f04d64ae503663cf5d25c9d3",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP09",
+        "path": "docs/foundation/components/motion-and-transitions.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "finish-then-next 기본·다른 중단 policy·퇴장 후 제거·reduced motion을 설명",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/motion-and-transitions.md",
+                "heading": "시간·상태·제거의 관계",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/motion-and-transitions.md",
+                "heading": "편집 모델",
+                "line": 19
+              },
+              {
+                "path": "docs/foundation/components/motion-and-transitions.md",
+                "heading": "플랫폼 차이와 감소 모션",
+                "line": 25
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/motion-and-transitions.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/motion-and-transitions.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "초기 keyframe/spring/tween/delay/stagger, 중단 profile, monotonic offset, bounded cleanup, reduced alternative, enter-close/reopen/stale callback 시험 범위를 확인함. 논리 state/focus/cleanup이 시각 큐에 무제한 종속되지 않음.",
+        "primaryDecisionIdsCompared": [
+          "D18-02",
+          "D18-03"
+        ],
+        "supportingDecisionIdsCompared": [
+          "D18-01"
+        ],
+        "findings": [],
+        "bodySha256": "732e8c2ff398b4164ac25da412de65efa36e889bfa39681c98b0b9dcd93d8143",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP10",
+      "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+      "bodySha256": "d61739bac12b679f340a0fccd7e71de9b9a8724a7b7dce4516abf8f3e24eb1d8",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP10",
+        "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "한 속성의 최종값 계산과 타깃 제약·reset·공통 승격을 설명",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                "heading": "설계안의 결정 순서",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                "heading": "한 속성의 계산 예",
+                "line": 32
+              },
+              {
+                "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                "heading": "환경 조건과 타깃 한계",
+                "line": 47
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "priority/refines 동점 규칙이 불명확하고 한 속성의 실제 계산 예가 부족했음. 더 큰 priority, 동일 priority의 명시적 DAG 우위, incomparable conflict, 동일 값 출처 합침, override/reset과 theme 독립 순서를 명시하고 결과표를 추가함.",
+        "primaryDecisionIdsCompared": [
+          "D19-01",
+          "D19-02",
+          "D19-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA02"
+        ],
+        "bodySha256": "e8e44bc6408955322400702c98cf647b54e706fd18aced50165f349a0d20923e",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "CMP11",
+      "path": "docs/foundation/components/custom-definition-registry.md",
+      "bodySha256": "732d5da9fdf4a2db03a4e2d0b7ac2425e80a97147e4131091658f6b8063597a6",
+      "status": "PASS",
+      "originalReview": {
+        "id": "CMP11",
+        "path": "docs/foundation/components/custom-definition-registry.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "미지 확장·충돌·버전 고정·승격·미검증 실행 능력의 표시를 정의",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/custom-definition-registry.md",
+                "heading": "등록·확장 계약",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/components/custom-definition-registry.md",
+                "heading": "Inspector 생성",
+                "line": 19
+              },
+              {
+                "path": "docs/foundation/components/custom-definition-registry.md",
+                "heading": "새 실행 능력의 완성",
+                "line": 25
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/custom-definition-registry.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/components/custom-definition-registry.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "선언형 커스텀 수준, 로컬→프로젝트→라이브러리 승격, namespace/version/의무, 알 수 없는 버전 보존, malicious metadata 격리, Inspector와 새 실행 능력 검증 상태가 충족됨. 구현 Agent oracle 변경 금지가 유지됨.",
+        "primaryDecisionIdsCompared": [
+          "D12-01",
+          "D12-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [],
+        "bodySha256": "db3150e2637fe6f51b7db1bbd3c42710949b1919795ea3a2aabd1c08fdaab818",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "UX01",
+      "path": "docs/foundation/experience/onboarding-and-inspector.md",
+      "bodySha256": "e6075ee4f2d3c7f9eaa3200bc93f0bd6d16503047e48bac3ea62ea10ce0182d4",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX01",
+        "path": "docs/foundation/experience/onboarding-and-inspector.md",
+        "status": "FIXED",
+        "findingIds": [
+          "UDQ01"
+        ],
+        "assessment": "Onboarding, progressive Inspector, scoped AI and learning path already aligned. Added explicit empty/error/first-output completion states."
+      }
+    },
+    {
+      "id": "UX02",
+      "path": "docs/foundation/experience/canvas-and-direct-manipulation.md",
+      "bodySha256": "2284c0fc54eb6ae4bc74cc4eadef2d3f190a801ccd720594dc23550c4c0f9925",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX02",
+        "path": "docs/foundation/experience/canvas-and-direct-manipulation.md",
+        "status": "PASS",
+        "findingIds": [],
+        "assessment": "Selection depth, geometric transforms, drag/resize/rotation, mixed parents, cancellation, keyboard alternative and one-gesture Undo are specified. Engine selection correctly deferred."
+      }
+    },
+    {
+      "id": "UX03",
+      "path": "docs/foundation/experience/layout-authoring.md",
+      "bodySha256": "66f0244eb8ac0c8df3d9c4a81a3defb899173002b5019aef122a48823fbea8f7",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX03",
+        "path": "docs/foundation/experience/layout-authoring.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ04"
+        ],
+        "assessment": "Hug/fill/fixed, cycle handling, parent-preserving drag and target alternatives are sound. Canonical LayoutRule terminology aligned; size/positioning field parity assigned."
+      }
+    },
+    {
+      "id": "UX04",
+      "path": "docs/foundation/experience/text-and-asset-editing.md",
+      "bodySha256": "e354ebbd517ec8fdfaa6c3cc57779e3ca68387c3d6217ce9bba9c99d78971c02",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX04",
+        "path": "docs/foundation/experience/text-and-asset-editing.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ04"
+        ],
+        "assessment": "IME, selection/history, safe paste, asset replacement/crop/fallback and rights boundary are explicit. Added persisted TextDocument versus runtime session boundary; field/command closure assigned."
+      }
+    },
+    {
+      "id": "UX05",
+      "path": "docs/foundation/experience/foundation-editor.md",
+      "bodySha256": "12436bddc8d5b9f7ccb60744e80f8716871dd2cf61976b879588724f3846978f",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX05",
+        "path": "docs/foundation/experience/foundation-editor.md",
+        "status": "FIXED",
+        "findingIds": [
+          "UDQ02"
+        ],
+        "assessment": "Token preview, shared review, aliases/themes and policies were sound. Added all create/rename/bulk authoring completion criteria."
+      }
+    },
+    {
+      "id": "UX06",
+      "path": "docs/foundation/experience/component-editing-panels.md",
+      "bodySha256": "60f683d171a91e21df14db4e1129d4c81a5c5183324b21a5a8ef68f5b13fc7d7",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX06",
+        "path": "docs/foundation/experience/component-editing-panels.md",
+        "status": "PASS",
+        "findingIds": [],
+        "assessment": "List/graph/AI/preset share typed transitions; controlled-state simulation, a11y relation panel and keyframe/spring/interruption UX connect to Card/Toast walkthroughs. No competing semantic ownership found."
+      }
+    },
+    {
+      "id": "UX07",
+      "path": "docs/foundation/experience/preview-and-prototypes.md",
+      "bodySha256": "cb352ddc81ca6aba1b7dafb846eff67f186421494c351e12143d7be3a46fc651",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX07",
+        "path": "docs/foundation/experience/preview-and-prototypes.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ04"
+        ],
+        "assessment": "Design/candidate/verified/native distinctions, sandbox, sharing revocation, loop budget and example output are sound. Separate Screen/Scenario persistence and command closure assigned."
+      }
+    },
+    {
+      "id": "UX08",
+      "path": "docs/foundation/experience/editor-accessibility-and-language.md",
+      "bodySha256": "8663590c7cef9ad241f56f1a523b7189486b90210b352c2fe1c958019109df8e",
+      "status": "PASS",
+      "originalReview": {
+        "id": "UX08",
+        "path": "docs/foundation/experience/editor-accessibility-and-language.md",
+        "status": "PASS",
+        "findingIds": [],
+        "assessment": "Core keyboard/screen reader/IME tasks, focus, translation keys/fallback and actual environment recording are stated; SEL16 retains required release coverage instead of claiming present AT proof."
+      }
+    },
+    {
+      "id": "ARC01",
+      "path": "docs/foundation/architecture/system-and-domain-boundaries.md",
+      "bodySha256": "e0f92d643da5f54c80e86b1fcb71b5f7422d83f2d4813d61c9cd576218eba02e",
+      "status": "PASS",
+      "originalReview": {
+        "id": "ARC01",
+        "path": "docs/foundation/architecture/system-and-domain-boundaries.md",
+        "status": "PASS",
+        "completionCriteriaReviewed": [
+          "정상/실패 흐름과 모든 I/O·권한·소유 경계를 하나의 시스템 지도로 연결",
+          "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+          "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+        ],
+        "assessment": "Shared document flow and all domain ownership boundaries are explicit; failure recovery uses the last valid snapshot and exact-source evidence."
+      }
+    },
+    {
+      "id": "ARC02",
+      "path": "docs/foundation/architecture/modules-and-dependencies.md",
+      "bodySha256": "4963de1cebaeb3d4b0f8ec269342ec714b1737af5bbfd6d62441a002779dfee4",
+      "status": "PASS",
+      "originalReview": {
+        "id": "ARC02",
+        "path": "docs/foundation/architecture/modules-and-dependencies.md",
+        "status": "FIXED",
+        "completionCriteriaReviewed": [
+          "각 모듈의 입력/출력·금지 의존성·교체 지점과 공개 유출 검사를 정의; 기존 Builder.io/UXPin/Plasmic/pen.dev 및 Canvas·Yoga 조사 근거를 현재 요구와 대조",
+          "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+          "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+        ],
+        "assessment": "Added concrete port inputs/outputs, forbidden imports, adapter conformance and public artifact/source-map leakage checks."
+      }
+    },
+    {
+      "id": "ARC03",
+      "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+      "bodySha256": "10e2b386c749b665e176bcf51a4277c8dcf9f1f7311af5dd77942ab595705bd5",
+      "status": "PASS",
+      "originalReview": {
+        "id": "ARC03",
+        "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+        "status": "FIXED",
+        "completionCriteriaReviewed": [
+          "동시 AI/사람 편집·부분 충돌·작업 취소·재전송을 단계별 예시",
+          "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+          "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+        ],
+        "assessment": "Defined project bootstrap, scoped idempotency, authenticated receipt replay order, durable document acceptance, separate external receipts, cancellation, stale review and canonical operation names."
+      }
+    },
+    {
+      "id": "ARC04",
+      "path": "docs/foundation/architecture/storage-offline-and-recovery.md",
+      "bodySha256": "66025af8644115286354ffca42bfb21d019207398443acadca7ddaef91042df4",
+      "status": "PASS",
+      "originalReview": {
+        "id": "ARC04",
+        "path": "docs/foundation/architecture/storage-offline-and-recovery.md",
+        "status": "FIXED",
+        "completionCriteriaReviewed": [
+          "끊김·파일 충돌·브라우저 보관 실패·준비 팩 누락·복구 시나리오를 정의",
+          "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+          "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+        ],
+        "assessment": "Defined CAS/single-writer boundary and prepare/marker/response crash recovery, receipt atomicity and ambiguous-chain handling."
+      }
+    },
+    {
+      "id": "ARC05",
+      "path": "docs/foundation/architecture/collaboration-readiness.md",
+      "bodySha256": "ae5a62eddbd8df9d51fc732360a618bcc93af93c190d74934bd3e960f92bf96a",
+      "status": "PASS",
+      "originalReview": {
+        "id": "ARC05",
+        "path": "docs/foundation/architecture/collaboration-readiness.md",
+        "status": "PASS",
+        "completionCriteriaReviewed": [
+          "비충돌·같은 속성 충돌·일시 invalid·삭제 경쟁에 대한 기록 모델을 설명",
+          "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+          "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+        ],
+        "assessment": "Concurrent invalid drafts, delete/edit conflicts, locks, individual Undo and shared revert are bounded; actual realtime collaboration remains later."
+      }
+    },
+    {
+      "id": "ARC06",
+      "path": "docs/foundation/architecture/browser-host-and-execution.md",
+      "bodySha256": "cca63cdb85e4e6ebc07d60d36db505123295be4a5c0be1ab09b9fa4933fbc70e",
+      "status": "PASS",
+      "originalReview": {
+        "id": "ARC06",
+        "path": "docs/foundation/architecture/browser-host-and-execution.md",
+        "status": "PASS",
+        "completionCriteriaReviewed": [
+          "브라우저 단독→Host 연결·권한 확장·내부 AI·native 실행 경로를 설명",
+          "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+          "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+        ],
+        "assessment": "Browser/Host capabilities, paired origins, authorized roots/jobs, disconnection and OS-native validation boundaries are explicit."
+      }
+    },
+    {
+      "id": "ARC07",
+      "path": "docs/foundation/architecture/public-api-mcp-and-entitlements.md",
+      "bodySha256": "eec706c39008b95de98c2ac8ca0d36611dded2c77388ff008e97173633b83a36",
+      "status": "PASS",
+      "originalReview": {
+        "id": "ARC07",
+        "path": "docs/foundation/architecture/public-api-mcp-and-entitlements.md",
+        "status": "FIXED",
+        "completionCriteriaReviewed": [
+          "HTTP/로컬 호출·권한 부족·버전 불일치·사용자 컴포넌트 API 변경을 예시",
+          "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+          "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+        ],
+        "assessment": "Added local/HTTP/MCP result equivalence, protocol mismatch handling, command unknown-field rejection and snapshot-scoped cursor authorization."
+      }
+    },
+    {
+      "id": "AI01",
+      "path": "docs/foundation/ai/authoring-context-and-providers.md",
+      "bodySha256": "88cecf7efa4cdcbbd47f56ec2adad4529366cc4b25a2285a309c1cc40e325d6e",
+      "status": "PASS",
+      "originalReview": {
+        "id": "AI01",
+        "path": "docs/foundation/ai/authoring-context-and-providers.md",
+        "reviewStatus": "PASS",
+        "completionCriteria": [
+          {
+            "criterion": "컨텍스트 계산·공유 토큰 검토·국소 편집·모호한 지시와 연결 실패를 정의",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                "heading": "AI가 읽는 컨텍스트도 제품의 계약이다",
+                "line": 7
+              },
+              {
+                "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                "heading": "작성 흐름",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                "heading": "실패·복구와 검증",
+                "line": 27
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "선택/참조/revision context, 독립 로컬 편집과 모든 공유 token 검토, 모호한 요청, 공식 provider/auth 구분, secret 경계, decode/contract/capability/budget 실패가 충족됨. provider 연결 성공을 증거 없이 주장하지 않음.",
+        "primaryDecisionIdsCompared": [
+          "D28-01",
+          "D28-02",
+          "D28-03",
+          "D39-05"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [],
+        "bodySha256": "620578d4762f620d79f2e281901be3a981e0ae5e0a6cf18a3327e975ab56966f",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "AI02",
+      "path": "docs/foundation/ai/realization-and-independent-verification.md",
+      "bodySha256": "afef2747f0530687885998293cfad75d4972963ef11361f4dea884193e456b18",
+      "status": "PASS",
+      "originalReview": {
+        "id": "AI02",
+        "path": "docs/foundation/ai/realization-and-independent-verification.md",
+        "reviewStatus": "PASS_AFTER_REPAIR",
+        "completionCriteria": [
+          {
+            "criterion": "Card와 Toast의 생성 실패·계약 변경 제안·검증본 유지와 재시도를 예시",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                "heading": "정답 기준을 먼저 고정한다",
+                "line": 13
+              },
+              {
+                "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                "heading": "반복과 채택",
+                "line": 19
+              },
+              {
+                "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                "heading": "Card와 Toast의 실패·재시도 예",
+                "line": 30
+              }
+            ]
+          },
+          {
+            "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          },
+          {
+            "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+            "status": "PASS",
+            "evidence": [
+              {
+                "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+              }
+            ]
+          }
+        ],
+        "assessment": "fixed oracle·runner·candidate 쓰기 경계와 예산/마지막 검증본은 충족했지만 manifest의 Card/Toast 구체 실패 예가 없었음. nested interactive Card와 stale generation Toast의 독립 기대값·후보 수정·별도 계약 제안·제한 재시도·부분 출력 예를 추가함.",
+        "primaryDecisionIdsCompared": [
+          "D12-02",
+          "D29-01",
+          "D29-02",
+          "D29-03"
+        ],
+        "supportingDecisionIdsCompared": [],
+        "findings": [
+          "SCA04"
+        ],
+        "bodySha256": "5d278d899eb6520bf715863a553485c6df840e5a19d216e55b2ac8a41765b6af",
+        "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+      }
+    },
+    {
+      "id": "DLV01",
+      "path": "docs/foundation/delivery/target-and-style-profiles.md",
+      "bodySha256": "c303211e078e45734f4901299292d6ddcb7c72de74c36dd29835f485df7a4cb4",
+      "status": "PASS",
+      "originalReview": {
+        "id": "DLV01",
+        "path": "docs/foundation/delivery/target-and-style-profiles.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ04"
+        ],
+        "assessment": "All four output technologies and eight applicable profile families are retained; Expo/bare, native toolkit, CSS-in-JS version and SSR/RSC gates are explicit. Body-required TargetProfile metadata needs field-table closure."
+      }
+    },
+    {
+      "id": "DLV02",
+      "path": "docs/foundation/delivery/project-init-and-doctor.md",
+      "bodySha256": "00e8a76dfbc39c9c0ecafe20c31e91454a829215548182693fe0ca52cf70cc9b",
+      "status": "PASS",
+      "originalReview": {
+        "id": "DLV02",
+        "path": "docs/foundation/delivery/project-init-and-doctor.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ03",
+          "UDQ04"
+        ],
+        "assessment": "Allowed behavior bases, detected configuration/drift, reviewed side effects and partial-install recovery are covered. Added mixed-install semantics and requested toolchain/package-manager/lock metadata."
+      }
+    },
+    {
+      "id": "DLV03",
+      "path": "docs/foundation/delivery/user-owned-library-and-packaging.md",
+      "bodySha256": "6f9056cacddb7d8257de63fe84f23d97096a8b84248696ec9bf286db55a2d404",
+      "status": "PASS",
+      "originalReview": {
+        "id": "DLV03",
+        "path": "docs/foundation/delivery/user-owned-library-and-packaging.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ04"
+        ],
+        "assessment": "Four delivery choices, native packaging, public types, dependency/assets/notices, user ownership and publish distinction are sound. Manifest public API map/instructions/test plan metadata needs table closure."
+      }
+    },
+    {
+      "id": "DLV04",
+      "path": "docs/foundation/delivery/diff-upgrades-and-rollback.md",
+      "bodySha256": "b8204a2666cfea10d3ed01b3dfcb4765ec78da6c199820be63c2ccfa2c7a353d",
+      "status": "PASS",
+      "originalReview": {
+        "id": "DLV04",
+        "path": "docs/foundation/delivery/diff-upgrades-and-rollback.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ03",
+          "UDQ04"
+        ],
+        "assessment": "Stale file check, staging/build, conflict review, multi-project rollback already covered. Added critical generated-versus-installed baseline and partial subsequent upgrade rules."
+      }
+    },
+    {
+      "id": "QAL01",
+      "path": "docs/foundation/quality/conformance-and-test-plans.md",
+      "bodySha256": "b418fdd30406f98b9526623aa0b651ed84a893e8acdd94df034960020bf266b6",
+      "status": "PASS",
+      "originalReview": {
+        "id": "QAL01",
+        "path": "docs/foundation/quality/conformance-and-test-plans.md",
+        "status": "FIXED",
+        "findingIds": [
+          "UDQ05"
+        ],
+        "assessment": "Independent oracle, all family/trait/profile obligations, negative fixtures and no empty/skip success are sound. Both scenario expansion and unknown applicability now explicit."
+      }
+    },
+    {
+      "id": "QAL02",
+      "path": "docs/foundation/quality/evidence-and-freshness.md",
+      "bodySha256": "a04da25636d7a014062f3aea2f74676e246824bca29187fbc6eebb58b330ac3c",
+      "status": "PASS",
+      "originalReview": {
+        "id": "QAL02",
+        "path": "docs/foundation/quality/evidence-and-freshness.md",
+        "status": "FIXED_INTEGRATION_REVIEWED",
+        "findingIds": [
+          "UDQ04",
+          "UDQ05"
+        ],
+        "assessment": "Impact-based staleness versus full release rerun, pinned candidate and runner trust boundaries are coherent. Added reproducible evidence completeness and requested record fields."
+      }
+    },
+    {
+      "id": "QAL03",
+      "path": "docs/foundation/quality/performance-capacity-and-budgets.md",
+      "bodySha256": "c7cae222f6e04f7bcf88170aa0603d8cb8d8eb3afeacd28ae5e8087b43088925",
+      "status": "PASS",
+      "originalReview": {
+        "id": "QAL03",
+        "path": "docs/foundation/quality/performance-capacity-and-budgets.md",
+        "status": "PASS",
+        "findingIds": [],
+        "assessment": "S/M/L workloads, proposed latency budgets, recorded hardware/cold-warm/sample/overhead, per-job cost limits and scope-change handling satisfy staged performance criteria without claiming measurements."
+      }
+    },
+    {
+      "id": "QAL04",
+      "path": "docs/foundation/quality/release-readiness.md",
+      "bodySha256": "9d4d15e1215d29f65c12a452a6bce6455c941e91c32426e0148893b1f8a2da38",
+      "status": "PASS",
+      "originalReview": {
+        "id": "QAL04",
+        "path": "docs/foundation/quality/release-readiness.md",
+        "status": "PASS",
+        "findingIds": [],
+        "assessment": "Documentation approval is distinct from G3-G5 implementation/release gates. Complete target/catalog/authoring/delivery/AT/offline scope, mandatory manual evidence, defect holds, exceptions and release recovery are explicit."
+      }
+    },
+    {
+      "id": "OPS01",
+      "path": "docs/foundation/operations/security-and-data-boundaries.md",
+      "bodySha256": "c01d2f22a09ce84702c4f3df57c41abeb084d582a7b9c0c6265b6b71d2703f3f",
+      "status": "PASS",
+      "originalReview": {
+        "id": "OPS01",
+        "path": "docs/foundation/operations/security-and-data-boundaries.md",
+        "status": "PASS",
+        "assessment": "Boundary controls, credential/data handling, candidate isolation, supply-chain integrity, incident response and adversarial verification conditions are stated.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "OPS02",
+      "path": "docs/foundation/operations/hosting-observability-and-support.md",
+      "bodySha256": "20904684143fb319c00644c4e067e7f43642436d848c3146e0fd8cf3c89cdad4",
+      "status": "PASS",
+      "originalReview": {
+        "id": "OPS02",
+        "path": "docs/foundation/operations/hosting-observability-and-support.md",
+        "status": "PASS_AFTER_SAFE_FIX",
+        "assessment": "Local-first operation, diagnostic privacy, retention/restore selection gates and recovery examples are covered; runbook minimum and entitlement outage recovery/acceptance are now explicit.",
+        "findingIds": [
+          "GP05"
+        ],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "OPS03",
+      "path": "docs/foundation/operations/release-and-supply-chain.md",
+      "bodySha256": "34ee423ee71561a693339724e4cc0eb89d3a0ce2c1cd8b44b0c63fa1804285e8",
+      "status": "PASS",
+      "originalReview": {
+        "id": "OPS03",
+        "path": "docs/foundation/operations/release-and-supply-chain.md",
+        "status": "PASS_AFTER_SAFE_FIX",
+        "assessment": "Manifest/version provenance, publish/partial failure, reproducibility, rights and rollback are covered; accepted bootstrap now clearly precedes product implementation.",
+        "findingIds": [
+          "GP02"
+        ],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    },
+    {
+      "id": "OPS04",
+      "path": "docs/foundation/operations/development-and-maintenance.md",
+      "bodySha256": "ad99a314c935a38d6d4612c03f5ec618c302cae49159c85327664c0c217628da",
+      "status": "PASS",
+      "originalReview": {
+        "id": "OPS04",
+        "path": "docs/foundation/operations/development-and-maintenance.md",
+        "status": "PASS",
+        "assessment": "I0-I6 preserves release scope; issue completion includes contracts/failure/recovery/evidence/migration, safe legacy reuse and impact/priority rules.",
+        "findingIds": [],
+        "completionCriteriaReviewed": true,
+        "ownershipAndOverlapReviewed": true,
+        "acceptanceAndFailurePathsReviewed": true
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "GP01",
+      "severity": "P2",
+      "path": "docs/foundation/governance/authority-and-change-control.md",
+      "originalEvidence": {
+        "line": 19,
+        "text": "BASELINE_APPROVED allowed bootstrap ADR proposal and implementation start without requiring accepted ADR; ownership had no explicit relation to field/catalog projections."
+      },
+      "resolution": {
+        "lines": [
+          19,
+          29,
+          37
+        ],
+        "text": "Require accepted bootstrap plus recorded implementation authorization, record satisfied conditional authorization without repeated approval, define owner document and consistent supporting projections."
+      },
+      "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "GP02",
+      "severity": "P2",
+      "path": "docs/foundation/operations/release-and-supply-chain.md",
+      "originalEvidence": {
+        "line": 11,
+        "text": "Product implementation confirmation appeared to precede bootstrap ADR."
+      },
+      "resolution": {
+        "lines": [
+          11
+        ],
+        "text": "Baseline confirmation and implementation authorization precede accepted bootstrap; product implementation follows it."
+      },
+      "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "GP03",
+      "severity": "P2",
+      "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+      "originalEvidence": {
+        "lines": [
+          34,
+          40
+        ],
+        "text": "Meter dedup and resource limits lacked operation/charged-attempt identity, concurrent reservations, and unknown provider outcome reconciliation."
+      },
+      "resolution": {
+        "lines": [
+          36,
+          44
+        ],
+        "text": "Atomic budget reservation, attempt identity, receipt settlement, pending unknown charges, no automatic new charged attempt until reconciliation or explicit duplicate-cost approval; negative acceptance cases included."
+      },
+      "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "GP04",
+      "severity": "P2",
+      "path": "docs/foundation/brand/assets-and-provenance.md",
+      "originalEvidence": {
+        "line": 11,
+        "text": "Distinct rights for identical bytes must survive dedup but AssetRecord field projection held singular source/license with no explicit blob versus rights-record identity."
+      },
+      "resolution": {
+        "lines": [
+          13,
+          37
+        ],
+        "text": "Separate blob contentHash from versioned AssetRecord acquisition/rights identity, pin chosen record, prohibit permission union, demonstrate Web-only/native negative case; local_readiness coordinates field-catalog version alignment."
+      },
+      "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+      "status": "RESOLVED_BODY_SHARED_PROJECTION_COORDINATED"
+    },
+    {
+      "id": "GP05",
+      "severity": "P2",
+      "path": "docs/foundation/operations/hosting-observability-and-support.md",
+      "originalEvidence": {
+        "lines": [
+          19,
+          23,
+          33
+        ],
+        "text": "Manifest explicitly requires runbook mandatory fields and entitlement connection failures; body gave examples but omitted that record and failure distinction."
+      },
+      "resolution": {
+        "lines": [
+          25,
+          27,
+          39
+        ],
+        "text": "Define owner/trigger/state/actions/retry/success/escalation runbook, distinguish unknown entitlement from denial, hold new paid work, preserve local access, reconcile jobs/charges, test timeout versus denial."
+      },
+      "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SCA01",
+      "severity": "P2",
+      "title": "RecordTypeExpr required/additional-field policy absent in all five example event payloads",
+      "observed": "CMP03 and document-contracts require explicit policy; example payloads contained only kind/fields.",
+      "resolution": "Defined required/additionalFields, negative payload behavior; updated all five payloads and added RecordTypeExpr field record.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SCA02",
+      "severity": "P2",
+      "title": "Appearance priority and refinement had ambiguous ordering",
+      "observed": "CMP10 called same-priority differences conflicts while also permitting explicit refinement, without numeric direction or cycle/dominance rules.",
+      "resolution": "Defined maximum numeric priority, refinement DAG and dominant tied candidate, conflicting incomparable cases, equal-value provenance; added a worked property/override/reset table.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SCA03",
+      "severity": "P2",
+      "title": "Card walkthrough and JSON disagree on layout and override permission",
+      "observed": "Walkthrough promises Web horizontal/Mobile vertical and gap override; both layouts were vertical and gap was absent from allowedOverrides.",
+      "resolution": "Set Card Web layout horizontal, retained Mobile vertical, permitted gap on Card surface.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SCA04",
+      "severity": "P2",
+      "title": "AI02 missing its explicit Card/Toast failure and retry acceptance examples",
+      "observed": "AI02 completion criterion names Card and Toast; body and related walkthrough only described generic candidate failure.",
+      "resolution": "Added two pinned-oracle failure/correction/proposal/bounded retry examples and partial-output evidence limits.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SCA05",
+      "severity": "P2",
+      "title": "SYN04 missing concrete failed-migration recovery example",
+      "observed": "Generic MigrationPlan and invalid import examples did not demonstrate migration failure and recovery required by the criterion.",
+      "resolution": "Added alias/opaque-extension migration failure, no adoption, unchanged source hash, corrected candidate and non-destructive snapshot recovery example.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SCA06",
+      "severity": "P2",
+      "title": "Three archetype refs pointed to family classification IDs",
+      "observed": "review-project ComponentDefinition.archetypeRef used axiom.family/* with expectedKind=archetype although CMP02 distinguishes those concepts.",
+      "resolution": "Added three explicit review archetypes, familyRef and typed contract field record; rewired components without changing 45-family vocabulary.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SCA07",
+      "severity": "P2",
+      "title": "Example references and Toast links underspecified relative to prose",
+      "observed": "Snapshot Refs lacked revision pins, and described Toast presence/content/close-request fields lacked simple binding links; ready transition omitted open=true condition.",
+      "resolution": "Pinned local/external profile Refs, linked three described ports, added open guard and explicit remaining runtime-specialization limitations.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "CROSS01",
+      "severity": "P2",
+      "title": "Cross-domain body contracts absent from field catalog",
+      "observed": "Peer audits identified TextDocument/Screen/Scenario, size/free positioning, delivery/target/install/upgrade/evidence/asset identity omissions; parent identified project-create/idempotency/storage receipt details.",
+      "resolution": "Added or completed records plus interpretation constraints, kept 57 JSON/Markdown tables equal; independent UX/DLV/QAL peer review cleared integration.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "UDQ01",
+      "severity": "P2",
+      "documents": [
+        "UX01"
+      ],
+      "evidence": "Manifest UX01 completion criterion explicitly requires first-run path plus empty/error states. Original onboarding-and-inspector.md lines 7-11 only provide starter import and a success exercise; no startup import failure, empty selection/search, storage failure or incomplete first-output interaction is specified.",
+      "impact": "Implementers could treat failed template import as a completed project, show stale Inspector selection, or end onboarding at an unverified export button click.",
+      "fix": "Added startup/empty/error table with recovery and retained state, and concrete export location/status plus optional init/doctor completion path. Storage and installation correctness remain owned by ARC04/DLV02.",
+      "validation": "Manual review of the added state table and shared-owner links; existing journey and scenario meaning retained.",
+      "status": "FIXED"
+    },
+    {
+      "id": "UDQ02",
+      "severity": "P2",
+      "documents": [
+        "UX05"
+      ],
+      "evidence": "Manifest UX05 requires creation, rename and bulk-edit flows easier than writing JSON. Original foundation-editor.md lines 7-31 describe selection, control types, preview and themes but no rename/bulk user flow. SC05 describes stable identity only, not authoring behavior.",
+      "impact": "Bulk edits lack defined target selection, row diagnostics, partial re-selection and atomic Undo; renames risk confusing display names with exported API paths.",
+      "fix": "Added token creation, stable-ID rename with output compatibility impact, bulk row selection/error handling, revalidated subset review and one transaction/Undo. Expanded SC04 in both scenario representations.",
+      "validation": "SC04 Markdown and JSON parity verified; lifecycle follows existing ARC03 transaction/review ownership and SYN02 identity semantics.",
+      "status": "FIXED"
+    },
+    {
+      "id": "UDQ03",
+      "severity": "P1",
+      "documents": [
+        "DLV02",
+        "DLV04"
+      ],
+      "evidence": "Original diff-upgrades-and-rollback.md lines 9-11 names baseline/current/new; line 41 records result file hashes as next comparison provenance. No rule distinguishes immutable generated bytes from user-merged installed output after partial-hunk upgrades or defines mixed project installation state.",
+      "impact": "A subsequent upgrade can misclassify retained custom code as generated baseline and replace it, or declare an incompletely upgraded project fully installed at the new release.",
+      "fix": "Separated generated baseline refs/digests from installed hashes. Fully accepted files advance baseline to exact new generator bytes; partly selected files retain prior generated baseline and record selected/deferred hunks. Mixed installation status and receipt records are required; ambiguous provenance forces reviewed comparison. DLV02 doctor preserves these distinctions. SC41 now exercises partial-upgrade-followed-by-next-upgrade.",
+      "validation": "Walked through generated Button plus retained user tracking call, partial hunk acceptance, next release and rollback. Scenario parity passes. Annex record synchronization assigned to local_readiness.",
+      "status": "FIXED_INTEGRATION_REVIEWED"
+    },
+    {
+      "id": "UDQ04",
+      "severity": "P2",
+      "documents": [
+        "UX03",
+        "UX04",
+        "UX07",
+        "DLV01",
+        "DLV02",
+        "DLV03",
+        "DLV04",
+        "QAL02"
+      ],
+      "evidence": "UX03:11 uses LayoutDefinition while field-catalog stores LayoutRule. UX04:11 declares TextDocument and UX07:29 separately persisted Screen/Scenario, absent from field catalog. Command catalog only has scenario.update(screenRef,...), lacking explicit screen and typed text/content authoring. TargetProfile, ProjectConnection, DeliveryManifest and EvidenceRecord field tables omit body-required runtime/mapping/host, toolchain/lock, public API/instructions, fixture/time/manual-observation metadata.",
+      "impact": "Independent implementations can invent incompatible persisted structures or bypass the common authoring API; output/evidence receipts cannot reproduce required ownership or validation inputs.",
+      "fix": "Normalized UX03 to LayoutRule. Added explicit UX04 persisted-versus-session boundary and UX07 Screen/Scenario ownership plus typed command linkage. Sent exact record additions to local_readiness and typed text/screen/instance content operations to parent. QAL02 now explicitly defines snapshot revision closure, separate fixture/oracle/source/dependency digests, execution/record timestamps and structured manual observations.",
+      "validation": "Read/search found no alternative normative TextDocument/Screen/Scenario records. Final JSON/Markdown field and command parity must be checked by integrating owners.",
+      "status": "FIXED_INTEGRATION_REVIEWED"
+    },
+    {
+      "id": "UDQ05",
+      "severity": "P2",
+      "documents": [
+        "QAL01",
+        "QAL02"
+      ],
+      "evidence": "Scenario catalog uses mode both while Requirement field contract permits automatic/manual; original QAL01 never explains expansion. Original QAL02 body requires fixture/time/manual evidence but does not state incomplete evidence is unusable for pass.",
+      "impact": "A plan builder could count one automatic result as fulfillment of a both scenario, or exclude unknown applicability and accept evidence missing critical observation identity.",
+      "fix": "Specified splitting both into distinct automatic/manual requirements, applying automatic-later only to later realtime profiles, and treating unknown applicability as blocked. Added evidence completeness rule; expanded SC44/45 without changing scenario count.",
+      "validation": "Scenario Markdown/JSON parity verified for all 50 rows; required/manual/full-profile release gates remain intact.",
+      "status": "FIXED"
+    },
+    {
+      "id": "ARC-A01",
+      "documents": [
+        "ARC02"
+      ],
+      "severity": "P2",
+      "evidence": "Manifest requires explicit input/output, forbidden dependency and public-leak checks; original table named dependencies but did not define artifact leakage or port swap acceptance.",
+      "fix": "Added concrete port inputs/outputs, forbidden imports, adapter conformance and public artifact/source-map leakage checks.",
+      "status": "FIXED"
+    },
+    {
+      "id": "ARC-A02",
+      "documents": [
+        "ARC03"
+      ],
+      "severity": "P1",
+      "evidence": "Unscoped idempotency and acceptance ordering could duplicate create/charged work after lost replies or return wrong actor receipts; cancellation and null-base creation were undefined.",
+      "fix": "Defined project bootstrap, scoped idempotency, authenticated receipt replay order, durable document acceptance, separate external receipts, cancellation, stale review and canonical operation names.",
+      "status": "FIXED"
+    },
+    {
+      "id": "ARC-A03",
+      "documents": [
+        "ARC04"
+      ],
+      "severity": "P1",
+      "evidence": "Revision check and multi-file write had no linearization or deterministic crash-stage choice; a durable snapshot could lose its retry receipt.",
+      "fix": "Defined CAS/single-writer boundary and prepare/marker/response crash recovery, receipt atomicity and ambiguous-chain handling.",
+      "status": "FIXED"
+    },
+    {
+      "id": "ARC-A04",
+      "documents": [
+        "ARC07"
+      ],
+      "severity": "P2",
+      "evidence": "Transport/version errors and unknown command fields were not distinguished from preserved opaque imported data.",
+      "fix": "Added local/HTTP/MCP result equivalence, protocol mismatch handling, command unknown-field rejection and snapshot-scoped cursor authorization.",
+      "status": "FIXED"
+    }
+  ],
+  "partitions": [
+    {
+      "kind": "axiom-foundation-semantic-audit-partition",
+      "reviewedAt": "2026-09-13",
+      "reviewer": "handoff_review",
+      "sourceBaselineCommit": "08a2c031f377e4d2da4bb0851a7c649392b6fea3",
+      "scope": {
+        "documentCount": 16,
+        "documentIds": [
+          "GOV01",
+          "GOV02",
+          "GOV03",
+          "PRD01",
+          "PRD02",
+          "PRD03",
+          "BIZ01",
+          "BIZ02",
+          "BIZ03",
+          "BIZ04",
+          "BRD01",
+          "BRD02",
+          "OPS01",
+          "OPS02",
+          "OPS03",
+          "OPS04"
+        ],
+        "instructionsRead": [
+          "AGENTS.md",
+          "docs/README.md",
+          "docs/adr/0006-product-reset-and-reference-lifecycle.md",
+          "docs/adr/0007-git-reference-and-documentation-phase.md"
+        ],
+        "criteriaSource": "docs/foundation/document-manifest.json",
+        "annexesCrossChecked": [
+          "catalog-and-obligations.md",
+          "component-catalog.json",
+          "document-contracts.md",
+          "field-catalog.json",
+          "rights-and-provenance.md",
+          "rights-register.json",
+          "language-and-messages.md",
+          "scenarios-and-evidence.md",
+          "selection-register.md"
+        ],
+        "boundary": "Full semantic review of assigned bodies against completion criteria and relevant projections; no claim that all later technology experiments or runtime requirements are implemented."
+      },
+      "documents": [
+        {
+          "id": "GOV01",
+          "path": "docs/foundation/governance/authority-and-change-control.md",
+          "status": "PASS_AFTER_SAFE_FIX",
+          "assessment": "Authority order, conditional authorization, accepted bootstrap gate, and normative ownership versus summaries/annex projections are explicit.",
+          "findingIds": [
+            "GP01"
+          ],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "GOV02",
+          "path": "docs/foundation/governance/glossary-and-naming.md",
+          "status": "PASS",
+          "assessment": "Studio/Builder/ADS/DSF and UI meaning are separated; stable IDs, five provider meanings, ko/en ownership and rename checks are coherent.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "GOV03",
+          "path": "docs/foundation/governance/version-and-compatibility.md",
+          "status": "PASS",
+          "assessment": "Format, contract, revision and delivery versions are distinct; breaking changes, migration/original retention, unknown extension preservation and deprecation are covered.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "PRD01",
+          "path": "docs/foundation/product/purpose-and-users.md",
+          "status": "PASS",
+          "assessment": "Four user groups have distinct success tasks; UI and consumer business logic boundary and observed value metrics are concrete.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "PRD02",
+          "path": "docs/foundation/product/journeys-and-acceptance.md",
+          "status": "PASS",
+          "assessment": "J01-J08 cover authoring, AI, installation, upgrades, offline and stale changes with observable success and failure recovery.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "PRD03",
+          "path": "docs/foundation/product/scope-catalog-and-roadmap.md",
+          "status": "PASS",
+          "assessment": "Initial/later/excluded scope remains explicit; 330 source rows/239 names preserve provider variants; full catalog and four target release scope are retained.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "BIZ01",
+          "path": "docs/foundation/business/open-core-and-rights.md",
+          "status": "PASS",
+          "assessment": "Open core, protected Studio, enterprise source, output rights and third-party conditions are separated; candidate licensing is not declared adopted.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "BIZ02",
+          "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+          "status": "PASS_AFTER_SAFE_FIX",
+          "assessment": "Free value, seats/resources, user/Axiom cost, measurement and selection gates remain hypotheses; reservation, charged attempt identity, reconciliation and unknown-charge recovery are now explicit.",
+          "findingIds": [
+            "GP03"
+          ],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "BIZ03",
+          "path": "docs/foundation/business/positioning-and-go-to-market.md",
+          "status": "PASS",
+          "assessment": "Audience/message/evidence mapping, channel experiments, public claim review and no unsupported two-way-code claims are coherent.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "BIZ04",
+          "path": "docs/foundation/business/research-and-customer-feedback.md",
+          "status": "PASS",
+          "assessment": "ResearchSession consent/observation context, success/dropout/help, issue prioritization and change/retest trace fulfill the stated review criteria.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "BRD01",
+          "path": "docs/foundation/brand/library-and-guidelines.md",
+          "status": "PASS",
+          "assessment": "Version-pinned brand library, optional measurable guidance, a11y non-exemption and asset change impact are explicit.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "BRD02",
+          "path": "docs/foundation/brand/assets-and-provenance.md",
+          "status": "PASS_AFTER_SAFE_FIX",
+          "assessment": "Asset closure, import security, missing assets/relinking, rights, offline copy and cleanup are covered; blob and acquisition/rights record identity are now distinguished with a negative case.",
+          "findingIds": [
+            "GP04"
+          ],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "OPS01",
+          "path": "docs/foundation/operations/security-and-data-boundaries.md",
+          "status": "PASS",
+          "assessment": "Boundary controls, credential/data handling, candidate isolation, supply-chain integrity, incident response and adversarial verification conditions are stated.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "OPS02",
+          "path": "docs/foundation/operations/hosting-observability-and-support.md",
+          "status": "PASS_AFTER_SAFE_FIX",
+          "assessment": "Local-first operation, diagnostic privacy, retention/restore selection gates and recovery examples are covered; runbook minimum and entitlement outage recovery/acceptance are now explicit.",
+          "findingIds": [
+            "GP05"
+          ],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "OPS03",
+          "path": "docs/foundation/operations/release-and-supply-chain.md",
+          "status": "PASS_AFTER_SAFE_FIX",
+          "assessment": "Manifest/version provenance, publish/partial failure, reproducibility, rights and rollback are covered; accepted bootstrap now clearly precedes product implementation.",
+          "findingIds": [
+            "GP02"
+          ],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        },
+        {
+          "id": "OPS04",
+          "path": "docs/foundation/operations/development-and-maintenance.md",
+          "status": "PASS",
+          "assessment": "I0-I6 preserves release scope; issue completion includes contracts/failure/recovery/evidence/migration, safe legacy reuse and impact/priority rules.",
+          "findingIds": [],
+          "completionCriteriaReviewed": true,
+          "ownershipAndOverlapReviewed": true,
+          "acceptanceAndFailurePathsReviewed": true
+        }
+      ],
+      "findings": [
+        {
+          "id": "GP01",
+          "severity": "P2",
+          "path": "docs/foundation/governance/authority-and-change-control.md",
+          "originalEvidence": {
+            "line": 19,
+            "text": "BASELINE_APPROVED allowed bootstrap ADR proposal and implementation start without requiring accepted ADR; ownership had no explicit relation to field/catalog projections."
+          },
+          "resolution": {
+            "lines": [
+              19,
+              29,
+              37
+            ],
+            "text": "Require accepted bootstrap plus recorded implementation authorization, record satisfied conditional authorization without repeated approval, define owner document and consistent supporting projections."
+          },
+          "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "GP02",
+          "severity": "P2",
+          "path": "docs/foundation/operations/release-and-supply-chain.md",
+          "originalEvidence": {
+            "line": 11,
+            "text": "Product implementation confirmation appeared to precede bootstrap ADR."
+          },
+          "resolution": {
+            "lines": [
+              11
+            ],
+            "text": "Baseline confirmation and implementation authorization precede accepted bootstrap; product implementation follows it."
+          },
+          "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "GP03",
+          "severity": "P2",
+          "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+          "originalEvidence": {
+            "lines": [
+              34,
+              40
+            ],
+            "text": "Meter dedup and resource limits lacked operation/charged-attempt identity, concurrent reservations, and unknown provider outcome reconciliation."
+          },
+          "resolution": {
+            "lines": [
+              36,
+              44
+            ],
+            "text": "Atomic budget reservation, attempt identity, receipt settlement, pending unknown charges, no automatic new charged attempt until reconciliation or explicit duplicate-cost approval; negative acceptance cases included."
+          },
+          "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "GP04",
+          "severity": "P2",
+          "path": "docs/foundation/brand/assets-and-provenance.md",
+          "originalEvidence": {
+            "line": 11,
+            "text": "Distinct rights for identical bytes must survive dedup but AssetRecord field projection held singular source/license with no explicit blob versus rights-record identity."
+          },
+          "resolution": {
+            "lines": [
+              13,
+              37
+            ],
+            "text": "Separate blob contentHash from versioned AssetRecord acquisition/rights identity, pin chosen record, prohibit permission union, demonstrate Web-only/native negative case; local_readiness coordinates field-catalog version alignment."
+          },
+          "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+          "status": "RESOLVED_BODY_SHARED_PROJECTION_COORDINATED"
+        },
+        {
+          "id": "GP05",
+          "severity": "P2",
+          "path": "docs/foundation/operations/hosting-observability-and-support.md",
+          "originalEvidence": {
+            "lines": [
+              19,
+              23,
+              33
+            ],
+            "text": "Manifest explicitly requires runbook mandatory fields and entitlement connection failures; body gave examples but omitted that record and failure distinction."
+          },
+          "resolution": {
+            "lines": [
+              25,
+              27,
+              39
+            ],
+            "text": "Define owner/trigger/state/actions/retry/success/escalation runbook, distinguish unknown entitlement from denial, hold new paid work, preserve local access, reconcile jobs/charges, test timeout versus denial."
+          },
+          "classification": "SAFE_COMPATIBLE_CLARIFICATION",
+          "status": "RESOLVED"
+        }
+      ],
+      "unresolvedOwnerScopeQuestions": [],
+      "deferredSelectionsAssessment": "Exact engines, licenses, prices, performance, hosting retention/region and SDK versions have owned selection and evidence gates; their unexecuted status is intentional, not a baseline blocker.",
+      "validation": {
+        "gitDiffCheck": "PASS",
+        "retirementVerifier": "PASS, 442 snapshot/archive files, 432 retired paths absent, 916 local links, unchanged LICENSE/.gitignore",
+        "retirementSelfTest": "PASS, four negative cases rejected",
+        "runtime": "NOT_EXECUTED_NOT_CLAIMED"
+      },
+      "editsRestrictedToOwnedBodies": true,
+      "remoteMutations": false,
+      "independentArchitectureCrossReview": {
+        "documents": [
+          "ARC02",
+          "ARC03",
+          "ARC04",
+          "ARC07"
+        ],
+        "status": "TWO_CLARIFICATIONS_REPORTED_TO_PARENT",
+        "findings": [
+          {
+            "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+            "issue": "The accepted=durable snapshot plus receipt rule must be limited to document mutations; plan/job/effect operations must not fabricate document revisions or Undo handles.",
+            "owner": "parent"
+          },
+          {
+            "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+            "issue": "Authenticated exact receipt replay must precede new-create existence, stale-base and new execution quota checks, so successful create retries and quota-consuming job response retries replay without another effect.",
+            "owner": "parent"
+          }
+        ],
+        "otherAssessment": "ARC02 module/export boundaries, ARC04 recovery and physical-durability limits, and ARC07 trusted context/transport/opaque-command distinctions are coherent."
+      }
+    },
+    {
+      "kind": "foundation-semantic-audit",
+      "reviewerScope": "SYN01-04, CMP01-11, AI01-02 and related contracts/examples/registry/decisions",
+      "completedAt": "2026-09-13T05:42:38.954528+00:00",
+      "status": "PASS_AFTER_REPAIRS",
+      "documentCount": 17,
+      "documents": [
+        {
+          "id": "SYN01",
+          "path": "docs/foundation/syntax/standard-strategy.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "기능·보존·편집·렌더링·유지보수 비교 항목, 증거 시점과 재선정 절차를 정의",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/standard-strategy.md",
+                  "heading": "기능과 렌더링의 전체 지원",
+                  "line": 19
+                },
+                {
+                  "path": "docs/foundation/syntax/standard-strategy.md",
+                  "heading": "비교 실험과 채택 문턱",
+                  "line": 27
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/standard-strategy.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/standard-strategy.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "기능/보존/편집/렌더링/유지 비용의 A/B/C 비교, corpus, 판정 책임과 첫 문법 고정 전 재선정 절차가 명시됨. DTCG 2025.10 Format/Resolver/Color 공식 페이지를 확인했고 본문과 배치되는 표준 주장을 찾지 못함.",
+          "primaryDecisionIdsCompared": [
+            "D06-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [],
+          "bodySha256": "6c093d3ac77ef697cdc0b6fe8fb14fd4af2259faf584426374ca4aa3d844ba57",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "SYN02",
+          "path": "docs/foundation/syntax/project-documents-and-identity.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "이름 변경·참조 분리·삭제 영향·원본 유지·문서 경계와 검토용 예제를 제공",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                  "heading": "ID·참조·revision",
+                  "line": 23
+                },
+                {
+                  "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                  "heading": "복사·연결·삭제",
+                  "line": 29
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/project-documents-and-identity.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "이름/ID/revision, 독립 복사 closure, 삭제 선택과 원문 보존이 구분됨. 부록의 문서 Ref를 실제 예시 revision에 고정하고 자산 ID/version과 bytes의 권리 경계를 연계함.",
+          "primaryDecisionIdsCompared": [
+            "D04-01",
+            "D04-02",
+            "D04-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA07",
+            "CROSS01"
+          ],
+          "bodySha256": "65929fde224c57429a08afd7feda9067b5c89d820f9e614fee64fe4b86f832d2",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "SYN03",
+          "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "타입/참조/테마의 정상·오류 규칙과 확장 가능 범위를 설명",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                  "heading": "타입·alias·사용 위치",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                  "heading": "테마와 최종 값의 출처",
+                  "line": 19
+                },
+                {
+                  "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                  "heading": "시스템 정책과 예외",
+                  "line": 25
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "type/domain/tier, typed alias와 순환 오류, theme context/provenance, DTCG Resolver의 별도 순서, 정책 예외와 접근성 의무, 타깃 변환·증거 만료가 충돌 없이 정의됨. 표준 선정/실제 renderer 지원은 의도된 구현 gate임.",
+          "primaryDecisionIdsCompared": [
+            "D07-01",
+            "D07-02",
+            "D07-03",
+            "D08-01",
+            "D08-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [],
+          "bodySha256": "252a231b7ba867b27ed1696e49c7d7779303219e6a796d1370da17f84e65c214",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "SYN04",
+          "path": "docs/foundation/syntax/interchange-and-migration.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "원문/편집본/재출력의 차이와 migration 실패 시 복구 예제를 제공",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/interchange-and-migration.md",
+                  "heading": "정규화와 migration 계약",
+                  "line": 23
+                },
+                {
+                  "path": "docs/foundation/syntax/interchange-and-migration.md",
+                  "heading": "migration 실패와 복구 예",
+                  "line": 29
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/interchange-and-migration.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/syntax/interchange-and-migration.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "원문/정규화/손실 출력은 분리되어 있었으나 요구된 migration 실패 복구 예가 없었음. 실패 후보 비채택, 원본 hash 보존, alias mapping 재시도, 후속 편집 비교와 새 복구 revision 예를 추가함.",
+          "primaryDecisionIdsCompared": [
+            "D05-02",
+            "D06-01",
+            "D06-02"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA05"
+          ],
+          "bodySha256": "1cd008aaa9a8e48769a43e38c0b4a61a6eb47a6ed79c917ab4745aa39e80eb4a",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP01",
+          "path": "docs/foundation/components/definition-and-designs.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "Button·Card·Toast를 같은 계층으로 설명하고 별도 Mobile 외형을 표현",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/definition-and-designs.md",
+                  "heading": "컴포넌트를 일곱 관점으로 정의한다",
+                  "line": 7
+                },
+                {
+                  "path": "docs/foundation/components/definition-and-designs.md",
+                  "heading": "공통 정의와 여러 디자인의 관계",
+                  "line": 23
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/definition-and-designs.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/definition-and-designs.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "Button/Card/Toast를 같은 일곱 관점으로 설명하며 Web/Mobile 의미와 표현 차이를 보존함. 예시의 family-as-archetype 참조를 분리하고 Card Web/Mobile 방향 차이를 실제 JSON과 맞춤.",
+          "primaryDecisionIdsCompared": [
+            "D09-01",
+            "D09-02",
+            "D09-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA03",
+            "SCA06"
+          ],
+          "bodySha256": "3206a476068f31431f54445eada9e0cdd0697ccc2384b3eb07b26c4ddb61c142",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP02",
+          "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "카탈로그 매핑·금지 조합·공유 연결 호환성과 전문가 분기 예제를 제공",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                  "heading": "등록 계약",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                  "heading": "조합과 충돌",
+                  "line": 21
+                },
+                {
+                  "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                  "heading": "확장과 라이브러리 예",
+                  "line": 27
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "38 trait/31 role/36 policy/45 family 어휘 및 조합표를 읽고 단일 owner, 입력 claim 충돌, 독립 버전 공존과 공유 port 호환성, 독립 유형 분기를 확인함. family 후보를 archetype으로 가장하던 예시 참조를 명시적 세 ArchetypeDefinition으로 수정함.",
+          "primaryDecisionIdsCompared": [
+            "D05-03",
+            "D11-01",
+            "D11-02",
+            "D11-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA06"
+          ],
+          "bodySha256": "52832717cb2a88d680451858fce82fe05678e01754249c82a050dd8eb1da70a2",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP03",
+          "path": "docs/foundation/components/values-events-and-expressions.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "공개 값·요청·상태 차이, 비즈니스 입력 경계와 타입 오류를 설명",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/values-events-and-expressions.md",
+                  "heading": "타입 설계",
+                  "line": 15
+                },
+                {
+                  "path": "docs/foundation/components/values-events-and-expressions.md",
+                  "heading": "제한 UI 표현식",
+                  "line": 31
+                },
+                {
+                  "path": "docs/foundation/components/values-events-and-expressions.md",
+                  "heading": "이벤트와 타깃 API",
+                  "line": 37
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/values-events-and-expressions.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/values-events-and-expressions.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "공개 값/의도/확정 이벤트와 비즈니스 입력 경계 및 bounded typed AST는 충족함. 모든 record payload의 필수/추가 필드 정책 누락을 고치고 record/nullable 의미와 실패 사례를 명시함.",
+          "primaryDecisionIdsCompared": [
+            "D10-01",
+            "D10-02",
+            "D10-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA01"
+          ],
+          "bodySha256": "989f0f1827d63d16f235bb74cb77a5764b3c4670842274a393b414654fce4380",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP04",
+          "path": "docs/foundation/components/state-and-request-lifecycle.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "query/selected 분리·외부 제어·빠른 재입력·미응답/취소 시 상태를 정의",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                  "heading": "요청 수명 계약",
+                  "line": 20
+                },
+                {
+                  "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                  "heading": "중복·큐·취소",
+                  "line": 26
+                },
+                {
+                  "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                  "heading": "Toast와 Card 사례",
+                  "line": 32
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/state-and-request-lifecycle.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "controlled/uncontrolled owner, query/active/selected 분리, request terminal 상태와 취소/timeout, profile별 큐, 논리 닫힘과 exit 구분을 확인함. Toast 예시에 open=true guard와 공개된 presence/content/closeRequest binding을 연결함. 기타 runtime specialization은 미실현으로 명시 유지.",
+          "primaryDecisionIdsCompared": [
+            "D14-01",
+            "D14-02",
+            "D14-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA07"
+          ],
+          "bodySha256": "d0b91bb2a3ea1d0e79c7aa4687dfd4e8a2335038f026126961041596723cbe9e",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP05",
+          "path": "docs/foundation/components/parts-slots-and-instances.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "Card 조합·slot 개수/종류·인스턴스 충돌·타깃 대체 노드 사례를 설명",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/parts-slots-and-instances.md",
+                  "heading": "공개 편집 범위",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/parts-slots-and-instances.md",
+                  "heading": "인스턴스와 원본",
+                  "line": 25
+                },
+                {
+                  "path": "docs/foundation/components/parts-slots-and-instances.md",
+                  "heading": "구조와 collection",
+                  "line": 31
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/parts-slots-and-instances.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/parts-slots-and-instances.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "Card Part/slot 종류·개수/필수성, 중첩 조작, stable key, 원본 삭제와 override 충돌, 타깃 대체 node 규칙은 충족함. walkthrough가 허용하는 gap override가 예시 permission 목록에 없던 모순을 수정함.",
+          "primaryDecisionIdsCompared": [
+            "D13-01",
+            "D13-02",
+            "D13-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA03"
+          ],
+          "bodySha256": "456db9dade8edf6c1d234c5e34acad83d6b385ba3b1c2db5db1dc99de315ba75",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP06",
+          "path": "docs/foundation/components/behavior-and-input-profiles.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "기반 교체·의무 변경·금지 부품 혼합·독립 유형의 판정 규칙을 정의",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                  "heading": "BehaviorProfile 계약",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                  "heading": "입력을 의미로 바꾼다",
+                  "line": 19
+                },
+                {
+                  "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                  "heading": "보호 모드와 전문가 모드",
+                  "line": 25
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/behavior-and-input-profiles.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "BehaviorProfile lock, 허용 기반 목록, 교체 영향, input normalization/claims, 보호·전문가 의미 변경과 독립 분기, Select 공유 context 혼합 금지 사례가 충족됨. React Aria/Base UI는 후보이며 미검증 상태를 유지함.",
+          "primaryDecisionIdsCompared": [
+            "D15-01",
+            "D15-02"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [],
+          "bodySha256": "02dacc440f1f7fa9aed4004f2f00d2d3d57a3c6ab4c607440e54c33993f2f763",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP07",
+          "path": "docs/foundation/components/coordinators-and-hosts.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "호스트 자동 제안·수동 연결·실제 경로·누락·모호함을 설명",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/coordinators-and-hosts.md",
+                  "heading": "초기 조정자 유형과 역산",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/coordinators-and-hosts.md",
+                  "heading": "연결 계약",
+                  "line": 28
+                },
+                {
+                  "path": "docs/foundation/components/coordinators-and-hosts.md",
+                  "heading": "수명·중첩·복구",
+                  "line": 34
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/coordinators-and-hosts.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/coordinators-and-hosts.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "8개 coordinator 범주, Host/Client binding, 최근접 호환 명시적 host 제안, 수동/누락/모호함, scope·generation·멱등 정리가 충족됨. 검토 JSON의 외부 coordinator 참조를 design-only 외부 선언 목록에 명시함.",
+          "primaryDecisionIdsCompared": [
+            "D16-01",
+            "D16-02",
+            "D16-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [],
+          "bodySha256": "cbbd318516bd0146625f2522eb4432696a2f15e537d5d0ea06400449b4604c82",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP08",
+          "path": "docs/foundation/components/accessibility-contracts.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "의무와 수동 확인 대상·확인 환경, 브랜드 충돌의 판정과 표시를 정의",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/accessibility-contracts.md",
+                  "heading": "계약 필드와 관계",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/accessibility-contracts.md",
+                  "heading": "충돌과 사용자 경험",
+                  "line": 28
+                },
+                {
+                  "path": "docs/foundation/components/accessibility-contracts.md",
+                  "heading": "자동·수동 검증의 분담",
+                  "line": 34
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/accessibility-contracts.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/accessibility-contracts.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "이름/관계/읽기/포커스/공지 의무, Axiom role과 platform role 구분, 브랜드 충돌 시 미준수 유지, 자동/수동 분담과 environment record가 충족됨. APG Button 공식 페이지의 기본 입력·이름 의미와 모순을 찾지 못함.",
+          "primaryDecisionIdsCompared": [
+            "D17-02",
+            "D17-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [],
+          "bodySha256": "893c98773073b160b6ce61a955b5c8d682848b02535c13379871e530f340f55f",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP09",
+          "path": "docs/foundation/components/motion-and-transitions.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "finish-then-next 기본·다른 중단 policy·퇴장 후 제거·reduced motion을 설명",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/motion-and-transitions.md",
+                  "heading": "시간·상태·제거의 관계",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/motion-and-transitions.md",
+                  "heading": "편집 모델",
+                  "line": 19
+                },
+                {
+                  "path": "docs/foundation/components/motion-and-transitions.md",
+                  "heading": "플랫폼 차이와 감소 모션",
+                  "line": 25
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/motion-and-transitions.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/motion-and-transitions.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "초기 keyframe/spring/tween/delay/stagger, 중단 profile, monotonic offset, bounded cleanup, reduced alternative, enter-close/reopen/stale callback 시험 범위를 확인함. 논리 state/focus/cleanup이 시각 큐에 무제한 종속되지 않음.",
+          "primaryDecisionIdsCompared": [
+            "D18-02",
+            "D18-03"
+          ],
+          "supportingDecisionIdsCompared": [
+            "D18-01"
+          ],
+          "findings": [],
+          "bodySha256": "732e8c2ff398b4164ac25da412de65efa36e889bfa39681c98b0b9dcd93d8143",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP10",
+          "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "한 속성의 최종값 계산과 타깃 제약·reset·공통 승격을 설명",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                  "heading": "설계안의 결정 순서",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                  "heading": "한 속성의 계산 예",
+                  "line": 32
+                },
+                {
+                  "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                  "heading": "환경 조건과 타깃 한계",
+                  "line": 47
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "priority/refines 동점 규칙이 불명확하고 한 속성의 실제 계산 예가 부족했음. 더 큰 priority, 동일 priority의 명시적 DAG 우위, incomparable conflict, 동일 값 출처 합침, override/reset과 theme 독립 순서를 명시하고 결과표를 추가함.",
+          "primaryDecisionIdsCompared": [
+            "D19-01",
+            "D19-02",
+            "D19-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA02"
+          ],
+          "bodySha256": "e8e44bc6408955322400702c98cf647b54e706fd18aced50165f349a0d20923e",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "CMP11",
+          "path": "docs/foundation/components/custom-definition-registry.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "미지 확장·충돌·버전 고정·승격·미검증 실행 능력의 표시를 정의",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/custom-definition-registry.md",
+                  "heading": "등록·확장 계약",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/components/custom-definition-registry.md",
+                  "heading": "Inspector 생성",
+                  "line": 19
+                },
+                {
+                  "path": "docs/foundation/components/custom-definition-registry.md",
+                  "heading": "새 실행 능력의 완성",
+                  "line": 25
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/custom-definition-registry.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/components/custom-definition-registry.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "선언형 커스텀 수준, 로컬→프로젝트→라이브러리 승격, namespace/version/의무, 알 수 없는 버전 보존, malicious metadata 격리, Inspector와 새 실행 능력 검증 상태가 충족됨. 구현 Agent oracle 변경 금지가 유지됨.",
+          "primaryDecisionIdsCompared": [
+            "D12-01",
+            "D12-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [],
+          "bodySha256": "db3150e2637fe6f51b7db1bbd3c42710949b1919795ea3a2aabd1c08fdaab818",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "AI01",
+          "path": "docs/foundation/ai/authoring-context-and-providers.md",
+          "reviewStatus": "PASS",
+          "completionCriteria": [
+            {
+              "criterion": "컨텍스트 계산·공유 토큰 검토·국소 편집·모호한 지시와 연결 실패를 정의",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                  "heading": "AI가 읽는 컨텍스트도 제품의 계약이다",
+                  "line": 7
+                },
+                {
+                  "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                  "heading": "작성 흐름",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                  "heading": "실패·복구와 검증",
+                  "line": 27
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/ai/authoring-context-and-providers.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "선택/참조/revision context, 독립 로컬 편집과 모든 공유 token 검토, 모호한 요청, 공식 provider/auth 구분, secret 경계, decode/contract/capability/budget 실패가 충족됨. provider 연결 성공을 증거 없이 주장하지 않음.",
+          "primaryDecisionIdsCompared": [
+            "D28-01",
+            "D28-02",
+            "D28-03",
+            "D39-05"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [],
+          "bodySha256": "620578d4762f620d79f2e281901be3a981e0ae5e0a6cf18a3327e975ab56966f",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        },
+        {
+          "id": "AI02",
+          "path": "docs/foundation/ai/realization-and-independent-verification.md",
+          "reviewStatus": "PASS_AFTER_REPAIR",
+          "completionCriteria": [
+            {
+              "criterion": "Card와 Toast의 생성 실패·계약 변경 제안·검증본 유지와 재시도를 예시",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                  "heading": "정답 기준을 먼저 고정한다",
+                  "line": 13
+                },
+                {
+                  "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                  "heading": "반복과 채택",
+                  "line": 19
+                },
+                {
+                  "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                  "heading": "Card와 Toast의 실패·재시도 예",
+                  "line": 30
+                }
+              ]
+            },
+            {
+              "criterion": "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            },
+            {
+              "criterion": "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다.",
+              "status": "PASS",
+              "evidence": [
+                {
+                  "path": "docs/foundation/ai/realization-and-independent-verification.md",
+                  "scope": "normal/failure/limits and owner/unverified/change-impact sections read in full"
+                }
+              ]
+            }
+          ],
+          "assessment": "fixed oracle·runner·candidate 쓰기 경계와 예산/마지막 검증본은 충족했지만 manifest의 Card/Toast 구체 실패 예가 없었음. nested interactive Card와 stale generation Toast의 독립 기대값·후보 수정·별도 계약 제안·제한 재시도·부분 출력 예를 추가함.",
+          "primaryDecisionIdsCompared": [
+            "D12-02",
+            "D29-01",
+            "D29-02",
+            "D29-03"
+          ],
+          "supportingDecisionIdsCompared": [],
+          "findings": [
+            "SCA04"
+          ],
+          "bodySha256": "5d278d899eb6520bf715863a553485c6df840e5a19d216e55b2ac8a41765b6af",
+          "runtimeEvidenceStatus": "NOT_IMPLEMENTED_NOT_VERIFIED"
+        }
+      ],
+      "findings": [
+        {
+          "id": "SCA01",
+          "severity": "P2",
+          "title": "RecordTypeExpr required/additional-field policy absent in all five example event payloads",
+          "observed": "CMP03 and document-contracts require explicit policy; example payloads contained only kind/fields.",
+          "resolution": "Defined required/additionalFields, negative payload behavior; updated all five payloads and added RecordTypeExpr field record.",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "SCA02",
+          "severity": "P2",
+          "title": "Appearance priority and refinement had ambiguous ordering",
+          "observed": "CMP10 called same-priority differences conflicts while also permitting explicit refinement, without numeric direction or cycle/dominance rules.",
+          "resolution": "Defined maximum numeric priority, refinement DAG and dominant tied candidate, conflicting incomparable cases, equal-value provenance; added a worked property/override/reset table.",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "SCA03",
+          "severity": "P2",
+          "title": "Card walkthrough and JSON disagree on layout and override permission",
+          "observed": "Walkthrough promises Web horizontal/Mobile vertical and gap override; both layouts were vertical and gap was absent from allowedOverrides.",
+          "resolution": "Set Card Web layout horizontal, retained Mobile vertical, permitted gap on Card surface.",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "SCA04",
+          "severity": "P2",
+          "title": "AI02 missing its explicit Card/Toast failure and retry acceptance examples",
+          "observed": "AI02 completion criterion names Card and Toast; body and related walkthrough only described generic candidate failure.",
+          "resolution": "Added two pinned-oracle failure/correction/proposal/bounded retry examples and partial-output evidence limits.",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "SCA05",
+          "severity": "P2",
+          "title": "SYN04 missing concrete failed-migration recovery example",
+          "observed": "Generic MigrationPlan and invalid import examples did not demonstrate migration failure and recovery required by the criterion.",
+          "resolution": "Added alias/opaque-extension migration failure, no adoption, unchanged source hash, corrected candidate and non-destructive snapshot recovery example.",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "SCA06",
+          "severity": "P2",
+          "title": "Three archetype refs pointed to family classification IDs",
+          "observed": "review-project ComponentDefinition.archetypeRef used axiom.family/* with expectedKind=archetype although CMP02 distinguishes those concepts.",
+          "resolution": "Added three explicit review archetypes, familyRef and typed contract field record; rewired components without changing 45-family vocabulary.",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "SCA07",
+          "severity": "P2",
+          "title": "Example references and Toast links underspecified relative to prose",
+          "observed": "Snapshot Refs lacked revision pins, and described Toast presence/content/close-request fields lacked simple binding links; ready transition omitted open=true condition.",
+          "resolution": "Pinned local/external profile Refs, linked three described ports, added open guard and explicit remaining runtime-specialization limitations.",
+          "status": "RESOLVED"
+        },
+        {
+          "id": "CROSS01",
+          "severity": "P2",
+          "title": "Cross-domain body contracts absent from field catalog",
+          "observed": "Peer audits identified TextDocument/Screen/Scenario, size/free positioning, delivery/target/install/upgrade/evidence/asset identity omissions; parent identified project-create/idempotency/storage receipt details.",
+          "resolution": "Added or completed records plus interpretation constraints, kept 57 JSON/Markdown tables equal; independent UX/DLV/QAL peer review cleared integration.",
+          "status": "RESOLVED"
+        }
+      ],
+      "unresolvedFindings": [],
+      "independentPeerReview": "ux_delivery_quality_audit reviewed integrated cross-domain fields and examples; requested before/after environment snapshot precision was implemented.",
+      "checks": {
+        "fieldTableParity": 57,
+        "exampleRefsChecked": 98,
+        "explicitRecordPayloads": 5,
+        "layoutSizePoliciesChecked": 6,
+        "exampleInvariantChecks": "PASS",
+        "scope": "documentation contracts, not executable renderer conformance",
+        "requiredRepositoryChecks": {
+          "verifyRetirement": "PASS",
+          "verifyRetirementSelfTest": "PASS",
+          "snapshotFiles": 442,
+          "retiredPathsAbsent": 432,
+          "activeFilesChecked": 107,
+          "localLinksChecked": 943,
+          "negativeCasesRejected": 4,
+          "legalFilesUnchanged": true,
+          "scope": "retirement and document integrity, not Studio tests"
+        }
+      },
+      "intentionalImplementationGates": [
+        "DTCG/ADS strategy empirical comparison before production syntax freeze",
+        "Target profile specialization of registry ports/roles/input claims/oracles",
+        "Actual renderer/motion/AT/native execution and evidence",
+        "Provider/auth connection verification and isolated implementation runner",
+        "No document QA result is runtime conformance evidence"
+      ],
+      "externalPrimarySourcesChecked": [
+        {
+          "url": "https://www.designtokens.org/TR/2025.10/format/",
+          "scope": "pinned stable format and type/reference semantics"
+        },
+        {
+          "url": "https://www.designtokens.org/TR/2025.10/resolver/",
+          "scope": "ordered set/modifier resolution and invalid input contexts"
+        },
+        {
+          "url": "https://www.designtokens.org/TR/2025.10/color/",
+          "scope": "color-space representation"
+        },
+        {
+          "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/",
+          "scope": "button activation and semantics"
+        }
+      ]
+    },
+    {
+      "kind": "foundation-independent-domain-audit",
+      "date": "2026-09-13",
+      "reviewer": "ux_delivery_quality_audit",
+      "scope": [
+        "UX01",
+        "UX02",
+        "UX03",
+        "UX04",
+        "UX05",
+        "UX06",
+        "UX07",
+        "UX08",
+        "DLV01",
+        "DLV02",
+        "DLV03",
+        "DLV04",
+        "QAL01",
+        "QAL02",
+        "QAL03",
+        "QAL04"
+      ],
+      "method": "Read all 16 complete bodies against their manifest owns/boundary/completionCriteria; cross-check ADR-0006/0007, PRD02 journeys, governed field/command/scenario/target/language/selection annexes and component walkthroughs. Deferred package/version choices and unexecuted product evidence are intentionally later gates, not document defects.",
+      "findings": [
+        {
+          "id": "UDQ01",
+          "severity": "P2",
+          "documents": [
+            "UX01"
+          ],
+          "evidence": "Manifest UX01 completion criterion explicitly requires first-run path plus empty/error states. Original onboarding-and-inspector.md lines 7-11 only provide starter import and a success exercise; no startup import failure, empty selection/search, storage failure or incomplete first-output interaction is specified.",
+          "impact": "Implementers could treat failed template import as a completed project, show stale Inspector selection, or end onboarding at an unverified export button click.",
+          "fix": "Added startup/empty/error table with recovery and retained state, and concrete export location/status plus optional init/doctor completion path. Storage and installation correctness remain owned by ARC04/DLV02.",
+          "validation": "Manual review of the added state table and shared-owner links; existing journey and scenario meaning retained.",
+          "status": "FIXED"
+        },
+        {
+          "id": "UDQ02",
+          "severity": "P2",
+          "documents": [
+            "UX05"
+          ],
+          "evidence": "Manifest UX05 requires creation, rename and bulk-edit flows easier than writing JSON. Original foundation-editor.md lines 7-31 describe selection, control types, preview and themes but no rename/bulk user flow. SC05 describes stable identity only, not authoring behavior.",
+          "impact": "Bulk edits lack defined target selection, row diagnostics, partial re-selection and atomic Undo; renames risk confusing display names with exported API paths.",
+          "fix": "Added token creation, stable-ID rename with output compatibility impact, bulk row selection/error handling, revalidated subset review and one transaction/Undo. Expanded SC04 in both scenario representations.",
+          "validation": "SC04 Markdown and JSON parity verified; lifecycle follows existing ARC03 transaction/review ownership and SYN02 identity semantics.",
+          "status": "FIXED"
+        },
+        {
+          "id": "UDQ03",
+          "severity": "P1",
+          "documents": [
+            "DLV02",
+            "DLV04"
+          ],
+          "evidence": "Original diff-upgrades-and-rollback.md lines 9-11 names baseline/current/new; line 41 records result file hashes as next comparison provenance. No rule distinguishes immutable generated bytes from user-merged installed output after partial-hunk upgrades or defines mixed project installation state.",
+          "impact": "A subsequent upgrade can misclassify retained custom code as generated baseline and replace it, or declare an incompletely upgraded project fully installed at the new release.",
+          "fix": "Separated generated baseline refs/digests from installed hashes. Fully accepted files advance baseline to exact new generator bytes; partly selected files retain prior generated baseline and record selected/deferred hunks. Mixed installation status and receipt records are required; ambiguous provenance forces reviewed comparison. DLV02 doctor preserves these distinctions. SC41 now exercises partial-upgrade-followed-by-next-upgrade.",
+          "validation": "Walked through generated Button plus retained user tracking call, partial hunk acceptance, next release and rollback. Scenario parity passes. Annex record synchronization assigned to local_readiness.",
+          "status": "FIXED_INTEGRATION_REVIEWED"
+        },
+        {
+          "id": "UDQ04",
+          "severity": "P2",
+          "documents": [
+            "UX03",
+            "UX04",
+            "UX07",
+            "DLV01",
+            "DLV02",
+            "DLV03",
+            "DLV04",
+            "QAL02"
+          ],
+          "evidence": "UX03:11 uses LayoutDefinition while field-catalog stores LayoutRule. UX04:11 declares TextDocument and UX07:29 separately persisted Screen/Scenario, absent from field catalog. Command catalog only has scenario.update(screenRef,...), lacking explicit screen and typed text/content authoring. TargetProfile, ProjectConnection, DeliveryManifest and EvidenceRecord field tables omit body-required runtime/mapping/host, toolchain/lock, public API/instructions, fixture/time/manual-observation metadata.",
+          "impact": "Independent implementations can invent incompatible persisted structures or bypass the common authoring API; output/evidence receipts cannot reproduce required ownership or validation inputs.",
+          "fix": "Normalized UX03 to LayoutRule. Added explicit UX04 persisted-versus-session boundary and UX07 Screen/Scenario ownership plus typed command linkage. Sent exact record additions to local_readiness and typed text/screen/instance content operations to parent. QAL02 now explicitly defines snapshot revision closure, separate fixture/oracle/source/dependency digests, execution/record timestamps and structured manual observations.",
+          "validation": "Read/search found no alternative normative TextDocument/Screen/Scenario records. Final JSON/Markdown field and command parity must be checked by integrating owners.",
+          "status": "FIXED_INTEGRATION_REVIEWED"
+        },
+        {
+          "id": "UDQ05",
+          "severity": "P2",
+          "documents": [
+            "QAL01",
+            "QAL02"
+          ],
+          "evidence": "Scenario catalog uses mode both while Requirement field contract permits automatic/manual; original QAL01 never explains expansion. Original QAL02 body requires fixture/time/manual evidence but does not state incomplete evidence is unusable for pass.",
+          "impact": "A plan builder could count one automatic result as fulfillment of a both scenario, or exclude unknown applicability and accept evidence missing critical observation identity.",
+          "fix": "Specified splitting both into distinct automatic/manual requirements, applying automatic-later only to later realtime profiles, and treating unknown applicability as blocked. Added evidence completeness rule; expanded SC44/45 without changing scenario count.",
+          "validation": "Scenario Markdown/JSON parity verified for all 50 rows; required/manual/full-profile release gates remain intact.",
+          "status": "FIXED"
+        }
+      ],
+      "documents": [
+        {
+          "id": "UX01",
+          "path": "docs/foundation/experience/onboarding-and-inspector.md",
+          "status": "FIXED",
+          "findingIds": [
+            "UDQ01"
+          ],
+          "assessment": "Onboarding, progressive Inspector, scoped AI and learning path already aligned. Added explicit empty/error/first-output completion states."
+        },
+        {
+          "id": "UX02",
+          "path": "docs/foundation/experience/canvas-and-direct-manipulation.md",
+          "status": "PASS",
+          "findingIds": [],
+          "assessment": "Selection depth, geometric transforms, drag/resize/rotation, mixed parents, cancellation, keyboard alternative and one-gesture Undo are specified. Engine selection correctly deferred."
+        },
+        {
+          "id": "UX03",
+          "path": "docs/foundation/experience/layout-authoring.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ04"
+          ],
+          "assessment": "Hug/fill/fixed, cycle handling, parent-preserving drag and target alternatives are sound. Canonical LayoutRule terminology aligned; size/positioning field parity assigned."
+        },
+        {
+          "id": "UX04",
+          "path": "docs/foundation/experience/text-and-asset-editing.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ04"
+          ],
+          "assessment": "IME, selection/history, safe paste, asset replacement/crop/fallback and rights boundary are explicit. Added persisted TextDocument versus runtime session boundary; field/command closure assigned."
+        },
+        {
+          "id": "UX05",
+          "path": "docs/foundation/experience/foundation-editor.md",
+          "status": "FIXED",
+          "findingIds": [
+            "UDQ02"
+          ],
+          "assessment": "Token preview, shared review, aliases/themes and policies were sound. Added all create/rename/bulk authoring completion criteria."
+        },
+        {
+          "id": "UX06",
+          "path": "docs/foundation/experience/component-editing-panels.md",
+          "status": "PASS",
+          "findingIds": [],
+          "assessment": "List/graph/AI/preset share typed transitions; controlled-state simulation, a11y relation panel and keyframe/spring/interruption UX connect to Card/Toast walkthroughs. No competing semantic ownership found."
+        },
+        {
+          "id": "UX07",
+          "path": "docs/foundation/experience/preview-and-prototypes.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ04"
+          ],
+          "assessment": "Design/candidate/verified/native distinctions, sandbox, sharing revocation, loop budget and example output are sound. Separate Screen/Scenario persistence and command closure assigned."
+        },
+        {
+          "id": "UX08",
+          "path": "docs/foundation/experience/editor-accessibility-and-language.md",
+          "status": "PASS",
+          "findingIds": [],
+          "assessment": "Core keyboard/screen reader/IME tasks, focus, translation keys/fallback and actual environment recording are stated; SEL16 retains required release coverage instead of claiming present AT proof."
+        },
+        {
+          "id": "DLV01",
+          "path": "docs/foundation/delivery/target-and-style-profiles.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ04"
+          ],
+          "assessment": "All four output technologies and eight applicable profile families are retained; Expo/bare, native toolkit, CSS-in-JS version and SSR/RSC gates are explicit. Body-required TargetProfile metadata needs field-table closure."
+        },
+        {
+          "id": "DLV02",
+          "path": "docs/foundation/delivery/project-init-and-doctor.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ03",
+            "UDQ04"
+          ],
+          "assessment": "Allowed behavior bases, detected configuration/drift, reviewed side effects and partial-install recovery are covered. Added mixed-install semantics and requested toolchain/package-manager/lock metadata."
+        },
+        {
+          "id": "DLV03",
+          "path": "docs/foundation/delivery/user-owned-library-and-packaging.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ04"
+          ],
+          "assessment": "Four delivery choices, native packaging, public types, dependency/assets/notices, user ownership and publish distinction are sound. Manifest public API map/instructions/test plan metadata needs table closure."
+        },
+        {
+          "id": "DLV04",
+          "path": "docs/foundation/delivery/diff-upgrades-and-rollback.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ03",
+            "UDQ04"
+          ],
+          "assessment": "Stale file check, staging/build, conflict review, multi-project rollback already covered. Added critical generated-versus-installed baseline and partial subsequent upgrade rules."
+        },
+        {
+          "id": "QAL01",
+          "path": "docs/foundation/quality/conformance-and-test-plans.md",
+          "status": "FIXED",
+          "findingIds": [
+            "UDQ05"
+          ],
+          "assessment": "Independent oracle, all family/trait/profile obligations, negative fixtures and no empty/skip success are sound. Both scenario expansion and unknown applicability now explicit."
+        },
+        {
+          "id": "QAL02",
+          "path": "docs/foundation/quality/evidence-and-freshness.md",
+          "status": "FIXED_INTEGRATION_REVIEWED",
+          "findingIds": [
+            "UDQ04",
+            "UDQ05"
+          ],
+          "assessment": "Impact-based staleness versus full release rerun, pinned candidate and runner trust boundaries are coherent. Added reproducible evidence completeness and requested record fields."
+        },
+        {
+          "id": "QAL03",
+          "path": "docs/foundation/quality/performance-capacity-and-budgets.md",
+          "status": "PASS",
+          "findingIds": [],
+          "assessment": "S/M/L workloads, proposed latency budgets, recorded hardware/cold-warm/sample/overhead, per-job cost limits and scope-change handling satisfy staged performance criteria without claiming measurements."
+        },
+        {
+          "id": "QAL04",
+          "path": "docs/foundation/quality/release-readiness.md",
+          "status": "PASS",
+          "findingIds": [],
+          "assessment": "Documentation approval is distinct from G3-G5 implementation/release gates. Complete target/catalog/authoring/delivery/AT/offline scope, mandatory manual evidence, defect holds, exceptions and release recovery are explicit."
+        }
+      ],
+      "duplicationAssessment": "Several concepts are summarized across UX, DLV, QAL and annexes, but domain ownership links generally make this legitimate cross-reference rather than competing rules. The LayoutDefinition/LayoutRule mismatch and omitted field/command counterparts were the material ownership/completeness issue; fixed or assigned above.",
+      "validation": [
+        {
+          "check": "All assigned bodies read",
+          "result": "16/16"
+        },
+        {
+          "check": "Scenario Markdown/JSON parity",
+          "result": "50 rows; 0 mismatches"
+        },
+        {
+          "check": "git diff --check",
+          "result": "PASS at owned-edit verification; global repo is concurrently edited by other agents"
+        },
+        {
+          "check": "Product implementation/platform execution",
+          "result": "NOT_RUN_NOT_APPLICABLE_TO_DOCUMENT_APPROVAL"
+        },
+        {
+          "check": "Final manifest/body hashes and repository verifier",
+          "result": "PARENT_TO_REGENERATE_AND_RUN_AFTER_ALL_INTEGRATION"
+        },
+        {
+          "check": "Final field/command integration rereview",
+          "result": "PASS: 57 field records include owned missing contracts; screen payload matches record; text envelope identity explicit; generated/installed baseline and before/after environment snapshots distinct."
+        }
+      ],
+      "remoteMutations": "NONE",
+      "commits": "NONE",
+      "remaining": "No substantive unresolved issues in the assigned 16 documents. Parent must regenerate global manifest/body hashes and run complete repository verification before merge. Product runtime evidence remains a later gate."
+    },
+    {
+      "kind": "foundation-independent-domain-audit",
+      "date": "2026-09-13",
+      "reviewer": "root",
+      "scope": [
+        "ARC01",
+        "ARC02",
+        "ARC03",
+        "ARC04",
+        "ARC05",
+        "ARC06",
+        "ARC07"
+      ],
+      "sourceBaselineCommit": "08a2c031f377e4d2da4bb0851a7c649392b6fea3",
+      "documents": [
+        {
+          "id": "ARC01",
+          "path": "docs/foundation/architecture/system-and-domain-boundaries.md",
+          "status": "PASS",
+          "completionCriteriaReviewed": [
+            "정상/실패 흐름과 모든 I/O·권한·소유 경계를 하나의 시스템 지도로 연결",
+            "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+          ],
+          "assessment": "Shared document flow and all domain ownership boundaries are explicit; failure recovery uses the last valid snapshot and exact-source evidence."
+        },
+        {
+          "id": "ARC02",
+          "path": "docs/foundation/architecture/modules-and-dependencies.md",
+          "status": "FIXED",
+          "completionCriteriaReviewed": [
+            "각 모듈의 입력/출력·금지 의존성·교체 지점과 공개 유출 검사를 정의; 기존 Builder.io/UXPin/Plasmic/pen.dev 및 Canvas·Yoga 조사 근거를 현재 요구와 대조",
+            "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+          ],
+          "assessment": "Added concrete port inputs/outputs, forbidden imports, adapter conformance and public artifact/source-map leakage checks."
+        },
+        {
+          "id": "ARC03",
+          "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+          "status": "FIXED",
+          "completionCriteriaReviewed": [
+            "동시 AI/사람 편집·부분 충돌·작업 취소·재전송을 단계별 예시",
+            "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+          ],
+          "assessment": "Defined project bootstrap, scoped idempotency, authenticated receipt replay order, durable document acceptance, separate external receipts, cancellation, stale review and canonical operation names."
+        },
+        {
+          "id": "ARC04",
+          "path": "docs/foundation/architecture/storage-offline-and-recovery.md",
+          "status": "FIXED",
+          "completionCriteriaReviewed": [
+            "끊김·파일 충돌·브라우저 보관 실패·준비 팩 누락·복구 시나리오를 정의",
+            "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+          ],
+          "assessment": "Defined CAS/single-writer boundary and prepare/marker/response crash recovery, receipt atomicity and ambiguous-chain handling."
+        },
+        {
+          "id": "ARC05",
+          "path": "docs/foundation/architecture/collaboration-readiness.md",
+          "status": "PASS",
+          "completionCriteriaReviewed": [
+            "비충돌·같은 속성 충돌·일시 invalid·삭제 경쟁에 대한 기록 모델을 설명",
+            "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+          ],
+          "assessment": "Concurrent invalid drafts, delete/edit conflicts, locks, individual Undo and shared revert are bounded; actual realtime collaboration remains later."
+        },
+        {
+          "id": "ARC06",
+          "path": "docs/foundation/architecture/browser-host-and-execution.md",
+          "status": "PASS",
+          "completionCriteriaReviewed": [
+            "브라우저 단독→Host 연결·권한 확장·내부 AI·native 실행 경로를 설명",
+            "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+          ],
+          "assessment": "Browser/Host capabilities, paired origins, authorized roots/jobs, disconnection and OS-native validation boundaries are explicit."
+        },
+        {
+          "id": "ARC07",
+          "path": "docs/foundation/architecture/public-api-mcp-and-entitlements.md",
+          "status": "FIXED",
+          "completionCriteriaReviewed": [
+            "HTTP/로컬 호출·권한 부족·버전 불일치·사용자 컴포넌트 API 변경을 예시",
+            "주요 용어를 설명하고 정상·실패 사례와 적용 범위를 연결한다.",
+            "규범·가설·미검증을 구분하고 변경 영향·검증 책임을 명시한다."
+          ],
+          "assessment": "Added local/HTTP/MCP result equivalence, protocol mismatch handling, command unknown-field rejection and snapshot-scoped cursor authorization."
+        }
+      ],
+      "findings": [
+        {
+          "id": "ARC-A01",
+          "documents": [
+            "ARC02"
+          ],
+          "severity": "P2",
+          "evidence": "Manifest requires explicit input/output, forbidden dependency and public-leak checks; original table named dependencies but did not define artifact leakage or port swap acceptance.",
+          "fix": "Added concrete port inputs/outputs, forbidden imports, adapter conformance and public artifact/source-map leakage checks.",
+          "status": "FIXED"
+        },
+        {
+          "id": "ARC-A02",
+          "documents": [
+            "ARC03"
+          ],
+          "severity": "P1",
+          "evidence": "Unscoped idempotency and acceptance ordering could duplicate create/charged work after lost replies or return wrong actor receipts; cancellation and null-base creation were undefined.",
+          "fix": "Defined project bootstrap, scoped idempotency, authenticated receipt replay order, durable document acceptance, separate external receipts, cancellation, stale review and canonical operation names.",
+          "status": "FIXED"
+        },
+        {
+          "id": "ARC-A03",
+          "documents": [
+            "ARC04"
+          ],
+          "severity": "P1",
+          "evidence": "Revision check and multi-file write had no linearization or deterministic crash-stage choice; a durable snapshot could lose its retry receipt.",
+          "fix": "Defined CAS/single-writer boundary and prepare/marker/response crash recovery, receipt atomicity and ambiguous-chain handling.",
+          "status": "FIXED"
+        },
+        {
+          "id": "ARC-A04",
+          "documents": [
+            "ARC07"
+          ],
+          "severity": "P2",
+          "evidence": "Transport/version errors and unknown command fields were not distinguished from preserved opaque imported data.",
+          "fix": "Added local/HTTP/MCP result equivalence, protocol mismatch handling, command unknown-field rejection and snapshot-scoped cursor authorization.",
+          "status": "FIXED"
+        }
+      ],
+      "crossReview": "handoff_review checked new ARC sections; its two ordering/receipt-scope findings corrected and rechecked through command catalog."
+    }
+  ],
+  "openFindings": [],
+  "deferredWork": "23 bounded selections remain implementation-stage evidence work; no scope reduction, product runtime support, final new license or pricing selection is inferred."
+}

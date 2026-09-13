@@ -1,0 +1,508 @@
+{
+  "kind": "documentation-test-scenarios",
+  "status": "DESIGN_REVIEW_READY",
+  "executionStatus": "NOT_EXECUTED",
+  "scenarios": [
+    {
+      "id": "SC01",
+      "area": "Foundation",
+      "stimulus": "오류가 섞인 토큰 묶음 import",
+      "expected": "유효 부분·오류 원본·경로를 보존",
+      "mode": "automatic",
+      "ownerDocumentId": "SYN04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC02",
+      "area": "Foundation",
+      "stimulus": "alias 순환·잘못된 type·누락 target",
+      "expected": "참조 경로 진단·오류 영역 출력 제한",
+      "mode": "automatic",
+      "ownerDocumentId": "SYN03",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC03",
+      "area": "Foundation",
+      "stimulus": "모든 선언 type·색 공간·resolver context 편집/출력",
+      "expected": "각 단계의 의미·출처·실제 렌더 비교",
+      "mode": "both",
+      "ownerDocumentId": "SYN01",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC04",
+      "area": "Foundation",
+      "stimulus": "토큰 생성·이름 변경·대량 편집·공유 drag 후 취소/승인/Undo",
+      "expected": "stable ID·영향·오류 재선택·stale 검토·원자 적용과 한 번 복구",
+      "mode": "both",
+      "ownerDocumentId": "UX05",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC05",
+      "area": "Foundation",
+      "stimulus": "이름 변경·독립 복사·같은 이름 재import",
+      "expected": "불변 ID·원본 출처·복사 refMap 유지",
+      "mode": "automatic",
+      "ownerDocumentId": "SYN02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC06",
+      "area": "Component",
+      "stimulus": "Button 유효 pointer/keyboard activation",
+      "expected": "한 사용자 의도당 emit 1회",
+      "mode": "both",
+      "ownerDocumentId": "CMP06",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC07",
+      "area": "Component",
+      "stimulus": "Button press 취소·disabled·synthetic click",
+      "expected": "취소 0회·중복 억제·profile focus 준수",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP06",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC08",
+      "area": "Component",
+      "stimulus": "plain Card 렌더·body 주입",
+      "expected": "필수 slot·읽기 순서·불필요 selected/업무 상태 없음",
+      "mode": "both",
+      "ownerDocumentId": "CMP05",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC09",
+      "area": "Component",
+      "stimulus": "선택 Card controlled 요청 지연·거절",
+      "expected": "단일 owner·요청/확정 구별·stale 응답 무시",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC10",
+      "area": "Component",
+      "stimulus": "Card 내부 action·중첩 interactive 구조",
+      "expected": "올바른 독립 목적 또는 구조 진단",
+      "mode": "both",
+      "ownerDocumentId": "CMP08",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC11",
+      "area": "Component",
+      "stimulus": "Toast 초기 open false·반복 close",
+      "expected": "공지 생략/종료·cleanup 1회",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC12",
+      "area": "Component",
+      "stimulus": "Toast enter 중 exit·reopen·늦은 callback",
+      "expected": "정의한 generation·중단 정책·stale 무시",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP09",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC13",
+      "area": "Component",
+      "stimulus": "Toast timeout pause·reduced motion",
+      "expected": "의미 유지·읽기·bounded cleanup",
+      "mode": "both",
+      "ownerDocumentId": "CMP09",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC14",
+      "area": "Component",
+      "stimulus": "Toast host 누락·중첩·수동 연결",
+      "expected": "실제 연결 경로·모호함 진단",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP07",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC15",
+      "area": "Component",
+      "stimulus": "Select query/active/selected·IME",
+      "expected": "독립 값·명시 commit·탐색 의미 유지",
+      "mode": "both",
+      "ownerDocumentId": "CMP04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC16",
+      "area": "Component",
+      "stimulus": "다른 provider의 Select trigger/item 결합",
+      "expected": "port/context/의무 호환 검사·무검사 혼합 거부",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC17",
+      "area": "Component",
+      "stimulus": "중첩 Dialog 열고 닫기·trigger 제거",
+      "expected": "stack·배경·focus 복귀·fallback",
+      "mode": "both",
+      "ownerDocumentId": "CMP07",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC18",
+      "area": "Component",
+      "stimulus": "같은 input claim·두 state writer 등록",
+      "expected": "실제 충돌 거부·scope 분리의 정상 조합 허용",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC19",
+      "area": "Component",
+      "stimulus": "custom trait local→library 승격·버전 혼합",
+      "expected": "ID·의무·사용처·호환 기록",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP11",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC20",
+      "area": "Component",
+      "stimulus": "의무를 바꾸는 전문가 설정",
+      "expected": "독립 유형 분기·기존 준수 주장 제거",
+      "mode": "both",
+      "ownerDocumentId": "CMP06",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC21",
+      "area": "Appearance",
+      "stimulus": "같은 우선순위 rule·refinement·instance override",
+      "expected": "충돌 진단·출처·reset·승격 영향",
+      "mode": "automatic",
+      "ownerDocumentId": "CMP10",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC22",
+      "area": "Editor",
+      "stimulus": "nested Part 선택·zoom/rotation·reparent",
+      "expected": "geometry identity·좌표·순환 거부",
+      "mode": "both",
+      "ownerDocumentId": "UX02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC23",
+      "area": "Editor",
+      "stimulus": "auto layout drag·hug/fill 순환·RTL",
+      "expected": "순서/크기 제약·대안·읽기 순서",
+      "mode": "both",
+      "ownerDocumentId": "UX03",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC24",
+      "area": "Editor",
+      "stimulus": "한글 composition·paste·selection·Undo",
+      "expected": "미완성 입력 보존·허용 서식·history",
+      "mode": "both",
+      "ownerDocumentId": "UX04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC25",
+      "area": "Editor",
+      "stimulus": "font/image 누락·재연결·SVG 입력",
+      "expected": "참조/자리 보존·부분 제한·안전 렌더",
+      "mode": "both",
+      "ownerDocumentId": "BRD02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC26",
+      "area": "Editor",
+      "stimulus": "keyboard·screen reader로 핵심 여정",
+      "expected": "선택·편집·검토·설치·복구 성공",
+      "mode": "manual",
+      "ownerDocumentId": "UX08",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC27",
+      "area": "Preview",
+      "stimulus": "design r20·code r18 비교·native 근사",
+      "expected": "각 revision·정확도·실행 증거 구분",
+      "mode": "both",
+      "ownerDocumentId": "UX07",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC28",
+      "area": "Preview",
+      "stimulus": "프로토타입 이동·mock 거절·자동 loop",
+      "expected": "시나리오 분리·step budget·예제 소스",
+      "mode": "both",
+      "ownerDocumentId": "UX07",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC29",
+      "area": "Command",
+      "stimulus": "idempotent 재전송·응답 유실",
+      "expected": "동일 receipt·중복 commit 없음",
+      "mode": "automatic",
+      "ownerDocumentId": "ARC03",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC30",
+      "area": "Command",
+      "stimulus": "AI stale patch·공유 token·stale approval",
+      "expected": "의미 충돌·검토·원자 commit",
+      "mode": "automatic",
+      "ownerDocumentId": "ARC03",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC31",
+      "area": "Storage",
+      "stimulus": "journal 단계별 강제 종료·quota 초과",
+      "expected": "마지막 complete revision·후보 복구",
+      "mode": "automatic",
+      "ownerDocumentId": "ARC04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC32",
+      "area": "Storage",
+      "stimulus": "외부 ADS 파일 수정·파일 권한 회수",
+      "expected": "hash 비교·재연결·덮어쓰기 방지",
+      "mode": "automatic",
+      "ownerDocumentId": "ARC04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC33",
+      "area": "Offline",
+      "stimulus": "팩 준비→네트워크 차단→재시작",
+      "expected": "편집·검사·출력·내부 AI 실제 연결",
+      "mode": "both",
+      "ownerDocumentId": "ARC04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC34",
+      "area": "Security",
+      "stimulus": "origin/actor 위조·경로 탈출·secret 요청",
+      "expected": "scope·root·secret 격리·진단",
+      "mode": "automatic",
+      "ownerDocumentId": "OPS01",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC35",
+      "area": "AI",
+      "stimulus": "metadata의 지시·core API 변경 명령",
+      "expected": "데이터로 처리·불허 operation 거부",
+      "mode": "automatic",
+      "ownerDocumentId": "ARC07",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC36",
+      "area": "AI",
+      "stimulus": "candidate가 oracle/receipt 수정·test 삭제",
+      "expected": "독립 권한·discovery count·실패 처리",
+      "mode": "automatic",
+      "ownerDocumentId": "AI02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC37",
+      "area": "AI",
+      "stimulus": "provider 실패·budget 초과·재시도",
+      "expected": "후보·last verified 보존·제한된 비용",
+      "mode": "automatic",
+      "ownerDocumentId": "AI01",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC38",
+      "area": "Delivery",
+      "stimulus": "새 React/RN 앱 init·실제 페이지 실행",
+      "expected": "provider·alias·types·style·dependency 일치",
+      "mode": "both",
+      "ownerDocumentId": "DLV02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC39",
+      "area": "Delivery",
+      "stimulus": "native 전체 catalog 선택 profile 실행",
+      "expected": "Swift/Android 실제 source·의무·AT 결과",
+      "mode": "both",
+      "ownerDocumentId": "DLV01",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC40",
+      "area": "Delivery",
+      "stimulus": "4 delivery mode export·restore·설치",
+      "expected": "파일·types·asset·notice·provenance 완전",
+      "mode": "both",
+      "ownerDocumentId": "DLV03",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC41",
+      "area": "Delivery",
+      "stimulus": "baseline/current/new conflict·baseline 없음·부분 hunk 이후 재업그레이드",
+      "expected": "생성 baseline/설치 hash 분리·mixed 상태·사용자 수정 보존·선택 diff",
+      "mode": "both",
+      "ownerDocumentId": "DLV04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC42",
+      "area": "Delivery",
+      "stimulus": "rename/delete·dependency 설치 부분 실패",
+      "expected": "효과 receipt·복구·stale 파일 비교",
+      "mode": "automatic",
+      "ownerDocumentId": "DLV04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC43",
+      "area": "Delivery",
+      "stimulus": "여러 소비 앱 upgrade·개별 rollback",
+      "expected": "앱별 version 고정·시험·상태 분리",
+      "mode": "both",
+      "ownerDocumentId": "DLV04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC44",
+      "area": "Evidence",
+      "stimulus": "source/oracle/profile 변경·fixture/time/수동 관찰 누락 후 badge",
+      "expected": "stale/확인 불가 판정·전체 release 재실행",
+      "mode": "automatic",
+      "ownerDocumentId": "QAL02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC45",
+      "area": "Evidence",
+      "stimulus": "both의 자동만 완료·수동 미완료·적용 범위 불명·skip/xfail·0 tests",
+      "expected": "자동/수동 요구 분리·blocked·full support 보류",
+      "mode": "automatic",
+      "ownerDocumentId": "QAL01",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC46",
+      "area": "Collaboration",
+      "stimulus": "동시 edit/delete·순서 변경·개인 Undo",
+      "expected": "의미 초안 보존·공유 revert 구별",
+      "mode": "automatic-later",
+      "ownerDocumentId": "ARC05",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC47",
+      "area": "Performance",
+      "stimulus": "S/M/L cold/warm 작업·취소",
+      "expected": "p95·memory·정확성·resource 기록",
+      "mode": "automatic",
+      "ownerDocumentId": "QAL03",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC48",
+      "area": "Operations",
+      "stimulus": "license/asset rights 미확인·publish 실패",
+      "expected": "해당 배포 보류·notice·재시도 기록",
+      "mode": "automatic",
+      "ownerDocumentId": "OPS03",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC49",
+      "area": "Operations",
+      "stimulus": "선택 오류 보고·복원·계정/키 회수",
+      "expected": "비식별·사용자 자료 보존·권한 차단",
+      "mode": "both",
+      "ownerDocumentId": "OPS02",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    },
+    {
+      "id": "SC50",
+      "area": "Business",
+      "stimulus": "첫 사용자 토큰→Card→설치 관찰",
+      "expected": "첫 성공·포기·도움·비용 기록",
+      "mode": "manual",
+      "ownerDocumentId": "BIZ04",
+      "requiredForApplicableProfile": true,
+      "evidence": []
+    }
+  ],
+  "catalogExpansionRule": "Each catalog provider variant expands family/trait obligations into a target-specific frozen TestPlan; scenario count alone is not full coverage."
+}

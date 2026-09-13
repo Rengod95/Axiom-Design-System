@@ -36,6 +36,7 @@ REVISED_PATHS = {
 FIXED_ACTIVE_PATHS = UNCHANGED_PATHS | REVISED_PATHS | {
     "docs/adr/0007-git-reference-and-documentation-phase.md",
     "reference/pre-studio/README.md", SNAPSHOT_PATH, VERIFIER_PATH,
+    "scripts/verify-foundation.py",
 }
 MARKDOWN_LINK = re.compile(r"\[[^\]]+\]\((?:<([^>]+)>|([^\s)]+))(?:\s+['\"][^)]*)?\)")
 FENCED_CODE = re.compile(r"^\s*(`{3,}|~{3,}).*?$.*?^\s*\1\s*$", re.MULTILINE | re.DOTALL)
