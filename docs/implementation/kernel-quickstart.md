@@ -2,7 +2,7 @@
 
 This is a bounded I1 implementation under [ADR-0009](../adr/0009-ads-kernel-implementation-bootstrap.md) and [ADR-0010](../adr/0010-source-preserving-draft-authoring.md). It creates a local project, captures original sources, stages repaired imports and existing-document updates, protects recognized document references, and persists Undo/redo across processes.
 
-Every JSON result reports `validation: "envelope-only"` and `semantics: "unverified"`. Component behavior, tokens, accessibility, rendering, Studio, Browser storage, AI and output platforms are later work. A successful import does not certify those contracts.
+Every JSON result reports `validation: "envelope-only"` and `semantics: "unverified"`. Component behavior, tokens, accessibility, rendering, Studio, AI and output platforms are later work. A successful import does not certify those contracts. A separate [browser adapter](browser-storage-evidence.md) now runs the same bounded kernel using IndexedDB.
 
 ## Prepare
 
@@ -16,7 +16,7 @@ pnpm build
 pnpm axiom help
 ```
 
-The CLI has no runtime dependencies. `pnpm axiom` runs Node's TypeScript stripping; `pnpm check` performs the separate strict type check. After a build, the emitted entry is `node dist/apps/cli/src/main.js` with the same arguments.
+The CLI's Node execution path imports no external runtime packages; the workspace's pinned hash dependency belongs only to the browser adapter. `pnpm axiom` runs Node's TypeScript stripping; `pnpm check` performs the separate strict type check. After a build, the emitted entry is `node dist/apps/cli/src/main.js` with the same arguments. `pnpm test:browser` then verifies the browser modules in a dedicated installed Chromium profile.
 
 ## Create, import and reopen
 
@@ -159,4 +159,4 @@ pnpm axiom --store "$demoRoot/store" show
 
 Recovery refuses a live or unverifiable lock owner. Do not delete lock or commit files to force a write. Corrupt committed data and ambiguous recovery stop with diagnostics; incomplete preparation is not a successful document revision. Tests cover process interruption, while sudden power loss and arbitrary external file edits have only the guarantees recorded by the local-store implementation.
 
-The local principal represents the user already permitted to run this process and access the folder. This adapter does not implement network authentication or multi-user authorization. API/Host authentication and Browser storage remain separate implementation work.
+The local principal represents the user already permitted to run this process and access the folder. This adapter does not implement network authentication or multi-user authorization. API/Host authentication remains separate implementation work. [Browser storage](browser-storage-evidence.md) uses the same core command boundary under the caller's origin authority.

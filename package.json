@@ -13,11 +13,16 @@
     "generate": "node scripts/generate-ads-validator.mjs",
     "build": "tsc -p tsconfig.build.json",
     "test": "node scripts/run-tests.mjs",
-    "axiom": "node apps/cli/src/main.ts"
+    "axiom": "node apps/cli/src/main.ts",
+    "test:browser": "node scripts/verify-browser-store.mjs"
   },
   "devDependencies": {
     "@types/node": "24.13.4",
     "ajv": "8.20.0",
+    "fake-indexeddb": "6.2.5",
     "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0"
   }
 }

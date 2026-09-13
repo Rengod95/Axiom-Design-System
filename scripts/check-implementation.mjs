@@ -6,8 +6,9 @@ import ts from "typescript";
 import { OPERATION_SCOPES } from "../modules/ads-core/src/constants.ts";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const MODULES = ["modules/ads-core", "modules/local-store", "apps/cli"].map((path) => resolve(ROOT, path));
+const MODULES = ["modules/ads-core", "modules/local-store", "apps/cli", "modules/browser-store"].map((path) => resolve(ROOT, path));
 const CORE_ROOT = resolve(MODULES[0], "src");
+const BROWSER_ROOT = resolve(MODULES[3], "src");
 const NODE_BUILTINS = new Set(builtinModules.flatMap((name) => [name, `node:${name}`]));
 const NODE_GLOBALS = new Set(["process", "Buffer", "require", "__dirname", "__filename"]);
 
@@ -25,11 +26,14 @@ function files(directory) {
 function checkSource(path, source) {
   const ownModule = MODULES.find((root) => within(root, path));
   const isCore = within(CORE_ROOT, path);
+  const isBrowser = within(BROWSER_ROOT, path);
+  const neutral = isCore || isBrowser;
   const label = relative(ROOT, path);
   if (/@ts-(?:nocheck|ignore)\b/.test(source) && !["generated/document-envelope.ts", "generated/catalog-structure.ts", "generated/type-expression.ts"].some((generated) => path === resolve(CORE_ROOT, generated))) throw new Error(`Unapproved type-check suppression: ${label}`);
   function dependency(target) {
     if (!target.startsWith(".")) {
-      if (isCore || !NODE_BUILTINS.has(target)) throw new Error(`Unapproved dependency in ${label}: ${target}`);
+      if (path === resolve(BROWSER_ROOT, "browser-services.ts") && target === "@noble/hashes/sha2.js") return;
+      if (neutral || !NODE_BUILTINS.has(target)) throw new Error(`Unapproved dependency in ${label}: ${target}`);
       return;
     }
     const destination = resolve(dirname(path), target);
@@ -37,6 +41,8 @@ function checkSource(path, source) {
     if (!targetModule) throw new Error(`Dependency escapes implementation modules: ${label} → ${target}`);
     if (isCore && !within(CORE_ROOT, destination)) throw new Error(`Core dependency escapes its source boundary: ${label} → ${target}`);
     if (targetModule !== ownModule && destination !== resolve(targetModule, "src/index.ts")) throw new Error(`Cross-module dependency must use the public barrel: ${label} → ${target}`);
+    if (isBrowser && targetModule !== MODULES[0] && targetModule !== MODULES[3]) throw new Error(`Browser adapter depends on a Node adapter: ${label}`);
+    if (!isBrowser && targetModule === MODULES[3]) throw new Error(`Node adapter depends on browser storage: ${label}`);
     if (ownModule === MODULES[1] && targetModule === MODULES[2]) throw new Error(`Storage adapter depends on CLI: ${label}`);
   }
   const tree = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
@@ -54,9 +60,9 @@ function checkSource(path, source) {
       if (node.arguments.length !== 1 || !ts.isStringLiteral(node.arguments[0])) throw new Error(`Computed dynamic dependency: ${label}`);
       dependency(node.arguments[0].text);
     }
-    if (isCore && ts.isIdentifier(node) && NODE_GLOBALS.has(node.text)) throw new Error(`Node identifier in core: ${label}: ${node.text}`);
-    if (isCore && (ts.isCallExpression(node) || ts.isNewExpression(node)) && ts.isIdentifier(node.expression) && ["eval", "Function"].includes(node.expression.text)) throw new Error(`Runtime code generation in core: ${label}`);
-    if (isCore && ts.isElementAccessExpression(node) && ts.isStringLiteral(node.argumentExpression) && NODE_GLOBALS.has(node.argumentExpression.text)) throw new Error(`Node global access in core: ${label}`);
+    if (neutral && ts.isIdentifier(node) && NODE_GLOBALS.has(node.text)) throw new Error(`Node identifier in core: ${label}: ${node.text}`);
+    if (neutral && (ts.isCallExpression(node) || ts.isNewExpression(node)) && ts.isIdentifier(node.expression) && ["eval", "Function"].includes(node.expression.text)) throw new Error(`Runtime code generation in core: ${label}`);
+    if (neutral && ts.isElementAccessExpression(node) && ts.isStringLiteral(node.argumentExpression) && NODE_GLOBALS.has(node.argumentExpression.text)) throw new Error(`Node global access in core: ${label}`);
     ts.forEachChild(node, visit);
   }
   visit(tree);
@@ -65,7 +71,8 @@ const sources = MODULES.flatMap((root) => files(resolve(root, "src"))).filter((p
 if (sources.filter((path) => within(CORE_ROOT, path)).length < 2) throw new Error("Core implementation is missing");
 for (const path of sources) checkSource(path, readFileSync(path, "utf8"));
 const pkg = JSON.parse(readFileSync(resolve(ROOT, "package.json"), "utf8"));
-if (Object.keys(pkg.dependencies ?? {}).length) throw new Error("Runtime dependencies require a profile review");
+if (JSON.stringify(pkg.dependencies) !== JSON.stringify({ "@noble/hashes": "2.4.0" })) throw new Error("Runtime dependencies differ from ADR-0013");
+if (pkg.devDependencies["fake-indexeddb"] !== "6.2.5") throw new Error("Browser test emulator differs from ADR-0013");
 const catalog = JSON.parse(readFileSync(resolve(ROOT, "docs/foundation/annexes/command-catalog.json"), "utf8"));
 const roadmap = JSON.parse(readFileSync(resolve(ROOT, "docs/implementation/implementation-roadmap.json"), "utf8"));
 for (const kind of ["commands", "queries"]) {
@@ -79,6 +86,12 @@ if (JSON.stringify(partialCommands) !== JSON.stringify(Object.keys(OPERATION_SCO
 
 // Verify the guard itself without writing invalid source into the checkout.
 const cases = [
+  [resolve(BROWSER_ROOT, "fixture.ts"), 'import fs from "node:fs";'],
+  [resolve(BROWSER_ROOT, "fixture.ts"), 'import x from "@noble/hashes/sha2.js";'],
+  [resolve(BROWSER_ROOT, "browser-services.ts"), 'import x from "@noble/hashes/utils.js";'],
+  [resolve(CORE_ROOT, "fixture.ts"), 'import x from "@noble/hashes/sha2.js";'],
+  [resolve(BROWSER_ROOT, "fixture.ts"), 'import x from "../../local-store/src/index.ts";'],
+  [resolve(MODULES[1], "src/fixture.ts"), 'import x from "../../browser-store/src/index.ts";'],
   [resolve(CORE_ROOT, "fixture.ts"), 'import fs from "node:fs";'],
   [resolve(CORE_ROOT, "fixture.ts"), 'export type T = import("node:fs").Stats;'],
   [resolve(CORE_ROOT, "fixture.ts"), 'const x = import(target);'],

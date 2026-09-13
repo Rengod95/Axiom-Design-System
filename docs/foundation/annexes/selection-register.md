@@ -47,7 +47,7 @@
 - **판정할 증거:** atomic save·delete/edit·cycle·origin Undo·offline merge·cost.
 - **결정 시점·책임:** I1 저장 모델 전·협업 도입 전 재검증 · 시스템 책임자.
 - **실패 시 처리:** 로컬 안정 저장 유지, realtime 출시 후속.
-- **현재 상태:** 미실증. 책임 문서는 [ARC05](../architecture/collaboration-readiness.md)이다.
+- **현재 상태:** [ADR-0013](../../adr/0013-browser-transactional-storage.md)에 따른 IndexedDB snapshot+journal의 [부분 실증](../../implementation/browser-storage-evidence.md)을 확보했다. 실제 Chromium 두 탭의 리비전 충돌·트랜잭션 취소·완료 응답 유실·재시작 복구를 검증했다. 다른 브라우저·eviction·이력 압축·오프라인 병합·협업 Undo와 대안 비교는 남아 있어 SEL05 전체 선택은 미완료다. 책임 문서는 [ARC05](../architecture/collaboration-readiness.md)이다.
 
 ## SEL06 · 상태·표현식 실행
 

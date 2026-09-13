@@ -82,7 +82,16 @@
       "fallback": "로컬 안정 저장 유지, realtime 출시 후속",
       "accountable": "시스템 책임자",
       "status": "BOUNDED_SELECTION_PENDING_EVIDENCE",
-      "evidence": []
+      "evidence": [
+        {
+          "scope": "Bounded IndexedDB snapshot journal, real Chromium two-tab revision conflicts, abort/completion boundaries and process restart; broader engine/offline/collaboration selection remains open",
+          "status": "PARTIAL_IMPLEMENTATION_EVIDENCE",
+          "path": "docs/implementation/browser-storage-evidence.md",
+          "adr": "docs/adr/0013-browser-transactional-storage.md",
+          "runtimeDependency": "@noble/hashes@2.4.0",
+          "testDependency": "fake-indexeddb@6.2.5"
+        }
+      ]
     },
     {
       "id": "SEL06",

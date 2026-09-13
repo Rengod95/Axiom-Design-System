@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const TEST_ROOTS = ["modules/ads-core/test", "modules/local-store/test", "apps/cli/test"];
+const TEST_ROOTS = ["modules/ads-core/test", "modules/local-store/test", "apps/cli/test", "modules/browser-store/test"];
 const tests = TEST_ROOTS.flatMap((directory) => {
   const entries = readdirSync(join(ROOT, directory), { withFileTypes: true });
   const paths = entries.filter((entry) => entry.isFile() && entry.name.endsWith(".test.ts"))
