@@ -7,6 +7,6 @@
     "declaration": true,
     "sourceMap": true
   },
-  "include": ["modules/*/src/**/*.ts", "apps/*/src/**/*.ts"],
+  "include": ["modules/*/src/**/*.ts", "apps/*/src/**/*.ts", "apps/*/src/**/*.tsx"],
   "exclude": ["**/test/**"]
 }

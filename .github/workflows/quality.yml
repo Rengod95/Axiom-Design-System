@@ -19,7 +19,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - name: Preserve Git blob bytes on every runner
         run: |
@@ -49,3 +49,16 @@ jobs:
         run: pnpm build
       - name: Verify real Chromium transaction and restart behavior
         run: pnpm test:browser
+      - name: Verify actual Studio editing and recovery in Chromium
+        run: pnpm test:studio
+      - name: Consume emitted Web and React Native target source
+        run: pnpm test:targets
+      - name: Retain actual browser and consumer evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-target-evidence-${{ matrix.os }}
+          path: |
+            dist/evidence/
+            dist/target-verification/evidence.json
+          if-no-files-found: ignore

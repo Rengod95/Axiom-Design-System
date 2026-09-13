@@ -19,9 +19,17 @@
       "style": "CSS",
       "behavior": "동작 기반 선택 팩 또는 custom",
       "environmentSelection": "대표 React 소비 앱·브라우저·SSR/RSC 경계 선정",
-      "status": "REQUIRED_NOT_IMPLEMENTED",
-      "exactVersions": null,
-      "evidence": []
+      "status": "PARTIAL_IMPLEMENTATION_EVIDENCE",
+      "exactVersions": {
+        "react": "19.3.0",
+        "react-dom": "19.3.0"
+      },
+      "evidence": [
+        {
+          "path": "docs/implementation/studio-delivery-evidence.md",
+          "scope": "Bounded source generation; execution separately recorded; not release certification"
+        }
+      ]
     },
     {
       "id": "target.web.react.scss",
@@ -63,9 +71,18 @@
       "style": "native style",
       "behavior": "RN 대응 또는 custom",
       "environmentSelection": "Expo toolchain·실기기/개발 client",
-      "status": "REQUIRED_NOT_IMPLEMENTED",
-      "exactVersions": null,
-      "evidence": []
+      "status": "PARTIAL_IMPLEMENTATION_EVIDENCE",
+      "exactVersions": {
+        "expo": "57.0.17",
+        "react-native": "0.86.3",
+        "react": "19.2.3"
+      },
+      "evidence": [
+        {
+          "path": "docs/implementation/studio-delivery-evidence.md",
+          "scope": "Bounded source generation; execution separately recorded; not release certification"
+        }
+      ]
     },
     {
       "id": "target.mobile.rn.bare",
@@ -85,9 +102,18 @@
       "style": "native",
       "behavior": "SwiftUI 우선 비교·보완 profile",
       "environmentSelection": "macOS Xcode·simulator·실기기 범위",
-      "status": "REQUIRED_NOT_IMPLEMENTED",
-      "exactVersions": null,
-      "evidence": []
+      "status": "PARTIAL_IMPLEMENTATION_EVIDENCE",
+      "exactVersions": {
+        "swiftCandidate": "6.3.3",
+        "swiftTools": "6.0",
+        "iOS": "17.0"
+      },
+      "evidence": [
+        {
+          "path": "docs/implementation/studio-delivery-evidence.md",
+          "scope": "Bounded source generation; execution separately recorded; not release certification"
+        }
+      ]
     },
     {
       "id": "target.mobile.android",
@@ -96,9 +122,21 @@
       "style": "native",
       "behavior": "Compose 우선 비교·보완 profile",
       "environmentSelection": "Android toolchain·emulator·실기기 범위",
-      "status": "REQUIRED_NOT_IMPLEMENTED",
-      "exactVersions": null,
-      "evidence": []
+      "status": "PARTIAL_IMPLEMENTATION_EVIDENCE",
+      "exactVersions": {
+        "agp": "9.0.1",
+        "gradle": "9.1.0",
+        "jdk": "17",
+        "kotlin": "2.2.10",
+        "composeBom": "2026.08.00",
+        "compileSdk": "36"
+      },
+      "evidence": [
+        {
+          "path": "docs/implementation/studio-delivery-evidence.md",
+          "scope": "Bounded source generation; execution separately recorded; not release certification"
+        }
+      ]
     }
   ],
   "unsupportedCartesianExamples": [

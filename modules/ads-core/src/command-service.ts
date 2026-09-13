@@ -1,5 +1,7 @@
 import type { Candidate, CommandEnvelope, CommandResult, Diagnostic, DocumentEntry, HistoryEntry, JsonObject, KernelServices, KernelState, Principal, ProjectSnapshot, ProjectStructureReport, SourceDraft, SourceExport, TransactionalStore, UndoEntry } from "./contracts.ts";
-import { CODE, KERNEL_FORMAT_VERSION, MAX_BATCH_DOCUMENTS, MAX_COMMAND_BYTES, OPERATION_SCOPES, PROTOCOL_VERSION, DOMAIN_PROFILE, STRUCTURAL_PROFILE, VALIDATION_PROFILES } from "./constants.ts";
+import { CODE, KERNEL_FORMAT_VERSION, MAX_BATCH_DOCUMENTS, MAX_COMMAND_BYTES, OPERATION_SCOPES, PROTOCOL_VERSION, DOMAIN_PROFILE, STRUCTURAL_PROFILE, STUDIO_PROFILE, VALIDATION_PROFILES } from "./constants.ts";
+import type { StudioAuthoringState } from "./contracts.ts";
+import { inspectStudioGraph } from "./studio-validation.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { inspectDocument, isObject, isValidId, validateReferences } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
@@ -133,6 +135,20 @@ export class CommandService {
     return structuredClone(checkedState(await this.#store.read()).history);
   }
 
+  /** Snapshot the actor before I/O; expose only their candidates and current applicable inverses. */
+  async getAuthoringState(principal: Principal): Promise<StudioAuthoringState> {
+    authorize(principal, "project.read");
+    const actorId = principal.id;
+    const state = checkedState(await this.#store.read());
+    const revision = state.project?.revision ?? null;
+    const pendingCandidates = state.candidates.filter(item => item.actorId === actorId && item.projectId === state.project?.id && ["pending", "approved"].includes(item.status))
+      .map(({ id, baseRevision, digest, status, diff, diagnostics }) => ({ id, baseRevision, digest, status, diff, diagnostics }));
+    const undo = state.undo.at(-1), redo = state.redo.at(-1);
+    return structuredClone({ revision, pendingCandidates,
+      ...(undo?.actorId === actorId && undo.applicableRevision === revision ? { undoHandle: undo.handle } : {}),
+      ...(redo?.actorId === actorId && redo.applicableRevision === revision ? { redoHandle: redo.handle } : {}) });
+  }
+
   /** Immutable source captures remain private to their authenticated author. */
   async listDrafts(principal: Principal): Promise<SourceDraft[]> {
     authorize(principal, "project.read");
@@ -202,6 +218,7 @@ export class CommandService {
     const structures = profiled.map((entry) => inspectProfileDocument(entry.document, entry.validationProfile!));
     const references = inspectLocalReferences(documents, projectId, profiled.map((entry) => entry.document.id));
     const diagnostics = [...structures.flatMap((structure) => structure.diagnostics), ...references.diagnostics];
+    if (profiled.some(entry => entry.validationProfile === STUDIO_PROFILE)) diagnostics.push(...inspectStudioGraph(documents, projectId));
     // Diagnostic presentation may be truncated; validity must never depend on a visible error surviving the cap.
     if ((!references.valid || structures.some((structure) => !structure.valid)) && !diagnostics.some((diagnostic) => diagnostic.severity === "error")) {
       diagnostics.unshift({ code: CODE.STRUCTURE_INVALID, phase: "document", severity: "error", sourceRef: projectId, path: "", message: "Covered document or local-reference constraints failed; detailed diagnostics were truncated." });
