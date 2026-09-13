@@ -69,7 +69,15 @@ class Cdp {
 
 async function launch(executable, profile) {
   const portFile = join(profile, "DevToolsActivePort");
-  await unlink(portFile).catch(error => { if (error.code !== "ENOENT") throw error; });
+  const resetDeadline = Date.now() + 10_000;
+  while (true) {
+    try { await unlink(portFile); break; }
+    catch (error) {
+      if (error.code === "ENOENT") break;
+      if (!["EBUSY", "EACCES", "EPERM"].includes(error.code) || Date.now() >= resetDeadline) throw error;
+      await delay(100);
+    }
+  }
   const child = spawn(executable, ["--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check", "--disable-background-networking", "--disable-extensions", "--disable-sync", "--remote-debugging-address=127.0.0.1", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "about:blank"], { windowsHide: true, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = "", spawnError;
   child.stderr.on("data", data => { stderr = (stderr + data.toString()).slice(-4000); });
@@ -82,24 +90,33 @@ async function launch(executable, profile) {
       try {
         const [port, endpoint] = (await readFile(portFile, "utf8")).trim().split(/\r?\n/);
         if (/^\d+$/.test(port) && endpoint?.startsWith("/devtools/browser/")) return { child, cdp: await Cdp.connect(`ws://127.0.0.1:${port}${endpoint}`) };
-      } catch (error) { if (error.code !== "ENOENT") throw error; }
+      } catch (error) {
+        // Chromium briefly holds this exclusively on Windows while publishing its endpoint.
+        if (!["ENOENT", "EBUSY", "EACCES", "EPERM"].includes(error.code)) throw error;
+      }
       await delay(100);
     }
     throw new Error(`Chromium startup timed out: ${stderr}`);
-  } catch (error) { child.kill("SIGKILL"); throw error; }
+  } catch (error) {
+    try { await stopChild(child); } catch (cleanup) { error.cleanupError = cleanup.message; }
+    throw error;
+  }
+}
+
+async function stopChild(child) {
+  if (child.pid && child.exitCode === null && child.signalCode === null) {
+    await new Promise((accept, reject) => {
+      const timer = setTimeout(() => reject(new Error("Dedicated Chromium process did not terminate")), 10_000);
+      child.once("exit", () => { clearTimeout(timer); accept(); });
+      child.kill("SIGKILL");
+    });
+  }
 }
 
 async function terminate(browser) {
   if (!browser) return;
   browser.cdp.close();
-  if (browser.child.exitCode === null && browser.child.signalCode === null) {
-    await new Promise((accept, reject) => {
-      const timer = setTimeout(() => reject(new Error("Dedicated Chromium process did not terminate")), 10_000);
-      browser.child.once("exit", () => { clearTimeout(timer); accept(); });
-      browser.child.kill("SIGKILL");
-    });
-  }
+  await stopChild(browser.child);
 }
-
 
 export { within, browserPath, launch, terminate };

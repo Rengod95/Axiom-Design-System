@@ -46,7 +46,13 @@ async function webConsumer(pack,directory){
   await click(page,'button[data-part="component.toast.close"]');await waitFor(page,`document.querySelector('#requests').textContent==='1'`);assert.equal(await page.evaluate(`document.querySelector('[role=status]').textContent`),"First notification");
   await page.send("Emulation.setEmulatedMedia",{features:[{name:"prefers-reduced-motion",value:"reduce"}]});await click(page,"#accept");await waitFor(page,`document.querySelector('[role=status]')?.textContent==='Second notification'`);assert.equal(await page.evaluate(`document.querySelectorAll('[role=status]').length`),1);await click(page,"#remove");await waitFor(page,`document.querySelectorAll('[role=status]').length===0`);
   assert.deepEqual(browser.cdp.errors,[]);evidence.targets.react={sourceGeneration:"passed",typecheck:"passed",ssr:"passed",hydration:"passed",browserInteraction:"passed",browser:await browser.cdp.send("Browser.getVersion"),cases:["escaped content","plain Card","explicit Toast host","native pointer activation once","Enter/Space activation once","disabled input","controlled close request","single announcement queue","reduced motion removal"]};
- }finally{await terminate(browser);await new Promise(resolve=>server.close(resolve));assert(within(resolve(tmpdir()),profile)&&profile!==resolve(tmpdir()),"Browser cleanup stays inside its dedicated temporary directory");await rm(profile,{recursive:true,force:true});}
+ }catch(error){evidence.targets.react={...evidence.targets.react,consumerError:{message:error.message,stack:error.stack,cleanupError:error.cleanupError}};throw error;}
+ finally{
+  try{await terminate(browser);}catch(error){evidence.browserCleanupError=error.message;process.exitCode=1;}
+  await new Promise(resolve=>server.close(resolve));assert(within(resolve(tmpdir()),profile)&&profile!==resolve(tmpdir()),"Browser cleanup stays inside its dedicated temporary directory");
+  try{await rm(profile,{recursive:true,force:true,maxRetries:10,retryDelay:100});}catch(error){evidence.browserCleanupError=error.message;process.exitCode=1;}
+  if(evidence.browserCleanupError&&!evidence.targets.react.consumerError)throw new Error(evidence.browserCleanupError);
+ }
 }
 
 async function nativeReactConsumer(pack,directory){
