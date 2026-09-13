@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-13T13:05:25.654Z",
+  "generatedAt": "2026-09-13T15:35:22.066Z",
   "title": "Design System: Axiom UI",
   "extensions": {
     "colorMeta": {
@@ -694,37 +694,62 @@
       }
     },
     "typographyMeta": {
-      "headline": {
-        "displayName": "Headline",
-        "purpose": "Foundation and content-page headings."
+      "heading": {
+        "displayName": "Heading",
+        "purpose": "Shared heading size and strong weight, demonstrated in Axiom UI; does not replace global h1.",
+        "cssVariable": "--type-heading"
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Secondary headings."
-      },
-      "section-title": {
-        "displayName": "Section Title",
-        "purpose": "Inspector disclosure headings."
+        "purpose": "Foundation section and manager h2 headings; inherits h2 leading and tracking.",
+        "cssVariable": "--type-title"
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Base UI size and paragraph rhythm; the actual default weight is 400."
-      },
-      "body-small": {
-        "displayName": "Body Small",
-        "purpose": "Supporting help text."
+        "purpose": "Shared body role demonstrated at regular weight in Axiom UI; scoped Foundation descriptions/controls reuse the size without a global weight reset.",
+        "cssVariable": "--type-body"
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Field labels and compact metadata."
+        "purpose": "Shared field labels and medium action labels.",
+        "cssVariable": "--type-label"
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Help, field hints and relationship metadata; inherits weight unless locally set.",
+        "cssVariable": "--type-caption"
+      },
+      "section-title": {
+        "displayName": "Section Title",
+        "purpose": "Inspector disclosure heading; strong weight and incumbent 1.5 leading."
       },
       "button": {
         "displayName": "Button",
-        "purpose": "Shared action labels."
+        "purpose": "Small and medium shared action labels."
+      },
+      "button-large": {
+        "displayName": "Large Button",
+        "purpose": "Large action labels: body size, medium weight, label leading."
+      },
+      "field-control": {
+        "displayName": "Field Control",
+        "purpose": "Scoped input/select/textarea: body size and label leading, with normal inherited weight."
       },
       "badge": {
         "displayName": "Badge",
-        "purpose": "Classification and status annotations."
+        "purpose": "Incumbent passive classification/status label; catalog-footer badges retain a smaller literal."
+      },
+      "headline": {
+        "displayName": "Incumbent Headline",
+        "purpose": "Existing global h1 and Foundation toolbar heading, still used outside the new role selectors."
+      },
+      "base-title": {
+        "displayName": "Incumbent Title",
+        "purpose": "Existing h2 default, overridden by scoped Foundation and inspector rules."
+      },
+      "base-body": {
+        "displayName": "Incumbent Body",
+        "purpose": "Existing root type size and normal default weight; the new shared role declarations do not reset it."
       },
       "code": {
         "displayName": "Code",
@@ -791,6 +816,10 @@
         "value": "1200px"
       },
       {
+        "name": "max-width-1100",
+        "value": "1100px"
+      },
+      {
         "name": "max-width-900",
         "value": "900px"
       },
@@ -798,7 +827,124 @@
         "name": "max-width-720",
         "value": "720px"
       }
-    ]
+    ],
+    "layout": {
+      "cssSourceOrder": [
+        "src/styles.css",
+        "src/ui-system.css",
+        "src/foundation-workspace.css"
+      ],
+      "shell": [
+        {
+          "range": "above 1200px",
+          "sidebar": "224px",
+          "inspector": "320px",
+          "rows": "52px minmax(0,1fr) 28px"
+        },
+        {
+          "range": "1101–1200px",
+          "sidebar": "200px",
+          "inspector": "320px",
+          "notes": "Earlier 1200px toolbar/header rules remain; later shared inspector variable wins."
+        },
+        {
+          "range": "721–1100px",
+          "sidebar": "200px",
+          "inspector": "292px",
+          "notes": "Later 1100px root rule wins over earlier 900px widths; other 900px rules remain."
+        },
+        {
+          "range": "at most 720px",
+          "columns": "minmax(0,1fr)",
+          "rows": "48px 40px minmax(0,1fr) 28px",
+          "notes": "Browse, Workspace and Inspect select one panel; fixed width variables no longer size columns."
+        }
+      ],
+      "controlSizing": {
+        "button": {
+          "defaultSize": "md",
+          "small": "{components.button-sm}",
+          "medium": "{components.button-primary}",
+          "large": "{components.button-lg}",
+          "heightSemantics": "min-height"
+        },
+        "iconButton": {
+          "refersTo": "icon-button",
+          "notes": "No size API; desktop width/height remain literal, shared radius follows --radius-control. Contextual selectors retain smaller widths."
+        },
+        "narrow": {
+          "defaultButtonAndIcon": "--control-lg",
+          "appFieldInputAndSelect": "--control-lg",
+          "appFieldTextarea": "76px minimum",
+          "smallButton": "--control-sm (more-specific selector)",
+          "choiceChip": "--control-md",
+          "topbarButton": "28px minimum (more-specific selector)",
+          "reviewStripButton": "34px minimum (more-specific selector)",
+          "onboardingField": "--control-md (outside .app mobile scope)"
+        }
+      },
+      "spacingApplication": {
+        "fieldGap": "--space-2",
+        "sectionContentGapAndPadding": "--space-4",
+        "sectionHeadingPadding": "--space-3 --space-4",
+        "formActionGap": "--space-3",
+        "formActionPaddingTop": "--space-4",
+        "formColumnsGap": "--space-5",
+        "propertyGroupGapAndPaddingBlock": "--space-2",
+        "consecutivePropertyGroupPaddingTop": "--space-4"
+      },
+      "foundation": {
+        "workspacePadding": "--space-6; domain/starter/relationship panels become --space-4 at 1100px",
+        "managerColumns": "two with --space-4 gap; one at 720px",
+        "domainRowMinHeight": "82px",
+        "domainSpecimen": "64px × 44px",
+        "relationshipIndent": "margin-left --space-4; padding-left --space-5; 1px line-strong",
+        "catalogSpecimenHeight": "112px",
+        "catalogGap": "--space-4",
+        "catalogMinWidth": "170px; 150px at 1200px",
+        "onboardingDomainColumns": "three; two at 720px"
+      }
+    },
+    "implementation": {
+      "refreshedFor": "2026-09-14 approved correction contract",
+      "sources": [
+        "src/styles.css",
+        "src/ui-system.css",
+        "src/foundation-workspace.css",
+        "src/ui.tsx",
+        "src/workbench-panels.tsx",
+        "src/main.tsx",
+        "src/catalog-thumbnail.tsx",
+        "src/token-relationships.tsx"
+      ],
+      "sharedWeights": {
+        "regular": "--weight-regular",
+        "medium": "--weight-medium",
+        "strong": "--weight-strong"
+      },
+      "sharedLeading": {
+        "label": "--leading-label",
+        "body": "--leading-body"
+      },
+      "residuals": [
+        "Global root/body and h1/h2 defaults remain the frontmatter base-body, headline and base-title roles. New token declarations alone do not apply them globally.",
+        "Onboarding retains its larger literal heading sizes; badges, catalog labels, navigation/tab weights and source/count metadata retain the documented literals.",
+        "Unmatched legacy value/property rows and headers retain optical spacing; ui-system section-content and field spacing apply only to matched selectors.",
+        "IconButton has no size prop. Contextual width/height rules and more-specific topbar/review/small-button rules remain, so narrow controls are not uniformly sized.",
+        "SystemPanel spacing specimen still displays only 4/8/12/16/24/32; the declared 20 and 40 steps are part of the scale, not shown there.",
+        "Consumer component previews keep authored styles; Studio UI tokens do not set user Foundation values."
+      ],
+      "evidence": {
+        "review": "../../docs/implementation/editor-completion-finish-review.md",
+        "disposition": "ship — R1 resolved only",
+        "recordedTests": 343,
+        "recordedBrowserFlows": 16,
+        "captureCount": 10,
+        "archive": "dist/evidence/completion/",
+        "note": "Recorded evidence read for documentation; no new detector, browser or test execution by this documenter.",
+        "remainingScope": "../../docs/implementation/editor-completion-followup.md (119-row Foundation ledger)"
+      }
+    }
   },
   "components": [
     {
@@ -806,48 +952,48 @@
       "kind": "button",
       "refersTo": "button-primary",
       "description": "Accent action with the implemented light/dark foreground and hover pair.",
-      "html": "<button type=\"button\" class=\"ds-button ds-primary\">Apply changes</button>",
-      "css": ".ds-button{min-height:32px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:6px 11px;border:1px solid transparent;border-radius:7px;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:12px;font-weight:600;line-height:18px;letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-primary{background:var(--accent,#5b50d6);color:#fff}.ds-primary:hover:not(:disabled){background:var(--accent-hover,#4c40c2)}:host-context([data-theme=dark]) .ds-primary{color:#16131e}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
+      "html": "<button type=\"button\" data-size=\"md\" class=\"ds-button ds-primary\">Apply changes</button>",
+      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-primary{background:var(--accent,#5b50d6);color:#fff}.ds-primary:hover:not(:disabled){background:var(--accent-hover,#4c40c2)}:host-context([data-theme=dark]) .ds-primary{color:#16131e}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}.ds-button.ds-primary:active:not(:disabled){background-color:var(--accent-hover,#4c40c2)}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Quiet outlined action on the current panel surface.",
-      "html": "<button type=\"button\" class=\"ds-button ds-secondary\">Cancel</button>",
-      "css": ".ds-button{min-height:32px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:6px 11px;border:1px solid transparent;border-radius:7px;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:12px;font-weight:600;line-height:18px;letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-secondary{background:var(--surface,#fff);color:var(--ink,#20242d);border-color:var(--line-strong,#c9cfd9)}.ds-secondary:hover:not(:disabled){background:var(--surface-hover,#eff1f5)}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
+      "description": "Quiet outlined action; independent small, medium and large size variants use minimum heights, with the documented narrow-screen cascade.",
+      "html": "<div class=\"ds-button-sizes\"><button type=\"button\" data-size=\"sm\" class=\"ds-button ds-secondary\">Small</button><button type=\"button\" data-size=\"md\" class=\"ds-button ds-secondary\">Medium</button><button type=\"button\" data-size=\"lg\" class=\"ds-button ds-secondary\">Large</button></div>",
+      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-secondary{background:var(--surface,#fff);color:var(--ink,#20242d);border-color:var(--line-strong,#c9cfd9)}.ds-secondary:hover:not(:disabled){background:var(--surface-hover,#eff1f5)}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}.ds-button-sizes{display:flex;flex-wrap:wrap;gap:var(--space-2,8px);align-items:center}"
     },
     {
       "name": "Subtle Button",
       "kind": "button",
       "refersTo": "button-subtle",
       "description": "Low-emphasis text action with a neutral hover fill.",
-      "html": "<button type=\"button\" class=\"ds-button ds-subtle\">View source</button>",
-      "css": ".ds-button{min-height:32px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:6px 11px;border:1px solid transparent;border-radius:7px;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:12px;font-weight:600;line-height:18px;letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-subtle{background:transparent;color:var(--ink-secondary,#525a68)}.ds-subtle:hover:not(:disabled){background:var(--surface-hover,#eff1f5);color:var(--ink,#20242d)}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
+      "html": "<button type=\"button\" data-size=\"md\" class=\"ds-button ds-subtle\">View source</button>",
+      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-subtle{background:transparent;color:var(--ink-secondary,#525a68)}.ds-subtle:hover:not(:disabled){background:var(--surface-hover,#eff1f5);color:var(--ink,#20242d)}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
     },
     {
       "name": "Danger Button",
       "kind": "button",
       "refersTo": "button-danger",
       "description": "Destructive action using negative text and soft fill; current source has no extra hover fill.",
-      "html": "<button type=\"button\" class=\"ds-button ds-danger\">Delete token</button>",
-      "css": ".ds-button{min-height:32px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:6px 11px;border:1px solid transparent;border-radius:7px;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:12px;font-weight:600;line-height:18px;letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-danger{background:var(--negative-soft,#fff0f1);color:var(--negative,#b23242)}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
+      "html": "<button type=\"button\" data-size=\"md\" class=\"ds-button ds-danger\">Delete token</button>",
+      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-danger{background:var(--negative-soft,#fff0f1);color:var(--negative,#b23242)}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
     },
     {
       "name": "Icon Button",
       "kind": "button",
       "refersTo": "icon-button",
-      "description": "Labeled icon action; pressed state uses the accent selection pair.",
+      "description": "Labeled icon action with the shared control radius; retains a literal desktop square and no Button size API. Narrow minimum height grows while width stays compact.",
       "html": "<button type=\"button\" class=\"ds-icon-button\" aria-label=\"Add component\" title=\"Add component\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10 3v14M3 10h14\"/></svg></button>",
-      "css": ".ds-icon-button{width:32px;height:32px;padding:7px;border:0;border-radius:6px;background:transparent;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-secondary,#525a68);cursor:pointer;transition:background var(--motion-fast,160ms)}.ds-icon-button:hover:not(:disabled){background:var(--surface-hover,#eff1f5);color:var(--ink,#20242d)}.ds-icon-button[aria-pressed=true]{background:var(--accent-soft,#eeecfc);color:var(--accent-ink,#493eba)}.ds-icon-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-icon-button:disabled{opacity:.46;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-icon-button{transition:none;animation:none}}"
+      "css": ".ds-icon-button{width:32px;height:32px;padding:7px;border:0;border-radius:var(--radius-control,7px);background:transparent;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-secondary,#525a68);cursor:pointer;transition:background var(--motion-fast,160ms)}.ds-icon-button:hover:not(:disabled){background:var(--surface-hover,#eff1f5);color:var(--ink,#20242d)}.ds-icon-button[aria-pressed=true]{background:var(--accent-soft,#eeecfc);color:var(--accent-ink,#493eba)}.ds-icon-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-icon-button:disabled{opacity:.46;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-icon-button{transition:none;animation:none}}.ds-icon-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-icon-button{min-height:var(--control-lg,40px)}}"
     },
     {
       "name": "Labeled Text Field",
       "kind": "input",
       "refersTo": "text-field",
-      "description": "Inspector-sized editable field with distinct rest, focus and invalid boundaries. The actual React TextInput owns IME composition behavior.",
+      "description": "Representative app field: shared label/hint spacing, scoped body-sized control and medium minimum height; app inputs grow to the large minimum on narrow screens. React TextInput owns composition behavior.",
       "html": "<div class=\"ds-field\"><label for=\"ds-token-name\">Token name</label><input id=\"ds-token-name\" value=\"brand.accent\" aria-describedby=\"ds-token-hint\"/><small id=\"ds-token-hint\">A stable name for this token.</small></div>",
-      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;min-width:0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink,#20242d)}.ds-field label{font-size:11px;font-weight:500;color:var(--ink-secondary,#525a68)}.ds-field input{font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:12px;color:var(--ink,#20242d);background:var(--surface,#fff);border:1px solid var(--control-border,#838c9b);border-radius:var(--radius-control,7px);padding:7px 9px;min-width:0;caret-color:var(--accent,#5b50d6)}.ds-field input::placeholder{color:var(--ink-tertiary,#646e7e);opacity:1}.ds-field input:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:1px}.ds-field input[aria-invalid=true]{border-color:var(--negative,#b23242)}.ds-field small{font-size:11px;line-height:1.6;color:var(--ink-secondary,#525a68)}@media(max-width:720px){.ds-field input{font-size:14px;min-height:38px}.ds-field label{font-size:12px}}"
+      "css": ".ds-field{display:flex;flex-direction:column;gap:var(--space-2,8px);margin:0;min-width:0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink,#20242d)}.ds-field label{font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);color:var(--ink-secondary,#525a68)}.ds-field input{font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-body,13px);font-weight:400;line-height:var(--leading-label,1.4);min-height:var(--control-md,34px);color:var(--ink,#20242d);background:var(--surface,#fff);border:1px solid var(--control-border,#838c9b);border-radius:var(--radius-control,7px);padding:7px var(--space-3,12px);min-width:0;caret-color:var(--accent,#5b50d6)}.ds-field input::placeholder{color:var(--ink-tertiary,#646e7e);opacity:1}.ds-field input:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:1px}.ds-field input[aria-invalid=true]{border-color:var(--negative,#b23242)}.ds-field small{font-size:var(--type-caption,11px);line-height:var(--leading-body,1.6);color:var(--ink-secondary,#525a68)}@media(max-width:720px){.ds-field input{min-height:var(--control-lg,40px)}}"
     },
     {
       "name": "Object Navigation",
@@ -869,17 +1015,25 @@
       "name": "Catalog Card",
       "kind": "card",
       "refersTo": "catalog-card",
-      "description": "Catalog entry with its own selection control. The accent outline and fill show the selected state.",
-      "html": "<article class=\"ds-card ds-selected\"><button type=\"button\" class=\"ds-catalog-select\" aria-pressed=\"true\"><span class=\"ds-catalog-symbol\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m10 2 8 8-8 8-8-8Zm-4 8h8m-4-4v8\"/></svg></span><strong>Button</strong><small>Actions</small></button></article>",
-      "css": ".ds-card{min-width:0;width:200px;display:flex;flex-direction:column;border:1px solid var(--line,#e5e7ec);border-radius:9px;background:var(--surface,#fff);overflow:hidden;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink,#20242d)}.ds-card:hover{border-color:var(--line-strong,#c9cfd9);background:var(--surface-subtle,#f7f8fa)}.ds-card.ds-selected{border-color:var(--accent,#5b50d6);background:var(--accent-soft,#eeecfc);box-shadow:0 0 0 1px var(--accent,#5b50d6)}.ds-catalog-select{width:100%;border:0;display:flex;flex-direction:column;align-items:flex-start;padding:16px;background:none;text-align:left;gap:5px;color:var(--ink,#20242d);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);cursor:pointer}.ds-catalog-symbol{height:62px;width:100%;display:grid;place-items:center;background:var(--surface-subtle,#f7f8fa);border-radius:5px;color:var(--ink-secondary,#525a68);margin-bottom:8px}.ds-catalog-select strong{font-size:13px;font-weight:600}.ds-catalog-select small{font-size:11px;color:var(--ink-secondary,#525a68)}.ds-catalog-select:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}"
+      "description": "Catalog selection card with a static SVG structure specimen, shared panel radius and label spacing. The specimen is not a live authored control.",
+      "html": "<article class=\"ds-card ds-selected\"><button type=\"button\" class=\"ds-catalog-select\" aria-pressed=\"true\"><span class=\"ds-catalog-symbol\"><svg class=\"ds-catalog-thumbnail\" viewBox=\"0 0 200 112\" role=\"img\" aria-labelledby=\"ds-catalog-title\" fill=\"none\" stroke=\"var(--line-strong,#c9cfd9)\" stroke-width=\"1.2\"><title id=\"ds-catalog-title\">Button · static structure preview</title><rect x=\"52\" y=\"36\" width=\"96\" height=\"36\" rx=\"7\" fill=\"var(--accent-soft,#eeecfc)\"/><text x=\"76\" y=\"58\" font-size=\"10\" fill=\"var(--ink-secondary,#525a68)\" stroke=\"none\" font-family=\"var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,sans-serif)\">Continue</text></svg></span><strong>Button</strong><small>Actions</small></button></article>",
+      "css": ".ds-card{min-width:0;width:200px;display:flex;flex-direction:column;border:1px solid var(--line,#e5e7ec);border-radius:var(--radius-panel,12px);background:var(--surface,#fff);overflow:hidden;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink,#20242d)}.ds-card:hover{border-color:var(--line-strong,#c9cfd9);background:var(--surface-subtle,#f7f8fa)}.ds-card.ds-selected{border-color:var(--accent,#5b50d6);background:var(--accent-soft,#eeecfc);box-shadow:0 0 0 1px var(--accent,#5b50d6)}.ds-catalog-select{width:100%;border:0;display:flex;flex-direction:column;align-items:flex-start;padding:0 0 var(--space-3,12px);background:none;text-align:left;gap:var(--space-2,8px);color:var(--ink,#20242d);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);cursor:pointer}.ds-catalog-symbol{height:112px;width:100%;display:grid;place-items:center;background:var(--surface-subtle,#f7f8fa);border-radius:0;color:var(--ink-secondary,#525a68);margin:0}.ds-catalog-select strong{font-size:13px;font-weight:600}.ds-catalog-select small{font-size:11px;color:var(--ink-secondary,#525a68)}.ds-catalog-select:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-catalog-select>strong,.ds-catalog-select>small{padding-inline:var(--space-3,12px)}.ds-catalog-thumbnail{width:100%;height:112px}"
     },
     {
       "name": "Inspector Tabs",
       "kind": "nav",
       "refersTo": "tab",
-      "description": "Underline tabs. This visual snippet is static; React TabBar supplies selection updates and Arrow/Home/End keyboard handling.",
+      "description": "Scrollable underline tabs with shared label size and gap; selected weight remains the incumbent 600. Static snippet: React TabBar supplies selection and Arrow/Home/End handling.",
       "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"Inspector\"><button type=\"button\" role=\"tab\" aria-selected=\"true\" tabindex=\"0\" class=\"ds-tab ds-active\">Properties</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\" class=\"ds-tab\">Source</button></div>",
-      "css": ".ds-tabs{display:flex;gap:18px;align-items:center;min-width:0}.ds-tab{background:none;border:0;border-bottom:2px solid transparent;padding:11px 0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:12px;color:var(--ink-secondary,#525a68);white-space:nowrap;cursor:pointer}.ds-tab.ds-active{color:var(--ink,#20242d);font-weight:600;border-bottom-color:var(--ink,#20242d)}.ds-tab:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}"
+      "css": ".ds-tabs{display:flex;gap:var(--space-5,20px);align-items:center;min-width:0;overflow-x:auto;flex-shrink:0}.ds-tab{background:none;border:0;border-bottom:2px solid transparent;padding:11px 0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);flex-shrink:0;font-size:var(--type-label,12px);color:var(--ink-secondary,#525a68);white-space:nowrap;cursor:pointer}.ds-tab.ds-active{color:var(--ink,#20242d);font-weight:600;border-bottom-color:var(--ink,#20242d)}.ds-tab:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}"
+    },
+    {
+      "name": "Foundation Usage Link",
+      "kind": "custom",
+      "refersTo": "relationship-usage",
+      "description": "Component and Part on the first line, distinct design/property/rule context below, source title and navigation arrow. Runtime activation selects the matching component, Part and category through draft-safe navigation; the snippet is static.",
+      "html": "<ul class=\"ds-usages\"><li><button type=\"button\" class=\"ds-usage\" title=\"Button Mobile / appearance / Rule 2 / background\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m10 2 8 8-8 8-8-8Zm-4 8h8m-4-4v8\"/></svg><span><strong>Button / Root</strong><small>Button Mobile · Background · Rule 2 · Variant: outlined</small></span><svg width=\"14\" height=\"14\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 10h12m-5-5 5 5-5 5\"/></svg></button></li></ul>",
+      "css": ".ds-usages{list-style:none;margin:0 0 0 var(--space-4,16px);padding:0 0 0 var(--space-5,20px);border-left:1px solid var(--line-strong,#c9cfd9);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif)}.ds-usages li{display:flex;align-items:center;gap:var(--space-2,8px);font-size:var(--type-caption,11px);color:var(--ink-secondary,#525a68);padding-block:var(--space-2,8px);overflow-wrap:anywhere}.ds-usage{display:flex;align-items:center;gap:var(--space-2,8px);width:100%;min-width:0;border:0;border-radius:var(--radius-sm,5px);background:transparent;padding:var(--space-2,8px);text-align:left;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink-secondary,#525a68);cursor:pointer}.ds-usage>span{flex:1;min-width:0}.ds-usage>svg{flex-shrink:0}.ds-usage strong{display:block;font-size:var(--type-label,12px);font-weight:var(--weight-medium,550)}.ds-usage small{display:block;margin-top:var(--space-1,4px);font-size:var(--type-caption,11px);color:var(--ink-secondary,#525a68);overflow-wrap:anywhere}.ds-usage:hover{background:var(--surface-hover,#eff1f5)}.ds-usage:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-usage:disabled{opacity:.46;cursor:not-allowed}"
     }
   ],
   "narrative": {
@@ -903,6 +1057,11 @@
         "section": "colors"
       },
       {
+        "name": "Scope shared roles",
+        "body": "Use the shared type and size variables for Studio controls, and inspect the actual selector cascade before claiming a whole screen follows them. Authored component typography belongs to the user's Foundation and design properties.",
+        "section": "typography"
+      },
+      {
         "name": "Elevate by role",
         "body": "Keep the workbench's structural panels flat. Use floating-shadow for canvas tools and dialog-shadow for modal surfaces; a selected catalog card's accent outline indicates selection rather than height.",
         "section": "elevation"
@@ -911,9 +1070,9 @@
     "dos": [
       "Do reuse the semantic CSS roles and shared controls in src/ui.tsx before adding another local variant.",
       "Do update both Studio palettes and these artifacts whenever a reused visual token changes.",
-      "Do preserve the 4px spacing rhythm while retaining the observed optical padding and compact-control exceptions.",
+      "Do use the shared type, spacing and Button size roles while retaining documented cascade and compact-control exceptions.",
       "Do label icon actions, keep keyboard focus visible, and retain the existing tab keyboard and input composition behavior.",
-      "Do keep alias targets and classification metadata on separate readable lines, and show the token's source relationships beside editing.",
+      "Do keep alias targets, classification and usage context on readable lines, and connect usage actions to the correct component, Part and design category.",
       "Do retain review, error, pending and saved states as explicit text and control behavior as well as color.",
       "Do check light and dark desktop views and the narrow panel flow when changing shared layout or controls."
     ],

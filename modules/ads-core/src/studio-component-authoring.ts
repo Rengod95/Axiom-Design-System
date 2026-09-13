@@ -57,7 +57,7 @@ function plan(input: ProjectSnapshot, options: unknown, createId: () => string, 
     for (const [id, entry] of Object.entries(before.documents)) if (!Object.hasOwn(project.documents, id)) changes.deletes.push({ id, expectedKind: entry.document.kind, revision: entry.document.revision });
     const report = inspectStudioProject(project), changed = new Set([...changes.upserts.map(item => item.document.id), ...changes.deletes.map(item => item.id)]);
     const impact = Object.values(previous.usages).flat().filter(usage => changed.has(usage.documentId) || changed.has(usage.componentId));
-    if (!changes.upserts.length && !changes.deletes.length) return { valid: false, diagnostics: [diagnostic(new Error("The selected edit does not change the source."))], baseRevision: before.revision, changes: { upserts: [], deletes: [] }, impact: [], project: before };
+    if (!changes.upserts.length && !changes.deletes.length) return { valid: report.valid, diagnostics: report.diagnostics, baseRevision: before.revision, changes: { upserts: [], deletes: [] }, impact: [], project: before };
     return { valid: report.valid, diagnostics: report.diagnostics, baseRevision: before.revision, changes: report.valid ? changes : { upserts: [], deletes: [] }, impact, project: report.valid ? project : before };
   } catch (error) { return { valid: false, diagnostics: [diagnostic(error)], baseRevision: before.revision, changes: { upserts: [], deletes: [] }, impact: [], project: before }; }
 }

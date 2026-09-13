@@ -1,15 +1,16 @@
 import type { AdsDocument, Diagnostic, JsonValue, ProjectSnapshot } from "./contracts.ts";
 import type { FoundationResolution, FoundationSelection } from "./foundation-contracts.ts";
 import type { StudioCatalogProjection, StudioSizePolicy } from "./studio-catalog-contracts.ts";
+import type { ResolvedStudioMotion } from "./studio-motion.ts";
 
 /** Executable editor profile; unrelated Foundation contracts remain separately tracked. */
 export type StudioArchetype = "button" | "card" | "toast" | "catalog";
 export interface StudioDocumentReport { profile: "foundation-studio"; valid: boolean; diagnostics: Diagnostic[]; checkedRecords: string[]; unverifiedTypes: string[] }
 export type StudioCategory = "Web" | "Mobile";
 export type StudioPartRole = string;
-export type StudioVisualProperty = "background" | "color" | "borderColor" | "borderWidth" | "borderRadius" | "fontSize" | "opacity";
-export interface StudioStyle { background?: string; color?: string; borderColor?: string; borderWidth?: number; borderRadius?: number; fontSize?: number; opacity?: number }
-export interface StudioPart { id: string; name: string; parent: string | null; role: StudioPartRole }
+export type StudioVisualProperty = "background" | "color" | "borderColor" | "borderWidth" | "borderRadius" | "fontSize" | "opacity" | "fontFamily" | "fontWeight" | "lineHeight" | "letterSpacing" | "boxShadow" | "backgroundImage" | "borderStyle" | "border" | "typography" | "transitionDuration" | "transitionTimingFunction" | "transition";
+export interface StudioStyle { background?: string; color?: string; borderColor?: string; borderWidth?: number; borderRadius?: number; fontSize?: number; opacity?: number; fontFamily?: string; fontWeight?: number; lineHeight?: number; letterSpacing?: number; boxShadow?: string; backgroundImage?: string; borderStyle?: "solid" | "dashed" | "dotted" | "double" | "groove" | "ridge" | "outset" | "inset"; transitionDelay?: string; transitionDuration?: string; transitionTimingFunction?: string }
+export interface StudioPart { id: string; name: string; parent: string | null; role: StudioPartRole; text?: string }
 export interface StudioPartPresentation {
   base: StudioStyle; outlined: StudioStyle; disabled: StudioStyle; pressed: StudioStyle;
   combinations: Record<"filled" | "outlined" | "filled-disabled" | "outlined-disabled" | "filled-pressed" | "outlined-pressed", StudioStyle>;
@@ -32,6 +33,7 @@ export interface StudioComponent {
   sampleContent: { label: string; title: string; body: string; actionLabel: string; closeLabel: string };
   defaults: { disabled: boolean; open: boolean; variant: "filled" | "outlined" };
   motion: { durationMs: number; reducedDurationMs: number; cleanupMs: number; easing?: string };
+  motionTracks?: ResolvedStudioMotion[];
   web: StudioDesign; mobile: StudioDesign;
 }
 export interface StudioUsage { componentId: string; partId: string; documentId: string; path: string }

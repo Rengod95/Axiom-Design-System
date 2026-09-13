@@ -16,12 +16,13 @@ const compiled = await build({ absWorkingDir: root, stdin: { contents: `
   import { createElement } from 'react';
   import { renderToStaticMarkup } from 'react-dom/server';
   import { ComponentInspector } from './apps/studio/src/component-inspector.tsx';
+  import { FormDraftProvider } from './apps/studio/src/form-drafts.tsx';
   import { Inspector } from './apps/studio/src/inspector.tsx';
   export * from './apps/studio/src/component-inspector.tsx';
   export function render(state, id, part, category='Web', locale='en', whole=false) {
     const component=state.projection.components.find(item=>item.id===id);
     const controller={component(){},inputError(){},getSnapshot(){return state},exportSource(){return Promise.resolve(null)}};
-    return renderToStaticMarkup(createElement(whole?Inspector:ComponentInspector,{state,controller,component,selectedPart:part,category,locale,tokenId:null}));
+    return renderToStaticMarkup(createElement(FormDraftProvider,null,createElement(whole?Inspector:ComponentInspector,{state,controller,component,selectedPart:part,category,locale,tokenId:null})));
   }
 `, resolveDir: root, loader: "tsx" }, bundle: true, platform: "node", format: "cjs", target: "node24", jsx: "automatic", write: false, logLevel: "silent" });
 const filename = join(directory, "inspector.cjs"); await writeFile(filename, compiled.outputFiles[0]!.text);

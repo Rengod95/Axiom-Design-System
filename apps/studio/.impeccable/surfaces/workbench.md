@@ -10,7 +10,7 @@ The owner answered the workflow question: build directly in code and complete th
 
 ## First viewport
 
-A quiet, full-height working instrument. A 52px top bar carries project identity, save/review status and export. A 224px left column contains Foundation and Components, searchable objects, and an indented Part tree. The open neutral-gray canvas owns the middle; separate named component frames show real authored controls and a crisp selection boundary. A 304px right inspector reveals the selected object's relevant content, dimensions, appearance and bindings, with technical source secondary. SUIT labels, measured 4px spacing rhythm, 1px neutral separators and one restrained violet-blue action/selection accent replace the incumbent green identity. No decorative hero, eyebrow, numbered samples or simulated browser chrome.
+A quiet, full-height working instrument. A 52px top bar carries project identity, save/review status and export. A 224px left column contains Foundation and Components, searchable objects, and an indented Part tree. The open neutral-gray canvas owns the middle; separate named component frames show real authored controls and a crisp selection boundary. A 320px right inspector reveals the selected object's relevant content, dimensions, appearance and bindings, with technical source secondary. SUIT labels, measured 4px spacing rhythm, 1px neutral separators and one restrained violet-blue action/selection accent replace the incumbent green identity. No decorative hero, eyebrow, numbered samples or simulated browser chrome.
 
 ## Signature interaction and motion
 
@@ -23,3 +23,7 @@ The same neutral roles, focus treatment, button/input/select/section/tab primiti
 ## Evidence required
 
 Real editing and restore/Undo tests; complete catalog and token-type inventory; keyboard/pointer zoom, pan, selection and resize checks; font load; desktop and 390px web capture in one batch; manual detector once; independent finish review and token-bearing DESIGN.md/design.json. Native output and external services retain their separate evidence limits.
+
+## 2026-09-14 correction contract
+
+The owner rejected blocked review after property input and weak Foundation management. Keep the established SUIT/neutral/violet dual-theme identity while replacing the flat Foundation workflow with domain workspaces, a curated 11-domain onboarding kit, a primitive-to-semantic usage tree, named theme management first, and collapsed axis/context options. Use 28/34/40px shared control sizes, 11/12/13/16/24px type roles and consistent field/section/action spacing. Valid buffered forms enter shared review directly; invalid values retain an explicit reset. Static SVG library specimens communicate control structure. Custom Part nesting, typed token-bound typography/effects and a reviewed motion track player are required actual actions. Physical trackpads, full behavior graphs, instance injection, full DTCG Resolver and native motion mappings remain separate outstanding work.

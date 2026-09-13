@@ -5,7 +5,7 @@ import { REACT_LIFECYCLE_SOURCE } from "./react-runtime.ts";
 import { catalogReactComponent } from "./catalog-react-generator.ts";
 import { CATALOG_REACT_RUNTIME } from "./catalog-react-runtime.ts";
 
-const CSS_NAMES: Record<string, string> = { background: "background", color: "color", borderColor: "border-color", borderWidth: "border-width", borderRadius: "border-radius", fontSize: "font-size", opacity: "opacity" };
+const CSS_NAMES: Record<string, string> = { background: "background", color: "color", borderColor: "border-color", borderWidth: "border-width", borderRadius: "border-radius", fontSize: "font-size", opacity: "opacity", fontFamily: "font-family", fontWeight: "font-weight", lineHeight: "line-height", letterSpacing: "letter-spacing", boxShadow: "box-shadow", backgroundImage: "background-image", borderStyle: "border-style", transitionDelay: "transition-delay", transitionDuration: "transition-duration", transitionTimingFunction: "transition-timing-function" };
 
 function cssRules(component: StudioComponent): string {
   const rules: string[] = []; const name = componentSymbol(component); const design = component.web;
@@ -13,7 +13,7 @@ function cssRules(component: StudioComponent): string {
     const presentation = design.parts[part.id]!; const layout = design.layout[part.id];
     const selector = `.${name} [data-part=${JSON.stringify(part.id)}]`;
     const rootSelector = part.role === "root" ? `.${name}` : selector;
-    const declarations = (style: typeof presentation.base) => Object.entries(style).map(([key, value]) => `${CSS_NAMES[key]}:${value}${typeof value === "number" && key !== "opacity" ? "px" : ""}`).join(";");
+    const declarations = (style: typeof presentation.base) => Object.entries(style).map(([key, value]) => `${CSS_NAMES[key]}:${value}${typeof value === "number" && !["opacity", "fontWeight", "lineHeight"].includes(key) ? "px" : ""}`).join(";");
     rules.push(`${rootSelector}{box-sizing:border-box;border-style:solid;border-width:0;${declarations(presentation.base)};${part.role==="close"||part.role==="root"&&component.archetype==="button"?"min-width:44px;":""}${layout ? `display:flex;flex-direction:${layout.axis === "horizontal" ? "row" : "column"};gap:${layout.gap}px;padding:${layout.padding}px;min-height:${Math.max(part.role==="close"?44:0,layout.minHeight)}px;` : ""}}`);
     if (layout) {
       const size = (axis: "width" | "height"): string => { const policy = layout[axis]; return policy ? `${axis}:${policy.mode === "fixed" ? `${policy.value}px` : policy.mode === "fill" ? "100%" : "max-content"};` : ""; };

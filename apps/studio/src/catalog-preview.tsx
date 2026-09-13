@@ -26,8 +26,8 @@ export function CatalogPreview({ component, category, mode, selectedPart, onSele
   const design = category === "Web" ? component.web : component.mobile, rootPart = component.parts.find(part => part.role === "root");
   const props = (role: string) => {
     const part = component.parts.find(item => item.role === role), layout = part ? design.layout[part.id] : undefined, presentation = part ? design.parts[part.id] : undefined;
-    const appearance = presentation?.combinations[disabled ? "filled-disabled" : "filled"] ?? presentation?.base ?? {};
-    const style: CSSProperties = { ...appearance, borderStyle: appearance.borderWidth ? "solid" : undefined, ...(layout ? { padding: layout.padding, gap: layout.gap, minHeight: layout.minHeight, ...(layout.width?.mode === "fixed" ? { width: layout.width.value } : layout.width?.mode === "fill" ? { width: "100%" } : {}), ...(layout.height?.mode === "fixed" ? { height: layout.height.value } : {}), alignItems: layout.alignment === "start" ? "flex-start" : layout.alignment === "end" ? "flex-end" : layout.alignment } : {}) };
+    const appearance = presentation?.combinations[`${component.defaults.variant}${disabled ? "-disabled" : ""}`] ?? presentation?.base ?? {};
+    const style: CSSProperties = { ...appearance, borderStyle: appearance.borderStyle ?? (appearance.borderWidth ? "solid" : undefined), ...(layout ? { padding: layout.padding, gap: layout.gap, minHeight: layout.minHeight, ...(layout.width?.mode === "fixed" ? { width: layout.width.value } : layout.width?.mode === "fill" ? { width: "100%" } : {}), ...(layout.height?.mode === "fixed" ? { height: layout.height.value } : {}), alignItems: layout.alignment === "start" ? "flex-start" : layout.alignment === "end" ? "flex-end" : layout.alignment } : {}) };
     if (layout && ["root", "body", "actions", "panel", "list"].includes(role) && !["table", "separator"].includes(kind)) {
       style.display = "flex"; style.flexDirection = layout.axis === "horizontal" ? "row" : "column";
     }
@@ -35,12 +35,12 @@ export function CatalogPreview({ component, category, mode, selectedPart, onSele
     return { "data-part-id": part?.id, "data-testid": `preview-part-${part?.id}`, className: `selectable-part ${selectedPart === part?.id ? "selected-part" : ""}`, style };
   };
   const valueName = catalog.semantic.valueName ?? "value", items = Array.isArray(values.items) ? values.items.filter(object) : [];
-  const label = String(catalog.accessibility.label || component.sampleContent.label || component.name), description = String(catalog.accessibility.description || "");
+  const label = String(component.parts.find(part => part.role === "label")?.text ?? (catalog.accessibility.label || component.sampleContent.label || component.name)), description = String(catalog.accessibility.description || "");
   const id = `simulation-${component.id}`, editable = { disabled, tabIndex: run ? 0 : -1 };
   const selected = values.selectedKeys ?? values.selectedKey, selectedKeys = Array.isArray(selected) ? selected.map(String) : [String(selected ?? "")];
   const choose = (key: string) => request(valueName, catalog.semantic.selection === "multiple" ? selectedKeys.includes(key) ? selectedKeys.filter(item => item !== key) : [...selectedKeys, key] : key);
   const fieldLabel = <label {...props("label")} htmlFor={`${id}-input`}>{label}</label>;
-  const body = component.sampleContent.body, content = <div {...props("body")}>{body}</div>;
+  const body = component.parts.find(part => part.role === "body")?.text ?? component.sampleContent.body, content = <div {...props("body")}>{body}</div>;
   let node: ReactNode;
   switch (kind) {
     case "button": node = <button {...props("root")} {...editable} onClick={() => activate()}><span {...props("label")}>{label}</span></button>; break;
@@ -69,7 +69,15 @@ export function CatalogPreview({ component, category, mode, selectedPart, onSele
     case "list": node = <ul {...props("root")}>{items.map(item => <li {...props("item")} key={String(item.key)}>{String(item.label)}</li>)}</ul>; break;
     case "toast": case "alert": node = <div {...props("root")}>{kind === "toast" && run && !values.open ? <button {...editable} onClick={() => request("open", true)}>{t("다시 표시", "Show again")}</button> : <div role={run ? "status" : undefined}><strong {...props("title")}>{component.sampleContent.title}</strong>{content}{(kind === "toast" || values.dismissible) && <button {...props("close")} {...editable} onClick={() => kind === "toast" ? request("open", false) : activate("dismissRequest")}>{component.sampleContent.closeLabel}</button>}</div>}</div>; break;
     case "field": node = <fieldset {...props("root")}><legend {...props("label")}>{label}{values.required ? " *" : ""}</legend>{content}<small {...props("description")}>{description}</small>{values.invalid && <p {...props("error")}>{t("입력값을 확인하세요.", "Check this value.")}</p>}</fieldset>; break;
-    case "layout": case "toolbar": node = <div {...props("root")} role={kind === "toolbar" ? "toolbar" : "group"} aria-label={label}>{content}</div>; break;
+    case "layout": {
+      const renderPart = (partId: string): ReactNode => {
+        const part = component.parts.find(part => part.id === partId)!;
+        const children = design.layout[part.id]?.childOrder ?? [];
+        return <div key={part.id} {...props(part.role)}>{part.text !== undefined ? part.text : part.role === "body" ? body : children.length ? null : part.name}{children.map(renderPart)}</div>;
+      };
+      node = rootPart ? renderPart(rootPart.id) : null; break;
+    }
+    case "toolbar": node = <div {...props("root")} role="toolbar" aria-label={label}>{content}</div>; break;
     default: node = <div {...props("root")}><strong>{component.name}</strong>{content}<p className="catalog-note">{t("전용 동작 미구현 · 파트와 디자인을 편집할 수 있습니다.", "Dedicated interaction pending · parts and design can be authored.")}</p></div>;
   }
   return <section className="preview-section catalog-component-preview" aria-label={component.name} data-testid={`preview-${component.id}`}><div className={`component-root ${run ? "" : "edit-surface"}`} onPointerDownCapture={event => { if (run) return; const part = event.target instanceof Element ? event.target.closest<HTMLElement>("[data-part-id]")?.dataset.partId : undefined; if (part ?? rootPart?.id) { event.preventDefault(); event.stopPropagation(); onSelect(component.id, part ?? rootPart!.id); } }} onClickCapture={event => { if (!run) { event.preventDefault(); event.stopPropagation(); } }}>{node}</div>{run && <div className="run-controls"><span>{t("소비자 시뮬레이션", "Consumer simulation")}</span><output aria-live="polite" data-testid={`catalog-requests-${component.id}`}>{requests} {lastRequest}</output></div>}</section>;

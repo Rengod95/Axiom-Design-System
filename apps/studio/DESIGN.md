@@ -53,48 +53,73 @@ colors:
   overlay-dark: "rgb(0 0 0 / 58%)"
   on-accent-dark: "#16131e"
 typography:
+  heading:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "24px"
+    fontWeight: 650
+  title:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "16px"
+    fontWeight: 650
+    lineHeight: 1.4
+    letterSpacing: "-0.015em"
+  body:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "13px"
+    fontWeight: 450
+    lineHeight: 1.6
+  label:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "12px"
+    fontWeight: 550
+    lineHeight: 1.4
+  caption:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "11px"
+    lineHeight: 1.6
+  section-title:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "12px"
+    fontWeight: 650
+    lineHeight: 1.5
+  button:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "12px"
+    fontWeight: 550
+    lineHeight: 1.4
+    letterSpacing: "0px"
+  button-large:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "13px"
+    fontWeight: 550
+    lineHeight: 1.4
+  field-control:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.4
+  badge:
+    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "10px"
+    fontWeight: 550
+    lineHeight: "16px"
   headline:
     fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
     fontSize: "23px"
     fontWeight: 650
     lineHeight: 1.3
     letterSpacing: "-0.025em"
-  title:
+  base-title:
     fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
     fontSize: "17px"
     fontWeight: 650
     lineHeight: 1.4
     letterSpacing: "-0.015em"
-  section-title:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "12px"
-    fontWeight: 650
-    lineHeight: 1.5
-  body:
+  base-body:
     fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
     fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.6
-  body-small:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "12px"
-    fontWeight: 400
-    lineHeight: 1.6
-  label:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "11px"
-    fontWeight: 500
-  button:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "12px"
-    fontWeight: 600
-    lineHeight: "18px"
-    letterSpacing: "0px"
-  badge:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "10px"
-    fontWeight: 550
-    lineHeight: "16px"
   code:
     fontFamily: "ui-monospace,Consolas,monospace"
     fontSize: "11px"
@@ -105,22 +130,24 @@ rounded:
   control: "7px"
   panel: "12px"
   badge: "4px"
-  icon: "6px"
   floating: "9px"
 spacing:
   space-1: "4px"
   space-2: "8px"
   space-3: "12px"
   space-4: "16px"
+  space-5: "20px"
   space-6: "24px"
   space-8: "32px"
+  space-10: "40px"
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.on-accent}"
     typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "6px 11px"
+    padding: "4px 12px"
+    height: "34px"
   button-primary-hover:
     backgroundColor: "{colors.accent-hover}"
   button-primary-dark:
@@ -133,7 +160,8 @@ components:
     textColor: "{colors.ink}"
     typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "6px 11px"
+    padding: "4px 12px"
+    height: "34px"
   button-secondary-hover:
     backgroundColor: "{colors.surface-hover}"
   button-subtle:
@@ -141,7 +169,8 @@ components:
     textColor: "{colors.ink-secondary}"
     typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "6px 11px"
+    padding: "4px 12px"
+    height: "34px"
   button-subtle-hover:
     backgroundColor: "{colors.surface-hover}"
     textColor: "{colors.ink}"
@@ -150,11 +179,20 @@ components:
     textColor: "{colors.negative}"
     typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "6px 11px"
+    padding: "4px 12px"
+    height: "34px"
+  button-sm:
+    typography: "{typography.button}"
+    padding: "4px 8px"
+    height: "28px"
+  button-lg:
+    typography: "{typography.button-large}"
+    padding: "4px 16px"
+    height: "40px"
   icon-button:
     backgroundColor: "transparent"
     textColor: "{colors.ink-secondary}"
-    rounded: "{rounded.icon}"
+    rounded: "{rounded.control}"
     padding: "7px"
     width: "32px"
     height: "32px"
@@ -165,7 +203,9 @@ components:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.control}"
-    padding: "7px 9px"
+    typography: "{typography.field-control}"
+    padding: "7px 12px"
+    height: "34px"
   navigation-item:
     backgroundColor: "transparent"
     textColor: "{colors.ink-secondary}"
@@ -193,9 +233,31 @@ components:
   catalog-card:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.floating}"
+    rounded: "{rounded.panel}"
   catalog-card-selected:
     backgroundColor: "{colors.accent-soft}"
+  choice-chip:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    typography: "{typography.button}"
+    rounded: "{rounded.control}"
+    padding: "4px 12px"
+    height: "28px"
+  choice-chip-selected:
+    backgroundColor: "{colors.accent-soft}"
+    textColor: "{colors.accent-ink}"
+  section-heading:
+    typography: "{typography.section-title}"
+    padding: "12px 16px"
+  section-content:
+    padding: "16px"
+  relationship-usage:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-secondary}"
+    rounded: "{rounded.sm}"
+    padding: "8px"
+  relationship-usage-hover:
+    backgroundColor: "{colors.surface-hover}"
   tab:
     backgroundColor: "transparent"
     textColor: "{colors.ink-secondary}"
@@ -221,9 +283,11 @@ Structure carries the identity: related controls align, selected objects remain 
 - Shared primitives across Foundation, library, canvas, inspector and Axiom UI.
 - Desktop panels that become separate, usable panels on narrow web viewports.
 
-This is a code-derived specification. The frontmatter records reused values in [src/styles.css](src/styles.css); the v2 [sidecar](.impeccable/design.json) extends it with motion, elevation, breakpoints and representative component snippets. The default color key names mirror the light-theme CSS roles; the `-dark` companion keys document the dark overrides. The `on-accent` pair names the two actual primary-button foreground literals. No new runtime token is implied by a documentation key.
+This is a code-derived specification refreshed for the approved 2026-09-14 correction. The runtime imports [src/styles.css](src/styles.css), then [src/ui-system.css](src/ui-system.css), then [src/foundation-workspace.css](src/foundation-workspace.css), in that order in [src/main.tsx](src/main.tsx). The first file owns the palettes and incumbent geometry; the second adds the shared type, size and spacing roles and overrides matching controls; the last defines connected Foundation workspaces. Later rules do not erase higher-specificity or unmatched literals. The frontmatter records reused roles and identified incumbent values; the v2 [sidecar](.impeccable/design.json) extends it with motion, elevation, responsive/cascade metadata and representative snippets.
 
-The durable constraints come from [PRODUCT.md](PRODUCT.md), with composition and task strategy retained in the [workbench surface brief](.impeccable/surfaces/workbench.md). The reviewed screenshots and font/overflow measurements are recorded in the generated `dist/evidence/workbench-visual.json` artifact; the independent [finish review](../../docs/implementation/workbench-finish-review.md) records its scope. That evidence concerns the web workbench, not native output execution.
+The default color names mirror the light-theme CSS roles; the `-dark` companions document dark overrides. The `on-accent` pair names the actual primary-button foreground literals. Documentation keys do not create runtime tokens. Component height entries describe minimum control heights where the source uses `min-height`; IconButton and navigation entries record their explicit desktop geometry.
+
+The durable constraints come from [PRODUCT.md](PRODUCT.md), with composition and the correction contract in the [workbench surface brief](.impeccable/surfaces/workbench.md). The current [finish review](../../docs/implementation/editor-completion-finish-review.md) records ten valid captures, 343 passing tests and 16 recorded browser flows, with a bounded ship verdict resolving R1 only. The captures and detector result were subsequently archived unchanged under `dist/evidence/completion/`, as noted in the review. This documentation pass reads that evidence; it does not rerun the detector or claim an independent execution. The [119-row follow-up ledger](../../docs/implementation/editor-completion-followup.md) retains incomplete Foundation obligations. Web evidence does not establish native execution or whole-product completion.
 
 ## Colors
 
@@ -267,34 +331,45 @@ SUIT supplies the same calm voice for Korean and English. The locally bundled `@
 
 | Role | Application |
 | --- | --- |
-| `headline` | Foundation and content-page heading. |
-| `title` | Secondary headings. |
-| `section-title` | Inspector disclosure headings. |
-| `body` | Base interface type and paragraph rhythm; the CSS default weight is 400. |
-| `body-small` | Help text and concise supporting explanations. |
-| `label` | Field names and compact metadata. |
-| `button` | Standard action labels with stable line height. |
-| `badge` | Compact state and classification tags. |
+| `heading` | Shared heading role, demonstrated by the Axiom UI specimen. |
+| `title` | Foundation section and manager headings. |
+| `body` | Shared body role and Axiom UI specimen; scoped fields and Foundation descriptions use its size. |
+| `label` | Field names, action labels and compact Foundation controls. |
+| `caption` | Field hints, help text and relationship metadata; weight is inherited where no local rule sets it. |
+| `section-title` | Inspector disclosure headings retain their own line height. |
+| `button` | Medium action labels; large buttons use the body size while retaining medium weight and label leading. |
+| `button-large` | Large action labels retain medium weight and label leading at the body size. |
+| `field-control` | Scoped native field typography keeps the inherited regular weight at the shared body size. |
+| `badge` | Existing compact status tags. |
+| `headline`, `base-title`, `base-body` | Incumbent h1, h2 and root/body values retained by the cascade. These are documented literals, not replacements for the shared roles. |
 | `code` | Source values and JSON with a monospace rhythm. |
 
-There is no proportional type-scale formula. The Axiom UI specimen intentionally demonstrates 14px and 12px at weight 450; this does not change the body's actual CSS default. Property values and counts use tabular numerals where alignment matters. IDs may wrap anywhere; navigation names truncate within their row. Supporting field hints use 11px type, and the densest counts/source summaries use 10px. Do not promote these sizes into normal body copy. Narrow inspector fields increase to 14px and labels to 12px.
+The shared size ladder is caption / label / body / title / heading, with regular, medium and strong weight variables (450 / 550 / 650). The role values live in the frontmatter and are identical across Studio themes. There is no proportional type-scale formula. The Axiom UI surface demonstrates the heading, title, body and label roles; its specimen is evidence of those role combinations, not a global reset.
+
+**The Scope shared roles Rule.** Use the shared type and size variables for Studio controls, and inspect the actual selector cascade before claiming a whole screen follows them. Authored component typography belongs to the user's Foundation and design properties.
+
+The root still sets 14px with the browser's regular weight (400), h1 remains 23px, and h2 remains 17px unless a local rule overrides it. The onboarding headline retains 36px, then 29px at 900px and 28px at 720px. Existing badges use 10px, catalog footer badges 9px, navigation labels 12px, and selected navigation/tab labels weight 600. Token summaries and counts retain 10px; catalog labels retain 13px/600. These literal residuals are recorded, not silently normalized. The new field selectors win over the older 14px mobile field size, so scoped Studio fields use the shared body size even on narrow screens. Property values and counts use tabular numerals where alignment matters; IDs wrap while navigation names truncate.
 
 ## Layout
 
 The workbench fills `100dvh` and keeps overflow inside the relevant panel. The center uses `minmax(0,1fr)`; sidebar and inspector have fixed role widths. No centered marketing-page maximum width constrains the editor.
 
-| Viewport | Columns | Rows and adjustments |
+| Viewport | Effective columns | Rows and adjustments |
 | --- | --- | --- |
-| Above 1200px | 224px navigation / fluid workspace / 304px inspector | 52px header / flexible work area / 28px status bar. |
-| At most 1200px | 200px / fluid / 280px | Compact header and toolbar; save text and project source-export shortcut hide, while the primary export remains. |
-| At most 900px | 184px / fluid / 264px | Further metadata reduction; the review strip stacks its content and actions. |
-| At most 720px | One fluid column | 48px header / 40px panel switcher / flexible selected panel / 28px status bar. Navigation, workspace and inspector remain individually accessible. |
+| Above 1200px | 224px navigation / fluid workspace / 320px inspector | 52px header / flexible work area / 28px status bar. |
+| 1101–1200px | 200px / fluid / 320px | Earlier 1200px toolbar, header and catalog adjustments remain; the later shared inspector width supersedes 280px. |
+| 721–1100px | 200px / fluid / 292px | The later 1100px width rule supersedes the earlier 900px 184px/264px pair. At 900px, the remaining metadata and stacked review-strip rules still apply. |
+| At most 720px | One fluid column | 48px header / 40px panel switcher / flexible selected panel / 28px status bar. Browse, Workspace and Inspect remain individually accessible. |
 
-The canonical spacing rhythm is the six-step frontmatter scale. Actual control geometry includes optical offsets: standard buttons use 6px by 11px padding, fields 7px by 9px, inspector sections 16px by 18px, and Foundation filter gaps 8px. These are observed geometry, not additions to a fabricated universal spacing scale. Inspector sections adapt to 15px padding at the compact desktop breakpoint and 18px by 20px on narrow screens. The editing-scope field in the Foundation inspector uses 12px by 18px padding.
+The frontmatter spacing scale extends the established 4px rhythm with 20px and 40px steps. Shared fields use an 8px gap, section content uses 16px padding and gap, section summaries use 12px by 16px padding, and form actions use a 12px gap with 16px top padding. Two-column forms use a 20px gap. Property groups use 8px gaps and vertical padding; consecutive groups receive a separator and 16px top padding. The later inspector-section rule removes the old outer section padding at every breakpoint; it does not remove independent inspector-header or editing-scope padding. The Foundation scope field still has its specific 12px by 18px inset. Existing 6px, 10px and 18px gaps/padding remain in unmatched legacy rows and headers.
 
-Standard controls are dense: buttons have a 32px minimum height and icons a 32px square. The sidebar contains 30px object rows, 34px workspace rows and 28px Part rows; narrow regular navigation grows to 36px. Inspector form controls have a 38px minimum height on narrow screens. Smaller 24–28px contextual icon controls are existing compact exceptions; do not describe every shipped target as a 44px touch target.
+Shared Button sizes are small, medium and large, with minimum heights recorded in the frontmatter. The default is medium. Padding grows from the small to the large variant, and the large label uses the body size. Desktop IconButton still has a literal 32px width and height, with contextual 24–28px dimensions; its radius now follows the shared control radius. These icons do not expose Button's size API. Sidebar object rows remain 30px, workspace rows 34px and Part rows 28px; regular narrow navigation grows to 36px.
 
-Foundation retains an internally scrollable table with sticky column headings. Identity, alias target and classification are separate lines; the alias checkbox stays beside its label because only the direct search input flexes. Inspector actions remain in a sticky bottom area. Catalog cards use an auto-fill grid with a 170px minimum card width on full desktop and a 150px minimum under the compact-desktop rule. Filters wrap on narrow screens instead of overflowing the document.
+At 720px, ordinary medium buttons and icon actions acquire the large minimum height, and app field inputs/selects acquire the same minimum height. More-specific small-button selectors retain 28px; choice chips become 34px, topbar actions retain their 28px minimum, and review-strip actions retain 34px. Icon widths remain compact even when the minimum height grows. Scoped app field textareas keep a 76px minimum height. Onboarding fields retain the medium minimum because the mobile app selector does not target onboarding. Do not claim every shipped control becomes one touch-target size.
+
+Foundation uses domain workspaces, a curated 11-domain starter choice, primitive-to-semantic relationships, and named theme management with collapsed advanced axis/context controls. Workspace and manager padding is 24px; domain, starter and relationship panels reduce to 16px at 1100px. Domain directory rows have an 82px minimum height with a 64px by 44px specimen. Manager forms use two columns with a 16px gap and become one at 720px. The onboarding domain choice grid changes from three columns to two on narrow screens.
+
+The token table remains internally scrollable with sticky column headings. Identity, alias target and classification are separate lines; only the direct filter search input flexes. Inspector actions remain sticky at the bottom. Catalog cards use an auto-fill grid with a 170px minimum on full desktop and 150px under the compact rule, with the new 16px gap. Static SVG specimens occupy a 112px-high band above labels; they communicate component structure. Filters wrap on narrow screens, and shared tab strips scroll horizontally inside their panel.
 
 The canvas is an unbounded document workspace with named frames. Its viewport clips and pans artwork while the surrounding editor remains stable; selection, frame labels and tools stay contextual. Desktop/mobile preview categories describe authored designs, independently of the browser's responsive panel arrangement.
 
@@ -313,13 +388,13 @@ Most hierarchy comes from tone and 1px separators. Structural panels do not floa
 
 ## Shapes
 
-Small, gently rounded controls sit inside rectangular working panels. The named radius tokens cover small navigation, standard controls and modal panels; the documented badge, icon and floating radii capture reused literal CSS values. Catalog cards share the floating radius. Canvas frames remain square so authored corner geometry is visible. Swatches retain a clear edge even when their color matches the surrounding surface. Do not round the entire application shell or wrap every inspector group in another card.
+Small, gently rounded controls sit inside rectangular working panels. The named radius tokens cover small navigation, standard controls and modal panels; the documented badge and floating radii capture reused literal CSS values. Icon buttons now use the control radius, and catalog cards use the panel radius. Canvas frames remain square so authored corner geometry is visible. Swatches retain a clear edge even when their color matches the surrounding surface. Do not round the entire application shell or wrap every inspector group in another card.
 
 ## Components
 
 ### Buttons and icon actions
 
-`Button` exposes primary, secondary, subtle and danger tones. Primary uses the accent pair, secondary uses the surface with a stronger neutral outline, subtle remains transparent until hover, and danger uses negative text on its soft fill. Standard actions share the frontmatter typography, radius and padding. Primary, secondary and subtle have distinct hover fills; danger currently has no additional hover fill. Disabled buttons use 0.46 opacity and a not-allowed cursor. They retain native disabled semantics.
+`Button` exposes primary, secondary, subtle and danger tones plus sm, md and lg sizes; md is the default. Primary uses the accent pair, secondary uses the surface with a stronger neutral outline, subtle remains transparent until hover, and danger uses negative text on its soft fill. Medium actions share the frontmatter typography, radius and padding; size and tone are independent. Primary, secondary and subtle have distinct hover fills; danger currently has no additional hover fill. Pressed non-primary buttons and icon actions use surface-active; pressed primary buttons use accent-hover. A busy button receives a progress cursor. Disabled buttons use 0.46 opacity and a not-allowed cursor. They retain native disabled semantics.
 
 `IconButton` uses a 15px inline SVG by default in a 32px target, an accessible label and a native title. SVGs use a 20-unit viewBox, currentColor, a 1.35-unit stroke, and rounded ends and joins. Hover uses the quiet hover surface; pressed tools use the accent-soft/accent-ink pair. Existing contextual sizes are described in Layout.
 
@@ -329,7 +404,7 @@ Button background and text transitions use 160ms with `cubic-bezier(.16,1,.3,1)`
 
 `Field` arranges the visible field name, control and optional hint; its visible span does not label a control by itself. Keep a real label association or the control's aria-label. `TextInput` maintains a local draft and defers commits during composition until composition ends. `NumberInput` retains a draft, commits finite in-range values, exposes invalid state and restores the last valid value on blur.
 
-Native input, textarea and select elements share the control border and surface. Textareas resize vertically and have a 72px minimum height. Field hints remain beneath the control; errors use negative text with readable line height. Native checkboxes are 15px squares with an 8px label gap in checkbox rows. Do not let broad flexible-search rules resize or separate the checkbox.
+Native input, textarea and select elements share the control border and surface. Shared field labels use the label role and weight-medium, with a caption hint. Scoped Studio fields use a medium minimum height, body size, label leading and 12px horizontal padding; text inputs retain 7px vertical padding, while select retains its 4px important vertical padding. The more specific app field textarea rule uses a 76px minimum and 8px vertical padding; unmatched native textareas retain the earlier 72px minimum. Textareas resize vertically. Field hints remain beneath the control; errors use negative text with readable line height. Native checkboxes are 15px squares with an 8px label gap in checkbox rows. Do not let broad flexible-search rules resize or separate the checkbox.
 
 ### Navigation and tabs
 
@@ -339,21 +414,25 @@ Object navigation uses a quiet default label, a neutral hover fill and an accent
 
 ### Badges and containers
 
-Badges convey classification or status using neutral, accent, positive and warning pairs. They are compact text annotations, not standalone buttons. The catalog card contains a separate selection button and contextual add action. Hover strengthens its edge and quiet fill; selection adds the accent fill, border and outer outline. Inspectors use disclosure sections with summary headings and separators, not a stack of floating cards.
+Choice chips are real Button controls with line-strong outlines and an accent fill/ink/border when aria-pressed is true. They use the small minimum height on desktop and medium on narrow screens. Badges convey classification or status using neutral, accent, positive and warning pairs. They are compact text annotations, not standalone buttons. The catalog card contains a separate selection button and contextual add action. Hover strengthens its edge and quiet fill; selection adds the accent fill, border and outer outline. Inspectors use native details/summary sections with an inner section-content wrapper and shared spacing. The summary chevron changes with disclosure state; the optional section action retains its separate 12px top inset.
 
 ### Foundation and canvas relationships
 
 A Foundation row aligns the name, alias hint, structured value, classification and usage count. The selected row gets the soft accent fill; editing takes place in the related inspector. Use wrapping hints for relationships, with a 4px separation below token identity. A native table, local scrolling and sticky headings preserve readable columns.
 
+The Connections tree indents nested lists with a 16px margin, 20px inset and neutral vertical rule. Token nodes place names above caption metadata. Component usage rows are full-width native buttons with 8px padding, a small radius and quiet hover fill. Their first line identifies the component and Part; a second line distinguishes the design category, property and rule/variant context. A trailing arrow communicates navigation, and the full source location remains in the title. Activation selects the component, Part and category through the shared draft-safe path without changing project revision. This is the R1 behavior verified by the current finish review.
+
+Named themes precede collapsed axis/context controls. Structured typography/effects bindings, nested Part actions and reviewed motion-track playback reuse the same field, section, choice and review conventions. Studio appearance remains separate from authored theme values and from the selected Web/Mobile design category. The motion player is a bounded preview, with behavior graphs and native mappings still in the implementation ledger.
+
 Canvas frame selection uses a 1.5px accent outline; a selected Part uses a 1px outline, with a dashed hover indication in Edit mode. Resize handles are 8px squares with a surface fill and accent edge. These direct-manipulation affordances describe authored objects and must remain distinct from the global 2px keyboard focus ring.
 
 ### Review, dialogs and empty states
 
-The review strip preserves the relationship between pending edits and the action that applies them. Its text remains visible when the action row stacks. Workbench dialogs use native dialog behavior, restore focus on close, and separate header from scrollable content. The standard workbench modal is at most 560px wide and 80dvh high; review/export dialogs use their existing larger 720px geometry and viewport constraints. Empty states use an icon, clear title, concise explanation and a relevant recovery action when available.
+Valid buffered forms enter the shared review directly; invalid values remain visible with an explicit reset. The review strip preserves the relationship between pending edits and the action that applies them. Its text remains visible when the action row stacks. Workbench dialogs use native dialog behavior, restore focus on close, and separate header from scrollable content. The standard workbench modal is at most 560px wide and 80dvh high; review/export dialogs use their existing larger 720px geometry and viewport constraints. Empty states use an icon, clear title, concise explanation and a relevant recovery action when available.
 
 The sidecar's tonal ramps are supplemental OKLCH swatch visualizations derived from each color's hue and chroma; they are not additional runtime palette tokens. The exact runtime values remain in the frontmatter.
 
-The ten sidecar snippets are representative static HTML/CSS previews of these implemented primitives. The React components and controller remain authoritative for commits, keyboard interaction, selection and modal behavior.
+The eleven sidecar snippets are representative static HTML/CSS previews of these implemented primitives. The React components and controller remain authoritative for commits, keyboard interaction, selection and modal behavior.
 
 ## Do's and Don'ts
 
@@ -361,9 +440,9 @@ The ten sidecar snippets are representative static HTML/CSS previews of these im
 
 - Do reuse the semantic CSS roles and shared controls in src/ui.tsx before adding another local variant.
 - Do update both Studio palettes and these artifacts whenever a reused visual token changes.
-- Do preserve the 4px spacing rhythm while retaining the observed optical padding and compact-control exceptions.
+- Do use the shared type, spacing and Button size roles while retaining documented cascade and compact-control exceptions.
 - Do label icon actions, keep keyboard focus visible, and retain the existing tab keyboard and input composition behavior.
-- Do keep alias targets and classification metadata on separate readable lines, and show the token's source relationships beside editing.
+- Do keep alias targets, classification and usage context on readable lines, and connect usage actions to the correct component, Part and design category.
 - Do retain review, error, pending and saved states as explicit text and control behavior as well as color.
 - Do check light and dark desktop views and the narrow panel flow when changing shared layout or controls.
 

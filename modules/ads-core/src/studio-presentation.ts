@@ -4,6 +4,8 @@ import type { StudioComponent, StudioDesign, StudioLayout, StudioPart, StudioPar
 import { isObject, isValidId } from "./documents.ts";
 import { STUDIO_COLOR_PROPERTIES, STUDIO_ERROR, STUDIO_MAX_DIMENSION } from "./studio-constants.ts";
 
+import { STUDIO_EXTENDED_STYLE_TYPES, resolveExtendedStudioStyle } from "./studio-style-values.ts";
+
 const PRESENTATION_STATES = ["filled", "outlined", "filled-disabled", "outlined-disabled", "filled-pressed", "outlined-pressed"] as const;
 const TOKEN_REFERENCE_KEY = "tokenRef";
 const CHANNEL_SCALE = 255;
@@ -57,27 +59,43 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
         if (rule.variants.variant !== undefined && rule.variants.variant !== variant) continue;
         if (Object.keys(rule.states).some(key => !state.endsWith(`-${key}`))) continue;
         const specificity = Object.keys(rule.states).length + Object.keys(rule.variants).length;
-        const rank = specificity * 10_000 + Number(rule.explicitPriority);
+        const rank = specificity * 100_000 + Number(rule.explicitPriority) * 10;
         for (const [property, source] of Object.entries(rule.declarations)) {
           const path = `/appearance/${index}/declarations/${property}`;
-          const output = value(source, STUDIO_COLOR_PROPERTIES.has(property) ? "color" : property === "opacity" ? "number" : "dimension", path, part.id);
-          if (output.resolved === undefined) continue;
-          if (property === "fontSize" && output.resolved === 0) { add(path, "Text must have a positive size."); continue; }
-          const previous = winners.get(property);
-          if (previous?.rank === rank && previous.value !== output.resolved) { add(path, `Conflicting ${property} declarations at equal precedence.`, STUDIO_ERROR.conflict); continue; }
-          if (!previous || rank > previous.rank) winners.set(property, { rank, value: output.resolved, path, ...(output.tokenId ? { tokenId: output.tokenId } : {}) });
+          const outputs: { property: string; resolved: string | number; tokenId?: string; rank: number }[] = [];
+          if (Object.hasOwn(STUDIO_EXTENDED_STYLE_TYPES, property)) {
+            let raw = source, tokenId: string | undefined;
+            try {
+              if (isObject(source) && Object.hasOwn(source, TOKEN_REFERENCE_KEY)) {
+                if (Object.keys(source).length !== 1 || typeof source.tokenRef !== "string") throw new Error("Use exactly one stable token binding.");
+                const token = tokens.get(source.tokenRef);
+                if (!token || token.type !== STUDIO_EXTENDED_STYLE_TYPES[property]) throw new Error("Style token is missing or has an incompatible type.");
+                raw = token.value; tokenId = token.id;
+                for (const id of new Set([token.id, ...token.aliasChain])) { const entries = usages[id] ??= []; if (!entries.some(item => item.documentId === document.id && item.path === path)) entries.push({ componentId: component.id, partId: part.id, documentId: document.id, path }); }
+              }
+              for (const [field, resolved] of Object.entries(resolveExtendedStudioStyle(property, raw))) outputs.push({ property: field, resolved, ...(tokenId ? { tokenId } : {}), rank: rank + (property === "typography" || property === "border" ? 0 : 1) });
+            } catch (error) { add(path, error instanceof Error ? error.message : "Invalid style value.", STUDIO_ERROR.unsupported); }
+          } else {
+            const output = value(source, STUDIO_COLOR_PROPERTIES.has(property) ? "color" : property === "opacity" ? "number" : "dimension", path, part.id);
+            if (output.resolved !== undefined) outputs.push({ property, resolved: output.resolved, ...(output.tokenId ? { tokenId: output.tokenId } : {}), rank: rank + 1 });
+          }
+          for (const output of outputs) {
+            if (output.property === "fontSize" && output.resolved === 0) { add(path, "Text must have a positive size."); continue; }
+            const previous = winners.get(output.property);
+            if (previous?.rank === output.rank && previous.value !== output.resolved) { add(path, `Conflicting ${output.property} declarations at equal precedence.`, STUDIO_ERROR.conflict); continue; }
+            if (!previous || output.rank > previous.rank) winners.set(output.property, { rank: output.rank, value: output.resolved, path, ...(output.tokenId ? { tokenId: output.tokenId } : {}) });
+          }
         }
       }
       const style: StudioStyle = {};
       for (const [property, winner] of winners) {
-        if ((property === "background" || property === "color" || property === "borderColor") && typeof winner.value === "string") style[property] = winner.value;
-        else if ((property === "borderWidth" || property === "borderRadius" || property === "fontSize" || property === "opacity") && typeof winner.value === "number") style[property] = winner.value;
+        Object.assign(style, { [property]: winner.value });
         presentation.provenance[`${state}.${property}`] = { documentId: document.id, path: winner.path, ...(winner.tokenId ? { tokenId: winner.tokenId } : {}) };
       }
       presentation.combinations[state] = style;
     }
     presentation.base = presentation.combinations.filled;
-    const changes = (style: StudioStyle): StudioStyle => Object.fromEntries(Object.entries(style).filter(([key, value]) => presentation.base[key as StudioVisualProperty] !== value));
+    const changes = (style: StudioStyle): StudioStyle => Object.fromEntries(Object.entries(style).filter(([key, value]) => presentation.base[key as keyof StudioStyle] !== value));
     presentation.outlined = changes(presentation.combinations.outlined);
     presentation.disabled = changes(presentation.combinations["filled-disabled"]);
     presentation.pressed = changes(presentation.combinations["filled-pressed"]);

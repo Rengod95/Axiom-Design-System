@@ -60,7 +60,7 @@ try {
   page = await browser.cdp.page(url);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await fill("project-name", "검증 디자인 시스템");
-  await click("start-project");
+  await click("starter-enabled"); await click("start-project");
   await until(`${element("studio-app")}`);
   // Locale-independent settled creation, then retain the source revision for preview checks.
   await until(`${element("save-status")} && !${element("undo")}.disabled`);

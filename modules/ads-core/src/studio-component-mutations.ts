@@ -5,9 +5,12 @@ import { catalogObjects, hasCatalogProfile } from "./studio-catalog-validation.t
 import { getStudioCatalogRecipe } from "./studio-catalog.ts";
 import { catalogIdentity } from "./studio-catalog-validation.ts";
 import { STUDIO_CATALOG_CODE } from "./studio-catalog-constants.ts";
+import { STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
 import { KernelError } from "./kernel-error.ts";
 
 const EDIT_FIELDS: Readonly<Record<string, readonly string[]>> = {
+  "motion-track-set": ["track", "trackId"], "motion-track-delete": ["trackId"],
+  "part-text": ["partId", "text"], "part-parent": ["partId", "parentId"], "appearance-rule": ["category", "partId", "condition", "property", "value"], "variant-default": ["value"], "slot-add": ["partId", "required", "multiple"], "slot-delete": ["slotId"],
   name: ["name"], purpose: ["purpose"], frame: ["category", "frame"], "part-name": ["partId", "name"], "part-add": ["parentId", "name", "role"], "part-delete": ["partId"], "part-order": ["parentId", "childIds"],
   layout: ["category", "partId", "field", "value"], appearance: ["category", "partId", "property", "value"], "value-default": ["valueId", "value"], "value-add": ["name", "type", "value", "ownership"], "value-delete": ["valueId"], accessibility: ["field", "value"], motion: ["field", "value"], "sample-content": ["field", "value"],
 };
@@ -34,6 +37,14 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
     case "purpose": component.purpose = edit.purpose; break;
     case "frame": design!.editorFrame = edit.frame; break;
     case "part-name": part!.name = edit.name; break;
+    case "part-text": if (!hasCatalogProfile(component)) fail("Part-specific content requires a catalog definition."); else part!.studioText = edit.text; break;
+    case "part-parent": {
+      if (!hasCatalogProfile(component) || part!.required === true || part!.parent === null) fail("Required semantic parts retain their parent.");
+      let parent = parts.find(item => item.id === edit.parentId); if (!parent) fail("Choose an existing parent.");
+      const seen = new Set<string>([String(part!.id)]);
+      while (parent) { if (seen.has(String(parent.id))) fail("A part cannot be its own ancestor."); seen.add(String(parent.id)); parent = parts.find(item => item.id === parent!.parent); }
+      part!.parent = edit.parentId; syncOrder(component, designs); break;
+    }
     case "part-add": {
       if (!hasCatalogProfile(component)) fail("Additional parts require an explicit catalog authoring definition; builtin semantic parts remain fixed.");
       const parent = parts.find(part => part.id === edit.parentId); if (!parent) fail("New part requires an existing local parent.");
@@ -49,6 +60,7 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
       if (part!.required === true || part!.parent === null) fail("A required semantic part cannot be deleted.");
       if (parts.some(child => child.parent === part!.id)) fail("Delete or explicitly move child parts before deleting their parent.");
       if (catalogObjects(component.slots).some(slot => slot.ownerPartRef === part!.id)) fail("A content slot still depends on this part.");
+      if (catalogObjects(component.motion).some(track => track.targetPartRef === part!.id)) fail("Remove this part's motion tracks before deleting it.");
       component.parts = parts.filter(item => item.id !== part!.id);
       for (const design of designs) {
         design.nodeMappings = catalogObjects(design.nodeMappings).filter(item => item.partRef !== part!.id);
@@ -76,11 +88,29 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
       } else layout[edit.field] = edit.field === "axis" || edit.field === "alignment" ? edit.value : typeof edit.value === "number" ? { value: edit.value, unit: "px" } : edit.value;
       break;
     }
-    case "appearance": {
-      if (!["background", "color", "borderColor", "borderWidth", "borderRadius", "fontSize", "opacity"].includes(edit.property)) fail("Unsupported appearance property.");
-      let rule = catalogObjects(design!.appearance).find(rule => rule.targetPartRef === part!.id && isObject(rule.variants) && Object.keys(rule.variants).length === 0 && isObject(rule.states) && Object.keys(rule.states).length === 0);
-      if (!rule) { rule = { id: id(), targetPartRef: part!.id!, variants: {}, states: {}, declarations: {}, explicitPriority: 0, refines: [] }; (design!.appearance as JsonValue[]).push(rule); }
+    case "appearance": case "appearance-rule": {
+      if (!STUDIO_VISUAL_PROPERTIES.includes(edit.property)) fail("Unsupported appearance property.");
+      const condition = edit.kind === "appearance-rule" ? edit.condition : "base";
+      if (!["base", "outlined", "disabled", "pressed"].includes(condition)) fail("Unsupported appearance condition.");
+      const variants: JsonObject = condition === "outlined" ? { variant: "outlined" } : {}, states: JsonObject = condition === "disabled" || condition === "pressed" ? { [condition]: true } : {};
+      const match = (value: unknown, expected: JsonObject) => isObject(value) && Object.keys(value).length === Object.keys(expected).length && Object.keys(expected).every(key => value[key] === expected[key]);
+      let rule = catalogObjects(design!.appearance).find(rule => rule.targetPartRef === part!.id && match(rule.variants, variants) && match(rule.states, states));
+      if (edit.value === null) { if (rule && isObject(rule.declarations)) { delete rule.declarations[edit.property]; if (!Object.keys(rule.declarations).length) design!.appearance = catalogObjects(design!.appearance).filter(item => item !== rule); } break; }
+      if (!rule) { rule = { id: id(), targetPartRef: part!.id!, variants, states, declarations: {}, explicitPriority: 0, refines: [] }; (design!.appearance as JsonValue[]).push(rule); }
       (rule.declarations as JsonObject)[edit.property] = edit.value; break;
+    }
+    case "variant-default": if (!["filled", "outlined"].includes(edit.value)) fail("Invalid variant."); else catalogObjects(contract.variants)[0]!.default = edit.value; break;
+    case "slot-add": {
+      if (!hasCatalogProfile(component) || typeof edit.required !== "boolean" || typeof edit.multiple !== "boolean") fail("Invalid slot contract.");
+      if (catalogObjects(component.slots).some(slot => slot.ownerPartRef === part!.id)) fail("This Part already owns a slot.");
+      const slot = { id: id(), ownerPartRef: part!.id!, contentKinds: ["text", "component"], min: edit.required ? 1 : 0, max: edit.multiple ? "unbounded" : 1, defaultContent: [], allowedContractRefs: [] };
+      (component.slots as JsonValue[]).push(slot); (contract.exposedSlots as JsonValue[]).push(slot.id); break;
+    }
+    case "slot-delete": {
+      const slot = catalogObjects(component.slots).find(slot => slot.id === edit.slotId); if (!slot) fail("Slot no longer exists.");
+      const role = parts.find(part => part.id === slot.ownerPartRef)?.studioRole, recipe = getStudioCatalogRecipe(catalogIdentity(component)!);
+      if (!recipe || recipe.slots.some(required => required.required && required.role === role)) fail("A required semantic slot cannot be deleted.");
+      component.slots = catalogObjects(component.slots).filter(slot => slot.id !== edit.slotId); contract.exposedSlots = (contract.exposedSlots as JsonValue[]).filter(id => id !== edit.slotId); break;
     }
     case "value-default": { const value = values.find(value => value.id === edit.valueId); if (!value) fail("Value port no longer exists."); value.defaultValue = edit.value; break; }
     case "value-add": {
@@ -94,6 +124,17 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
       contract.values = values.filter(value => value.id !== edit.valueId); break;
     }
     case "accessibility": if (!["label", "description"].includes(edit.field) || !isObject(component.accessibility)) fail("Invalid accessibility property."); else component.accessibility[edit.field] = edit.value; break;
+    case "motion-track-set": {
+      if (!hasCatalogProfile(component) || !isObject(edit.track) || Object.hasOwn(edit.track, "id")) fail("A motion track requires a catalog component and generated identity.");
+      const tracks = catalogObjects(component.motion), existing = edit.trackId === null ? undefined : tracks.find(track => track.id === edit.trackId);
+      if (edit.trackId !== null && !existing) fail("Motion track no longer exists.");
+      const next = { ...edit.track, id: existing?.id ?? id() } as unknown as JsonObject;
+      component.motion = existing ? tracks.map(track => track.id === existing.id ? next : track) : [...tracks, next]; break;
+    }
+    case "motion-track-delete": {
+      if (!hasCatalogProfile(component) || !catalogObjects(component.motion).some(track => track.id === edit.trackId)) fail("Motion track no longer exists.");
+      component.motion = catalogObjects(component.motion).filter(track => track.id !== edit.trackId); break;
+    }
     case "motion": {
       if (!["durationMs", "easing"].includes(edit.field) || !isObject(component.studioMotion)) fail("Invalid motion property.");
       component.studioMotion[edit.field] = edit.value;
@@ -104,7 +145,10 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
   }
 }
 function syncOrder(component: AdsDocument, designs: AdsDocument[]): void {
-  const parts = catalogObjects(component.parts);
+  const source = catalogObjects(component.parts), parts: JsonObject[] = [];
+  const visit = (parent: JsonObject) => { parts.push(parent); for (const child of source.filter(item => item.parent === parent.id)) visit(child); };
+  const root = source.find(item => item.parent === null); if (root) visit(root);
+  component.parts = parts;
   (component.accessibility as JsonObject).readingOrder = parts.map(part => part.id!);
   for (const design of designs) for (const layout of catalogObjects(design.layout)) layout.childOrder = parts.filter(part => part.parent === layout.targetPartRef).map(part => part.id!);
 }

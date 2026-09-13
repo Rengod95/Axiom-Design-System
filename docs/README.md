@@ -21,3 +21,7 @@ Current lifecycle authority remains [ADR-0006](adr/0006-product-reset-and-refere
 11. [Studio quickstart](implementation/studio-quickstart.md), [editor/target evidence](implementation/studio-delivery-evidence.md) and [dependency decisions](implementation/studio-dependency-notice.md)
 
 12. [Workbench extension](adr/0015-studio-workbench-and-catalog-authoring.md), [complete editor audit](implementation/editor-completeness-audit.md), [workbench evidence](implementation/workbench-evidence.md), and [Axiom UI design system](../apps/studio/DESIGN.md)
+
+13. [Foundation onboarding and editor completion](adr/0016-foundation-onboarding-and-editor-completion.md)
+
+The [2026-09-14 editor follow-up](implementation/editor-completion-followup.md) retains all 119 requirement IDs and current source hashes after the property-input, token onboarding and custom-authoring corrections. Its outstanding obligations remain part of the Foundation implementation scope.

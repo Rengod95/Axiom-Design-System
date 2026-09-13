@@ -4,6 +4,8 @@ import { createBrowserServices, IndexedDbStore } from "../../../modules/browser-
 import { App } from "./app.tsx";
 import { StudioController } from "./controller.ts";
 import "./styles.css";
+import "./ui-system.css";
+import "./foundation-workspace.css";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("Studio root is missing.");

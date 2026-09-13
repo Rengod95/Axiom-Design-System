@@ -31,5 +31,12 @@ export { STUDIO_CATALOG_PROFILE, STUDIO_CATALOG_LIMITS } from "./studio-catalog-
 export type { StudioCatalogEntry, StudioSemanticKind, StudioSemanticDescriptor, StudioCatalogRecipe, StudioCatalogProjection, StudioComponentEdit, StudioComponentPlan, StudioSizePolicy } from "./studio-catalog-contracts.ts";
 export { planFoundationEdit, MAX_FOUNDATION_AUTHORING_EDITS } from "./foundation-authoring.ts";
 export { inspectFoundationAuthoring } from "./foundation-authoring-projection.ts";
+export { FOUNDATION_STARTER_DOMAINS, foundationStarterTokens } from "./foundation-starters.ts";
+export type { FoundationStarterOptions, FoundationStarterToken } from "./foundation-starters.ts";
 export { MAX_FOUNDATION_CONTEXT_COMBINATIONS } from "./foundation-validation.ts";
 export type { FoundationAuthoringEdit, FoundationEditPlan, FoundationAuthoringProjection, FoundationAuthoringFilter, FoundationTokenRow, FoundationReference, FoundationClassification, FoundationClassificationKind, FoundationTokenChanges } from "./foundation-authoring-contracts.ts";
+
+export { STUDIO_EXTENDED_STYLE_TYPES } from "./studio-style-values.ts";
+
+export { inspectStudioMotion, resolveStudioMotion, sampleStudioSpring } from "./studio-motion.ts";
+export type { StudioMotionTrack, ResolvedStudioMotion } from "./studio-motion.ts";

@@ -1,8 +1,11 @@
 import type { AdsDocument, JsonObject, JsonValue } from "./contracts.ts";
 import type { StudioArchetype, StudioCategory } from "./studio-contracts.ts";
-import { isValidId } from "./documents.ts";
+import { isObject, isValidId } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
 import { CODE } from "./constants.ts";
+import { applyFoundationStarter } from "./foundation-starters.ts";
+import type { FoundationStarterOptions } from "./foundation-starters.ts";
+import type { FoundationDocument } from "./foundation-contracts.ts";
 import { STUDIO_ARCHETYPES, STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MOTION, STUDIO_PART_ROLES, STUDIO_RESOLVER, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
 
 const STARTER_REVISION = "source.initial";
@@ -74,8 +77,25 @@ function design(document: AdsDocument, category: StudioCategory): AdsDocument {
 }
 
 /** Create independent editable sources; adoption still requires ordinary reviewed import. */
-export function createStudioStarter(projectId: string): AdsDocument[] {
+export function createStudioStarter(projectId: string, options?: FoundationStarterOptions): AdsDocument[] {
   if (!isValidId(projectId) || projectId === FOUNDATION_ID || projectId.startsWith("component.") || projectId.startsWith("design.")) throw new KernelError(CODE.PAYLOAD_INVALID, "Starter requires a distinct valid project identity.");
   const components = (Object.keys(STUDIO_ARCHETYPES) as Exclude<StudioArchetype, "catalog">[]).map(component);
-  return [foundation(), ...components, ...components.flatMap(item => STUDIO_CATEGORIES.map(category => design(item, category)))];
+  const source = foundation(); let sequence = 0;
+  if (options) {
+    const foundation = source as FoundationDocument;
+    applyFoundationStarter(foundation, options, () => `foundation.starter.${++sequence}`);
+    const scheme = foundation.themeAxes.find(axis => axis.id === "axis.scheme"); if (scheme) scheme.name = "Color scheme";
+    for (const theme of foundation.themeSets) if (["theme.light", "theme.dark"].includes(theme.id)) theme.name = theme.id === "theme.light" ? "Light" : "Dark";
+    // Only a newly created project is connected to the chosen kit. Existing-project adoption is additive.
+    const links: Record<string, string> = { accent: "action.primary.background", action: "action.primary.background", surface: "surface.raised", content: "text.primary", onAccent: "action.primary.foreground", border: "border.default", gap: "spacing.control", radius: "radius.control", fontSize: "font.size.16" };
+    for (const [id, targetName] of Object.entries(links)) {
+      const token = foundation.tokens.find(token => token.id === `token.${id}`), target = foundation.tokens.find(token => token.name === targetName);
+      if (!token || !target) continue;
+      token.value = { ref: { id: target.id, expectedKind: "token" } };
+      if (target.domain) token.domain = target.domain;
+      const semantic = foundation.tiers.filter(isObject).find(tier => typeof tier.name === "string" && tier.name.toLowerCase() === "semantic"); if (semantic && typeof semantic.id === "string") token.tier = semantic.id;
+      for (const axis of foundation.themeAxes) for (const overrides of Object.values(axis.overrides ?? {})) delete overrides[token.id];
+    }
+  }
+  return [source, ...components, ...components.flatMap(item => STUDIO_CATEGORIES.map(category => design(item, category)))];
 }

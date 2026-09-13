@@ -1,6 +1,7 @@
 import { canonicalJson, CommandService, createStudioStarter, inspectStudioProject, planStudioEdit, planFoundationEdit, planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentBatch, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
 import type { CommandEnvelope, CommandResult, Diagnostic, JsonObject, KernelServices, Principal, ProjectSnapshot, StudioEdit, StudioEditPlan, StudioProjection, StudioSelection, FoundationAuthoringEdit, StudioComponentEdit, StudioComponentPlan } from "../../../modules/ads-core/src/index.ts";
 import type { MessageKey } from "./locales.ts";
+import type { FoundationStarterOptions } from "../../../modules/ads-core/src/index.ts";
 
 export const STUDIO_PRINCIPAL: Principal = { id: "studio.local", scopes: ["project.read", "project.write", "review.apply"] };
 export interface ReviewSummary { id: string; baseRevision: string; digest: string; status: string; diff: CommandResult["diff"]; diagnostics: Diagnostic[] }
@@ -40,6 +41,10 @@ export class StudioController {
   get canUndo(): boolean { return !this.#state.busy && !this.#retry && !this.#state.candidate && !this.#unplannedInput && (this.#draftHistory.length > 0 || !this.dirty && Boolean(this.#state.authoring.undoHandle)); }
   get canRedo(): boolean { return !this.#state.busy && !this.#retry && !this.#state.candidate && !this.#unplannedInput && (this.#draftFuture.length > 0 || !this.dirty && Boolean(this.#state.authoring.redoHandle)); }
   inputError(): void { if (!this.#state.busy && !this.#retry && !this.#state.candidate) this.#patch({ error: "STUDIO_INPUT_INVALID", message: "invalidValue" }); }
+  clearInputError(): void {
+    if (!["STUDIO_INPUT_INVALID", "STUDIO_EDIT_INVALID"].includes(this.#state.error ?? "") || this.#state.pendingBuffers.length) return;
+    this.#patch({ error: null, message: null, diagnostics: this.#state.projection?.diagnostics ?? [] });
+  }
   #patch(patch: Partial<StudioState>): void { this.#state = { ...this.#state, ...patch }; for (const listener of this.#listeners) listener(); }
   #command(operation: string, payload: JsonObject, projectId = this.#state.project?.id, baseRevision: string | null = this.#state.project?.revision ?? null): CommandEnvelope {
     if (!projectId) throw new Error("Project identity is unavailable.");
@@ -94,13 +99,13 @@ export class StudioController {
   }
   retry(): Promise<void> { const retry = this.#retry; return retry ? this.#run(() => this.#send(retry.command, retry.after), true) : this.refresh(); }
 
-  createProject(name: string): Promise<void> {
+  createProject(name: string, starter?: FoundationStarterOptions): Promise<void> {
     if (this.#state.project && Object.keys(this.#state.project.documents).length) return Promise.resolve();
     return this.#run(async () => {
       const start = async (): Promise<void> => {
         const project = this.#state.project;
         if (!project) throw new Error("Project creation failed.");
-        const documents = createStudioStarter(project.id);
+        const documents = createStudioStarter(project.id, starter);
         const command = this.#command("document.import", { sourceRefs: documents.map(document => ({ uri: `axiom:starter/${document.id}`, content: JSON.stringify(document, null, 2) })), formatProfile: "ads-studio", importMode: "review" });
         await this.#send(command, async result => { await this.#approve(this.#summary(result, project.revision)); });
       };
@@ -142,6 +147,10 @@ export class StudioController {
       const next = intent.plan(working, this.#state.selection);
       if (!next.valid) { this.#patch({ diagnostics: next.diagnostics, error: "STUDIO_EDIT_INVALID", message: "invalidValue" }); return false; }
       const nextUpdates = "changes" in next ? next.changes.upserts : next.updates;
+      if (!nextUpdates.length && !("changes" in next && next.changes.deletes.length)) {
+        this.#patch({ diagnostics: next.diagnostics, error: null, message: null, ...(sourceEdit ? { buffers: { ...this.#state.buffers, [sourceEdit.id]: sourceEdit.source }, pendingBuffers: this.#state.pendingBuffers.filter(id => id !== sourceEdit.id) } : {}) });
+        return true;
+      }
       const touched = new Set([...nextUpdates.map(update => update.document.id), ...Object.keys(working.documents).filter(id => !Object.hasOwn(next.project.documents, id))]);
       if (this.#state.pendingBuffers.some(id => id !== sourceEdit?.id && touched.has(id))) {
         this.#patch({ error: "STUDIO_INPUT_INVALID", message: "previewSource" }); return false;

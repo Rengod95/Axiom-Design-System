@@ -1,6 +1,7 @@
 import type { AdsDocument, Diagnostic, JsonObject, JsonValue, ProjectSnapshot } from "./contracts.ts";
 import type { StudioCategory, StudioUsage, StudioVisualProperty } from "./studio-contracts.ts";
 import type { TypeExpression } from "./type-contracts.ts";
+import type { StudioMotionTrack } from "./studio-motion.ts";
 
 /** Inventory identity is independent of authoring instances and runtime implementations. */
 export interface StudioCatalogEntry {
@@ -47,16 +48,24 @@ export type StudioComponentEdit =
   | { kind: "purpose"; purpose: string }
   | { kind: "frame"; category: StudioCategory; frame: { x: number; y: number; width: number; height?: number } }
   | { kind: "part-name"; partId: string; name: string }
+  | { kind: "part-text"; partId: string; text: string }
+  | { kind: "part-parent"; partId: string; parentId: string }
   | { kind: "part-add"; parentId: string; name: string; role: string }
   | { kind: "part-delete"; partId: string }
   | { kind: "part-order"; parentId: string; childIds: string[] }
   | { kind: "layout"; category: StudioCategory; partId: string; field: "gap" | "padding" | "minHeight" | "axis" | "width" | "height" | "alignment"; value: JsonValue }
   | { kind: "appearance"; category: StudioCategory; partId: string; property: StudioVisualProperty; value: JsonValue }
+  | { kind: "appearance-rule"; category: StudioCategory; partId: string; condition: "base" | "outlined" | "disabled" | "pressed"; property: StudioVisualProperty; value: JsonValue | null }
+  | { kind: "variant-default"; value: "filled" | "outlined" }
+  | { kind: "slot-add"; partId: string; required: boolean; multiple: boolean }
+  | { kind: "slot-delete"; slotId: string }
   | { kind: "value-default"; valueId: string; value: JsonValue }
   | { kind: "value-add"; name: string; type: TypeExpression; value: JsonValue; ownership: "consumer" | "local" }
   | { kind: "value-delete"; valueId: string }
   | { kind: "accessibility"; field: "label" | "description"; value: string }
   | { kind: "motion"; field: "durationMs" | "easing"; value: JsonValue }
+  | { kind: "motion-track-set"; track: Omit<StudioMotionTrack, "id">; trackId: string | null }
+  | { kind: "motion-track-delete"; trackId: string }
   | { kind: "sample-content"; field: "label" | "title" | "body" | "actionLabel" | "closeLabel"; value: string };
 export interface StudioComponentPlan {
   valid: boolean; diagnostics: Diagnostic[]; baseRevision: string;

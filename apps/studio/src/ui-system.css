@@ -1,0 +1,68 @@
+/* Axiom UI primitives. Consumer component previews keep their authored styles. */
+:root {
+  --type-caption: 11px;
+  --type-label: 12px;
+  --type-body: 13px;
+  --type-title: 16px;
+  --type-heading: 24px;
+  --leading-label: 1.4;
+  --leading-body: 1.6;
+  --weight-regular: 450;
+  --weight-medium: 550;
+  --weight-strong: 650;
+  --space-5: 20px;
+  --space-10: 40px;
+  --control-sm: 28px;
+  --control-md: 34px;
+  --control-lg: 40px;
+  --inspector-width: 320px;
+}
+.button, .icon-button { border-radius: var(--radius-control); font-size: var(--type-label); font-weight: var(--weight-medium); }
+.button { min-height: var(--control-md); gap: var(--space-2); padding: var(--space-1) var(--space-3); line-height: var(--leading-label); }
+.button[data-size=sm] { min-height: var(--control-sm); padding-inline: var(--space-2); }
+.button[data-size=lg] { min-height: var(--control-lg); padding-inline: var(--space-4); font-size: var(--type-body); }
+.button:active:not(:disabled), .icon-button:active:not(:disabled) { background-color: var(--surface-active); }
+.button.primary:active:not(:disabled) { background-color: var(--accent-hover); }
+.button[aria-busy=true] { cursor: progress; }
+.field { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; min-width: 0; }
+.field-label, .field > label { font-size: var(--type-label); line-height: var(--leading-label); font-weight: var(--weight-medium); color: var(--ink-secondary); }
+.field-hint, .help { font-size: var(--type-caption); line-height: var(--leading-body); }
+.app :is(.field,.foundation-filters,.foundation-context-bar,.manager-form) :is(input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]),select,textarea),
+.onboarding .field :is(input,select,textarea) {
+  min-height: var(--control-md); font-size: var(--type-body); line-height: var(--leading-label); border-radius: var(--radius-control); padding-inline: var(--space-3);
+}
+.app .field textarea { min-height: 76px; padding-block: var(--space-2); }
+.section-content { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4); }
+.section-title { font-size: var(--type-label); font-weight: var(--weight-strong); padding: var(--space-3) var(--space-4); }
+.inspector-section { border-bottom: 1px solid var(--line); padding: 0; }
+.inspector-section .field + .field { margin-top: 0; }
+.property-group { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; padding-block: var(--space-2); }
+.property-group + .property-group { border-top: 1px solid var(--line); padding-top: var(--space-4); }
+.form-actions { display: flex; gap: var(--space-3); align-items: center; padding-top: var(--space-4); }
+.form-actions p { max-width: 52ch; }
+.form-columns { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-5); }
+.form-feedback { margin: var(--space-3); padding: var(--space-3); background: var(--warning-soft); color: var(--warning); border-radius: var(--radius-control); font-size: var(--type-label); }
+.form-feedback .button { margin-top: var(--space-2); }
+.form-success { color: var(--positive); font-size: var(--type-label); padding-top: var(--space-3); }
+.choice-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.choice-chips .button { border: 1px solid var(--line-strong); font-size: var(--type-label); min-height: var(--control-sm); }
+.choice-chips .button[aria-pressed=true] { color: var(--accent-ink); background: var(--accent-soft); border-color: var(--accent); }
+.input-notice { max-height: 220px; overflow: auto; flex-shrink: 0; }
+.input-notice p { margin-block: var(--space-2); }
+.input-notice .row { margin-top: var(--space-2); }
+.catalog-symbol { height: 112px; border-radius: 0; margin: 0; }
+.catalog-thumbnail { width: 100%; height: 112px; }
+.catalog-select { padding: 0 0 var(--space-3); gap: var(--space-2); }
+.catalog-select > :is(strong,small) { padding-inline: var(--space-3); }
+.catalog-grid { gap: var(--space-4); }
+.catalog-card { border-radius: var(--radius-panel); }
+.tabs { overflow-x: auto; flex-shrink: 0; gap: var(--space-5); }
+.tabs button { flex-shrink: 0; font-size: var(--type-label); }
+@media(max-width: 1100px) { :root { --sidebar-width: 200px; --inspector-width: 292px; } }
+@media(max-width: 720px) {
+  .form-columns { grid-template-columns: 1fr; }
+  .form-actions { align-items: stretch; flex-direction: column; }
+  .button, .icon-button { min-height: var(--control-lg); }
+  .choice-chips .button { min-height: var(--control-md); }
+  .app .field :is(input,select) { min-height: var(--control-lg); }
+}

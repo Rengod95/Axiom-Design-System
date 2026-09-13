@@ -1,3 +1,4 @@
+import { inspectStudioMotion } from "./studio-motion.ts";
 import type { JsonObject, JsonValue } from "./contracts.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
@@ -39,7 +40,7 @@ export function inspectCatalogComponent(document: JsonObject, add: Sink): void {
   const roots = parts.filter(part => part.parent === null);
   if (roots.length !== 1 || roots[0]?.studioRole !== "root") add("/parts", "Exactly one root semantic part must own the part tree.");
   for (const [index, part] of parts.entries()) {
-    if (!catalogKeys(part, ["id", "name", "studioRole", "parent", "roleRefs", "required", "cardinality", "relationships"]) || !isValidId(part.id) || !text(part.name) || typeof part.studioRole !== "string" || !NAME_PATTERN.test(part.studioRole)
+    if (!catalogKeys(part, ["id", "name", "studioRole", "parent", "roleRefs", "required", "cardinality", "relationships", "studioText"]) || part.studioText !== undefined && !text(part.studioText, true) || !isValidId(part.id) || !text(part.name) || typeof part.studioRole !== "string" || !NAME_PATTERN.test(part.studioRole)
       || typeof part.required !== "boolean" || !same(part.cardinality, { min: 1, max: 1 }) || !empty(part.roleRefs) || !empty(part.relationships)) add(`/parts/${index}`, "Invalid bounded logical part declaration.");
     if (part.parent !== null && !parts.some(parent => parent.id === part.parent)) add(`/parts/${index}/parent`, "A part parent must be in the same component.");
   }
@@ -63,7 +64,8 @@ export function inspectCatalogComponent(document: JsonObject, add: Sink): void {
   if (slots.length > STUDIO_CATALOG_LIMITS.maxSlots || !same(contract.exposedSlots, slots.map(slot => slot.id))) add("/slots", "Bounded content slots must have an exact public exposure list.");
   for (const [index, slot] of slots.entries()) if (!catalogKeys(slot, ["id", "ownerPartRef", "contentKinds", "min", "max", "defaultContent", "allowedContractRefs"]) || !empty(slot.defaultContent) || !empty(slot.allowedContractRefs) || !same(slot.contentKinds, ["text", "component"])) add(`/slots/${index}`, "Catalog slots support declared text/component content without unverified replacement contracts.");
   for (const required of recipe.slots.filter(slot => slot.required)) if (!slots.some(slot => slot.ownerPartRef === roles.get(required.role)?.id && typeof slot.min === "number" && slot.min >= 1)) add("/slots", `Required ${required.role} content slot cannot be removed.`);
-  for (const field of ["traitBindings", "motion", "requirements"]) if (!empty(document[field])) add(`/${field}`, "Unimplemented trait, motion graph or obligation extensions cannot acquire an executable claim.");
+  for (const field of ["traitBindings", "requirements"]) if (!empty(document[field])) add(`/${field}`, "Unimplemented trait or obligation extensions cannot acquire an executable claim.");
+  inspectStudioMotion(document, add);
   const behavior = document.behavior;
   if (!isObject(behavior) || !catalogKeys(behavior, ["states", "transitions", "hostBindings", "profile"]) || !empty(behavior.states) || !empty(behavior.transitions) || !empty(behavior.hostBindings) || !same(behavior.profile, { id: `axiom.behavior.${id}`, version: STUDIO_CATALOG_PROFILE.version })) add("/behavior", "Catalog behavior must retain its explicit semantic profile; no arbitrary state machine executes.");
   const accessibility = document.accessibility;

@@ -7,8 +7,8 @@ import type { Locale } from "./locales.ts";
 export const copy = (locale: Locale, ko: string, en: string): string => locale === "ko" ? ko : en;
 
 /** Axiom UI controls share the same semantics in Foundation, canvas and inspector. */
-export function Button({ tone = "secondary", icon, children, className = "", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { tone?: "primary" | "secondary" | "subtle" | "danger"; icon?: IconName }) {
-  return <button type="button" {...props} className={`button ${tone} ${className}`}>{icon && <Icon name={icon} />}{children}</button>;
+export function Button({ tone = "secondary", size = "md", icon, children, className = "", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { tone?: "primary" | "secondary" | "subtle" | "danger"; size?: "sm" | "md" | "lg"; icon?: IconName }) {
+  return <button type="button" {...props} data-size={size} className={`button ${tone} ${className}`}>{icon && <Icon name={icon} />}{children}</button>;
 }
 export function IconButton({ icon, label, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconName; label: string }) {
   return <button type="button" {...props} className={`icon-button ${props.className ?? ""}`} aria-label={label} title={props.title ?? label}><Icon name={icon} /></button>;

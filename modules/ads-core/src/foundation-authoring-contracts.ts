@@ -1,10 +1,12 @@
 import type { Diagnostic, JsonValue } from "./contracts.ts";
 import type { FoundationAxis, FoundationSelection, FoundationThemeSet, FoundationToken, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
 import type { StudioEditPlan, StudioUsage } from "./studio-contracts.ts";
+import type { FoundationStarterOptions } from "./foundation-starters.ts";
 
 export type FoundationClassificationKind = "domain" | "tier";
 export interface FoundationTokenChanges { name?: string; description?: string | null; domain?: string | null; tier?: string | null }
 export type FoundationAuthoringEdit =
+  | ({ kind: "template-apply" } & FoundationStarterOptions)
   | { kind: "token-create"; name: string; type: FoundationTokenType; value: FoundationTokenValue; description?: string; domain?: string; tier?: string }
   | ({ kind: "token-update"; id: string } & FoundationTokenChanges)
   | { kind: "token-delete"; id: string; replacementId?: string }
@@ -32,7 +34,7 @@ export interface FoundationEditPlan extends StudioEditPlan { createdIds: string[
 export interface FoundationClassification { id: string; name: string; description?: string; allowedTypes?: FoundationTokenType[]; tokenCount: number }
 export interface FoundationReference {
   tokenId: string; documentId: string; path: string;
-  kind: "alias" | "theme-alias" | "theme-override" | "design";
+  kind: "alias" | "theme-alias" | "theme-override" | "design" | "motion";
   ownerTokenId?: string; componentId?: string; partId?: string; axisId?: string; context?: string;
 }
 export interface FoundationTokenRow extends FoundationToken {

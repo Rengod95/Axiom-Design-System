@@ -21,9 +21,12 @@ export function inspectCatalogTarget(component: StudioComponent, target: TargetI
   const catalog = component.catalog, recipe = catalog && getStudioCatalogRecipe(catalog.catalogId);
   const fail = (message: string): never => { throw new TargetError(TARGET_CODE.UNSUPPORTED, message, component.id); };
   if (!catalog || !recipe) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Missing catalog source contract", component.id);
+  if (component.motionTracks?.length) fail("Authored motion tracks are available in Studio preview; this target still requires an explicit motion runtime mapping.");
   if (["catalog.grid", "catalog.simplegrid", "catalog.center", "catalog.space", "catalog.highlight", "catalog.codehighlight", "catalog.ringprogress", "catalog.semicircleprogress"].includes(catalog.catalogId)) fail("This catalog variant requires its own track/geometry/content realization; the broad family emitter cannot substitute a different presentation.");
   if (catalog.semantic.contract !== "defined" || !CATALOG_TARGET_KINDS[target].includes(catalog.semantic.kind)) fail(`Catalog ${catalog.catalogId} has no implemented ${target} realization.`);
-  if (component.parts.length !== recipe.parts.length || component.parts.some(part => !recipe.parts.some(expected => expected.role === part.role))) fail("Custom logical parts require a target mapping before output.");
+  const customLayout = target === "react" && catalog.semantic.kind === "layout";
+  if (!customLayout && component.parts.some(part => part.text !== undefined)) fail("Authored per-Part text needs an explicit target content mapping.");
+  if (!customLayout && (component.parts.length !== recipe.parts.length || component.parts.some(part => !recipe.parts.some(expected => expected.role === part.role)))) fail("Custom logical parts require a target mapping before output.");
   if (catalog.values.length !== recipe.values.length || catalog.events.length !== recipe.events.length) fail("Additional public values/events require explicit target API and behavior mappings.");
   if (catalog.slots.length !== recipe.slots.length) fail("Additional content slots require explicit target content mappings.");
   for (const expected of recipe.slots) {
@@ -60,6 +63,6 @@ export function inspectCatalogTarget(component: StudioComponent, target: TargetI
   for (const targetDesign of [target === "react" ? component.web : component.mobile]) {
     const root = component.parts.find(part => part.role === "root")!;
     const expected = recipe.parts.filter(part => part.role !== "root").map(expected => component.parts.find(part => part.role === expected.role)!.id);
-    if (canonicalJson(targetDesign.layout[root.id]?.childOrder) !== canonicalJson(expected)) fail("Logical part order needs an explicit target interpretation.");
+    if (!customLayout && canonicalJson(targetDesign.layout[root.id]?.childOrder) !== canonicalJson(expected)) fail("Logical part order needs an explicit target interpretation.");
   }
 }

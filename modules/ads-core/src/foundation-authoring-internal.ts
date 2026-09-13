@@ -38,6 +38,16 @@ export function foundationReferences(project: ProjectSnapshot, foundation: Found
     }
   });
   for (const { document } of Object.values(project.documents)) {
+    if (document.kind === "component") {
+      authoringList(document.motion).forEach((track, index) => {
+        const collect = (value: JsonValue | undefined, path: string) => {
+          if (!isObject(value) || typeof value.tokenRef !== "string") return;
+          found.push({ reference: { tokenId: value.tokenRef, documentId: document.id, componentId: document.id, partId: String(track.targetPartRef), kind: "motion", path }, replace: id => { value.tokenRef = id; } });
+        };
+        collect(track.delay, `/motion/${index}/delay`);
+        if (isObject(track.timing)) { collect(track.timing.duration, `/motion/${index}/timing/duration`); collect(track.timing.easing, `/motion/${index}/timing/easing`); }
+      });
+    }
     if (document.kind !== "design" || !isObject(document.foundationRef) || document.foundationRef.id !== foundation.id) continue;
     const componentId = isObject(document.componentRef) && typeof document.componentRef.id === "string" ? document.componentRef.id : undefined;
     const binding = (value: JsonValue | undefined, path: string, partId: JsonValue | undefined): void => {

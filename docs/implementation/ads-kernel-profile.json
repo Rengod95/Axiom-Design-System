@@ -32,7 +32,8 @@
     "scripts/verify-studio.mjs",
     "scripts/verify-targets.mjs",
     "scripts/browser-driver.mjs",
-    "scripts/verify-workbench.mjs"
+    "scripts/verify-workbench.mjs",
+    "scripts/workbench-completion-cases.mjs"
   ],
   "allowedBrowserTestAssets": [
     "modules/browser-store/test/browser-harness.html",
@@ -55,14 +56,15 @@
     "typescript": "5.9.3",
     "nodeTypes": "24.13.4"
   },
-  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance; bounded Foundation resolver, Studio reviewed authoring and four target source delivery under ADR-0014; ADR-0015 typed Foundation management, catalog authoring, reviewed mixed document changes and token-based dual-theme editor workbench",
+  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance; bounded Foundation resolver, Studio reviewed authoring and four target source delivery under ADR-0014; ADR-0015 typed Foundation management, catalog authoring, reviewed mixed document changes and token-based dual-theme editor workbench; ADR-0016 reviewed starter onboarding, domain workspaces, recoverable form drafts, custom Part structure, typed Web effects and bounded motion preview",
   "extensionAdrs": [
     "docs/adr/0010-source-preserving-draft-authoring.md",
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
     "docs/adr/0012-typed-values-and-project-bundles.md",
     "docs/adr/0013-browser-transactional-storage.md",
     "docs/adr/0014-studio-authoring-and-target-delivery.md",
-    "docs/adr/0015-studio-workbench-and-catalog-authoring.md"
+    "docs/adr/0015-studio-workbench-and-catalog-authoring.md",
+    "docs/adr/0016-foundation-onboarding-and-editor-completion.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -102,7 +104,9 @@
     "apps/studio/DESIGN.md",
     "apps/studio/.impeccable/config.json",
     "apps/studio/.impeccable/design.json",
-    "apps/studio/.impeccable/surfaces/workbench.md"
+    "apps/studio/.impeccable/surfaces/workbench.md",
+    "apps/studio/src/ui-system.css",
+    "apps/studio/src/foundation-workspace.css"
   ],
   "studio": {
     "profile": "axiom.studio",
@@ -146,5 +150,46 @@
   },
   "allowedTargetTestAssets": [
     "modules/target-packs/test/expo-consumer.lock.yaml"
-  ]
+  ],
+  "editorCompletion": {
+    "authority": "docs/adr/0016-foundation-onboarding-and-editor-completion.md",
+    "foundationStarter": {
+      "id": "axiom.foundation.essentials",
+      "version": "1.0.0",
+      "domains": 11,
+      "types": 13,
+      "adoption": "additive-reviewed-idempotent"
+    },
+    "formDrafts": "explicit-recovery-valid-input-flush",
+    "canvasInput": [
+      "normalized-wheel",
+      "native-gesture",
+      "two-touch-pointer"
+    ],
+    "catalogThumbnails": "local-static-svg",
+    "uiSystem": "shared-type-spacing-control-variants",
+    "motion": {
+      "maxTracks": 16,
+      "maxKeyframes": 32,
+      "properties": [
+        "opacity",
+        "translateY",
+        "scale"
+      ],
+      "timing": [
+        "tween",
+        "spring"
+      ],
+      "maxDurationMs": 10000,
+      "runtime": "isolated-web-animation-preview",
+      "targetOutput": "unsupported-explicit",
+      "pending": [
+        "behavior-trigger-binding",
+        "stagger",
+        "completion-effects",
+        "native-runtime"
+      ]
+    },
+    "extendedStyles": "typed-whole-token Web mappings; explicit native rejection"
+  }
 }

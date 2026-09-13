@@ -42,13 +42,14 @@ export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: Ad
 export function duplicateComponentSources(component: AdsDocument, designs: AdsDocument[], name: string, id: () => string): AdsDocument[] {
   const sources = JSON.parse(canonicalJson([component, ...designs])) as AdsDocument[];
   const copy = sources[0]!, contract = copy.publicContract as JsonObject;
-  const entities: JsonObject[] = [copy, ...catalogObjects(copy.parts), ...catalogObjects(copy.slots), ...catalogObjects(contract.values), ...catalogObjects(contract.events), ...catalogObjects(contract.variants), ...sources.slice(1), ...sources.slice(1).flatMap(design => catalogObjects(design.appearance))];
+  const entities: JsonObject[] = [copy, ...catalogObjects(copy.parts), ...catalogObjects(copy.slots), ...catalogObjects(copy.motion), ...catalogObjects(contract.values), ...catalogObjects(contract.events), ...catalogObjects(contract.variants), ...sources.slice(1), ...sources.slice(1).flatMap(design => catalogObjects(design.appearance))];
   const ids = new Map(entities.map(entity => [String(entity.id), id()]));
   const mapped = (value: JsonValue | undefined): JsonValue => typeof value === "string" && ids.has(value) ? ids.get(value)! : value ?? null;
   for (const entity of entities) entity.id = mapped(entity.id);
   for (const source of sources) source.revision = id();
   copy.name = name;
   for (const part of catalogObjects(copy.parts)) part.parent = mapped(part.parent);
+  for (const track of catalogObjects(copy.motion)) track.targetPartRef = mapped(track.targetPartRef);
   for (const slot of catalogObjects(copy.slots)) slot.ownerPartRef = mapped(slot.ownerPartRef);
   for (const value of catalogObjects(contract.values)) if (value.requestEventRef !== undefined) value.requestEventRef = mapped(value.requestEventRef);
   for (const key of ["exposedSlots", "replaceableParts"]) if (Array.isArray(contract[key])) contract[key] = contract[key].map(mapped);

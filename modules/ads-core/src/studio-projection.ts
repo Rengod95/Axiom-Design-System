@@ -9,6 +9,7 @@ import { CODE, MAX_BATCH_BYTES, STUDIO_PROFILE } from "./constants.ts";
 import { KernelError } from "./kernel-error.ts";
 import { inspectLocalReferences } from "./local-references.ts";
 import { catalogIdentity } from "./studio-catalog-validation.ts";
+import { resolveStudioMotion } from "./studio-motion.ts";
 import { getStudioCatalogRecipe } from "./studio-catalog.ts";
 
 function list(value: JsonValue | undefined): JsonObject[] { return Array.isArray(value) ? value.filter(isObject) : []; }
@@ -58,6 +59,7 @@ function inspectCapturedProject(input: ProjectSnapshot, selection: StudioSelecti
     components.push({ ...metadata, ...(catalog ? { catalog: { catalogId: catalog.entry.id, kind: catalog.entry.kind, familyIds: catalog.entry.familyIds, semantic: catalog.semantic, values, events: list(contract.events), variants, slots: list(document.slots), accessibility: document.accessibility as JsonObject, behavior: document.behavior as JsonObject } } : {}), name: document.name, purpose: String(document.purpose), sampleContent: document.previewContent as unknown as StudioComponent["sampleContent"],
       defaults: { disabled: values.find(item => item.name === "disabled")?.defaultValue === true, open: values.find(item => item.name === "open")?.defaultValue !== false, variant: variants[0]?.default === "outlined" ? "outlined" : "filled" },
       motion: document.studioMotion as unknown as StudioComponent["motion"],
+      ...(catalog ? { motionTracks: resolveStudioMotion(document, foundation, diagnostics, (id, partId, path) => { const entries = usages[id] ??= []; if (!entries.some(item => item.documentId === document.id && item.path === path)) entries.push({ componentId: document.id, documentId: document.id, partId, path }); }) } : {}),
       web: projectStudioDesign(design("Web"), metadata, foundation, diagnostics, usages), mobile: projectStudioDesign(design("Mobile"), metadata, foundation, diagnostics, usages) });
   }
   return { valid: !diagnostics.some(item => item.severity === "error"), diagnostics, projectId: project.id, revision: project.revision, sourceText: sourceGraph(project), foundation, components, usages,

@@ -7,6 +7,7 @@ import type { Locale } from "./locales.ts";
 import { Preview } from "./preview.tsx";
 import { editingTarget } from "./ui-utils.ts";
 import { copy, IconButton } from "./ui.tsx";
+import { pinchViewport, wheelViewport } from "./canvas-input.ts";
 
 export interface CanvasFrame extends Rect {}
 interface Props {
@@ -37,13 +38,38 @@ export function Canvas(props: Props) {
       if (!initial.current && rect.width > 0 && current.current.components.length) { initial.current = true; fit(); }
     });
     observer.observe(element);
+    let nativePinch: { view: Viewport; scale: number; point: Point } | null = null;
     const wheel = (event: WheelEvent) => {
+      if (!(event.target instanceof Node) || !element.contains(event.target)) return;
       if (event.target instanceof Element && event.target.closest("[data-canvas-ui]")) return;
       event.preventDefault();
-      if (event.ctrlKey || event.metaKey) setView(before => zoomAt(before, before.zoom * Math.exp(-event.deltaY * 0.004), screenPoint(event)));
-      else setView(before => ({ ...before, x: before.x - (event.shiftKey ? event.deltaY : event.deltaX), y: before.y - (event.shiftKey ? event.deltaX : event.deltaY) }));
+      if (!nativePinch) setView(before => wheelViewport(before, event, screenPoint(event), size.current.height));
     };
-    element.addEventListener("wheel", wheel, { passive: false });
+    const nativeGesture = (event: Event) => {
+      const input = event as Event & { scale?: number; clientX?: number; clientY?: number };
+      if (!(event.target instanceof Node) || !element.contains(event.target)) return;
+      event.preventDefault();
+      if (event.type === "gestureend") { nativePinch = null; return; }
+      if (event.type === "gesturestart") nativePinch = { view: viewRef.current, scale: input.scale ?? 1, point: typeof input.clientX === "number" && typeof input.clientY === "number" ? screenPoint({ clientX: input.clientX, clientY: input.clientY }) : { x: size.current.width / 2, y: size.current.height / 2 } };
+      else if (nativePinch && typeof input.scale === "number" && input.scale > 0) setView(zoomAt(nativePinch.view, nativePinch.view.zoom * input.scale / nativePinch.scale, nativePinch.point));
+    };
+    const touches = new Map<number, Point>();
+    let touchStart: { view: Viewport; points: [Point, Point] } | null = null;
+    const touch = (event: globalThis.PointerEvent) => {
+      if (event.pointerType !== "touch" || current.current.mode === "run" || event.target instanceof Element && event.target.closest("[data-canvas-ui]")) return;
+      if (event.type === "pointerdown") {
+        touches.set(event.pointerId, screenPoint(event)); element.setPointerCapture(event.pointerId);
+        if (touches.size === 2) { gesture.current = null; touchStart = { view: viewRef.current, points: [...touches.values()] as [Point, Point] }; }
+      } else if (event.type === "pointermove" && touches.has(event.pointerId)) {
+        const previous = touches.get(event.pointerId)!, point = screenPoint(event); touches.set(event.pointerId, point);
+        if (touchStart && touches.size === 2) setView(pinchViewport(touchStart.view, touchStart.points, [...touches.values()] as [Point, Point]));
+        else if (touches.size === 1) setView(view => ({ ...view, x: view.x + point.x - previous.x, y: view.y + point.y - previous.y }));
+      } else { touches.delete(event.pointerId); touchStart = null; }
+      event.preventDefault(); event.stopImmediatePropagation();
+    };
+    window.addEventListener("wheel", wheel, { passive: false, capture: true });
+    for (const name of ["gesturestart", "gesturechange", "gestureend"]) element.addEventListener(name, nativeGesture, { passive: false });
+    for (const name of ["pointerdown", "pointermove", "pointerup", "pointercancel"] as const) element.addEventListener(name, touch, { capture: true, passive: false });
     const keyboard = (event: KeyboardEvent) => {
       if (event.isComposing || editingTarget(event.target) || document.querySelector("dialog[open]") || !element.isConnected) return;
       if (event.target instanceof Element && event.target.closest("button, a, summary, [role=button], [role=tab]")) return;
@@ -73,7 +99,12 @@ export function Canvas(props: Props) {
     const release = (event: KeyboardEvent) => { if (event.key === " ") { spaceRef.current = false; setSpace(false); } };
     const blur = () => { spaceRef.current = false; setSpace(false); gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); };
     window.addEventListener("keydown", keyboard); window.addEventListener("keyup", release); window.addEventListener("blur", blur);
-    return () => { observer.disconnect(); element.removeEventListener("wheel", wheel); window.removeEventListener("keydown", keyboard); window.removeEventListener("keyup", release); window.removeEventListener("blur", blur); };
+    return () => {
+      observer.disconnect(); window.removeEventListener("wheel", wheel, true);
+      for (const name of ["gesturestart", "gesturechange", "gestureend"]) element.removeEventListener(name, nativeGesture);
+      for (const name of ["pointerdown", "pointermove", "pointerup", "pointercancel"] as const) element.removeEventListener(name, touch, true);
+      window.removeEventListener("keydown", keyboard); window.removeEventListener("keyup", release); window.removeEventListener("blur", blur);
+    };
   }, []);
   const capture = (event: PointerEvent, next: Gesture) => { event.preventDefault(); event.stopPropagation(); gesture.current = next; root.current?.setPointerCapture(event.pointerId); };
   const down = (event: PointerEvent<HTMLDivElement>) => {

@@ -198,4 +198,4 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
 }
 
 /** Read validated component roles without tying stable IDs to presentation names. */
-export function studioParts(document: AdsDocument) { return objects(document.parts).map(part => ({ id: String(part.id), name: String(part.name), parent: part.parent as string | null, role: part.studioRole as StudioPartRole })); }
+export function studioParts(document: AdsDocument) { return objects(document.parts).map(part => ({ id: String(part.id), name: String(part.name), parent: part.parent as string | null, role: part.studioRole as StudioPartRole, ...(typeof part.studioText === "string" ? { text: part.studioText } : {}) })); }

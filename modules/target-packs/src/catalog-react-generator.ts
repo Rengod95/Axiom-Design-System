@@ -54,7 +54,14 @@ export function catalogReactComponent(component: StudioComponent): string {
     case "table": output = `<table ${attrs}><caption>{label}</caption><thead data-part=${part("header")}><tr>{columns.map(column=><th key={column.key} scope="col">{column.label}</th>)}</tr></thead><tbody>{rows.map(row=><tr key={row.key} data-part=${part("row")}>{row.cells.map((cell,index)=><td key={columns[index]!.key} data-part=${part("cell")}>{cell}</td>)}</tr>)}</tbody></table>`; break;
     case "list": output = `<ul ${attrs} aria-label={label}>{items.map(item=><li key={item.key} data-part=${part("item")}>{item.label}</li>)}</ul>`; break;
     case "surface": output = `<section ${attrs}>{header!=null&&<header data-part=${part("header")}>{header}</header>}${body}{actions!=null&&<footer data-part=${part("actions")}>{actions}</footer>}</section>`; break;
-    case "layout": output = `<div ${attrs}>${body}</div>`; break;
+    case "layout": {
+      const render = (partId: string): string => {
+        const current = component.parts.find(part => part.id === partId)!;
+        const text = current.text === undefined ? current.role === "body" ? `{body}` : "" : `{${JSON.stringify(current.text)}}`;
+        return `<div ${current.role === "root" ? attrs : `data-part=${JSON.stringify(current.id)}`}>${text}${(component.web.layout[current.id]?.childOrder ?? []).map(render).join("")}</div>`;
+      };
+      output = render(component.parts.find(part => part.role === "root")!.id); break;
+    }
     case "field": output = `<fieldset ${attrs} aria-invalid={invalid} aria-required={required}><legend data-part=${part("label")}>{label}</legend>${body}${description}<span data-part=${part("error")}>{invalid?description:""}</span></fieldset>`; break;
     case "alert": output = `<div ${attrs} role="status"><strong data-part=${part("title")}>{label}</strong>${body}{dismissible&&<button type="button" data-part=${part("close")} onClick={()=>onDismissRequest({})}>{${JSON.stringify(component.sampleContent.closeLabel)}}</button>}</div>`; break;
     case "toolbar": output = `<div ${attrs} role=${JSON.stringify(semantic.role)} aria-label={label} onKeyDown={event=>catalogMoveFocus(event,"button")}>${body}</div>`; break;

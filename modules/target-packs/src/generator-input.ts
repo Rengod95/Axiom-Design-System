@@ -33,11 +33,13 @@ export function inspectGeneratorProjection(projection: StudioProjection, target:
     if (symbols.has(symbol)) throw new TargetError(TARGET_CODE.INVALID, "Component identifiers collide in source output", component.id);
     symbols.add(symbol);
     const roots = component.parts.filter((part) => part.role === "root");
-    if (roots.length !== 1 || component.parts.some((part) => part.role !== "root" && part.parent !== roots[0]!.id)) throw new TargetError(TARGET_CODE.UNSUPPORTED, "This target profile requires one root with direct semantic parts", component.id);
-    for (const design of [component.web, component.mobile]) for (const part of component.parts) {
+    if (roots.length !== 1 || !(target === "react" && component.catalog?.semantic.kind === "layout") && component.parts.some((part) => part.role !== "root" && part.parent !== roots[0]!.id)) throw new TargetError(TARGET_CODE.UNSUPPORTED, "This target profile requires one root with direct semantic parts", component.id);
+    for (const design of [target === "react" ? component.web : component.mobile]) for (const part of component.parts) {
       const presentation = design.parts[part.id]; const layout = design.layout[part.id];
       if (!presentation) throw new TargetError(TARGET_CODE.INVALID, "Design lacks an expected part", part.id);
       for (const style of Object.values(presentation.combinations)) for (const [property, value] of Object.entries(style)) {
+        const extended = ["fontFamily", "fontWeight", "lineHeight", "letterSpacing", "boxShadow", "backgroundImage", "borderStyle", "transitionDuration", "transitionTimingFunction", "transitionDelay"].includes(property);
+        if (extended) { if (target !== "react") throw new TargetError(TARGET_CODE.UNSUPPORTED, "Extended token-bound paint needs a native mapping before output", part.id); continue; }
         if (["background", "color", "borderColor"].includes(property)) { if (typeof value !== "string") throw new TargetError(TARGET_CODE.INVALID, "Color declaration must be resolved", part.id); colorChannels(value); }
         else if (typeof value !== "number" || !Number.isFinite(value) || value < 0) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Visual declaration cannot be represented", part.id);
       }

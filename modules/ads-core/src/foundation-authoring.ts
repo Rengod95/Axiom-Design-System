@@ -7,6 +7,7 @@ import { studioDiagnostic } from "./studio-validation.ts";
 import { authoringFoundation, authoringList, captureAuthoringProject, foundationReferences } from "./foundation-authoring-internal.ts";
 import { applyFoundationTokenEdit } from "./foundation-authoring-token-ops.ts";
 import { applyFoundationThemeEdit } from "./foundation-authoring-theme-ops.ts";
+import { applyFoundationStarter } from "./foundation-starters.ts";
 import type { ProjectSnapshot } from "./contracts.ts";
 import type { FoundationSelection } from "./foundation-contracts.ts";
 import type { FoundationAuthoringEdit, FoundationEditPlan } from "./foundation-authoring-contracts.ts";
@@ -14,6 +15,7 @@ import type { StudioUsage } from "./studio-contracts.ts";
 
 export const MAX_FOUNDATION_AUTHORING_EDITS = 128;
 const FIELDS: Readonly<Record<string, readonly [readonly string[], readonly string[]]>> = {
+  "template-apply": [["domains"], ["accent", "fontFamily", "density"]],
   "token-create": [["name", "type", "value"], ["description", "domain", "tier"]],
   "token-update": [["id"], ["name", "description", "domain", "tier"]],
   "token-delete": [["id"], ["replacementId"]], "token-duplicate": [["id", "name"], []],
@@ -58,7 +60,7 @@ function affectedUses(before: ProjectSnapshot, after: ProjectSnapshot): StudioUs
   const queue = [...changed];
   for (let index = 0; index < queue.length; index++) for (const id of aliases.get(queue[index]!) ?? []) if (!changed.has(id)) { changed.add(id); queue.push(id); }
   const usages = new Map<string, StudioUsage>();
-  for (const reference of references) if (reference.kind === "design" && changed.has(reference.tokenId) && reference.componentId && reference.partId) {
+  for (const reference of references) if ((reference.kind === "design" || reference.kind === "motion") && changed.has(reference.tokenId) && reference.componentId && reference.partId) {
     const usage = { componentId: reference.componentId, partId: reference.partId, documentId: reference.documentId, path: reference.path };
     usages.set(canonicalJson(usage), usage);
   }
@@ -84,7 +86,11 @@ export function planFoundationEdit(input: ProjectSnapshot, editInput: Foundation
     for (const field of ["tokens", "domains", "tiers", "themeAxes", "themeSets"] as const) for (const item of authoringList(foundation[field])) if (typeof item.id === "string") allocated.add(item.id);
     const createdIds: string[] = [];
     const allocate = (entity: boolean): string => { const id = createId(); if (!isValidId(id) || allocated.has(id)) throw new Error("Identity service must return a fresh valid identity."); allocated.add(id); if (entity) createdIds.push(id); return id; };
-    for (const edit of edits) { if (!applyFoundationTokenEdit(project, foundation, edit, () => allocate(true))) applyFoundationThemeEdit(foundation, edit, () => allocate(true), selection); editIndex++; }
+    for (const edit of edits) {
+      if (edit.kind === "template-apply") applyFoundationStarter(foundation, edit, () => allocate(true));
+      else if (!applyFoundationTokenEdit(project, foundation, edit, () => allocate(true))) applyFoundationThemeEdit(foundation, edit, () => allocate(true), selection);
+      editIndex++;
+    }
     const updates: FoundationEditPlan["updates"] = [];
     for (const [id, entry] of Object.entries(project.documents)) {
       const original = baseline.documents[id]!;
