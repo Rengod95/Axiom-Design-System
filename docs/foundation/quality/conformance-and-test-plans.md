@@ -1,6 +1,6 @@
 # QAL01 · 검증 요구·oracle·자동/수동 검사
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 품질 책임자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -9,6 +9,8 @@
 Conformance는 특정 컴포넌트·타깃이 선언한 의무를 실제로 만족하는 상태다. TestPlan은 기본 archetype, trait/role/policy, 사용자 추가 요구, 디자인 규칙, target profile에서 requirement를 모아 만든다. 구현 코드를 읽어 그 코드와 같은 기대값을 만들지 않는다.
 
 Requirement는 id/version, owner contract ref, appliesWhen, setup, stimulus, expected observable, severity, oracleRef, automation/manual mode, target/environment scope를 가진다. plan에는 전체 요구 목록과 적용 제외 이유, 예상 test count, fixture hash를 고정한다.
+
+시나리오 부록의 both는 하나의 자동 결과가 수동 확인까지 대신한다는 뜻이 아니다. 계획을 고정할 때 automatic과 manual Requirement로 나누고 각각 안정 ID·기대 관찰·필수 여부·환경을 부여한다. automatic-later는 후속 realtime profile에만 적용되며 초기 출시에서 제외한 이유를 명시한다. 요구의 applicable 여부를 판정할 수 없으면 제외로 계산하지 않고 blocked로 남긴다.
 
 ## 검사 층과 관찰
 

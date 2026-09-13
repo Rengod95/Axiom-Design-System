@@ -789,8 +789,9 @@
       "scope": "generation.plan",
       "reviewClass": "job-plan",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "generation.start",
@@ -806,8 +807,9 @@
       "scope": "generation.execute",
       "reviewClass": "execution",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "job.cancel",
@@ -822,8 +824,9 @@
       "scope": "job.cancel",
       "reviewClass": "execution",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "doctor.plan",
@@ -838,8 +841,9 @@
       "scope": "connection.read",
       "reviewClass": "read-only-plan",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "doctor.apply",
@@ -856,8 +860,9 @@
       "scope": "connection.execute",
       "reviewClass": "filesystem-dependency",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "delivery.plan",
@@ -874,8 +879,9 @@
       "scope": "delivery.plan",
       "reviewClass": "read-only-plan",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "delivery.export",
@@ -892,8 +898,9 @@
       "scope": "delivery.write",
       "reviewClass": "artifact-write",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "delivery.publish",
@@ -910,8 +917,9 @@
       "scope": "delivery.publish",
       "reviewClass": "external-publication",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "upgrade.plan",
@@ -928,8 +936,9 @@
       "scope": "connection.read",
       "reviewClass": "read-only-plan",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "upgrade.apply",
@@ -945,8 +954,9 @@
       "scope": "connection.execute",
       "reviewClass": "filesystem-dependency",
       "envelope": "CommandEnvelope",
-      "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
     },
     {
       "id": "upgrade.rollback",
@@ -963,8 +973,118 @@
       "scope": "connection.execute",
       "reviewClass": "filesystem-dependency",
       "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": false,
+      "externalEffectsRequireSeparateReceipt": true,
+      "receiptKind": "plan-or-external-effect"
+    },
+    {
+      "id": "instance.contents.update",
+      "kind": "command",
+      "payloadFields": [
+        "instanceRef",
+        "slotId",
+        "contentNodes"
+      ],
+      "resultFields": [
+        "contentDiff",
+        "slotDiagnostics"
+      ],
+      "scope": "component.write",
+      "reviewClass": "local-or-shared",
+      "envelope": "CommandEnvelope",
       "atomicDocumentTransaction": true,
-      "externalEffectsRequireSeparateReceipt": true
+      "externalEffectsRequireSeparateReceipt": false
+    },
+    {
+      "id": "text.create",
+      "kind": "command",
+      "payloadFields": [
+        "documentId",
+        "blocks",
+        "typographyRefs"
+      ],
+      "resultFields": [
+        "textRef",
+        "diagnostics"
+      ],
+      "scope": "component.write",
+      "reviewClass": "meaning-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": false
+    },
+    {
+      "id": "text.update",
+      "kind": "command",
+      "payloadFields": [
+        "textRef",
+        "edits",
+        "typographyRefs"
+      ],
+      "resultFields": [
+        "textDiff",
+        "diagnostics"
+      ],
+      "scope": "component.write",
+      "reviewClass": "local-or-shared",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": false
+    },
+    {
+      "id": "screen.create",
+      "kind": "command",
+      "payloadFields": [
+        "documentId",
+        "name",
+        "instances",
+        "themeSetRef",
+        "brandAssetRefs",
+        "layout"
+      ],
+      "resultFields": [
+        "screenRef",
+        "diagnostics"
+      ],
+      "scope": "scenario.write",
+      "reviewClass": "new-screen",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": false
+    },
+    {
+      "id": "screen.update",
+      "kind": "command",
+      "payloadFields": [
+        "screenRef",
+        "typedChanges"
+      ],
+      "resultFields": [
+        "screenDiff",
+        "diagnostics"
+      ],
+      "scope": "scenario.write",
+      "reviewClass": "local-or-shared",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": false
+    },
+    {
+      "id": "transaction.redo",
+      "kind": "command",
+      "payloadFields": [
+        "redoHandle",
+        "expectedRevision"
+      ],
+      "resultFields": [
+        "redoCandidate",
+        "conflicts"
+      ],
+      "scope": "project.write",
+      "reviewClass": "current-impact",
+      "envelope": "CommandEnvelope",
+      "atomicDocumentTransaction": true,
+      "externalEffectsRequireSeparateReceipt": false
     }
   ],
   "diagnostics": [
@@ -1118,5 +1238,16 @@
       "meaning": "표현식 타입/평가 한도",
       "recovery": "식 단순화·오류 수정"
     }
-  ]
+  ],
+  "protocolPolicy": {
+    "documentMutationReceipt": "durable-snapshot-and-receipt",
+    "externalJobReceipt": "separate-plan-or-effect-no-fabricated-ADS-revision",
+    "projectCreateBaseRevision": null,
+    "otherBaseRevision": "required-existing-revision",
+    "idempotencyNamespace": [
+      "projectId",
+      "authenticatedPrincipal",
+      "idempotencyKey"
+    ]
+  }
 }

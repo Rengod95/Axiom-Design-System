@@ -928,6 +928,11 @@
           "name": "childOrder",
           "type": "list<StableId>",
           "required": true
+        },
+        {
+          "name": "freePosition",
+          "type": "FreePosition",
+          "required": false
         }
       ]
     },
@@ -1194,6 +1199,11 @@
           "name": "rightsStatus",
           "type": "verified | unknown | restricted",
           "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
         }
       ]
     },
@@ -1218,7 +1228,7 @@
         },
         {
           "name": "baseRevision",
-          "type": "Revision",
+          "type": "Revision | null",
           "required": true
         },
         {
@@ -1249,6 +1259,11 @@
         {
           "name": "requestedScopes",
           "type": "list<Scope>",
+          "required": true
+        },
+        {
+          "name": "protocolVersion",
+          "type": "Version",
           "required": true
         }
       ]
@@ -1470,6 +1485,31 @@
           "name": "testEnvironments",
           "type": "list<EnvironmentRef>",
           "required": true
+        },
+        {
+          "name": "runtimeDependencies",
+          "type": "list<DependencyLock>",
+          "required": true
+        },
+        {
+          "name": "valueMapping",
+          "type": "list<Mapping>",
+          "required": true
+        },
+        {
+          "name": "publicApiMapping",
+          "type": "list<PublicApiMapping>",
+          "required": true
+        },
+        {
+          "name": "requiredHosts",
+          "type": "list<CapabilityRef>",
+          "required": true
+        },
+        {
+          "name": "supportMatrix",
+          "type": "SupportMatrix",
+          "required": true
         }
       ]
     },
@@ -1592,6 +1632,31 @@
           "name": "artifacts",
           "type": "list<ArtifactRef>",
           "required": true
+        },
+        {
+          "name": "subjectRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "fixtureDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "timestamps",
+          "type": "RunTimestamps",
+          "required": true
+        },
+        {
+          "name": "observations",
+          "type": "list<Observable>",
+          "required": true
+        },
+        {
+          "name": "manualObservation",
+          "type": "ManualObservation",
+          "required": false
         }
       ]
     },
@@ -1641,6 +1706,36 @@
         },
         {
           "name": "lastDoctorReceipt",
+          "type": "Ref",
+          "required": false
+        },
+        {
+          "name": "declaredEnvironment",
+          "type": "EnvironmentSnapshot",
+          "required": true
+        },
+        {
+          "name": "detectedEnvironment",
+          "type": "EnvironmentSnapshot",
+          "required": false
+        },
+        {
+          "name": "dependencyLockDigest",
+          "type": "Digest",
+          "required": false
+        },
+        {
+          "name": "targetRelease",
+          "type": "Ref",
+          "required": false
+        },
+        {
+          "name": "installationState",
+          "type": "none | complete | mixed | failed",
+          "required": true
+        },
+        {
+          "name": "lastInstallReceipt",
           "type": "Ref",
           "required": false
         }
@@ -1699,6 +1794,26 @@
           "name": "limitations",
           "type": "list<Diagnostic>",
           "required": true
+        },
+        {
+          "name": "subjectRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "testPlanRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "publicApiMap",
+          "type": "list<PublicApiMapping>",
+          "required": true
+        },
+        {
+          "name": "consumerInstructions",
+          "type": "list<ArtifactRef>",
+          "required": true
         }
       ]
     },
@@ -1755,6 +1870,36 @@
           "name": "rollbackRefs",
           "type": "list<Ref>",
           "required": true
+        },
+        {
+          "name": "generatedBaselineRefs",
+          "type": "map<path,ArtifactRef>",
+          "required": true
+        },
+        {
+          "name": "newGeneratedRefs",
+          "type": "map<path,ArtifactRef>",
+          "required": true
+        },
+        {
+          "name": "deferredActions",
+          "type": "list<ActionDescriptor>",
+          "required": true
+        },
+        {
+          "name": "dependencyChanges",
+          "type": "list<Change>",
+          "required": true
+        },
+        {
+          "name": "providerChanges",
+          "type": "list<Change>",
+          "required": true
+        },
+        {
+          "name": "validationPlanRef",
+          "type": "Ref",
+          "required": true
         }
       ]
     },
@@ -1780,6 +1925,612 @@
         {
           "name": "default",
           "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "RecordTypeExpr",
+      "ownerDocumentId": "CMP03",
+      "fields": [
+        {
+          "name": "kind",
+          "type": "record",
+          "required": true
+        },
+        {
+          "name": "fields",
+          "type": "map<fieldName,TypeExpr>",
+          "required": true
+        },
+        {
+          "name": "required",
+          "type": "list<fieldName>",
+          "required": true
+        },
+        {
+          "name": "additionalFields",
+          "type": "reject | preserve-opaque",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ArchetypeDefinition",
+      "ownerDocumentId": "CMP02",
+      "fields": [
+        {
+          "name": "id",
+          "type": "NamespacedId",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "familyRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "requiredTraitRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "requiredRoleRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "requirements",
+          "type": "list<RequirementRef>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TextDocument",
+      "ownerDocumentId": "UX04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "blocks",
+          "type": "list<TextBlock>",
+          "required": true
+        },
+        {
+          "name": "localeHints",
+          "type": "map<scope,LocaleTag>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TextBlock",
+      "ownerDocumentId": "UX04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "kind",
+          "type": "paragraph | list-item",
+          "required": true
+        },
+        {
+          "name": "inlines",
+          "type": "list<InlineRun>",
+          "required": true
+        },
+        {
+          "name": "list",
+          "type": "ListMetadata",
+          "required": false
+        },
+        {
+          "name": "typographyRef",
+          "type": "Ref",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "InlineRun",
+      "ownerDocumentId": "UX04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "marks",
+          "type": "list<InlineMark>",
+          "required": true
+        },
+        {
+          "name": "link",
+          "type": "SafeLink",
+          "required": false
+        },
+        {
+          "name": "typographyRef",
+          "type": "Ref",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "SizePolicy",
+      "ownerDocumentId": "UX03",
+      "fields": [
+        {
+          "name": "mode",
+          "type": "hug | fill | fixed",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "Dimension",
+          "required": false
+        },
+        {
+          "name": "min",
+          "type": "Dimension",
+          "required": false
+        },
+        {
+          "name": "max",
+          "type": "Dimension",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "FreePosition",
+      "ownerDocumentId": "UX03",
+      "fields": [
+        {
+          "name": "relativeTo",
+          "type": "parent-content-box",
+          "required": true
+        },
+        {
+          "name": "x",
+          "type": "Dimension",
+          "required": true
+        },
+        {
+          "name": "y",
+          "type": "Dimension",
+          "required": true
+        },
+        {
+          "name": "anchors",
+          "type": "map<edge,Dimension>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Screen",
+      "ownerDocumentId": "UX07",
+      "fields": [
+        {
+          "name": "instances",
+          "type": "list<Instance>",
+          "required": true
+        },
+        {
+          "name": "themeSetRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "brandAssetRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "layout",
+          "type": "list<InstanceLayoutRule>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "Scenario",
+      "ownerDocumentId": "UX07",
+      "fields": [
+        {
+          "name": "screenRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "initialMockValues",
+          "type": "map<valueId,TypedValue>",
+          "required": true
+        },
+        {
+          "name": "initialMockStates",
+          "type": "map<stateId,TypedValue>",
+          "required": true
+        },
+        {
+          "name": "eventBindings",
+          "type": "list<ScenarioEventBinding>",
+          "required": true
+        },
+        {
+          "name": "prototypeLinks",
+          "type": "list<PrototypeLink>",
+          "required": true
+        },
+        {
+          "name": "inputTrace",
+          "type": "InputTrace",
+          "required": true
+        },
+        {
+          "name": "expectations",
+          "type": "list<Observable>",
+          "required": true
+        },
+        {
+          "name": "stepBudget",
+          "type": "positive integer",
+          "required": true
+        },
+        {
+          "name": "clock",
+          "type": "VirtualClockPolicy",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ScenarioEventBinding",
+      "ownerDocumentId": "UX07",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "eventRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "mockAction",
+          "type": "MockAction",
+          "required": true
+        },
+        {
+          "name": "response",
+          "type": "accept | reject | delay",
+          "required": true
+        },
+        {
+          "name": "delay",
+          "type": "Duration",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "PrototypeLink",
+      "ownerDocumentId": "UX07",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "fromScreenRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "eventRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "toScreenRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "guard",
+          "type": "Expr",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "EnvironmentSnapshot",
+      "ownerDocumentId": "DLV02",
+      "fields": [
+        {
+          "name": "framework",
+          "type": "VersionedTool",
+          "required": true
+        },
+        {
+          "name": "toolchain",
+          "type": "ToolchainLock",
+          "required": true
+        },
+        {
+          "name": "packageManager",
+          "type": "VersionedTool",
+          "required": true
+        },
+        {
+          "name": "dependencyLockDigest",
+          "type": "Digest",
+          "required": false
+        },
+        {
+          "name": "configurationDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "observedAt",
+          "type": "Timestamp",
+          "required": false
+        },
+        {
+          "name": "diagnostics",
+          "type": "list<Diagnostic>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "InstalledFileRecord",
+      "ownerDocumentId": "DLV04",
+      "fields": [
+        {
+          "name": "path",
+          "type": "AuthorizedRelativePath",
+          "required": true
+        },
+        {
+          "name": "generatedBaselineRef",
+          "type": "ArtifactRef",
+          "required": false
+        },
+        {
+          "name": "generatedBaselineDigest",
+          "type": "Digest",
+          "required": false
+        },
+        {
+          "name": "generatedReleaseRef",
+          "type": "Ref",
+          "required": false
+        },
+        {
+          "name": "newGeneratedRef",
+          "type": "ArtifactRef",
+          "required": false
+        },
+        {
+          "name": "installedHash",
+          "type": "Digest",
+          "required": false
+        },
+        {
+          "name": "appliedActions",
+          "type": "list<ActionDescriptor>",
+          "required": true
+        },
+        {
+          "name": "deferredActions",
+          "type": "list<ActionDescriptor>",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "accepted | preserved | partial | deleted | unresolved",
+          "required": true
+        },
+        {
+          "name": "provenance",
+          "type": "SourceRecord",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "UpgradeReceipt",
+      "ownerDocumentId": "DLV04",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "planRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "connectionRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "targetReleaseRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "files",
+          "type": "list<InstalledFileRecord>",
+          "required": true
+        },
+        {
+          "name": "installationState",
+          "type": "complete | mixed | failed",
+          "required": true
+        },
+        {
+          "name": "validationEvidenceRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "rollbackRefs",
+          "type": "list<Ref>",
+          "required": true
+        },
+        {
+          "name": "createdAt",
+          "type": "Timestamp",
+          "required": true
+        },
+        {
+          "name": "environmentBeforeRef",
+          "type": "ArtifactRef",
+          "required": true
+        },
+        {
+          "name": "environmentAfterRef",
+          "type": "ArtifactRef",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TransactionReceipt",
+      "ownerDocumentId": "ARC03",
+      "fields": [
+        {
+          "name": "id",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "projectId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "transactionId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "authenticatedPrincipalId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "idempotencyKey",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "requestDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "protocolVersion",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "result",
+          "type": "CommandResult",
+          "required": true
+        },
+        {
+          "name": "createdAt",
+          "type": "Timestamp",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "StorageCommitRecord",
+      "ownerDocumentId": "ARC04",
+      "fields": [
+        {
+          "name": "projectId",
+          "type": "StableId",
+          "required": true
+        },
+        {
+          "name": "revision",
+          "type": "Revision",
+          "required": true
+        },
+        {
+          "name": "parentRevision",
+          "type": "Revision | null",
+          "required": true
+        },
+        {
+          "name": "snapshotDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "fileManifestDigest",
+          "type": "Digest",
+          "required": true
+        },
+        {
+          "name": "transactionReceiptRef",
+          "type": "Ref",
+          "required": true
+        },
+        {
+          "name": "undoStateRef",
+          "type": "StorageRef",
+          "required": true
+        },
+        {
+          "name": "redoStateRef",
+          "type": "StorageRef",
+          "required": true
+        },
+        {
+          "name": "storageFormatVersion",
+          "type": "Version",
+          "required": true
+        },
+        {
+          "name": "committedAt",
+          "type": "Timestamp",
           "required": true
         }
       ]

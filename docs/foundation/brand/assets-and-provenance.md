@@ -1,6 +1,6 @@
 # BRD02 · 자산 저장·출처·권리·배포
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 브랜드 담당. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -9,6 +9,8 @@
 외부 URL 하나를 저장하는 것만으로 오프라인 재사용이나 장기 보존이 성립하지 않는다. 선택 컴포넌트가 직접·간접 참조하는 자산은 권리가 허용하는 범위에서 실제 복사하고 출처를 남긴다. 연결된 Brand Library 전체 복사는 별도 선택으로 제공한다.
 
 AssetRecord는 id, contentHash, mediaType, byteSize, originalName, source, author/license/notice, acquiredAt, variantOf, dimensions/fontMetadata, storageRef, rightsStatus를 가진다. 파일 위치가 바뀌어도 id와 hash가 동일하면 다시 연결할 수 있다. 같은 bytes의 중복 저장은 줄이되 서로 다른 출처·권리 기록을 하나로 지우지 않는다.
+
+contentHash는 저장 blob의 동일성이고 AssetRecord.id는 출처·취득·권리 기록의 동일성이다. 같은 blob에 서로 다른 source/license를 가진 AssetRecord가 공존할 수 있다. 필드 부록의 단일 source/license는 해당 record가 근거로 삼는 권리이며, 사용처와 출력 계획은 그 record의 ID·버전을 고정한다. 중복 제거로 여러 권리를 합쳐 더 넓은 사용 허가를 만들지 않는다. 출력 방식·타깃·배포 범위를 허용하는 검증된 record를 명시적으로 선택하고, 권리 근거가 바뀌면 새 기록과 영향 검토를 남긴다.
 
 ## 가져오기와 출력 계약
 
@@ -31,6 +33,8 @@ AssetRecord는 id, contentHash, mediaType, byteSize, originalName, source, autho
 사용 중인 원본은 파생본 정리 과정에서 삭제하지 않는다. 삭제 계획에는 역참조, 보관된 release, 복구 시점이 포함된다. 로컬 원본과 호스팅 사본의 소유·동기화 상태를 구별하고, 선택한 백업을 성공적으로 검증하기 전 이전 사본을 정리하지 않는다.
 
 필수 시험은 해시 일치, 중복 출처 보존, 폰트 누락·재연결, SVG 격리, 의존 자산 closure, offline 준비, 라이선스 고지 누락 탐지다. 실제 third-party 목록은 [권리·출처 부록](../annexes/rights-and-provenance.md)에 버전별로 등록한다.
+
+같은 폰트 bytes에 Web 전용 권리와 native 배포 권리가 따로 있을 때, Web 전용 record를 선택한 native 출력은 보류되어야 한다. 다른 record의 존재만으로 통과하지 않으며, 허용된 record를 선택한 뒤 해당 배포의 notice와 provenance가 그 선택을 가리키는지 확인한다.
 
 ## 결정 추적과 변경 영향
 

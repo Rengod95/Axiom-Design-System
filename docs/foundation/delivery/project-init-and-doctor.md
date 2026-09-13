@@ -1,12 +1,14 @@
 # DLV02 · 소비 프로젝트 init·doctor
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 플랫폼 담당. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
 ## 코드 파일을 복사한 뒤 실제로 쓸 수 있어야 한다
 
 Project Connection은 framework/toolchain, package manager, project root, source/component/token/style directories, import aliases, theme/locale providers, allowed behavior bases, dependency lock, installed Axiom release를 관리한다. 선언된 설정과 실제 탐지 상태를 비교해 추적한다.
+
+installed release는 완전 설치를 확인한 판본이다. 부분 upgrade가 있으면 목표 release·파일별 생성 baseline·실제 설치 hash·보류 변경을 별도 receipt로 연결하고 mixed/partial로 표시한다. doctor는 이 상태를 단일 새 release 설치 완료로 덮어쓰지 않으며 다음 비교·복구는 [DLV04](diff-upgrades-and-rollback.md)의 baseline 규칙을 따른다.
 
 Doctor는 단순 “파일 존재” 검사를 넘어 token/theme 공급, CSS 로딩 순서, alias 해석, public API import, dependency version, 필요한 host 설치, 실제 소비 build·화면을 확인한다.
 

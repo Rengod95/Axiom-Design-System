@@ -11,7 +11,7 @@
 | SC01 | Foundation | 오류가 섞인 토큰 묶음 import | 유효 부분·오류 원본·경로를 보존 | automatic · SYN04 |
 | SC02 | Foundation | alias 순환·잘못된 type·누락 target | 참조 경로 진단·오류 영역 출력 제한 | automatic · SYN03 |
 | SC03 | Foundation | 모든 선언 type·색 공간·resolver context 편집/출력 | 각 단계의 의미·출처·실제 렌더 비교 | both · SYN01 |
-| SC04 | Foundation | 공유 token drag preview 후 취소·승인·Undo | 즉시 시연과 review commit 분리·한 번 복구 | both · UX05 |
+| SC04 | Foundation | 토큰 생성·이름 변경·대량 편집·공유 drag 후 취소/승인/Undo | stable ID·영향·오류 재선택·stale 검토·원자 적용과 한 번 복구 | both · UX05 |
 | SC05 | Foundation | 이름 변경·독립 복사·같은 이름 재import | 불변 ID·원본 출처·복사 refMap 유지 | automatic · SYN02 |
 | SC06 | Component | Button 유효 pointer/keyboard activation | 한 사용자 의도당 emit 1회 | both · CMP06 |
 | SC07 | Component | Button press 취소·disabled·synthetic click | 취소 0회·중복 억제·profile focus 준수 | automatic · CMP06 |
@@ -48,11 +48,11 @@
 | SC38 | Delivery | 새 React/RN 앱 init·실제 페이지 실행 | provider·alias·types·style·dependency 일치 | both · DLV02 |
 | SC39 | Delivery | native 전체 catalog 선택 profile 실행 | Swift/Android 실제 source·의무·AT 결과 | both · DLV01 |
 | SC40 | Delivery | 4 delivery mode export·restore·설치 | 파일·types·asset·notice·provenance 완전 | both · DLV03 |
-| SC41 | Delivery | baseline/current/new conflict·baseline 없음 | 출처 한계·사용자 수정 보존·선택 diff | both · DLV04 |
+| SC41 | Delivery | baseline/current/new conflict·baseline 없음·부분 hunk 이후 재업그레이드 | 생성 baseline/설치 hash 분리·mixed 상태·사용자 수정 보존·선택 diff | both · DLV04 |
 | SC42 | Delivery | rename/delete·dependency 설치 부분 실패 | 효과 receipt·복구·stale 파일 비교 | automatic · DLV04 |
 | SC43 | Delivery | 여러 소비 앱 upgrade·개별 rollback | 앱별 version 고정·시험·상태 분리 | both · DLV04 |
-| SC44 | Evidence | source/oracle/profile 변경 후 badge | stale 판정·전체 release 재실행 | automatic · QAL02 |
-| SC45 | Evidence | 수동 미완료·skip/xfail·0 tests | full support 보류·부분 결과 표시 | automatic · QAL01 |
+| SC44 | Evidence | source/oracle/profile 변경·fixture/time/수동 관찰 누락 후 badge | stale/확인 불가 판정·전체 release 재실행 | automatic · QAL02 |
+| SC45 | Evidence | both의 자동만 완료·수동 미완료·적용 범위 불명·skip/xfail·0 tests | 자동/수동 요구 분리·blocked·full support 보류 | automatic · QAL01 |
 | SC46 | Collaboration | 동시 edit/delete·순서 변경·개인 Undo | 의미 초안 보존·공유 revert 구별 | automatic-later · ARC05 |
 | SC47 | Performance | S/M/L cold/warm 작업·취소 | p95·memory·정확성·resource 기록 | automatic · QAL03 |
 | SC48 | Operations | license/asset rights 미확인·publish 실패 | 해당 배포 보류·notice·재시도 기록 | automatic · OPS03 |

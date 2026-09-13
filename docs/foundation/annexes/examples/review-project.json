@@ -7,7 +7,10 @@
     "Review-sized examples are not a complete generated UI library.",
     "Default card slot content is supplied by instances; body slot is required.",
     "Reopen is defined as a new generation after current instance completion; stale callbacks are ignored. Platform runtime remains unimplemented.",
-    "Token internal shape illustrates ADS proposal B, not proof of DTCG replacement."
+    "Token internal shape illustrates ADS proposal B, not proof of DTCG replacement.",
+    "Archetypes are explicit review contracts linked to family classifications; the family catalog itself is not an archetype implementation.",
+    "Declarative source relationships and the three Toast value/event bindings are shown. Other lifecycle/host/motion ports require profile specialization and are not claimed to be an executable closed graph.",
+    "Review external profiles/oracles are version-pinned declarations, not installed or verified implementations."
   ],
   "project": {
     "id": "project.review",
@@ -22,43 +25,53 @@
     "documents": [
       {
         "id": "foundation.demo",
-        "expectedKind": "foundation"
+        "expectedKind": "foundation",
+        "revision": "review-r1"
       },
       {
         "id": "component.button",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       {
         "id": "component.card",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       {
         "id": "component.toast",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       {
         "id": "design.button.web",
-        "expectedKind": "design"
+        "expectedKind": "design",
+        "revision": "review-r1"
       },
       {
         "id": "design.button.mobile",
-        "expectedKind": "design"
+        "expectedKind": "design",
+        "revision": "review-r1"
       },
       {
         "id": "design.card.web",
-        "expectedKind": "design"
+        "expectedKind": "design",
+        "revision": "review-r1"
       },
       {
         "id": "design.card.mobile",
-        "expectedKind": "design"
+        "expectedKind": "design",
+        "revision": "review-r1"
       },
       {
         "id": "design.toast.web",
-        "expectedKind": "design"
+        "expectedKind": "design",
+        "revision": "review-r1"
       },
       {
         "id": "design.toast.mobile",
-        "expectedKind": "design"
+        "expectedKind": "design",
+        "revision": "review-r1"
       }
     ],
     "libraries": [
@@ -71,11 +84,13 @@
     "targetProfiles": [
       {
         "id": "profile.review.web",
-        "expectedKind": "targetProfile"
+        "expectedKind": "targetProfile",
+        "version": "1.0.0"
       },
       {
         "id": "profile.review.mobile",
-        "expectedKind": "targetProfile"
+        "expectedKind": "targetProfile",
+        "version": "1.0.0"
       }
     ],
     "brandLibraries": [],
@@ -166,7 +181,8 @@
         "default": "light",
         "scope": {
           "id": "foundation.demo",
-          "expectedKind": "foundation"
+          "expectedKind": "foundation",
+          "revision": "review-r1"
         }
       }
     ],
@@ -199,7 +215,7 @@
       "extensions": {},
       "purpose": "범용 UI 활성화 요청",
       "archetypeRef": {
-        "id": "axiom.family/command",
+        "id": "review.archetype/button",
         "expectedKind": "archetype",
         "version": "1.0.0"
       },
@@ -314,7 +330,11 @@
                     "assistive"
                   ]
                 }
-              }
+              },
+              "required": [
+                "source"
+              ],
+              "additionalFields": "reject"
             },
             "phase": "intent",
             "cancellable": false,
@@ -444,7 +464,7 @@
       "extensions": {},
       "purpose": "범용 콘텐츠 묶음",
       "archetypeRef": {
-        "id": "axiom.family/surface",
+        "id": "review.archetype/card",
         "expectedKind": "archetype",
         "version": "1.0.0"
       },
@@ -500,7 +520,8 @@
             "part": "part.card.surface",
             "properties": [
               "background",
-              "padding"
+              "padding",
+              "gap"
             ]
           }
         ],
@@ -672,7 +693,7 @@
       "extensions": {},
       "purpose": "일시 메시지 표시와 닫기",
       "archetypeRef": {
-        "id": "axiom.family/toast-system",
+        "id": "review.archetype/toast",
         "expectedKind": "archetype",
         "version": "1.0.0"
       },
@@ -690,7 +711,9 @@
           "configuration": {
             "initial": "mounting"
           },
-          "portBindings": {},
+          "portBindings": {
+            "presence": "value.toast.presence"
+          },
           "policyBindings": []
         },
         {
@@ -707,7 +730,9 @@
             "priority": "polite",
             "deduplication": "instance-generation"
           },
-          "portBindings": {},
+          "portBindings": {
+            "content": "value.toast.content"
+          },
           "policyBindings": []
         },
         {
@@ -726,7 +751,9 @@
               "external"
             ]
           },
-          "portBindings": {},
+          "portBindings": {
+            "closeRequest": "event.toast.close-request"
+          },
           "policyBindings": []
         },
         {
@@ -804,7 +831,11 @@
                     "timeout"
                   ]
                 }
-              }
+              },
+              "required": [
+                "reason"
+              ],
+              "additionalFields": "reject"
             },
             "phase": "intent",
             "cancellable": false,
@@ -815,7 +846,9 @@
             "name": "present",
             "payloadType": {
               "kind": "record",
-              "fields": {}
+              "fields": {},
+              "required": [],
+              "additionalFields": "reject"
             },
             "phase": "notification",
             "cancellable": false,
@@ -826,7 +859,9 @@
             "name": "openCommittedFalse",
             "payloadType": {
               "kind": "record",
-              "fields": {}
+              "fields": {},
+              "required": [],
+              "additionalFields": "reject"
             },
             "phase": "notification",
             "cancellable": false,
@@ -837,7 +872,9 @@
             "name": "exitCompleteOrCleanupDeadline",
             "payloadType": {
               "kind": "record",
-              "fields": {}
+              "fields": {},
+              "required": [],
+              "additionalFields": "reject"
             },
             "phase": "notification",
             "cancellable": false,
@@ -944,7 +981,12 @@
             "to": "presenting",
             "trigger": "event.toast.present",
             "effects": [],
-            "requirements": []
+            "requirements": [],
+            "guard": {
+              "op": "read",
+              "scope": "value",
+              "id": "value.toast.open"
+            }
           },
           {
             "id": "transition.toast.2",
@@ -1106,7 +1148,8 @@
       "extensions": {},
       "componentRef": {
         "id": "component.button",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "category": "Web",
       "nodeMappings": [
@@ -1131,8 +1174,12 @@
           "mode": "stack",
           "axis": "horizontal",
           "size": {
-            "inline": "hug",
-            "block": "hug"
+            "inline": {
+              "mode": "hug"
+            },
+            "block": {
+              "mode": "hug"
+            }
           },
           "gap": {
             "tokenRef": "token.gap"
@@ -1188,7 +1235,8 @@
       "extensions": {},
       "componentRef": {
         "id": "component.button",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "category": "Mobile",
       "nodeMappings": [
@@ -1213,8 +1261,12 @@
           "mode": "stack",
           "axis": "vertical",
           "size": {
-            "inline": "hug",
-            "block": "hug"
+            "inline": {
+              "mode": "hug"
+            },
+            "block": {
+              "mode": "hug"
+            }
           },
           "gap": {
             "tokenRef": "token.gap"
@@ -1270,7 +1322,8 @@
       "extensions": {},
       "componentRef": {
         "id": "component.card",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "category": "Web",
       "nodeMappings": [
@@ -1307,10 +1360,14 @@
         {
           "targetPartRef": "part.card.surface",
           "mode": "stack",
-          "axis": "vertical",
+          "axis": "horizontal",
           "size": {
-            "inline": "hug",
-            "block": "hug"
+            "inline": {
+              "mode": "hug"
+            },
+            "block": {
+              "mode": "hug"
+            }
           },
           "gap": {
             "tokenRef": "token.gap"
@@ -1368,7 +1425,8 @@
       "extensions": {},
       "componentRef": {
         "id": "component.card",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "category": "Mobile",
       "nodeMappings": [
@@ -1407,8 +1465,12 @@
           "mode": "stack",
           "axis": "vertical",
           "size": {
-            "inline": "hug",
-            "block": "hug"
+            "inline": {
+              "mode": "hug"
+            },
+            "block": {
+              "mode": "hug"
+            }
           },
           "gap": {
             "tokenRef": "token.gap"
@@ -1466,7 +1528,8 @@
       "extensions": {},
       "componentRef": {
         "id": "component.toast",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "category": "Web",
       "nodeMappings": [
@@ -1498,8 +1561,12 @@
           "mode": "stack",
           "axis": "vertical",
           "size": {
-            "inline": "hug",
-            "block": "hug"
+            "inline": {
+              "mode": "hug"
+            },
+            "block": {
+              "mode": "hug"
+            }
           },
           "gap": {
             "tokenRef": "token.gap"
@@ -1539,7 +1606,8 @@
       "extensions": {},
       "componentRef": {
         "id": "component.toast",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "category": "Mobile",
       "nodeMappings": [
@@ -1571,8 +1639,12 @@
           "mode": "stack",
           "axis": "vertical",
           "size": {
-            "inline": "hug",
-            "block": "hug"
+            "inline": {
+              "mode": "hug"
+            },
+            "block": {
+              "mode": "hug"
+            }
           },
           "gap": {
             "tokenRef": "token.gap"
@@ -1611,7 +1683,8 @@
       },
       "scope": {
         "id": "project.review",
-        "expectedKind": "project"
+        "expectedKind": "project",
+        "revision": "review-r1"
       },
       "configuration": {
         "queuePolicy": "fifo",
@@ -1629,7 +1702,8 @@
       "version": "1.0.0",
       "ownerRef": {
         "id": "component.button",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "appliesWhen": {
         "op": "literal",
@@ -1655,7 +1729,8 @@
       "scope": [
         {
           "id": "profile.review.web",
-          "expectedKind": "targetProfile"
+          "expectedKind": "targetProfile",
+          "version": "1.0.0"
         }
       ]
     },
@@ -1664,7 +1739,8 @@
       "version": "1.0.0",
       "ownerRef": {
         "id": "component.button",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "appliesWhen": {
         "op": "literal",
@@ -1690,7 +1766,8 @@
       "scope": [
         {
           "id": "profile.review.web",
-          "expectedKind": "targetProfile"
+          "expectedKind": "targetProfile",
+          "version": "1.0.0"
         }
       ]
     },
@@ -1699,7 +1776,8 @@
       "version": "1.0.0",
       "ownerRef": {
         "id": "component.card",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "appliesWhen": {
         "op": "literal",
@@ -1725,7 +1803,8 @@
       "scope": [
         {
           "id": "profile.review.web",
-          "expectedKind": "targetProfile"
+          "expectedKind": "targetProfile",
+          "version": "1.0.0"
         }
       ]
     },
@@ -1734,7 +1813,8 @@
       "version": "1.0.0",
       "ownerRef": {
         "id": "component.card",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "appliesWhen": {
         "op": "literal",
@@ -1760,7 +1840,8 @@
       "scope": [
         {
           "id": "profile.review.web",
-          "expectedKind": "targetProfile"
+          "expectedKind": "targetProfile",
+          "version": "1.0.0"
         }
       ]
     },
@@ -1769,7 +1850,8 @@
       "version": "1.0.0",
       "ownerRef": {
         "id": "component.toast",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "appliesWhen": {
         "op": "literal",
@@ -1795,7 +1877,8 @@
       "scope": [
         {
           "id": "profile.review.web",
-          "expectedKind": "targetProfile"
+          "expectedKind": "targetProfile",
+          "version": "1.0.0"
         }
       ]
     },
@@ -1804,7 +1887,8 @@
       "version": "1.0.0",
       "ownerRef": {
         "id": "component.toast",
-        "expectedKind": "component"
+        "expectedKind": "component",
+        "revision": "review-r1"
       },
       "appliesWhen": {
         "op": "literal",
@@ -1830,7 +1914,8 @@
       "scope": [
         {
           "id": "profile.review.web",
-          "expectedKind": "targetProfile"
+          "expectedKind": "targetProfile",
+          "version": "1.0.0"
         }
       ]
     }
@@ -1857,6 +1942,182 @@
     ],
     "layoutProfiles": [
       "profile.review.layout"
+    ],
+    "coordinators": [
+      "axiom.coordinator/notification"
     ]
-  }
+  },
+  "archetypes": [
+    {
+      "id": "review.archetype/button",
+      "kind": "archetype",
+      "version": "1.0.0",
+      "familyRef": {
+        "id": "axiom.family/command",
+        "expectedKind": "family",
+        "version": "1.0.0"
+      },
+      "purpose": "범용 UI 활성화 요청",
+      "requiredTraitRefs": [
+        {
+          "id": "axiom.trait/activation",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.trait/naming",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.trait/availability",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        }
+      ],
+      "requiredRoleRefs": [
+        {
+          "id": "axiom.role/surface",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.role/control",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.role/label",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        }
+      ],
+      "requirements": [
+        {
+          "id": "req.button.activation-once",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        },
+        {
+          "id": "req.button.a11y",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "review.archetype/card",
+      "kind": "archetype",
+      "version": "1.0.0",
+      "familyRef": {
+        "id": "axiom.family/surface",
+        "expectedKind": "family",
+        "version": "1.0.0"
+      },
+      "purpose": "범용 콘텐츠 묶음",
+      "requiredTraitRefs": [
+        {
+          "id": "axiom.trait/content",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.trait/layout",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        }
+      ],
+      "requiredRoleRefs": [
+        {
+          "id": "axiom.role/surface",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.role/content",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        }
+      ],
+      "requirements": [
+        {
+          "id": "req.card.reading-order",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        },
+        {
+          "id": "req.card.a11y",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "review.archetype/toast",
+      "kind": "archetype",
+      "version": "1.0.0",
+      "familyRef": {
+        "id": "axiom.family/toast-system",
+        "expectedKind": "family",
+        "version": "1.0.0"
+      },
+      "purpose": "일시 메시지 표시와 닫기",
+      "requiredTraitRefs": [
+        {
+          "id": "axiom.trait/presence",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.trait/announcement",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.trait/dismissal",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.trait/motion",
+          "expectedKind": "trait",
+          "version": "1.0.0"
+        }
+      ],
+      "requiredRoleRefs": [
+        {
+          "id": "axiom.role/surface",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.role/content",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.role/close",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        },
+        {
+          "id": "axiom.role/control",
+          "expectedKind": "role",
+          "version": "1.0.0"
+        }
+      ],
+      "requirements": [
+        {
+          "id": "req.toast.cleanup-once",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        },
+        {
+          "id": "req.toast.a11y",
+          "expectedKind": "requirement",
+          "version": "1.0.0"
+        }
+      ]
+    }
+  ]
 }

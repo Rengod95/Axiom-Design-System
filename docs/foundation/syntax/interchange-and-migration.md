@@ -1,6 +1,6 @@
 # SYN04 · 가져오기·원문 보존·migration
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 문법/도메인 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -25,6 +25,12 @@
 정규화는 포맷·정렬·안정적인 직렬화를 위한 변환이고 표준 의미를 임의로 단순화하는 과정이 아니다. 손실이 있는 내보내기는 LossReport의 경로·이전 의미·출력 표현·영향 타깃·사용자 선택을 요구한다.
 
 MigrationPlan은 from/to schemaVersion, transform identity·version, preconditions, operations, loss/diagnostic list, input/output digest, inverse 가능 여부를 가진다. 실행은 원본 보존→별도 후보 작성→검증→선택 채택이다. 역변환이 의미상 불가능하면 undo가 가능한 것처럼 표시하지 않고 보존된 원본 복원으로 안내한다.
+
+## migration 실패와 복구 예
+
+예를 들어 schema A의 두 토큰과 opaque extension을 schema B로 옮기는 후보를 만든다. 변환 뒤 alias가 삭제된 ID를 가리키고 extension과 연결된 의미를 보존할 수 없으면 후보 검증은 실패다. 원본 bytes/hash와 A의 마지막 채택 revision은 그대로 유지하고, 실패한 B 후보·변환기 version·문제 경로·LossReport를 별도로 보관한다. 유효한 다른 문서를 이 후보의 성공 결과로 덮어쓰지 않는다.
+
+사용자는 alias mapping을 고친 새 후보를 검사하거나, 지원이 준비될 때까지 A의 원본/마지막 유효본으로 계속 작업한다. 손실을 검토해 제한된 출력만 선택한 경우에도 B의 전체 호환 migration 성공으로 표시하지 않는다. 채택 후 복구가 필요하고 역변환이 불가능하면 보존된 A snapshot에서 새 복구 revision을 만든다. 그 사이 편집이 있으면 먼저 diff를 비교하며, 복원은 현재 변경을 무조건 지우는 작업이 아니다. 문법 책임자는 원본 hash 불변, 실패 후보 비채택, 재시도 입력 digest와 복구 후 참조를 확인한다.
 
 ## 제외와 오류 사례
 

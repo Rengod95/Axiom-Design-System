@@ -1,12 +1,14 @@
 # QAL02 · 검증 증거·freshness·추적성
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 품질 책임자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
 ## 초록색 표시가 무엇을 증명하는지 추적한다
 
 EvidenceRecord는 evidenceId, requirementIds, contract/design/standard/registry revisions, source hash, dependency lock digest, target profile version, environment, runner identity, fixture/oracle digest, observed result, timestamps, artifacts를 가진다. 수동 결과에는 수행자와 실제 절차·관찰도 필요하다.
+
+snapshot digest는 검사에 사용한 계약·디자인·표준·registry revision의 고정 closure를 식별한다. source·dependency·fixture·oracle는 각각 별도 digest를 가지며 실행 시작/종료와 기록 시각을 남긴다. 수동 절차·수행자·관찰은 해당 requirement와 candidate에 연결한다. 필수 identity·시간·artifact를 확인할 수 없는 결과는 pass로 채택하지 않고 확인 불가 이유를 기록한다. 필드 표는 [문서 계약](../annexes/document-contracts.md)에 두며 이 문서가 증거의 의미와 freshness 판정을 소유한다.
 
 진행 상태는 notRun/running/pass/fail/blocked/waived/stale를 구별한다. waived는 특정 승인 가능한 정책 예외이며 다른 필수 접근성 의무의 pass로 바뀌지 않는다. 지원 badge는 계산된 파생값이고 사용자가 문서 필드를 수정해 직접 pass로 만들 수 없다.
 

@@ -49,6 +49,11 @@ Query도 일관된 snapshot을 지정하고 pagination·context size를 제한�
 | slot.update | slotRef,contentKinds,cardinality,exposure | slotDiff,instanceImpact | contract.write · public-api |
 | instance.create | componentRef,designRef,parent,values,contents | instanceRef | component.write · local |
 | instance.override | instanceRef,allowedProperties | overrideDiff | component.write · local-or-shared |
+| instance.contents.update | instanceRef,slotId,contentNodes | contentDiff,slotDiagnostics | component.write · local-or-shared |
+| text.create | documentId,blocks,typographyRefs | textRef,diagnostics | component.write · meaning-impact |
+| text.update | textRef,edits,typographyRefs | textDiff,diagnostics | component.write · local-or-shared |
+| screen.create | documentId,name,instances,themeSetRef,brandAssetRefs,layout | screenRef,diagnostics | scenario.write · new-screen |
+| screen.update | screenRef,typedChanges | screenDiff,diagnostics | scenario.write · local-or-shared |
 | appearance.update | designRef,partRef,rules | computedValues,provenance | design.write · local-or-shared |
 | layout.update | designRef,partRef,rules | layoutDiff,diagnostics | design.write · local-or-shared |
 | motion.update | componentRef,definitions | motionDiff,invalidations | contract.write · behavior-change |
@@ -63,6 +68,7 @@ Query도 일관된 snapshot을 지정하고 pagination·context size를 제한�
 | transaction.review | candidateId,patchDigest,decision | boundApprovalOrRejection | review.apply · review |
 | transaction.apply | candidateId,approvalToken,expectedRevision | CommandResult | project.write · checked-at-commit |
 | transaction.undo | undoHandle,expectedRevision | inverseCandidate,conflicts | project.write · current-impact |
+| transaction.redo | redoHandle,expectedRevision | redoCandidate,conflicts | project.write · current-impact |
 | project.revert | targetRevision,expectedRevision | sharedRevertCandidate | project.write · shared-impact |
 | generation.plan | snapshotRef,targetProfile,budget | RealizationJobPlan,expectedCost | generation.plan · job-plan |
 | generation.start | planId,planDigest,approval | jobId | generation.execute · execution |
@@ -77,6 +83,10 @@ Query도 일관된 snapshot을 지정하고 pagination·context size를 제한�
 | upgrade.rollback | receiptRef,expectedFileHashes,approval | rollbackReceipt,conflicts | connection.execute · filesystem-dependency |
 
 ## 불허하는 표면
+
+`text.create/update`는 TextDocument의 안정 block/run ID와 typed range 편집을 사용한다. `text.create`와 `screen.create`의 documentId는 새 문서 envelope의 id이며 포함 문서 참조가 아니다. IME composition은 transient로 유지하고 확정된 한 의도를 한 transaction으로 저장한다. `screen.create/update`는 독립 Screen 문서를 만들고 수정한다. Screen 생성 payload는 필드 계약의 inline instances, themeSetRef, brandAssetRefs, layout과 동일하다. `scenario.update`는 screenRef에 연결된 안정 ID의 Scenario를 생성 또는 변경하며 mock binding·prototype link·step budget을 typed payload로 검증한다. 생성 시 ID 충돌은 덮어쓰지 않는다. `instance.contents.update`는 Slot 계약의 허용 content kind·개수·참조를 검사하며 appearance override에 콘텐츠를 숨겨 넣지 않는다.
+
+공개 operation 목록의 문서 mutation은 ARC03의 원자 snapshot/receipt 계약을 사용한다. generation/doctor/delivery/upgrade/job operation의 plan·외부 효과는 별도 receipt이며 문서 mutation인 것처럼 ADS revision·Undo를 발급하지 않는다. 같은 요청의 receipt 재생은 새 과금·설치·publish를 시작하지 않는다.
 
 core.api.update, validator.replace, entitlement.override, oracle.markPassed 같은 자기 권한·정답 변경 기능을 사용자 작성 API로 제공하지 않는다. 사용자 registry entry는 타입·의무·설명 데이터로 등록하고 자유 실행 코드를 도메인 validation에 주입하지 않는다.
 

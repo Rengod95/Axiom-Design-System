@@ -36,8 +36,8 @@
     {
       "id": "SC04",
       "area": "Foundation",
-      "stimulus": "공유 token drag preview 후 취소·승인·Undo",
-      "expected": "즉시 시연과 review commit 분리·한 번 복구",
+      "stimulus": "토큰 생성·이름 변경·대량 편집·공유 drag 후 취소/승인/Undo",
+      "expected": "stable ID·영향·오류 재선택·stale 검토·원자 적용과 한 번 복구",
       "mode": "both",
       "ownerDocumentId": "UX05",
       "requiredForApplicableProfile": true,
@@ -406,8 +406,8 @@
     {
       "id": "SC41",
       "area": "Delivery",
-      "stimulus": "baseline/current/new conflict·baseline 없음",
-      "expected": "출처 한계·사용자 수정 보존·선택 diff",
+      "stimulus": "baseline/current/new conflict·baseline 없음·부분 hunk 이후 재업그레이드",
+      "expected": "생성 baseline/설치 hash 분리·mixed 상태·사용자 수정 보존·선택 diff",
       "mode": "both",
       "ownerDocumentId": "DLV04",
       "requiredForApplicableProfile": true,
@@ -436,8 +436,8 @@
     {
       "id": "SC44",
       "area": "Evidence",
-      "stimulus": "source/oracle/profile 변경 후 badge",
-      "expected": "stale 판정·전체 release 재실행",
+      "stimulus": "source/oracle/profile 변경·fixture/time/수동 관찰 누락 후 badge",
+      "expected": "stale/확인 불가 판정·전체 release 재실행",
       "mode": "automatic",
       "ownerDocumentId": "QAL02",
       "requiredForApplicableProfile": true,
@@ -446,8 +446,8 @@
     {
       "id": "SC45",
       "area": "Evidence",
-      "stimulus": "수동 미완료·skip/xfail·0 tests",
-      "expected": "full support 보류·부분 결과 표시",
+      "stimulus": "both의 자동만 완료·수동 미완료·적용 범위 불명·skip/xfail·0 tests",
+      "expected": "자동/수동 요구 분리·blocked·full support 보류",
       "mode": "automatic",
       "ownerDocumentId": "QAL01",
       "requiredForApplicableProfile": true,

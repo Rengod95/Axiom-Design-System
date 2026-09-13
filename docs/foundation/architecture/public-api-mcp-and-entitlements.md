@@ -1,6 +1,6 @@
 # ARC07 · 공식 API·MCP·확장·사용권 경계
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 시스템 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -17,6 +17,14 @@ Query는 project.describe, registry.describe, context.resolve, document.get, dia
 각 operation은 schema version, description/examples, input/output type, permission scope, review class, idempotency, side effects, diagnostic codes를 가진다. 한 번에 전체 프로젝트를 읽게 하지 않고 선택 범위와 필요한 참조 closure를 가져오는 query를 제공한다. pagination과 revision pin을 유지한다.
 
 ## 권한과 entitlement의 분리
+
+### 로컬·HTTP·MCP의 같은 결과
+
+로컬 호출은 신뢰된 adapter가 authenticated context를 전달하고, HTTP/MCP adapter는 인증된 세션에서 같은 context를 만든다. payload의 actorId나 requestedScopes는 권한 부여 수단이 아니다. 예를 들어 `component.contract.update`로 Card의 public event를 바꾸면 어느 transport에서도 contract.write 검사, 공개 API 영향 diff, 같은 reviewRequired 결과를 거친다. 권한이 없으면 AUTH_SCOPE로 종료하고 부분 변경이나 검토 토큰을 남기지 않는다.
+
+Transport handshake는 지원 protocol/schema 판본·operation capability를 먼저 교환한다. 호환되지 않는 필수 판본이면 명령 decode/실행 전에 명시적 unsupported-version 응답으로 종료하며 임의 최신판으로 변환하지 않는다. MCP/HTTP의 전송 오류는 domain rejection과 구분한다. 각 transport profile은 성공·reviewRequired·conflict·rejected의 domain 결과와 transport 오류의 mapping을 고정하고 동일 fixture로 동등성을 검사한다.
+
+문서 import의 미래 필드 원형 보존과 command 입력의 허용 필드는 다르다. command의 알 수 없는 operation·권한 필드·실행 payload는 거부한다. 보존한 opaque 문서 영역은 지원하는 의미로 편집하거나 실행하지 않는다. query pagination cursor는 project·snapshot·권한 범위에 묶고 현재 권한을 다시 확인한다. 삭제되거나 권한이 바뀐 snapshot을 cursor만으로 조회하지 못한다.
 
 Authorization은 어떤 사용자가 어떤 프로젝트를 읽고 바꿀 수 있는지다. Entitlement는 어떤 서비스 기능·자원 사용권이 있는지다. 두 결과가 모두 허용되어야 서비스 작업을 수행한다. 기본 역할안은 owner/editor/reviewer/viewer/service actor이며 구체 권한은 capability로 분해한다.
 

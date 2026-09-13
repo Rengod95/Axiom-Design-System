@@ -1,6 +1,6 @@
 # CMP03 · 값·이벤트·props·UI 표현식
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 컴포넌트 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -24,7 +24,9 @@ VariantAxis는 안정 ID·공개 이름·허용 option·기본값을 가진다. 
 | reference | asset·token·component | 대상 kind·version |
 | UI domain value | 날짜·색·단위 있는 수치 | 의미·단위·타깃 변환 |
 
-undefined와 null, 누락과 기본값을 같은 것으로 처리하지 않는다. 사용자 필드 편집기는 간단한 타입부터 record/list/nullable까지 확장해 보여 준다. opaque key의 payload를 GUI 조건에서 임의 해석하지 않는다.
+undefined와 null, 누락과 기본값을 같은 것으로 처리하지 않는다. record TypeExpr는 `fields`의 이름→타입 목록, `required`의 필수 이름 목록, `additionalFields`의 `reject` 또는 `preserve-opaque` 정책을 명시한다. `required`는 `fields`의 부분집합이고 빈 payload도 `required: []`를 쓴다. 추가 필드 원형 보존은 그 필드를 표현식이나 실행 명령으로 읽을 권한이 아니다. 이 정책이 빠진 record를 구현자가 임의 기본값으로 해석하지 않는다.
+
+예를 들어 activation payload의 source가 필수 enum이면 source 누락과 선언되지 않은 paymentResult는 거부한다. nullable 필드는 명시적 null을 허용할 뿐 required 목록에서 자동 제외되지 않는다. 사용자 필드 편집기는 간단한 타입부터 record/list/nullable까지 확장해 보여 준다. opaque key의 payload를 GUI 조건에서 임의 해석하지 않는다.
 
 ## 제한 UI 표현식
 

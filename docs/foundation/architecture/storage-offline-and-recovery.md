@@ -1,6 +1,6 @@
 # ARC04 · 저장·오프라인 팩·복구
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 시스템 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -19,6 +19,21 @@ StoragePort는 readSnapshot, listDocuments, stageTransaction, commitIfRevision, 
 자동 이력은 중요한 commit과 복구 point를 유지한다. 크기 제한·정리 시점은 실측 후 정하지만 active revision·사용자 지정 checkpoint·보존 원본·출시 manifest가 참조한 blob을 임의 삭제하지 않는다. export 검증 후 정리하는 경로를 제공한다.
 
 ## 오프라인 준비 팩
+
+### commit 선형화와 중단 시 선택 규칙
+
+StoragePort의 `commitIfRevision`은 expected revision 비교와 활성 commit 전환을 하나의 직렬화 경계에서 수행한다. 비교 후 독립적으로 파일을 쓰는 check-then-write는 허용하지 않는다. Folder adapter는 단일 writer lease/lock 또는 동등한 CAS를 사용하고, 다른 writer는 stale revision으로 재계획한다. 모든 프로세스가 같은 lock에 참여하지 않는 외부 편집은 별도 drift 검사의 대상이며 그 원자성을 과장하지 않는다.
+
+| 중단 위치 | 재시작 결과 |
+|---|---|
+| prepare 이전 또는 payload 일부 기록 | 이전 완전 commit 유지. 미완성 후보는 격리하고 성공 receipt 없음 |
+| payload 완성, commit marker 이전 | 이전 revision 유지. digest 검증된 후보는 재시도/복구 선택 가능 |
+| commit marker 확정 이후, 응답 이전 | 새 snapshot과 같은 commit의 receipt 복원. 재전송으로 두 번째 변경을 만들지 않음 |
+| 활성 manifest 손상·서로 다른 최신 후보 | parent chain·digest·marker 검증으로 마지막 유일한 완전 commit을 찾음. 모호하면 읽기/복구 상태로 멈추고 후보 보존 |
+
+Commit record는 projectId, revision, parentRevision, snapshot digest, transaction/receipt, storage format version을 묶는다. Undo/redo 기록도 그 문서 변경과 함께 저장한다. 정상 파일을 쓸 수 없는 quota·권한 실패에서는 메모리 preview를 저장 성공으로 표시하지 않는다. flush·rename·파일 잠금·전원 손실 내구성의 실제 보장 범위는 adapter별 증거로 기록한다. I1의 메모리 adapter 통과만으로 Browser/Folder 또는 갑작스러운 전원 차단 복구를 지원한다고 표시하지 않는다.
+
+오래된 lock은 시간 경과만으로 다른 writer가 제거하지 않는다. 소유 프로세스/lease의 종료를 증명하고 마지막 commit을 검사한 복구 절차를 사용한다. 다중 탭·프로세스 경합과 각 중단 위치를 실제 adapter에 주입하는 시험이 저장 완료 기준이다.
 
 PreparationPack은 project snapshot, registry/token 표준 자료, asset/font, 선택 target templates/runtime, 검사 도구·dependency cache, provider connection manifest, integrity list를 가진다. 준비 가능 여부는 실제 toolchain·권리·OS에 따라 다르다.
 

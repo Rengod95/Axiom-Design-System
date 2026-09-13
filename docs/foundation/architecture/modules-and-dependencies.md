@@ -1,6 +1,6 @@
 # ARC02 · 모듈·저장소·의존 방향
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 시스템 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -36,6 +36,18 @@ DOM은 실제 Web text·CSS·accessibility와 근접한 대신 zoom·geometry·�
 Konva/Fabric은 도형·transform 재사용 후보, CanvasKit/Skia는 더 넓은 렌더 제어 후보지만 텍스트 편집·접근성·실제 Web 코드와의 대응 비용이 있다. tldraw/PixiJS는 사용자 결정에 따라 최후순위이며 DOM 경로로 해결되지 않는 필수 요구의 증거가 있을 때 비교한다. 단순 사각형/대량 sprite demo로 선택하지 않는다.
 
 ## 선택 게이트와 유지보수
+
+### 교체 가능한 port와 배포 경계 검사
+
+| 경계 | 입력 → 출력 | 금지되는 결합 · 교체 시험 |
+|---|---|---|
+| syntax/semantic | 문서 bytes·registry lock → 문서·진단 | DOM·filesystem·AI SDK를 import하지 않는다. 같은 fixture를 Node와 브라우저에서 해석해 같은 의미 진단을 얻는다. |
+| command/storage | authenticated context·명령·expected revision → durable receipt | 코어가 특정 DB 객체를 받지 않는다. 메모리·Folder adapter에 같은 원자성·경쟁·복구 conformance suite를 적용한다. |
+| preview/Studio | 고정 snapshot·transient buffer → geometry·시연 | renderer 객체가 저장 문서에 유입되지 않는다. preview를 교체해도 저장 hash와 Undo 의미가 유지된다. |
+| realization/verification | 고정 계약·test plan → 후보 / 독립 evidence | 후보 작성자가 oracle이나 기대 시험 목록을 교체하지 못한다. 실패 후보의 oracle 수정 시도를 거절한다. |
+| public core/Studio/Host | 공개 export allowlist → 배포 artifact | 공개 artifact에 Studio 비공개 자원·Host 자격증명·내부 service 코드가 transitive import, source map, asset 경로로 포함되지 않는지 검사한다. |
+
+I0의 구현 profile은 실제 source ownership·public export 목록과 검사 명령을 고정한다. CI는 import graph의 금지 간선과 실제 pack/archive의 파일 목록을 모두 검사한다. 타입 전용 import도 공개 declaration을 통해 내부 계약을 유출할 수 있으므로 검사에 포함한다. 아직 분리 배포하지 않은 모듈에 배포 완료를 주장하지 않는다. port 구현을 바꿀 때 소유 모듈 담당자는 동일 fixture·진단·복구 결과와 달라진 capability를 기록한다.
 
 [선정 기록](../annexes/selection-register.md)은 engine, text, storage/CRDT, schema, state, motion, style, native toolkits의 후보·기준·책임·실증 시점·fallback을 관리한다. JSON Schema 2020-12와 Ajv의 사전 컴파일은 검토 후보이며 실제 버전·CSP·성능을 확인한다. [JSON Schema](https://json-schema.org/draft/2020-12), [Ajv](https://ajv.js.org/guide/managing-schemas.html)
 

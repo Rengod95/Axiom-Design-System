@@ -1,6 +1,6 @@
 # Axiom documentation
 
-The current product direction and document index are confirmed. The complete Foundation body is ready for owner review before new product implementation.
+The current product direction and document index are confirmed. All 56 Foundation bodies and governed annexes passed the 2026-09-13 semantic audit after repairs. The owner's conditional merge and implementation authorization is recorded in [baseline approval](decisions/axiom-foundation-baseline-approval.json). An accepted bootstrap ADR precedes implementation.
 
 1. [Foundation reading entry](foundation/README.md)
 2. [Document index](foundation/document-index.md)

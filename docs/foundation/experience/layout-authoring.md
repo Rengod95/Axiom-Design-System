@@ -1,6 +1,6 @@
 # UX03 · 시각적 레이아웃 편집
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: UX/UI 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -8,7 +8,7 @@
 
 Hug는 내용에 맞추기, Fill은 가능한 공간 채우기, Fixed는 지정 크기다. 사용자에게 이 세 가지를 쉽게 보여 주되 뒤에서는 축별 intrinsic sizing, constraints, distribution, alignment와 연결한다. 모든 경우를 CSS width 숫자 하나로 저장하지 않는다.
 
-LayoutDefinition은 mode(flow/stack/grid/free), axis, gap, padding, alignment, distribution, size policies, min/max, wrap, overflow, positioning, child order를 가진다. Grid는 Web 지원과 Mobile 대응 여부를 별도로 기록한다. 설계 문법에서 정의 가능하다는 것과 각 타깃 실행 지원은 구분한다.
+저장 단위는 [필드 계약](../annexes/document-contracts.md)의 LayoutRule이며 DesignDefinition.layout에 모인다. LayoutRule은 mode(flow/stack/grid/free), axis, gap, padding, alignment, distribution, 축별 size policy와 min/max, wrap, overflow, positioning, child order를 가진다. Grid는 Web 지원과 Mobile 대응 여부를 별도로 기록한다. 설계 문법에서 정의 가능하다는 것과 각 타깃 실행 지원은 구분한다.
 
 ## 편집 흐름
 

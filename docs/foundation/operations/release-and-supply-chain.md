@@ -1,6 +1,6 @@
 # OPS03 · 릴리스·배포·의존성 공급망
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: 개발/운영 담당. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -8,7 +8,7 @@
 
 ReleaseManifest는 product/core/ADS·registry·template·target profile·dependency·toolchain 버전과 source tree, asset hashes, oracle/test plan, artifact 목록을 연결한다. 저장 의미, 코드 구현, 검증 도구가 같은 숫자의 버전을 가진다고 가정하지 않는다.
 
-초기 문서 단계의 CI는 reference 보존과 문서 정합성만 확인한다. 제품 구현 확인 후 bootstrap ADR에서 lint/type/build/unit/integration/target/manual gate를 새로 정의한다. 이전 pnpm workspace와 CI를 조용히 복원하지 않는다.
+초기 문서 단계의 CI는 reference 보존과 문서 정합성만 확인한다. 문서 기준선 확인과 구현 허가를 연결한 뒤, 제품 구현 전에 채택하는 bootstrap ADR에서 lint/type/build/unit/integration/target/manual gate를 새로 정의한다. 이전 pnpm workspace와 CI를 조용히 복원하지 않는다.
 
 ## 공급망과 패키지 공개
 

@@ -1,6 +1,6 @@
 # UX07 · 즉시 preview·검증 화면·프로토타입
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: UX/UI 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -27,6 +27,8 @@ Mobile은 브라우저 근사 비교, 가능한 QR/개발 클라이언트 연결
 ## 시스템 검증 화면
 
 검증 화면은 고정 component version의 인스턴스·brand asset·theme를 배치하고 mock data, 상태 토글, event 연결, 화면 이동, 반복·지연·거절 시나리오를 제공한다. 화면 구성과 시험 시나리오를 별도 문서로 저장해 같은 화면을 여러 조건에서 시험한다.
+
+Screen은 화면 ID·인스턴스와 디자인 참조·theme/asset 참조·배치를 소유하고 Scenario는 참조 화면·초기 mock 값·입력 trace·예상 관찰·prototype 연결·step budget을 소유한다. 현재 시뮬레이션의 진행 위치나 모의 응답이 실제 컴포넌트 기본값으로 저장되지 않는다. 두 문서의 필드 표는 [문서 계약](../annexes/document-contracts.md)에 두고 생성·편집은 [공식 명령](../annexes/commands-and-diagnostics.md)을 사용한다. 화면만 복사할지 연결된 시나리오도 복사할지 선택하고, 포함되지 않은 화면으로의 이동은 누락 참조로 표시해 실행을 제한한다.
 
 화면 전용 override는 표시하고 공통 variant·component로 승격할 수 있다. 승격은 공유 영향 검토를 거친다. Screen A→B→A 같은 프로토타입 cycle은 허용하지만 무한 자동 event loop는 step budget으로 중단한다.
 

@@ -1,6 +1,6 @@
 # AI02 · AI 코드 실현·후보·독립 판정
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: AI 통합 담당. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -26,6 +26,14 @@ RealizationJob은 contract/design snapshot, target/style/behavior profile, depen
 6. 정확한 candidate hash의 증거를 모아 검토·채택한다.
 
 시간·토큰·비용·시도 수 중 한도를 넘으면 중단한다. 마지막 검증본을 유지하고 실패 후보, 별도 계약 수정 제안, 명시적 부분 출력 중 선택한다. 부분 출력은 전체 정식 지원 표시를 받지 않는다.
+
+## Card와 Toast의 실패·재시도 예
+
+**Card:** 사용자가 확인한 plain Card의 body slot 안에 독립 Button을 넣은 fixture를 고정한다. 후보 C1이 Card 전체를 button으로 만들어 중첩 조작과 불필요한 tab stop 검사를 실패하면, Agent는 C1의 구조만 콘텐츠 컨테이너로 수정해 C2를 제출한다. 고정된 plain Card 의미·oracle·필수 시험 개수는 유지한다. 선택 가능한 Card가 필요한 경우에는 별도 계약 제안으로 selected owner·selectionRequest·입력/이름 의무와 영향을 제시한다. 사용자가 그 의미 변경을 확인하기 전에는 원래 Card 시험을 지워 C1을 통과시키지 않는다. C2의 정확한 source hash로 검사를 실행해 채택하고, 실패하거나 예산을 소진하면 이전 검증본 V를 유지한다.
+
+**Toast:** controlled open=false 뒤 exit를 시작하고, 재표시된 새 generation에 이전 completion을 전달하는 trace를 고정한다. 후보 T1이 새 Toast까지 제거하면 cleanup-once와 generation isolation 실패다. Agent는 후보의 generation 확인·멱등 cleanup을 고쳐 T2를 재시험한다. callback을 제외하거나 timeout을 무제한으로 늘리는 oracle 변경은 허용하지 않는다. 타깃에서 기존 motion 계약을 만족시킬 수 없다는 증거가 나오면 제한된 대체 motion/지원 범위와 새 계약 revision을 별도 제안한다. 승인 전에는 실패 타깃을 미검증으로 유지하고 마지막 검증 source와 환경을 표시한다.
+
+두 작업 모두 시작 전에 최대 시도·시간·비용 한도와 중단 조건을 고정한다. 재시도는 실패 진단과 같은 pinned contract/TestPlan을 사용하고 새 후보 digest를 만든다. Card가 통과해도 Toast 실패를 묶음 전체 통과로 만들지 않는다. 사용자가 내부 시험용 Card만 선택하면 manifest에 포함 타깃·미완료 Toast·만료된 증거를 표시한다. 이 예의 V/C1/C2/T1/T2는 절차 설명용 기호이며 실제 실행 결과가 아니다.
 
 ## 자동 생성 테스트의 한계와 책임
 

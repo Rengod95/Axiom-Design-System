@@ -1,6 +1,6 @@
 # UX04 · 텍스트·폰트·벡터·이미지 편집
 
-상태: 전체 문서 기준선 검토안 · 목표 Foundation 1.0.0 · 2026-09-12
+상태: 승인된 Foundation 1.0.0 설계 기준선 · 검토 2026-09-13
 
 책임 역할: UX/UI 설계자. 이 문서의 설계는 아직 제품 구현·실행 검증 완료를 뜻하지 않는다.
 
@@ -9,6 +9,8 @@
 초기 텍스트는 라벨·문단·줄바꿈·기본 인라인 서식·링크·목록을 다룬다. 한글 IME, 커서·선택, Undo, typography token은 기본 품질이다. CMS의 페이지·표·복잡 문서 편집을 초기 텍스트 엔진 요구로 자동 확장하지 않는다. Rich editor 컴포넌트 카탈로그 항목의 계약과 Studio 자체 텍스트 입력기의 범위도 구별한다.
 
 TextDocument는 block와 inline run, marks, link, token typography refs, locale hints를 가진다. 표시 텍스트와 accessible name의 연결은 별도 의미 계약을 따른다. 임의 HTML을 그대로 정본으로 저장하지 않는다.
+
+저장 필드의 소유권은 이 문서에 있고 공통 표기는 [필드 계약](../annexes/document-contracts.md)에 기록한다. block/run의 stable ID와 허용된 서식은 편집 엔진을 바꿔도 유지한다. 커서·선택과 IME 중간 문자열은 편집 세션 상태이며 확정한 콘텐츠와 구별한다. GUI·AI의 텍스트/slot 내용 편집은 [공식 명령](../annexes/commands-and-diagnostics.md)을 통해 같은 콘텐츠 검사·revision·Undo를 적용한다. 선택한 엔진의 내부 JSON을 ADS 정본으로 자동 채택하지 않는다.
 
 ## 입력과 Undo
 
