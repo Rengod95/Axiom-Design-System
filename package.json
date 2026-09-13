@@ -1,0 +1,23 @@
+{
+  "name": "@axiom/document-kernel-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": "24.19.0"
+  },
+  "scripts": {
+    "check": "node scripts/generate-ads-validator.mjs --check && tsc --noEmit && node scripts/check-implementation.mjs",
+    "generate": "node scripts/generate-ads-validator.mjs",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "node scripts/run-tests.mjs",
+    "axiom": "node apps/cli/src/main.ts"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.4",
+    "ajv": "8.20.0",
+    "typescript": "5.9.3"
+  }
+}

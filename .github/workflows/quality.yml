@@ -14,15 +14,36 @@ concurrency:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     steps:
+      - name: Preserve Git blob bytes on every runner
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Verify documentation phase and frozen snapshot
-        run: python3 scripts/verify-retirement.py
+        run: python scripts/verify-retirement.py
       - name: Verify corruption and source-resurrection detection
-        run: python3 scripts/verify-retirement.py --self-test
+        run: python scripts/verify-retirement.py --self-test
       - name: Verify Foundation document integrity and negative cases
-        run: python3 scripts/verify-foundation.py --self-test
+        run: python scripts/verify-foundation.py --self-test
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install pinned package manager and locked development tools
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts
+          pnpm install --frozen-lockfile --ignore-scripts
+      - name: Check module boundaries and strict TypeScript
+        run: pnpm check
+      - name: Run product behavior and filesystem tests
+        run: pnpm test
+      - name: Emit runnable JavaScript
+        run: pnpm build

@@ -1,13 +1,13 @@
 # Axiom source-code and module-structure standard
 
-**Status:** Engineering principles retained; implementation-specific profile frozen pending an approved implementation bootstrap
+**Status:** Engineering principles retained; active I1 profile accepted in ADR-0009
 
 **Applies to:** source, tests, scripts, package manifests, generated-code inputs,
 and source-level changes
 
-**Current enforcement:** `python3 scripts/verify-retirement.py`, its self-tests, code review and repository `AGENTS.md`.
+**Current enforcement:** retirement and Foundation verifiers with self-tests, `pnpm check`, `pnpm test`, `pnpm build`, code review and repository `AGENTS.md`.
 
-[ADR-0007](../adr/0007-git-reference-and-documentation-phase.md) scopes former package layout, NodeNext and pnpm rules below to the restored reference. The active repository is documentation-only. General principles apply to maintenance; they do not authorize product implementation or settle the next layout.
+[ADR-0007](../adr/0007-git-reference-and-documentation-phase.md) scopes the former fixed package layout and checks below to the restored reference. [ADR-0009](../adr/0009-ads-kernel-implementation-bootstrap.md) defines the new single-package I1 implementation, public module barrels, pinned toolchain and its own checks. General engineering principles still apply; the former package graph is not restored.
 
 ## 1. Purpose and language
 
@@ -303,7 +303,7 @@ specification failures, and TypeScript errors. Literal intent still requires
 review because a static rule cannot reliably distinguish every domain value
 from ordinary syntax.
 
-For the active documentation phase, run `python3 scripts/verify-retirement.py` and `python3 scripts/verify-retirement.py --self-test`. These are retirement/documentation checks. Old pnpm checks are not applicable here and are not reported as passing. Product checks return with an approved implementation-bootstrap ADR.
+For the active I1 profile, run the retirement and Foundation verifiers with their self-tests, then `pnpm check`, `pnpm test`, and `pnpm build`. These are the new profile's source-boundary, strict-type, runtime and emit checks. They do not rerun or inherit the retired product suite. Preserve the snapshot/phase boundaries and verify real user failure/recovery behavior in addition to source structure.
 
 ## 10. Public practice references
 

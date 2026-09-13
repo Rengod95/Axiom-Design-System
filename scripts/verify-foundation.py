@@ -107,6 +107,9 @@ def section(text: str, heading: str) -> str:
 
 
 def audit(root: Path, check_hashes: bool = True, check_subjects: bool = True) -> dict:
+    # Windows TEMP may use an 8.3 alias while resolved document paths use the
+    # long name. Compare all paths against the same canonical repository root.
+    root = root.resolve()
     checks = []
     def check(name: str, condition: bool, detail=None) -> None:
         require(condition, name)
@@ -269,6 +272,12 @@ def self_test(root: Path, refreshed_qa: dict | None = None) -> list[str]:
             for filename in ("README.md", "AGENTS.md", "LICENSE", ".gitignore"):
                 shutil.copyfile(root / filename, candidate / filename)
             shutil.copytree(root / "scripts", candidate / "scripts")
+            for directory in ("modules", "apps"):
+                if (root / directory).exists():
+                    shutil.copytree(root / directory, candidate / directory)
+            for filename in ("package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"):
+                if (root / filename).exists():
+                    shutil.copyfile(root / filename, candidate / filename)
             if (root / ".github").is_dir():
                 shutil.copytree(root / ".github", candidate / ".github")
             if refreshed_qa is not None:
@@ -332,7 +341,8 @@ def self_test(root: Path, refreshed_qa: dict | None = None) -> list[str]:
             "Fence close parser fixture failed")
     require(anchors('`<a id="inline-example"></a>`\n<!-- <a id="comment-example"></a> -->') == set(),
             "Literal HTML anchor parser fixture failed")
-    verified.extend(["heading-slug-collisions", "fence-close-with-info", "literal-html-anchors"])
+    audit(root / "docs" / "..", check_subjects=refreshed_qa is None)
+    verified.extend(["heading-slug-collisions", "fence-close-with-info", "literal-html-anchors", "canonical-root-alias"])
     return verified
 
 

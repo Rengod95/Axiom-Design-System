@@ -38,7 +38,7 @@
 - **판정할 증거:** CSP·표현 완전성·schema diff·bundle·동적 확장 제한.
 - **결정 시점·책임:** I1 문서 format 고정 전 · 문법 책임자.
 - **실패 시 처리:** 공개 교환 schema와 의미 validator 분리 유지.
-- **현재 상태:** 미실증. 책임 문서는 [SYN02](../syntax/project-documents-and-identity.md)이다.
+- **현재 상태:** [ADR-0010](../../adr/0010-source-preserving-draft-authoring.md)에 따른 공통 DocumentEnvelope·Ajv 8.20.0 사전 생성 검사의 [부분 실증](../../implementation/schema-selection-evidence.md)을 확보했다. 전체 ADS 도메인 표현·공개 타입 생성·실제 브라우저 측정은 남아 있어 SEL04 전체 선택은 미완료다. 책임 문서는 [SYN02](../syntax/project-documents-and-identity.md)이다.
 
 ## SEL05 · 문서 저장·협업 준비
 
@@ -212,6 +212,8 @@
 - **현재 상태:** 미실증. 책임 문서는 [BRD02](../brand/assets-and-provenance.md)이다.
 
 ## 선택 결과 양식
+
+SEL04는 [공통 문서 envelope의 첫 실증](../../implementation/schema-selection-evidence.md)을 확보했다. ADR-0010의 Ajv 8.20.0 사전 생성 검사에 한정하며, 전체 ADS 도메인 표현·공개 타입 생성·실제 브라우저 측정은 남아 있다. 전체 선택 완료로 표시하지 않는다.
 
 각 결과는 후보 version·license·설치 조건, 동일 입력 corpus·장비, 구현 추가량·회피 코드, 성능·정확성·접근성·복구 결과, 비용, 잔여 제한, 선택 이유·기각 이유, 승인자, source/evidence hashes를 포함한다. 실패한 후보의 측정값을 삭제하지 않는다.
 

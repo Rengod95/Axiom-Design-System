@@ -24,6 +24,11 @@ EXPECTED_FILE_COUNT = 442
 EXPECTED_REMOVED_COUNT = 432
 SNAPSHOT_PATH = "reference/pre-studio/snapshot.json"
 VERIFIER_PATH = "scripts/verify-retirement.py"
+IMPLEMENTATION_PROFILE = "docs/implementation/ads-kernel-profile.json"
+IMPLEMENTATION_ROOTS = {"modules/ads-core", "modules/local-store", "apps/cli"}
+IMPLEMENTATION_ROOT_FILES = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"}
+IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs"}
+APPROVED_REPLACEMENTS = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json"}
 RETIRED_DIRECTORIES = {"packages", "spec", "fixtures", "tokens"}
 UNCHANGED_PATHS = {"LICENSE", ".gitignore"}
 REVISED_PATHS = {
@@ -55,7 +60,9 @@ def require(condition: bool, message: str) -> None:
 def git_output(repository: Path, *arguments: str) -> bytes:
     """Read the repository's existing Git objects; never fetch or mutate refs."""
     result = subprocess.run(
-        ["git", "-C", str(repository), *arguments], capture_output=True, check=False
+        # Git archive can apply host newline settings. Reference verification is
+        # against blob bytes, independent of a contributor's Windows defaults.
+        ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "-C", str(repository), *arguments], capture_output=True, check=False
     )
     require(result.returncode == 0,
             f"Git object read failed: {' '.join(arguments)}. "
@@ -67,8 +74,12 @@ def git_output(repository: Path, *arguments: str) -> bytes:
 def active_files(root: Path) -> list[Path]:
     """Enumerate checkout files without traversing Git metadata or symlinks."""
     files = []
+    profile = implementation_profile(root)
     for directory, names, filenames in os.walk(root):
-        names[:] = [name for name in names if name != ".git"]
+        ignored = {".git"}
+        if profile and Path(directory) == root:
+            ignored |= {"node_modules", "dist", "coverage"}
+        names[:] = [name for name in names if name not in ignored]
         for name in names:
             path = Path(directory) / name
             require(not path.is_symlink(), f"Directory symlink outside phase policy: {path}")
@@ -79,6 +90,38 @@ def active_files(root: Path) -> list[Path]:
             require(not path.is_symlink(), f"File symlink outside phase policy: {path}")
             files.append(path)
     return sorted(files)
+
+
+def implementation_profile(root: Path) -> dict | None:
+    """Recognize only the explicitly approved bounded bootstrap profile."""
+    path = root / IMPLEMENTATION_PROFILE
+    if not path.exists():
+        return None
+    profile = json.loads(path.read_text(encoding="utf-8"))
+    require(profile.get("kind") == "axiom-implementation-profile" and profile.get("status") == "ACCEPTED",
+            "Unapproved implementation profile")
+    require(profile.get("phase") == "I1_DOCUMENT_KERNEL", "Unknown implementation phase")
+    require(set(profile.get("allowedSourceRoots", [])) == IMPLEMENTATION_ROOTS,
+            "Unapproved implementation source roots")
+    require(set(profile.get("allowedRootFiles", [])) == IMPLEMENTATION_ROOT_FILES,
+            "Unapproved implementation root files")
+    require(set(profile.get("allowedMaintenanceFiles", [])) == IMPLEMENTATION_SCRIPTS,
+            "Unapproved implementation maintenance files")
+    require(set(profile.get("reintroducedRetiredPaths", [])) == APPROVED_REPLACEMENTS,
+            "Unapproved retired path replacement")
+    require(profile.get("adr") == "docs/adr/0009-ads-kernel-implementation-bootstrap.md",
+            "Implementation bootstrap ADR mismatch")
+    require("Status: ACCEPTED" in (root / profile["adr"]).read_text(encoding="utf-8"),
+            "Implementation bootstrap ADR not accepted")
+    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md"]
+            and "Status: ACCEPTED" in (root / profile["extensionAdrs"][0]).read_text(encoding="utf-8"),
+            "Source authoring extension ADR not accepted")
+    require(profile.get("approval") == "docs/decisions/axiom-foundation-baseline-approval.json",
+            "Implementation approval path mismatch")
+    approval = json.loads((root / profile["approval"]).read_text(encoding="utf-8"))
+    require(approval.get("fullDocumentationApproved") is True and approval.get("newImplementationAuthorized") is True,
+            "Implementation authorization missing")
+    return profile
 
 
 def read_inventory(root: Path, repository: Path) -> tuple[dict, dict]:
@@ -152,11 +195,17 @@ def restore_and_verify(repository: Path, records: dict) -> int:
 
 def verify_active_tree(root: Path, records: dict) -> tuple[int, int]:
     """Reject restored product paths and broken links while permitting planning docs."""
+    profile = implementation_profile(root)
+    replacements = APPROVED_REPLACEMENTS if profile else set()
     for directory in RETIRED_DIRECTORIES:
         require(not (root / directory).exists(), f"Retired directory resurrected: {directory}")
     for path, record in records.items():
         if record["disposition"] == "remove-from-active":
-            require(not (root / path).exists(), f"Retired path resurrected: {path}")
+            if path in replacements and (root / path).is_file():
+                require(hashlib.sha256((root / path).read_bytes()).hexdigest() != record["sha256"],
+                        f"Frozen manifest resurrected instead of approved replacement: {path}")
+            else:
+                require(not (root / path).exists(), f"Retired path resurrected: {path}")
         elif record["disposition"] == "retain-unchanged":
             require((root / path).is_file(), f"Preserved legal/config file missing: {path}")
             require(hashlib.sha256((root / path).read_bytes()).hexdigest() == record["sha256"],
@@ -168,8 +217,12 @@ def verify_active_tree(root: Path, records: dict) -> tuple[int, int]:
     for path in files:
         relative = path.relative_to(root).as_posix()
         permitted_document = relative.startswith("docs/") and path.suffix in {".md", ".json"}
-        require(relative in FIXED_ACTIVE_PATHS or permitted_document,
-                f"Unapproved active file in documentation phase: {relative}")
+        permitted_implementation = bool(profile) and (
+            relative in IMPLEMENTATION_ROOT_FILES | IMPLEMENTATION_SCRIPTS or
+            any(relative.startswith(prefix + "/") for prefix in IMPLEMENTATION_ROOTS)
+            and path.suffix in {".ts", ".json", ".md"})
+        require(relative in FIXED_ACTIVE_PATHS or permitted_document or permitted_implementation,
+                f"Unapproved active file for current phase: {relative}")
         if path.suffix != ".md":
             continue
         prose = FENCED_CODE.sub("", path.read_text(encoding="utf-8"))
@@ -190,12 +243,16 @@ def verify(root: Path, repository: Path) -> dict:
     document, records = read_inventory(root, repository)
     restored = restore_and_verify(repository, records)
     file_count, links = verify_active_tree(root, records)
+    replacements = [path for path in APPROVED_REPLACEMENTS if implementation_profile(root)
+                    and path in records and records[path]["disposition"] == "remove-from-active"
+                    and (root / path).is_file()]
     return {
         "snapshotCommit": document["commit"], "snapshotFilesVerified": len(records),
-        "archiveFilesRestoredAndVerified": restored, "retiredPathsAbsent": EXPECTED_REMOVED_COUNT,
+        "archiveFilesRestoredAndVerified": restored, "retiredPathsAbsent": EXPECTED_REMOVED_COUNT - len(replacements),
+        "approvedReplacementPathsPresent": sorted(replacements),
         "activeFilesChecked": file_count, "localLinksChecked": links,
         "preservedFilesUnchanged": sorted(UNCHANGED_PATHS),
-        "scope": "retirement and documentation integrity; not product tests",
+        "scope": "frozen reference, approved phase boundaries and document integrity; not product tests",
     }
 
 
@@ -203,6 +260,8 @@ def run_self_tests(root: Path, repository: Path) -> list[str]:
     """Prove corruption, source resurrection and broken links are actually rejected."""
     verified = []
     cases = ["snapshot-digest-corruption", "retired-package-resurrection", "broken-document-link", "new-product-source"]
+    if implementation_profile(root):
+        cases += ["unapproved-profile-root", "missing-implementation-authorization", "frozen-manifest-resurrection"]
     for case in cases:
         with tempfile.TemporaryDirectory(prefix="axiom-retirement-negative-") as directory:
             candidate = Path(directory)
@@ -225,6 +284,21 @@ def run_self_tests(root: Path, repository: Path) -> list[str]:
                 with (candidate / "README.md").open("a") as stream:
                     stream.write("\n[Broken fixture](docs/does-not-exist.md)\n")
                 expected_message = "Broken local link"
+            elif case == "unapproved-profile-root":
+                path = candidate / IMPLEMENTATION_PROFILE
+                document = json.loads(path.read_text(encoding="utf-8"))
+                document["allowedSourceRoots"].append("modules/unapproved")
+                path.write_text(json.dumps(document), encoding="utf-8")
+                expected_message = "Unapproved implementation source roots"
+            elif case == "missing-implementation-authorization":
+                path = candidate / "docs/decisions/axiom-foundation-baseline-approval.json"
+                document = json.loads(path.read_text(encoding="utf-8"))
+                document["newImplementationAuthorized"] = False
+                path.write_text(json.dumps(document), encoding="utf-8")
+                expected_message = "Implementation authorization missing"
+            elif case == "frozen-manifest-resurrection":
+                (candidate / "package.json").write_bytes(git_output(repository, "show", SNAPSHOT_COMMIT + ":package.json"))
+                expected_message = "Frozen manifest resurrected"
             else:
                 path = candidate / "src/unapproved.ts"
                 path.parent.mkdir(parents=True)
