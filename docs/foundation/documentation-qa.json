@@ -2,7 +2,7 @@
   "kind": "foundation-documentation-qa",
   "status": "PASS",
   "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
-  "verifiedAt": "2026-09-13T05:46:25.462503+00:00",
+  "verifiedAt": "2026-09-13T06:11:31.442064+00:00",
   "checkerProvenance": "scripts/verify-foundation.py",
   "counts": {
     "documents": 56,
@@ -13,9 +13,9 @@
     "queries": 10,
     "commands": 52,
     "diagnostics": 30,
-    "localLinks": 1000,
+    "localLinks": 1023,
     "fragments": 129,
-    "checks": 2095
+    "checks": 2118
   },
   "errors": [],
   "checks": [
@@ -2856,6 +2856,21 @@
     },
     {
       "name": "local link: docs/adr/0008-foundation-review-and-reproducible-checks.md → ../foundation/operations/development-and-maintenance.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0009-ads-kernel-implementation-bootstrap.md → ../foundation/audits/completeness-review.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0009-ads-kernel-implementation-bootstrap.md → ../decisions/axiom-foundation-baseline-approval.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/adr/0009-ads-kernel-implementation-bootstrap.md → ../implementation/ads-kernel-profile.json",
       "passed": true,
       "detail": null
     },
@@ -8375,6 +8390,81 @@
       "detail": null
     },
     {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../adr/0009-ads-kernel-implementation-bootstrap.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → kernel-quickstart.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../modules/ads-core/src/index.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../modules/local-store/src/index.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../.github/workflows/quality.yml",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../modules/ads-core/test/command-service.test.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../modules/ads-core/test/json-and-documents.test.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../modules/local-store/test/file-store.test.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../apps/cli/test/cli.test.ts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../scripts/check-implementation.mjs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../scripts/verify-foundation.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../../scripts/verify-retirement.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-evidence.md → ../foundation/operations/development-and-maintenance.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-quickstart.md → ../adr/0009-ads-kernel-implementation-bootstrap.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/implementation/kernel-quickstart.md → ads-kernel-profile.json",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/maintenance/pre-studio-retirement.md → ../adr/0007-git-reference-and-documentation-phase.md",
       "passed": true,
       "detail": null
@@ -8396,6 +8486,11 @@
     },
     {
       "name": "local link: docs/README.md → decisions/axiom-foundation-baseline-approval.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → adr/0009-ads-kernel-implementation-bootstrap.md",
       "passed": true,
       "detail": null
     },
@@ -8430,6 +8525,16 @@
       "detail": null
     },
     {
+      "name": "local link: docs/README.md → implementation/kernel-quickstart.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/README.md → implementation/kernel-evidence.md",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/README.md → adr/0006-product-reset-and-reference-lifecycle.md",
       "passed": true,
       "detail": null
@@ -8455,14 +8560,24 @@
       "detail": null
     },
     {
+      "name": "local link: docs/README.md → implementation/ads-kernel-profile.json",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "local link: docs/standards/source-code-and-module-structure.md → ../adr/0007-git-reference-and-documentation-phase.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local link: docs/standards/source-code-and-module-structure.md → ../adr/0009-ads-kernel-implementation-bootstrap.md",
       "passed": true,
       "detail": null
     },
     {
       "name": "all documentation JSON parses with unique keys",
       "passed": true,
-      "detail": 18
+      "detail": 19
     },
     {
       "name": "unique queries",
@@ -10809,5 +10924,23 @@
       "sha256": "35cc6a249f40e896b57ce6e89939a6dc69a9eb6f258915fe2fde1edabf8214cb"
     }
   ],
-  "subjectPolicy": "QA excludes itself and manifest to avoid self-referential hashes. Historical QA is preserved separately at its original commit."
+  "subjectPolicy": "QA excludes itself and manifest to avoid self-referential hashes. Historical QA is preserved separately at its original commit.",
+  "negativeCasesRejected": [
+    "missing-body",
+    "body-drift",
+    "broken-anchor",
+    "fenced-code-anchor",
+    "dependency-cycle",
+    "duplicate-json-key",
+    "non-json-constant",
+    "duplicate-followup",
+    "unknown-followup-owner",
+    "missing-command-projection",
+    "command-field-drift",
+    "field-table-drift",
+    "annex-drift",
+    "heading-slug-collisions",
+    "fence-close-with-info",
+    "literal-html-anchors"
+  ]
 }

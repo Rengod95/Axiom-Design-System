@@ -269,6 +269,12 @@ def self_test(root: Path, refreshed_qa: dict | None = None) -> list[str]:
             for filename in ("README.md", "AGENTS.md", "LICENSE", ".gitignore"):
                 shutil.copyfile(root / filename, candidate / filename)
             shutil.copytree(root / "scripts", candidate / "scripts")
+            for directory in ("modules", "apps"):
+                if (root / directory).exists():
+                    shutil.copytree(root / directory, candidate / directory)
+            for filename in ("package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"):
+                if (root / filename).exists():
+                    shutil.copyfile(root / filename, candidate / filename)
             if (root / ".github").is_dir():
                 shutil.copytree(root / ".github", candidate / ".github")
             if refreshed_qa is not None:

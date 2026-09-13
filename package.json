@@ -1,0 +1,19 @@
+{
+  "name": "@axiom/document-kernel-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@11.19.0",
+  "engines": { "node": "24.19.0" },
+  "scripts": {
+    "check": "tsc --noEmit && node scripts/check-implementation.mjs",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "node scripts/run-tests.mjs",
+    "axiom": "node apps/cli/src/main.ts"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.4",
+    "typescript": "5.9.3"
+  }
+}

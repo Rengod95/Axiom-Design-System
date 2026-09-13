@@ -11,7 +11,7 @@
   "fullDocumentationApproved": true,
   "newImplementationAuthorized": true,
   "prNumber": 25,
-  "prMergeStatus": "PENDING_FINAL_CI_AND_EXACT_HEAD_MERGE",
+  "prMergeStatus": "MERGED",
   "runtimeSupportApproved": false,
   "historicalDecisionRecordsModified": false,
   "subjects": [
@@ -239,5 +239,9 @@
       "path": "docs/foundation/operations/development-and-maintenance.md",
       "sha256": "ad99a314c935a38d6d4612c03f5ec618c302cae49159c85327664c0c217628da"
     }
-  ]
+  ],
+  "reviewedCommit": "35916efcbe6390149446d826d8018fba04a2a180",
+  "mergeCommit": "04c762c384bf41168a843649c542f5d69c04734b",
+  "qualityGateRun": 34741226218,
+  "implementationBootstrapAdr": "docs/adr/0009-ads-kernel-implementation-bootstrap.md"
 }
