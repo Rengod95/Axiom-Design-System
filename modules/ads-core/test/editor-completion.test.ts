@@ -4,6 +4,16 @@ import { canonicalJson, createStudioStarter, FOUNDATION_STARTER_DOMAINS, foundat
 import type { FoundationDocument, JsonObject, ProjectSnapshot, StudioMotionTrack } from "../src/index.ts";
 import { resolveExtendedStudioStyle } from "../src/studio-style-values.ts";
 
+function opaqueContrast(left: JsonObject, right: JsonObject): number {
+  const luminance = (color: JsonObject) => {
+    assert.equal(color.colorSpace, "srgb"); assert.equal(color.alpha, 1);
+    const [r, g, b] = (color.components as number[]).map(channel => channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4));
+    return r! * 0.2126 + g! * 0.7152 + b! * 0.0722;
+  };
+  const first = luminance(left), second = luminance(right);
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+}
+
 const OPTIONS = { domains: FOUNDATION_STARTER_DOMAINS.map(domain => domain.id), accent: "#245dc5", density: "compact" as const, fontFamily: "SUIT" };
 function fixture(kit = false) {
   let count = 0; const id = () => `completion.${++count}`, documents = createStudioStarter("project.completion", kit ? OPTIONS : undefined);
@@ -35,6 +45,55 @@ test("adopting starter is additive and repeatable; name/type conflicts reject th
   const repeated = planFoundationEdit(added.project, { kind: "template-apply", ...OPTIONS, accent: "#c52c40" }, id); assert.equal(repeated.valid, true, explain(repeated)); assert.deepEqual((repeated.project.documents["foundation.system"]!.document as FoundationDocument).tokens, tokens);
   const collision = planFoundationEdit(project, { kind: "token-create", name: "color.neutral.0", type: "number", value: { literal: 42 } }, id);
   const rejected = planFoundationEdit(collision.project, { kind: "template-apply", ...OPTIONS }, id); assert.equal(rejected.valid, false); assert.equal(rejected.updates.length, 0); assert.deepEqual(rejected.project, collision.project);
+});
+
+test("new fluorescent starters resolve readable action foregrounds in both actual light and dark themes", () => {
+  const documents = createStudioStarter("project.contrast", { ...OPTIONS, accent: "#8DFC52" });
+  const project: ProjectSnapshot = { id: "project.contrast", name: "Contrast", revision: "initial", documents: Object.fromEntries(documents.map(document => [document.id, { document, originalText: canonicalJson(document), sourceUri: "memory:contrast", validation: "envelope-only", validationProfile: STUDIO_PROFILE, diagnostics: [] }])) };
+  for (const themeSetId of ["theme.light", "theme.dark"]) {
+    const report = inspectStudioProject(project, { themeSetId }); assert.equal(report.valid, true, explain(report));
+    const background = report.foundation.tokens.find(token => token.name === "action.primary.background")!, foreground = report.foundation.tokens.find(token => token.name === "action.primary.foreground")!;
+    assert.ok(opaqueContrast(background.value as JsonObject, foreground.value as JsonObject) >= 4.5, themeSetId);
+    const neutral = report.foundation.tokens.find(token => token.name === "color.neutral.900")!;
+    assert.deepEqual(foreground.value, neutral.value, themeSetId);
+    assert.deepEqual(report.foundation.tokens.find(token => token.id === "token.onAccent")!.value, neutral.value, "New sample button follows the semantic foreground alias");
+  }
+});
+
+test("starter action foregrounds use the best generated neutral for each generated shade across custom accents", () => {
+  const accents = ["#8DFC52", "#000000", "#ffffff", "#5b50d6", "#ffff00", "#00ffff", "#ff00ff", "#ff0000", "#00ff00", "#0000ff", ...Array.from({ length: 256 }, (_, value) => `#${value.toString(16).padStart(2, "0").repeat(3)}`)];
+  let white = 0, dark = 0, belowThreshold = 0;
+  for (const accent of accents) {
+    const tokens = foundationStarterTokens({ domains: ["color"], accent }), byName = new Map(tokens.map(token => [token.name, token]));
+    const foreground = byName.get("action.primary.foreground")!, background = byName.get("action.primary.background")!;
+    for (const theme of ["alias", "darkAlias"] as const) {
+      const backgroundValue = byName.get(background[theme]!)!.literal as JsonObject, chosen = foreground[theme]!;
+      assert.ok(chosen === "color.neutral.0" || chosen === "color.neutral.900");
+      const achieved = opaqueContrast(backgroundValue, byName.get(chosen)!.literal as JsonObject);
+      const candidates = ["color.neutral.0", "color.neutral.900"].map(name => opaqueContrast(backgroundValue, byName.get(name)!.literal as JsonObject));
+      assert.equal(achieved, Math.max(...candidates), `${accent} ${theme}`);
+      if (Math.max(...candidates) >= 4.5) assert.ok(achieved >= 4.5); else belowThreshold++;
+      if (chosen === "color.neutral.0") white++; else dark++;
+    }
+  }
+  assert.ok(white && dark, "Neither light nor dark foreground is hard-coded by theme");
+  assert.ok(belowThreshold, "The fixed neutral palette does not pretend all custom accents satisfy AA");
+});
+
+test("reapplying starters preserves saved legacy foreground aliases and dark overrides", () => {
+  const { project, id } = fixture(true), foundation = project.documents["foundation.system"]!.document as FoundationDocument;
+  const byName = new Map(foundation.tokens.map(token => [token.name, token]));
+  const foreground = byName.get("action.primary.foreground")!;
+  foreground.value = { ref: { id: byName.get("color.neutral.0")!.id, expectedKind: "token" } };
+  const axis = foundation.themeAxes.find(axis => axis.contexts.includes("dark"))!;
+  axis.overrides!.dark![foreground.id] = { ref: { id: byName.get("color.neutral.950")!.id, expectedKind: "token" } };
+  project.documents[foundation.id]!.currentText = canonicalJson(foundation);
+  const beforeTokens = canonicalJson(foundation.tokens), beforeAxes = canonicalJson(foundation.themeAxes), beforeProject = canonicalJson(project);
+  const applied = planFoundationEdit(project, { kind: "template-apply", ...OPTIONS, accent: "#8DFC52" }, id);
+  assert.equal(applied.valid, true, explain(applied));
+  const saved = applied.project.documents[foundation.id]!.document as FoundationDocument;
+  assert.equal(canonicalJson(saved.tokens), beforeTokens); assert.equal(canonicalJson(saved.themeAxes), beforeAxes);
+  assert.equal(canonicalJson(project), beforeProject, "Planning never mutates saved source");
 });
 
 test("custom parts nest without cycles, keep order and exposed slots, and duplicate owned identities", () => {

@@ -1,0 +1,138 @@
+/* Foundation material language: one drawing per domain, scales before roles. */
+.domain-directory .blueprint-domain-card { position: relative; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px 12px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb,var(--surface) 45%,transparent); overflow: hidden; }
+.domain-directory .blueprint-domain-card:hover { background: color-mix(in srgb,var(--surface-hover) 64%,transparent); border-color: var(--line-strong); }
+.domain-directory .blueprint-domain-card > .domain-blueprint { display: block; grid-column: 1 / -1; width: 100%; height: auto; max-height: 170px; color: var(--ink-secondary); }
+.domain-blueprint .blueprint-grid { opacity: .13; }
+.domain-blueprint .blueprint-guides { stroke: currentColor; stroke-width: .65; opacity: .28; }
+.domain-blueprint .blueprint-object { stroke: currentColor; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.domain-blueprint .blueprint-construction,.domain-blueprint .blueprint-projection { opacity: .38; stroke-width: .65; }
+.domain-blueprint .blueprint-type { font: 88px/1 var(--font-ui); stroke-width: .65; letter-spacing: -.04em; }
+.blueprint-domain-card .domain-directory-label { grid-column: 1; }
+.blueprint-domain-card .domain-directory-label small { max-width: 38ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+.blueprint-domain-card .domain-totals { grid-column: 2; align-self: center; text-align: right; }
+.blueprint-domain-card .domain-totals strong { font-size: 11px; color: var(--ink-secondary); font-weight: 450; }
+.blueprint-domain-card .domain-totals small { font-size: 10px; }
+.domain-directory .blueprint-domain-card > .domain-directory-arrow { display: none; }
+
+.blueprint-atlas { display: flex; flex-direction: column; gap: 38px; min-width: 0; container-type: inline-size; }
+.blueprint-atlas .atlas-tier { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
+.atlas-tier-heading { display: flex; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.atlas-tier-heading h2 { margin: 0; font-size: 18px; line-height: 24px; letter-spacing: -.025em; font-weight: 550; }
+.atlas-tier-heading p { margin: 0; font-size: 12px; color: var(--ink-secondary); }
+.atlas-tier-semantic > .atlas-tier-heading h2 { color: var(--accent-ink); }
+.blueprint-atlas .material-group { min-width: 0; }
+.blueprint-atlas .material-group > header { margin-bottom: 10px; }
+.blueprint-atlas .material-group h3 { font-size: 13px; font-weight: 500; letter-spacing: -.01em; }
+.blueprint-atlas .material-caption { display: flex; width: 100%; min-width: 0; flex-direction: column; gap: 1px; }
+.blueprint-atlas .material-name { display: block; width: 100%; padding-inline: 0; font-size: 12px; line-height: 18px; }
+.blueprint-atlas .material-value { display: block; width: 100%; padding-inline: 0; font-size: 10px; line-height: 16px; color: var(--ink-secondary); }
+.blueprint-atlas .material-token { padding: 0; border-radius: var(--radius-control,12px); }
+.blueprint-atlas .material-token:hover,.blueprint-atlas .material-token.selected { background: transparent; }
+.blueprint-atlas .material-token.selected > .material-select { background: color-mix(in srgb,var(--surface-active) 75%,transparent); }
+.blueprint-atlas .material-token > .material-select { border-radius: var(--radius-control,12px); }
+.blueprint-atlas .material-select:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.blueprint-atlas .material-meta { padding: 4px 0; }
+.blueprint-atlas .material-color { --swatch-size: clamp(54px,calc((100cqw - 36px) / 10),128px); grid-template-columns: repeat(var(--specimen-count),minmax(52px,1fr)); max-width: calc(var(--specimen-count) * var(--swatch-size) + (var(--specimen-count) - 1) * 4px); gap: 4px; overflow-x: auto; padding: 3px; margin: -3px; }
+.blueprint-atlas .material-color .material-select { padding-bottom: 2px; gap: 2px; }
+.blueprint-atlas .material-color .token-visual { width: 100%; min-width: 0; height: auto; aspect-ratio: 1; margin-bottom: 4px; border-radius: var(--radius-control,12px); }
+.blueprint-atlas .material-color .material-caption { padding-inline: 3px; }
+.blueprint-atlas .material-color .material-value { font-size: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.blueprint-atlas .material-color .material-name { font-size: 11px; }
+
+/* Every length starts at one persistent vertical origin; rows are not cards. */
+.shared-ruler-heading { display: flex; justify-content: space-between; gap: 12px; font-size: 10px; color: var(--ink-secondary); margin: 4px 0 12px; }
+.blueprint-atlas .atlas-ruler-specimens { --ruler-label: 128px; position: relative; display: flex; flex-direction: column; gap: 0; padding-block: 5px; }
+.atlas-ruler-specimens::before { content: ""; position: absolute; left: calc(var(--ruler-label) + 16px); top: 0; bottom: 0; width: 1px; background: var(--ink-tertiary); opacity: .65; pointer-events: none; }
+.blueprint-atlas .atlas-ruler-specimens .material-select { display: grid; grid-template-columns: var(--ruler-label) minmax(0,1fr) 70px; gap: 16px; align-items: center; min-height: 48px; padding: 6px 0; border-radius: 0; }
+.atlas-ruler-specimens .material-caption { display: contents; }
+.atlas-ruler-specimens .material-name { grid-row: 1; grid-column: 1; text-align: right; padding-right: 1px; }
+.atlas-ruler-specimens .material-value { grid-row: 1; grid-column: 3; font-size: 11px; white-space: nowrap; }
+.shared-measure-track { position: relative; display: flex; align-items: center; grid-row: 1; grid-column: 2; width: 100%; height: 32px; }
+.shared-measure-bar { display: block; height: 26px; min-width: 0; background: color-mix(in srgb,var(--ink-secondary) 18%,transparent); border-block: 1px solid color-mix(in srgb,var(--ink-secondary) 18%,transparent); border-right: 1px solid var(--ink-tertiary); border-radius: 0; }
+.shared-measure-bar.negative { background: transparent; border-style: dashed; }
+.measure-endpoint { position: absolute; top: 50%; width: 4px; height: 4px; border-radius: 50%; transform: translate(-2px,-2px); background: var(--ink-secondary); }
+.atlas-ruler-specimens .material-select:hover .shared-measure-bar,.atlas-ruler-specimens .selected .shared-measure-bar { background: color-mix(in srgb,var(--accent-ink) 20%,transparent); border-color: color-mix(in srgb,var(--accent-ink) 50%,transparent); }
+.atlas-ruler-specimens .material-meta { position: absolute; right: 0; transform: translateY(-30px); }
+
+/* Type is the artifact: real family, weight, size, leading and tracking. */
+.blueprint-atlas .atlas-typography-specimens { display: flex; flex-direction: column; gap: 0; }
+.blueprint-atlas .atlas-typography-specimens .material-select { display: grid; grid-template-columns: 150px minmax(0,1fr); align-items: center; gap: 28px; padding: 22px 0; border-radius: 0; border-bottom: 1px solid var(--line); }
+.atlas-typography-specimens .material-caption { grid-column: 1; grid-row: 1; align-self: start; padding-top: 4px; gap: 6px; }
+.atlas-typography-specimens .material-name { font-size: 12px; font-weight: 500; }
+.atlas-typography-specimens .material-value { white-space: normal; overflow-wrap: anywhere; font: 10px/16px var(--font-ui); max-width: 140px; }
+.blueprint-atlas .atlas-typography-specimens .token-visual { grid-column: 2; grid-row: 1; justify-content: flex-start; display: block; padding: 0; min-height: 0; height: auto; width: 100%; margin: 0; background: transparent; border-radius: 0; overflow: auto; }
+.blueprint-atlas .editorial-type { display: block; width: max-content; max-width: none; overflow: visible; padding: 0; line-height: 1.3; color: var(--ink); }
+.atlas-typography-specimens .material-meta { padding: 5px 0; }
+
+/* Stroke is a line, elevation is an object on a shared plane. */
+.blueprint-atlas .atlas-border-specimens { display: flex; flex-direction: column; gap: 0; }
+.blueprint-atlas .atlas-border-specimens .material-select { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 28px; align-items: center; padding: 10px 0; border-radius: 0; }
+.atlas-border-specimens .material-caption { grid-row: 1; grid-column: 1; }
+.blueprint-atlas .atlas-border-specimens .token-visual { grid-row: 1; grid-column: 2; height: 52px; margin: 0; padding: 0; background: transparent; border-radius: 0; overflow: visible; }
+.visual-border-line { display: block; width: 100%; border: 0; }
+.visual-border-line-svg { display: block; width: 100%; height: 60px; overflow: visible; }
+.blueprint-atlas .atlas-shadow-specimens { gap: 24px; max-width: 760px; padding: 16px; border-radius: var(--radius-control,12px); background: color-mix(in srgb,var(--surface) 76%,var(--ink)); }
+.blueprint-atlas .atlas-shadow-specimens .material-select { gap: 14px; padding: 14px 10px 10px; background: transparent; }
+.blueprint-atlas .atlas-shadow-specimens .token-visual { height: 116px; background: transparent; border-radius: 0; overflow: visible; margin: 0; }
+.blueprint-atlas .atlas-shadow-specimens .visual-shadow { width: 76px; height: 64px; border-radius: 12px; background: var(--ink-tertiary); }
+.blueprint-atlas .atlas-shadow-specimens .material-caption { padding: 0; }
+.blueprint-atlas .atlas-radius-specimens .token-visual { background: transparent; }
+.blueprint-atlas .atlas-radius-specimens .visual-radius { background: color-mix(in srgb,var(--ink-secondary) 12%,transparent); border-color: var(--ink-secondary); }
+
+/* Real dependency edges connect authored source IDs to their consumers. */
+.token-dependency-map { min-width: 0; }
+.dependency-column-labels { display: grid; grid-template-columns: 42% 42%; justify-content: space-between; gap: 16%; color: var(--ink-secondary); font-size: 10px; padding-bottom: 8px; }
+.dependency-map-stage { position: relative; min-height: 64px; isolation: isolate; }
+.dependency-map-edges { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; overflow: visible; fill: var(--ink-tertiary); }
+.dependency-edge { fill: none; stroke: var(--line-strong); stroke-width: 1; }
+.dependency-edge-flow { fill: none; stroke: var(--accent-ink); stroke-width: 1.25; stroke-dasharray: 9 91; stroke-linecap: round; filter: drop-shadow(0 0 2px color-mix(in srgb,var(--accent-ink) 55%,transparent)); animation: dependency-current 3.6s linear infinite; opacity: .75; }
+@keyframes dependency-current { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+.dependency-source,.dependency-target { position: absolute; width: 42%; height: 56px; }
+.dependency-source { left: 0; display: flex; align-items: center; gap: 8px; padding: 7px 9px; text-align: left; background: color-mix(in srgb,var(--surface-subtle) 65%,transparent); border: 1px solid var(--line); border-radius: var(--radius-control,12px); color: var(--ink); }
+.dependency-source > i { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; }
+.dependency-source > span:first-of-type { min-width: 0; }
+.dependency-source strong,.dependency-source small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dependency-source strong { font-size: 11px; line-height: 17px; font-weight: 500; }
+.dependency-source small { font: 9px/15px var(--font-code); color: var(--ink-secondary); }
+.dependency-source-tier { margin-left: auto; font-size: 9px; color: var(--ink-secondary); }
+.dependency-source:hover { background: var(--surface-hover); }
+.dependency-target { right: 0; }
+.blueprint-atlas .dependency-token { height: 56px; background: color-mix(in srgb,var(--surface-subtle) 70%,transparent); border-radius: var(--radius-control,12px); }
+.blueprint-atlas .dependency-token > .material-select { display: grid; grid-template-columns: 30px minmax(0,1fr); align-items: center; gap: 8px; padding: 7px 9px; height: 56px; border-radius: var(--radius-control,12px); }
+.blueprint-atlas .dependency-token .token-visual { width: 30px; height: 30px; min-height: 0; margin: 0; border-radius: 7px; }
+.blueprint-atlas .dependency-token .visual-radius { width: 26px; height: 26px; }
+.dependency-token .visual-radius > span { display: none; }
+.blueprint-atlas .dependency-token .material-name { font-size: 11px; line-height: 17px; }
+.blueprint-atlas .dependency-token .material-value { font-size: 9px; line-height: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dependency-token .material-meta { position: absolute; right: -1px; top: 15px; padding: 0; }
+.dependency-token.selection-mode .material-select { padding-right: 28px; }
+.dependency-role-label { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px; width: 100%; height: 56px; padding: 8px 10px; border: 0; border-radius: var(--radius-control,12px); background: color-mix(in srgb,var(--surface-subtle) 70%,transparent); text-align: left; }
+.dependency-role-label strong { font-size: 11px; font-weight: 500; }
+.dependency-role-label small { font-size: 9px; color: var(--ink-secondary); }
+.specimen-connections { margin-top: 12px; }
+.specimen-connections > summary { font-size: 11px; color: var(--ink-secondary); padding: 6px 0; cursor: pointer; }
+.specimen-connections[open] > summary { margin-bottom: 10px; }
+@media (prefers-reduced-motion: reduce) { .dependency-edge-flow { animation: none !important; stroke-dasharray: none; opacity: .35; filter: none; } }
+@media (max-width: 1100px) {
+  .blueprint-atlas .material-color { grid-template-columns: repeat(var(--specimen-count),minmax(54px,1fr)); }
+  .dependency-source-tier { display: none; }
+  .blueprint-atlas .atlas-typography-specimens .material-select { grid-template-columns: 120px minmax(0,1fr); gap: 18px; }
+}
+@media (max-width: 720px) {
+  .blueprint-atlas .atlas-tier { gap: 22px; }
+  .atlas-tier-heading { gap: 3px; flex-direction: column; }
+  .blueprint-atlas .atlas-ruler-specimens { --ruler-label: 68px; }
+  .blueprint-atlas .atlas-ruler-specimens .material-select { grid-template-columns: var(--ruler-label) minmax(0,1fr) 46px; gap: 10px; }
+  .atlas-ruler-specimens::before { left: calc(var(--ruler-label) + 10px); }
+  .shared-ruler-heading { align-items: flex-start; flex-direction: column; gap: 2px; }
+  .blueprint-atlas .atlas-typography-specimens .material-select { grid-template-columns: minmax(0,1fr); gap: 12px; padding: 18px 0; }
+  .atlas-typography-specimens .material-caption { grid-column: 1; grid-row: 1; gap: 2px; }
+  .atlas-typography-specimens .material-value { max-width: none; }
+  .blueprint-atlas .atlas-typography-specimens .token-visual { grid-column: 1; grid-row: 2; }
+  .blueprint-atlas .atlas-border-specimens .material-select { grid-template-columns: 95px minmax(0,1fr); gap: 14px; }
+  .dependency-source { padding: 6px; gap: 5px; }
+  .dependency-source > i { width: 18px; height: 18px; }
+  .dependency-source strong,.blueprint-atlas .dependency-token .material-name { font-size: 10px; }
+  .blueprint-atlas .dependency-token > .material-select { grid-template-columns: 20px minmax(0,1fr); padding: 6px; gap: 5px; }
+  .blueprint-atlas .dependency-token .token-visual { width: 20px; height: 20px; }
+}

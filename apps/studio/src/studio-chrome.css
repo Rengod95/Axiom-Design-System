@@ -1,0 +1,62 @@
+/* Optical corners: 12px controls, 8px nested details, 16px surfaces; true round tools stay round. */
+:root { --on-accent: #152009; --radius-sm: 8px; --radius-control: 12px; --radius-md: 12px; --radius-panel: 16px; --glass-panel: rgb(250 250 250 / 54%); --glass-header: rgb(250 250 250 / 58%); --glass-raised: rgb(250 250 250 / 80%); --chrome-blur: 32px; }
+:root[data-theme=dark] { --glass-panel: rgb(23 23 23 / 54%); --glass-header: rgb(23 23 23 / 58%); --glass-raised: rgb(32 32 32 / 80%); }
+.app { position: relative; isolation: isolate; background: var(--canvas); }
+.app::before { content: ""; position: fixed; inset: -60px; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 10% 8%,color-mix(in srgb,var(--ink) 10%,transparent),transparent 35%),radial-gradient(ellipse at 98% 78%,color-mix(in srgb,var(--ink) 8%,transparent),transparent 36%),radial-gradient(ellipse at 55% 110%,color-mix(in srgb,var(--accent) 5%,transparent),transparent 48%); }
+.topbar,.sidebar,.inspector,.canvas-toolbar,.statusbar,.mobile-panel-tabs,.foundation-navigation,.selection-actions,.review-strip { backdrop-filter: blur(var(--chrome-blur)) saturate(1.06); -webkit-backdrop-filter: blur(var(--chrome-blur)) saturate(1.06); background-image: none; box-shadow: none; }
+.sidebar,.inspector { background: var(--glass-panel); }
+.topbar,.canvas-toolbar,.statusbar,.foundation-navigation,.selection-actions { background: var(--glass-header); }
+.app :is(.badge,.nav-item,.nav-marker,.section-add-token,.locale-button,.logo-mark),.app :is(.segmented,.choice-control) button,.select-option { border-radius: var(--radius-sm); }
+.app :is(.catalog-card,.domain-material),.select-popup,.dialog,.workbench-dialog,.review-dialog,.export-dialog { border-radius: var(--radius-panel); }
+.app .workspace-nav .nav-item { border-radius: var(--radius-control); }
+.app .button[data-size=sm] { border-radius: var(--radius-sm); }
+.app .sidebar { position: relative; overflow: visible; min-width: 0; }
+.sidebar-scroll { min-height: 0; padding: 6px 8px 12px; }
+.sidebar-section-header { padding: 12px 0 6px 8px; min-height: 36px; }
+.sidebar-section-header .icon-button { width: 28px; height: 28px; min-height: 28px; margin: 0; }
+.sidebar-domains { display: grid; gap: 2px; }
+.sidebar-domain-toggle { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 34px; border: 0; background: transparent; border-radius: var(--radius-sm); padding: 8px; text-align: left; color: var(--ink-secondary); font-size: 12px; }
+.sidebar-domain-toggle:hover { color: var(--ink); background: var(--surface-hover); }
+.sidebar-domain-toggle[aria-expanded=true] { color: var(--ink); }
+.sidebar-domain-toggle > svg { transition: transform 180ms var(--motion-ease); flex-shrink: 0; }
+.sidebar-domain-toggle[aria-expanded=true] > svg { transform: rotate(90deg); }
+.sidebar-domain-toggle small { margin-left: auto; font: 10px/16px var(--font-code); color: var(--ink-tertiary); }
+.sidebar-domain > div { padding-left: 12px; }
+.sidebar-token { margin-bottom: 2px; padding-right: 8px; min-height: 32px; height: auto; }
+.token-name-segments { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.token-name-segments > span { color: var(--ink-secondary); overflow: hidden; text-overflow: ellipsis; font-size: 11px; }
+.token-name-segments > strong { flex-shrink: 0; margin-left: auto; max-width: 65%; overflow: hidden; text-overflow: ellipsis; padding: 1px 5px; background: color-mix(in srgb,var(--ink) 5%,transparent); border-radius: 5px; font: 450 11px/18px var(--font-code); }
+.sidebar-token.active .token-name-segments > strong { background: var(--accent-soft); color: var(--accent-ink); }
+.sidebar-resize { position: absolute; right: -4px; top: 0; bottom: 0; z-index: 30; width: 8px; cursor: col-resize; touch-action: none; outline-offset: -2px; }
+.sidebar-resize span { display: block; position: absolute; left: 3px; top: 0; bottom: 0; width: 2px; opacity: 0; background: var(--accent); transition: opacity 150ms; }
+.sidebar-resize:hover span,.sidebar-resize:focus-visible span,.sidebar-resize:active span { opacity: .75; }
+@media (min-width: 721px) { .app:not([data-sidebar-collapsed=true]) { --sidebar-width: var(--sidebar-user-width,232px); } }
+@media (min-width: 721px) and (max-width: 1100px) { .app:not([data-sidebar-collapsed=true]) { --sidebar-width: min(var(--sidebar-user-width,232px),280px); } }
+.mode-label { margin-left: 5px; font-size: 11px; font-weight: 500; }
+.canvas-viewport .canvas-frame { background: var(--preview-backdrop,var(--surface)); }
+.frame-content .preview-section { color: var(--preview-foreground,var(--ink)); --ink-secondary: color-mix(in srgb,currentColor 80%,transparent); --ink-tertiary: color-mix(in srgb,currentColor 70%,transparent); }
+.frame-content .run-controls { color: var(--ink); background: var(--surface); padding: 12px; border-radius: var(--radius-control); }
+.canvas-toolbar .segmented button { display: flex; align-items: center; }
+.canvas-toolbar .canvas-mode-switch button { width: auto; min-width: 72px; padding-inline: 8px; flex-shrink: 0; justify-content: center; }
+.app .canvas-tools { left: 16px; bottom: 16px; display: flex; gap: 5px; padding: 6px; border: 0; border-radius: 999px; background: var(--glass-raised); backdrop-filter: blur(32px); box-shadow: 0 8px 24px rgb(0 0 0 / 16%); }
+.app .canvas-tools .icon-button { width: 36px; height: 36px; min-height: 36px; flex: 0 0 auto; border-radius: 50%; background: color-mix(in srgb,var(--ink) 5%,transparent); color: var(--ink-secondary); }
+.app .canvas-tools .icon-button[aria-pressed=true] { color: var(--accent-ink); background: var(--accent-soft); }
+.app .canvas-tools .icon-button.active[data-tool-label] { width: 72px; border-radius: 999px; background: var(--accent); color: var(--on-accent); }
+.canvas-tools .icon-button.active[data-tool-label]::after { content: attr(data-tool-label); margin-left: 3px; font-size: 11px; font-weight: 550; }
+.canvas-tools .toolbar-divider { height: 18px; margin-inline: 2px; }
+.app .canvas-zoom { border-radius: 999px; box-shadow: 0 8px 24px rgb(0 0 0 / 16%); padding: 5px; }
+.app .canvas-zoom .icon-button { border-radius: 50%; }
+.canvas-hint { bottom: 76px; left: 20px; right: 20px; text-align: left; pointer-events: none; font-size: 10px; color: var(--ink-tertiary); }
+.studio-tooltip { position: fixed; z-index: 2000; transform: translate(-50%,-100%); max-width: min(280px,calc(100vw - 16px)); padding: 8px 10px; border-radius: 8px; background: var(--ink); color: var(--surface); font: 450 11px/16px var(--font-ui); box-shadow: 0 6px 20px rgb(0 0 0 / 20%); pointer-events: none; text-align: center; }
+.studio-tooltip[data-below=true] { transform: translate(-50%,0); }
+[data-studio-scroll=true] { scrollbar-width: none !important; }
+[data-studio-scroll=true]::-webkit-scrollbar { width: 0; height: 0; }
+.studio-scrollbar { position: fixed; z-index: 1100; touch-action: none; background: transparent; opacity: 0; transition: opacity 180ms; cursor: default; }
+.studio-scrollbar[data-axis=y] { width: 7px; }
+.studio-scrollbar[data-axis=x] { height: 7px; }
+.studio-scrollbar[data-active=true],.studio-scrollbar:hover,.studio-scrollbar:focus-visible { opacity: 1; }
+.studio-scrollbar > span { display: block; width: 100%; height: 100%; border-radius: 999px; background: color-mix(in srgb,var(--ink) 24%,transparent); border: 2px solid transparent; background-clip: padding-box; }
+.studio-scrollbar:hover > span,.studio-scrollbar:focus-visible > span { background-color: color-mix(in srgb,var(--ink) 42%,transparent); }
+@media (max-width: 720px) { .sidebar-resize { display: none; } .app .canvas-tools { bottom: 64px; left: 12px; } .app .canvas-zoom { right: 12px; bottom: 12px; } .canvas-toolbar .breadcrumb { display: none; } .mode-label { font-size: 10px; } .sidebar-domain-toggle { min-height: 40px; } .sidebar-token { min-height: 36px; } }
+@media (prefers-reduced-motion: reduce) { .studio-scrollbar,.sidebar-domain-toggle > svg,.sidebar-resize span { transition: none; } }
+@media (prefers-reduced-transparency: reduce) { .topbar,.sidebar,.inspector,.canvas-toolbar,.statusbar,.mobile-panel-tabs,.foundation-navigation,.selection-actions,.review-strip,.app .canvas-tools,.app .canvas-zoom { background: var(--surface); backdrop-filter: none; } .app::before { display: none; } }

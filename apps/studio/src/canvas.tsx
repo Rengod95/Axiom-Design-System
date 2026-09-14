@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { PointerEvent } from "react";
+import type { CSSProperties, PointerEvent } from "react";
 import type { StudioCategory, StudioComponent } from "../../../modules/ads-core/src/index.ts";
 import { canvasPoint, clampZoom, fitBounds, intersects, snap, unionBounds, zoomAt } from "./canvas-geometry.ts";
 import type { Point, Rect, Viewport } from "./canvas-geometry.ts";
@@ -15,6 +15,8 @@ interface Props {
   selectedIds: string[]; selectedPart: string | null; frames: Record<string, CanvasFrame>;
   onSelect(ids: string[], partId?: string): void; onFrames(frames: Record<string, CanvasFrame>): void;
   onDuplicate(): void; onDelete(): void; disabled: boolean;
+  previewBackground?: string | undefined;
+  previewForeground?: string | undefined;
 }
 type Gesture = { kind: "pan"; point: Point; view: Viewport } | { kind: "marquee"; point: Point; additive: string[] } | { kind: "move" | "resize"; point: Point; originals: Record<string, CanvasFrame> };
 
@@ -134,7 +136,7 @@ export function Canvas(props: Props) {
     if (Object.keys(edited).length && !disabled) onFrames(edited);
   };
   return <div ref={root} className={`canvas-viewport ${tool === "hand" || space ? "hand-tool" : ""}`} data-testid="canvas-viewport" role="region" aria-label={copy(locale, "디자인 캔버스", "Design canvas")} tabIndex={0} onPointerDownCapture={event => { if (tool === "hand" || spaceRef.current || event.button === 1) down(event); }} onPointerDown={down} onPointerMove={move} onPointerUp={finish} onPointerCancel={() => { gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); }}
-    style={grid ? { backgroundImage: "radial-gradient(var(--canvas-dot) 1px, transparent 1px)", backgroundSize: `${24 * view.zoom}px ${24 * view.zoom}px`, backgroundPosition: `${view.x}px ${view.y}px` } : undefined}>
+    style={{ "--preview-backdrop": props.previewBackground, "--preview-foreground": props.previewForeground, ...(grid ? { backgroundImage: "radial-gradient(var(--canvas-dot) 1px, transparent 1px)", backgroundSize: `${24 * view.zoom}px ${24 * view.zoom}px`, backgroundPosition: `${view.x}px ${view.y}px` } : {}) } as CSSProperties}>
     <div className="canvas-world" data-testid="canvas-world" style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.zoom})` }}>
       {components.map(component => {
         const frame = transient[component.id] ?? frames[component.id]; if (!frame) return null;
@@ -155,11 +157,11 @@ export function Canvas(props: Props) {
       {marquee && <div className="selection-marquee" style={{ left: marquee.x, top: marquee.y, width: marquee.width, height: marquee.height }} />}
     </div>
     <div className="canvas-tools" data-canvas-ui="true" role="toolbar" aria-label={copy(locale, "캔버스 도구", "Canvas tools")}>
-      <IconButton icon="cursor" label={copy(locale, "선택 (V)", "Select (V)")} aria-pressed={tool === "select"} className={tool === "select" ? "active" : ""} onClick={() => setTool("select")} />
-      <IconButton icon="hand" label={copy(locale, "이동 (H / Space)", "Pan (H / Space)")} aria-pressed={tool === "hand"} className={tool === "hand" ? "active" : ""} onClick={() => setTool("hand")} />
+      <IconButton icon="cursor" data-tool-label={copy(locale, "선택", "Select")} label={copy(locale, "파트 선택 (V)", "Select parts (V)")} aria-pressed={tool === "select"} className={tool === "select" ? "active" : ""} onClick={() => setTool("select")} />
+      <IconButton icon="hand" data-tool-label={copy(locale, "이동", "Pan")} label={copy(locale, "이동 (H / Space)", "Pan (H / Space)")} aria-pressed={tool === "hand"} className={tool === "hand" ? "active" : ""} onClick={() => setTool("hand")} />
       <span className="toolbar-divider" />
       <IconButton icon="grid" label={copy(locale, "격자 표시", "Show grid")} aria-pressed={grid} onClick={() => setGrid(value => !value)} />
-      <button type="button" className={`tool-text ${snapping ? "active" : ""}`} aria-pressed={snapping} onClick={() => setSnapping(value => !value)}>{copy(locale, "스냅", "Snap")}</button>
+      <IconButton icon="magnet" data-testid="canvas-snap" label={copy(locale, "격자에 맞추기 · Alt로 일시 해제", "Snap to grid · Hold Alt to bypass")} aria-pressed={snapping} className={snapping ? "active" : ""} onClick={() => setSnapping(value => !value)} />
     </div>
     {selectedIds.length > 1 && mode === "edit" && <div className="canvas-alignment" data-canvas-ui="true" role="toolbar" aria-label={copy(locale, "선택 정렬", "Align selection")}><Select aria-label={copy(locale, "정렬과 분배", "Align and distribute")} data-testid="canvas-align" defaultValue="" disabled={disabled} onChange={event => {
       const operation = event.target.value, ids = selectedIds.filter(id => frames[id]), bounds = unionBounds(ids.map(id => frames[id]!));
@@ -180,6 +182,6 @@ export function Canvas(props: Props) {
       <IconButton icon="plus" data-testid="zoom-in" label={copy(locale, "확대", "Zoom in")} onClick={() => zoom(view.zoom * 1.2)} />
       <span className="toolbar-divider" /><IconButton icon="fit" data-testid="zoom-fit" label={copy(locale, "전체 보기 (Shift 1)", "Zoom to fit (Shift 1)")} onClick={() => fit()} /><IconButton icon="component" data-testid="zoom-selection" label={copy(locale, "선택에 맞추기 (Shift 2)", "Zoom to selection (Shift 2)")} disabled={!selectedIds.length} onClick={() => fit(true)} />
     </div>
-    <span className="canvas-hint" data-canvas-ui="true">{copy(locale, "Space로 이동 · Ctrl/⌘ + 휠로 확대", "Space to pan · Ctrl/⌘ + scroll to zoom")}</span>
+    <span className="canvas-hint" data-canvas-ui="true">{mode === "edit" ? copy(locale, "파트 선택 · 드래그로 배치 · Space로 이동", "Select parts · Drag to arrange · Space to pan") : copy(locale, "클릭과 입력을 시험하세요 · 프로젝트는 변경되지 않습니다", "Try clicks and input · Project data stays unchanged")}</span>
   </div>;
 }

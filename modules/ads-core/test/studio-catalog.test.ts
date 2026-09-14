@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { canonicalJson, CommandService, createStudioStarter, getStudioCatalogRecipe, inspectStudioProject, listStudioCatalog, MemoryStore, planStudioComponentBatch, planStudioComponentCreate, planStudioComponentDelete, planStudioComponentDuplicate, planStudioComponentEdit, PROTOCOL_VERSION, STUDIO_FORMAT, STUDIO_PROFILE, studioComponentPlanPayload } from "../src/index.ts";
 import type { AdsDocument, CommandEnvelope, CommandResult, JsonObject, Principal, ProjectSnapshot, StudioComponentPlan } from "../src/index.ts";
+import { studioCatalogPresentation, studioCatalogProvenance } from "../src/index.ts";
 
 const OWNER: Principal = { id: "catalog.owner", scopes: ["project.read", "project.write", "review.apply"] };
 const digest = (text: string): string => createHash("sha256").update(text).digest("hex");
@@ -36,8 +37,49 @@ test("every independent catalog component produces a valid definition and both d
     assert.equal(plan.changes.upserts.length, 3, entry.id); assert.equal(Object.keys(plan.project.documents).length, 13);
     const component = inspectStudioProject(plan.project).components.find(item => item.id === added(plan).id)!;
     assert.equal(component.archetype, "catalog"); assert.equal(component.catalog?.catalogId, entry.id);
+    const presentation = studioCatalogPresentation(entry, component.catalog!.semantic.kind);
+    assert.notEqual(presentation.shape, "reference", `${entry.id} needs an explicit visual composition`);
+    assert.ok(component.parts.length <= 64);
+    for (const authored of presentation.parts) {
+      const part = component.parts.find(part => part.role === authored.role)!;
+      assert.ok(part, `${entry.id}: authored ${authored.role} exists`);
+      assert.equal(component.parts.find(parent => parent.id === part.parent)?.role, authored.parent);
+      assert.equal(part.text, authored.text);
+      assert.ok(component.web.layout[part.id] && component.mobile.layout[part.id]);
+    }
+    if (component.catalog!.semantic.contract === "unimplemented") assert.ok(component.parts.length > 2, `${entry.id} must not create generic root/body Card structure`);
   }
   assert.equal(Object.keys(project.documents).length, 10);
+});
+
+test("catalog provenance preserves all provider rows with official reference indexes, without claiming upstream execution", () => {
+  const urls = new Set(["https://ui.shadcn.com/docs/components", "https://mantine.dev/core/package/", "https://mantine.dev/charts/getting-started/", "https://mantine.dev/dates/getting-started/", "https://mantine.dev/schedule/getting-started/", "https://mantine.dev/x/extensions/", "https://base-ui.com/react/overview/quick-start", "https://react-aria.adobe.com/"]);
+  const refs = listStudioCatalog().flatMap(entry => {
+    const references = studioCatalogProvenance(entry);
+    assert.deepEqual(references.map(({ provider, name, sourceRow }) => ({ provider, name, sourceRow })), entry.providerVariants);
+    return references;
+  });
+  assert.equal(refs.length, 330); assert.ok(refs.every(ref => urls.has(ref.catalogUrl)));
+  assert.ok(refs.filter(ref => ref.provider === "React Aria").every(ref => !ref.catalogUrl.endsWith("/Button")));
+});
+
+test("new catalog defaults distinguish control and surface boxes and retain editable native properties", () => {
+  const { project, id } = fixture();
+  const components = Object.fromEntries(["checkbox", "switch", "textinput", "card", "calendar", "tree", "donutchart"].map(name => {
+    const plan = planStudioComponentCreate(project, { catalogId: `catalog.${name}` }, id);
+    assert.equal(plan.valid, true, errors(plan)); return [name, inspectStudioProject(plan.project).components.find(item => item.id === added(plan).id)!];
+  }));
+  for (const name of ["checkbox", "switch", "textinput"]) {
+    const component = components[name]!, root = component.parts.find(part => part.role === "root")!;
+    assert.equal(component.web.parts[root.id]!.base.borderWidth, 0, `${name} must not inherit a Card border`);
+    assert.equal(component.web.layout[root.id]!.padding, 0);
+  }
+  assert.equal(components.checkbox!.web.layout[components.checkbox!.parts[0]!.id]!.axis, "horizontal");
+  assert.equal(components.card!.web.layout[components.card!.parts[0]!.id]!.padding, 16);
+  assert.ok(components.calendar!.parts.some(part => part.role === "day_15"));
+  assert.ok(components.tree!.parts.some(part => part.role === "branch"));
+  assert.ok(components.donutchart!.parts.some(part => part.role === "series"));
+  assert.equal(Object.keys(project.documents).length, 10, "Looking up and constructing plans never edits the original project");
 });
 
 test("semantic descriptors preserve input, selection, popup and specialized-domain boundaries", () => {

@@ -1,4 +1,7 @@
 import { verifyCompactWorkbench, verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench, verifyPanelVisibility, verifyBindingPurposeFilters, verifyBindingRepair } from "./workbench-completion-cases.mjs";
+import { verifyFoundationBlueprints } from "./workbench-foundation-cases.mjs";
+import { verifyBlueprintChrome } from "./workbench-chrome-cases.mjs";
+import { verifyCatalogBlueprints } from "./workbench-catalog-cases.mjs";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -28,7 +31,8 @@ async function clickElement(expression) {
   await revealControl(expression);
   await page.evaluate(`(${expression}).scrollIntoView({block:'center',inline:'nearest'})`);
   const point = await page.evaluate(`(()=>{const e=(${expression}),r=e.getBoundingClientRect(); if(!r.width||!r.height)throw Error('Hidden control'); return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
-  assert.equal(await page.evaluate(`(()=>{const e=(${expression}),hit=document.elementFromPoint(${point.x},${point.y});return e===hit||e.contains(hit)})()`), true, `Control is obscured: ${expression}`);
+  const hit = await page.evaluate(`(()=>{const e=(${expression}),hit=document.elementFromPoint(${point.x},${point.y});return {visible:e===hit||e.contains(hit),hit:hit?.outerHTML.slice(0,300),point:${JSON.stringify(point)},rect:e.getBoundingClientRect().toJSON()}})()`);
+  assert.equal(hit.visible, true, `Control is obscured: ${expression}; ${JSON.stringify(hit)}`);
   for (const type of ["mousePressed", "mouseReleased"]) await page.send("Input.dispatchMouseEvent", { type, button: "left", clickCount: 1, ...point });
   await settled();
   if (await page.evaluate(`(${expression})?.tagName==='SUMMARY'`)) await delay(280);
@@ -40,6 +44,8 @@ async function key(key, code, extra = {}) {
   await settled();
 }
 async function revealControl(expression) {
+  const domain = await page.evaluate(`(()=>{const target=(${expression});const toggle=target?.closest('.sidebar-domain')?.querySelector('.sidebar-domain-toggle[aria-expanded=false]');return toggle&&!toggle.contains(target)?toggle.dataset.testid:null})()`);
+  if (domain) await click(domain);
   const ancestor = await page.evaluate(`(()=>{const target=(${expression});let e=target;let closed=null;for(;e;e=e.parentElement)if(e.tagName==='DETAILS'&&!e.open&&!e.querySelector(':scope > summary')?.contains(target))closed=e;return closed?Array.from(document.querySelectorAll('details')).indexOf(closed):-1})()`);
   if(ancestor >= 0) { await clickElement(`document.querySelectorAll('details')[${ancestor}].querySelector('summary')`); await delay(280); await revealControl(expression); }
 }
@@ -134,7 +140,7 @@ try {
   await click("new-token"); await fill("foundation-token-name", "Workbench alias"); await select("foundation-token-type", "dimension");
   await selectElement(label("Value source", "select"), "alias"); await selectElement(label("Referenced token", "select"), tokenId); await click("foundation-token-apply");
   const aliasId = await page.evaluate("Array.from(document.querySelectorAll('.sidebar [data-testid^=token-]')).find(e=>e.textContent==='Workbench alias').dataset.testid.slice(6)");
-  await until(`${id(`foundation-row-${aliasId}`)}.textContent.includes('12 px')`);
+  await until(`${id(`foundation-row-${aliasId}`)}.querySelector('.material-value').textContent==='12px'`);
   await clickElement(text("Manage")); await fill("foundation-classification-name", "Workbench domain");
   assert.equal(await page.evaluate(`${id("foundation-token-apply")}.disabled`), false, "Independent property forms remain accessible");
   // A genuine composition remains in the form and commits only after composition ends.
@@ -240,6 +246,9 @@ try {
   await verifyCompactWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
   await verifyBindingPurposeFilters({ page, id, text, click, clickElement, selectElement, revision, record });
   await verifyPanelVisibility({ page, id, text, click, clickElement, fill, until, settled, revision, record });
+  await verifyFoundationBlueprints({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
+  await verifyBlueprintChrome({ page, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
+  await verifyCatalogBlueprints({ page, id, label, click, fill, selectElement, until, settled, approve, revision, record });
   await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   await verifyBindingRepair({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, click, fill, selectElement, until, settled, approve, revision, record });
   assert.deepEqual(browser.cdp.errors, []); evidence.status = "PASSED";

@@ -4,24 +4,28 @@ Mode: Operate. Surface: local browser design-system editor.
 
 ## Direction contract
 
-THESIS: Compact glass tooling gives the authored materials space; neutral planes recede and fluorescent green identifies action.
+THESIS: Precise material drawings and real source connections lead; compact neutral glass keeps the editing tools present without competing with the work.
 
-OWN-WORLD: Geist, achromatic charcoal or white, green #8DFC52, thin rounded icons, 28/32/36px controls and 4/8/12/16px spacing. Translucent chrome and backdrop blur remain; the owner removed header/footer bevels. Rectangular UI corners share 8px and object rows have 2px separation.
+OWN-WORLD: Geist and Geist Mono with local SUIT Korean fallback; achromatic charcoal or white; fluorescent green #8DFC52; thin rounded icons. Controls use 28/32/36px heights and an optical 8/12/16px corner system. Structural glass is flat, with 54% panel, 58% header and 80% raised neutral fills over a 32px blur. No inset bar highlights or panel bevels.
 
-STORY: Browse domains, inspect material families, add a token with the section's defaults, then edit and review its source impact. The list and opt-in bulk selection remain available.
+STORY: Open a domain, compare its primitive scale, follow an actual reference into a semantic role, add with family defaults, then edit and review the source impact. New-project onboarding suggests Geist and #8DFC52 without rewriting existing projects. A normal List view and explicit bulk-selection mode remain available. Component library specimens identify the component's own structure and retain explicit runtime limits.
 
-FIRST VIEWPORT: A 52px global header, 196px navigation rail, flexible work area and 304px inspector. Workspace navigation is 36px. Foundation starts at sticky subsection tabs and a compact context strip. Family headings contain an add icon; square color tiles show local names. Inspector Design/Source tabs replace the large identity header; compact property rows lead.
+FIRST VIEWPORT: A 52px global header, 232px navigation default, flexible workspace and 304px inspector above a 28px status bar. The navigation resize range is 196–400px, visually capped at 280px at desktop widths of 1100px or less. Workspace navigation is 36px. Domain accordions start closed and open to reveal search results. Independent panel collapse keeps forms mounted. Foundation subsection tabs remain sticky within the center scroll pane.
 
-FORM: The owner's latest follow-up pins flat header/footer material, unified corners, greener accent and collapsible sidebars, superseding the previous bar highlights. The owner's video and concrete corrections pin this revision, superseding the previous material spacing, SUIT primary face and green-tinted neutrals. Prior seed provenance remains in studio-lime-redesign.md; no new random direction or comp approval is required. Code-first and both themes were confirmed.
+FORM: Domain cards have one thin-line blueprint drawing rather than repeated token previews. Token browsing separates Primitive and Semantic headings. The ten brand shades from 50 through 900 occupy one compact square row at Full HD. Spacing and sizing share aligned ruler rows; radius keeps the corner drawing; borders use horizontal samples; shadows have no nested preview card; type is an actual styled specimen. Reference maps connect actual token IDs, including the active theme and composite/property bindings. Contextual section add buttons and local leaf labels retain source names and classification.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
-## Reference and interaction
+## References and interaction
 
-The owner supplied https://cdn.dribbble.com/userupload/40430823/file/large-cd8b73c3d8327748db387dfad3f10235.mp4. Direct Chrome playback exposed a 7.68-second 800x600 builder reference: compact Layout and Size rows, two-column numeric controls, a spacing diagram and thin separators. Root inspected the local editor at 1198x958 before editing. This request rejects the previous finish at its actual scope; a fresh independent review must receive this evidence.
+The owner supplied https://cdn.dribbble.com/userupload/40430823/file/large-cd8b73c3d8327748db387dfad3f10235.mp4 for compact builder rows and property controls. The later Expo exploded-layer and dark measured-grid images pin the current blueprint language: crisp authored SVG geometry, thin construction lines and clear measurements. They supersede repetitive material cards and the previous uniform 8px-corner interpretation. This is the continuing code-first direction; no context CLI rerun, random direction or additional comp selection is required.
 
-The signature interaction is contextual editing: a section add control inherits classification, an authored dropdown opens a matching glass menu, and selection stays in place while the inspector discloses its relevant controls. Menu entry and selection movement use semantic motion timing. Reduced motion retains all functions without animated movement. Sticky navigation follows the independently scrolling Foundation area.
+Signature interactions stay close to the work. Family add controls prefill classification; dropdowns open matching glass menus; sliders combine pointer adjustment with exact lexical input; the canvas dock exposes named tools and contextual help. Sidebar width supports pointer and keyboard adjustment. Styled scroll indicators augment native scrolling. Dependency glow follows real edges and stops under reduced motion. Reduced transparency restores opaque structural surfaces.
 
 ## Product boundaries
 
-Studio appearance is independent from authored ADS tokens. Full token paths remain in source, titles and accessible labels where needed; shortened specimen labels are presentation only. Preserve review, rejected input, original source, recovery, Undo, file staging and theme semantics. Real form controls and keyboard navigation remain accessible. No native target execution, assistive-technology certification, or full Foundation completion is implied by this interface revision.
+Studio appearance is independent from authored ADS tokens. Short labels, normalized ruler lengths and bounded previews do not rewrite values. Reference maps must never fabricate edges. Keep review, rejected input, original source, recovery, Undo, file staging and theme semantics. Typography names can describe authored fonts beyond those bundled with Studio; browser font fallback does not imply installation of arbitrary project fonts.
+
+Canvas artboards use the active project's resolved surface behind the complete rectangular frame; authored transparent roots remain transparent. Preview metadata follows the project's content color. Sparse color families use the same bounded swatch scale as full shade rows, and shadow specimens share one neutral comparison plane.
+
+The current library contains a bounded catalog and recognizable specimens; upstream references do not install a runtime component library or certify all interactions. This surface contract records intended composition and source behavior, not a test verdict, native execution, assistive-technology certification or full Foundation completion.

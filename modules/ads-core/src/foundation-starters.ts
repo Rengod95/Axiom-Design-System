@@ -42,8 +42,24 @@ export function foundationStarterTokens(options: FoundationStarterOptions): Foun
     literal("color", `color.${name}.600`, "color", color(hex)); alias("color", `feedback.${name}`, "color", `color.${name}.600`);
   }
   for (const [name, light, dark] of [["surface.canvas", "50", "950"], ["surface.raised", "0", "900"], ["surface.subtle", "100", "800"], ["text.primary", "900", "50"], ["text.secondary", "600", "300"], ["text.inverse", "0", "950"], ["border.default", "300", "600"], ["border.strong", "500", "400"]]) alias("color", name!, "color", `color.neutral.${light}`, `color.neutral.${dark}`);
+  // These generated literals are opaque sRGB. Choose each theme's foreground against its
+  // actual action shade, not the accent seed or an assumed light/dark text polarity.
+  const luminance = (name: string): number => {
+    const channels = (tokens.find(token => token.name === name)!.literal as JsonObject).components as number[];
+    return channels.reduce((sum, channel, index) => sum + (channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4) * [0.2126, 0.7152, 0.0722][index]!, 0);
+  };
+  const actionForeground = (background: string): string => {
+    const backgroundLuminance = luminance(background);
+    const contrast = (name: string): number => {
+      const foregroundLuminance = luminance(name);
+      return (Math.max(backgroundLuminance, foregroundLuminance) + .05) / (Math.min(backgroundLuminance, foregroundLuminance) + .05);
+    };
+    // The larger ratio meets 4.5 whenever either available neutral does. Some custom
+    // accents fall between both candidates; this bounded palette does not claim AA for those.
+    return contrast("color.neutral.0") >= contrast("color.neutral.900") ? "color.neutral.0" : "color.neutral.900";
+  };
   alias("color", "action.primary.background", "color", "color.brand.600", "color.brand.400");
-  alias("color", "action.primary.foreground", "color", "color.neutral.0", "color.neutral.950");
+  alias("color", "action.primary.foreground", "color", actionForeground("color.brand.600"), actionForeground("color.brand.400"));
   alias("color", "focus.ring", "color", "color.brand.500", "color.brand.300");
   for (const step of [0, 1, 2, 3, 4, 6, 8, 12, 16, 24]) literal("spacing", `space.${step}`, "dimension", dimension(step * 4));
   for (const [name, step] of [["inline", 2], ["stack", 3], ["control", options.density === "compact" ? 2 : 3], ["section", 6], ["page", 8]] as const) alias("spacing", `spacing.${name}`, "dimension", `space.${step}`);

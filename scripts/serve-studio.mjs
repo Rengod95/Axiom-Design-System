@@ -8,6 +8,9 @@ const DEFAULT_PORT = 4317;
 const port = process.env.AXIOM_STUDIO_PORT === undefined ? DEFAULT_PORT : Number(process.env.AXIOM_STUDIO_PORT);
 if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error("Invalid AXIOM_STUDIO_PORT.");
 const ASSETS = new Map([["/", ["index.html", "text/html"]], ["/index.html", ["index.html", "text/html"]], ["/app.js", ["app.js", "text/javascript"]], ["/app.css", ["app.css", "text/css"]], ["/SUIT-Variable.woff2", ["SUIT-Variable.woff2", "font/woff2"]], ["/SUIT-OFL.txt", ["SUIT-OFL.txt", "text/plain"]]]);
+ASSETS.set("/Geist-Variable.woff2", ["Geist-Variable.woff2", "font/woff2"]);
+ASSETS.set("/GeistMono-Variable.woff2", ["GeistMono-Variable.woff2", "font/woff2"]);
+ASSETS.set("/Geist-OFL.txt", ["Geist-OFL.txt", "text/plain"]);
 const server = createServer(async (request, response) => {
   try {
     if (!["GET", "HEAD"].includes(request.method)) { response.writeHead(405).end(); return; }

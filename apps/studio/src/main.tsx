@@ -6,6 +6,10 @@ import { StudioController } from "./controller.ts";
 import "./styles.css";
 import "./ui-system.css";
 import "./foundation-workspace.css";
+import "./studio-chrome.css";
+import "./foundation-blueprint.css";
+import "./catalog-specimens.css";
+import "./studio-slider.css";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("Studio root is missing.");

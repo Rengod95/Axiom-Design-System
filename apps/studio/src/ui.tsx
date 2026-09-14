@@ -176,7 +176,7 @@ export function Button({ tone = "secondary", size = "md", icon, children, classN
   return <button type="button" {...props} data-size={size} className={`button ${tone} ${className}`}>{icon && <Icon name={icon} />}{children}</button>;
 }
 export function IconButton({ icon, label, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconName; label: string }) {
-  return <button type="button" {...props} className={`icon-button ${props.className ?? ""}`} aria-label={label} title={props.title ?? label}><Icon name={icon} /></button>;
+  return <button type="button" {...props} className={`icon-button ${props.className ?? ""}`} aria-label={label} data-tooltip={props.title ?? label}><Icon name={icon} /></button>;
 }
 export function Field({ label, hint, children, layout = "stack" }: { label: string; hint?: string; children: ReactNode; layout?: "stack" | "row" }) {
   return <div className={`field field-${layout}`}><span className="field-label">{label}</span>{children}{hint && <small className="field-hint">{hint}</small>}</div>;

@@ -1,0 +1,626 @@
+{
+  "kind": "axiom-studio-blueprint-verification",
+  "status": "PASSED",
+  "recordedAt": "2026-09-14T12:56:38.203879+00:00",
+  "scope": "The 2026-09-14 blueprint workbench request; not full Foundation or native runtime certification.",
+  "rollbackCommit": "7f10dc910144d8eb453f9489f5a00a0b6001202a",
+  "rollbackTag": "rollback/studio-before-blueprint-20260914",
+  "checks": {
+    "strictSourceFiles": 169,
+    "sourceNegativeCases": 20,
+    "unitTests": 386,
+    "unitFailures": 0,
+    "unitSkipped": 0,
+    "buildInputs": 154,
+    "browser": "PASSED",
+    "studio": "PASSED",
+    "workbench": {
+      "status": "PASSED",
+      "cases": [
+        "create",
+        "typedToken",
+        "aliasAndClassification",
+        "themes",
+        "catalogSimulation",
+        "libraryAndCanvas",
+        "dirtyManagement",
+        "hexEditing",
+        "sourceBundle",
+        "processRestart",
+        "starterWorkspace",
+        "directReview",
+        "blockedInspectorRecovery",
+        "trackpadGesture",
+        "motionAuthoring",
+        "responsiveAppearance",
+        "materialAtlas",
+        "materialMotion",
+        "collapsedDraftRecovery",
+        "compactGlassControls",
+        "bindingPurposeFilters",
+        "panelVisibility",
+        "foundationBlueprints",
+        "blueprintChrome",
+        "studioSliderAuthoring",
+        "catalogBlueprints",
+        "dtcgReviewedImport",
+        "dtcgResolverAndExchange",
+        "atomicBindingRepair"
+      ],
+      "elapsedMs": 350758
+    },
+    "foundation": {
+      "documents": 56,
+      "checks": 2423,
+      "negativeCases": 17
+    },
+    "snapshotFiles": 442,
+    "retirementNegativeCases": 10,
+    "targets": {
+      "react": {
+        "sourceGeneration": "passed",
+        "typecheck": "passed",
+        "ssr": "passed",
+        "hydration": "passed",
+        "browserInteraction": "passed",
+        "browser": {
+          "protocolVersion": "1.3",
+          "product": "Chrome/152.0.7977.83",
+          "revision": "@79460ebecaa5625e57a5fb679a735659e73dc687",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+          "jsVersion": "15.2.124.21"
+        },
+        "cases": [
+          "escaped content",
+          "plain Card",
+          "explicit Toast host",
+          "native pointer activation once",
+          "Enter/Space activation once",
+          "disabled input",
+          "controlled close request",
+          "single announcement queue",
+          "reduced motion removal",
+          "catalog controlled checkbox request/adoption",
+          "catalog Korean text input",
+          "native HTML select keyboard",
+          "manual tabs focus/activation and hidden panels",
+          "native modal Escape and focus restoration"
+        ],
+        "generatedCatalogRepresentatives": 35
+      },
+      "react-native": {
+        "sourceGeneration": "passed",
+        "typecheck": "passed",
+        "androidBundle": "passed",
+        "iosBundle": "passed",
+        "nativeExecution": "not-run",
+        "dependencies": {
+          "react": "19.2.3",
+          "react-native": "0.86.3",
+          "expo": "57.0.17",
+          "@types/react": "19.3.0",
+          "typescript": "5.9.3"
+        },
+        "lockDigest": "0bc3519e7e4873df69ed1cfedc55bfe952d68a104fe767f75be6458f83553853",
+        "generatedCatalogRepresentatives": 22
+      },
+      "swiftui": {
+        "sourceGeneration": "passed",
+        "nativeCompilation": "not-run",
+        "nativeExecution": "not-run",
+        "generatedCatalogRepresentatives": 18
+      },
+      "compose": {
+        "sourceGeneration": "passed",
+        "nativeCompilation": "not-run",
+        "nativeExecution": "not-run",
+        "generatedCatalogRepresentatives": 18
+      }
+    }
+  },
+  "focusedCases": {
+    "catalog": {
+      "kind": "axiom-real-workbench-regression",
+      "status": "PASSED",
+      "browser": "Chrome/152.0.7977.83",
+      "cases": {
+        "catalogBlueprints": {
+          "created": [
+            {
+              "catalogId": "catalog.checkbox",
+              "componentId": "browser-64003281-d80a-4fe7-afbe-74d373ef8ac3",
+              "name": "Checkbox",
+              "shape": "checkbox",
+              "parts": 4
+            },
+            {
+              "catalogId": "catalog.textinput",
+              "componentId": "browser-263f5f68-8ed4-4536-84dd-f805134c0928",
+              "name": "TextInput",
+              "shape": "text-input",
+              "parts": 5
+            },
+            {
+              "catalogId": "catalog.card",
+              "componentId": "browser-b943f203-5676-4e15-8ac1-ea364cfc3f93",
+              "name": "Card",
+              "shape": "card",
+              "parts": 4
+            },
+            {
+              "catalogId": "catalog.calendar",
+              "componentId": "browser-ab7fc697-3b0f-4df1-bdae-d968674edb8e",
+              "name": "Calendar",
+              "shape": "calendar",
+              "parts": 47
+            },
+            {
+              "catalogId": "catalog.tree",
+              "componentId": "browser-5fed57d4-629a-4fbc-8738-0c9c7a26dbec",
+              "name": "Tree",
+              "shape": "tree",
+              "parts": 6
+            },
+            {
+              "catalogId": "catalog.donutchart",
+              "componentId": "browser-b227e372-a6b1-49bb-b71c-95a7b7bfab95",
+              "name": "DonutChart",
+              "shape": "donutchart",
+              "parts": 6
+            }
+          ],
+          "providerReferences": [
+            {
+              "catalogId": "catalog.checkbox",
+              "references": 4
+            },
+            {
+              "catalogId": "catalog.textinput",
+              "references": 1
+            },
+            {
+              "catalogId": "catalog.card",
+              "references": 2
+            },
+            {
+              "catalogId": "catalog.calendar",
+              "references": 3
+            },
+            {
+              "catalogId": "catalog.tree",
+              "references": 2
+            },
+            {
+              "catalogId": "catalog.donutchart",
+              "references": 1
+            }
+          ],
+          "rejectedCreationPreservesSource": true,
+          "reviewedComponentAndBothDesigns": true,
+          "canonicalIdentityAndSelectedName": true,
+          "distinctAuthoredRenderers": true,
+          "structuralPartIds": true,
+          "defaultFramesContainContent": true,
+          "defaultFramesDoNotOverlap": true,
+          "calendarWeekdaysOneRow": true,
+          "treeProjectThemeFrameBackdrop": true,
+          "transparentTreeAndButtonWrappers": true,
+          "reloadPreservesSourceAndRendering": true,
+          "elapsedMs": 71529
+        }
+      },
+      "limitations": [
+        "Chromium DOM execution; no native target certification.",
+        "CDP composition exercises browser IME events, not an operating-system keyboard.",
+        "Representative authoring flows; this is not full Foundation completion evidence."
+      ],
+      "elapsedMs": 71632
+    },
+    "chrome": {
+      "kind": "axiom-real-workbench-regression",
+      "status": "PASSED",
+      "browser": "Chrome/152.0.7977.83",
+      "cases": {
+        "starterWorkspace": {
+          "domains": 11,
+          "allTokensClassified": true,
+          "semanticFilter": true,
+          "aliasTree": true,
+          "distinguishableDesignPropertyUses": true,
+          "usagePartNavigation": true,
+          "themeWorkspace": true,
+          "elapsedMs": 4064
+        },
+        "directReview": {
+          "pendingTypedBindingFlushed": true,
+          "reviewedShadowVisible": true,
+          "elapsedMs": 8233
+        },
+        "blockedInspectorRecovery": {
+          "invalidTextRetained": true,
+          "resetRestoresLastGoodValue": true,
+          "commonReviewRecovered": true,
+          "elapsedMs": 11747
+        },
+        "trackpadGesture": {
+          "controlWheelZoomsCanvas": true,
+          "browserPageScaleUnchanged": true,
+          "projectRevisionUnchanged": true,
+          "physicalHardware": "unverified",
+          "elapsedMs": 11809
+        },
+        "motionAuthoring": {
+          "typedTrackReviewed": true,
+          "actualWebAnimation": true,
+          "pauseAndReset": true,
+          "elapsedMs": 17605
+        },
+        "responsiveAppearance": {
+          "desktopWidths": [
+            1440,
+            1312
+          ],
+          "mobileWidth": 390,
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "documentOverflow": false,
+          "elapsedMs": 18320
+        },
+        "blueprintChrome": {
+          "domainsInitiallyCollapsed": 11,
+          "searchRevealsMatches": true,
+          "domainPrefixOmitted": true,
+          "keyboardAndPointerResize": true,
+          "persistedWidth": 253,
+          "collapsePreservesWidth": true,
+          "nativeScrollbarPointerAndKeyboard": true,
+          "transparentTrack": true,
+          "noNativeGutter": true,
+          "activeDockForeground": {
+            "button": "rgb(21, 32, 9)",
+            "label": "rgb(21, 32, 9)",
+            "icon": "rgb(21, 32, 9)"
+          },
+          "modeHoverTooltip": true,
+          "projectPreserved": true,
+          "elapsedMs": 24605
+        },
+        "studioSliderAuthoring": {
+          "cleanMountAndFocus": true,
+          "opacityRadiusAndDurationHomeEnd": true,
+          "precisionBeyondStep": true,
+          "invalidDraftRetainedAndBlocksReview": true,
+          "reviewedUndoRestoresBindingsAndValues": true,
+          "motionTrackPrecisionFlushesOnReview": true,
+          "motionTrackUndo": true,
+          "elapsedMs": 54331
+        }
+      },
+      "limitations": [
+        "Chromium DOM execution; no native target certification.",
+        "CDP composition exercises browser IME events, not an operating-system keyboard.",
+        "Representative authoring flows; this is not full Foundation completion evidence."
+      ],
+      "elapsedMs": 54439
+    },
+    "contrast": [
+      {
+        "label": "AcceptDecline",
+        "color": "color(srgb 0.941176 0.941176 0.941176 / 0.8)",
+        "background": "rgb(23, 23, 23)",
+        "plane": "rgb(23, 23, 23)",
+        "contrast": 10.343563655575204
+      },
+      {
+        "label": "Show toast",
+        "color": "rgb(240, 240, 240)",
+        "background": "rgb(32, 32, 32)",
+        "plane": "rgb(23, 23, 23)",
+        "contrast": 14.297209287725707
+      }
+    ]
+  },
+  "visualEvidence": {
+    "captureCount": 31,
+    "captures": [
+      {
+        "name": "domains-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "88288d2e78c8d010d1d5f4d4c4f339a2a704eec6e899740741bff6430b20b320"
+      },
+      {
+        "name": "color-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "f3d354218ffe7cfe78d4a1b7c73de438f69d4be229cd4607efafee1ddda74ce5"
+      },
+      {
+        "name": "color-inspector",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "4bc07e4f5f4932a71b1205488b76a98ff6fd6bc0ad5b99cab1eabe04755c8cc6"
+      },
+      {
+        "name": "connections-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "b7cf294ce621f8918667601dda8bb8bf2b5fdf452f3058cfeda023edf0d4585e"
+      },
+      {
+        "name": "connections-light",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "c486582ee7238614eee68bf9580d6f4612db7ec002653afcdd1698bda64df444"
+      },
+      {
+        "name": "spacing-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "2ae46c836e279bcdb360059d7080cbe4e83f61a461b22d852f280be9800dc6d8"
+      },
+      {
+        "name": "sizing-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "1770c966fcf4bae18cd8b6f68c9fd3fa738cb69820bf01a8c6c7b8b5d8bc5bd6"
+      },
+      {
+        "name": "radius-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "d6aa595223c4d822b0fe20b9cb62afeba004a50e24de14c79f15eca8f7f50e43"
+      },
+      {
+        "name": "border-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "ad24ea74415e4ae0b63c887498fee506af536ea70fae4b346a0d59d4df940d4e"
+      },
+      {
+        "name": "shadow-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "91ff7c2ae46acea85f73b6d4dac53482ddf3569ff7eba80ac2655fbd64f0fdaf"
+      },
+      {
+        "name": "typography-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "e78101c3608a04a921e95e86c5f2037bc86f28ef4f6eab472e32c4ed3ff3b93c"
+      },
+      {
+        "name": "typography-scale",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "64d73ad5213c58d39d6a566ba203148feee1458b28d703bf73bf40e9a485e694"
+      },
+      {
+        "name": "domains-light",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "bdda40923567e7ffc64652995a59cd28f64527c825e45f3e15c0b1c72e65b29a"
+      },
+      {
+        "name": "canvas-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "7e27d028cd15562bd90e767208fbba68964b8e932df43b42d8448a01dc493989"
+      },
+      {
+        "name": "canvas-project-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "4ad497b90ff64ebbc77f1092f22fd9ba31cd2392440f0815170e843542c67db2"
+      },
+      {
+        "name": "dock-tooltip",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "3b6f8482b320c6a640c846422b2221e054ef6c60e02ae314d79ecd0691e50685"
+      },
+      {
+        "name": "interact-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "368fcadd66cc59236b03eede454880f685505d789d2582a542fc39705ca95cbd"
+      },
+      {
+        "name": "library-dark",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "09ac7f76bc9e1f0b26c5c1bdaaffae9110632fce48f5e8c3524753b585759d14"
+      },
+      {
+        "name": "library-color",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "2b170785e89318adedb1c2138a0dce74d45dce86d0925634db49eea40395f056"
+      },
+      {
+        "name": "library-chart",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "ec0ae31e618fa24c15d7dafcaff50acf7231efa1eb91aca577d64dea9ec685b2"
+      },
+      {
+        "name": "library-calendar",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "abc242a25cccd3c0e3e98f4c07a67791f0bfe84f68fd11d11b87a76fc7301d0d"
+      },
+      {
+        "name": "library-tree",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "05eb0604381e2187a0053fe6fdedb050ad46d48a058a2799fb8843ac6ae9f26a"
+      },
+      {
+        "name": "library-input",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "93331f3af863bdbed35006db851409698477dfac0bd1fe366ce4231100ffa2ca"
+      },
+      {
+        "name": "created-calendar",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "a34f1c4513a7cdc5281c8f9d38f85d2de24af1d1cba1ff59ad67fad52e79f793"
+      },
+      {
+        "name": "created-tree",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "4e84f3a83488dd11106a64de345f5ea1c338a9c1413917bc43cd81eabe0d8d69"
+      },
+      {
+        "name": "created-donutchart",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "7f3ce8eca420b00ebc48ab2aaefb5ee503b9f824be12441d94619570dc887a3f"
+      },
+      {
+        "name": "sidebar-mobile",
+        "width": 390,
+        "height": 844,
+        "sha256": "10687e98a217d4abb4f03d42c7d3b263c96f142de3da48fb29ff8c5630c161f3"
+      },
+      {
+        "name": "domains-mobile",
+        "width": 390,
+        "height": 844,
+        "sha256": "5ae652644711cf8c28b078158c66d5881ee6b3bd7c0b2913f4e05c4690cd669e"
+      },
+      {
+        "name": "color-mobile",
+        "width": 390,
+        "height": 844,
+        "sha256": "ef20810607e60bad1d0b769f6ac14d86efe5b0c9b2f82a59766f211961683191"
+      },
+      {
+        "name": "inspector-mobile",
+        "width": 390,
+        "height": 844,
+        "sha256": "f5e714fa7f979d989117084ae661e839441d21cbdcd5ef60182ad00b5cc13225"
+      },
+      {
+        "name": "color-mobile-light",
+        "width": 390,
+        "height": 844,
+        "sha256": "da2f3ec5100aa363e9389a4d3594167ba822f2f8a198d3b7cca9c39051b06520"
+      }
+    ],
+    "browserErrors": [],
+    "notes": "Disposable databases only. Final B1/B2 verdict captures replace the three same-named canvas states; remaining states are unchanged by the scoped control foreground fix."
+  },
+  "externalPreview": {
+    "checkedAt": "2026-09-14T12:55:01.486658+00:00",
+    "result": [
+      {
+        "path": "/",
+        "status": 200,
+        "bytes": 420,
+        "sha256": "0cbb597faedefa1f0c71245f49a3ebdb97373ac34a3c9871b0989a6161bf2c22",
+        "matchesBuild": true
+      },
+      {
+        "path": "/app.js",
+        "status": 200,
+        "bytes": 1488393,
+        "sha256": "0b21175fbbd38e3ef125871a3443b5ec90a74bb94d5a645e2596501e85515204",
+        "matchesBuild": true
+      },
+      {
+        "path": "/app.css",
+        "status": 200,
+        "bytes": 150920,
+        "sha256": "a87f34485b80879c5f7fd86f3b37d0fb7651fe523c36eff4811fb1518e9f7401",
+        "matchesBuild": true
+      },
+      {
+        "path": "/Geist-Variable.woff2",
+        "status": 200,
+        "bytes": 69652,
+        "sha256": "a369fcf5628ea2aa4e1b9e2ec6a5b3624e365bda588e1f0f2f12b564f728fbb8",
+        "matchesBuild": true
+      },
+      {
+        "path": "/GeistMono-Variable.woff2",
+        "status": 200,
+        "bytes": 71368,
+        "sha256": "fba8f577f38a2bbcbe818efa6348dd58f36303a10b8737c42fefad275be563ab",
+        "matchesBuild": true
+      }
+    ],
+    "note": "Temporary preview address is kept in the local operational handoff, not published here."
+  },
+  "detector": {
+    "findings": 149,
+    "interpretation": "Not mechanically clean: pinned Geist, authored specimen literals/geometry and legacy recipe findings were reviewed; see the independent finish review."
+  },
+  "sourceSha256": {
+    "apps/studio/src/app.tsx": "1932029e36fbae1f1efd81ac12eb3d175bc7dc247a92a40f221ab6aa6b6c1010",
+    "apps/studio/src/appearance-rules.tsx": "dbe3dfb6ac2401309895d10abb784aa770c73db795f6dd634564cea48f864c23",
+    "apps/studio/src/canvas-frames.ts": "59f8c373ffb054caacd0142b143b33a90ef5483f09c35e596d98918a20a4d350",
+    "apps/studio/src/canvas.tsx": "0cae5287b9c4b0ba29b7a9746aa392ffd296ec3e923c34eab9732dbd0cae7a3a",
+    "apps/studio/src/catalog-preview.tsx": "5e5cd67006fc2ffac72ac23cf6389e08fe0f0ce04f30e981411761ce193565c1",
+    "apps/studio/src/catalog-specimens.css": "0b12aaf4e00ca97079dadfbc0f51656745dd319cbdcd24a39924e9f2fa6127fd",
+    "apps/studio/src/catalog-structure-preview.tsx": "a8ae6bd61c100570feab6bd816321bdc4a483cdc6dd852705c99f9463a626f04",
+    "apps/studio/src/catalog-thumbnail.tsx": "6f46f7af15098aed4de8bce95290f0531a157ff87f84b72495ae56156dbba3b2",
+    "apps/studio/src/catalog-vector.tsx": "23af795c9fdbb0d3ef76b931b935d3f1b8c4de1e6f8451c58e7ccd36e9f7f9d9",
+    "apps/studio/src/component-inspector.tsx": "ce3876c3bdf6e1c0df659d465dc8fd1a3d2143ffc6cf350d822fb45fe588cf91",
+    "apps/studio/src/foundation-blueprint.css": "de47a01940b5a3525938e670bf835213f18297b44ec843cf51583e20cc176773",
+    "apps/studio/src/foundation-domains.tsx": "48125ee1c0bc2d0f2f8a207c3a136ba0ed871718293ff1dbc6db42cbb9d6f0ac",
+    "apps/studio/src/foundation-starter-panel.tsx": "c04654ba91b3d96e23857b17551a3cf86e2c0d9c55605388d41ceeec102d1ada",
+    "apps/studio/src/foundation-workspace.css": "db583b2cfa52af8c8406c8f15116e3d1be814536785fa88e28f8ea75fb099030",
+    "apps/studio/src/icons.tsx": "86c5a2ad6f98d8876f2724c9ee4e1a214d812975adc30d653bf3e28bce9d9f1a",
+    "apps/studio/src/main.tsx": "32e2a28550d6143b338db9fe16375db605a4d0dc0b0b171d19421cef98b45d2c",
+    "apps/studio/src/motion-inspector.tsx": "1da658fabc20882ea969d1e316db94134d5c1af461459d2e8fc33e3ec95d3a49",
+    "apps/studio/src/preview.tsx": "d64fd9036fcd4aa81b800f423fb48c94a2033de0748c3a1ce3a8d7397b0627d5",
+    "apps/studio/src/sidebar-resize.tsx": "5fd0acb61b4f45f416ca6aa92c5ff29db34e3b9005c397c0078ff14d6f305cac",
+    "apps/studio/src/sidebar-tokens.tsx": "260ef6aa183fe72c2adf5489405dab21e7e439dbacc49f226975b6e8c456210d",
+    "apps/studio/src/studio-chrome.css": "2cc081159682ef13f63392b008feed831ced5a4b22ff17aa57e1f2bb4d62ab60",
+    "apps/studio/src/studio-overlays.tsx": "2382a8a8ea46268a882365987c43fa0228aa6b8c08e964706c9ee65e5e1f860a",
+    "apps/studio/src/studio-slider.css": "1a7c549e73d09d529b5794670b2d69164dfa31b7c8f12d1de25b70f67494d544",
+    "apps/studio/src/studio-slider.tsx": "4c6b8084335f799ebf3fc5eed1e5fd4bb9ece7dd81d22ae2edf5299878704480",
+    "apps/studio/src/system-panel.tsx": "edc50ae75a9ee4f45b30bda9f33236c55f66c0b02eaefb33a8301f851fa2c772",
+    "apps/studio/src/token-atlas.tsx": "dcfa07dfee0a8bf00d355e2fed883cd0840113e890258a3eb0185450c40cac7a",
+    "apps/studio/src/token-relationships.tsx": "a0817818110579bcd56ffbabfa179f7c5ff267a47ef0481e8525d456a7736e5f",
+    "apps/studio/src/token-specimen.tsx": "e1423e57b72a03911d1b35ac5a0ee3f1b9bc5028fc15e4e159240add3eb34ac1",
+    "apps/studio/src/token-value-editor.tsx": "6b22694f41647287e589ee3ce6fe7583f4f8899d88e7ae86591bf0027645e652",
+    "apps/studio/src/token-visual.tsx": "1aefb7f0341a35402bc5d88f6c6cc0f6470cfd1184d7750fe9d4e2b8230777da",
+    "apps/studio/src/ui.tsx": "963d652a2c9bcbaf8faf97235810021e2c9f73e699b882bc2e441db37c9c1e2f",
+    "apps/studio/src/workbench-panels.tsx": "2c11b7a1b441885910887f04183054492b0218b96bfd0abee064bbd60bf99e70",
+    "apps/studio/test/catalog-preview.test.ts": "fe3e0c7e8c453638195ee64addb2d59158b4bfe2ad87ced53d3731882e5563b4",
+    "apps/studio/test/studio-slider.test.ts": "f30ba2414931fb2a4e79dd4147e7e71fe58210a76082067922168fc0c630ac8e",
+    "apps/studio/test/token-visual.test.ts": "682036bc9cd2eb27f75a99854fb5d6b27d67cba8b89aee7b7735a592f091aecb",
+    "modules/ads-core/src/foundation-starters.ts": "22b83988f0b72975d4d785026ae65ff96951e42efa6c654231151792cd4448a1",
+    "modules/ads-core/src/index.ts": "c4add5e99f86a0515dc79151619ee42ee2708923ccbc5daa73e5e4f6d5a9f03c",
+    "modules/ads-core/src/studio-catalog-presentation.ts": "830334fbdde6f937336aadc6e06219f8ef51cd6e7ed73c39ad9a4302e1b94ac3",
+    "modules/ads-core/src/studio-catalog-sources.ts": "c4b8ff307960fc48b10583cd90075e86e741af9cf6ff144049863f4608da804d",
+    "modules/ads-core/test/editor-completion.test.ts": "46903e862bcfab45299a795fe07839ed6ec22e3948d022b07597e26f7aec5a7e",
+    "modules/ads-core/test/studio-catalog.test.ts": "d73dadee2c5c8388347ff1a2336d5a54eff9993558ba74856a1d86881efef32a",
+    "scripts/check-implementation.mjs": "55b8321ec63e2509a5e11865c6d7ca2c2e966d8427ae573ba4fe997d9a03158f",
+    "scripts/serve-studio.mjs": "631a358457457ae1cc06c90a76578d575cc1e7efe834acd7905810975be51b0b",
+    "scripts/verify-retirement.py": "cf35ee5a532f4ac018429599790a65df6e39d31134e02fcc256f3987c2ec7d22",
+    "scripts/verify-studio.mjs": "9434ba26de549c265139cb0173672c0ea186dbc7a9e3ea69a71aa56476acd272",
+    "scripts/verify-workbench.mjs": "91be8a1c4bb4f03118c384f1ddc72d2f707c950c9d4edc61ced066813bbf732c",
+    "scripts/workbench-catalog-cases.mjs": "0e77ec2697e748525be1c1bf361a4634a3c497ce22af40d8ec65de17ce9b3f81",
+    "scripts/workbench-chrome-cases.mjs": "f911f7e6bf03533ce95ab7d839cf8f5c0295e59ac795dbb2962a683074f03ee1",
+    "scripts/workbench-completion-cases.mjs": "0ab2fe4bd7700a2ead185ca53da5c9144f82649d356f5222c02102bc9b76f00e",
+    "scripts/workbench-foundation-cases.mjs": "353d3ed352771901d31d0a9731681aab0428de7227922fbaafa5c6245db2583d"
+  },
+  "limits": [
+    "Legacy Button/Card/Toast plus focused catalog Checkbox/Input/Select/Tabs/Dialog consumers are covered; other source capabilities need their own consumer verification.",
+    "RN export verifies JavaScript/Hermes bundles; it does not run native controls or assistive technology.",
+    "SwiftUI/Compose compilation and device execution are not run without their toolchains.",
+    "Chromium DOM execution; no native target certification.",
+    "CDP composition exercises browser IME events, not an operating-system keyboard.",
+    "Representative authoring flows; this is not full Foundation completion evidence.",
+    "113 bounded semantic catalog entries; 96 editable structural adaptations. Provider catalog references do not execute upstream runtime packages.",
+    "Physical trackpad hardware and manual assistive technology were not certified.",
+    "Existing browser project source was preserved. No project data was published with verification."
+  ]
+}

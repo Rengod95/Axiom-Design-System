@@ -1,6 +1,6 @@
 ---
 name: "Axiom UI"
-description: "A compact glass workbench with Geist, achromatic planes and fluorescent green action."
+description: "A blueprint workbench with flat neutral glass, optical corners and purpose-built material specimens."
 colors:
   brand: "#8dfc52"
   accent: "#8dfc52"
@@ -27,11 +27,9 @@ colors:
   negative-soft: "#fff0f1"
   focus: "#348023"
   selection: "#ccf5bd"
-  glass-panel: "rgb(250 250 250 / 58%)"
-  glass-header: "rgb(255 255 255 / 60%)"
-  glass-raised: "rgb(255 255 255 / 74%)"
-  glass-edge: "rgb(255 255 255 / 75%)"
-  glass-sheen: "rgb(255 255 255 / 48%)"
+  glass-panel: "rgb(250 250 250 / 54%)"
+  glass-header: "rgb(250 250 250 / 58%)"
+  glass-raised: "rgb(250 250 250 / 80%)"
   dark-accent-hover: "#a6ff77"
   dark-accent-soft: "#23331e"
   dark-accent-ink: "#8dfc52"
@@ -55,12 +53,17 @@ colors:
   dark-negative-soft: "#472a30"
   dark-focus: "#8dfc52"
   dark-selection: "#305025"
-  dark-glass-panel: "rgb(23 23 23 / 58%)"
-  dark-glass-header: "rgb(29 29 29 / 60%)"
-  dark-glass-raised: "rgb(35 35 35 / 72%)"
-  dark-glass-edge: "rgb(255 255 255 / 9%)"
-  dark-glass-sheen: "rgb(255 255 255 / 6%)"
+  dark-glass-panel: "rgb(23 23 23 / 54%)"
+  dark-glass-header: "rgb(23 23 23 / 58%)"
+  dark-glass-raised: "rgb(32 32 32 / 80%)"
   on-accent: "#152009"
+  slider-track: "#cdcdcd"
+  slider-fill: "#656565"
+  slider-thumb: "#ffffff"
+  slider-thumb-edge: "#c7c7c7"
+  dark-slider-track: "#454545"
+  dark-slider-fill: "#a5a5a5"
+  dark-slider-surface: "#242424"
 typography:
   heading:
     fontFamily: "Geist,SUIT,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
@@ -94,10 +97,12 @@ typography:
     letterSpacing: "normal"
   material-code:
     fontFamily: "'Geist Mono',ui-monospace,Consolas,monospace"
-    fontSize: "11px"
+    fontSize: "10px"
     lineHeight: "16px"
 rounded:
-  control: "8px"
+  nested: "8px"
+  control: "12px"
+  surface: "16px"
   checkbox: "4px"
 spacing:
   1: "4px"
@@ -136,6 +141,7 @@ components:
   button-small:
     padding: "3px 8px"
     height: "28px"
+    rounded: "{rounded.nested}"
   button-large:
     padding: "7px 16px"
     height: "36px"
@@ -148,7 +154,7 @@ components:
   select:
     backgroundColor: "{colors.surface-subtle}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.nested}"
     padding: "6px 8px 6px 10px"
     height: "28px"
   navigation:
@@ -163,7 +169,7 @@ components:
   choice-chip:
     backgroundColor: "{colors.surface-subtle}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.nested}"
     height: "28px"
   choice-chip-selected:
     backgroundColor: "{colors.surface-active}"
@@ -172,12 +178,12 @@ components:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
     rounded: "{rounded.control}"
-    padding: "3px"
+    padding: "0"
   material-card-selected:
     backgroundColor: "{colors.surface-active}"
   section-add:
     backgroundColor: "{colors.surface-subtle}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.nested}"
     padding: "5px"
     height: "24px"
     width: "24px"
@@ -188,101 +194,140 @@ components:
     padding: "11px 0"
   tab-selected:
     textColor: "{colors.ink}"
+  domain-blueprint:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-secondary}"
+    rounded: "{rounded.control}"
+    padding: "12px"
+  slider:
+    backgroundColor: "{colors.surface-subtle}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "4px 8px"
+  slider-thumb:
+    backgroundColor: "{colors.slider-thumb}"
+    height: "16px"
+    width: "16px"
 ---
 
 # Design System: Axiom UI
 
 ## Overview
 
-**Creative North Star: "Compact glass workbench"**
+**Creative North Star: "Blueprint workbench"**
 
-Axiom UI is a compact glass workbench. Achromatic planes recede behind the authored materials; fluorescent green identifies action. Geist, consistent rectangular corners, thin SVG icons and tightly grouped controls give English and Korean authoring a consistent rhythm.
+Axiom UI combines precise material drawings with compact neutral glass. Geist, thin construction lines and optical corners give English and Korean authoring a consistent rhythm. Fluorescent green identifies action and the flow of real references; authored materials remain the visual subject.
 
-Translucent rails, inspectors and overlapping menus share neutral edge light and soft backdrop diffusion. Headers and footer use flat translucent fills without an internal highlight or inset bevel. Both themes retain the same hierarchy. Studio appearance stays independent from the user's authored colors, typography and saved theme preferences.
+Structural planes are translucent and flat. The sidebar, inspector, headers and footer share neutral diffusion without inset highlights or bevels. Individual domains have one recognizable blueprint drawing. Inside a domain, the material determines the presentation: a shade row, a shared ruler, a stroke, an elevated object or an actual typographic specimen.
 
 **Key Characteristics:**
 
-- Achromatic grounds with a fluorescent action accent.
-- Compact controls and aligned panel bars.
-- Material specimens with contextual creation and inspection.
-- Shared glass depth in dark and light appearances.
+- Achromatic glass with a fluorescent action and dependency accent.
+- Compact controls with optical 8/12/16px corners.
+- Primitive scales and semantic roles with real source connections.
+- Purpose-specific specimens instead of repeated generic cards.
+- Adjustable navigation, contextual help and restrained scroll indicators.
 
-This refresh follows the owner's explicit replacement of the earlier spacing, font and neutral palette. [PRODUCT.md](PRODUCT.md) records durable commitments; the [surface contract](.impeccable/surfaces/workbench.md) and [refinement record](../../docs/implementation/studio-panel-binding-refinement.md) record composition and evidence. [styles.css](src/styles.css), [ui-system.css](src/ui-system.css), then [foundation-workspace.css](src/foundation-workspace.css) define the effective cascade. Frontmatter owns reusable tokens; the [sidecar](.impeccable/design.json) extends it with material, motion and snippets.
+[PRODUCT.md](PRODUCT.md) carries durable product constraints; the [surface contract](.impeccable/surfaces/workbench.md) carries workbench composition. Styles load [styles.css](src/styles.css), [ui-system.css](src/ui-system.css), [foundation-workspace.css](src/foundation-workspace.css), [studio-chrome.css](src/studio-chrome.css), [foundation-blueprint.css](src/foundation-blueprint.css), then [studio-slider.css](src/studio-slider.css). Frontmatter owns reusable token values; the [sidecar](.impeccable/design.json) extends them with materials, motion, responsive behavior and snippets. This document records the source design system and does not issue a verification verdict.
 
 ## Colors
 
-The brand and accent roles are fluorescent green. Accent-soft and accent-ink support action, links and relationship cues; positive, warning and negative preserve feedback meaning. Neutral surface, hover, active, canvas, ink and line roles are achromatic in both themes. Glass roles vary opacity, not hue.
+Fluorescent green supplies the brand action and the highlight traveling along a dependency edge. Accent-soft and accent-ink provide restrained selected or contextual treatments. Positive, warning and negative retain their feedback meanings. Neutral surface, hover, active, canvas, text and separator roles are achromatic in both themes. Glass changes opacity, not hue.
 
-Line separates structure, line-strong marks a stronger boundary and control-border supplies eligible control edges. Filled controls and specimen selection do not receive an additional accent outline. Authored color and shadow specimens remain independent content; shadow comparisons use a stable neutral ground.
+Filled controls and segmented selections use one selected surface. Structural lines remain quiet; keyboard focus remains distinct. Authored colors, gradients and shadows are independent content, including their source color space and alpha. Their values do not inherit Studio's accent.
 
 **The Independent Values Rule.** Studio appearance never rewrites authored token values or saved appearance preferences.
 
-**The One Selected Surface Rule.** Use a neutral fill for selected specimens and segmented choices; preserve a distinct keyboard focus outline.
+**The One Selected Surface Rule.** Use one neutral fill for selected material and segmented choices; preserve a distinct keyboard focus outline.
 
-CSS root values describe light appearance. The app restores the saved appearance and defaults to dark only when there is no saved choice.
+Root colors describe light appearance. The app restores the saved appearance and defaults to dark when no choice has been saved. New-project starter suggestions use Geist and the current accent; existing project values are preserved.
 
 ## Typography
 
-Geist Variable is locally bundled for the interface; SUIT is the Korean glyph fallback. Geist Mono is locally bundled for code and material measurements. Shared heading, title, body, label and caption recipes are normative in frontmatter and demonstrated by Axiom UI.
+Geist Variable is bundled locally for the interface, Geist Mono for code and measurements, and SUIT for Korean glyph fallback. The local font assets are explicitly served by the Studio asset allowlist. Arbitrary fonts named by project tokens remain subject to browser availability and fallback.
 
-The complete role recipes do not override every local text style. Buttons use medium weight and 1.4 leading; managed fields use 12px with 1.4 leading; Select uses 450 weight and an 18px line box; badges use their local 11px/16px recipe. Existing root headings and the wordmark retain local weights. Reuse complete roles for new surfaces rather than copying incidental literals.
+The heading, title, body, label and caption recipes in frontmatter are the shared interface hierarchy. Foundation tier headings use a local 18px/24px, 550-weight recipe; family headings use 13px medium text. Measurements are intentionally smaller than labels. Color and dependency-node values have a compact 9px exception; they do not establish the body type size.
+
+Typography specimens use the token's family, weight, font size, line height and letter spacing. A display specimen is large because its authored size is large. Font-family and weight-only tokens use a fixed comparison text; body, label and display composites keep their actual authored differences. Oversized specimens may scroll within their own plane, and previews retain explicit display bounds without changing the source.
+
+**The Type Is the Specimen Rule.** Render an authored typographic style on real text; do not replace every style with the same decorative Aa card.
 
 ## Layout
 
-Desktop rows are a 52px header, flexible work row and 28px status bar. Rail and inspector defaults are 196px and 304px. Foundation navigation, canvas tools bar, selection actions and token context header align on 44px bars. The middle pane uses minmax(0,1fr); workspaces scroll independently. Foundation subsection tabs remain sticky inside their scrolling pane.
+Desktop uses a 52px global header, flexible work row and 28px status bar. Navigation defaults to 232px and can be resized from 196 to 400px with pointer or keyboard input. At desktop viewport widths of 1100px or less it is visually capped at 280px. The inspector defaults to 304px and follows the existing compact-pane rules. The center uses minmax(0,1fr), and each workspace scrolls independently.
 
-Control size variants use 28/32/36px minimum heights. Workspace choices are 36px with 7px vertical and 10px horizontal padding. Foundation roots use 16px insets; inspector content uses 12px. Section content uses 10px gaps and 0 12px 12px padding. Related measurements use two columns with 8px gaps. Descriptions follow section titles by 4px.
+Control sizes are 28/32/36px. Workspace choices are 36px. Foundation roots use 16px insets, inspector content 12px, and related measurements group with 8px gaps. Narrow roots use 12px. At 720px the editor exposes Browse / 탐색, Workspace / 작업 영역 and Inspect / 속성 as separate accessible panes instead of maintaining three fixed columns.
 
-Material families are separated by 24px. General, color and typography columns start at 140px, 88px and 220px respectively. Color surfaces remain square. A family supplies context; cards show local leaf names, and section add inherits classification and prefix. Full paths remain accessible and in source. Bulk checks appear only after selecting the explicit selection mode; List remains available.
+Foundation subsection tabs stay sticky within their own scrolling pane. Domain cards separate one blueprint each with modest boundaries. Token families sit under a single Primitive or Semantic heading, with 26px between family groups and a larger break between tiers. The standard ten brand shades, 50 through 900, use a four-pixel gap and one square row at Full HD; smaller widths can scroll that row locally.
 
-An inherited 1200px rule sets the rail to 200px. At 1100px, the effective rail/inspector become 180px/288px and domain galleries become one column. At 720px, a single working pane replaces the three-column composition, with 52/40/flexible/28px rows and Browse/Workspace/Inspect choices. Narrow root insets become 12px and color minima 82px. Compact contextual targets retain exceptions to the shared mobile button minimum. Object rows have a 2px trailing gap. Independent header controls collapse either side column and persist browser preferences. Hidden forms stay mounted. Inspector-form recovery and successful object selection reopen the inspector; Foundation manager recovery returns to the workspace. Desktop collapse preferences do not suppress mobile panel navigation.
+Spacing and sizing align values on a ruler origin. Radius keeps the corner preview. Border and typography use rows, while shadows use an open plane. Semantic maps expose the source-to-role relationship; advanced reference details remain accessible under line, type and measurement specimens. A family provides the name context, so visible leaf labels avoid repeating the path. Contextual add inherits domain, tier, type and prefix. List and explicit bulk selection remain available.
+
+Domain accordions in navigation start closed and expand for matching search results. Navigation and inspector may collapse independently while their forms remain mounted. Resizing and collapse are appearance preferences; they do not edit the project. Enhanced scroll indicators track native scrolling rather than replacing wheel or keyboard scrolling.
 
 ## Elevation & Depth
 
-**The Shared Glass Rule.** Use translucent structural planes and frosted raised surfaces with restrained neutral edge light; reduced transparency restores solid surfaces.
+**The Flat Glass Rule.** Structural glass uses neutral opacity and backdrop diffusion without inset highlights or bevels.
 
-Headers, sidebar, inspector and status use the shared glass roles over an achromatic ambient ground. Sidebar and inspector retain restrained neutral sheen; headers and footer have no internal gradient or inset shadow. Raised menus, tools and dialogs add soft depth. Chrome uses 24px blur; popup saturation is 1.08, chrome saturation 1.04, and dialogs use 28px blur. Primary actions retain a restrained accent glow. Exact material, shadows and motion live in the sidecar.
+Panels, headers and raised surfaces use the frontmatter glass roles at 54%, 58% and 80% opacity. Structural chrome uses 32px blur with restrained saturation. A neutral ambient ground supplies something for the translucent panes to diffuse. Floating canvas tools and zoom controls use a soft downward shadow, while tooltips use a smaller, separate shadow. Reduced transparency restores opaque structural surfaces and removes their backdrop filters.
 
-Selection moves by translation and opacity; disclosure and menus use semantic fast/reveal timing. Reduced motion removes nonessential transitions and animations. Reduced transparency removes blur and restores opaque surfaces. The static finish review does not establish temporal motion quality.
+Dependency glow travels only along real authored edges. A selected theme can change the source edge; composite and property references remain actual references. Reduced motion removes the traveling stroke and leaves the connection visible. Menus, disclosure, scroll indicators and selection movement use semantic timing. Motion and material values are extended in the sidecar; the presence of a motion definition is not temporal quality evidence.
 
 ## Shapes
 
-Rectangular Studio controls, navigation, menus, cards and specimen surfaces share an 8px corner. The 15px checkbox retains a proportional 4px corner, and circular indicators retain their actual shape. Authored geometry stays independent; rectangular color surfaces always use equal width and height. Borders establish structure without outlining every container.
+Optical nesting replaces one radius applied at every size: small details and compact actions use eight-pixel corners, standard controls use twelve-pixel corners, and larger floating surfaces use sixteen-pixel corners. The fifteen-pixel checkbox retains a proportional four-pixel corner. True circular tools and indicator dots stay circular; the canvas tool dock is a capsule with an extended active tool.
 
-SVG icons use rounded caps/joins and a 1.4-unit stroke in a 20-unit view box. Most controls display 16px icons, workspace navigation 17px. Icon-only controls retain accessible names and titles.
+Domain blueprints use crisp SVG geometry, construction lines, measured guides and unshaded layered outlines. A domain has one drawing. Token color surfaces remain square. Rulers, strokes and text rows use open geometry rather than enclosing every value in a card. Authored radius values remain independent from the Studio corner system.
+
+Icons use rounded caps and joins with a 1.4-unit stroke in a 20-unit view box. Most icons render at 16px and workspace icons at 17px. Named icon controls retain accessible labels and contextual tooltips.
 
 ## Components
 
 ### Buttons, inputs and checkbox
 
-Primary is solid accent with dark text; secondary is tonal fill with a transparent resting border; subtle starts transparent; danger pairs negative ink and its soft surface. Minimum height is represented by frontmatter height recipes. Hover and pressed feedback use semantic surface roles; disabled and busy semantics remain explicit.
+Primary actions use the accent with dark text; secondary actions use a tonal fill and transparent resting border; subtle actions begin transparent; danger pairs negative ink with its soft surface. Small actions follow the nested radius, standard actions the control radius. Hover, focus, disabled and busy states remain explicit.
 
-Managed inputs use filled neutral grounds, compact padding and visible invalid treatment. Fields may stack or align labels with values. Checkboxes use a 15px neutral filled box with a compact accent check or indeterminate mark. Source/review state, composition and rejected-input recovery remain functional contracts.
+Managed inputs use compact neutral fills and invalid-state treatment. Fields may stack or align labels with values. Checkboxes use a neutral filled box and an accent check or indeterminate mark. Korean composition and incomplete numeric text belong to the owning form, not to a render-time normalization step.
 
 ### Authored dropdown
 
-Select renders a compact trigger and frosted listbox with an inset chevron. It supports Arrow/Home/End/Page keys, typeahead, Enter/Space, Escape cancellation, Tab continuation and outside dismissal. A hidden native form proxy preserves labels, required validation, reset and fieldsets. Popups clamp to the viewport and stay inside an owning dialog's top layer. Consumer component previews retain their authored controls.
+Select pairs a compact trigger and inset chevron with a frosted listbox. Arrow, Home/End, Page keys, typeahead, Enter/Space, Escape, Tab and outside dismissal retain the component's behavior. A hidden native proxy preserves form labels, required validation, reset and fieldset semantics. The popup clamps to the viewport and can remain inside an owning dialog's top layer. Consumer previews retain their authored controls.
 
-### Chips, tabs and cards
+### Precision slider
 
-Choice chips and Specimens/List segments use a neutral selected fill. Subsection tabs use neutral ink and an underline, keyboard navigation and horizontal reveal without moving their parent panel. Badges use compact tonal or semantic pairs. Catalog and specimen selection use neutral fills without a competing accent border. A specimen is a bounded display projection of the authored value, not a replacement value.
+StudioSlider combines a bounded native pointer range with a lexical precision field and an optional unit. The value, gradient and ruler variants share one container, clear focus and disabled/error treatment. A range gesture stays within the configured window; exact text can retain values outside it or incomplete input for the owner to validate. Arrow keys use one step, Page keys ten steps and Home/End the endpoints. The precise input remains compatible with Korean composition.
+
+The ordinary track is thin and neutral with a white thumb. Gradient controls expose the authored channel ramp; ruler controls use fine ticks and a small accent marker. These are Studio authoring controls, separate from generated consumer sliders.
+
+### Chips, tabs and specimens
+
+Choice chips and Specimens / 견본 versus List / 목록 use a neutral selected fill. Subsection tabs use neutral ink and an underline, keyboard navigation and local horizontal reveal. A domain card owns one blueprint. Square color swatches use leaf labels; spacing and sizing share a ruler; stroke is a horizontal sample; shadow is one elevated object; typography is actual styled text.
+
+Primitive headings describe base scales and Semantic headings describe roles. Reference maps use actual source IDs and selected-theme expressions, with source names and values beside the edges. Card checkboxes appear only in explicit selection mode. A specimen is a display projection, not a replacement source value.
 
 ### Navigation and contextual inspector
 
-The rail has a fluorescent rounded workspace selection and quieter object navigation. The former lower Axiom UI footer is absent; Quick search exposes the system gallery. Canvas category, interaction mode and theme use named icon controls. The component inspector starts with Design/Source and compact property sections instead of a large identity heading.
+The navigation rail combines a fluorescent workspace choice with quiet, initially collapsed domain sections. Token paths split into family context and a short terminal value. The resize separator supports pointer drag, arrow keys, Home/End and a reset gesture. The former lower Axiom UI footer remains absent.
 
-Layout choices, paired dimensions, inline binding actions and an all-sides padding diagram precede advanced metadata. The diagram describes the currently supported uniform value, not independently editable sides. Token context uses a 44px bar; material and value come before collapsed metadata. Contextual creation prepopulates family defaults. Draft, review, save and Undo remain distinct. Property binding combines the token value type with the domain's declared use category. Unknown or unrestricted domains appear separately as type-compatible candidates; custom domain purpose is editable in Manage.
+The floating canvas tool dock uses circular inactive tools and a labeled active capsule. Contextual tooltips support icon controls. The component inspector starts with Design / 디자인 and Source / 소스, then compact property sections. Layout choices, paired dimensions, inline bindings and the uniform-padding diagram precede advanced metadata. Domain purpose and token type both contribute to property compatibility; unrestricted domains remain separate type-compatible candidates.
+
+### Library specimens
+
+A library preview should identify the component's recognizable structure rather than reuse one button or card for unrelated controls. Upstream catalog references describe provenance and comparison targets. They do not install those libraries, confer runtime semantics or certify every catalog interaction. Unsupported authoring or target behavior must remain explicit.
+
+The canvas artboard is a separate rectangular preview environment: its backdrop follows the active project's resolved surface, and metadata follows its content color. Do not paint Studio radii or backgrounds onto transparent authored roots. Sparse color families retain the same bounded square scale as full ten-stop rows; shadow specimens use a shared neutral comparison plane.
 
 ## Do's and Don'ts
 
-- **Do** reuse semantic roles and shared primitives.
-- **Do** keep related measurements together and disclose advanced metadata.
-- **Do** preserve readable focus, Korean input composition, reduced motion and reviewed source changes.
-- **Do** inspect selector precedence when extending a control.
+- **Do** reuse semantic roles, optical radii and shared authoring controls.
+- **Do** show each token through a material-appropriate specimen and preserve its exact source value.
+- **Do** connect semantic roles with actual references, including active theme overrides.
+- **Do** preserve keyboard focus, Korean composition, reduced motion and reviewed source changes.
+- **Do** keep local scroll and navigation adjustments independent from project data.
 
-- **Don't** tint neutral Studio surfaces with the accent.
-- **Don't** repeat the full token path beneath a family heading.
-- **Don't** add competing selection borders to filled specimen or view controls.
-- **Don't** treat static captures or source generation as proof of motion quality, native execution or Foundation completion.
+- **Don't** tint neutral Studio planes with the accent or add inset panel bevels.
+- **Don't** repeat every token path below an existing family heading.
+- **Don't** force all materials into identical or nested cards.
+- **Don't** fabricate dependency edges or imply every catalog preview has a complete runtime implementation.
+- **Don't** treat design context, static captures or source generation as proof of platform readiness or Foundation completion.
 
-Known drift is not canonized: a more specific managed-field transparent-border selector still outranks ordinary hover/focus border declarations; the keyboard outline and important invalid edge remain. Legacy eyebrow styling and incidental heading weights are not new reusable type rules. Native execution, assistive-technology certification and full Foundation completion are outside this design record.
+Legacy selector specificity remains part of the source cascade. New surfaces should use the shared recipes rather than promote incidental eyebrow styles, control shadows or local text weights into additional system rules. Verification and remaining implementation obligations belong to their separate records.

@@ -4,7 +4,7 @@ import type { FoundationStarterOptions } from "../../../modules/ads-core/src/ind
 import type { Locale } from "./locales.ts";
 import { Button, Field, copy } from "./ui.tsx";
 
-export const DEFAULT_STARTER: FoundationStarterOptions = { domains: FOUNDATION_STARTER_DOMAINS.map(domain => domain.id), accent: "#5b50d6", fontFamily: "SUIT", density: "comfortable" };
+export const DEFAULT_STARTER: FoundationStarterOptions = { domains: FOUNDATION_STARTER_DOMAINS.map(domain => domain.id), accent: "#8dfc52", fontFamily: "Geist", density: "comfortable" };
 export const DOMAIN_LABELS: Record<string, [string, string]> = {
   color: ["색상", "Color"], spacing: ["간격", "Spacing"], sizing: ["크기", "Sizing"], radius: ["모서리", "Radius"], border: ["테두리", "Border"], shadow: ["그림자", "Shadow"], typography: ["타이포그래피", "Typography"], motion: ["모션", "Motion"], opacity: ["불투명도", "Opacity"], gradient: ["그라디언트", "Gradient"], layer: ["레이어", "Layer"],
 };

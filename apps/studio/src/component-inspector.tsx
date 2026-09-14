@@ -12,6 +12,7 @@ import { AppearanceRules } from "./appearance-rules.tsx";
 import { useFormDraft } from "./form-drafts.tsx";
 import { TokenVisual } from "./token-visual.tsx";
 import { colorHex, hexColor, object } from "./ui-utils.ts";
+import { StudioSlider } from "./studio-slider.tsx";
 
 const rows = (value: unknown): JsonObject[] => Array.isArray(value) ? value.filter(object) : [];
 const VISUAL: readonly StudioVisualProperty[] = ["background", "color", "borderColor", "borderWidth", "borderRadius", "fontSize", "opacity"];
@@ -73,10 +74,14 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     <TextInput label={label} data-testid={testId} value={drafts[keyFor(key)] ?? value} aria-invalid={Object.hasOwn(drafts, keyFor(key))} multiline={multiline} onCommit={text => commit(key, text, make(text))} />
     {Object.hasOwn(drafts, keyFor(key)) && <small role="status">{t("입력을 수정해 주세요. 이전 값은 보존됩니다.", "Correct this input. The previous value is preserved.")}</small>}
   </Field>;
-  const numberField = (key: string, label: string, value: number, make: (number: number) => StudioComponentEdit, min = 0, max = 4096, testId = key): ReactNode => <Field key={key} label={label} layout="row">
-    <TextInput label={label} data-testid={testId} inputMode="decimal" value={drafts[keyFor(key)] ?? String(value)} aria-invalid={Object.hasOwn(drafts, keyFor(key))} onCommit={text => { const parsed = inspectorNumber(text, min, max); if (parsed === null) hold(key, text); else commit(key, text, make(parsed)); }} />
+  const numberField = (key: string, label: string, value: number, make: (number: number) => StudioComponentEdit, min = 0, max = 4096, testId = key): ReactNode => {
+    const change = (text: string) => { const parsed = inspectorNumber(text, min, max); if (parsed === null) hold(key, text); else if (parsed !== value || Object.hasOwn(drafts, keyFor(key))) commit(key, text, make(parsed)); };
+    const slider = max === 1 || key === "motion-duration" || key === "appearance-borderRadius-value";
+    return <Field key={key} label={label} layout="row">
+    {slider ? <StudioSlider label={label} sliderLabel={key === "appearance-opacity-value" ? t("불투명도 슬라이더", "Opacity slider") : undefined} locale={locale} testId={testId} value={drafts[keyFor(key)] ?? String(value)} invalid={Object.hasOwn(drafts, keyFor(key))} min={min} max={key === "appearance-borderRadius-value" ? 128 : max} step={max === 1 ? .01 : 1} variant={key === "motion-duration" ? "ruler" : "value"} onChange={change} /> : <TextInput label={label} data-testid={testId} inputMode="decimal" value={drafts[keyFor(key)] ?? String(value)} aria-invalid={Object.hasOwn(drafts, keyFor(key))} onCommit={change} />}
     {Object.hasOwn(drafts, keyFor(key)) && <small role="status">{t(`${min}–${max} 사이 숫자를 입력하세요.`, `Enter a number from ${min} to ${max}.`)}</small>}
   </Field>;
+  };
   const selectField = (key: string, label: string, value: string, options: readonly { value: string; label: string; disabled?: boolean }[], make: (value: string) => StudioComponentEdit): ReactNode => <Field key={key} label={label} layout="row">
     <Select aria-label={label} data-testid={key} value={drafts[keyFor(key)] ?? value} aria-invalid={Object.hasOwn(drafts, keyFor(key))} onChange={event => commit(key, event.currentTarget.value, make(event.currentTarget.value))}>{options.map(option => <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>)}</Select>
   </Field>;
@@ -108,7 +113,7 @@ export function ComponentInspector({ state, controller, component, selectedPart,
         </Select>{tokenId && <IconButton icon="link" label={t("연결된 토큰 열기", "Open linked token")} disabled={!onSelectToken} onClick={() => onSelectToken?.(tokenId)} />}
       </div>
       {bound === "literal" && (type === "color" ? <div className="property-color-row"><Field label={t("색", "Color")}><input type="color" aria-label={`${label} ${t("색 선택", "color picker")}`} value={colorHex(value) ?? "#000000"} onChange={event => { const next = hexColor(event.currentTarget.value, value); if (next) commit(valueKey, event.currentTarget.value, change(next)); }} /></Field><Field label="Hex"><TextInput label={`${label} Hex`} data-testid={valueKey} value={drafts[keyFor(valueKey)] ?? colorHex(value) ?? ""} aria-invalid={Object.hasOwn(drafts, keyFor(valueKey))} onCommit={text => { const next = hexColor(text, value); if (next) commit(valueKey, text, change(next)); else hold(valueKey, text); }} /></Field>{numberField(`appearance-${property}-alpha`, t("알파", "Alpha"), object(value) && typeof value.alpha === "number" ? value.alpha : 1, alpha => change({ ...(object(value) ? value : {}), alpha }), 0, 1)}</div>
-        : <div className={type === "number" ? "property-slider-row" : "property-literal-row"}>{type === "number" && <input type="range" aria-label={t("불투명도 슬라이더", "Opacity slider")} min="0" max="100" step="1" value={typeof value === "number" ? value * 100 : 100} onChange={event => commit(valueKey, String(event.currentTarget.valueAsNumber / 100), change(event.currentTarget.valueAsNumber / 100))} />}{numberField(valueKey, type === "number" ? "0–1" : "px", typeof value === "number" ? value : object(value) && typeof value.value === "number" ? value.value : 0, number => change(type === "number" ? number : { value: number, unit: "px" }), property === "fontSize" ? Number.MIN_VALUE : 0, type === "number" ? 1 : 4096)}</div>)}
+        : <div className="property-literal-row">{numberField(valueKey, type === "number" ? "0–1" : "px", typeof value === "number" ? value : object(value) && typeof value.value === "number" ? value.value : 0, number => change(type === "number" ? number : { value: number, unit: "px" }), property === "fontSize" ? Number.MIN_VALUE : 0, type === "number" ? 1 : 4096)}</div>)}
     </div>;
   };
   const removePart = source.sourcePart?.required !== true && part.parent !== null && !component.parts.some(item => item.parent === part.id) && !rows(source.document?.slots).some(slot => slot.ownerPartRef === part.id);

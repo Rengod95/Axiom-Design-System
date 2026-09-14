@@ -466,12 +466,7 @@
 .type-caption { font: 400 12px/18px var(--font-ui); }
 .review-strip { padding: 10px 16px; gap: 12px; background: var(--glass-raised); backdrop-filter: blur(24px); }
 .workbench-dialog,.review-dialog,.export-dialog { background: var(--glass-raised); backdrop-filter: blur(28px); }
-/* Rectangular Studio controls use one corner rule; authored specimens keep their own geometry. */
-:root { --radius-sm: 8px; --radius-control: 8px; --radius-panel: 8px; --radius-md: 8px; }
-.app :is(.button,.icon-button,.locale-button,.logo-mark,.nav-item,.nav-marker,.badge,.segmented,.choice-control,.choice-chips .button,.catalog-card,.material-token,.domain-material,.padding-box,.section-add-token,.canvas-tools,.canvas-zoom,.tool-button,.tool-text,.search-field input,.brand-chip),
-.app :is(.segmented,.choice-control) button,
-.app .workspace-nav .nav-item,
-.select-trigger,.select-popup,.select-option,.dialog,.workbench-dialog,.review-dialog,.export-dialog,.command-result,.file-list,.diff-values > div { border-radius: var(--radius-control); }
+/* Optical Studio corner roles are centralized in studio-chrome.css. */
 .material-select .token-visual,.inspector-material .token-visual { border-radius: var(--radius-control); }
 .system-depth > div,.system-motion .token-visual { border-radius: var(--radius-control); }
 .app .property-color-row input[type=color],.app .color-primary input[type=color],.app .sidebar-search input { border-radius: var(--radius-control); }

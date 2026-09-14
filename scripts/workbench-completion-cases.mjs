@@ -75,7 +75,7 @@ export async function verifyBindingRepair({ page, origin, database, root, id, cl
   const before = await revision();
   const capture = async name => { await page.evaluate("document.fonts.ready"); const shot = await page.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false }); await writeFile(join(root, "dist/evidence", `quiet-repair-${name}.png`), Buffer.from(shot.data, "base64")); };
   await click("open-binding-repair"); await until(`${id("binding-repair-dialog")}.open`);
-  assert.equal(await page.evaluate(`getComputedStyle(${id("binding-repair-dialog")}).borderRadius`), "8px");
+  assert.equal(await page.evaluate(`getComputedStyle(${id("binding-repair-dialog")}).borderRadius`), "16px");
   assert.equal(await page.evaluate(`${id("binding-repair-progress")}.textContent`), "0 / 3");
   const rowLabels = await page.evaluate("Array.from(document.querySelectorAll('select[data-testid^=binding-repair-select-]')).map(e=>e.getAttribute('aria-label'))");
   assert.equal(new Set(rowLabels).size, 3, "Base and conditional rules have distinguishable repair labels");
@@ -150,9 +150,9 @@ export async function verifyPanelVisibility({ page, id, text, click, clickElemen
   await click("reset-pending-input");
   assert.equal(await page.evaluate(`${id("component-name")}.value`), originalName);
   await click("toggle-sidebar");
-  const chrome = await page.evaluate("(()=>{const a=document.querySelector('.app');return{header:getComputedStyle(a.querySelector('.topbar')).backgroundImage,headerShadow:getComputedStyle(a.querySelector('.topbar')).boxShadow,footer:getComputedStyle(a.querySelector('.statusbar')).backgroundImage,radii:[...a.querySelectorAll('.topbar .button,.workspace-nav .nav-item,.sidebar-scroll .nav-item,.select-trigger')].map(e=>getComputedStyle(e).borderRadius),gaps:[...a.querySelectorAll('.sidebar-scroll > button')].slice(0,4).map(e=>parseFloat(getComputedStyle(e).marginBottom))}})()");
+  const chrome = await page.evaluate("(()=>{const a=document.querySelector('.app');return{header:getComputedStyle(a.querySelector('.topbar')).backgroundImage,headerShadow:getComputedStyle(a.querySelector('.topbar')).boxShadow,footer:getComputedStyle(a.querySelector('.statusbar')).backgroundImage,radii:[...a.querySelectorAll('.topbar .button,.workspace-nav .nav-item,.sidebar-scroll .nav-item,.select-trigger')].map(e=>getComputedStyle(e).borderRadius),gaps:[...a.querySelectorAll('.sidebar-token')].slice(0,4).map(e=>parseFloat(getComputedStyle(e).marginBottom))}})()");
   assert.equal(chrome.header, "none"); assert.equal(chrome.headerShadow, "none"); assert.equal(chrome.footer, "none");
-  assert.ok(chrome.radii.every(radius => radius === "8px")); assert.ok(chrome.gaps.length && chrome.gaps.every(gap => gap === 2));
+  assert.ok(chrome.radii.every(radius => ["8px", "12px"].includes(radius))); assert.ok(chrome.radii.includes("12px") && chrome.radii.includes("8px")); assert.ok(chrome.gaps.length && chrome.gaps.every(gap => gap === 2));
   await click("toggle-sidebar"); await click("toggle-inspector");
   assert.deepEqual(await page.evaluate("[localStorage.getItem('axiom.ui.sidebarCollapsed'),localStorage.getItem('axiom.ui.inspectorCollapsed')]"), ["true", "true"]);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: false }); await settled();
@@ -162,7 +162,7 @@ export async function verifyPanelVisibility({ page, id, text, click, clickElemen
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1080, deviceScaleFactor: 1, mobile: false }); await settled();
   await click("toggle-sidebar"); await click("toggle-inspector");
   assert.equal(await revision(), before, "Layout preferences and draft reset create no project revision");
-  record("panelVisibility", { independentPanels: true, releasedCanvasWidth: true, hiddenDraftPreserved: true, recoveryReopensInspector: true, persistedPreferences: true, mobileNavigation: true, radius: 8, objectRowGap: 2, flatHeaderFooter: true });
+  record("panelVisibility", { independentPanels: true, releasedCanvasWidth: true, hiddenDraftPreserved: true, recoveryReopensInspector: true, persistedPreferences: true, mobileNavigation: true, opticalRadii: [8, 12], objectRowGap: 2, flatHeaderFooter: true });
 }
 
 /** Real browser regressions for the owner's blocked-review and Foundation completion report. */
@@ -183,7 +183,7 @@ export async function verifyEditorCompletion({ page, origin, database, root, id,
   await viewport(1312, 958); await capture("02-domains-light");
   await clickElement("Array.from(document.querySelectorAll('.domain-directory-row')).find(e=>e.querySelector('strong').textContent==='Typography')");
   await selectElement(label("Filter tier", "select"), await page.evaluate(`Array.from((${label("Filter tier", "select")}).options).find(e=>e.textContent==='Semantic').value`));
-  assert.ok(await page.evaluate("document.querySelectorAll('.material-group').length>0 && Array.from(document.querySelectorAll('.material-group > header')).every(e=>e.textContent.includes('Semantic'))"));
+  assert.ok(await page.evaluate("document.querySelectorAll('.material-group').length>0 && Array.from(document.querySelectorAll('.material-group')).every(e=>e.dataset.tokenTier==='Semantic')"));
   await clickElement("Array.from(document.querySelectorAll('[data-testid^=foundation-row-]')).find(e=>e.textContent.includes('typography.body'))?.querySelector('button')");
   await capture("03-typography-light");
   await clickElement(text("Connections"));
@@ -339,7 +339,7 @@ export async function verifyMaterialWorkbench({ page, id, label, text, click, cl
   const before = await revision();
   const types = await page.evaluate("[...new Set(Array.from(document.querySelectorAll('.material-select [data-visual-type]')).map(e=>e.dataset.visualType))].sort()");
   assert.deepEqual(types, ["border", "color", "cubicBezier", "dimension", "duration", "fontFamily", "fontWeight", "gradient", "number", "shadow", "strokeStyle", "transition", "typography"].sort());
-  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.material-select .token-visual')).every(e=>{const r=e.getBoundingClientRect();return r.width>=80&&(e.dataset.visualType==='color'?Math.abs(r.height-r.width)<1:r.height>=100)})"), "Color surfaces stay square; other material types keep a readable display");
+  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.material-color .token-visual')).every(e=>{const r=e.getBoundingClientRect();return r.width>=20&&Math.abs(r.height-r.width)<1}) && Boolean(document.querySelector('.shared-measure-track')) && Boolean(document.querySelector('.editorial-type'))"), "Color surfaces stay square; length and typography use purpose-specific displays");
   await fill("foundation-search", "space.");
   const names = await page.evaluate("Array.from(document.querySelectorAll('.material-select .sr-only')).map(e=>e.textContent)");
   assert.ok(names.indexOf("space.2") < names.indexOf("space.12"), "Numeric scales use natural ordering");

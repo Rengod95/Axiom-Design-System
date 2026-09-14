@@ -35,7 +35,7 @@ function checkSource(path, source) {
     if (!target.startsWith(".")) {
       if (path === resolve(BROWSER_ROOT, "browser-services.ts") && target === "@noble/hashes/sha2.js") return;
       if (isStudio && ["react", "react-dom/client"].includes(target)) return;
-      if (path === resolve(MODULES[5], "src/ui.tsx") && target === "react-dom") return;
+      if (["src/ui.tsx", "src/studio-overlays.tsx"].some(owner => path === resolve(MODULES[5], owner)) && target === "react-dom") return;
       if (neutral || !NODE_BUILTINS.has(target)) throw new Error(`Unapproved dependency in ${label}: ${target}`);
       return;
     }

@@ -1,15 +1,19 @@
 import { useId } from "react";
-import { getStudioCatalogRecipe } from "../../../modules/ads-core/src/index.ts";
+import { getStudioCatalogRecipe, studioCatalogPresentation } from "../../../modules/ads-core/src/index.ts";
 import type { StudioCatalogEntry } from "../../../modules/ads-core/src/index.ts";
+import { CatalogChartDrawing, catalogDetailedVector } from "./catalog-vector.tsx";
 
 /** Fixed, authored vector specimens: no live controls, external image fetch or mutable preview state. */
 export function CatalogThumbnail({ entry }: { entry: StudioCatalogEntry }) {
-  const title = useId(), kind = getStudioCatalogRecipe(entry.id)?.semantic.kind, name = entry.name.toLowerCase();
+  const title = useId(), kind = getStudioCatalogRecipe(entry.id)!.semantic.kind, name = entry.name.toLowerCase();
+  const presentation = studioCatalogPresentation(entry, kind), detail = catalogDetailedVector(presentation.shape, presentation.variant, title, entry.name);
   const box = (x: number, y: number, width: number, height: number, radius = 4, fill = "var(--surface)") => <rect x={x} y={y} width={width} height={height} rx={radius} fill={fill} />;
   const line = (x: number, y: number, width: number) => <path d={`M${x} ${y}h${width}`} />;
   const label = (x: number, y: number, text: string, size = 10) => <text x={x} y={y} fontSize={size} fill="var(--ink-secondary)" stroke="none" fontFamily="var(--font-ui)">{text}</text>;
   let drawing;
-  if (/calendar|date|month|year/.test(name)) drawing = <>{box(45, 12, 110, 88)}{line(45, 34, 110)}{label(60, 27, "September")}{Array.from({ length: 28 }, (_, i) => <rect key={i} x={55 + i % 7 * 13} y={43 + Math.floor(i / 7) * 12} width={7} height={5} rx={1} fill={i === 12 ? "var(--accent)" : "var(--line-strong)"} stroke="none" />)}</>;
+  if (entry.familyIds.includes("axiom.family/chart")) drawing = <CatalogChartDrawing shape={presentation.shape} />;
+  else if (detail !== null) drawing = detail;
+  else if (/calendar|date|month|year/.test(name)) drawing = <>{box(45, 12, 110, 88)}{line(45, 34, 110)}{label(60, 27, "September")}{Array.from({ length: 28 }, (_, i) => <rect key={i} x={55 + i % 7 * 13} y={43 + Math.floor(i / 7) * 12} width={7} height={5} rx={1} fill={i === 12 ? "var(--accent)" : "var(--line-strong)"} stroke="none" />)}</>;
   else if (/chart|sparkline/.test(name)) drawing = <>{line(35, 91, 130)}<path d="M35 20v71" />{/bar/.test(name) ? [28, 52, 40, 66, 50].map((height, i) => <rect key={i} x={47 + i * 22} y={90 - height} width={12} height={height} rx={2} fill="var(--accent)" stroke="none" />) : /pie|donut/.test(name) ? <><circle cx="102" cy="54" r="30" strokeWidth="14" stroke="var(--line-strong)" /><path d="M102 24a30 30 0 0 1 30 30" stroke="var(--accent)" strokeWidth="14" /></> : <path d="m42 76 24-24 25 8 25-32 38 10" stroke="var(--accent)" strokeWidth="3" />}</>;
   else switch (kind) {
     case "button": drawing = <>{box(52, 36, 96, 36, 7, "var(--accent-soft)")}{label(76, 58, "Continue")}</>; break;
@@ -29,5 +33,5 @@ export function CatalogThumbnail({ entry }: { entry: StudioCatalogEntry }) {
     case "layout": case "surface": case "field": case "toolbar": drawing = <>{box(25, 17, 150, 80)}{/grid/.test(name) ? [0, 1, 2, 3, 4, 5].map(i => <g key={i}>{box(36 + i % 3 * 43, 29 + Math.floor(i / 3) * 29, 34, 20, 3, "var(--accent-soft)")}</g>) : /stack|group|flex|toolbar/.test(name) ? [0, 1, 2].map(i => <g key={i}>{box(37 + i * 43, 38, 33, 34, 3, "var(--accent-soft)")}</g>) : <>{label(39, 41, "A shared surface")}{line(39, 53, 100)}{line(39, 64, 76)}{box(40, 75, 43, 10, 3, "var(--accent-soft)")}</>}</>; break;
     default: drawing = <>{box(35, 22, 130, 67)}{label(47, 46, entry.name.slice(0, 20))}{line(47, 59, 88)}{line(47, 70, 65)}</>;
   }
-  return <svg className="catalog-thumbnail" viewBox="0 0 200 112" role="img" aria-labelledby={title} fill="none" stroke="var(--line-strong)" strokeWidth="1.2"><title id={title}>{entry.name} · static structure preview</title>{drawing}</svg>;
+  return <svg className="catalog-thumbnail" viewBox="0 0 200 112" role="img" aria-labelledby={title} data-catalog-id={entry.id} data-specimen-shape={presentation.shape} fill="none" stroke="var(--line-strong)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><title id={title}>{`${entry.name} · Axiom structural specimen`}</title>{drawing}</svg>;
 }

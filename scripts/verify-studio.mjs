@@ -21,6 +21,8 @@ async function until(expression) {
 }
 const element = id => `document.querySelector(${JSON.stringify(selector(id))})`;
 async function reveal(id) {
+  const domain = await page.evaluate(`(()=>{const target=${element(id)},toggle=target?.closest('.sidebar-domain')?.querySelector('.sidebar-domain-toggle[aria-expanded=false]');return toggle&&!toggle.contains(target)?toggle.dataset.testid:null})()`);
+  if (domain) await click(domain);
   const index = await page.evaluate(`(()=>{const target=${element(id)};let closed=null;for(let e=target;e;e=e.parentElement)if(e.tagName==='DETAILS'&&!e.open&&!e.querySelector(':scope > summary')?.contains(target))closed=e;return closed?Array.from(document.querySelectorAll('details')).indexOf(closed):-1})()`);
   if(index<0)return;
   const point=await page.evaluate(`(()=>{const e=document.querySelectorAll('details')[${index}].querySelector('summary');e.scrollIntoView({block:'center'});const r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()`);

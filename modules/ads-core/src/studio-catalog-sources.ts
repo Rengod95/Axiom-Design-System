@@ -5,17 +5,24 @@ import { isObject } from "./documents.ts";
 import { catalogObjects } from "./studio-catalog-validation.ts";
 import { STUDIO_CATALOG_PROFILE } from "./studio-catalog-constants.ts";
 import { STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MOTION, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
+import { studioCatalogPresentation } from "./studio-catalog-presentation.ts";
 
 const dimension = (value: number): JsonObject => ({ value, unit: "px" });
 const color = (value: number): JsonObject => ({ colorSpace: "srgb", components: [value, value, value], alpha: 1 });
 
 /** Produce independent IDs for one definition and its two category designs. */
 export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: AdsDocument, name: string, id: () => string): AdsDocument[] {
+  const presentation = studioCatalogPresentation(recipe.entry, recipe.semantic.kind);
   const pin = { ...STUDIO_CATALOG_PROFILE, catalogId: recipe.entry.id };
   const envelope = (kind: string, name: string): AdsDocument => ({ id: id(), kind, name, schemaVersion: STUDIO_SCHEMA_VERSION, revision: id(), studioProfile: { ...STUDIO_SOURCE_PROFILE }, catalogProfile: { ...pin }, metadata: {}, extensions: {} });
-  const component = envelope("component", name), parts = recipe.parts.map(part => ({ id: id(), name: part.role, studioRole: part.role, parent: null as string | null, roleRefs: [], required: part.required, cardinality: { min: 1, max: 1 }, relationships: [] }));
+  const sourceParts = [...recipe.parts, ...presentation.parts.filter(part => !recipe.parts.some(existing => existing.role === part.role)).map(part => ({ role: part.role, required: false }))];
+  const component = envelope("component", name), parts = sourceParts.map(part => {
+    const visual = presentation.parts.find(item => item.role === part.role);
+    return { id: id(), name: part.role, studioRole: part.role, parent: null as string | null, roleRefs: [], required: part.required, cardinality: { min: 1, max: 1 }, relationships: [], ...(visual?.text !== undefined ? { studioText: visual.text } : {}) };
+  });
   const root = parts[0]!; for (const part of parts.slice(1)) part.parent = root.id;
   const partId = (role: string): string => parts.find(part => part.studioRole === role)!.id;
+  for (const visual of presentation.parts) { const part = parts.find(item => item.studioRole === visual.role); if (part && part !== root) part.parent = partId(visual.parent); }
   const events = recipe.events.map(event => ({ id: id(), name: event.name, payloadType: structuredClone(event.payloadType), phase: "intent", cancellable: false, visibility: "public" }));
   const values = recipe.values.map(value => ({ id: id(), name: value.name, type: structuredClone(value.type), ownership: "consumer", defaultValue: structuredClone(value.defaultValue), visibility: "public", ...(value.requestEvent ? { requestEventRef: events.find(event => event.name === value.requestEvent)!.id } : {}) }));
   const slots = recipe.slots.map(slot => ({ id: id(), ownerPartRef: partId(slot.role), contentKinds: ["text", "component"], min: slot.required ? 1 : 0, max: "unbounded", defaultContent: [], allowedContractRefs: [] }));
@@ -28,11 +35,20 @@ export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: Ad
   const binding = (token: string, fallback: JsonValue): JsonValue => tokens.has(token) ? { tokenRef: token } : fallback;
   const designs = STUDIO_CATEGORIES.map(category => {
     const design = envelope("design", `${name} ${category}`);
-    const action = ["button", "checkbox", "radio", "switch", "toggle", "select", "combobox", "slider", "range-slider", "rating"].includes(recipe.semantic.kind);
+    const partPadding = (role: string): number => {
+      if (role === "root") return presentation.padding;
+      if (role.startsWith("item_") || role.startsWith("result_") || role.startsWith("option_")) return 6;
+      if (["first_pane", "second_pane", "message"].includes(role)) return 12;
+      if (["submit", "step_1"].includes(role)) return 10;
+      if (role === "body" && ["dropzone", "overlay", "loading-overlay", "navigation-progress", "affix"].includes(presentation.shape)) return 16;
+      return 0;
+    };
+    const declarations: JsonObject = { color: binding("token.content", color(.1)), fontSize: binding("token.fontSize", dimension(14)), background: presentation.surface ? binding("token.surface", color(1)) : { colorSpace: "srgb", components: [0, 0, 0], alpha: 0 }, borderWidth: dimension(presentation.border ? 1 : 0), borderRadius: binding("token.radius", dimension(8)) };
+    if (presentation.border) declarations.borderColor = binding("token.border", color(.8));
     Object.assign(design, { componentRef: { id: component.id, expectedKind: "component" }, foundationRef: { id: foundation.id, expectedKind: "foundation" }, category,
       nodeMappings: parts.map(part => ({ partRef: part.id, role: part.studioRole })),
-      layout: parts.map(part => ({ targetPartRef: part.id, mode: "stack", axis: "vertical", size: {}, gap: part === root ? binding("token.gap", dimension(12)) : dimension(0), padding: dimension(part === root ? 16 : 0), minHeight: dimension(part === root && action ? category === "Web" ? 44 : 48 : 0), childOrder: part === root ? parts.slice(1).map(child => child.id) : [] })),
-      appearance: [{ id: id(), targetPartRef: root.id, variants: {}, states: {}, declarations: { background: binding("token.surface", color(1)), color: binding("token.content", color(.1)), borderColor: binding("token.border", color(.8)), borderWidth: dimension(1), borderRadius: binding("token.radius", dimension(8)), fontSize: binding("token.fontSize", dimension(16)) }, explicitPriority: 0, refines: [] }], targetOverrides: [] });
+      layout: parts.map(part => ({ targetPartRef: part.id, mode: "stack", axis: presentation.parts.find(item => item.role === part.studioRole)?.axis ?? (part === root || part.studioRole === "body" ? presentation.axis : ["actions", "list", "toolbar"].includes(part.studioRole) && ["tabs", "toolbar", "navigation"].includes(recipe.semantic.kind) ? "horizontal" : "vertical"), size: {}, gap: dimension(part === root || parts.some(child => child.parent === part.id) ? presentation.gap : 0), padding: dimension(partPadding(part.studioRole)), minHeight: dimension(part === root ? presentation.minHeight && category === "Mobile" ? Math.max(presentation.minHeight, 48) : presentation.minHeight : 0), childOrder: parts.filter(child => child.parent === part.id).map(child => child.id) })),
+      appearance: [{ id: id(), targetPartRef: root.id, variants: {}, states: {}, declarations, explicitPriority: 0, refines: [] }], targetOverrides: [] });
     return design;
   });
   return [component, ...designs];
