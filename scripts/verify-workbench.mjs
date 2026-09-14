@@ -1,4 +1,4 @@
-import { verifyEditorCompletion } from "./workbench-completion-cases.mjs";
+import { verifyEditorCompletion, verifyFoundationInterop } from "./workbench-completion-cases.mjs";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -226,6 +226,7 @@ try {
   await selectElement(label("Editing scope", "select"), scope); await until(`(${numeric}).value==='24'`);
   record("processRestart", { dedicatedProfile: true, ordinaryBrowserShutdown: true, tokenAndContextValue: true, catalogComponent: true, localeAndAppearance: true });
   await verifyEditorCompletion({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, select, selectElement, until, settled, approve, revision, record });
+  await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   assert.deepEqual(browser.cdp.errors, []); evidence.status = "PASSED";
 } catch (error) { evidence.error = { message: error.message, stack: error.stack }; process.exitCode = 1; }
 finally {

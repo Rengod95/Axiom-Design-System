@@ -1,3 +1,4 @@
+import { decodeFoundationPointer } from "./foundation-references.ts";
 import type { JsonObject, JsonValue } from "./contracts.ts";
 import type { FoundationDocument, FoundationReport, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
 import { FOUNDATION_CODES, FOUNDATION_RESOLVER_ID, FOUNDATION_RESOLVER_VERSION, FOUNDATION_TOKEN_TYPES } from "./foundation-constants.ts";
@@ -11,14 +12,24 @@ export const MAX_FOUNDATION_CONTEXT_COMBINATIONS = 128;
 
 function tokenValue(value: JsonValue | undefined, type: FoundationTokenType, path: string, tokens: ReadonlyMap<string, JsonObject>, check: FoundationCheck): void {
   check.step(path);
-  if (!record(value) || Object.keys(value).length !== 1 || own(value, "literal") === own(value, "ref")) { check.error(path, "Token value must contain exactly one literal or ref."); return; }
+  if (!record(value) || Object.keys(value).length !== 1 || !["literal", "ref", "composite"].some(key => own(value, key))) { check.error(path, "Token value must contain exactly one literal, ref or composite expression."); return; }
   if (own(value, "literal")) { checkFoundationValue(type, value.literal, pointer(path, "literal"), check); return; }
-  if (!record(value.ref)) { check.error(pointer(path, "ref"), "Expected a token Ref.", FOUNDATION_CODES.ALIAS); return; }
-  fields(value.ref, ["id", "expectedKind"], [], pointer(path, "ref"), check);
-  if (!stableId(value.ref.id) || value.ref.expectedKind !== "token") { check.error(pointer(path, "ref"), "Expected a stable token ID and expectedKind token.", FOUNDATION_CODES.ALIAS); return; }
-  const target = tokens.get(value.ref.id);
-  if (!target) check.error(pointer(path, "ref"), "Alias target is missing from this Foundation.", FOUNDATION_CODES.ALIAS);
-  else if (!record(target.typeRef) || target.typeRef.id !== type) check.error(pointer(path, "ref"), "Alias target has a different token type.", FOUNDATION_CODES.ALIAS);
+  const visit = (item: JsonValue, at: string, whole: boolean): void => {
+    check.step(at);
+    if (record(item) && own(item, "ref")) {
+      if (Object.keys(item).length !== 1 || !record(item.ref)) { check.error(at, "A reference node contains exactly one ref object."); return; }
+      fields(item.ref, ["id", "expectedKind"], ["path"], `${at}/ref`, check);
+      if (!stableId(item.ref.id) || item.ref.expectedKind !== "token") { check.error(at, "Expected a stable token reference.", FOUNDATION_CODES.ALIAS); return; }
+      const target = tokens.get(item.ref.id);
+      if (!target) check.error(at, "Referenced token is missing.", FOUNDATION_CODES.ALIAS);
+      if (own(item.ref, "path")) { try { if (typeof item.ref.path !== "string") throw new Error("Property pointer must be a string."); decodeFoundationPointer(item.ref.path); } catch (error) { check.error(at, (error as Error).message); } }
+      else if (whole && target && (!record(target.typeRef) || target.typeRef.id !== type)) check.error(at, "Alias target has a different token type.", FOUNDATION_CODES.ALIAS);
+      return;
+    }
+    if (Array.isArray(item)) item.forEach((child, index) => visit(child, `${at}/${index}`, false));
+    else if (record(item)) for (const [key, child] of Object.entries(item)) visit(child, pointer(at, key), false);
+  };
+  visit(own(value, "ref") ? value : value.composite!, own(value, "ref") ? path : `${path}/composite`, own(value, "ref"));
 }
 
 /** Internal: snapshot is JSON-safe. Returns a typed view only if every shape check succeeds. */
@@ -68,8 +79,9 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   (snapshot.tokens as JsonValue[]).forEach((item, index) => {
     const path = `/tokens/${index}`; check.step(path);
     if (!record(item)) { check.error(path, "Expected a token record."); return; }
-    fields(item, ["id", "name", "typeRef", "value"], ["domain", "tier", "description", "metadata", "extensions"], path, check);
+    fields(item, ["id", "name", "typeRef", "value"], ["domain", "tier", "description", "deprecated", "metadata", "extensions"], path, check);
     identity(item, path);
+    if (own(item, "deprecated") && typeof item.deprecated !== "boolean" && typeof item.deprecated !== "string") check.error(`${path}/deprecated`, "Deprecation must be a boolean or reason string.");
     displayFields(item, path, "tokens");
     if (stableId(item.id)) tokens.set(item.id, item);
     if (!nonblank(item.name)) check.error(pointer(path, "name"), "Expected a nonblank token name.");

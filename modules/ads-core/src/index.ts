@@ -18,7 +18,7 @@ export { BUNDLE_FORMAT, BUNDLE_LIMITS, BUNDLE_MANIFEST_FILE } from "./bundle-con
 export { encodeKernelState, decodeKernelState, kernelStateTextBytes } from "./kernel-state-codec.ts";
 export { inspectFoundationDocument } from "./foundation-validation.ts";
 export { resolveFoundationTokens } from "./foundation-resolution.ts";
-export { importDtcgFoundation, exportFoundationDtcg } from "./foundation-interchange.ts";
+export { importDtcgFoundation, exportFoundationDtcg, exportResolvedFoundationDtcg, exportSelectedFoundationDtcg } from "./foundation-interchange.ts";
 export type { FoundationDocument, FoundationSelection, FoundationReport, FoundationResolution, FoundationToken, FoundationTokenValue, FoundationTokenType, ResolvedFoundationToken } from "./foundation-contracts.ts";
 export { createStudioStarter } from "./studio-template.ts";
 export { inspectStudioDocument } from "./studio-validation.ts";
@@ -40,3 +40,7 @@ export { STUDIO_EXTENDED_STYLE_TYPES } from "./studio-style-values.ts";
 
 export { inspectStudioMotion, resolveStudioMotion, sampleStudioSpring } from "./studio-motion.ts";
 export type { StudioMotionTrack, ResolvedStudioMotion } from "./studio-motion.ts";
+
+export { foundationValueReferences } from "./foundation-references.ts";
+export { resolveDtcgResolver } from "./dtcg-resolver.ts";
+export type { DtcgResolverReport } from "./dtcg-resolver.ts";

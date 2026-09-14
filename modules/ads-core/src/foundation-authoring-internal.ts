@@ -1,3 +1,5 @@
+import { foundationValueReferences } from "./foundation-references.ts";
+import type { FoundationTokenValue } from "./foundation-contracts.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
 import { MAX_BATCH_BYTES } from "./constants.ts";
@@ -25,9 +27,11 @@ interface MutableReference { reference: FoundationReference; replace(id: string)
 export function foundationReferences(project: ProjectSnapshot, foundation: FoundationDocument): MutableReference[] {
   const found: MutableReference[] = [];
   const alias = (value: unknown, reference: Omit<FoundationReference, "tokenId">): void => {
-    if (!isObject(value) || !isObject(value.ref) || value.ref.expectedKind !== "token" || typeof value.ref.id !== "string") return;
-    const target = value.ref;
-    found.push({ reference: { ...reference, tokenId: target.id as string }, replace: id => { target.id = id; } });
+    if (!isObject(value)) return;
+    for (const location of foundationValueReferences(value as unknown as FoundationTokenValue)) {
+      const target = location.ref;
+      found.push({ reference: { ...reference, path: reference.path.replace(/\/ref$/, "") + location.path, tokenId: target.id }, replace: id => { target.id = id; } });
+    }
   };
   foundation.tokens.forEach((token, index) => alias(token.value, { kind: "alias", documentId: foundation.id, ownerTokenId: token.id, path: `/tokens/${index}/value/ref` }));
   foundation.themeAxes.forEach((axis, index) => {

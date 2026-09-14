@@ -4,14 +4,16 @@ import type { StudioEditPlan, StudioUsage } from "./studio-contracts.ts";
 import type { FoundationStarterOptions } from "./foundation-starters.ts";
 
 export type FoundationClassificationKind = "domain" | "tier";
-export interface FoundationTokenChanges { name?: string; description?: string | null; domain?: string | null; tier?: string | null }
+export interface FoundationTokenChanges { name?: string; description?: string | null; deprecated?: boolean | string | null; domain?: string | null; tier?: string | null }
 export type FoundationAuthoringEdit =
+  | { kind: "dtcg-import"; sourceText: string; sourceName: string; conflicts: "keep" | "update" | "reject"; prefix?: string; format?: "dtcg" | "resolver"; inputs?: Record<string, string>; sources?: Record<string, string> }
   | ({ kind: "template-apply" } & FoundationStarterOptions)
   | { kind: "token-create"; name: string; type: FoundationTokenType; value: FoundationTokenValue; description?: string; domain?: string; tier?: string }
   | ({ kind: "token-update"; id: string } & FoundationTokenChanges)
   | { kind: "token-delete"; id: string; replacementId?: string }
   | { kind: "token-duplicate"; id: string; name: string }
   | { kind: "token-alias"; id: string; targetId: string }
+  | { kind: "token-expression"; id: string; value: FoundationTokenValue }
   | { kind: "token-literal"; id: string; value: JsonValue }
   | { kind: "classification-create"; category: FoundationClassificationKind; name: string; description?: string; allowedTypes?: FoundationTokenType[] }
   | { kind: "classification-update"; category: FoundationClassificationKind; id: string; name?: string; description?: string | null; allowedTypes?: FoundationTokenType[] | null }

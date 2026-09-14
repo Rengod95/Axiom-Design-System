@@ -128,8 +128,15 @@ export class StudioController {
   }
   foundation(edit: FoundationAuthoringEdit | FoundationAuthoringEdit[]): string[] {
     let created: string[] = [];
-    const accepted = this.#editIntent(this.#intent(null, (project, selection, ids) => { const plan = planFoundationEdit(project, edit, ids, selection); created = plan.createdIds; return plan; }));
+    const accepted = this.#editIntent(this.#intent(null, (project, selection, ids) => { const plan = planFoundationEdit(project, edit, ids, selection, this.#services.digest); created = plan.createdIds; return plan; }));
     return accepted ? created : [];
+  }
+  previewFoundation(edit: FoundationAuthoringEdit) {
+    const project = this.#state.plan?.project ?? this.#state.project;
+    if (!project) return null;
+    let next = 0;
+    // Preview identities are isolated from the host allocator and never persisted.
+    return planFoundationEdit(project, edit, () => `preview.import.${++next}`, this.#state.selection, this.#services.digest);
   }
   createComponent(catalogId: string, name?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentCreate(project, { catalogId, ...(name ? { name } : {}) }, ids))); }
   duplicateComponent(componentId: string, name?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentDuplicate(project, { componentId, ...(name ? { name } : {}) }, ids))); }

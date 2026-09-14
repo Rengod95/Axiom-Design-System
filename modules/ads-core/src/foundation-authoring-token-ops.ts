@@ -26,8 +26,9 @@ export function applyFoundationTokenEdit(project: ProjectSnapshot, foundation: F
       const token: FoundationToken = { id: createId(), name: edit.name, typeRef: { id: edit.type }, value: edit.value };
       changeFields(token, edit, ["description", "domain", "tier"]); foundation.tokens.push(token); return true;
     }
-    case "token-update": changeFields(selected(foundation, edit.id), edit, ["name", "description", "domain", "tier"]); return true;
+    case "token-update": changeFields(selected(foundation, edit.id), edit, ["name", "description", "domain", "tier", "deprecated"]); return true;
     case "token-alias": selected(foundation, edit.id).value = { ref: { id: edit.targetId, expectedKind: "token" } }; return true;
+    case "token-expression": selected(foundation, edit.id).value = edit.value; return true;
     case "token-literal": selected(foundation, edit.id).value = { literal: edit.value }; return true;
     case "token-duplicate": {
       const token = { ...copy(selected(foundation, edit.id)), id: createId(), name: edit.name };

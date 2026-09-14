@@ -1,3 +1,4 @@
+import { foundationValueReferences } from "./foundation-references.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { isObject } from "./documents.ts";
 import { FOUNDATION_TOKEN_TYPES } from "./foundation-constants.ts";
@@ -54,7 +55,7 @@ export function inspectFoundationAuthoring(input: ProjectSnapshot, selection: Fo
     const query = String(filter.query ?? "").trim().toLowerCase();
     result.totalTokens = rows.length;
     result.tokens = rows.filter(token => (filter.type === undefined || token.typeRef.id === filter.type) && (filter.domain === undefined || (token.domain ?? null) === filter.domain)
-      && (filter.tier === undefined || (token.tier ?? null) === filter.tier) && (!filter.aliasesOnly || token.aliasTarget !== null)
+      && (filter.tier === undefined || (token.tier ?? null) === filter.tier) && (!filter.aliasesOnly || foundationValueReferences(token.value).length > 0)
       && (!query || [token.id, token.name, token.description ?? "", token.typeRef.id, domainNames.get(token.domain ?? "") ?? "", tierNames.get(token.tier ?? "") ?? ""].some(value => value.toLowerCase().includes(query))));
     result.matchingTokens = result.tokens.length;
     return result;

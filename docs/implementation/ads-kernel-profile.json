@@ -64,7 +64,8 @@
     "docs/adr/0013-browser-transactional-storage.md",
     "docs/adr/0014-studio-authoring-and-target-delivery.md",
     "docs/adr/0015-studio-workbench-and-catalog-authoring.md",
-    "docs/adr/0016-foundation-onboarding-and-editor-completion.md"
+    "docs/adr/0016-foundation-onboarding-and-editor-completion.md",
+    "docs/adr/0017-foundation-interchange-and-live-expressions.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -191,5 +192,33 @@
       ]
     },
     "extendedStyles": "typed-whole-token Web mappings; explicit native rejection"
+  },
+  "foundationInterchange": {
+    "authority": "docs/adr/0017-foundation-interchange-and-live-expressions.md",
+    "format": "DTCG 2025.10 bounded editable subset",
+    "groupAdoption": "normalized with original source preservation",
+    "valueExpressions": [
+      "literal",
+      "stable whole-token reference",
+      "stable token-value property reference",
+      "composite reference expression"
+    ],
+    "cycles": "token-granularity",
+    "resolver": "supplied local files; sets/modifiers/context/default/order; selected permutation adoption",
+    "maxSuppliedFiles": 32,
+    "lifecycle": "boolean or migration-guidance deprecation",
+    "export": [
+      "exact imported source",
+      "selected context with live references",
+      "selected context with resolved literals",
+      "full ADS project bundle"
+    ],
+    "fullDtcgConformance": "UNVERIFIED",
+    "remaining": [
+      "non-value document pointers",
+      "property-granularity self references",
+      "editable Resolver graph",
+      "policy and exception workflow"
+    ]
   }
 }

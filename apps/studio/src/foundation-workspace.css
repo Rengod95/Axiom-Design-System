@@ -1,4 +1,29 @@
 .foundation-panel > .tabs { margin-bottom: 0; }
+.exchange-panel { padding: var(--space-6); }
+.exchange-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(240px, 1fr); gap: var(--space-8); padding-top: var(--space-6); }
+.exchange-layout h3, .exchange-export h3 { font-size: var(--type-body); font-weight: var(--weight-strong); }
+.exchange-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.exchange-source, .exchange-preview > fieldset, .exchange-export { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.exchange-preview > h3 { margin-bottom: var(--space-5); }
+.exchange-source textarea, .expression-editor textarea { font-family: var(--font-code); font-size: var(--type-caption); line-height: var(--leading-body); resize: vertical; }
+.exchange-source input[type=file] { max-width: 100%; font-size: var(--type-label); }
+.exchange-source input::file-selector-button { margin-right: var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-control); background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.exchange-empty { padding-block: var(--space-6); color: var(--ink-secondary); font-size: var(--type-body); }
+.exchange-token-list { list-style: none; margin: 0; padding: 0; }
+.exchange-token-list li { display: flex; justify-content: space-between; gap: var(--space-4); padding-block: var(--space-3); border-bottom: 1px solid var(--line); font-size: var(--type-label); }
+.exchange-token-list li span, .exchange-original > span { overflow-wrap: anywhere; min-width: 0; }
+.exchange-token-list small { color: var(--ink-secondary); }
+.import-count { font-size: var(--type-body); font-weight: var(--weight-medium); }
+.exchange-export { padding-top: var(--space-6); max-width: 65ch; }
+.exchange-export > .button { align-self: flex-start; }
+.exchange-originals { padding-top: var(--space-6); border-top: 1px solid var(--line); margin-top: var(--space-4); }
+.exchange-original { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding-block: var(--space-3); font-size: var(--type-label); }
+.exchange-original > span { flex: 1 1 180px; }
+.expression-editor { display: flex; flex-direction: column; gap: var(--space-4); }
+.expression-binding { display: flex; flex-direction: column; gap: var(--space-3); border-bottom: 1px solid var(--line); padding-bottom: var(--space-4); }
+.expression-binding select { text-overflow: ellipsis; }
+.deprecated-label { display: block; color: var(--ink-secondary); font-size: var(--type-caption); font-weight: var(--weight-medium); }
+@media (max-width: 1200px) { .exchange-layout { grid-template-columns: minmax(0, 1fr); } .exchange-preview { padding-top: var(--space-6); border-top: 1px solid var(--line); } }
 .foundation-context-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--line); color: var(--ink-secondary); font-size: var(--type-label); }
 .foundation-context-bar select { width: auto; max-width: 200px; }
 .foundation-context-bar > span:last-child { margin-left: auto; font-size: var(--type-caption); }

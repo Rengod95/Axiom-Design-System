@@ -35,9 +35,25 @@ export function EmptyState({ icon = "search", title, description, children }: { 
   return <div className="empty-state"><Icon name={icon} size={28} /><h2>{title}</h2><p>{description}</p>{children}</div>;
 }
 export function TabBar<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: { value: T; label: string }[]; onChange(value: T): void }) {
-  return <div className="tabs" role="tablist" aria-label={label} onKeyDown={event => {
+  const strip = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = strip.current;
+    if (!element) return;
+    const reveal = () => {
+      const selected = element.querySelector<HTMLButtonElement>('[aria-selected="true"]');
+      if (!selected || !element.clientWidth) return;
+      const viewport = element.getBoundingClientRect(), tab = selected.getBoundingClientRect();
+      // Scroll only this horizontal strip; never move independent editor panels.
+      if (tab.left < viewport.left + 4) element.scrollLeft += tab.left - viewport.left - 4;
+      else if (tab.right > viewport.right - 4) element.scrollLeft += tab.right - viewport.right + 4;
+    };
+    reveal(); const observer = new ResizeObserver(reveal); observer.observe(element);
+    const selected = element.querySelector('[aria-selected="true"]'); if (selected) observer.observe(selected);
+    return () => observer.disconnect();
+  }, [value, label]);
+  return <div ref={strip} className="tabs" role="tablist" aria-label={label} onKeyDown={event => {
     const index = options.findIndex(item => item.value === value);
     const next = event.key === "Home" ? 0 : event.key === "End" ? options.length - 1 : event.key === "ArrowRight" ? (index + 1) % options.length : event.key === "ArrowLeft" ? (index + options.length - 1) % options.length : null;
-    if (next !== null) { event.preventDefault(); onChange(options[next]!.value); event.currentTarget.querySelectorAll<HTMLButtonElement>("button")[next]?.focus(); }
+    if (next !== null) { event.preventDefault(); onChange(options[next]!.value); event.currentTarget.querySelectorAll<HTMLButtonElement>("button")[next]?.focus({ preventScroll: true }); }
   }}>{options.map(item => <button key={item.value} type="button" role="tab" aria-selected={value === item.value} tabIndex={value === item.value ? 0 : -1} className={value === item.value ? "active" : ""} onClick={() => onChange(item.value)}>{item.label}</button>)}</div>;
 }

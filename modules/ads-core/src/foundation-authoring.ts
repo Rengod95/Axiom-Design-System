@@ -1,3 +1,4 @@
+import { applyDtcgImport } from "./foundation-import-authoring.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
 import { STUDIO_PROFILE } from "./constants.ts";
@@ -15,11 +16,12 @@ import type { StudioUsage } from "./studio-contracts.ts";
 
 export const MAX_FOUNDATION_AUTHORING_EDITS = 128;
 const FIELDS: Readonly<Record<string, readonly [readonly string[], readonly string[]]>> = {
+  "dtcg-import": [["sourceText", "sourceName", "conflicts"], ["prefix", "format", "inputs", "sources"]],
   "template-apply": [["domains"], ["accent", "fontFamily", "density"]],
   "token-create": [["name", "type", "value"], ["description", "domain", "tier"]],
-  "token-update": [["id"], ["name", "description", "domain", "tier"]],
+  "token-update": [["id"], ["name", "description", "domain", "tier", "deprecated"]],
   "token-delete": [["id"], ["replacementId"]], "token-duplicate": [["id", "name"], []],
-  "token-alias": [["id", "targetId"], []], "token-literal": [["id", "value"], []],
+  "token-alias": [["id", "targetId"], []], "token-literal": [["id", "value"], []], "token-expression": [["id", "value"], []],
   "classification-create": [["category", "name"], ["description", "allowedTypes"]],
   "classification-update": [["category", "id"], ["name", "description", "allowedTypes"]],
   "classification-delete": [["category", "id"], ["replacementId"]],
@@ -68,7 +70,7 @@ function affectedUses(before: ProjectSnapshot, after: ProjectSnapshot): StudioUs
 }
 
 /** Curated source edits share the existing reviewed command and one-Undo transaction boundary. */
-export function planFoundationEdit(input: ProjectSnapshot, editInput: FoundationAuthoringEdit | readonly FoundationAuthoringEdit[], createId: () => string, selectionInput: FoundationSelection = {}): FoundationEditPlan {
+export function planFoundationEdit(input: ProjectSnapshot, editInput: FoundationAuthoringEdit | readonly FoundationAuthoringEdit[], createId: () => string, selectionInput: FoundationSelection = {}, digest?: (text: string) => string): FoundationEditPlan {
   let baseline: ProjectSnapshot = { id: "invalid", name: "Invalid source", revision: "invalid", documents: {} };
   let selection: FoundationSelection = {};
   let originalSelection: FoundationSelection = {};
@@ -87,7 +89,8 @@ export function planFoundationEdit(input: ProjectSnapshot, editInput: Foundation
     const createdIds: string[] = [];
     const allocate = (entity: boolean): string => { const id = createId(); if (!isValidId(id) || allocated.has(id)) throw new Error("Identity service must return a fresh valid identity."); allocated.add(id); if (entity) createdIds.push(id); return id; };
     for (const edit of edits) {
-      if (edit.kind === "template-apply") applyFoundationStarter(foundation, edit, () => allocate(true));
+      if (edit.kind === "dtcg-import") applyDtcgImport(foundation, edit, () => allocate(true), digest);
+      else if (edit.kind === "template-apply") applyFoundationStarter(foundation, edit, () => allocate(true));
       else if (!applyFoundationTokenEdit(project, foundation, edit, () => allocate(true))) applyFoundationThemeEdit(foundation, edit, () => allocate(true), selection);
       editIndex++;
     }
@@ -103,7 +106,8 @@ export function planFoundationEdit(input: ProjectSnapshot, editInput: Foundation
     }
     const report = inspectStudioProject(project, selection);
     if (!report.valid) return { valid: false, diagnostics: report.diagnostics, baseRevision: baseline.revision, updates: [], impact: [], project: baseline, createdIds: [], selection: originalSelection };
-    return { valid: true, diagnostics: report.diagnostics, baseRevision: baseline.revision, updates, impact: affectedUses(baseline, project), project, createdIds, selection };
+    const retainedIds = new Set([foundation.id, ...["tokens", "domains", "tiers", "themeAxes", "themeSets"].flatMap(key => authoringList(foundation[key]).map(item => item.id))]);
+    return { valid: true, diagnostics: report.diagnostics, baseRevision: baseline.revision, updates, impact: affectedUses(baseline, project), project, createdIds: createdIds.filter(id => retainedIds.has(id)), selection };
   } catch (error) {
     return { valid: false, diagnostics: [studioDiagnostic("memory:foundation-authoring", `/edits/${editIndex}`, error instanceof Error ? error.message : "Invalid Foundation edit.", "FOUNDATION_AUTHORING_INVALID")], baseRevision: baseline.revision, updates: [], impact: [], project: baseline, createdIds: [], selection: {} };
   }
