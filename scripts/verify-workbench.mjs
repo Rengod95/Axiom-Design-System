@@ -85,12 +85,14 @@ async function stopServer() {
 async function closeBrowserNormally() {
   // Browser preferences use localStorage; verify an ordinary browser restart, not
   // a claim that Chromium synchronously flushes preferences before process kill.
+  const closingAt = Date.now();
   const exiting = new Promise((accept, reject) => {
-    const timer = setTimeout(() => reject(new Error("Dedicated browser did not close normally")), 10_000);
+    const timer = setTimeout(() => reject(new Error(`Dedicated browser did not close normally after 30s (exit=${browser.child.exitCode}, signal=${browser.child.signalCode})`)), 30_000);
     browser.child.once("exit", () => { clearTimeout(timer); accept(); });
   });
   await Promise.all([browser.cdp.send("Browser.close"), exiting]);
   browser.cdp.close(); browser = undefined;
+  return Date.now() - closingAt;
 }
 try {
   temp = await mkdtemp(join(tmpdir(), "axiom-workbench-"));
@@ -223,7 +225,7 @@ try {
   await writeFile(join(ROOT, "dist/evidence/workbench.png"), Buffer.from(screenshot.data, "base64"));
   assert.deepEqual(browser.cdp.errors, []);
   assert.deepEqual(await page.evaluate("({theme:localStorage.getItem('axiom.ui.theme'),locale:localStorage.getItem('axiom.ui.locale')})"), { theme: "dark", locale: "en" });
-  await closeBrowserNormally();
+  const shutdownElapsedMs = await closeBrowserNormally();
   browser = await launch(executable, profile); page = await browser.cdp.page(url);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1600, height: 1080, deviceScaleFactor: 1, mobile: false });
   await until(`${id("studio-app")}`);
@@ -231,7 +233,7 @@ try {
   assert.equal(await page.evaluate("document.querySelectorAll('[data-component-frame]').length"), 4);
   await click(`token-${tokenId}`); await until(`${id("foundation-token-name")}.value==='Workbench spacing'`);
   await selectElement(label("Editing scope", "select"), scope); await until(`(${numeric}).value==='24'`);
-  record("processRestart", { dedicatedProfile: true, ordinaryBrowserShutdown: true, tokenAndContextValue: true, catalogComponent: true, localeAndAppearance: true });
+  record("processRestart", { dedicatedProfile: true, ordinaryBrowserShutdown: true, shutdownElapsedMs, tokenAndContextValue: true, catalogComponent: true, localeAndAppearance: true });
   await verifyEditorCompletion({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, select, selectElement, until, settled, approve, revision, record });
   await verifyMaterialWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
   await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });

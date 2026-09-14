@@ -178,8 +178,9 @@
     "apps/studio/test/token-value-editor.test.ts": "4c77e9f0795a3c3d4caff4a60898a86134c6bd436f3307be18384f8dbc9e4281",
     "apps/studio/test/token-visual.test.ts": "c3138fa04bc96923430c88ce670ebf3b8c23ff4a2ee2387df56a6fc29ba50379",
     "scripts/verify-studio.mjs": "fda6c69c714c0003bc44b5d95c18fa76d8de015ca6928df74645ce6bc51392b1",
-    "scripts/verify-workbench.mjs": "d20328dafabd6cbab4bda1f09f417f684621c50c1a757ee5d616b1fdd7eaa679",
-    "scripts/workbench-completion-cases.mjs": "443d7a35423c384c194364c3eda83015680e6e0986c0e2db02bba455c3487343"
+    "scripts/verify-workbench.mjs": "a14bdd878d81846ab0ea2ffb89b5bf387cf9a17e24d8938723be39509b9612a3",
+    "scripts/workbench-completion-cases.mjs": "443d7a35423c384c194364c3eda83015680e6e0986c0e2db02bba455c3487343",
+    "scripts/verify-browser-store.mjs": "7a9ca8e3db66badd2e28084885f4b50c0b9a0e0d0356a17a72aa8f064601d810"
   },
   "limitations": [
     "13 literal types receive bounded display projections, not full target capability evidence.",
@@ -229,5 +230,20 @@
     "ubuntu": "all steps passed",
     "windows": "361 unit tests passed; no active animation observed in the environment-dependent materialMotion test",
     "correction": "Test-only clock and media-preference control; product source unchanged"
+  },
+  "windowsHarnessFollowup": {
+    "priorRun": 34811352262,
+    "firstAttempt": "ordinary Browser.close exceeded the 10-second deadline",
+    "retry": "transient EBUSY reading DevToolsActivePort before browser readiness",
+    "changes": [
+      "bounded transient file-read retry matching common browser driver",
+      "30-second ordinary process-exit deadline with elapsed-time evidence; no forced-kill pass"
+    ],
+    "localBrowserStore": "PASSED",
+    "localWorkbench": {
+      "status": "PASSED",
+      "flows": 21,
+      "shutdownElapsedMs": 173
+    }
   }
 }

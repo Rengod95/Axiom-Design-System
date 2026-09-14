@@ -56,3 +56,6 @@ Browser evidence uses dedicated profiles/databases. OS trackpad/IME hardware, ma
 
 
 The first remote Quality Gate (#83) passed on Ubuntu but found an environment-dependent motion assertion on Windows: the test observed no active 300ms animation without controlling document time or the inherited motion preference. The follow-up test explicitly sets each motion preference and uses the [Chrome DevTools document animation clock](https://github.com/ChromeDevTools/devtools-protocol/blob/master/pdl/domains/Animation.pdl) to inspect the real duration, seek visible movement, cancel on preference change and prevent reduced-motion replay. It restores the clock and media override afterward. This corrects the test fixture; product source and the reviewed visuals are unchanged.
+
+
+Windows runner follow-up: Quality Gate #84 encountered two existing browser-harness failures in separate attempts: an ordinary shutdown exceeded its 10-second window, and Chromium temporarily locked DevToolsActivePort during startup. The browser-store harness now uses the same bounded transient-file retry set as the common browser driver. The workbench allows up to 30 seconds for actual ordinary process exit and records its duration; no forced kill is counted as a passing restart. These changes affect verification only.
