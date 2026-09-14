@@ -179,7 +179,7 @@
     "apps/studio/test/token-visual.test.ts": "c3138fa04bc96923430c88ce670ebf3b8c23ff4a2ee2387df56a6fc29ba50379",
     "scripts/verify-studio.mjs": "fda6c69c714c0003bc44b5d95c18fa76d8de015ca6928df74645ce6bc51392b1",
     "scripts/verify-workbench.mjs": "d20328dafabd6cbab4bda1f09f417f684621c50c1a757ee5d616b1fdd7eaa679",
-    "scripts/workbench-completion-cases.mjs": "4648b317305e570a6fef8a87fc67d4eb85e54e08be19fc774b59aa7739cd6eb8"
+    "scripts/workbench-completion-cases.mjs": "443d7a35423c384c194364c3eda83015680e6e0986c0e2db02bba455c3487343"
   },
   "limitations": [
     "13 literal types receive bounded display projections, not full target capability evidence.",
@@ -210,5 +210,24 @@
     "extractedColorAgreement": true,
     "componentReferencesValid": true,
     "sourceCascadeExceptionsRecorded": true
+  },
+  "motionTestFixture": {
+    "localStatus": "PASSED",
+    "flows": 21,
+    "explicitMotionPreferences": true,
+    "controlledDocumentClock": true,
+    "realDuration": 300,
+    "nativeSeekingMovesSpecimen": true,
+    "cancelBeforeReplayVerified": true,
+    "clockAndMediaRestored": true
+  },
+  "priorCI": {
+    "run": 34810400394,
+    "number": 83,
+    "head": "1ca9c7f2e5853103dec925cd59b269b63faea580",
+    "conclusion": "failure",
+    "ubuntu": "all steps passed",
+    "windows": "361 unit tests passed; no active animation observed in the environment-dependent materialMotion test",
+    "correction": "Test-only clock and media-preference control; product source unchanged"
   }
 }

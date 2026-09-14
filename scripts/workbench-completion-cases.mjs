@@ -191,14 +191,29 @@ export async function verifyMaterialWorkbench({ page, id, label, text, click, cl
   record("materialAtlas", { types: 13, naturalScales: true, selectionSurvivesListSwitch: true, readonlyBrowsing: true });
 
   await fill("foundation-search", "duration.300"); await clickElement("document.querySelector('.material-select')");
-  await clickElement(label("Replay motion", "button"));
-  assert.ok(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations().length>0"));
-  await page.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }); await settled();
-  await clickElement(label("Replay motion", "button"));
-  assert.equal(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations().length"), 0);
-  await page.send("Emulation.setEmulatedMedia", { features: [] });
+  const inheritedReducedMotion = await page.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches");
+  await page.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "no-preference" }] }); await settled();
+  // Keep the real 300ms animation inspectable independently of CI/CDP latency.
+  await page.send("Animation.enable");
+  const { playbackRate } = await page.send("Animation.getPlaybackRate");
+  await page.send("Animation.setPlaybackRate", { playbackRate: 0 });
+  try {
+    await clickElement(label("Replay motion", "button"));
+    await page.evaluate("new Promise(resolve=>setTimeout(resolve,400))");
+    assert.equal(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations()[0]?.effect.getTiming().duration"), 300);
+    await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations()[0].currentTime=150"); await settled();
+    assert.ok(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getBoundingClientRect().left-document.querySelector('.inspector-material .motion-track').getBoundingClientRect().left>0"), "Seeking the real animation moves its specimen");
+    await page.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }); await settled();
+    assert.equal(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations().length"), 0, "A preference change cancels an existing animation");
+    await clickElement(label("Replay motion", "button"));
+    assert.equal(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations().length"), 0, "Reduced motion prevents replay");
+  } finally {
+    await page.send("Animation.setPlaybackRate", { playbackRate });
+    await page.send("Animation.disable");
+    await page.send("Emulation.setEmulatedMedia", { features: [] });
+  }
   assert.equal(await revision(), before);
-  record("materialMotion", { tokenDrivenPlayback: true, cancelsOnReducedMotion: true, noSourceEdit: true });
+  record("materialMotion", { inheritedReducedMotion, explicitPreferenceCases: true, tokenDrivenPlayback: true, controlledDocumentClock: true, nativeSeekingMovesSpecimen: true, cancelsOnReducedMotion: true, noSourceEdit: true });
 
   await fill("foundation-token-name", "");
   await clickElement(text("Definition", "summary"));
