@@ -13,4 +13,4 @@ export const STUDIO_MAX_COMPONENTS = 64;
 export const STUDIO_MAX_RULES = 128;
 export const STUDIO_MAX_THEME_SETS = 32;
 export const STUDIO_MOTION = Object.freeze({ durationMs: 160, reducedDurationMs: 0, cleanupMs: 500 });
-export const STUDIO_ERROR = Object.freeze({ invalid: "STUDIO_INVALID", unsupported: "STUDIO_UNSUPPORTED", conflict: "STUDIO_RULE_CONFLICT" });
+export const STUDIO_ERROR = Object.freeze({ invalid: "STUDIO_INVALID", unsupported: "STUDIO_UNSUPPORTED", conflict: "STUDIO_RULE_CONFLICT", tokenBinding: "STUDIO_TOKEN_BINDING" });

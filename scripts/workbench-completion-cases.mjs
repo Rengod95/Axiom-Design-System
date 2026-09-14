@@ -48,6 +48,123 @@ export async function verifyCompactWorkbench({ page, id, label, text, click, cli
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
+/** Trusted test-only journal seed models documents saved by the former type-only validator. */
+export async function verifyBindingRepair({ page, origin, database, root, id, click, fill, selectElement, until, settled, approve, revision, record }) {
+  assert.match(database, /^axiom-studio-test-/);
+  await page.send("Page.navigate", { url: `${origin}/?database=${database}` });
+  await until(id("onboarding")); await fill("project-name", "Binding recovery"); await click("start-project");
+  await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
+  const latest = await page.evaluate(`new Promise((resolve,reject)=>{const request=indexedDB.open(${JSON.stringify(database)});request.onerror=()=>reject(request.error);request.onsuccess=()=>{const db=request.result,tx=db.transaction('commits','readonly'),get=tx.objectStore('commits').openCursor(null,'prev');get.onsuccess=()=>resolve(get.result.value);get.onerror=()=>reject(get.error);tx.oncomplete=()=>db.close();};})`);
+  const { canonicalJson } = await import("../modules/ads-core/src/index.ts");
+  const { createBrowserCommit } = await import("../modules/browser-store/src/journal.ts");
+  const state = JSON.parse(latest.stateText), foundation = state.project.documents["foundation.system"].document;
+  const wrongToken = foundation.tokens.find(token => token.name === "space.2"); assert.ok(wrongToken);
+  const replacement = foundation.tokens.find(token => token.name === "radius.control"); assert.ok(replacement);
+  for (const name of ["design.button.web", "design.card.web"]) {
+    const entry = state.project.documents[name];
+    entry.document.appearance[0].declarations.borderRadius = { tokenRef: wrongToken.id };
+    entry.currentText = canonicalJson(entry.document);
+  }
+  const conditional = state.project.documents["design.button.web"];
+  conditional.document.appearance[1].declarations.borderRadius = { tokenRef: wrongToken.id };
+  conditional.currentText = canonicalJson(conditional.document);
+  const commit = createBrowserCommit(state, { storageFormatVersion: latest.storageFormatVersion, sequence: latest.sequence, commitDigest: latest.commitDigest });
+  await page.evaluate(`new Promise((resolve,reject)=>{const request=indexedDB.open(${JSON.stringify(database)});request.onerror=()=>reject(request.error);request.onsuccess=()=>{const db=request.result,tx=db.transaction(['commits','meta'],'readwrite'),commit=${JSON.stringify(commit)};tx.objectStore('commits').add(commit,commit.sequence);tx.objectStore('meta').put({storageFormatVersion:commit.storageFormatVersion,sequence:commit.sequence,commitDigest:commit.commitDigest},'head');tx.oncomplete=()=>{db.close();resolve(true)};tx.onabort=()=>{db.close();reject(tx.error)};};})`);
+  await page.send("Page.reload"); await until(id("open-binding-repair"));
+  const before = await revision();
+  const capture = async name => { await page.evaluate("document.fonts.ready"); const shot = await page.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false }); await writeFile(join(root, "dist/evidence", `quiet-repair-${name}.png`), Buffer.from(shot.data, "base64")); };
+  await click("open-binding-repair"); await until(`${id("binding-repair-dialog")}.open`);
+  assert.equal(await page.evaluate(`getComputedStyle(${id("binding-repair-dialog")}).borderRadius`), "8px");
+  assert.equal(await page.evaluate(`${id("binding-repair-progress")}.textContent`), "0 / 3");
+  const rowLabels = await page.evaluate("Array.from(document.querySelectorAll('select[data-testid^=binding-repair-select-]')).map(e=>e.getAttribute('aria-label'))");
+  assert.equal(new Set(rowLabels).size, 3, "Base and conditional rules have distinguishable repair labels");
+  assert.ok(rowLabels.some(label => label.includes("outlined")));
+  assert.equal(await page.evaluate(`${id("binding-repair-apply")}.disabled`), true);
+  if (await page.evaluate("document.documentElement.dataset.theme!=='dark'")) {
+    await click("binding-repair-cancel"); await click("studio-theme-toggle"); await click("open-binding-repair");
+  }
+  await capture("desktop");
+  await selectElement(id("binding-repair-select-0"), `token:${replacement.id}`);
+  assert.equal(await page.evaluate(`${id("binding-repair-apply")}.disabled`), true, "One repaired document cannot commit while another remains incompatible");
+  await click("binding-repair-cancel"); assert.equal(await revision(), before);
+  await click("open-binding-repair");
+  assert.equal(await page.evaluate(`${id("binding-repair-progress")}.textContent`), "0 / 3", "Cancelled transient choices do not change source or linger");
+  await page.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: false }); await settled(); await capture("mobile");
+  await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1080, deviceScaleFactor: 1, mobile: false }); await settled();
+  await click("binding-repair-cancel"); await click("studio-theme-toggle"); await click("open-binding-repair"); await capture("light");
+  for (const index of [0, 1, 2]) await selectElement(id(`binding-repair-select-${index}`), `token:${replacement.id}`);
+  await click("binding-repair-apply"); await until(`!${id("binding-repair-dialog")}`);
+  assert.equal(await revision(), before, "Preparing the complete repair does not save it before review");
+  await approve(); assert.notEqual(await revision(), before);
+  assert.equal(await page.evaluate(`Boolean(${id("open-binding-repair")})`), false);
+  await page.send("Page.reload"); await until(`${id("studio-app")} && !${id("open-export")}.disabled`);
+  assert.equal(await page.evaluate(`Boolean(${id("open-binding-repair")})`), false, "Reviewed repair survives reopening");
+  record("atomicBindingRepair", { incompatibleDocuments: 2, incompatibleSites: 3, distinctRuleContexts: true, noPartialCommit: true, cancelPreservesSource: true, reviewedAtomicRepair: true, survivesReload: true });
+}
+
+/** Token candidates retain their property purpose as well as their DTCG value type. */
+export async function verifyBindingPurposeFilters({ page, id, text, click, clickElement, selectElement, revision, record }) {
+  const before = await revision();
+  await click("view-canvas"); await clickElement("document.querySelector('.sidebar [data-testid^=component-]')");
+  const beforeStatus = await page.evaluate(`${id("save-status")}.textContent`);
+  const names = testId => page.evaluate(`Array.from(${id(testId)}.options).filter(o=>!o.disabled && !['literal','inherited'].includes(o.value)).map(o=>o.textContent)`);
+  const verified = {};
+  for (const [property, expected, excluded] of [
+    ["borderRadius", /radius\./, /space\.|size\.|font\.|border\./],
+    ["fontSize", /font\.size\.|text\.body\.size/, /radius\.|space\.|border\.width/],
+    ["borderWidth", /stroke\.width/, /radius\.|space\.|font\.size/],
+    ["opacity", /alpha\.|opacity\./, /lineHeight|layer\.|z\./],
+  ]) {
+    const values = await names(`appearance-${property}-binding`);
+    assert.ok(values.some(value => expected.test(value)), `${property} retains related tokens`);
+    assert.ok(values.every(value => !excluded.test(value)), `${property} excludes unrelated same-type tokens`);
+    verified[property] = values.length;
+  }
+  await clickElement(text("Typography, effects and states", "summary"));
+  await selectElement(id("appearance-rule-property"), "lineHeight");
+  const lineHeight = await names("appearance-rule-binding");
+  assert.ok(lineHeight.some(value => value.includes("lineHeight")));
+  assert.ok(lineHeight.every(value => !/alpha\.|opacity\.|layer\.|z\./.test(value)));
+  assert.equal(await page.evaluate(`${id("save-status")}.textContent`), beforeStatus, "Changing the inspected property must not create a false dirty value of the previous type");
+  assert.equal(await page.evaluate(`${id("appearance-rule-property")}.disabled`), false);
+  assert.equal(await revision(), before);
+  record("bindingPurposeFilters", { sameTypeDomainsSeparated: verified, extendedLineHeight: lineHeight.length, projectPreserved: true });
+}
+
+export async function verifyPanelVisibility({ page, id, text, click, clickElement, fill, until, settled, revision, record }) {
+  await click("view-canvas");
+  await clickElement("document.querySelector('.sidebar [data-testid^=component-]')");
+  const before = await revision(), originalName = await page.evaluate(`${id("component-name")}.value`);
+  const initialWidth = await page.evaluate("document.querySelector('.workarea').clientWidth");
+  await fill("component-name", "");
+  await click("toggle-inspector"); await click("toggle-sidebar");
+  assert.equal(await page.evaluate(`${id("toggle-inspector")}.getAttribute('aria-expanded')`), "false");
+  assert.equal(await page.evaluate("getComputedStyle(document.querySelector('#studio-inspector')).display"), "none");
+  assert.equal(await page.evaluate(`${id("component-name")}.value`), "", "Hiding the inspector retains its invalid draft");
+  assert.ok(await page.evaluate("document.querySelector('.workarea').clientWidth") > initialWidth + 400, "Both panes release their width to the work area");
+  await click("review-changes"); await until("document.querySelector('.input-notice')");
+  await clickElement(text("Component properties"));
+  await until(`document.activeElement===${id("component-name")}`);
+  assert.equal(await page.evaluate(`${id("toggle-inspector")}.getAttribute('aria-expanded')`), "true", "Draft recovery reopens a hidden inspector");
+  await click("reset-pending-input");
+  assert.equal(await page.evaluate(`${id("component-name")}.value`), originalName);
+  await click("toggle-sidebar");
+  const chrome = await page.evaluate("(()=>{const a=document.querySelector('.app');return{header:getComputedStyle(a.querySelector('.topbar')).backgroundImage,headerShadow:getComputedStyle(a.querySelector('.topbar')).boxShadow,footer:getComputedStyle(a.querySelector('.statusbar')).backgroundImage,radii:[...a.querySelectorAll('.topbar .button,.workspace-nav .nav-item,.sidebar-scroll .nav-item,.select-trigger')].map(e=>getComputedStyle(e).borderRadius),gaps:[...a.querySelectorAll('.sidebar-scroll > button')].slice(0,4).map(e=>parseFloat(getComputedStyle(e).marginBottom))}})()");
+  assert.equal(chrome.header, "none"); assert.equal(chrome.headerShadow, "none"); assert.equal(chrome.footer, "none");
+  assert.ok(chrome.radii.every(radius => radius === "8px")); assert.ok(chrome.gaps.length && chrome.gaps.every(gap => gap === 2));
+  await click("toggle-sidebar"); await click("toggle-inspector");
+  assert.deepEqual(await page.evaluate("[localStorage.getItem('axiom.ui.sidebarCollapsed'),localStorage.getItem('axiom.ui.inspectorCollapsed')]"), ["true", "true"]);
+  await page.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: false }); await settled();
+  await clickElement("document.querySelectorAll('.mobile-panel-tabs button')[1]");
+  await clickElement("document.querySelectorAll('.mobile-panel-tabs button')[2]");
+  assert.equal(await page.evaluate("getComputedStyle(document.querySelector('#studio-inspector')).display"), "flex", "Mobile panel navigation remains available despite desktop collapse preferences");
+  await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1080, deviceScaleFactor: 1, mobile: false }); await settled();
+  await click("toggle-sidebar"); await click("toggle-inspector");
+  assert.equal(await revision(), before, "Layout preferences and draft reset create no project revision");
+  record("panelVisibility", { independentPanels: true, releasedCanvasWidth: true, hiddenDraftPreserved: true, recoveryReopensInspector: true, persistedPreferences: true, mobileNavigation: true, radius: 8, objectRowGap: 2, flatHeaderFooter: true });
+}
+
 /** Real browser regressions for the owner's blocked-review and Foundation completion report. */
 export async function verifyEditorCompletion({ page, origin, database, root, id, label, text, click, clickElement, fill, fillElement, select, selectElement, until, settled, approve, revision, record }) {
   const captures = join(root, "dist/evidence/completion"); await mkdir(captures, { recursive: true });

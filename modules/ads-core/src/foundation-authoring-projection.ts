@@ -9,6 +9,7 @@ import { authoringFoundation, authoringList, captureAuthoringProject, foundation
 import type { JsonValue, ProjectSnapshot } from "./contracts.ts";
 import type { FoundationSelection, FoundationTokenType } from "./foundation-contracts.ts";
 import type { FoundationAuthoringFilter, FoundationAuthoringProjection, FoundationClassification, FoundationTokenRow } from "./foundation-authoring-contracts.ts";
+import { foundationDomainBindings } from "./foundation-starters.ts";
 
 const empty = (): FoundationAuthoringProjection => ({ valid: false, diagnostics: [], foundationId: null, revision: null, tokens: [], totalTokens: 0, matchingTokens: 0, domains: [], tiers: [], axes: [], themeSets: [], contexts: {}, resolutionOrder: [], references: [], referenceScope: "known-studio" });
 
@@ -33,10 +34,12 @@ export function inspectFoundationAuthoring(input: ProjectSnapshot, selection: Fo
     result.references = references;
     const counts = { domain: new Map<string, number>(), tier: new Map<string, number>() };
     for (const token of foundation.tokens) for (const field of ["domain", "tier"] as const) { const id = token[field]; if (id !== undefined) counts[field].set(id, (counts[field].get(id) ?? 0) + 1); }
+    const bindings = foundationDomainBindings(foundation);
     const classify = (items: JsonValue[], field: "domain" | "tier"): FoundationClassification[] => authoringList(items).map(item => ({
       id: String(item.id), name: typeof item.name === "string" ? item.name : String(item.id),
       ...(typeof item.description === "string" ? { description: item.description } : {}),
       ...(field === "domain" && Array.isArray(item.allowedTypes) ? { allowedTypes: item.allowedTypes as FoundationTokenType[] } : {}),
+      ...(field === "domain" && bindings.has(String(item.id)) ? { bindingCategory: bindings.get(String(item.id))!.category, bindingCategorySource: bindings.get(String(item.id))!.source } : {}),
       tokenCount: counts[field].get(String(item.id)) ?? 0,
     }));
     result.domains = classify(foundation.domains, "domain"); result.tiers = classify(foundation.tiers, "tier");

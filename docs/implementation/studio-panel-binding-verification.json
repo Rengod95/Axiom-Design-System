@@ -1,0 +1,275 @@
+{
+  "kind": "AxiomStudioPanelBindingVerification",
+  "date": "2026-09-14",
+  "implementationParent": "56ea19a4e5efb0306b42c1d01dac3a53ac9aa943",
+  "scope": "Flat Studio bars, consistent corners and row spacing, independent panel visibility, authoritative token purpose and atomic legacy-binding repair",
+  "foundationCompletion": false,
+  "gates": {
+    "check": "PASSED:161 source files;20 negative cases",
+    "unit": {
+      "status": "PASSED",
+      "tests": 372,
+      "fail": 0,
+      "skipped": 0
+    },
+    "build": "PASSED:142 inputs;no external JS imports or Node adapter",
+    "browserStore": "PASSED",
+    "studio": "PASSED",
+    "workbench": {
+      "status": "PASSED",
+      "count": 25,
+      "caseNames": [
+        "create",
+        "typedToken",
+        "aliasAndClassification",
+        "themes",
+        "catalogSimulation",
+        "libraryAndCanvas",
+        "dirtyManagement",
+        "hexEditing",
+        "sourceBundle",
+        "processRestart",
+        "starterWorkspace",
+        "directReview",
+        "blockedInspectorRecovery",
+        "trackpadGesture",
+        "motionAuthoring",
+        "responsiveAppearance",
+        "materialAtlas",
+        "materialMotion",
+        "collapsedDraftRecovery",
+        "compactGlassControls",
+        "bindingPurposeFilters",
+        "panelVisibility",
+        "dtcgReviewedImport",
+        "dtcgResolverAndExchange",
+        "atomicBindingRepair"
+      ]
+    },
+    "panelAndPropertyProbe": {
+      "status": "PASSED",
+      "bindingPurposeFilters": {
+        "sameTypeDomainsSeparated": {
+          "borderRadius": 12,
+          "fontSize": 8,
+          "borderWidth": 3,
+          "opacity": 8
+        },
+        "extendedLineHeight": 3,
+        "projectPreserved": true,
+        "elapsedMs": 2088
+      },
+      "panelVisibility": {
+        "independentPanels": true,
+        "releasedCanvasWidth": true,
+        "hiddenDraftPreserved": true,
+        "recoveryReopensInspector": true,
+        "persistedPreferences": true,
+        "mobileNavigation": true,
+        "radius": 8,
+        "objectRowGap": 2,
+        "flatHeaderFooter": true,
+        "elapsedMs": 3639
+      },
+      "reloadPreference": true,
+      "errors": []
+    },
+    "finalRepairProbe": {
+      "status": "PASSED",
+      "atomicBindingRepair": {
+        "incompatibleDocuments": 2,
+        "incompatibleSites": 3,
+        "distinctRuleContexts": true,
+        "noPartialCommit": true,
+        "cancelPreservesSource": true,
+        "reviewedAtomicRepair": true,
+        "survivesReload": true,
+        "elapsedMs": 5917
+      },
+      "errors": []
+    },
+    "targets": "PASSED:representative Web and React Native consumers;native execution not run",
+    "retirement": "PASSED:442 frozen files",
+    "retirementSelfTest": "PASSED:10 negative cases",
+    "foundationSelfTest": {
+      "kind": "foundation-documentation-qa",
+      "status": "PASS",
+      "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
+      "verifiedAt": "2026-09-14T08:44:02.889565+00:00",
+      "checkerProvenance": "scripts/verify-foundation.py",
+      "counts": {
+        "documents": 56,
+        "domains": 12,
+        "decisions": 129,
+        "followups": 14,
+        "fieldRecords": 57,
+        "queries": 10,
+        "commands": 52,
+        "diagnostics": 30,
+        "localLinks": 1247,
+        "fragments": 129,
+        "checks": 2421
+      },
+      "errors": [],
+      "subjectPolicy": "QA excludes itself and manifest to avoid self-referential hashes. Historical QA is preserved separately at its original commit.",
+      "negativeCasesRejected": [
+        "missing-body",
+        "body-drift",
+        "broken-anchor",
+        "fenced-code-anchor",
+        "dependency-cycle",
+        "duplicate-json-key",
+        "non-json-constant",
+        "duplicate-followup",
+        "unknown-followup-owner",
+        "missing-command-projection",
+        "command-field-drift",
+        "field-table-drift",
+        "annex-drift",
+        "heading-slug-collisions",
+        "fence-close-with-info",
+        "literal-html-anchors",
+        "canonical-root-alias"
+      ]
+    }
+  },
+  "review": {
+    "captureCount": 19,
+    "disposition": "ship",
+    "report": "docs/implementation/studio-panel-binding-finish-review.md",
+    "scope": "16 shell states and 3 final repair states; rule context and dialog corners corrected before final review",
+    "captureLocation": "Ignored local evidence and CI workbench artifacts; no screenshot shipped as product source"
+  },
+  "captures": [
+    {
+      "path": "dist/evidence/quiet-domains-dark.png",
+      "sha256": "b5e5a04ba074a45207e56b1493740be0f8bcc9b1c2f16d1766cd3619f889c31a",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-tokens-dark.png",
+      "sha256": "4309c6ed78436375addcb8bf57eb5d191a866197b2b95659a28f83fe374dc240",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-menu-dark.png",
+      "sha256": "6883fe2b594fae42599a9e2a1abe51092eaf772f617fb35bb803b97106e685ae",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-right-collapsed.png",
+      "sha256": "a46f14e27a15e10ab4de617148cd67f7174c6ad8ed5ab1eaaf06ba2e483a529b",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-both-collapsed.png",
+      "sha256": "6d4fdbab0f7fc08dcd1dd218bcbc0b9a39114ed8f756a4f537eb4216e840d22b",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-left-collapsed.png",
+      "sha256": "728a90169c710477f29bc89901267c5608e5cc4f34c50abb10c56ca24be7e378",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-component-dark.png",
+      "sha256": "529b03c4adecc1e7b939b74c66de7b1f51b081915054f68ee9e04b3ea75c5da8",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-radius-binding.png",
+      "sha256": "cebf4fae40cce483a695438b9a1e02b0bdbe11c82e22bdf3e02c95b97fb33709",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-domain-purpose.png",
+      "sha256": "d7a19a00119c40c3ffcd4255a456620b2e044b482f0db2498666410497c5cb4d",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-domains-light.png",
+      "sha256": "9ee3fd543ca50eea71f8a75bae7ff39a755d50c3e4b8fd86ce13781627247285",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-component-light.png",
+      "sha256": "8bfaf6e6e3bfe9b676615497ad6305ba01672b728de99befe10703067e074254",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "dist/evidence/quiet-user-951.png",
+      "sha256": "b0b1c80a0faf6c89a160f05e87aa562c177d85b945cf13fa386e30b7bcdc5d33",
+      "width": 951,
+      "height": 958
+    },
+    {
+      "path": "dist/evidence/quiet-mobile-inspector.png",
+      "sha256": "2286135d24104c4fc922c151041f0471492e247d2f0cf893c252a1eecccb540d",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "dist/evidence/quiet-mobile-navigation.png",
+      "sha256": "0fa4a7ef354ba0bd058a91e9e413a6c818bacf84f55ca045ce09b8e8464322e3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "dist/evidence/quiet-mobile-foundation.png",
+      "sha256": "4ec2ef4bf88a4364480fe72048098506f009c74a624777d175486112a15970a7",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "dist/evidence/quiet-mobile-light.png",
+      "sha256": "49f2f6b35d0fc25b4f6fc398741a12074bbf1b08bd94bc79065b59f626a3c7cd",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "dist/evidence/quiet-repair-desktop.png",
+      "sha256": "5cca7368ee13c976fd72e23187ba1263a674329c8d52768e1103d7a8518c87e5",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "path": "dist/evidence/quiet-repair-mobile.png",
+      "sha256": "16a890392af233d641c960cb974064d9ba399082d23c210496f531f4e18479d3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "dist/evidence/quiet-repair-light.png",
+      "sha256": "41d9cb3216211ad87f2f0d36387307480d8176726af685bd57364ac203d8c076",
+      "width": 1440,
+      "height": 1080
+    }
+  ],
+  "localWorkspace": {
+    "refreshAfterSavedCheck": true,
+    "savedProjectRevisionPreserved": true,
+    "userDataPublished": false
+  },
+  "ci": {
+    "previousRun": 86,
+    "previousStatus": "FAILED:obsolete Select SSR opening-tag assertion;corrected",
+    "currentStatus": "See latest PR head checks;not inferred from local gates"
+  },
+  "limitations": [
+    "Chromium only;no native platform certification",
+    "Physical trackpad and OS IME hardware are not exercised by CDP",
+    "Unclassified custom domains retain explicitly labelled type compatibility until purpose is assigned",
+    "Static captures do not establish temporal motion quality"
+  ]
+}

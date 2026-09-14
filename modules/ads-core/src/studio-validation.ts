@@ -6,6 +6,7 @@ import { inspectDocumentDomain } from "./domain-validation.ts";
 import { inspectFoundationDocument } from "./foundation-validation.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
 import { projectStudioDesign } from "./studio-presentation.ts";
+import { resolveStudioMotion } from "./studio-motion.ts";
 import { MAX_DOCUMENT_BYTES, MAX_STRUCTURE_DIAGNOSTICS, STUDIO_PROFILE } from "./constants.ts";
 import { STUDIO_ARCHETYPES, STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_ERROR, STUDIO_MAX_COMPONENTS, STUDIO_MAX_DIMENSION, STUDIO_MAX_RULES, STUDIO_MAX_THEME_SETS, STUDIO_PART_ROLES, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE, STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
 import { hasCatalogProfile, inspectCatalogComponent, inspectCatalogLayout, inspectCatalogPin, inspectEditorFrame } from "./studio-catalog-validation.ts";
@@ -157,6 +158,12 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
   const resolutions = new Map<string, ReturnType<typeof resolveFoundationTokens>[]>();
   for (const entry of foundations) if (inspectStudioDocument(entry.document).valid) {
     resolutions.set(entry.document.id, [{}, ...objects(entry.document.themeSets).map(set => ({ themeSetId: String(set.id) }))].map(selection => resolveFoundationTokens(entry.document, selection)));
+  }
+  for (const component of components) if (hasCatalogProfile(component) && inspectStudioDocument(component).valid) {
+    for (const resolved of resolutions.get(foundations[0]?.document.id ?? "") ?? []) {
+      if (diagnostics.length >= MAX_STRUCTURE_DIAGNOSTICS) break;
+      if (resolved.valid) resolveStudioMotion(component, resolved, diagnostics);
+    }
   }
   for (const [id, entry] of Object.entries(documents)) if (entry.validationProfile === STUDIO_PROFILE && entry.document.id !== id) add(id, "/id", "Project record key must match the stable document ID.");
   for (const { document } of entries.filter(entry => entry.document.kind === "design")) {

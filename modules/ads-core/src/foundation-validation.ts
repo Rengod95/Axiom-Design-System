@@ -6,6 +6,8 @@ import { FoundationCheck, fields, nonblank, own, pointer, record, stableId } fro
 import { checkFoundationValue } from "./foundation-values.ts";
 import { checkAliasCycles, evaluateFoundation } from "./foundation-evaluation.ts";
 import { STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
+import { FOUNDATION_BINDING_CATEGORIES } from "./foundation-starters.ts";
+import type { FoundationBindingCategory } from "./foundation-contracts.ts";
 
 const tokenType = (value: unknown): value is FoundationTokenType => typeof value === "string" && (FOUNDATION_TOKEN_TYPES as readonly string[]).includes(value);
 export const MAX_FOUNDATION_CONTEXT_COMBINATIONS = 128;
@@ -70,6 +72,7 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
     else if (key === "domains" || key === "tiers") {
       identity(item, path); displayFields(item, path, key);
       if (key === "domains" && own(item, "allowedTypes") && (!Array.isArray(item.allowedTypes) || !item.allowedTypes.length || !item.allowedTypes.every(tokenType) || new Set(item.allowedTypes).size !== item.allowedTypes.length)) check.error(pointer(path, "allowedTypes"), "Allowed types must be a nonempty unique list of supported token types.");
+      if (own(item, "bindingCategory") && (key !== "domains" || typeof item.bindingCategory !== "string" || !FOUNDATION_BINDING_CATEGORIES.includes(item.bindingCategory as FoundationBindingCategory))) check.error(pointer(path, "bindingCategory"), "Binding purpose must be a supported domain category.");
     }
     if (key === "policies") check.error(path, "Policy execution is not supported by this authoring profile.", FOUNDATION_CODES.UNSUPPORTED);
   });

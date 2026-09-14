@@ -10,6 +10,7 @@ import { mutateStudioComponent } from "./studio-component-mutations.ts";
 import { STUDIO_CATALOG_CODE } from "./studio-catalog-constants.ts";
 import { MAX_BATCH_BYTES, STUDIO_FORMAT, STUDIO_PROFILE } from "./constants.ts";
 import { KernelError } from "./kernel-error.ts";
+import { STUDIO_ERROR } from "./studio-constants.ts";
 
 interface Context { project: ProjectSnapshot; id(): string; component(id: string): AdsDocument; designs(id: string): AdsDocument[] }
 const EMPTY_PROJECT: ProjectSnapshot = { id: "invalid", revision: "invalid", name: "Invalid source", documents: {} };
@@ -27,7 +28,8 @@ function plan(input: ProjectSnapshot, options: unknown, createId: () => string, 
     if (!isObject(detached) || !isValidId(detached.id) || !isValidId(detached.revision) || !isObject(detached.documents)) fail("Invalid Studio project snapshot.");
     before = detached as unknown as ProjectSnapshot;
     const previous = inspectStudioProject(before);
-    if (!previous.valid) return { valid: false, diagnostics: previous.diagnostics, baseRevision: before.revision, changes: { upserts: [], deletes: [] }, impact: [], project: before };
+    // A formerly type-only binding may need repair. The complete result must still be valid below.
+    if (!previous.valid && previous.diagnostics.some(item => item.severity === "error" && item.code !== STUDIO_ERROR.tokenBinding)) return { valid: false, diagnostics: previous.diagnostics, baseRevision: before.revision, changes: { upserts: [], deletes: [] }, impact: [], project: before };
     const data: unknown = JSON.parse(canonicalJson(options, MAX_BATCH_BYTES)); if (!isObject(data)) fail("Component plan options must be plain JSON.");
     const project = structuredClone(before), seen = new Set(inspectLocalReferences(project.documents, project.id).entities.map(entity => entity.id));
     const context: Context = { project,

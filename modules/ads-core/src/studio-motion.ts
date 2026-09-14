@@ -1,6 +1,9 @@
 import type { Diagnostic, JsonObject, JsonValue } from "./contracts.ts";
 import type { FoundationResolution } from "./foundation-contracts.ts";
 import { isObject, isValidId } from "./documents.ts";
+import { isStudioTokenCompatible } from "./studio-style-values.ts";
+import { STUDIO_ERROR } from "./studio-constants.ts";
+import { KernelError } from "./kernel-error.ts";
 
 export interface StudioMotionTrack {
   id: string; targetPartRef: string; trigger: "enter" | "exit" | "state";
@@ -56,6 +59,7 @@ export function resolveStudioMotion(document: JsonObject, foundation: Foundation
     if (!isObject(source) || !Object.hasOwn(source, "tokenRef")) return source;
     const token = typeof source.tokenRef === "string" && tokens.get(source.tokenRef);
     if (Object.keys(source).length !== 1 || !token || token.type !== type) throw new Error(`Motion requires an existing ${type} token.`);
+    if (!isStudioTokenCompatible(token, type === "duration" ? "motionDuration" : "motionEasing")) throw new KernelError(STUDIO_ERROR.tokenBinding, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind motion timing. Choose a motion token or correct its domain purpose.`);
     for (const id of new Set([token.id, ...token.aliasChain])) use(id, currentPart, currentPath);
     return token.value;
   };
@@ -69,6 +73,6 @@ export function resolveStudioMotion(document: JsonObject, foundation: Foundation
     else { const spring = sampleStudioSpring(track.timing.stiffness, track.timing.damping, track.timing.mass), from = track.keyframes[0]!.value, to = track.keyframes.at(-1)!.value;
       result.push({ ...track, durationMs: spring.durationMs, delayMs, easing: "linear", keyframes: spring.samples.map(sample => ({ offset: sample.offset, value: track.property === "opacity" ? Math.max(0, Math.min(1, from + (to - from) * sample.value)) : from + (to - from) * sample.value })) });
     }
-  } catch (error) { diagnostics.push({ code: "STUDIO_MOTION_INVALID", severity: "error", phase: "document", sourceRef: String(document.id), path: `/motion/${index}`, message: error instanceof Error ? error.message : "Invalid motion." }); }
+  } catch (error) { diagnostics.push({ code: error instanceof KernelError ? error.code : "STUDIO_MOTION_INVALID", severity: "error", phase: "document", sourceRef: String(document.id), path: `/motion/${index}`, message: error instanceof Error ? error.message : "Invalid motion." }); }
   return result;
 }

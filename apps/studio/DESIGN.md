@@ -2,11 +2,11 @@
 name: "Axiom UI"
 description: "A compact glass workbench with Geist, achromatic planes and fluorescent green action."
 colors:
-  brand: "#a3ff47"
-  accent: "#a3ff47"
-  accent-hover: "#92ee36"
-  accent-soft: "#e7f6dc"
-  accent-ink: "#32630b"
+  brand: "#8dfc52"
+  accent: "#8dfc52"
+  accent-hover: "#7ce641"
+  accent-soft: "#e2f7dc"
+  accent-ink: "#296214"
   surface: "#fafafa"
   surface-subtle: "#f2f2f2"
   surface-hover: "#e8e8e8"
@@ -25,16 +25,16 @@ colors:
   warning-soft: "#fff4dd"
   negative: "#b23242"
   negative-soft: "#fff0f1"
-  focus: "#43830c"
-  selection: "#d4f5bd"
+  focus: "#348023"
+  selection: "#ccf5bd"
   glass-panel: "rgb(250 250 250 / 58%)"
   glass-header: "rgb(255 255 255 / 60%)"
   glass-raised: "rgb(255 255 255 / 74%)"
   glass-edge: "rgb(255 255 255 / 75%)"
   glass-sheen: "rgb(255 255 255 / 48%)"
-  dark-accent-hover: "#b6ff70"
-  dark-accent-soft: "#26331c"
-  dark-accent-ink: "#a3ff47"
+  dark-accent-hover: "#a6ff77"
+  dark-accent-soft: "#23331e"
+  dark-accent-ink: "#8dfc52"
   dark-surface: "#171717"
   dark-surface-subtle: "#202020"
   dark-surface-hover: "#2b2b2b"
@@ -53,8 +53,8 @@ colors:
   dark-warning-soft: "#44351c"
   dark-negative: "#ff9aa9"
   dark-negative-soft: "#472a30"
-  dark-focus: "#a3ff47"
-  dark-selection: "#375025"
+  dark-focus: "#8dfc52"
+  dark-selection: "#305025"
   dark-glass-panel: "rgb(23 23 23 / 58%)"
   dark-glass-header: "rgb(29 29 29 / 60%)"
   dark-glass-raised: "rgb(35 35 35 / 72%)"
@@ -97,14 +97,8 @@ typography:
     fontSize: "11px"
     lineHeight: "16px"
 rounded:
-  small: "6px"
   control: "8px"
-  sheet: "10px"
-  specimen: "7px"
-  option: "5px"
-  floating: "12px"
-  panel: "16px"
-  pill: "999px"
+  checkbox: "4px"
 spacing:
   1: "4px"
   2: "8px"
@@ -154,13 +148,13 @@ components:
   select:
     backgroundColor: "{colors.surface-subtle}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.small}"
+    rounded: "{rounded.control}"
     padding: "6px 8px 6px 10px"
     height: "28px"
   navigation:
     backgroundColor: "transparent"
     textColor: "{colors.ink-secondary}"
-    rounded: "{rounded.pill}"
+    rounded: "{rounded.control}"
     padding: "7px 10px"
     height: "36px"
   navigation-selected:
@@ -177,13 +171,13 @@ components:
   material-card:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "{rounded.sheet}"
+    rounded: "{rounded.control}"
     padding: "3px"
   material-card-selected:
     backgroundColor: "{colors.surface-active}"
   section-add:
     backgroundColor: "{colors.surface-subtle}"
-    rounded: "{rounded.small}"
+    rounded: "{rounded.control}"
     padding: "5px"
     height: "24px"
     width: "24px"
@@ -202,9 +196,9 @@ components:
 
 **Creative North Star: "Compact glass workbench"**
 
-Axiom UI is a compact glass workbench. Achromatic planes recede behind the authored materials; fluorescent green identifies action. Geist, thin rounded SVG icons and tightly grouped controls give English and Korean authoring a consistent rhythm.
+Axiom UI is a compact glass workbench. Achromatic planes recede behind the authored materials; fluorescent green identifies action. Geist, consistent rectangular corners, thin SVG icons and tightly grouped controls give English and Korean authoring a consistent rhythm.
 
-Translucent headers, rails, inspectors and overlapping menus share neutral edge light and soft backdrop diffusion. Both themes retain the same hierarchy. Studio appearance stays independent from the user's authored colors, typography and saved theme preferences.
+Translucent rails, inspectors and overlapping menus share neutral edge light and soft backdrop diffusion. Headers and footer use flat translucent fills without an internal highlight or inset bevel. Both themes retain the same hierarchy. Studio appearance stays independent from the user's authored colors, typography and saved theme preferences.
 
 **Key Characteristics:**
 
@@ -213,7 +207,7 @@ Translucent headers, rails, inspectors and overlapping menus share neutral edge 
 - Material specimens with contextual creation and inspection.
 - Shared glass depth in dark and light appearances.
 
-This refresh follows the owner's explicit replacement of the earlier spacing, font and neutral palette. [PRODUCT.md](PRODUCT.md) records durable commitments; the [surface contract](.impeccable/surfaces/workbench.md) and [compact review](../../docs/implementation/studio-compact-finish-review.md) record composition and evidence. [styles.css](src/styles.css), [ui-system.css](src/ui-system.css), then [foundation-workspace.css](src/foundation-workspace.css) define the effective cascade. Frontmatter owns reusable tokens; the [sidecar](.impeccable/design.json) extends it with material, motion and snippets.
+This refresh follows the owner's explicit replacement of the earlier spacing, font and neutral palette. [PRODUCT.md](PRODUCT.md) records durable commitments; the [surface contract](.impeccable/surfaces/workbench.md) and [refinement record](../../docs/implementation/studio-panel-binding-refinement.md) record composition and evidence. [styles.css](src/styles.css), [ui-system.css](src/ui-system.css), then [foundation-workspace.css](src/foundation-workspace.css) define the effective cascade. Frontmatter owns reusable tokens; the [sidecar](.impeccable/design.json) extends it with material, motion and snippets.
 
 ## Colors
 
@@ -241,19 +235,19 @@ Control size variants use 28/32/36px minimum heights. Workspace choices are 36px
 
 Material families are separated by 24px. General, color and typography columns start at 140px, 88px and 220px respectively. Color surfaces remain square. A family supplies context; cards show local leaf names, and section add inherits classification and prefix. Full paths remain accessible and in source. Bulk checks appear only after selecting the explicit selection mode; List remains available.
 
-An inherited 1200px rule sets the rail to 200px. At 1100px, the effective rail/inspector become 180px/288px and domain galleries become one column. At 720px, a single working pane replaces the three-column composition, with 52/40/flexible/28px rows and Browse/Workspace/Inspect choices. Narrow root insets become 12px and color minima 82px. Compact contextual targets retain exceptions to the shared mobile button minimum.
+An inherited 1200px rule sets the rail to 200px. At 1100px, the effective rail/inspector become 180px/288px and domain galleries become one column. At 720px, a single working pane replaces the three-column composition, with 52/40/flexible/28px rows and Browse/Workspace/Inspect choices. Narrow root insets become 12px and color minima 82px. Compact contextual targets retain exceptions to the shared mobile button minimum. Object rows have a 2px trailing gap. Independent header controls collapse either side column and persist browser preferences. Hidden forms stay mounted. Inspector-form recovery and successful object selection reopen the inspector; Foundation manager recovery returns to the workspace. Desktop collapse preferences do not suppress mobile panel navigation.
 
 ## Elevation & Depth
 
 **The Shared Glass Rule.** Use translucent structural planes and frosted raised surfaces with restrained neutral edge light; reduced transparency restores solid surfaces.
 
-Headers, sidebar, inspector and status use the shared glass roles over an achromatic ambient ground. Panes receive diagonal neutral sheen and inset edge light. Raised menus, tools and dialogs add soft depth. Chrome uses 24px blur; popup saturation is 1.08, chrome saturation 1.04, and dialogs use 28px blur. Primary actions retain a restrained accent glow. Exact material, shadows and motion live in the sidecar.
+Headers, sidebar, inspector and status use the shared glass roles over an achromatic ambient ground. Sidebar and inspector retain restrained neutral sheen; headers and footer have no internal gradient or inset shadow. Raised menus, tools and dialogs add soft depth. Chrome uses 24px blur; popup saturation is 1.08, chrome saturation 1.04, and dialogs use 28px blur. Primary actions retain a restrained accent glow. Exact material, shadows and motion live in the sidecar.
 
 Selection moves by translation and opacity; disclosure and menus use semantic fast/reveal timing. Reduced motion removes nonessential transitions and animations. Reduced transparency removes blur and restores opaque surfaces. The static finish review does not establish temporal motion quality.
 
 ## Shapes
 
-Controls use contained rounded corners, while navigation retains a full pill. Material wrappers and their inner specimens have separate radii; rectangular color surfaces always use equal width and height. Borders establish structure without outlining every container.
+Rectangular Studio controls, navigation, menus, cards and specimen surfaces share an 8px corner. The 15px checkbox retains a proportional 4px corner, and circular indicators retain their actual shape. Authored geometry stays independent; rectangular color surfaces always use equal width and height. Borders establish structure without outlining every container.
 
 SVG icons use rounded caps/joins and a 1.4-unit stroke in a 20-unit view box. Most controls display 16px icons, workspace navigation 17px. Icon-only controls retain accessible names and titles.
 
@@ -275,9 +269,9 @@ Choice chips and Specimens/List segments use a neutral selected fill. Subsection
 
 ### Navigation and contextual inspector
 
-The rail has a fluorescent workspace pill and quieter object navigation. The former lower Axiom UI footer is absent; Quick search exposes the system gallery. Canvas category, interaction mode and theme use named icon controls. The component inspector starts with Design/Source and compact property sections instead of a large identity heading.
+The rail has a fluorescent rounded workspace selection and quieter object navigation. The former lower Axiom UI footer is absent; Quick search exposes the system gallery. Canvas category, interaction mode and theme use named icon controls. The component inspector starts with Design/Source and compact property sections instead of a large identity heading.
 
-Layout choices, paired dimensions, inline binding actions and an all-sides padding diagram precede advanced metadata. The diagram describes the currently supported uniform value, not independently editable sides. Token context uses a 44px bar; material and value come before collapsed metadata. Contextual creation prepopulates family defaults. Draft, review, save and Undo remain distinct.
+Layout choices, paired dimensions, inline binding actions and an all-sides padding diagram precede advanced metadata. The diagram describes the currently supported uniform value, not independently editable sides. Token context uses a 44px bar; material and value come before collapsed metadata. Contextual creation prepopulates family defaults. Draft, review, save and Undo remain distinct. Property binding combines the token value type with the domain's declared use category. Unknown or unrestricted domains appear separately as type-compatible candidates; custom domain purpose is editable in Manage.
 
 ## Do's and Don'ts
 

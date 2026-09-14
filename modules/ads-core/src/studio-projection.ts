@@ -1,5 +1,5 @@
 import type { AdsDocument, Diagnostic, JsonObject, JsonValue, ProjectSnapshot } from "./contracts.ts";
-import type { StudioComponent, StudioEdit, StudioEditPlan, StudioProjection, StudioSelection, StudioUsage } from "./studio-contracts.ts";
+import type { StudioComponent, StudioEdit, StudioEditPlan, StudioProjection, StudioSelection, StudioTokenBindingIssue, StudioTokenBindingReplacement, StudioUsage } from "./studio-contracts.ts";
 import { canonicalJson, parseJson } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
 import { inspectStudioDocument, inspectStudioGraph, studioArchetype, studioDiagnostic, studioParts } from "./studio-validation.ts";
@@ -11,6 +11,9 @@ import { inspectLocalReferences } from "./local-references.ts";
 import { catalogIdentity } from "./studio-catalog-validation.ts";
 import { resolveStudioMotion } from "./studio-motion.ts";
 import { getStudioCatalogRecipe } from "./studio-catalog.ts";
+import { STUDIO_ERROR, STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
+import { isStudioTokenCompatible } from "./studio-style-values.ts";
+import type { StudioTokenBindingProperty } from "./studio-style-values.ts";
 
 function list(value: JsonValue | undefined): JsonObject[] { return Array.isArray(value) ? value.filter(isObject) : []; }
 function copiedProject(value: ProjectSnapshot): ProjectSnapshot {
@@ -48,7 +51,8 @@ function inspectCapturedProject(input: ProjectSnapshot, selection: StudioSelecti
   diagnostics.push(...foundation.diagnostics);
   const components: StudioComponent[] = [];
   const usages: Record<string, StudioUsage[]> = Object.create(null);
-  if (!diagnostics.some(item => item.severity === "error")) for (const entry of entries.filter(item => item.document.kind === "component")) {
+  // Domain-incompatible references remain inspectable for repair; preview/export still require valid=true.
+  if (!diagnostics.some(item => item.severity === "error" && item.code !== STUDIO_ERROR.tokenBinding)) for (const entry of entries.filter(item => item.document.kind === "component")) {
     const document = entry.document, archetype = studioArchetype(document)!;
     const parts = studioParts(document);
     const contract = document.publicContract as JsonObject;
@@ -70,6 +74,75 @@ function inspectCapturedProject(input: ProjectSnapshot, selection: StudioSelecti
 export function inspectStudioProject(input: ProjectSnapshot, selection: StudioSelection = {}): StudioProjection {
   try { return inspectCapturedProject(input, JSON.parse(canonicalJson(selection)) as StudioSelection); }
   catch { return { valid: false, diagnostics: [invalidDiagnostic()], projectId: "invalid", revision: "invalid", sourceText: "", foundation: { valid: false, diagnostics: [invalidDiagnostic()], foundationId: null, contexts: {}, resolutionOrder: [], tokens: [] }, components: [], usages: {}, capabilities: { editor: "implemented", targets: ["react", "react-native", "swiftui", "compose"], nativeExecution: "unverified" } }; }
+}
+
+interface BindingSite { issue: StudioTokenBindingIssue; source: JsonObject; owner: JsonObject; key: string }
+function bindingSites(project: ProjectSnapshot, projection: StudioProjection): BindingSite[] {
+  const tokens = new Map(projection.foundation.tokens.map(token => [token.id, token])), found: BindingSite[] = [];
+  const collect = (documentId: string, componentId: string, partId: string, owner: JsonObject, key: string, path: string, property: StudioTokenBindingProperty) => {
+    const source = owner[key]; if (!isObject(source) || typeof source.tokenRef !== "string") return;
+    const token = tokens.get(source.tokenRef); if (!token || isStudioTokenCompatible(token, property)) return;
+    found.push({ source, owner, key, issue: { documentId, componentId, partId, path, property, tokenId: token.id,
+      compatibleTokenIds: projection.foundation.tokens.filter(candidate => isStudioTokenCompatible(candidate, property)).map(candidate => candidate.id) } });
+  };
+  for (const { document } of Object.values(project.documents)) {
+    if (document.kind === "design" && isObject(document.componentRef)) {
+      const componentId = String(document.componentRef.id);
+      list(document.appearance).forEach((rule, index) => { if (isObject(rule.declarations)) for (const property of STUDIO_VISUAL_PROPERTIES) collect(document.id, componentId, String(rule.targetPartRef), rule.declarations, property, `/appearance/${index}/declarations/${property}`, property); });
+      list(document.layout).forEach((rule, index) => { for (const property of ["gap", "padding", "minHeight"] as const) collect(document.id, componentId, String(rule.targetPartRef), rule, property, `/layout/${index}/${property}`, property); });
+    } else if (document.kind === "component") list(document.motion).forEach((track, index) => {
+      collect(document.id, document.id, String(track.targetPartRef), track, "delay", `/motion/${index}/delay`, "motionDelay");
+      if (isObject(track.timing) && track.timing.kind === "tween") {
+        collect(document.id, document.id, String(track.targetPartRef), track.timing, "duration", `/motion/${index}/timing/duration`, "motionDuration");
+        collect(document.id, document.id, String(track.targetPartRef), track.timing, "easing", `/motion/${index}/timing/easing`, "motionEasing");
+      }
+    });
+  }
+  return found;
+}
+const bindingOnlyErrors = (projection: StudioProjection): boolean => {
+  const errors = projection.diagnostics.filter(item => item.severity === "error");
+  return errors.length > 0 && errors.every(item => item.code === STUDIO_ERROR.tokenBinding);
+};
+/** Enumerate explicit supported binding sites, never arbitrary paths or opaque extension data. */
+export function inspectStudioTokenBindingIssues(input: ProjectSnapshot, selection: StudioSelection = {}): StudioTokenBindingIssue[] {
+  try { const project = copiedProject(input), projection = inspectStudioProject(project, selection); return bindingOnlyErrors(projection) ? bindingSites(project, projection).map(site => site.issue) : []; }
+  catch { return []; }
+}
+/** Collect all corrections before producing one valid, reviewed source update. Partial repairs never become plans. */
+export function planStudioTokenBindingRepair(input: ProjectSnapshot, replacements: readonly StudioTokenBindingReplacement[], createId: () => string, selection: StudioSelection = {}): StudioEditPlan {
+  let baseline = invalidProject();
+  try {
+    baseline = copiedProject(input); const project = copiedProject(baseline), projection = inspectStudioProject(project, selection);
+    if (!bindingOnlyErrors(projection)) throw new Error("This repair handles existing token-purpose errors only. Repair other source diagnostics first.");
+    const sites = bindingSites(project, projection), choices: unknown = JSON.parse(canonicalJson(replacements, MAX_BATCH_BYTES));
+    if (!sites.length || !Array.isArray(choices) || choices.length !== sites.length) throw new Error("Choose a replacement for every incompatible binding before proposing the repair.");
+    const seen = new Set<string>(), changed = new Set<string>(), tokens = new Map(projection.foundation.tokens.map(token => [token.id, token]));
+    for (const choice of choices) {
+      if (!isObject(choice) || Object.keys(choice).length !== 4 || !["documentId", "path", "tokenId", "replacementTokenId"].every(key => Object.hasOwn(choice, key))) throw new Error("Invalid binding repair fields.");
+      const site = sites.find(site => site.issue.documentId === choice.documentId && site.issue.path === choice.path && site.issue.tokenId === choice.tokenId);
+      const key = canonicalJson([choice.documentId!, choice.path!]);
+      if (!site || seen.has(key)) throw new Error("The binding changed or was selected more than once. Reopen the repair form.");
+      seen.add(key); changed.add(site.issue.documentId);
+      if (choice.replacementTokenId === null) site.owner[site.key] = structuredClone(tokens.get(site.issue.tokenId)!.value);
+      else {
+        if (typeof choice.replacementTokenId !== "string" || !site.issue.compatibleTokenIds.includes(choice.replacementTokenId)) throw new Error("Choose a token compatible with this property's type and purpose.");
+        site.source.tokenRef = choice.replacementTokenId;
+      }
+    }
+    const revisions = new Set(Object.values(project.documents).map(entry => entry.document.revision));
+    const revise = (document: AdsDocument) => { const revision = createId(); if (!isValidId(revision) || revisions.has(revision)) throw new Error("A distinct source revision is required."); revisions.add(revision); document.revision = revision; };
+    for (const documentId of changed) revise(project.documents[documentId]!.document);
+    for (const { document } of Object.values(project.documents)) if (document.kind === "design" && isObject(document.componentRef) && typeof document.componentRef.id === "string" && document.componentRef.revision !== undefined && changed.has(document.componentRef.id)) {
+      document.componentRef.revision = project.documents[document.componentRef.id]!.document.revision;
+      if (!changed.has(document.id)) { changed.add(document.id); revise(document); }
+    }
+    for (const documentId of changed) { const entry = project.documents[documentId]!; entry.currentText = canonicalJson(entry.document); entry.currentSourceUri = "studio:binding-repair"; }
+    const report = inspectStudioProject(project, selection);
+    if (!report.valid) return { valid: false, diagnostics: report.diagnostics, baseRevision: baseline.revision, updates: [], impact: [], project: baseline };
+    return { valid: true, diagnostics: report.diagnostics, baseRevision: baseline.revision, updates: [...changed].map(id => ({ document: project.documents[id]!.document, expectedRevision: baseline.documents[id]!.document.revision })),
+      impact: sites.map(({ issue: { componentId, partId, documentId, path } }) => ({ componentId, partId, documentId, path })), project };
+  } catch (error) { return { valid: false, diagnostics: [studioDiagnostic(baseline.id, "", error instanceof Error ? error.message : "Invalid binding repair.")], baseRevision: baseline.revision, updates: [], impact: [], project: baseline }; }
 }
 
 /** Build reviewed source updates; stable identity and the caller's base revision are preserved. */

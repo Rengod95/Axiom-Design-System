@@ -1,12 +1,29 @@
 import { isObject } from "./documents.ts";
 import type { JsonValue } from "./contracts.ts";
-import type { FoundationTokenType } from "./foundation-contracts.ts";
+import type { FoundationBindingCategory, FoundationTokenType, ResolvedFoundationToken } from "./foundation-contracts.ts";
+import type { StudioVisualProperty } from "./studio-contracts.ts";
 
 export const STUDIO_EXTENDED_STYLE_TYPES: Readonly<Record<string, FoundationTokenType>> = {
   fontFamily: "fontFamily", fontWeight: "fontWeight", lineHeight: "number", letterSpacing: "dimension",
   boxShadow: "shadow", backgroundImage: "gradient", borderStyle: "strokeStyle", border: "border", typography: "typography",
   transitionDuration: "duration", transitionTimingFunction: "cubicBezier", transition: "transition",
 };
+export type StudioTokenBindingProperty = StudioVisualProperty | "gap" | "padding" | "minHeight" | "motionDuration" | "motionDelay" | "motionEasing";
+const STUDIO_BINDING_TYPES: Readonly<Record<StudioTokenBindingProperty, FoundationTokenType>> = {
+  background: "color", color: "color", borderColor: "color", borderWidth: "dimension", borderRadius: "dimension", fontSize: "dimension", opacity: "number",
+  fontFamily: "fontFamily", fontWeight: "fontWeight", lineHeight: "number", letterSpacing: "dimension", boxShadow: "shadow", backgroundImage: "gradient", borderStyle: "strokeStyle", border: "border", typography: "typography",
+  transitionDuration: "duration", transitionTimingFunction: "cubicBezier", transition: "transition", gap: "dimension", padding: "dimension", minHeight: "dimension", motionDuration: "duration", motionDelay: "duration", motionEasing: "cubicBezier",
+};
+const STUDIO_BINDING_CATEGORIES: Readonly<Record<StudioTokenBindingProperty, FoundationBindingCategory>> = {
+  background: "color", color: "color", borderColor: "color", borderWidth: "border", borderRadius: "radius", fontSize: "typography", opacity: "opacity",
+  fontFamily: "typography", fontWeight: "typography", lineHeight: "typography", letterSpacing: "typography", boxShadow: "shadow", backgroundImage: "gradient", borderStyle: "border", border: "border", typography: "typography",
+  transitionDuration: "motion", transitionTimingFunction: "motion", transition: "motion", gap: "spacing", padding: "spacing", minHeight: "sizing", motionDuration: "motion", motionDelay: "motion", motionEasing: "motion",
+};
+/** Shared by UI candidates and authoritative projection/transaction validation. Unclassified imports retain type compatibility. */
+export function isStudioTokenCompatible(token: Pick<ResolvedFoundationToken, "type" | "bindingCategory">, property: StudioTokenBindingProperty): boolean {
+  return Object.hasOwn(STUDIO_BINDING_TYPES, property) && token.type === STUDIO_BINDING_TYPES[property]
+    && (token.bindingCategory === undefined || token.bindingCategory === "unrestricted" || token.bindingCategory === STUDIO_BINDING_CATEGORIES[property]);
+}
 const finite = (value: JsonValue | undefined, min: number, max: number): number => {
   if (typeof value !== "number" || !Number.isFinite(value) || value < min || value > max) throw new Error(`Expected a number from ${min} to ${max}.`);
   return value;

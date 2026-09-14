@@ -1,5 +1,8 @@
 import type { JsonObject, JsonValue } from "./contracts.ts";
-import type { FoundationDocument, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
+import type { FoundationBindingCategory, FoundationDocument, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
+import { isObject } from "./documents.ts";
+
+export const FOUNDATION_STARTER_PROFILE = Object.freeze({ id: "axiom.foundation.essentials", version: "1.0.0" });
 
 export const FOUNDATION_STARTER_DOMAINS = [
   { id: "color", name: "Color", types: ["color"] },
@@ -14,6 +17,7 @@ export const FOUNDATION_STARTER_DOMAINS = [
   { id: "gradient", name: "Gradient", types: ["gradient"] },
   { id: "layer", name: "Layer", types: ["number"] },
 ] as const;
+export const FOUNDATION_BINDING_CATEGORIES: readonly FoundationBindingCategory[] = [...FOUNDATION_STARTER_DOMAINS.map(domain => domain.id), "unrestricted"];
 export interface FoundationStarterOptions { domains: string[]; accent?: string; fontFamily?: string; density?: "comfortable" | "compact" }
 export interface FoundationStarterToken { name: string; domain: string; type: FoundationTokenType; tier: "primitive" | "semantic"; literal?: JsonValue; alias?: string; darkAlias?: string }
 const dimension = (value: number): JsonObject => ({ value, unit: "px" });
@@ -86,14 +90,14 @@ export function applyFoundationStarter(foundation: FoundationDocument, options: 
     const id = createId(); foundation[category].push({ id, name, ...extra }); return id;
   };
   const tiers = { primitive: classification("tiers", "Primitive"), semantic: classification("tiers", "Semantic") };
-  const domains = new Map<string, string>(FOUNDATION_STARTER_DOMAINS.filter(domain => options.domains.includes(domain.id)).map(domain => [domain.id, classification("domains", domain.name, { allowedTypes: [...domain.types] })]));
+  const domains = new Map<string, string>(FOUNDATION_STARTER_DOMAINS.filter(domain => options.domains.includes(domain.id)).map(domain => [domain.id, classification("domains", domain.name, { allowedTypes: [...domain.types], bindingCategory: domain.id })]));
   const byName = new Map(foundation.tokens.map(token => [token.name, token]));
   const newNames = new Set<string>();
   for (const spec of blueprint) {
     const existing = byName.get(spec.name);
     if (existing) { if (existing.typeRef.id !== spec.type) throw new Error(`Starter name ${spec.name} exists with another type. Rename it before applying this domain.`); continue; }
     const value: FoundationTokenValue = spec.alias ? { ref: { id: byName.get(spec.alias)!.id, expectedKind: "token" } } : { literal: spec.literal! };
-    const token = { id: createId(), name: spec.name, typeRef: { id: spec.type }, domain: domains.get(spec.domain)!, tier: tiers[spec.tier], value, metadata: { starter: "axiom.foundation.essentials", version: "1.0.0" } };
+    const token = { id: createId(), name: spec.name, typeRef: { id: spec.type }, domain: domains.get(spec.domain)!, tier: tiers[spec.tier], value, metadata: { starter: FOUNDATION_STARTER_PROFILE.id, version: FOUNDATION_STARTER_PROFILE.version } };
     foundation.tokens.push(token); byName.set(spec.name, token); newNames.add(spec.name);
   }
   if (options.domains.includes("color")) {
@@ -103,4 +107,24 @@ export function applyFoundationStarter(foundation: FoundationDocument, options: 
     for (const spec of blueprint) if (spec.darkAlias && newNames.has(spec.name)) axis.overrides.dark[byName.get(spec.name)!.id] = { ref: { id: byName.get(spec.darkAlias)!.id, expectedKind: "token" } };
     for (const context of ["light", "dark"]) if (!foundation.themeSets.some(set => set.contexts[axis!.id] === context)) foundation.themeSets.push({ id: createId(), name: context === "light" ? "Light" : "Dark", contexts: Object.fromEntries(foundation.themeAxes.map(item => [item.id, item.id === axis!.id ? context : item.default ?? item.contexts[0]!])), resolutionProfile: { id: "axiom.resolver.explicit-order", expectedKind: "resolutionProfile", version: "1.0.0" } });
   }
+}
+
+const STARTER_BINDING_BLUEPRINT = new Map(foundationStarterTokens({ domains: FOUNDATION_STARTER_DOMAINS.map(domain => domain.id) }).map(token => [token.name, token]));
+/** Read-only compatibility for pre-purpose starter domains. Only retained, pinned starter provenance is evidence. */
+export function foundationDomainBindings(foundation: FoundationDocument): Map<string, { category: FoundationBindingCategory; source: "explicit" | "starter" }> {
+  const bindings = new Map<string, { category: FoundationBindingCategory; source: "explicit" | "starter" }>();
+  for (const domain of foundation.domains.filter(isObject)) {
+    if (typeof domain.id !== "string") continue;
+    if (typeof domain.bindingCategory === "string" && FOUNDATION_BINDING_CATEGORIES.includes(domain.bindingCategory as FoundationBindingCategory)) {
+      bindings.set(domain.id, { category: domain.bindingCategory as FoundationBindingCategory, source: "explicit" }); continue;
+    }
+    const evidence = new Set<FoundationBindingCategory>();
+    for (const token of foundation.tokens) {
+      if (token.domain !== domain.id || token.metadata?.starter !== FOUNDATION_STARTER_PROFILE.id || token.metadata.version !== FOUNDATION_STARTER_PROFILE.version) continue;
+      const spec = STARTER_BINDING_BLUEPRINT.get(token.name);
+      if (spec && spec.type === token.typeRef.id) evidence.add(spec.domain as FoundationBindingCategory);
+    }
+    if (evidence.size === 1) bindings.set(domain.id, { category: [...evidence][0]!, source: "starter" });
+  }
+  return bindings;
 }

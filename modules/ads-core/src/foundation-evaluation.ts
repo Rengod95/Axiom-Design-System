@@ -5,6 +5,7 @@ import type { JsonValue } from "./contracts.ts";
 import type { FoundationDocument, FoundationOverrideTrace, FoundationResolution, FoundationSelection, FoundationTokenValue } from "./foundation-contracts.ts";
 import { FOUNDATION_CODES } from "./foundation-constants.ts";
 import { FoundationCheck, own, pointer } from "./foundation-internal.ts";
+import { foundationDomainBindings } from "./foundation-starters.ts";
 
 /** Iterative topology covers whole and property/composite edges without call-stack growth. */
 export function checkAliasCycles(values: ReadonlyMap<string, FoundationTokenValue>, check: FoundationCheck, path: string): string[] {
@@ -81,11 +82,14 @@ export function evaluateFoundation(document: FoundationDocument, selection: Foun
       resolved.set(id, { value, chain: [...chain], trace });
     } catch (error) { if (error instanceof TypeInputError) throw error; check.error(paths.get(id)!, error instanceof Error ? error.message : "Cannot resolve expression.", FOUNDATION_CODES.ALIAS); return result; }
   }
+  const domainBindings = includeTokens ? foundationDomainBindings(document) : new Map();
   if (includeTokens) for (const token of document.tokens) {
     const value = resolved.get(token.id)!;
     let origin = token.id;
     while (true) { check.step(paths.get(origin)!); const source = values.get(origin)!; if (!("ref" in source) || source.ref.path !== undefined) break; origin = source.ref.id; }
-    result.tokens.push({ id: token.id, name: token.name, type: token.typeRef.id, value: value.value, aliasChain: value.chain, sourcePath: paths.get(origin)!, overrideTrace: value.trace });
+    const category = token.domain ? domainBindings.get(token.domain)?.category : undefined;
+    result.tokens.push({ id: token.id, name: token.name, type: token.typeRef.id, value: value.value, aliasChain: value.chain, sourcePath: paths.get(origin)!, overrideTrace: value.trace,
+      ...(token.domain ? { domain: token.domain } : {}), ...(category ? { bindingCategory: category } : {}) });
   }
   result.valid = check.valid; return result;
 }

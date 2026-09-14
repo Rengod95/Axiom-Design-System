@@ -1,4 +1,5 @@
-import { canonicalJson, CommandService, createStudioStarter, inspectStudioProject, planStudioEdit, planFoundationEdit, planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentBatch, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
+import { canonicalJson, CommandService, createStudioStarter, inspectStudioProject, planStudioEdit, planFoundationEdit, planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentBatch, planStudioTokenBindingRepair, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
+import type { StudioTokenBindingReplacement } from "../../../modules/ads-core/src/index.ts";
 import type { CommandEnvelope, CommandResult, Diagnostic, JsonObject, KernelServices, Principal, ProjectSnapshot, StudioEdit, StudioEditPlan, StudioProjection, StudioSelection, FoundationAuthoringEdit, StudioComponentEdit, StudioComponentPlan } from "../../../modules/ads-core/src/index.ts";
 import type { MessageKey } from "./locales.ts";
 import type { FoundationStarterOptions } from "../../../modules/ads-core/src/index.ts";
@@ -142,6 +143,7 @@ export class StudioController {
   duplicateComponent(componentId: string, name?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentDuplicate(project, { componentId, ...(name ? { name } : {}) }, ids))); }
   deleteComponent(componentId: string): void { this.#editIntent({ key: null, plan: project => planStudioComponentDelete(project, { componentId }) }); }
   component(edits: { componentId: string; edit: StudioComponentEdit }[]): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentBatch(project, { edits }, ids))); }
+  repairTokenBindings(replacements: readonly StudioTokenBindingReplacement[]): boolean { return this.#editIntent(this.#intent(null, (project, selection, ids) => planStudioTokenBindingRepair(project, replacements, ids, selection))); }
   #intent(key: string | null, plan: (project: ProjectSnapshot, selection: StudioSelection, createId: () => string) => StudioEditPlan | StudioComponentPlan): EditIntent {
     const ids: string[] = [];
     return { key, plan: (project, selection) => { let index = 0; return plan(project, selection, () => { const at = index++; return ids[at] ?? (ids[at] = this.#services.createId()); }); } };

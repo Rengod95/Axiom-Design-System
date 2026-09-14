@@ -1,5 +1,5 @@
 import type { Diagnostic, JsonValue } from "./contracts.ts";
-import type { FoundationAxis, FoundationSelection, FoundationThemeSet, FoundationToken, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
+import type { FoundationAxis, FoundationBindingCategory, FoundationSelection, FoundationThemeSet, FoundationToken, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
 import type { StudioEditPlan, StudioUsage } from "./studio-contracts.ts";
 import type { FoundationStarterOptions } from "./foundation-starters.ts";
 
@@ -15,8 +15,8 @@ export type FoundationAuthoringEdit =
   | { kind: "token-alias"; id: string; targetId: string }
   | { kind: "token-expression"; id: string; value: FoundationTokenValue }
   | { kind: "token-literal"; id: string; value: JsonValue }
-  | { kind: "classification-create"; category: FoundationClassificationKind; name: string; description?: string; allowedTypes?: FoundationTokenType[] }
-  | { kind: "classification-update"; category: FoundationClassificationKind; id: string; name?: string; description?: string | null; allowedTypes?: FoundationTokenType[] | null }
+  | { kind: "classification-create"; category: FoundationClassificationKind; name: string; description?: string; allowedTypes?: FoundationTokenType[]; bindingCategory?: FoundationBindingCategory }
+  | { kind: "classification-update"; category: FoundationClassificationKind; id: string; name?: string; description?: string | null; allowedTypes?: FoundationTokenType[] | null; bindingCategory?: FoundationBindingCategory | null }
   | { kind: "classification-delete"; category: FoundationClassificationKind; id: string; replacementId?: string }
   | { kind: "theme-axis-create"; name: string; contexts: string[]; default: string; description?: string }
   | { kind: "theme-axis-update"; id: string; name?: string; description?: string | null; default?: string }
@@ -33,7 +33,7 @@ export type FoundationAuthoringEdit =
 
 /** The caller adopts updates through document.import update and review/apply, never directly. */
 export interface FoundationEditPlan extends StudioEditPlan { createdIds: string[]; selection: FoundationSelection }
-export interface FoundationClassification { id: string; name: string; description?: string; allowedTypes?: FoundationTokenType[]; tokenCount: number }
+export interface FoundationClassification { id: string; name: string; description?: string; allowedTypes?: FoundationTokenType[]; tokenCount: number; bindingCategory?: FoundationBindingCategory; bindingCategorySource?: "explicit" | "starter" }
 export interface FoundationReference {
   tokenId: string; documentId: string; path: string;
   kind: "alias" | "theme-alias" | "theme-override" | "design" | "motion";

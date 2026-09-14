@@ -2,7 +2,7 @@ import { AccessibilityInsight } from "./accessibility-insight.tsx";
 import { MotionInspector } from "./motion-inspector.tsx";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { getStudioCatalogRecipe, inspectTypedValue, parseJson } from "../../../modules/ads-core/src/index.ts";
+import { getStudioCatalogRecipe, inspectTypedValue, isStudioTokenCompatible, parseJson } from "../../../modules/ads-core/src/index.ts";
 import type { JsonObject, JsonValue, StudioCategory, StudioComponent, StudioComponentEdit, StudioVisualProperty, TypeExpression } from "../../../modules/ads-core/src/index.ts";
 import type { StudioController, StudioState } from "./controller.ts";
 import type { Locale } from "./locales.ts";
@@ -95,11 +95,16 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     const value = resolve(declared) ?? resolve(rootValue) ?? (type === "color" ? { colorSpace: "srgb", components: [0, 0, 0], alpha: property === "background" ? 0 : 1 } : type === "number" ? 1 : { value: property === "fontSize" ? 14 : 0, unit: "px" });
     const change = (next: JsonValue): StudioComponentEdit => ({ kind: "appearance", category, partId: part.id, property, value: next });
     const bindingKey = `appearance-${property}-binding`, valueKey = `appearance-${property}-value`;
-    const label = visualLabels[property] ?? property, tokens = state.projection?.foundation.tokens.filter(token => token.type === type) ?? [];
+    const label = visualLabels[property] ?? property, tokens = state.projection?.foundation.tokens.filter(token => isStudioTokenCompatible(token, property)) ?? [];
+    const currentToken = tokenId ? state.projection?.foundation.tokens.find(token => token.id === tokenId) : undefined;
+    const unclassified = tokens.filter(token => !token.bindingCategory || token.bindingCategory === "unrestricted");
     return <div className={`property-group appearance-property appearance-${property}`} key={`${part.id}/${property}`}>
       <div className="property-binding-row"><span className="field-label">{label}</span><span className="binding-specimen"><TokenVisual type={type} value={value} domain={property === "borderRadius" ? "radius" : property === "opacity" ? "opacity" : ""} locale={locale} /></span>
         <Select aria-label={label} title={tokens.find(token => token.id === bound)?.name} data-testid={bindingKey} value={drafts[keyFor(bindingKey)] ?? bound} aria-invalid={Object.hasOwn(drafts, keyFor(bindingKey))} onChange={event => commit(bindingKey, event.currentTarget.value, change(event.currentTarget.value === "literal" ? value : { tokenRef: event.currentTarget.value }))}>
-          {declared === undefined && <option value="inherited" disabled>{t("상속", "Inherited")}</option>}<option value="literal">{t("직접 값", "Literal")}</option>{tokens.map(token => <option key={token.id} value={token.id} title={token.name}>{token.name.startsWith(`${type}.`) ? token.name.slice(type.length + 1) : token.name}</option>)}
+          {declared === undefined && <option value="inherited" disabled>{t("상속", "Inherited")}</option>}<option value="literal">{t("직접 값", "Literal")}</option>
+          {tokenId && !tokens.some(token => token.id === tokenId) && <option value={tokenId} disabled>{currentToken?.name ?? tokenId} · {t("연결 수정 필요", "Repair binding")}</option>}
+          {tokens.filter(token => !unclassified.includes(token)).map(token => <option key={token.id} value={token.id} title={token.name}>{token.name.startsWith(`${type}.`) ? token.name.slice(type.length + 1) : token.name}</option>)}
+          {unclassified.length > 0 && <optgroup label={t("용도 미제한 · 유형 기준", "Unrestricted purpose · by type")}>{unclassified.map(token => <option key={token.id} value={token.id}>{token.name}</option>)}</optgroup>}
         </Select>{tokenId && <IconButton icon="link" label={t("연결된 토큰 열기", "Open linked token")} disabled={!onSelectToken} onClick={() => onSelectToken?.(tokenId)} />}
       </div>
       {bound === "literal" && (type === "color" ? <div className="property-color-row"><Field label={t("색", "Color")}><input type="color" aria-label={`${label} ${t("색 선택", "color picker")}`} value={colorHex(value) ?? "#000000"} onChange={event => { const next = hexColor(event.currentTarget.value, value); if (next) commit(valueKey, event.currentTarget.value, change(next)); }} /></Field><Field label="Hex"><TextInput label={`${label} Hex`} data-testid={valueKey} value={drafts[keyFor(valueKey)] ?? colorHex(value) ?? ""} aria-invalid={Object.hasOwn(drafts, keyFor(valueKey))} onCommit={text => { const next = hexColor(text, value); if (next) commit(valueKey, text, change(next)); else hold(valueKey, text); }} /></Field>{numberField(`appearance-${property}-alpha`, t("알파", "Alpha"), object(value) && typeof value.alpha === "number" ? value.alpha : 1, alpha => change({ ...(object(value) ? value : {}), alpha }), 0, 1)}</div>

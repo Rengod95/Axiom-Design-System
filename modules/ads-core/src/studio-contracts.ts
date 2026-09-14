@@ -37,6 +37,8 @@ export interface StudioComponent {
   web: StudioDesign; mobile: StudioDesign;
 }
 export interface StudioUsage { componentId: string; partId: string; documentId: string; path: string }
+export interface StudioTokenBindingIssue extends StudioUsage { property: string; tokenId: string; compatibleTokenIds: string[] }
+export interface StudioTokenBindingReplacement { documentId: string; path: string; tokenId: string; replacementTokenId: string | null }
 export interface StudioProjection {
   valid: boolean; diagnostics: Diagnostic[]; projectId: string; revision: string;
   /** Canonical adopted document snapshot, excluding private candidates and receipts. */

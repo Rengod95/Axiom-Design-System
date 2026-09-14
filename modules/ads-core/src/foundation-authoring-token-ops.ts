@@ -50,15 +50,15 @@ export function applyFoundationTokenEdit(project: ProjectSnapshot, foundation: F
     }
     case "classification-create": case "classification-update": case "classification-delete": {
       if (edit.category !== "domain" && edit.category !== "tier") throw new Error("Unknown classification category.");
-      if (edit.category === "tier" && "allowedTypes" in edit) throw new Error("Allowed token types belong to a domain, not a tier.");
+      if (edit.category === "tier" && ("allowedTypes" in edit || "bindingCategory" in edit)) throw new Error("Allowed token types and binding purpose belong to a domain, not a tier.");
       const field = edit.category === "domain" ? "domains" : "tiers", records = authoringList(foundation[field]);
       if (edit.kind === "classification-create") {
         const item: JsonObject = { id: createId(), name: edit.name };
-        changeFields(item, edit, ["description", "allowedTypes"]); foundation[field].push(item); return true;
+        changeFields(item, edit, ["description", "allowedTypes", "bindingCategory"]); foundation[field].push(item); return true;
       }
       const item = records.find(record => record.id === edit.id);
       if (!item) throw new Error("Selected classification is missing.");
-      if (edit.kind === "classification-update") { changeFields(item, edit, ["name", "description", "allowedTypes"]); return true; }
+      if (edit.kind === "classification-update") { changeFields(item, edit, ["name", "description", "allowedTypes", "bindingCategory"]); return true; }
       const uses = foundation.tokens.filter(token => token[edit.category] === edit.id);
       if (uses.length && edit.replacementId === undefined) throw new Error("The classification is assigned to tokens; reclassify them or choose a replacement first.");
       if (edit.replacementId !== undefined) {

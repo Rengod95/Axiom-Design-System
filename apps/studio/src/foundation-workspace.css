@@ -303,9 +303,9 @@
 .topbar,.sidebar,.inspector,.canvas-toolbar,.statusbar,.mobile-panel-tabs {
   background: var(--glass-panel); backdrop-filter: blur(24px) saturate(1.04);
 }
-.topbar,.canvas-toolbar,.statusbar { background: var(--glass-header); background-image: linear-gradient(180deg,var(--glass-edge),transparent 45%); }
+.topbar,.canvas-toolbar,.statusbar { background: var(--glass-header); background-image: none; box-shadow: none; }
 .sidebar,.inspector { background-image: linear-gradient(145deg,var(--glass-sheen),transparent 45%); box-shadow: inset 1px 0 var(--glass-edge),inset 0 1px var(--glass-edge); }
-.topbar { padding-inline: 12px; box-shadow: inset 0 1px var(--glass-edge); }
+.topbar { padding-inline: 12px; }
 .topbar-left { gap: 12px; }
 .top-actions { gap: 2px; }
 .logo-mark { width: 28px; height: 28px; font-size: 15px; border-radius: 8px; }
@@ -318,6 +318,7 @@
 .nav-item { min-height: 30px; padding: 6px 8px; border-radius: 6px; }
 .nav-part { min-height: 26px; height: 26px; }
 .sidebar-scroll { padding: 6px; }
+.sidebar-scroll .nav-item { margin-block: 0 2px; }
 .sidebar-section-header { padding: 8px 8px 4px; }
 .sidebar-search { margin: 8px 8px 0; }
 .sidebar-search input { height: 30px; background: var(--surface-subtle) !important; border-color: transparent !important; }
@@ -465,12 +466,33 @@
 .type-caption { font: 400 12px/18px var(--font-ui); }
 .review-strip { padding: 10px 16px; gap: 12px; background: var(--glass-raised); backdrop-filter: blur(24px); }
 .workbench-dialog,.review-dialog,.export-dialog { background: var(--glass-raised); backdrop-filter: blur(28px); }
+/* Rectangular Studio controls use one corner rule; authored specimens keep their own geometry. */
+:root { --radius-sm: 8px; --radius-control: 8px; --radius-panel: 8px; --radius-md: 8px; }
+.app :is(.button,.icon-button,.locale-button,.logo-mark,.nav-item,.nav-marker,.badge,.segmented,.choice-control,.choice-chips .button,.catalog-card,.material-token,.domain-material,.padding-box,.section-add-token,.canvas-tools,.canvas-zoom,.tool-button,.tool-text,.search-field input,.brand-chip),
+.app :is(.segmented,.choice-control) button,
+.app .workspace-nav .nav-item,
+.select-trigger,.select-popup,.select-option,.dialog,.workbench-dialog,.review-dialog,.export-dialog,.command-result,.file-list,.diff-values > div { border-radius: var(--radius-control); }
+.material-select .token-visual,.inspector-material .token-visual { border-radius: var(--radius-control); }
+.system-depth > div,.system-motion .token-visual { border-radius: var(--radius-control); }
+.app .property-color-row input[type=color],.app .color-primary input[type=color],.app .sidebar-search input { border-radius: var(--radius-control); }
+.inspector-host { grid-column: 3; grid-row: 2; display: flex; min-width: 0; min-height: 0; overflow: hidden; }
+.inspector-host > :is(.inspector,.inspector-container) { flex: 1; min-width: 0; min-height: 0; width: 100%; }
+.panel-toggle[aria-expanded=false] { background: var(--surface-active); color: var(--ink); }
+@media (min-width: 721px) {
+  .app[data-sidebar-collapsed=true] { --sidebar-width: 0px; }
+  .app[data-inspector-collapsed=true] { --inspector-width: 0px; }
+  .app[data-sidebar-collapsed=true] > .sidebar,.app[data-inspector-collapsed=true] > .inspector-host { display: none; }
+}
 @media (max-width: 1100px) { .foundation-filters > .select-control { max-width: none; } }
 @media (max-width: 720px) {
   .app { grid-template-columns: 1fr; grid-template-rows: 52px 40px minmax(0,1fr) 28px; }
   .topbar { padding-inline: 8px; }
   .top-actions { gap: 0; }
   .top-actions .icon-button { width: 28px; min-height: 32px; }
+  .topbar .panel-toggle { display: none; }
+  .inspector-host { grid-column: 1; grid-row: 3; display: none; }
+  .app[data-mobile-panel=inspector] > .inspector-host { display: flex; }
+  .app[data-mobile-panel=inspector] .inspector-host > :is(.inspector,.inspector-container) { display: flex; }
   .topbar .button { min-height: 32px; }
   .mobile-panel-tabs { padding-inline: 12px; }
   .statusbar { padding-inline: 8px; }

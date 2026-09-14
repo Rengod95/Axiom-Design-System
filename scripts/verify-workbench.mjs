@@ -1,4 +1,4 @@
-import { verifyCompactWorkbench, verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench } from "./workbench-completion-cases.mjs";
+import { verifyCompactWorkbench, verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench, verifyPanelVisibility, verifyBindingPurposeFilters, verifyBindingRepair } from "./workbench-completion-cases.mjs";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -238,7 +238,10 @@ try {
   await verifyEditorCompletion({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, select, selectElement, until, settled, approve, revision, record });
   await verifyMaterialWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
   await verifyCompactWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
+  await verifyBindingPurposeFilters({ page, id, text, click, clickElement, selectElement, revision, record });
+  await verifyPanelVisibility({ page, id, text, click, clickElement, fill, until, settled, revision, record });
   await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
+  await verifyBindingRepair({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, click, fill, selectElement, until, settled, approve, revision, record });
   assert.deepEqual(browser.cdp.errors, []); evidence.status = "PASSED";
 } catch (error) { evidence.error = { message: error.message, stack: error.stack }; process.exitCode = 1; }
 finally {

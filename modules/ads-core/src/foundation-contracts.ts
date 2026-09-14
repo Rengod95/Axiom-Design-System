@@ -2,6 +2,8 @@ import type { AdsDocument, Diagnostic, JsonObject, JsonValue } from "./contracts
 
 /** DTCG 2025.10 value inspection; this is not a claim of full interchange conformance. */
 export type FoundationTokenType = "color" | "dimension" | "fontFamily" | "fontWeight" | "duration" | "cubicBezier" | "number" | "strokeStyle" | "border" | "transition" | "shadow" | "gradient" | "typography";
+/** Stable authoring purpose; display labels and token paths are not binding authority. */
+export type FoundationBindingCategory = "color" | "spacing" | "sizing" | "radius" | "border" | "shadow" | "typography" | "motion" | "opacity" | "gradient" | "layer" | "unrestricted";
 export type FoundationTokenValue = { literal: JsonValue } | { ref: { id: string; expectedKind: "token"; path?: string } } | { composite: JsonValue };
 export interface FoundationToken { id: string; name: string; typeRef: { id: FoundationTokenType }; value: FoundationTokenValue; description?: string; deprecated?: boolean | string; domain?: string; tier?: string; metadata?: JsonObject; extensions?: JsonObject }
 export interface FoundationAxis { id: string; name?: string; description?: string; contexts: string[]; scope: { id: string; expectedKind: "foundation"; revision?: string }; default?: string; overrides?: Record<string, Record<string, FoundationTokenValue>> }
@@ -10,7 +12,7 @@ export type FoundationDocument = AdsDocument & { studioProfile: { id: "axiom.stu
 export interface FoundationSelection { themeSetId?: string; contexts?: Record<string, string> }
 export interface FoundationReport { valid: boolean; diagnostics: Diagnostic[] }
 export interface FoundationOverrideTrace { axisId: string; context: string; path: string }
-export interface ResolvedFoundationToken { id: string; name: string; type: FoundationTokenType; value: JsonValue; aliasChain: string[]; sourcePath: string; overrideTrace: FoundationOverrideTrace[] }
+export interface ResolvedFoundationToken { id: string; name: string; type: FoundationTokenType; value: JsonValue; aliasChain: string[]; sourcePath: string; overrideTrace: FoundationOverrideTrace[]; domain?: string; bindingCategory?: FoundationBindingCategory }
 export interface FoundationResolution extends FoundationReport { foundationId: string | null; contexts: Record<string, string>; resolutionOrder: string[]; tokens: ResolvedFoundationToken[] }
 
 /** Original exchange bytes remain available even when executable import is unsupported. */

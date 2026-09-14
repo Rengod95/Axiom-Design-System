@@ -19,10 +19,11 @@ export { encodeKernelState, decodeKernelState, kernelStateTextBytes } from "./ke
 export { inspectFoundationDocument } from "./foundation-validation.ts";
 export { resolveFoundationTokens } from "./foundation-resolution.ts";
 export { importDtcgFoundation, exportFoundationDtcg, exportResolvedFoundationDtcg, exportSelectedFoundationDtcg } from "./foundation-interchange.ts";
-export type { FoundationDocument, FoundationSelection, FoundationReport, FoundationResolution, FoundationToken, FoundationTokenValue, FoundationTokenType, ResolvedFoundationToken } from "./foundation-contracts.ts";
+export type { FoundationBindingCategory, FoundationDocument, FoundationSelection, FoundationReport, FoundationResolution, FoundationToken, FoundationTokenValue, FoundationTokenType, ResolvedFoundationToken } from "./foundation-contracts.ts";
 export { createStudioStarter } from "./studio-template.ts";
 export { inspectStudioDocument } from "./studio-validation.ts";
-export { inspectStudioProject, planStudioEdit } from "./studio-projection.ts";
+export { inspectStudioProject, planStudioEdit, inspectStudioTokenBindingIssues, planStudioTokenBindingRepair } from "./studio-projection.ts";
+export type { StudioTokenBindingIssue, StudioTokenBindingReplacement } from "./studio-contracts.ts";
 export type { StudioAuthoringState } from "./contracts.ts";
 export type { StudioArchetype, StudioCategory, StudioPartRole, StudioVisualProperty, StudioStyle, StudioPart, StudioPartPresentation, StudioLayout, StudioDesign, StudioComponent, StudioUsage, StudioProjection, StudioEdit, StudioEditPlan, StudioSelection, StudioDocumentReport } from "./studio-contracts.ts";
 export { listStudioCatalog, getStudioCatalogEntry, getStudioCatalogRecipe } from "./studio-catalog.ts";
@@ -31,12 +32,13 @@ export { STUDIO_CATALOG_PROFILE, STUDIO_CATALOG_LIMITS } from "./studio-catalog-
 export type { StudioCatalogEntry, StudioSemanticKind, StudioSemanticDescriptor, StudioCatalogRecipe, StudioCatalogProjection, StudioComponentEdit, StudioComponentPlan, StudioSizePolicy } from "./studio-catalog-contracts.ts";
 export { planFoundationEdit, MAX_FOUNDATION_AUTHORING_EDITS } from "./foundation-authoring.ts";
 export { inspectFoundationAuthoring } from "./foundation-authoring-projection.ts";
-export { FOUNDATION_STARTER_DOMAINS, foundationStarterTokens } from "./foundation-starters.ts";
+export { FOUNDATION_STARTER_DOMAINS, FOUNDATION_BINDING_CATEGORIES, foundationStarterTokens } from "./foundation-starters.ts";
 export type { FoundationStarterOptions, FoundationStarterToken } from "./foundation-starters.ts";
 export { MAX_FOUNDATION_CONTEXT_COMBINATIONS } from "./foundation-validation.ts";
 export type { FoundationAuthoringEdit, FoundationEditPlan, FoundationAuthoringProjection, FoundationAuthoringFilter, FoundationTokenRow, FoundationReference, FoundationClassification, FoundationClassificationKind, FoundationTokenChanges } from "./foundation-authoring-contracts.ts";
 
-export { STUDIO_EXTENDED_STYLE_TYPES } from "./studio-style-values.ts";
+export { STUDIO_EXTENDED_STYLE_TYPES, isStudioTokenCompatible } from "./studio-style-values.ts";
+export type { StudioTokenBindingProperty } from "./studio-style-values.ts";
 
 export { inspectStudioMotion, resolveStudioMotion, sampleStudioSpring } from "./studio-motion.ts";
 export type { StudioMotionTrack, ResolvedStudioMotion } from "./studio-motion.ts";

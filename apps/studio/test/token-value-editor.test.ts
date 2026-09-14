@@ -68,7 +68,9 @@ test("compound fixtures expose their independent fields, lists and controls whil
     assert.ok(html.includes(`aria-label="${label} unit"`), `${label} retains its own source unit`);
   }
   for (const label of ["Inset shadow", "Remove shadow", "Add shadow"]) assert.ok(html.includes(label), label);
-  assert.match(html, /value="-2.5"/); assert.match(html, /<select aria-label="X unit"><option>px<\/option><option selected="">rem<\/option>/);
+  assert.match(html, /value="-2.5"/);
+  assert.match(html, /<select[^>]*aria-label="X unit"[^>]*><option>px<\/option><option selected="">rem<\/option>/, "the form-owned control retains the authored rem unit");
+  assert.match(html, /role="combobox"[^>]*aria-label="X unit"/, "the unit also has a visible authored trigger");
   const gradient: JsonValue = [{ color: { colorSpace: "srgb", components: [1, 0, 0] }, position: -0.1 }, { color: { colorSpace: "srgb", components: [0, 0, 1] }, position: 1.2 }];
   assert.equal(controls.validateTokenEditorValue("gradient", gradient).valid, true, "DTCG out-of-range stops are preserved with warnings");
   const rendered = controls.render("gradient", gradient); assert.match(rendered, /value="-0.1"/); assert.match(rendered, /value="1.2"/);

@@ -4,7 +4,8 @@ import type { StudioComponent, StudioDesign, StudioLayout, StudioPart, StudioPar
 import { isObject, isValidId } from "./documents.ts";
 import { STUDIO_COLOR_PROPERTIES, STUDIO_ERROR, STUDIO_MAX_DIMENSION } from "./studio-constants.ts";
 
-import { STUDIO_EXTENDED_STYLE_TYPES, resolveExtendedStudioStyle } from "./studio-style-values.ts";
+import { STUDIO_EXTENDED_STYLE_TYPES, isStudioTokenCompatible, resolveExtendedStudioStyle } from "./studio-style-values.ts";
+import type { StudioTokenBindingProperty } from "./studio-style-values.ts";
 
 const PRESENTATION_STATES = ["filled", "outlined", "filled-disabled", "outlined-disabled", "filled-pressed", "outlined-pressed"] as const;
 const TOKEN_REFERENCE_KEY = "tokenRef";
@@ -20,12 +21,13 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
   const parts: Record<string, StudioPartPresentation> = Object.create(null);
   const layout: Record<string, StudioLayout> = Object.create(null);
   const add = (path: string, message: string, code?: string): void => { diagnostics.push(diagnostic(document.id, path, message, code)); };
-  function value(source: JsonValue | undefined, type: "color" | "dimension" | "number", path: string, partId: string): { resolved?: string | number; tokenId?: string } {
+  function value(source: JsonValue | undefined, type: "color" | "dimension" | "number", property: StudioTokenBindingProperty, path: string, partId: string): { resolved?: string | number; tokenId?: string } {
     let raw: JsonValue | undefined = source, token: ResolvedFoundationToken | undefined;
     if (isObject(source) && Object.hasOwn(source, TOKEN_REFERENCE_KEY)) {
       if (Object.keys(source).length !== 1 || !isValidId(source.tokenRef)) { add(path, "A visual token binding must name exactly one stable token ID."); return {}; }
       token = tokens.get(source.tokenRef);
       if (!token || token.type !== type) { add(path, "The visual token is missing or has an incompatible type."); return {}; }
+      if (!isStudioTokenCompatible(token, property)) { add(path, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind ${property}. Choose a compatible token or correct its domain purpose.`, STUDIO_ERROR.tokenBinding); return {}; }
       raw = token.value;
       for (const id of [...new Set([token.id, ...token.aliasChain])]) {
         const entries = usages[id] ??= [];
@@ -70,13 +72,14 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
                 if (Object.keys(source).length !== 1 || typeof source.tokenRef !== "string") throw new Error("Use exactly one stable token binding.");
                 const token = tokens.get(source.tokenRef);
                 if (!token || token.type !== STUDIO_EXTENDED_STYLE_TYPES[property]) throw new Error("Style token is missing or has an incompatible type.");
+                if (!isStudioTokenCompatible(token, property as StudioVisualProperty)) { add(path, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind ${property}. Choose a compatible token or correct its domain purpose.`, STUDIO_ERROR.tokenBinding); continue; }
                 raw = token.value; tokenId = token.id;
                 for (const id of new Set([token.id, ...token.aliasChain])) { const entries = usages[id] ??= []; if (!entries.some(item => item.documentId === document.id && item.path === path)) entries.push({ componentId: component.id, partId: part.id, documentId: document.id, path }); }
               }
               for (const [field, resolved] of Object.entries(resolveExtendedStudioStyle(property, raw))) outputs.push({ property: field, resolved, ...(tokenId ? { tokenId } : {}), rank: rank + (property === "typography" || property === "border" ? 0 : 1) });
             } catch (error) { add(path, error instanceof Error ? error.message : "Invalid style value.", STUDIO_ERROR.unsupported); }
           } else {
-            const output = value(source, STUDIO_COLOR_PROPERTIES.has(property) ? "color" : property === "opacity" ? "number" : "dimension", path, part.id);
+            const output = value(source, STUDIO_COLOR_PROPERTIES.has(property) ? "color" : property === "opacity" ? "number" : "dimension", property as StudioVisualProperty, path, part.id);
             if (output.resolved !== undefined) outputs.push({ property, resolved: output.resolved, ...(output.tokenId ? { tokenId: output.tokenId } : {}), rank: rank + 1 });
           }
           for (const output of outputs) {
@@ -103,8 +106,8 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
     const source = objectList(document.layout).find(item => item.targetPartRef === part.id);
     if (!source) continue;
     const index = objectList(document.layout).indexOf(source);
-    const numeric = (field: string): number => {
-      const result = value(source[field], "dimension", `/layout/${index}/${field}`, part.id).resolved;
+    const numeric = (field: "gap" | "padding" | "minHeight"): number => {
+      const result = value(source[field], "dimension", field, `/layout/${index}/${field}`, part.id).resolved;
       return typeof result === "number" ? result : 0;
     };
     layout[part.id] = { axis: source.axis === "horizontal" ? "horizontal" : "vertical", gap: numeric("gap"), padding: numeric("padding"), minHeight: numeric("minHeight"), childOrder: Array.isArray(source.childOrder) ? source.childOrder.map(String) : [] };

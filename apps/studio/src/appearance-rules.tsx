@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { STUDIO_EXTENDED_STYLE_TYPES } from "../../../modules/ads-core/src/index.ts";
+import { STUDIO_EXTENDED_STYLE_TYPES, isStudioTokenCompatible } from "../../../modules/ads-core/src/index.ts";
 import type { FoundationTokenType, JsonValue, StudioCategory, StudioComponent, StudioVisualProperty } from "../../../modules/ads-core/src/index.ts";
 import type { StudioController, StudioState } from "./controller.ts";
 import type { Locale } from "./locales.ts";
@@ -23,14 +23,25 @@ export function AppearanceRules({ state, controller, component, partId, category
   const rules = Array.isArray(document?.appearance) ? document.appearance.filter(object) : [];
   const rule = rules.find(rule => rule.targetPartRef === partId && object(rule.variants) && object(rule.states) && (condition === "base" ? !Object.keys(rule.variants).length && !Object.keys(rule.states).length : condition === "outlined" ? rule.variants.variant === "outlined" : rule.states[condition] === true));
   const declared = object(rule?.declarations) ? rule.declarations[property] : undefined;
-  const type: FoundationTokenType = STUDIO_EXTENDED_STYLE_TYPES[property] ?? (property === "background" || property === "color" ? "color" : property === "opacity" ? "number" : "dimension");
-  const compatible = state.projection?.foundation.tokens.filter(token => token.type === type) ?? [];
+  const propertyType = (name: string): FoundationTokenType => STUDIO_EXTENDED_STYLE_TYPES[name] ?? (name === "background" || name === "color" ? "color" : name === "opacity" ? "number" : "dimension");
+  const type = propertyType(property);
+  const compatible = state.projection?.foundation.tokens.filter(token => isStudioTokenCompatible(token, property as StudioVisualProperty)) ?? [];
+  const boundToken = state.projection?.foundation.tokens.find(token => token.id === binding);
+  const unclassified = compatible.filter(token => !token.bindingCategory || token.bindingCategory === "unrestricted");
   useEffect(() => {
     if (dirty) return;
     const tokenId = object(declared) && typeof declared.tokenRef === "string" ? declared.tokenRef : null;
-    setBinding(tokenId ?? "literal"); setValue(tokenId ? compatible.find(token => token.id === tokenId)?.value ?? defaultTokenValue(type) : declared ?? defaultTokenValue(type));
+    setBinding(tokenId ?? "literal"); setValue(tokenId ? state.projection?.foundation.tokens.find(token => token.id === tokenId)?.value ?? defaultTokenValue(type) : declared ?? defaultTokenValue(type));
   }, [declared, type, dirty, state.selection]);
   const reset = () => { setDirty(false); setValid(true); setEpoch(n => n + 1); controller.clearInputError(); };
+  const selectProperty = (nextProperty: string) => {
+    const nextDeclared = object(rule?.declarations) ? rule.declarations[nextProperty] : undefined;
+    const tokenId = object(nextDeclared) && typeof nextDeclared.tokenRef === "string" ? nextDeclared.tokenRef : null;
+    // Mount the next editor with its own value; validating the previous type creates a false dirty draft.
+    setProperty(nextProperty); setBinding(tokenId ?? "literal"); setValid(true);
+    setValue(tokenId ? state.projection?.foundation.tokens.find(token => token.id === tokenId)?.value ?? defaultTokenValue(propertyType(nextProperty)) : nextDeclared ?? defaultTokenValue(propertyType(nextProperty)));
+    setEpoch(n => n + 1);
+  };
   const apply = (next: JsonValue | null = binding === "literal" ? value : { tokenRef: binding }) => {
     controller.component([{ componentId: component.id, edit: { kind: "appearance-rule", category, partId, condition, property: property as StudioVisualProperty, value: next } }]);
     if (controller.getSnapshot().error) return false; setDirty(false); return true;
@@ -38,8 +49,12 @@ export function AppearanceRules({ state, controller, component, partId, category
   useFormDraft({ id: "appearance-rules", label: t("타이포그래피·효과·상태 규칙", "Typography, effects and state rules"), dirty, valid: binding !== "literal" || valid, apply: () => apply(), reset });
   return <Section title={t("타이포그래피·효과·상태", "Typography, effects and states")} defaultOpen={false}><div data-draft-form="appearance-rules" className="form-stack">
     <Field label={t("규칙 범위", "Rule scope")}><Select aria-label={t("규칙 범위", "Rule scope")} data-testid="appearance-rule-condition" disabled={dirty} value={condition} onChange={event => setCondition(event.target.value as typeof condition)}>{[["base", t("기본", "Base")], ["outlined", "Outlined"], ...component.catalog || component.archetype === "button" ? [["disabled", t("비활성", "Disabled")], ["pressed", t("누름", "Pressed")]] : []].map(([value, label]) => <option key={value} value={value}>{label}</option>)}</Select></Field>
-    <Field label={t("편집할 속성", "Property")}><Select data-testid="appearance-rule-property" aria-label={t("편집할 속성", "Property")} disabled={dirty} value={property} onChange={event => { setProperty(event.target.value); setEpoch(n => n + 1); }}>{Object.entries(PROPERTIES).map(([id, labels]) => <option key={id} value={id}>{t(...labels)}</option>)}</Select></Field>
-    <Field label={t("토큰 연결", "Token binding")}><Select aria-label={t("토큰 연결", "Token binding")} data-testid="appearance-rule-binding" value={binding} onChange={event => { setBinding(event.target.value); setDirty(true); }}><option value="literal">{t("직접 값", "Literal")}</option>{compatible.map(token => <option key={token.id} value={token.id}>{token.name}</option>)}</Select></Field>
+    <Field label={t("편집할 속성", "Property")}><Select data-testid="appearance-rule-property" aria-label={t("편집할 속성", "Property")} disabled={dirty} value={property} onChange={event => selectProperty(event.target.value)}>{Object.entries(PROPERTIES).map(([id, labels]) => <option key={id} value={id}>{t(...labels)}</option>)}</Select></Field>
+    <Field label={t("토큰 연결", "Token binding")}><Select aria-label={t("토큰 연결", "Token binding")} data-testid="appearance-rule-binding" value={binding} onChange={event => { setBinding(event.target.value); setDirty(true); }}><option value="literal">{t("직접 값", "Literal")}</option>
+      {binding !== "literal" && !compatible.some(token => token.id === binding) && <option value={binding} disabled>{boundToken?.name ?? binding} · {t("연결 수정 필요", "Repair binding")}</option>}
+      {compatible.filter(token => !unclassified.includes(token)).map(token => <option key={token.id} value={token.id}>{token.name}</option>)}
+      {unclassified.length > 0 && <optgroup label={t("용도 미제한 · 유형 기준", "Unrestricted purpose · by type")}>{unclassified.map(token => <option key={token.id} value={token.id}>{token.name}</option>)}</optgroup>}
+    </Select></Field>
     {binding === "literal" && <TokenValueEditor key={`${property}/${condition}/${epoch}`} locale={locale} type={type} value={value} onChange={next => { setValue(next); setDirty(true); }} onValidityChange={next => { setValid(next); if (!next) setDirty(true); }} />}
     <div className="form-actions"><Button data-testid="appearance-rule-apply" tone="primary" disabled={!valid && binding === "literal"} onClick={() => apply()}>{t("규칙 반영", "Apply rule")}</Button>{dirty && <Button onClick={reset}>{t("입력 초기화", "Reset input")}</Button>}</div>
     {declared !== undefined && <Button tone="subtle" data-testid="appearance-rule-reset" disabled={dirty} onClick={() => apply(null)}>{t("규칙 제거 · 상속 복원", "Remove rule · restore inheritance")}</Button>}

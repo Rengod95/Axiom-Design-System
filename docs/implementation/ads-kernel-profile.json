@@ -164,6 +164,35 @@
       "dependency": "react-dom@19.3.0 createPortal",
       "scope": "Single-value authored listbox with native form semantics; popup stays within owning modal top layer",
       "authority": "docs/implementation/studio-compact-glass.md"
+    },
+    "bindingCompatibility": {
+      "authority": "docs/implementation/studio-panel-binding-refinement.md",
+      "domainField": "bindingCategory",
+      "categories": [
+        "color",
+        "spacing",
+        "sizing",
+        "radius",
+        "border",
+        "shadow",
+        "typography",
+        "motion",
+        "opacity",
+        "gradient",
+        "layer",
+        "unrestricted"
+      ],
+      "matching": "DTCG value type and explicit or pinned-starter-derived property purpose",
+      "unclassified": "type compatibility; separately labelled in UI",
+      "legacy": "read-only pinned starter provenance and consistent retained blueprint evidence",
+      "repair": "existing binding-only errors remain inspectable; a component mutation or atomic multi-document repair must restore full validity",
+      "repairChoices": "all recognized binding sites; compatible token or explicit current-theme literal; ordinary reviewed transaction"
+    },
+    "panelVisibility": {
+      "authority": "docs/implementation/studio-panel-binding-refinement.md",
+      "persistence": "browser layout preference",
+      "draftLifetime": "hidden panels remain mounted",
+      "mobile": "independent single-pane navigation"
     }
   },
   "allowedTargetTestAssets": [
