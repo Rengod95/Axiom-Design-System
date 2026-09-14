@@ -1,10 +1,26 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
 import { Icon } from "./icons.tsx";
 import type { IconName } from "./icons.tsx";
 import type { Locale } from "./locales.ts";
 
 export const copy = (locale: Locale, ko: string, en: string): string => locale === "ko" ? ko : en;
+
+/** A single moving surface connects workspace selections without moving their labels. */
+export function SelectionPill({ value }: { value: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const marker = ref.current, nav = marker?.parentElement;
+    if (!marker || !nav) return;
+    const update = () => { const active = nav.querySelector<HTMLElement>('button[aria-pressed="true"]'); marker.style.opacity = active ? "1" : "0"; if (active) { marker.style.transform = `translateY(${active.offsetTop}px)`; marker.style.height = `${active.offsetHeight}px`; } };
+    update(); const observer = new ResizeObserver(update); observer.observe(nav); return () => observer.disconnect();
+  }, [value]);
+  return <span ref={ref} className="nav-marker" aria-hidden="true" />;
+}
+
+export function ChoiceControl({ label, value, choices, onChange, testId }: { label: string; value: string; choices: { value: string; label: string; icon?: IconName }[]; onChange(value: string): void; testId?: string }) {
+  return <div className="choice-control" role="group" aria-label={label} data-testid={testId}>{choices.map(choice => <button key={choice.value} type="button" aria-pressed={choice.value === value} onClick={() => onChange(choice.value)}>{choice.icon && <Icon name={choice.icon} />}{choice.label}</button>)}</div>;
+}
 
 /** Axiom UI controls share the same semantics in Foundation, canvas and inspector. */
 export function Button({ tone = "secondary", size = "md", icon, children, className = "", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { tone?: "primary" | "secondary" | "subtle" | "danger"; size?: "sm" | "md" | "lg"; icon?: IconName }) {
@@ -13,8 +29,8 @@ export function Button({ tone = "secondary", size = "md", icon, children, classN
 export function IconButton({ icon, label, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconName; label: string }) {
   return <button type="button" {...props} className={`icon-button ${props.className ?? ""}`} aria-label={label} title={props.title ?? label}><Icon name={icon} /></button>;
 }
-export function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
-  return <div className="field"><span className="field-label">{label}</span>{children}{hint && <small className="field-hint">{hint}</small>}</div>;
+export function Field({ label, hint, children, layout = "stack" }: { label: string; hint?: string; children: ReactNode; layout?: "stack" | "row" }) {
+  return <div className={`field field-${layout}`}><span className="field-label">{label}</span>{children}{hint && <small className="field-hint">{hint}</small>}</div>;
 }
 export function Section({ title, children, action, defaultOpen = true }: { title: string; children: ReactNode; action?: ReactNode; defaultOpen?: boolean }) {
   return <details className="inspector-section" open={defaultOpen}><summary className="section-title"><span>{title}</span><Icon name="chevron" size={12} /></summary>{action && <div className="section-action">{action}</div>}<div className="section-content">{children}</div></details>;

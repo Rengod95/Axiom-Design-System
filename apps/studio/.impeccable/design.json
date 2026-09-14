@@ -1,1088 +1,536 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-13T15:35:22.066Z",
+  "generatedAt": "2026-09-14T05:32:50.930Z",
   "title": "Design System: Axiom UI",
   "extensions": {
     "colorMeta": {
-      "surface": {
-        "displayName": "Panel surface · light",
-        "tonalRamp": [
-          "oklch(15% 0.00000 0.00)",
-          "oklch(26% 0.00000 0.00)",
-          "oklch(38% 0.00000 0.00)",
-          "oklch(50% 0.00000 0.00)",
-          "oklch(62% 0.00000 0.00)",
-          "oklch(74% 0.00000 0.00)",
-          "oklch(85% 0.00000 0.00)",
-          "oklch(95% 0.00000 0.00)"
-        ],
-        "role": "neutral"
-      },
-      "surface-subtle": {
-        "displayName": "Quiet surface · light",
-        "tonalRamp": [
-          "oklch(15% 0.00287 264.54)",
-          "oklch(26% 0.00287 264.54)",
-          "oklch(38% 0.00287 264.54)",
-          "oklch(50% 0.00287 264.54)",
-          "oklch(62% 0.00287 264.54)",
-          "oklch(74% 0.00287 264.54)",
-          "oklch(85% 0.00287 264.54)",
-          "oklch(95% 0.00287 264.54)"
-        ],
-        "role": "neutral"
-      },
-      "surface-hover": {
-        "displayName": "Hover fill · light",
-        "tonalRamp": [
-          "oklch(15% 0.00577 264.53)",
-          "oklch(26% 0.00577 264.53)",
-          "oklch(38% 0.00577 264.53)",
-          "oklch(50% 0.00577 264.53)",
-          "oklch(62% 0.00577 264.53)",
-          "oklch(74% 0.00577 264.53)",
-          "oklch(85% 0.00577 264.53)",
-          "oklch(95% 0.00577 264.53)"
-        ],
-        "role": "neutral"
-      },
-      "surface-active": {
-        "displayName": "Stronger quiet fill · light",
-        "tonalRamp": [
-          "oklch(15% 0.01036 261.79)",
-          "oklch(26% 0.01036 261.79)",
-          "oklch(38% 0.01036 261.79)",
-          "oklch(50% 0.01036 261.79)",
-          "oklch(62% 0.01036 261.79)",
-          "oklch(74% 0.01036 261.79)",
-          "oklch(85% 0.01036 261.79)",
-          "oklch(95% 0.01036 261.79)"
-        ],
-        "role": "neutral"
-      },
-      "canvas": {
-        "displayName": "Canvas ground · light",
-        "tonalRamp": [
-          "oklch(15% 0.00455 258.32)",
-          "oklch(26% 0.00455 258.32)",
-          "oklch(38% 0.00455 258.32)",
-          "oklch(50% 0.00455 258.32)",
-          "oklch(62% 0.00455 258.32)",
-          "oklch(74% 0.00455 258.32)",
-          "oklch(85% 0.00455 258.32)",
-          "oklch(95% 0.00455 258.32)"
-        ],
-        "role": "neutral"
-      },
-      "ink": {
-        "displayName": "Primary ink · light",
-        "tonalRamp": [
-          "oklch(15% 0.01792 266.28)",
-          "oklch(26% 0.01792 266.28)",
-          "oklch(38% 0.01792 266.28)",
-          "oklch(50% 0.01792 266.28)",
-          "oklch(62% 0.01792 266.28)",
-          "oklch(74% 0.01792 266.28)",
-          "oklch(85% 0.01792 266.28)",
-          "oklch(95% 0.01792 266.28)"
-        ],
-        "role": "neutral"
-      },
-      "ink-secondary": {
-        "displayName": "Secondary ink · light",
-        "tonalRamp": [
-          "oklch(15% 0.02490 261.68)",
-          "oklch(26% 0.02490 261.68)",
-          "oklch(38% 0.02490 261.68)",
-          "oklch(50% 0.02490 261.68)",
-          "oklch(62% 0.02490 261.68)",
-          "oklch(74% 0.02490 261.68)",
-          "oklch(85% 0.02490 261.68)",
-          "oklch(95% 0.02490 261.68)"
-        ],
-        "role": "neutral"
-      },
-      "ink-tertiary": {
-        "displayName": "Supporting ink · light",
-        "tonalRamp": [
-          "oklch(15% 0.02792 259.80)",
-          "oklch(26% 0.02792 259.80)",
-          "oklch(38% 0.02792 259.80)",
-          "oklch(50% 0.02792 259.80)",
-          "oklch(62% 0.02792 259.80)",
-          "oklch(74% 0.02792 259.80)",
-          "oklch(85% 0.02792 259.80)",
-          "oklch(95% 0.02792 259.80)"
-        ],
-        "role": "neutral"
-      },
-      "line": {
-        "displayName": "Structural separator · light",
-        "tonalRamp": [
-          "oklch(15% 0.00708 268.54)",
-          "oklch(26% 0.00708 268.54)",
-          "oklch(38% 0.00708 268.54)",
-          "oklch(50% 0.00708 268.54)",
-          "oklch(62% 0.00708 268.54)",
-          "oklch(74% 0.00708 268.54)",
-          "oklch(85% 0.00708 268.54)",
-          "oklch(95% 0.00708 268.54)"
-        ],
-        "role": "neutral"
-      },
-      "line-strong": {
-        "displayName": "Strong neutral edge · light",
-        "tonalRamp": [
-          "oklch(15% 0.01534 260.73)",
-          "oklch(26% 0.01534 260.73)",
-          "oklch(38% 0.01534 260.73)",
-          "oklch(50% 0.01534 260.73)",
-          "oklch(62% 0.01534 260.73)",
-          "oklch(74% 0.01534 260.73)",
-          "oklch(85% 0.01534 260.73)",
-          "oklch(95% 0.01534 260.73)"
-        ],
-        "role": "neutral"
-      },
-      "control-border": {
-        "displayName": "Editable control edge · light",
-        "tonalRamp": [
-          "oklch(15% 0.02483 260.70)",
-          "oklch(26% 0.02483 260.70)",
-          "oklch(38% 0.02483 260.70)",
-          "oklch(50% 0.02483 260.70)",
-          "oklch(62% 0.02483 260.70)",
-          "oklch(74% 0.02483 260.70)",
-          "oklch(85% 0.02483 260.70)",
-          "oklch(95% 0.02483 260.70)"
-        ],
-        "role": "neutral"
+      "brand": {
+        "role": "primary",
+        "displayName": "Signal lime brand"
       },
       "accent": {
-        "displayName": "Violet action · light",
-        "tonalRamp": [
-          "oklch(15% 0.19787 280.73)",
-          "oklch(26% 0.19787 280.73)",
-          "oklch(38% 0.19787 280.73)",
-          "oklch(50% 0.19787 280.73)",
-          "oklch(62% 0.19787 280.73)",
-          "oklch(74% 0.19787 280.73)",
-          "oklch(85% 0.19787 280.73)",
-          "oklch(95% 0.19787 280.73)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Signal lime action · light"
       },
       "accent-hover": {
-        "displayName": "Violet hover · light",
-        "tonalRamp": [
-          "oklch(15% 0.19421 279.93)",
-          "oklch(26% 0.19421 279.93)",
-          "oklch(38% 0.19421 279.93)",
-          "oklch(50% 0.19421 279.93)",
-          "oklch(62% 0.19421 279.93)",
-          "oklch(74% 0.19421 279.93)",
-          "oklch(85% 0.19421 279.93)",
-          "oklch(95% 0.19421 279.93)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Lime hover · light"
       },
       "accent-soft": {
-        "displayName": "Violet selection fill · light",
-        "tonalRamp": [
-          "oklch(15% 0.02148 291.73)",
-          "oklch(26% 0.02148 291.73)",
-          "oklch(38% 0.02148 291.73)",
-          "oklch(50% 0.02148 291.73)",
-          "oklch(62% 0.02148 291.73)",
-          "oklch(74% 0.02148 291.73)",
-          "oklch(85% 0.02148 291.73)",
-          "oklch(95% 0.02148 291.73)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Lime selection wash · light"
       },
       "accent-ink": {
-        "displayName": "Violet label · light",
-        "tonalRamp": [
-          "oklch(15% 0.18695 279.93)",
-          "oklch(26% 0.18695 279.93)",
-          "oklch(38% 0.18695 279.93)",
-          "oklch(50% 0.18695 279.93)",
-          "oklch(62% 0.18695 279.93)",
-          "oklch(74% 0.18695 279.93)",
-          "oklch(85% 0.18695 279.93)",
-          "oklch(95% 0.18695 279.93)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Readable lime ink · light"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Editing plane · light"
+      },
+      "surface-subtle": {
+        "role": "neutral",
+        "displayName": "Inset and rail plane · light"
+      },
+      "surface-hover": {
+        "role": "neutral",
+        "displayName": "Hover plane · light"
+      },
+      "surface-active": {
+        "role": "neutral",
+        "displayName": "Pressed plane · light"
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Document ground · light"
+      },
+      "canvas-dot": {
+        "role": "neutral",
+        "displayName": "Canvas point · light"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Primary ink · light"
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Secondary ink · light"
+      },
+      "ink-tertiary": {
+        "role": "neutral",
+        "displayName": "Supporting ink · light"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Structural separator · light"
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Stronger neutral edge · light"
+      },
+      "control-border": {
+        "role": "neutral",
+        "displayName": "Editable neutral edge · light"
       },
       "positive": {
-        "displayName": "Positive text · light",
-        "tonalRamp": [
-          "oklch(15% 0.09603 158.58)",
-          "oklch(26% 0.09603 158.58)",
-          "oklch(38% 0.09603 158.58)",
-          "oklch(50% 0.09603 158.58)",
-          "oklch(62% 0.09603 158.58)",
-          "oklch(74% 0.09603 158.58)",
-          "oklch(85% 0.09603 158.58)",
-          "oklch(95% 0.09603 158.58)"
-        ]
+        "role": "neutral",
+        "displayName": "Positive ink · light"
       },
       "positive-soft": {
-        "displayName": "Positive fill · light",
-        "tonalRamp": [
-          "oklch(15% 0.01651 156.91)",
-          "oklch(26% 0.01651 156.91)",
-          "oklch(38% 0.01651 156.91)",
-          "oklch(50% 0.01651 156.91)",
-          "oklch(62% 0.01651 156.91)",
-          "oklch(74% 0.01651 156.91)",
-          "oklch(85% 0.01651 156.91)",
-          "oklch(95% 0.01651 156.91)"
-        ]
+        "role": "neutral",
+        "displayName": "Positive wash · light"
       },
       "warning": {
-        "displayName": "Attention text · light",
-        "tonalRamp": [
-          "oklch(15% 0.10622 67.58)",
-          "oklch(26% 0.10622 67.58)",
-          "oklch(38% 0.10622 67.58)",
-          "oklch(50% 0.10622 67.58)",
-          "oklch(62% 0.10622 67.58)",
-          "oklch(74% 0.10622 67.58)",
-          "oklch(85% 0.10622 67.58)",
-          "oklch(95% 0.10622 67.58)"
-        ]
+        "role": "neutral",
+        "displayName": "Warning ink · light"
       },
       "warning-soft": {
-        "displayName": "Attention fill · light",
-        "tonalRamp": [
-          "oklch(15% 0.03239 85.48)",
-          "oklch(26% 0.03239 85.48)",
-          "oklch(38% 0.03239 85.48)",
-          "oklch(50% 0.03239 85.48)",
-          "oklch(62% 0.03239 85.48)",
-          "oklch(74% 0.03239 85.48)",
-          "oklch(85% 0.03239 85.48)",
-          "oklch(95% 0.03239 85.48)"
-        ]
+        "role": "neutral",
+        "displayName": "Warning wash · light"
       },
       "negative": {
-        "displayName": "Negative text · light",
-        "tonalRamp": [
-          "oklch(15% 0.16359 18.22)",
-          "oklch(26% 0.16359 18.22)",
-          "oklch(38% 0.16359 18.22)",
-          "oklch(50% 0.16359 18.22)",
-          "oklch(62% 0.16359 18.22)",
-          "oklch(74% 0.16359 18.22)",
-          "oklch(85% 0.16359 18.22)",
-          "oklch(95% 0.16359 18.22)"
-        ]
+        "role": "neutral",
+        "displayName": "Negative ink · light"
       },
       "negative-soft": {
-        "displayName": "Negative fill · light",
-        "tonalRamp": [
-          "oklch(15% 0.01627 12.78)",
-          "oklch(26% 0.01627 12.78)",
-          "oklch(38% 0.01627 12.78)",
-          "oklch(50% 0.01627 12.78)",
-          "oklch(62% 0.01627 12.78)",
-          "oklch(74% 0.01627 12.78)",
-          "oklch(85% 0.01627 12.78)",
-          "oklch(95% 0.01627 12.78)"
-        ]
+        "role": "neutral",
+        "displayName": "Negative wash · light"
       },
       "focus": {
-        "displayName": "Keyboard focus · light",
-        "tonalRamp": [
-          "oklch(15% 0.20096 282.81)",
-          "oklch(26% 0.20096 282.81)",
-          "oklch(38% 0.20096 282.81)",
-          "oklch(50% 0.20096 282.81)",
-          "oklch(62% 0.20096 282.81)",
-          "oklch(74% 0.20096 282.81)",
-          "oklch(85% 0.20096 282.81)",
-          "oklch(95% 0.20096 282.81)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Keyboard focus · light"
       },
       "selection": {
-        "displayName": "Text selection · light",
-        "tonalRamp": [
-          "oklch(15% 0.05469 290.98)",
-          "oklch(26% 0.05469 290.98)",
-          "oklch(38% 0.05469 290.98)",
-          "oklch(50% 0.05469 290.98)",
-          "oklch(62% 0.05469 290.98)",
-          "oklch(74% 0.05469 290.98)",
-          "oklch(85% 0.05469 290.98)",
-          "oklch(95% 0.05469 290.98)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Text selection · light"
       },
       "overlay": {
-        "displayName": "Modal scrim · light",
-        "tonalRamp": [
-          "oklch(15% 0.02526 266.75 / 32%)",
-          "oklch(26% 0.02526 266.75 / 32%)",
-          "oklch(38% 0.02526 266.75 / 32%)",
-          "oklch(50% 0.02526 266.75 / 32%)",
-          "oklch(62% 0.02526 266.75 / 32%)",
-          "oklch(74% 0.02526 266.75 / 32%)",
-          "oklch(85% 0.02526 266.75 / 32%)",
-          "oklch(95% 0.02526 266.75 / 32%)"
-        ],
-        "role": "neutral"
+        "role": "neutral",
+        "displayName": "Modal scrim · light"
       },
       "on-accent": {
-        "displayName": "Primary action label · light",
-        "tonalRamp": [
-          "oklch(15% 0.00000 0.00)",
-          "oklch(26% 0.00000 0.00)",
-          "oklch(38% 0.00000 0.00)",
-          "oklch(50% 0.00000 0.00)",
-          "oklch(62% 0.00000 0.00)",
-          "oklch(74% 0.00000 0.00)",
-          "oklch(85% 0.00000 0.00)",
-          "oklch(95% 0.00000 0.00)"
-        ],
-        "role": "primary"
-      },
-      "surface-dark": {
-        "displayName": "Panel surface · dark",
-        "tonalRamp": [
-          "oklch(15% 0.01021 268.22)",
-          "oklch(26% 0.01021 268.22)",
-          "oklch(38% 0.01021 268.22)",
-          "oklch(50% 0.01021 268.22)",
-          "oklch(62% 0.01021 268.22)",
-          "oklch(74% 0.01021 268.22)",
-          "oklch(85% 0.01021 268.22)",
-          "oklch(95% 0.01021 268.22)"
-        ],
-        "role": "neutral"
-      },
-      "surface-subtle-dark": {
-        "displayName": "Quiet surface · dark",
-        "tonalRamp": [
-          "oklch(15% 0.01180 270.90)",
-          "oklch(26% 0.01180 270.90)",
-          "oklch(38% 0.01180 270.90)",
-          "oklch(50% 0.01180 270.90)",
-          "oklch(62% 0.01180 270.90)",
-          "oklch(74% 0.01180 270.90)",
-          "oklch(85% 0.01180 270.90)",
-          "oklch(95% 0.01180 270.90)"
-        ],
-        "role": "neutral"
-      },
-      "surface-hover-dark": {
-        "displayName": "Hover fill · dark",
-        "tonalRamp": [
-          "oklch(15% 0.01517 269.16)",
-          "oklch(26% 0.01517 269.16)",
-          "oklch(38% 0.01517 269.16)",
-          "oklch(50% 0.01517 269.16)",
-          "oklch(62% 0.01517 269.16)",
-          "oklch(74% 0.01517 269.16)",
-          "oklch(85% 0.01517 269.16)",
-          "oklch(95% 0.01517 269.16)"
-        ],
-        "role": "neutral"
-      },
-      "surface-active-dark": {
-        "displayName": "Stronger quiet fill · dark",
-        "tonalRamp": [
-          "oklch(15% 0.02012 269.53)",
-          "oklch(26% 0.02012 269.53)",
-          "oklch(38% 0.02012 269.53)",
-          "oklch(50% 0.02012 269.53)",
-          "oklch(62% 0.02012 269.53)",
-          "oklch(74% 0.02012 269.53)",
-          "oklch(85% 0.02012 269.53)",
-          "oklch(95% 0.02012 269.53)"
-        ],
-        "role": "neutral"
-      },
-      "canvas-dark": {
-        "displayName": "Canvas ground · dark",
-        "tonalRamp": [
-          "oklch(15% 0.01062 268.13)",
-          "oklch(26% 0.01062 268.13)",
-          "oklch(38% 0.01062 268.13)",
-          "oklch(50% 0.01062 268.13)",
-          "oklch(62% 0.01062 268.13)",
-          "oklch(74% 0.01062 268.13)",
-          "oklch(85% 0.01062 268.13)",
-          "oklch(95% 0.01062 268.13)"
-        ],
-        "role": "neutral"
-      },
-      "ink-dark": {
-        "displayName": "Primary ink · dark",
-        "tonalRamp": [
-          "oklch(15% 0.00703 268.55)",
-          "oklch(26% 0.00703 268.55)",
-          "oklch(38% 0.00703 268.55)",
-          "oklch(50% 0.00703 268.55)",
-          "oklch(62% 0.00703 268.55)",
-          "oklch(74% 0.00703 268.55)",
-          "oklch(85% 0.00703 268.55)",
-          "oklch(95% 0.00703 268.55)"
-        ],
-        "role": "neutral"
-      },
-      "ink-secondary-dark": {
-        "displayName": "Secondary ink · dark",
-        "tonalRamp": [
-          "oklch(15% 0.01999 262.99)",
-          "oklch(26% 0.01999 262.99)",
-          "oklch(38% 0.01999 262.99)",
-          "oklch(50% 0.01999 262.99)",
-          "oklch(62% 0.01999 262.99)",
-          "oklch(74% 0.01999 262.99)",
-          "oklch(85% 0.01999 262.99)",
-          "oklch(95% 0.01999 262.99)"
-        ],
-        "role": "neutral"
-      },
-      "ink-tertiary-dark": {
-        "displayName": "Supporting ink · dark",
-        "tonalRamp": [
-          "oklch(15% 0.02672 263.28)",
-          "oklch(26% 0.02672 263.28)",
-          "oklch(38% 0.02672 263.28)",
-          "oklch(50% 0.02672 263.28)",
-          "oklch(62% 0.02672 263.28)",
-          "oklch(74% 0.02672 263.28)",
-          "oklch(85% 0.02672 263.28)",
-          "oklch(95% 0.02672 263.28)"
-        ],
-        "role": "neutral"
-      },
-      "line-dark": {
-        "displayName": "Structural separator · dark",
-        "tonalRamp": [
-          "oklch(15% 0.01669 270.83)",
-          "oklch(26% 0.01669 270.83)",
-          "oklch(38% 0.01669 270.83)",
-          "oklch(50% 0.01669 270.83)",
-          "oklch(62% 0.01669 270.83)",
-          "oklch(74% 0.01669 270.83)",
-          "oklch(85% 0.01669 270.83)",
-          "oklch(95% 0.01669 270.83)"
-        ],
-        "role": "neutral"
-      },
-      "line-strong-dark": {
-        "displayName": "Strong neutral edge · dark",
-        "tonalRamp": [
-          "oklch(15% 0.02631 268.05)",
-          "oklch(26% 0.02631 268.05)",
-          "oklch(38% 0.02631 268.05)",
-          "oklch(50% 0.02631 268.05)",
-          "oklch(62% 0.02631 268.05)",
-          "oklch(74% 0.02631 268.05)",
-          "oklch(85% 0.02631 268.05)",
-          "oklch(95% 0.02631 268.05)"
-        ],
-        "role": "neutral"
-      },
-      "control-border-dark": {
-        "displayName": "Editable control edge · dark",
-        "tonalRamp": [
-          "oklch(15% 0.03763 260.94)",
-          "oklch(26% 0.03763 260.94)",
-          "oklch(38% 0.03763 260.94)",
-          "oklch(50% 0.03763 260.94)",
-          "oklch(62% 0.03763 260.94)",
-          "oklch(74% 0.03763 260.94)",
-          "oklch(85% 0.03763 260.94)",
-          "oklch(95% 0.03763 260.94)"
-        ],
-        "role": "neutral"
+        "role": "neutral",
+        "displayName": "Ink on solid lime"
       },
       "accent-dark": {
-        "displayName": "Violet action · dark",
-        "tonalRamp": [
-          "oklch(15% 0.15569 285.94)",
-          "oklch(26% 0.15569 285.94)",
-          "oklch(38% 0.15569 285.94)",
-          "oklch(50% 0.15569 285.94)",
-          "oklch(62% 0.15569 285.94)",
-          "oklch(74% 0.15569 285.94)",
-          "oklch(85% 0.15569 285.94)",
-          "oklch(95% 0.15569 285.94)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Signal lime action · dark"
       },
       "accent-hover-dark": {
-        "displayName": "Violet hover · dark",
-        "tonalRamp": [
-          "oklch(15% 0.12298 287.90)",
-          "oklch(26% 0.12298 287.90)",
-          "oklch(38% 0.12298 287.90)",
-          "oklch(50% 0.12298 287.90)",
-          "oklch(62% 0.12298 287.90)",
-          "oklch(74% 0.12298 287.90)",
-          "oklch(85% 0.12298 287.90)",
-          "oklch(95% 0.12298 287.90)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Lime hover · dark"
       },
       "accent-soft-dark": {
-        "displayName": "Violet selection fill · dark",
-        "tonalRamp": [
-          "oklch(15% 0.05653 288.42)",
-          "oklch(26% 0.05653 288.42)",
-          "oklch(38% 0.05653 288.42)",
-          "oklch(50% 0.05653 288.42)",
-          "oklch(62% 0.05653 288.42)",
-          "oklch(74% 0.05653 288.42)",
-          "oklch(85% 0.05653 288.42)",
-          "oklch(95% 0.05653 288.42)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Lime selection wash · dark"
       },
       "accent-ink-dark": {
-        "displayName": "Violet label · dark",
-        "tonalRamp": [
-          "oklch(15% 0.11999 288.68)",
-          "oklch(26% 0.11999 288.68)",
-          "oklch(38% 0.11999 288.68)",
-          "oklch(50% 0.11999 288.68)",
-          "oklch(62% 0.11999 288.68)",
-          "oklch(74% 0.11999 288.68)",
-          "oklch(85% 0.11999 288.68)",
-          "oklch(95% 0.11999 288.68)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Readable lime ink · dark"
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Editing plane · dark"
+      },
+      "surface-subtle-dark": {
+        "role": "neutral",
+        "displayName": "Inset and rail plane · dark"
+      },
+      "surface-hover-dark": {
+        "role": "neutral",
+        "displayName": "Hover plane · dark"
+      },
+      "surface-active-dark": {
+        "role": "neutral",
+        "displayName": "Pressed plane · dark"
+      },
+      "canvas-dark": {
+        "role": "neutral",
+        "displayName": "Document ground · dark"
+      },
+      "canvas-dot-dark": {
+        "role": "neutral",
+        "displayName": "Canvas point · dark"
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Primary ink · dark"
+      },
+      "ink-secondary-dark": {
+        "role": "neutral",
+        "displayName": "Secondary ink · dark"
+      },
+      "ink-tertiary-dark": {
+        "role": "neutral",
+        "displayName": "Supporting ink · dark"
+      },
+      "line-dark": {
+        "role": "neutral",
+        "displayName": "Structural separator · dark"
+      },
+      "line-strong-dark": {
+        "role": "neutral",
+        "displayName": "Stronger neutral edge · dark"
+      },
+      "control-border-dark": {
+        "role": "neutral",
+        "displayName": "Editable neutral edge · dark"
       },
       "positive-dark": {
-        "displayName": "Positive text · dark",
-        "tonalRamp": [
-          "oklch(15% 0.10003 159.69)",
-          "oklch(26% 0.10003 159.69)",
-          "oklch(38% 0.10003 159.69)",
-          "oklch(50% 0.10003 159.69)",
-          "oklch(62% 0.10003 159.69)",
-          "oklch(74% 0.10003 159.69)",
-          "oklch(85% 0.10003 159.69)",
-          "oklch(95% 0.10003 159.69)"
-        ]
+        "role": "neutral",
+        "displayName": "Positive ink · dark"
       },
       "positive-soft-dark": {
-        "displayName": "Positive fill · dark",
-        "tonalRamp": [
-          "oklch(15% 0.04331 161.89)",
-          "oklch(26% 0.04331 161.89)",
-          "oklch(38% 0.04331 161.89)",
-          "oklch(50% 0.04331 161.89)",
-          "oklch(62% 0.04331 161.89)",
-          "oklch(74% 0.04331 161.89)",
-          "oklch(85% 0.04331 161.89)",
-          "oklch(95% 0.04331 161.89)"
-        ]
+        "role": "neutral",
+        "displayName": "Positive wash · dark"
       },
       "warning-dark": {
-        "displayName": "Attention text · dark",
-        "tonalRamp": [
-          "oklch(15% 0.10965 82.42)",
-          "oklch(26% 0.10965 82.42)",
-          "oklch(38% 0.10965 82.42)",
-          "oklch(50% 0.10965 82.42)",
-          "oklch(62% 0.10965 82.42)",
-          "oklch(74% 0.10965 82.42)",
-          "oklch(85% 0.10965 82.42)",
-          "oklch(95% 0.10965 82.42)"
-        ]
+        "role": "neutral",
+        "displayName": "Warning ink · dark"
       },
       "warning-soft-dark": {
-        "displayName": "Attention fill · dark",
-        "tonalRamp": [
-          "oklch(15% 0.04431 79.18)",
-          "oklch(26% 0.04431 79.18)",
-          "oklch(38% 0.04431 79.18)",
-          "oklch(50% 0.04431 79.18)",
-          "oklch(62% 0.04431 79.18)",
-          "oklch(74% 0.04431 79.18)",
-          "oklch(85% 0.04431 79.18)",
-          "oklch(95% 0.04431 79.18)"
-        ]
+        "role": "neutral",
+        "displayName": "Warning wash · dark"
       },
       "negative-dark": {
-        "displayName": "Negative text · dark",
-        "tonalRamp": [
-          "oklch(15% 0.12159 10.62)",
-          "oklch(26% 0.12159 10.62)",
-          "oklch(38% 0.12159 10.62)",
-          "oklch(50% 0.12159 10.62)",
-          "oklch(62% 0.12159 10.62)",
-          "oklch(74% 0.12159 10.62)",
-          "oklch(85% 0.12159 10.62)",
-          "oklch(95% 0.12159 10.62)"
-        ]
+        "role": "neutral",
+        "displayName": "Negative ink · dark"
       },
       "negative-soft-dark": {
-        "displayName": "Negative fill · dark",
-        "tonalRamp": [
-          "oklch(15% 0.04402 6.36)",
-          "oklch(26% 0.04402 6.36)",
-          "oklch(38% 0.04402 6.36)",
-          "oklch(50% 0.04402 6.36)",
-          "oklch(62% 0.04402 6.36)",
-          "oklch(74% 0.04402 6.36)",
-          "oklch(85% 0.04402 6.36)",
-          "oklch(95% 0.04402 6.36)"
-        ]
+        "role": "neutral",
+        "displayName": "Negative wash · dark"
       },
       "focus-dark": {
-        "displayName": "Keyboard focus · dark",
-        "tonalRamp": [
-          "oklch(15% 0.11998 289.23)",
-          "oklch(26% 0.11998 289.23)",
-          "oklch(38% 0.11998 289.23)",
-          "oklch(50% 0.11998 289.23)",
-          "oklch(62% 0.11998 289.23)",
-          "oklch(74% 0.11998 289.23)",
-          "oklch(85% 0.11998 289.23)",
-          "oklch(95% 0.11998 289.23)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Keyboard focus · dark"
       },
       "selection-dark": {
-        "displayName": "Text selection · dark",
-        "tonalRamp": [
-          "oklch(15% 0.07307 292.21)",
-          "oklch(26% 0.07307 292.21)",
-          "oklch(38% 0.07307 292.21)",
-          "oklch(50% 0.07307 292.21)",
-          "oklch(62% 0.07307 292.21)",
-          "oklch(74% 0.07307 292.21)",
-          "oklch(85% 0.07307 292.21)",
-          "oklch(95% 0.07307 292.21)"
-        ],
-        "role": "primary"
+        "role": "primary",
+        "displayName": "Text selection · dark"
       },
       "overlay-dark": {
-        "displayName": "Modal scrim · dark",
-        "tonalRamp": [
-          "oklch(15% 0.00000 0.00 / 58%)",
-          "oklch(26% 0.00000 0.00 / 58%)",
-          "oklch(38% 0.00000 0.00 / 58%)",
-          "oklch(50% 0.00000 0.00 / 58%)",
-          "oklch(62% 0.00000 0.00 / 58%)",
-          "oklch(74% 0.00000 0.00 / 58%)",
-          "oklch(85% 0.00000 0.00 / 58%)",
-          "oklch(95% 0.00000 0.00 / 58%)"
-        ],
-        "role": "neutral"
+        "role": "neutral",
+        "displayName": "Modal scrim · dark"
       },
-      "on-accent-dark": {
-        "displayName": "Primary action label · dark",
-        "tonalRamp": [
-          "oklch(15% 0.02224 296.81)",
-          "oklch(26% 0.02224 296.81)",
-          "oklch(38% 0.02224 296.81)",
-          "oklch(50% 0.02224 296.81)",
-          "oklch(62% 0.02224 296.81)",
-          "oklch(74% 0.02224 296.81)",
-          "oklch(85% 0.02224 296.81)",
-          "oklch(95% 0.02224 296.81)"
-        ],
-        "role": "primary"
+      "shadow-specimen-ground": {
+        "role": "neutral",
+        "displayName": "Stable shadow comparison ground"
       }
     },
     "typographyMeta": {
       "heading": {
-        "displayName": "Heading",
-        "purpose": "Shared heading size and strong weight, demonstrated in Axiom UI; does not replace global h1.",
-        "cssVariable": "--type-heading"
+        "displayName": "heading",
+        "purpose": "Complete shared SUIT role shown in Axiom UI."
       },
       "title": {
-        "displayName": "Title",
-        "purpose": "Foundation section and manager h2 headings; inherits h2 leading and tracking.",
-        "cssVariable": "--type-title"
+        "displayName": "title",
+        "purpose": "Complete shared SUIT role shown in Axiom UI."
       },
       "body": {
-        "displayName": "Body",
-        "purpose": "Shared body role demonstrated at regular weight in Axiom UI; scoped Foundation descriptions/controls reuse the size without a global weight reset.",
-        "cssVariable": "--type-body"
+        "displayName": "body",
+        "purpose": "Complete shared SUIT role shown in Axiom UI."
       },
       "label": {
-        "displayName": "Label",
-        "purpose": "Shared field labels and medium action labels.",
-        "cssVariable": "--type-label"
+        "displayName": "label",
+        "purpose": "Complete shared SUIT role shown in Axiom UI."
       },
       "caption": {
-        "displayName": "Caption",
-        "purpose": "Help, field hints and relationship metadata; inherits weight unless locally set.",
-        "cssVariable": "--type-caption"
-      },
-      "section-title": {
-        "displayName": "Section Title",
-        "purpose": "Inspector disclosure heading; strong weight and incumbent 1.5 leading."
+        "displayName": "caption",
+        "purpose": "Complete shared SUIT role shown in Axiom UI."
       },
       "button": {
-        "displayName": "Button",
-        "purpose": "Small and medium shared action labels."
+        "displayName": "button",
+        "purpose": "Actual component recipe; not identical to every named type sample."
       },
       "button-large": {
-        "displayName": "Large Button",
-        "purpose": "Large action labels: body size, medium weight, label leading."
+        "displayName": "button-large",
+        "purpose": "Actual component recipe; not identical to every named type sample."
       },
       "field-control": {
-        "displayName": "Field Control",
-        "purpose": "Scoped input/select/textarea: body size and label leading, with normal inherited weight."
+        "displayName": "field-control",
+        "purpose": "Actual component recipe; not identical to every named type sample."
+      },
+      "field-label": {
+        "displayName": "field-label",
+        "purpose": "Actual component recipe; not identical to every named type sample."
+      },
+      "section-title": {
+        "displayName": "section-title",
+        "purpose": "Actual component recipe; not identical to every named type sample."
       },
       "badge": {
-        "displayName": "Badge",
-        "purpose": "Incumbent passive classification/status label; catalog-footer badges retain a smaller literal."
+        "displayName": "badge",
+        "purpose": "Actual component recipe; not identical to every named type sample."
       },
-      "headline": {
-        "displayName": "Incumbent Headline",
-        "purpose": "Existing global h1 and Foundation toolbar heading, still used outside the new role selectors."
-      },
-      "base-title": {
-        "displayName": "Incumbent Title",
-        "purpose": "Existing h2 default, overridden by scoped Foundation and inspector rules."
-      },
-      "base-body": {
-        "displayName": "Incumbent Body",
-        "purpose": "Existing root type size and normal default weight; the new shared role declarations do not reset it."
-      },
-      "code": {
-        "displayName": "Code",
-        "purpose": "Source values and JSON."
+      "material-code": {
+        "displayName": "material-code",
+        "purpose": "Actual component recipe; not identical to every named type sample."
       }
     },
     "shadows": [
       {
         "name": "floating-shadow",
         "value": "0 4px 18px rgb(31 38 56 / 13%)",
-        "purpose": "Light Studio canvas tool, zoom and alignment trays."
+        "purpose": "Detached light-theme tools."
       },
       {
         "name": "floating-shadow-dark",
         "value": "0 6px 24px rgb(0 0 0 / 32%)",
-        "purpose": "Dark Studio canvas tool, zoom and alignment trays."
+        "purpose": "Detached dark-theme tools."
       },
       {
         "name": "dialog-shadow",
         "value": "0 18px 70px rgb(20 26 44 / 22%)",
-        "purpose": "Light Studio dialogs."
+        "purpose": "Light modal depth."
       },
       {
         "name": "dialog-shadow-dark",
         "value": "0 20px 80px rgb(0 0 0 / 50%)",
-        "purpose": "Dark Studio dialogs."
+        "purpose": "Dark modal depth."
       },
       {
-        "name": "segment-active",
-        "value": "0 1px 3px rgb(20 26 44 / 10%)",
-        "purpose": "Active segmented-control option in both themes."
+        "name": "navigation-marker",
+        "value": "0 3px 20px color-mix(in srgb,var(--brand) 12%,transparent),inset 0 1px 0 #ffffff60",
+        "purpose": "Measured active workspace pill."
       },
       {
-        "name": "catalog-selection",
-        "value": "0 0 0 1px var(--accent)",
-        "purpose": "Selected catalog card outline, independent of elevation."
+        "name": "material-selection",
+        "value": "0 0 0 2px color-mix(in srgb,var(--accent-ink) 10%,transparent)",
+        "purpose": "Selection ring; not elevation."
       }
     ],
     "motion": [
       {
         "name": "motion-fast",
-        "value": "160ms",
-        "purpose": "Shared button background/text and icon background state transitions."
+        "value": "150ms",
+        "purpose": "Color, border and opacity feedback."
+      },
+      {
+        "name": "motion-reveal",
+        "value": "250ms",
+        "purpose": "Marker translation, disclosure and dialog reveal."
       },
       {
         "name": "motion-ease",
-        "value": "cubic-bezier(.16,1,.3,1)",
-        "purpose": "Standard Button background and color easing."
+        "value": "cubic-bezier(.22,1,.36,1)",
+        "purpose": "Smooth-out easing from the recorded transitions.dev reference."
       },
       {
-        "name": "icon-background-ease",
-        "value": "ease",
-        "purpose": "CSS default easing retained by IconButton's background transition."
+        "name": "dialog-enter",
+        "value": "opacity 0 → 1; translateY(8px) scale(.98) → translateY(0) scale(1)",
+        "purpose": "Short dialog entry."
       },
       {
         "name": "reduced-motion",
-        "value": "@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.canvas-world{will-change:auto}}",
-        "purpose": "Exact current reduced-motion override."
+        "value": "animation: none !important; transition: none !important; scroll-behavior: auto !important",
+        "purpose": "Global reduction plus cancellation/replay guard for material Web Animations."
       }
     ],
     "breakpoints": [
       {
-        "name": "max-width-1200",
+        "name": "compact-desktop",
         "value": "1200px"
       },
       {
-        "name": "max-width-1100",
+        "name": "compact-workspace",
         "value": "1100px"
       },
       {
-        "name": "max-width-900",
+        "name": "condensed-header",
         "value": "900px"
       },
       {
-        "name": "max-width-720",
+        "name": "single-pane",
         "value": "720px"
+      },
+      {
+        "name": "inspector-container",
+        "value": "300px",
+        "kind": "container"
       }
     ],
-    "layout": {
-      "cssSourceOrder": [
+    "materials": {
+      "floatingTools": {
+        "background": "color-mix(in srgb,var(--surface) 85%,transparent)",
+        "backdropFilter": "blur(18px) saturate(1.15)",
+        "border": "1px solid var(--line-strong)",
+        "shadow": "var(--floating-shadow),inset 0 1px 0 color-mix(in srgb,var(--ink) 6%,transparent)"
+      },
+      "icons": {
+        "viewBox": "0 0 20 20",
+        "strokeWidth": 1.4,
+        "strokeLinecap": "round",
+        "strokeLinejoin": "round",
+        "fill": "none",
+        "defaultSize": "16px",
+        "workspaceSize": "20px"
+      }
+    },
+    "cascade": {
+      "importOrder": [
         "src/styles.css",
         "src/ui-system.css",
         "src/foundation-workspace.css"
       ],
-      "shell": [
-        {
-          "range": "above 1200px",
-          "sidebar": "224px",
-          "inspector": "320px",
-          "rows": "52px minmax(0,1fr) 28px"
-        },
-        {
-          "range": "1101–1200px",
-          "sidebar": "200px",
-          "inspector": "320px",
-          "notes": "Earlier 1200px toolbar/header rules remain; later shared inspector variable wins."
-        },
-        {
-          "range": "721–1100px",
-          "sidebar": "200px",
-          "inspector": "292px",
-          "notes": "Later 1100px root rule wins over earlier 900px widths; other 900px rules remain."
-        },
-        {
-          "range": "at most 720px",
-          "columns": "minmax(0,1fr)",
-          "rows": "48px 40px minmax(0,1fr) 28px",
-          "notes": "Browse, Workspace and Inspect select one panel; fixed width variables no longer size columns."
-        }
-      ],
-      "controlSizing": {
-        "button": {
-          "defaultSize": "md",
-          "small": "{components.button-sm}",
-          "medium": "{components.button-primary}",
-          "large": "{components.button-lg}",
-          "heightSemantics": "min-height"
-        },
-        "iconButton": {
-          "refersTo": "icon-button",
-          "notes": "No size API; desktop width/height remain literal, shared radius follows --radius-control. Contextual selectors retain smaller widths."
-        },
-        "narrow": {
-          "defaultButtonAndIcon": "--control-lg",
-          "appFieldInputAndSelect": "--control-lg",
-          "appFieldTextarea": "76px minimum",
-          "smallButton": "--control-sm (more-specific selector)",
-          "choiceChip": "--control-md",
-          "topbarButton": "28px minimum (more-specific selector)",
-          "reviewStripButton": "34px minimum (more-specific selector)",
-          "onboardingField": "--control-md (outside .app mobile scope)"
-        }
-      },
-      "spacingApplication": {
-        "fieldGap": "--space-2",
-        "sectionContentGapAndPadding": "--space-4",
-        "sectionHeadingPadding": "--space-3 --space-4",
-        "formActionGap": "--space-3",
-        "formActionPaddingTop": "--space-4",
-        "formColumnsGap": "--space-5",
-        "propertyGroupGapAndPaddingBlock": "--space-2",
-        "consecutivePropertyGroupPaddingTop": "--space-4"
-      },
-      "foundation": {
-        "workspacePadding": "--space-6; domain/starter/relationship panels become --space-4 at 1100px",
-        "managerColumns": "two with --space-4 gap; one at 720px",
-        "domainRowMinHeight": "82px",
-        "domainSpecimen": "64px × 44px",
-        "relationshipIndent": "margin-left --space-4; padding-left --space-5; 1px line-strong",
-        "catalogSpecimenHeight": "112px",
-        "catalogGap": "--space-4",
-        "catalogMinWidth": "170px; 150px at 1200px",
-        "onboardingDomainColumns": "three; two at 720px"
-      }
+      "theme": "CSS root is light. App reads axiom.ui.theme with dark fallback, then sets data-theme. Saved preferences and authored ADS themes stay independent.",
+      "sizes": "Button/field/badge frontmatter heights are minima. IconButton is an explicit 40px square before compact overrides. Small Button padding and leading can exceed its 32px minimum.",
+      "managedFields": "Managed fields use 40px minimum, 14px type, 1.4 leading, 10px corner and 12px inline padding. Managed selects use auto height and 8px block padding; field textareas have 76px minimum. Native fallback selects remain 32px with 4px block padding.",
+      "inspectorFields": "The resting inspector field :is(...) selector is more specific than its hover/focus border rules, so transparent border persists. The shared focus-visible outline and important invalid border remain effective. This is a limitation, not prescribed hover behavior.",
+      "responsive": "Shared root inspector width 348px supersedes earlier 1200px/900px widths. Later 1100px shared rules produce 200px rail and 316px inspector. Narrow base control minima do not supersede every size/toolbar rule.",
+      "type": "Complete gallery recipes differ from live component recipes. Paragraphs use 1.6; buttons/managed fields use 1.4. Local branding and native fallback literals are not generalized.",
+      "sourceRoles": "Frontmatter keys do not create runtime properties. on-accent and shadow-specimen-ground name source literals. No invented tonal ramp is supplied."
     },
-    "implementation": {
-      "refreshedFor": "2026-09-14 approved correction contract",
-      "sources": [
-        "src/styles.css",
-        "src/ui-system.css",
-        "src/foundation-workspace.css",
-        "src/ui.tsx",
-        "src/workbench-panels.tsx",
-        "src/main.tsx",
-        "src/catalog-thumbnail.tsx",
-        "src/token-relationships.tsx"
+    "evidence": {
+      "directionContract": "../../../docs/implementation/studio-lime-redesign.md",
+      "finishReview": "../../../docs/implementation/studio-lime-finish-review.md",
+      "captureManifest": "../../../dist/evidence/lime-capture-manifest.json",
+      "captureArchive": "../../../dist/evidence/lime-*.png",
+      "disposition": "ship",
+      "dispositionScope": "Four scored fixes only: compact Foundation color/shadow controls, readable composite captions, seed execution record, and neutral editable borders.",
+      "limits": [
+        "The reviewer examined all 19 static recaptures; the documenter extracted current source and read the report.",
+        "No whole-surface or temporal visual approval. List rendering was not captured.",
+        "The documenter reran neither detector nor browser. Functional evidence belongs to the verification record.",
+        "One detector run against stale DESIGN.md reported 45 advisory mismatches and one height-transition warning. The height transition was then removed mechanically.",
+        "The new identity has no shipping raster assets."
       ],
-      "sharedWeights": {
-        "regular": "--weight-regular",
-        "medium": "--weight-medium",
-        "strong": "--weight-strong"
-      },
-      "sharedLeading": {
-        "label": "--leading-label",
-        "body": "--leading-body"
-      },
-      "residuals": [
-        "Global root/body and h1/h2 defaults remain the frontmatter base-body, headline and base-title roles. New token declarations alone do not apply them globally.",
-        "Onboarding retains its larger literal heading sizes; badges, catalog labels, navigation/tab weights and source/count metadata retain the documented literals.",
-        "Unmatched legacy value/property rows and headers retain optical spacing; ui-system section-content and field spacing apply only to matched selectors.",
-        "IconButton has no size prop. Contextual width/height rules and more-specific topbar/review/small-button rules remain, so narrow controls are not uniformly sized.",
-        "SystemPanel spacing specimen still displays only 4/8/12/16/24/32; the declared 20 and 40 steps are part of the scale, not shown there.",
-        "Consumer component previews keep authored styles; Studio UI tokens do not set user Foundation values."
-      ],
-      "evidence": {
-        "review": "../../docs/implementation/editor-completion-finish-review.md",
-        "disposition": "ship — R1 resolved only",
-        "recordedTests": 343,
-        "recordedBrowserFlows": 16,
-        "captureCount": 10,
-        "archive": "dist/evidence/completion/",
-        "note": "Recorded evidence read for documentation; no new detector, browser or test execution by this documenter.",
-        "remainingScope": "../../docs/implementation/editor-completion-followup.md (119-row Foundation ledger)"
-      }
+      "notCanonized": [
+        "Inspector hover/focus border declarations lose to the resting selector.",
+        "Existing kicker/eyebrow selector and compact fallback literals are not elevated into house rules.",
+        "Independently authored purple is retained content, not identity drift."
+      ]
     }
   },
   "components": [
     {
-      "name": "Primary Button",
+      "name": "Apply to preview · primary",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Accent action with the implemented light/dark foreground and hover pair.",
-      "html": "<button type=\"button\" data-size=\"md\" class=\"ds-button ds-primary\">Apply changes</button>",
-      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-primary{background:var(--accent,#5b50d6);color:#fff}.ds-primary:hover:not(:disabled){background:var(--accent-hover,#4c40c2)}:host-context([data-theme=dark]) .ds-primary{color:#16131e}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}.ds-button.ds-primary:active:not(:disabled){background-color:var(--accent-hover,#4c40c2)}"
+      "description": "Actual shared primary Button tone at default minimum size.",
+      "html": "<button type=\"button\" class=\"ds-button-primary\">Apply to preview</button>",
+      "css": ".ds-button-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--control-md,40px);padding:8px 12px;border:1px solid transparent;border-radius:var(--radius-control,10px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,13px);font-weight:550;line-height:1.4;letter-spacing:0;cursor:pointer;transition:background var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1)),color var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1))}.ds-button-primary:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}.ds-button-primary:disabled{opacity:.46;cursor:not-allowed}.ds-button-primary[aria-busy=true]{cursor:progress}.ds-button-primary{background:var(--accent,#b9ff46);color:var(--on-accent,#172108);}.ds-button-primary:hover:not(:disabled){background:var(--accent-hover,#a9ef36);}.ds-button-primary:active:not(:disabled){background-color:var(--accent-hover,#a9ef36)}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Secondary Button",
+      "name": "Cancel · secondary",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Quiet outlined action; independent small, medium and large size variants use minimum heights, with the documented narrow-screen cascade.",
-      "html": "<div class=\"ds-button-sizes\"><button type=\"button\" data-size=\"sm\" class=\"ds-button ds-secondary\">Small</button><button type=\"button\" data-size=\"md\" class=\"ds-button ds-secondary\">Medium</button><button type=\"button\" data-size=\"lg\" class=\"ds-button ds-secondary\">Large</button></div>",
-      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-secondary{background:var(--surface,#fff);color:var(--ink,#20242d);border-color:var(--line-strong,#c9cfd9)}.ds-secondary:hover:not(:disabled){background:var(--surface-hover,#eff1f5)}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}.ds-button-sizes{display:flex;flex-wrap:wrap;gap:var(--space-2,8px);align-items:center}"
+      "description": "Actual shared secondary Button tone at default minimum size.",
+      "html": "<button type=\"button\" class=\"ds-button-secondary\">Cancel</button>",
+      "css": ".ds-button-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--control-md,40px);padding:8px 12px;border:1px solid transparent;border-radius:var(--radius-control,10px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,13px);font-weight:550;line-height:1.4;letter-spacing:0;cursor:pointer;transition:background var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1)),color var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1))}.ds-button-secondary:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}.ds-button-secondary:disabled{opacity:.46;cursor:not-allowed}.ds-button-secondary[aria-busy=true]{cursor:progress}.ds-button-secondary{background:var(--surface,#fcfcfa);color:var(--ink,#21241d);border-color:var(--line-strong,#c5cdba);}.ds-button-secondary:hover:not(:disabled){background:var(--surface-hover,#e9ece4);}.ds-button-secondary:active:not(:disabled){background-color:var(--surface-active,#dde3d5)}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Subtle Button",
+      "name": "Open linked token · subtle",
       "kind": "button",
       "refersTo": "button-subtle",
-      "description": "Low-emphasis text action with a neutral hover fill.",
-      "html": "<button type=\"button\" data-size=\"md\" class=\"ds-button ds-subtle\">View source</button>",
-      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-subtle{background:transparent;color:var(--ink-secondary,#525a68)}.ds-subtle:hover:not(:disabled){background:var(--surface-hover,#eff1f5);color:var(--ink,#20242d)}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
+      "description": "Actual shared subtle Button tone at default minimum size.",
+      "html": "<button type=\"button\" class=\"ds-button-subtle\">Open linked token</button>",
+      "css": ".ds-button-subtle{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--control-md,40px);padding:8px 12px;border:1px solid transparent;border-radius:var(--radius-control,10px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,13px);font-weight:550;line-height:1.4;letter-spacing:0;cursor:pointer;transition:background var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1)),color var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1))}.ds-button-subtle:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}.ds-button-subtle:disabled{opacity:.46;cursor:not-allowed}.ds-button-subtle[aria-busy=true]{cursor:progress}.ds-button-subtle{background:transparent;color:var(--ink-secondary,#575d50);}.ds-button-subtle:hover:not(:disabled){background:var(--surface-hover,#e9ece4);color:var(--ink,#21241d);}.ds-button-subtle:active:not(:disabled){background-color:var(--surface-active,#dde3d5)}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Danger Button",
+      "name": "Propose deletion · danger",
       "kind": "button",
       "refersTo": "button-danger",
-      "description": "Destructive action using negative text and soft fill; current source has no extra hover fill.",
-      "html": "<button type=\"button\" data-size=\"md\" class=\"ds-button ds-danger\">Delete token</button>",
-      "css": ".ds-button{min-height:var(--control-md,34px);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2,8px);padding:var(--space-1,4px) var(--space-3,12px);border:1px solid transparent;border-radius:var(--radius-control,7px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);letter-spacing:0;white-space:nowrap;cursor:pointer;transition:background var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1)),color var(--motion-fast,160ms) var(--motion-ease,cubic-bezier(.16,1,.3,1))}.ds-button[data-size=sm]{min-height:var(--control-sm,28px);padding-inline:var(--space-2,8px)}.ds-button[data-size=lg]{min-height:var(--control-lg,40px);padding-inline:var(--space-4,16px);font-size:var(--type-body,13px)}.ds-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-button:disabled{cursor:not-allowed;opacity:.46}.ds-button[aria-busy=true]{cursor:progress}.ds-danger{background:var(--negative-soft,#fff0f1);color:var(--negative,#b23242)}.ds-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-button{min-height:var(--control-lg,40px)}}@media(prefers-reduced-motion:reduce){.ds-button{transition:none;animation:none}}"
+      "description": "Actual shared danger Button tone at default minimum size.",
+      "html": "<button type=\"button\" class=\"ds-button-danger\">Propose deletion</button>",
+      "css": ".ds-button-danger{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--control-md,40px);padding:8px 12px;border:1px solid transparent;border-radius:var(--radius-control,10px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,13px);font-weight:550;line-height:1.4;letter-spacing:0;cursor:pointer;transition:background var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1)),color var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1))}.ds-button-danger:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}.ds-button-danger:disabled{opacity:.46;cursor:not-allowed}.ds-button-danger[aria-busy=true]{cursor:progress}.ds-button-danger{background:var(--negative-soft,#fff0f1);color:var(--negative,#b23242);}.ds-button-danger:active:not(:disabled){background-color:var(--surface-active,#dde3d5)}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Icon Button",
-      "kind": "button",
-      "refersTo": "icon-button",
-      "description": "Labeled icon action with the shared control radius; retains a literal desktop square and no Button size API. Narrow minimum height grows while width stays compact.",
-      "html": "<button type=\"button\" class=\"ds-icon-button\" aria-label=\"Add component\" title=\"Add component\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10 3v14M3 10h14\"/></svg></button>",
-      "css": ".ds-icon-button{width:32px;height:32px;padding:7px;border:0;border-radius:var(--radius-control,7px);background:transparent;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-secondary,#525a68);cursor:pointer;transition:background var(--motion-fast,160ms)}.ds-icon-button:hover:not(:disabled){background:var(--surface-hover,#eff1f5);color:var(--ink,#20242d)}.ds-icon-button[aria-pressed=true]{background:var(--accent-soft,#eeecfc);color:var(--accent-ink,#493eba)}.ds-icon-button:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-icon-button:disabled{opacity:.46;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-icon-button{transition:none;animation:none}}.ds-icon-button:active:not(:disabled){background-color:var(--surface-active,#e9edf4)}@media(max-width:720px){.ds-icon-button{min-height:var(--control-lg,40px)}}"
-    },
-    {
-      "name": "Labeled Text Field",
+      "name": "Managed text field",
       "kind": "input",
       "refersTo": "text-field",
-      "description": "Representative app field: shared label/hint spacing, scoped body-sized control and medium minimum height; app inputs grow to the large minimum on narrow screens. React TextInput owns composition behavior.",
-      "html": "<div class=\"ds-field\"><label for=\"ds-token-name\">Token name</label><input id=\"ds-token-name\" value=\"brand.accent\" aria-describedby=\"ds-token-hint\"/><small id=\"ds-token-hint\">A stable name for this token.</small></div>",
-      "css": ".ds-field{display:flex;flex-direction:column;gap:var(--space-2,8px);margin:0;min-width:0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink,#20242d)}.ds-field label{font-size:var(--type-label,12px);font-weight:var(--weight-medium,550);line-height:var(--leading-label,1.4);color:var(--ink-secondary,#525a68)}.ds-field input{font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-body,13px);font-weight:400;line-height:var(--leading-label,1.4);min-height:var(--control-md,34px);color:var(--ink,#20242d);background:var(--surface,#fff);border:1px solid var(--control-border,#838c9b);border-radius:var(--radius-control,7px);padding:7px var(--space-3,12px);min-width:0;caret-color:var(--accent,#5b50d6)}.ds-field input::placeholder{color:var(--ink-tertiary,#646e7e);opacity:1}.ds-field input:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:1px}.ds-field input[aria-invalid=true]{border-color:var(--negative,#b23242)}.ds-field small{font-size:var(--type-caption,11px);line-height:var(--leading-body,1.6);color:var(--ink-secondary,#525a68)}@media(max-width:720px){.ds-field input{min-height:var(--control-lg,40px)}}"
+      "description": "Stacked Field with the neutral editable boundary.",
+      "html": "<div class=\"ds-text-field\"><label for=\"ds-text-field-input\">Name</label><input id=\"ds-text-field-input\" value=\"Axiom Studio\" /></div>",
+      "css": ".ds-text-field{display:flex;flex-direction:column;gap:8px;min-width:0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif)}.ds-text-field label{font-size:13px;font-weight:550;line-height:1.4;color:var(--ink-secondary,#575d50)}.ds-text-field input{min-width:0;min-height:var(--control-md,40px);padding:7px 12px;border:1px solid var(--control-border,#7a826f);border-radius:var(--radius-control,10px);background:var(--surface,#fcfcfa);color:var(--ink,#21241d);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:14px;font-weight:450;line-height:1.4;caret-color:var(--accent,#b9ff46)}.ds-text-field input:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:1px}.ds-text-field input[aria-invalid=true]{border-color:var(--negative,#b23242)!important}.ds-text-field input::placeholder{color:var(--ink-tertiary,#68705f);opacity:1}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Object Navigation",
+      "name": "Inset inspector field",
+      "kind": "input",
+      "refersTo": "inspector-field",
+      "description": "Actual tonal field with global focus outline. The current resting border selector wins over its hover/focus border declarations.",
+      "html": "<div class=\"ds-inspector-field\"><label for=\"ds-inspector-field-input\">Name</label><input id=\"ds-inspector-field-input\" value=\"Axiom Studio\" /></div>",
+      "css": ".ds-inspector-field{display:flex;flex-direction:column;gap:8px;min-width:0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif)}.ds-inspector-field label{font-size:13px;font-weight:550;line-height:1.4;color:var(--ink-secondary,#575d50)}.ds-inspector-field input{min-width:0;min-height:var(--control-md,40px);padding:7px 12px;border:1px solid transparent;border-radius:var(--radius-control,10px);background:var(--surface-subtle,#f3f4f0);color:var(--ink,#21241d);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:14px;font-weight:450;line-height:1.4;caret-color:var(--accent,#b9ff46)}.ds-inspector-field input:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:1px}.ds-inspector-field input[aria-invalid=true]{border-color:var(--negative,#b23242)!important}.ds-inspector-field input::placeholder{color:var(--ink-tertiary,#68705f);opacity:1}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
+    },
+    {
+      "name": "Workspace navigation",
       "kind": "nav",
-      "refersTo": "navigation-item",
-      "description": "Compact object rows with a quiet hover and persistent selected fill; row geometry is shared by the sidebar.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Objects\"><button type=\"button\" class=\"ds-nav-item ds-active\" aria-current=\"true\"><span class=\"ds-nav-name\">Button</span><span class=\"ds-nav-count\">4</span></button><button type=\"button\" class=\"ds-nav-item\"><span class=\"ds-nav-name\">Card</span><span class=\"ds-nav-count\">6</span></button></nav>",
-      "css": ".ds-nav{font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);min-width:180px}.ds-nav-item{position:relative;width:100%;height:30px;display:flex;align-items:center;gap:8px;text-align:left;background:transparent;border:0;border-radius:5px;padding:5px 9px;color:var(--ink-secondary,#525a68);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:12px;overflow:hidden;white-space:nowrap;cursor:pointer}.ds-nav-name{overflow:hidden;text-overflow:ellipsis}.ds-nav-count{margin-left:auto;font-size:10px;color:var(--ink-tertiary,#646e7e);font-weight:450;font-variant-numeric:tabular-nums}.ds-nav-item:hover{background:var(--surface-hover,#eff1f5);color:var(--ink,#20242d)}.ds-nav-item.ds-active{background:var(--accent-soft,#eeecfc);color:var(--accent-ink,#493eba);font-weight:600}.ds-nav-item:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}@media(max-width:720px){.ds-nav-item{height:36px;font-size:13px}}"
+      "refersTo": "workspace-navigation",
+      "description": "Lime active pill; live SelectionPill moves a measured surface while labels stay still.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Workspace\"><button type=\"button\" aria-pressed=\"true\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z\"/></svg><span>Foundation</span></button></nav>",
+      "css": ".ds-nav{padding:18px 12px;background:var(--surface-subtle,#f3f4f0);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif)}.ds-nav button{display:flex;align-items:center;gap:12px;width:100%;height:48px;padding:12px 16px;border:0;border-radius:999px;background:transparent;color:var(--ink-secondary,#575d50);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:13px;font-weight:550;cursor:pointer}.ds-nav button:hover{background:var(--surface-hover,#e9ece4);color:var(--ink,#21241d)}.ds-nav button[aria-pressed=true]{background:var(--brand,#b9ff46);color:var(--on-accent,#172108);box-shadow:0 0 20px color-mix(in srgb,var(--brand,#b9ff46) 10%,transparent),inset 0 1px 0 #ffffff60}.ds-nav button:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Status Badges",
+      "name": "Choice chip",
       "kind": "chip",
-      "refersTo": "badge",
-      "description": "Passive neutral, selection, success and attention annotations. Their text conveys meaning alongside color.",
-      "html": "<div class=\"ds-badges\"><span class=\"ds-badge\">Semantic contract</span><span class=\"ds-badge ds-accent\">Selected</span><span class=\"ds-badge ds-success\">Saved</span><span class=\"ds-badge ds-warning\">Pending</span></div>",
-      "css": ".ds-badges{display:flex;gap:6px;flex-wrap:wrap}.ds-badge{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:2px 6px;border-radius:4px;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:10px;line-height:16px;font-weight:550;background:var(--surface-hover,#eff1f5);color:var(--ink-secondary,#525a68);white-space:nowrap}.ds-badge.ds-accent{background:var(--accent-soft,#eeecfc);color:var(--accent-ink,#493eba)}.ds-badge.ds-success{background:var(--positive-soft,#e9f5ed);color:var(--positive,#24714c)}.ds-badge.ds-warning{background:var(--warning-soft,#fff4dd);color:var(--warning,#8c570d)}"
+      "refersTo": "choice-chip",
+      "description": "Pressed classification chip from the small Button primitive.",
+      "html": "<button type=\"button\" class=\"ds-chip\" aria-pressed=\"true\">Primitive</button>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--control-md,40px);padding:8px 12px;border:1px solid transparent;border-radius:var(--radius-control,10px);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);font-size:var(--type-label,13px);font-weight:550;line-height:1.4;letter-spacing:0;cursor:pointer;transition:background var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1)),color var(--motion-fast,150ms) var(--motion-ease,cubic-bezier(.22,1,.36,1))}.ds-chip:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}.ds-chip:disabled{opacity:.46;cursor:not-allowed}.ds-chip[aria-busy=true]{cursor:progress}.ds-chip{min-height:var(--control-sm,32px);padding-inline:8px;background:var(--surface,#fcfcfa);color:var(--ink,#21241d);border-color:var(--line-strong,#c5cdba)}.ds-chip:hover{background:var(--surface-hover,#e9ece4)}.ds-chip[aria-pressed=true]{background:var(--accent-soft,#eaf7d7);color:var(--accent-ink,#355b0b);border-color:var(--accent,#b9ff46)}.ds-chip:active{background-color:var(--surface-active,#dde3d5)}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Catalog Card",
+      "name": "Material token card",
       "kind": "card",
-      "refersTo": "catalog-card",
-      "description": "Catalog selection card with a static SVG structure specimen, shared panel radius and label spacing. The specimen is not a live authored control.",
-      "html": "<article class=\"ds-card ds-selected\"><button type=\"button\" class=\"ds-catalog-select\" aria-pressed=\"true\"><span class=\"ds-catalog-symbol\"><svg class=\"ds-catalog-thumbnail\" viewBox=\"0 0 200 112\" role=\"img\" aria-labelledby=\"ds-catalog-title\" fill=\"none\" stroke=\"var(--line-strong,#c9cfd9)\" stroke-width=\"1.2\"><title id=\"ds-catalog-title\">Button · static structure preview</title><rect x=\"52\" y=\"36\" width=\"96\" height=\"36\" rx=\"7\" fill=\"var(--accent-soft,#eeecfc)\"/><text x=\"76\" y=\"58\" font-size=\"10\" fill=\"var(--ink-secondary,#525a68)\" stroke=\"none\" font-family=\"var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,sans-serif)\">Continue</text></svg></span><strong>Button</strong><small>Actions</small></button></article>",
-      "css": ".ds-card{min-width:0;width:200px;display:flex;flex-direction:column;border:1px solid var(--line,#e5e7ec);border-radius:var(--radius-panel,12px);background:var(--surface,#fff);overflow:hidden;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink,#20242d)}.ds-card:hover{border-color:var(--line-strong,#c9cfd9);background:var(--surface-subtle,#f7f8fa)}.ds-card.ds-selected{border-color:var(--accent,#5b50d6);background:var(--accent-soft,#eeecfc);box-shadow:0 0 0 1px var(--accent,#5b50d6)}.ds-catalog-select{width:100%;border:0;display:flex;flex-direction:column;align-items:flex-start;padding:0 0 var(--space-3,12px);background:none;text-align:left;gap:var(--space-2,8px);color:var(--ink,#20242d);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);cursor:pointer}.ds-catalog-symbol{height:112px;width:100%;display:grid;place-items:center;background:var(--surface-subtle,#f7f8fa);border-radius:0;color:var(--ink-secondary,#525a68);margin:0}.ds-catalog-select strong{font-size:13px;font-weight:600}.ds-catalog-select small{font-size:11px;color:var(--ink-secondary,#525a68)}.ds-catalog-select:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-catalog-select>strong,.ds-catalog-select>small{padding-inline:var(--space-3,12px)}.ds-catalog-thumbnail{width:100%;height:112px}"
+      "refersTo": "material-card",
+      "description": "Selected material-card pattern with an illustrative resolved 12px radius; the example is authored content, not a Studio primitive.",
+      "html": "<article class=\"ds-material\"><button type=\"button\" aria-pressed=\"true\"><span class=\"ds-material-visual\"><span class=\"ds-radius\">12px</span></span><strong>radius.medium</strong><small>12px</small></button><span class=\"ds-material-meta\">2 uses</span></article>",
+      "css": ".ds-material{max-width:220px;min-width:0;border:1px solid var(--accent-ink,#355b0b);border-radius:12px;background:var(--accent-soft,#eaf7d7);color:var(--ink,#21241d);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent-ink,#355b0b) 10%,transparent);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);transition:border-color var(--motion-fast,150ms),background-color var(--motion-fast,150ms)}.ds-material:hover{border-color:var(--accent-ink,#355b0b)}.ds-material button{display:flex;flex-direction:column;gap:6px;width:100%;min-width:0;padding:0 0 8px;border:0;background:transparent;color:inherit;border-radius:11px;text-align:left;cursor:pointer;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif)}.ds-material-visual{display:flex;justify-content:center;align-items:center;width:100%;height:124px;overflow:hidden;background:var(--surface-subtle,#f3f4f0);border-radius:10px;margin-bottom:8px}.ds-radius{display:grid;place-items:center;width:94px;height:84px;margin:20px -28px -20px 0;border:2px solid var(--ink-secondary,#575d50);border-right:0;border-bottom:0;border-top-left-radius:12px;background:var(--surface-hover,#e9ece4);font:12px/18px var(--font-code,ui-monospace,Consolas,monospace)}.ds-material strong{padding-inline:8px;font-size:13px;font-weight:550}.ds-material small{padding-inline:8px;font:12px/18px var(--font-code,ui-monospace,Consolas,monospace);color:var(--ink-secondary,#575d50);overflow-wrap:anywhere}.ds-material-meta{display:block;padding:0 8px 8px;font-size:12px;color:var(--ink-secondary,#575d50)}.ds-material button:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     },
     {
-      "name": "Inspector Tabs",
-      "kind": "nav",
-      "refersTo": "tab",
-      "description": "Scrollable underline tabs with shared label size and gap; selected weight remains the incumbent 600. Static snippet: React TabBar supplies selection and Arrow/Home/End handling.",
-      "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"Inspector\"><button type=\"button\" role=\"tab\" aria-selected=\"true\" tabindex=\"0\" class=\"ds-tab ds-active\">Properties</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\" class=\"ds-tab\">Source</button></div>",
-      "css": ".ds-tabs{display:flex;gap:var(--space-5,20px);align-items:center;min-width:0;overflow-x:auto;flex-shrink:0}.ds-tab{background:none;border:0;border-bottom:2px solid transparent;padding:11px 0;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);flex-shrink:0;font-size:var(--type-label,12px);color:var(--ink-secondary,#525a68);white-space:nowrap;cursor:pointer}.ds-tab.ds-active{color:var(--ink,#20242d);font-weight:600;border-bottom-color:var(--ink,#20242d)}.ds-tab:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}"
-    },
-    {
-      "name": "Foundation Usage Link",
+      "name": "Inspector disclosure",
       "kind": "custom",
-      "refersTo": "relationship-usage",
-      "description": "Component and Part on the first line, distinct design/property/rule context below, source title and navigation arrow. Runtime activation selects the matching component, Part and category through draft-safe navigation; the snippet is static.",
-      "html": "<ul class=\"ds-usages\"><li><button type=\"button\" class=\"ds-usage\" title=\"Button Mobile / appearance / Rule 2 / background\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m10 2 8 8-8 8-8-8Zm-4 8h8m-4-4v8\"/></svg><span><strong>Button / Root</strong><small>Button Mobile · Background · Rule 2 · Variant: outlined</small></span><svg width=\"14\" height=\"14\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.35\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 10h12m-5-5 5 5-5 5\"/></svg></button></li></ul>",
-      "css": ".ds-usages{list-style:none;margin:0 0 0 var(--space-4,16px);padding:0 0 0 var(--space-5,20px);border-left:1px solid var(--line-strong,#c9cfd9);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif)}.ds-usages li{display:flex;align-items:center;gap:var(--space-2,8px);font-size:var(--type-caption,11px);color:var(--ink-secondary,#525a68);padding-block:var(--space-2,8px);overflow-wrap:anywhere}.ds-usage{display:flex;align-items:center;gap:var(--space-2,8px);width:100%;min-width:0;border:0;border-radius:var(--radius-sm,5px);background:transparent;padding:var(--space-2,8px);text-align:left;font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink-secondary,#525a68);cursor:pointer}.ds-usage>span{flex:1;min-width:0}.ds-usage>svg{flex-shrink:0}.ds-usage strong{display:block;font-size:var(--type-label,12px);font-weight:var(--weight-medium,550)}.ds-usage small{display:block;margin-top:var(--space-1,4px);font-size:var(--type-caption,11px);color:var(--ink-secondary,#525a68);overflow-wrap:anywhere}.ds-usage:hover{background:var(--surface-hover,#eff1f5)}.ds-usage:focus-visible{outline:2px solid var(--focus,#6b5ce6);outline-offset:3px}.ds-usage:disabled{opacity:.46;cursor:not-allowed}"
+      "refersTo": "section-heading",
+      "description": "Native details retains mounted children and reduced-motion support.",
+      "html": "<details class=\"ds-section\" open><summary><span>Value</span><svg width=\"12\" height=\"12\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m8 5 5 5-5 5\"/></svg></summary><div class=\"ds-section-content\">Keep related properties together.</div></details>",
+      "css": ".ds-section{border-bottom:1px solid var(--line,#e0e4da);font-family:var(--font-ui,SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--ink,#21241d)}.ds-section summary{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;padding:16px;font-size:13px;font-weight:650;line-height:1.5;cursor:pointer}.ds-section summary::-webkit-details-marker{display:none}.ds-section summary svg{color:var(--ink-tertiary,#68705f);transition:transform var(--motion-reveal,250ms) var(--motion-ease,cubic-bezier(.22,1,.36,1))}.ds-section[open] summary svg{transform:rotate(90deg)}.ds-section-content{display:flex;flex-direction:column;gap:20px;padding:24px 16px;font-size:14px;font-weight:450;line-height:22px}.ds-section::details-content{interpolate-size:allow-keywords;block-size:0;opacity:0;overflow:clip;transition:block-size var(--motion-reveal,250ms) var(--motion-ease,cubic-bezier(.22,1,.36,1)),opacity var(--motion-reveal,250ms),content-visibility var(--motion-reveal,250ms) allow-discrete}.ds-section[open]::details-content{block-size:auto;opacity:1}.ds-section summary:focus-visible{outline:2px solid var(--focus,#568b12);outline-offset:3px}@media(prefers-reduced-motion:reduce){:host *{animation:none!important;transition:none!important}}"
     }
   ],
   "narrative": {
-    "northStar": "The familiar professional editor",
-    "overview": "Axiom UI makes system authoring feel precise and legible. Its neutral surfaces, restrained violet action and selection color, compact SUIT typography, and clear control boundaries follow the owner's pinned Linear, Geist, Figma and Apple references. The work is implemented directly in code and supports both light and dark Studio themes.\n\nStructure carries the identity: related controls align, selected objects remain visible, and contextual properties sit close to their source relationships. Flat panels leave the canvas and authored content prominent; floating tools and dialogs receive purposeful elevation. This document describes the editor's reusable interface, not the design system a person authors inside it.",
+    "northStar": "The material workbench",
+    "overview": "Axiom UI is a precise, tactile editor whose actual values carry the visual interest. Signal lime marks primary action and selection; charcoal or chalk planes carry the work. SUIT, rounded outline icons, and generous vertical grouping give Korean and English authoring the same measured rhythm.\n\nThe interface is built directly in code. Flat structural panels, restrained glow on active navigation, and glass on floating canvas tools establish depth without competing with the authored system. This identity belongs to Studio: a person's colors, type, shadows, and motion remain independently authored content.",
     "keyCharacteristics": [
-      "Neutral layers with one violet action and selection family.",
-      "Compact Korean and English typography with visible control boundaries and keyboard focus.",
-      "Shared primitives across Foundation, library, canvas, inspector and Axiom UI.",
-      "Desktop panels that become separate, usable panels on narrow web viewports."
+      "One fluorescent signal color across dark and light Studio appearances.",
+      "Shared SUIT roles, rounded controls, and vertically separated property groups.",
+      "Actual material specimens connected to contextual controls and reviewed changes.",
+      "Thin SVG outlines, tonal structural layers, and purposeful motion."
     ],
     "rules": [
       {
-        "name": "Separate themes",
-        "body": "Studio appearance uses the root data-theme attribute and the axiom.ui.theme preference. Authored ADS theme sets select the values shown in previews and edited in Foundation; changing one must not silently change the other.",
+        "name": "Independent Values",
+        "body": "Studio appearance is separate from authored ADS theme contexts and token values. Preserve authored purple, other project colors, and explicit saved appearance preferences when changing the editor identity.",
         "section": "colors"
       },
       {
-        "name": "Boundaries have jobs",
-        "body": "Use line for structural separators, line-strong for stronger non-editable edges and secondary-button outlines, and control-border for ordinary editable inputs, textareas and selects. Keep validation and focus visible as distinct states.",
+        "name": "Boundaries Have Jobs",
+        "body": "Structural separators use line, secondary edges use line-strong, and ordinary editable fields use control-border. Inset inspector fields are a documented tonal exception; focus and invalid state still need their own visible treatment.",
         "section": "colors"
       },
       {
-        "name": "Scope shared roles",
-        "body": "Use the shared type and size variables for Studio controls, and inspect the actual selector cascade before claiming a whole screen follows them. Authored component typography belongs to the user's Foundation and design properties.",
+        "name": "Scope Shared Roles",
+        "body": "Use shared role variables for Studio chrome, and inspect the actual cascade before claiming every element uses a complete type recipe. Authored typography specimens render the user's value with documented display bounds.",
         "section": "typography"
       },
       {
-        "name": "Elevate by role",
-        "body": "Keep the workbench's structural panels flat. Use floating-shadow for canvas tools and dialog-shadow for modal surfaces; a selected catalog card's accent outline indicates selection rather than height.",
+        "name": "Elevate by Role",
+        "body": "Keep structural panes flat. Use floating-shadow for detached tools and dialog-shadow for modal surfaces. Preserve the stable light ground behind authored shadow specimens.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do reuse the semantic CSS roles and shared controls in src/ui.tsx before adding another local variant.",
-      "Do update both Studio palettes and these artifacts whenever a reused visual token changes.",
-      "Do use the shared type, spacing and Button size roles while retaining documented cascade and compact-control exceptions.",
-      "Do label icon actions, keep keyboard focus visible, and retain the existing tab keyboard and input composition behavior.",
-      "Do keep alias targets, classification and usage context on readable lines, and connect usage actions to the correct component, Part and design category.",
-      "Do retain review, error, pending and saved states as explicit text and control behavior as well as color.",
-      "Do check light and dark desktop views and the narrow panel flow when changing shared layout or controls."
+      "**Do** reuse semantic CSS roles and shared primitives before adding another local recipe.",
+      "**Do** preserve the same role meanings in dark and light Studio appearances.",
+      "**Do** keep authored material values independent from the Studio brand.",
+      "**Do** group related measurements and leave vertical space between property groups.",
+      "**Do** pair specimens with readable names, measurement recipes, bindings, and unresolved states.",
+      "**Do** retain accessible icon labels, visible focus, reduced motion, and Korean input composition.",
+      "**Do** verify selector precedence when extending shared controls or responsive behavior.",
+      "**Do** keep review and source-provenance states explicit at the point of change."
     ],
     "donts": [
-      "Don't couple the Studio appearance switch to an authored ADS theme or use Studio tokens as authored token values.",
-      "Don't substitute the faint structural separator for the ordinary editable-control boundary.",
-      "Don't give every panel a card, shadow or large radius; keep hierarchy in surface tone, separators and alignment.",
-      "Don't squeeze navigation, workspace and inspector into three columns at narrow widths.",
-      "Don't introduce page-load choreography or retain nonessential transitions under reduced motion.",
-      "Don't treat a catalog inventory, web preview or generated native source as proof of native interaction, accessibility or device execution."
+      "**Don't** change saved appearance or authored project values to enforce a new default.",
+      "**Don't** replace ordinary editable boundaries with faint structural separators.",
+      "**Don't** make structural panes glow or float just because active navigation and tools do.",
+      "**Don't** squeeze three desktop panes into a narrow viewport.",
+      "**Don't** substitute truncated composite JSON for a readable material caption.",
+      "**Don't** treat a static capture, catalog entry, or generated source as proof of temporal behavior or native execution."
     ]
   }
 }

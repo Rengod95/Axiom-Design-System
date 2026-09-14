@@ -20,7 +20,15 @@ async function until(expression) {
   throw new Error(`Studio condition timed out: ${expression}; detail: ${JSON.stringify(detail)}; browser errors: ${browser.cdp.errors.join("; ")}`);
 }
 const element = id => `document.querySelector(${JSON.stringify(selector(id))})`;
+async function reveal(id) {
+  const index = await page.evaluate(`(()=>{const target=${element(id)};let closed=null;for(let e=target;e;e=e.parentElement)if(e.tagName==='DETAILS'&&!e.open&&!e.querySelector(':scope > summary')?.contains(target))closed=e;return closed?Array.from(document.querySelectorAll('details')).indexOf(closed):-1})()`);
+  if(index<0)return;
+  const point=await page.evaluate(`(()=>{const e=document.querySelectorAll('details')[${index}].querySelector('summary');e.scrollIntoView({block:'center'});const r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+  for(const type of ['mousePressed','mouseReleased'])await page.send('Input.dispatchMouseEvent',{type,button:'left',clickCount:1,...point});
+  await delay(280);await reveal(id);
+}
 async function click(id) {
+  await reveal(id);
   await until(`${element(id)} && !${element(id)}.disabled`);
   await page.evaluate(`${element(id)}.scrollIntoView({block:"center",inline:"nearest"})`);
   const bounds = await page.evaluate(`(()=>{const r=${element(id)}.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
@@ -29,6 +37,7 @@ async function click(id) {
   await page.evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))`);
 }
 async function fill(id, value) {
+  await reveal(id);
   await until(`${element(id)} && !${element(id)}.disabled`);
   await page.evaluate(`${element(id)}.focus()`);
   await page.send("Input.dispatchKeyEvent", { type: "keyDown", key: "a", code: "KeyA", modifiers: 2, windowsVirtualKeyCode: 65 });
@@ -109,6 +118,7 @@ try {
   await until(`${element("token-value-input")}.value === "#7451e8"`);
   await click("component-component.card");
   const cardBody = "한글 입력을 보존하는 디자인 시스템";
+  await reveal("sample-body");
   await page.evaluate(`${element("sample-body")}.focus()`);
   // Genuine CDP composition (not a synthetic DOM event) remains transient until commit.
   await page.send("Input.imeSetComposition", { text: "한글", selectionStart: 2, selectionEnd: 2 });

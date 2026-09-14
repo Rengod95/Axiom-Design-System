@@ -6,9 +6,10 @@ import { getStudioCatalogRecipe, inspectTypedValue, parseJson } from "../../../m
 import type { JsonObject, JsonValue, StudioCategory, StudioComponent, StudioComponentEdit, StudioVisualProperty, TypeExpression } from "../../../modules/ads-core/src/index.ts";
 import type { StudioController, StudioState } from "./controller.ts";
 import type { Locale } from "./locales.ts";
-import { Button, Field, Section, TextInput, copy } from "./ui.tsx";
+import { ChoiceControl, Button, Field, Section, TextInput, copy } from "./ui.tsx";
 import { AppearanceRules } from "./appearance-rules.tsx";
 import { useFormDraft } from "./form-drafts.tsx";
+import { TokenVisual } from "./token-visual.tsx";
 import { colorHex, hexColor, object } from "./ui-utils.ts";
 
 const rows = (value: unknown): JsonObject[] => Array.isArray(value) ? value.filter(object) : [];
@@ -67,15 +68,15 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     if (!perform([edit])) { draftRef.current = { ...before, [id]: text }; controller.inputError(); }
     setDrafts(draftRef.current);
   };
-  const textField = (key: string, label: string, value: string, make: (text: string) => StudioComponentEdit, multiline = false, testId = key): ReactNode => <Field key={key} label={label}>
+  const textField = (key: string, label: string, value: string, make: (text: string) => StudioComponentEdit, multiline = false, testId = key): ReactNode => <Field key={key} label={label} layout="row">
     <TextInput label={label} data-testid={testId} value={drafts[keyFor(key)] ?? value} aria-invalid={Object.hasOwn(drafts, keyFor(key))} multiline={multiline} onCommit={text => commit(key, text, make(text))} />
     {Object.hasOwn(drafts, keyFor(key)) && <small role="status">{t("입력을 수정해 주세요. 이전 값은 보존됩니다.", "Correct this input. The previous value is preserved.")}</small>}
   </Field>;
-  const numberField = (key: string, label: string, value: number, make: (number: number) => StudioComponentEdit, min = 0, max = 4096, testId = key): ReactNode => <Field key={key} label={label}>
+  const numberField = (key: string, label: string, value: number, make: (number: number) => StudioComponentEdit, min = 0, max = 4096, testId = key): ReactNode => <Field key={key} label={label} layout="row">
     <TextInput label={label} data-testid={testId} inputMode="decimal" value={drafts[keyFor(key)] ?? String(value)} aria-invalid={Object.hasOwn(drafts, keyFor(key))} onCommit={text => { const parsed = inspectorNumber(text, min, max); if (parsed === null) hold(key, text); else commit(key, text, make(parsed)); }} />
     {Object.hasOwn(drafts, keyFor(key)) && <small role="status">{t(`${min}–${max} 사이 숫자를 입력하세요.`, `Enter a number from ${min} to ${max}.`)}</small>}
   </Field>;
-  const selectField = (key: string, label: string, value: string, options: readonly { value: string; label: string; disabled?: boolean }[], make: (value: string) => StudioComponentEdit): ReactNode => <Field key={key} label={label}>
+  const selectField = (key: string, label: string, value: string, options: readonly { value: string; label: string; disabled?: boolean }[], make: (value: string) => StudioComponentEdit): ReactNode => <Field key={key} label={label} layout="row">
     <select aria-label={label} data-testid={key} value={drafts[keyFor(key)] ?? value} aria-invalid={Object.hasOwn(drafts, keyFor(key))} onChange={event => commit(key, event.currentTarget.value, make(event.currentTarget.value))}>{options.map(option => <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>)}</select>
   </Field>;
   const options = (values: readonly string[]) => values.map(value => ({ value, label: value }));
@@ -93,7 +94,7 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     const value = resolve(declared) ?? resolve(rootValue) ?? (type === "color" ? { colorSpace: "srgb", components: [0, 0, 0], alpha: property === "background" ? 0 : 1 } : type === "number" ? 1 : { value: property === "fontSize" ? 14 : 0, unit: "px" });
     const change = (next: JsonValue): StudioComponentEdit => ({ kind: "appearance", category, partId: part.id, property, value: next });
     const bindingKey = `appearance-${property}-binding`, valueKey = `appearance-${property}-value`;
-    return <div className="property-group" key={`${part.id}/${property}`}>
+    return <div className={`property-group appearance-property appearance-${property}`} key={`${part.id}/${property}`}><span className="binding-specimen"><TokenVisual type={type} value={value} domain={property === "borderRadius" ? "radius" : property === "opacity" ? "opacity" : ""} locale={locale} /></span>
       {selectField(bindingKey, visualLabels[property] ?? property, bound, [...(declared === undefined ? [{ value: "inherited", label: t("기본값 상속", "Inherited default"), disabled: true }] : []), { value: "literal", label: t("직접 값", "Literal value") }, ...(state.projection?.foundation.tokens.filter(token => token.type === type).map(token => ({ value: token.id, label: token.name })) ?? [])], selected => change(selected === "literal" ? value : { tokenRef: selected }))}
       {bound === "literal" && (type === "color" ? <div className="value-grid"><Field label={t("sRGB 색", "sRGB color")}><input type="color" aria-label={`${visualLabels[property]} ${t("색 선택", "color picker")}`} value={colorHex(value) ?? "#000000"} onChange={event => { const next = hexColor(event.currentTarget.value, value); if (next) commit(valueKey, event.currentTarget.value, change(next)); }} /></Field><Field label="Hex"><TextInput label={`${visualLabels[property]} Hex`} data-testid={valueKey} value={drafts[keyFor(valueKey)] ?? colorHex(value) ?? ""} aria-invalid={Object.hasOwn(drafts, keyFor(valueKey))} onCommit={text => { const next = hexColor(text, value); if (next) commit(valueKey, text, change(next)); else hold(valueKey, text); }} /></Field>{numberField(`appearance-${property}-alpha`, t("알파 (0–1)", "Alpha (0–1)"), object(value) && typeof value.alpha === "number" ? value.alpha : 1, alpha => change({ ...(object(value) ? value : {}), alpha }), 0, 1)}</div>
         : numberField(valueKey, type === "number" ? t("값 (0–1)", "Value (0–1)") : "px", typeof value === "number" ? value : object(value) && typeof value.value === "number" ? value.value : 0, number => change(type === "number" ? number : { value: number, unit: "px" }), property === "fontSize" ? Number.MIN_VALUE : 0, type === "number" ? 1 : 4096))}
@@ -133,27 +134,30 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     valid: !Object.keys(drafts).length && (!addingPart || !!partName.trim()) && (!addingValue || !!valueName.trim()), apply: applyForm, reset: resetForm });
   return <div data-draft-form="component-properties">
     {localDirty && <div className="form-feedback" role="status"><p>{Object.keys(drafts).length ? t("입력값을 확인하세요. 마지막 정상 미리보기는 유지됩니다.", "Check the input. The last valid preview is retained.") : t("추가 중인 항목을 완료하거나 취소하세요.", "Complete or cancel the item being added.")}</p><Button data-testid="inspector-reset-input" onClick={resetForm}>{t("미반영 입력 초기화", "Reset uncommitted input")}</Button></div>}
-    <Section title={t("컴포넌트", "Component")}>
-      {textField("component-name", t("이름", "Name"), component.name, name => ({ kind: "name", name }))}
-      {textField("component-purpose", t("목적", "Purpose"), component.purpose, purpose => ({ kind: "purpose", purpose }), true)}
-    </Section>
-    <Section title={t("콘텐츠", "Content")}>{selectField("variant-default", t("기본 변형", "Default variant"), component.defaults.variant, options(["filled", "outlined"]), value => ({ kind: "variant-default", value: value as "filled" | "outlined" }))}{samples.map(field => textField(`sample-${field}`, sampleLabels[field], component.sampleContent[field], value => ({ kind: "sample-content", field, value }), field === "body"))}</Section>
-    <Section title={t("선택한 Part", "Selected Part")}>
-      {textField(`part-name/${part.id}`, t("Part 이름", "Part name"), part.name, name => ({ kind: "part-name", partId: part.id, name }), false, "part-name")}
+    <div className="selected-part-heading"><span className="badge">{part.role}</span>      {textField(`part-name/${part.id}`, t("Part 이름", "Part name"), part.name, name => ({ kind: "part-name", partId: part.id, name }), false, "part-name")}</div>
+    <Section title={t("선택한 Part", "Selected Part")} defaultOpen={false}>
+
       {catalog && <>{textField(`part-text/${part.id}`, t("Part 텍스트", "Part text"), part.text ?? "", text => ({ kind: "part-text", partId: part.id, text }), true, "part-text")}{part.parent && source.sourcePart?.required !== true && selectField("part-parent", t("부모 Part", "Parent Part"), part.parent, component.parts.filter(item => item.id !== part.id).map(item => ({ value: item.id, label: item.name })), parentId => ({ kind: "part-parent", partId: part.id, parentId }))}</>}
       <p className="field-hint">{part.role} · <code>{part.id}</code></p>
       <div className="button-row">{([-1, 1] as const).map(direction => <Button key={direction} tone="subtle" data-testid={`part-move-${direction === -1 ? "up" : "down"}`} disabled={!catalog || !movedChildren(component, part.id, direction)} onClick={() => { const childIds = movedChildren(component, part.id, direction); if (childIds && part.parent) perform([{ kind: "part-order", parentId: part.parent, childIds }]); }}>{direction === -1 ? t("앞으로", "Move earlier") : t("뒤로", "Move later")}</Button>)}<Button tone="danger" icon="trash" data-testid="part-delete" disabled={!removePart} onClick={() => { if (perform([{ kind: "part-delete", partId: part.id }])) onSelectPart?.(part.parent!); }}>{t("삭제", "Delete")}</Button></div>
       {catalog ? <><Button tone="subtle" icon="plus" data-testid="part-add" onClick={() => { setAddingPart(!addingPart); setFormError(null); if (!addingPart) { let index = 1; while (component.parts.some(item => item.role === `part${index}`)) index++; setPartRole(`part${index}`); } }}>{t("하위 Part 추가", "Add child Part")}</Button>{addingPart && <div className="property-group"><Field label={t("새 Part 이름", "New Part name")}><TextInput label={t("새 Part 이름", "New Part name")} data-testid="part-add-name" value={partName} onCommit={setPartName} /></Field><Field label={t("Part 역할", "Part role")}><TextInput label={t("Part 역할", "Part role")} data-testid="part-add-role" value={partRole} onCommit={setPartRole} /></Field><Button data-testid="part-add-confirm" onClick={() => { if (perform([{ kind: "part-add", parentId: part.id, name: partName, role: partRole }])) { setAddingPart(false); setPartName(""); setFormError(null); } else setFormError(t("Part 이름과 역할을 확인하세요.", "Check the Part name and role.")); }}>{t("Part 추가", "Add Part")}</Button></div>}</> : <p className="field-hint">{t("기본 컴포넌트의 의미 구조는 고정되어 있습니다.", "The builtin component keeps its required semantic structure.")}</p>}
     </Section>
     {layout && <Section title={`${t("레이아웃", "Layout")} · ${category}`}>
-      {selectField("layout-axis", t("방향", "Direction"), layout.axis, [{ value: "horizontal", label: t("가로", "Horizontal") }, { value: "vertical", label: t("세로", "Vertical") }], value => ({ kind: "layout", category, partId: part.id, field: "axis", value }))}
-      {(["gap", "padding", "minHeight"] as const).map(field => numberField(`layout-${field}`, fieldLabels[field], layout[field], value => ({ kind: "layout", category, partId: part.id, field, value })))}
+      <Field layout="row" label={t("방향", "Direction")}><ChoiceControl label={t("레이아웃 방향", "Layout direction")} testId="layout-axis" value={layout.axis} choices={[{ value: "horizontal", label: t("가로", "Row"), icon: "arrow" }, { value: "vertical", label: t("세로", "Column"), icon: "download" }]} onChange={value => commit("layout-axis", value, { kind: "layout", category, partId: part.id, field: "axis", value })} /></Field>
+      <div className="dimension-controls">{(["gap", "padding", "minHeight"] as const).map(field => numberField(`layout-${field}`, fieldLabels[field], layout[field], value => ({ kind: "layout", category, partId: part.id, field, value })))}</div>
       {catalog && <>{(["width", "height"] as const).map(field => { const policy = layout[field] ?? { mode: "hug" }; return <div className="property-group" key={field}>{selectField(`layout-${field}`, field === "width" ? t("너비", "Width") : t("높이", "Height"), policy.mode, [{ value: "hug", label: t("콘텐츠에 맞춤", "Hug contents") }, { value: "fill", label: t("공간 채우기", "Fill available") }, { value: "fixed", label: t("고정", "Fixed") }], mode => ({ kind: "layout", category, partId: part.id, field, value: mode === "fixed" ? { mode, value: 100 } : { mode } }))}{policy.mode === "fixed" && numberField(`layout-${field}-value`, "px", policy.value, value => ({ kind: "layout", category, partId: part.id, field, value: { mode: "fixed", value } }), 1)}</div>; })}
         {selectField("layout-alignment", t("정렬", "Alignment"), layout.alignment ?? "stretch", options(["start", "center", "end", "stretch"]), value => ({ kind: "layout", category, partId: part.id, field: "alignment", value }))}</>}
     </Section>}
-    <Section title={`${t("스타일", "Appearance")} · ${category}`}><p className="field-hint">{t("선택한 Part의 기본 스타일입니다. 아래에서 타이포그래피·효과와 조건별 규칙을 연결하세요.", "Base style for this Part. Connect typography, effects and state rules below.")}</p>{VISUAL.map(appearance)}</Section>
+    <Section title={t("채우기", "Fill")}>{appearance("background")}{appearance("opacity")}</Section>
+    <Section title={t("텍스트", "Text")}>{appearance("color")}{appearance("fontSize")}</Section>
+    <Section title={t("테두리와 모서리", "Border and corners")}>{appearance("borderColor")}<div className="dimension-controls">{appearance("borderWidth")}{appearance("borderRadius")}</div></Section>
+    <Section title={t("컴포넌트", "Component")} defaultOpen={false}>
+      {textField("component-name", t("이름", "Name"), component.name, name => ({ kind: "name", name }))}
+      {textField("component-purpose", t("목적", "Purpose"), component.purpose, purpose => ({ kind: "purpose", purpose }), true)}
+    </Section>
+    <Section title={t("콘텐츠", "Content")} defaultOpen={false}>{selectField("variant-default", t("기본 변형", "Default variant"), component.defaults.variant, options(["filled", "outlined"]), value => ({ kind: "variant-default", value: value as "filled" | "outlined" }))}{samples.map(field => textField(`sample-${field}`, sampleLabels[field], component.sampleContent[field], value => ({ kind: "sample-content", field, value }), field === "body"))}</Section>
     <AppearanceRules key={`${component.id}/${part.id}/${category}`} state={state} controller={controller} component={component} partId={part.id} category={category} locale={locale} />
-    <Section title={t("공개 값", "Public values")} defaultOpen={source.values.length > 0}>
+    <Section title={t("공개 값", "Public values")} defaultOpen={false}>
       {source.values.map(valueEditor)}
       {!source.values.length && <p className="field-hint">{t("공개 값이 없습니다.", "No public values are defined.")}</p>}
       {catalog && <><Button icon="plus" tone="subtle" data-testid="value-add" onClick={() => { setAddingValue(!addingValue); setFormError(null); }}>{t("값 추가", "Add value")}</Button>{addingValue && <div className="property-group">
@@ -166,7 +170,7 @@ export function ComponentInspector({ state, controller, component, selectedPart,
       </div>}</>}
     </Section>
     {catalog && <Section title={t("슬롯 계약", "Slot contracts")} defaultOpen={false}><p className="field-hint">{t("슬롯은 선택한 Part가 받을 콘텐츠의 계약입니다. 컴포넌트 인스턴스 주입은 별도의 작성 범위입니다.", "A slot declares content accepted by its Part. Instance content injection is a separate authoring capability.")}</p>{catalog.slots.map(slot => <div className="property-row" key={String(slot.id)}><span>{component.parts.find(item => item.id === slot.ownerPartRef)?.name} · {slot.min === 0 ? t("선택", "Optional") : t("필수", "Required")} / {String(slot.max)}</span><Button tone="subtle" icon="trash" aria-label={t("슬롯 삭제", "Delete slot")} disabled={recipe?.slots.some(required => required.required && component.parts.find(item => item.id === slot.ownerPartRef)?.role === required.role)} onClick={() => perform([{ kind: "slot-delete", slotId: String(slot.id) }])} /></div>)}{!catalog.slots.some(slot => slot.ownerPartRef === part.id) && <div className="choice-chips"><Button data-testid="slot-add-optional" onClick={() => perform([{ kind: "slot-add", partId: part.id, required: false, multiple: true }])}>{t("선택 슬롯 추가", "Add optional slot")}</Button><Button onClick={() => perform([{ kind: "slot-add", partId: part.id, required: true, multiple: false }])}>{t("필수 슬롯 추가", "Add required slot")}</Button></div>}</Section>}
-    <Section title={t("접근성", "Accessibility")} defaultOpen={Boolean(catalog)}>
+    <Section title={t("접근성", "Accessibility")} defaultOpen={false}>
       {catalog ? <>{textField("a11y-label", t("접근 가능한 이름", "Accessible name"), String(catalog.accessibility.label ?? ""), value => ({ kind: "accessibility", field: "label", value }))}{textField("a11y-description", t("추가 설명", "Accessible description"), String(catalog.accessibility.description ?? ""), value => ({ kind: "accessibility", field: "description", value }), true)}<p className="field-hint">{t("레이블 편집은 실제 보조기기 검증을 대신하지 않습니다.", "Label editing does not establish assistive-technology verification.")}</p></> : <p className="field-hint">{t("기본 이름과 초점 계약을 유지합니다. 표시 레이블은 콘텐츠에서 편집하세요.", "Builtin naming and focus contracts remain fixed. Edit visible labels in Content.")}</p>}
     </Section>
     {catalog && <MotionInspector key={`${component.id}/${part.id}`} state={state} controller={controller} component={component} partId={part.id} locale={locale} />}

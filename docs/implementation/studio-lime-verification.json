@@ -1,0 +1,214 @@
+{
+  "kind": "AxiomStudioLimeVerification",
+  "date": "2026-09-14",
+  "implementationParent": "5d6b893744df5fb7a0228491e5c4ece462c99a09",
+  "scope": "Studio material-token browsing and requested identity/inspector redesign",
+  "foundationCompletion": false,
+  "gates": {
+    "check": "PASSED:161 source files",
+    "unit": {
+      "status": "PASSED",
+      "tests": 361,
+      "fail": 0,
+      "skipped": 0
+    },
+    "build": "PASSED:140 inputs",
+    "browserStore": "PASSED",
+    "studio": "PASSED",
+    "workbench": {
+      "status": "PASSED",
+      "count": 21,
+      "caseNames": [
+        "create",
+        "typedToken",
+        "aliasAndClassification",
+        "themes",
+        "catalogSimulation",
+        "libraryAndCanvas",
+        "dirtyManagement",
+        "hexEditing",
+        "sourceBundle",
+        "processRestart",
+        "starterWorkspace",
+        "directReview",
+        "blockedInspectorRecovery",
+        "trackpadGesture",
+        "motionAuthoring",
+        "responsiveAppearance",
+        "materialAtlas",
+        "materialMotion",
+        "collapsedDraftRecovery",
+        "dtcgReviewedImport",
+        "dtcgResolverAndExchange"
+      ]
+    },
+    "targets": "PASSED:representative consumers; native execution not run",
+    "retirement": "PASSED:442 frozen files",
+    "retirementSelfTest": "PASSED",
+    "foundationSelfTest": {
+      "status": "PASSED",
+      "counts": {
+        "documents": 56,
+        "domains": 12,
+        "decisions": 129,
+        "followups": 14,
+        "fieldRecords": 57,
+        "queries": 10,
+        "commands": 52,
+        "diagnostics": 30,
+        "localLinks": 1247,
+        "fragments": 129,
+        "checks": 2421
+      }
+    }
+  },
+  "review": {
+    "disposition": "ship",
+    "scope": "four scored material fixes only",
+    "report": "docs/implementation/studio-lime-finish-review.md",
+    "staticVisualLimit": "Temporal motion and List rendering are not visually approved by static captures.",
+    "detector": {
+      "oldDesignAdvisories": 45,
+      "primaryWarning": "nav height transition removed",
+      "secondRun": false
+    },
+    "captureArchiveVerified": true,
+    "temporaryCaptureFilesRemoved": 19
+  },
+  "captures": [
+    {
+      "path": "dist/evidence/lime-domains-dark.png",
+      "sha256": "687946f1178631dc5926e98199153b737a9fb083ad513075017662a86bb8a1e8"
+    },
+    {
+      "path": "dist/evidence/lime-atlas-dark.png",
+      "sha256": "1ba478f8f423f5cb8ecac86f5ac6b9cf486db2abfaf822c2dc004ff3c2b89fca"
+    },
+    {
+      "path": "dist/evidence/lime-color-inspector.png",
+      "sha256": "1d970447050809ff5828f7014b334e9a43f39e766bbb25f1fe021abca8198a2e"
+    },
+    {
+      "path": "dist/evidence/lime-spacing.png",
+      "sha256": "be1dea946f8dfbd621892a2100a1cc42cd1426bedc4b3c79d60bc1e2b1117c2f"
+    },
+    {
+      "path": "dist/evidence/lime-radius.png",
+      "sha256": "4ce5d3ee2178452af05c63bad854dbb59e0448c320ce12ca271ae77ea8eaccef"
+    },
+    {
+      "path": "dist/evidence/lime-shadow.png",
+      "sha256": "2da7f8938b61fc02f04e20f99402181d4eed6401ead65e094d8f452072d9913d"
+    },
+    {
+      "path": "dist/evidence/lime-typography.png",
+      "sha256": "77cf46f13baad3faa094dc7a713cd16dd05cfe924de19dc03accced05a3f615c"
+    },
+    {
+      "path": "dist/evidence/lime-motion.png",
+      "sha256": "e202375e1c57e297861f5de0df07e6ef2aa0a30953ee6ab96b6d01a0548b30b4"
+    },
+    {
+      "path": "dist/evidence/lime-opacity.png",
+      "sha256": "6723554eeb0df527f2560204ff138e691e08875d831e52d6e72e99a54718f2a5"
+    },
+    {
+      "path": "dist/evidence/lime-sizing.png",
+      "sha256": "37a3cf383b56bccc124fbcd487645aca70e98d109ce795a49c2f6b541ac1dff2"
+    },
+    {
+      "path": "dist/evidence/lime-component-inspector.png",
+      "sha256": "0edfd21af0a74c47376d8125b92fc9178799405aa9e1f437d1cb9450e5db30e6"
+    },
+    {
+      "path": "dist/evidence/lime-system-dark.png",
+      "sha256": "493321c2b73f021c7a09d0c3b2557163c595d1e466a1da70fa8389596a501376"
+    },
+    {
+      "path": "dist/evidence/lime-system-controls.png",
+      "sha256": "64d5428875a3a4d6f62260a458ec78a7f1a5812900f91f7ce3711708e9d79923"
+    },
+    {
+      "path": "dist/evidence/lime-system-motion.png",
+      "sha256": "4fc492006335f49f43edca3d9cb0bd7d19b76c04284d289ff7d611d0bef6754b"
+    },
+    {
+      "path": "dist/evidence/lime-system-light.png",
+      "sha256": "f55f404be44994849a12dbbdee3b8426f9dbb8087b82faafe5511caa1de65cea"
+    },
+    {
+      "path": "dist/evidence/lime-domains-light.png",
+      "sha256": "965402e5caccd7a3fb40fa8579156b96414a5705fe2a97ad1e0c669dbfd9d570"
+    },
+    {
+      "path": "dist/evidence/lime-user-1312.png",
+      "sha256": "e41d73bc5fac7c80e505133eeb8daefe89cc34ec5016ce284b68b1c60146a169"
+    },
+    {
+      "path": "dist/evidence/lime-mobile.png",
+      "sha256": "0d48843503da5fa06a5419f48a49cd22e6cd8e60af4ff08b39ccd9f8cd10a9a2"
+    },
+    {
+      "path": "dist/evidence/lime-mobile-light.png",
+      "sha256": "d3e531ff43f93fbffdd7842d979d0c0d725cece9a20e9343912b7e6999469548"
+    }
+  ],
+  "sourceHashes": {
+    "apps/studio/.impeccable/design.json": "36604f905cd22449ca2fbbf358e0b59a631076ef7464f14d3215cf21a1d02b93",
+    "apps/studio/.impeccable/surfaces/workbench.md": "ffcacf4eb29b816d09d077c262096a15205295ee64a99578b34cde0aa9036816",
+    "apps/studio/DESIGN.md": "5dd004a99f27208626621eb73abf0ec17b341f1affe6a5358b91d97d6bad3e70",
+    "apps/studio/PRODUCT.md": "0e53acf1b43a7bb480f3cfc99adfc58f926d1816f273595dfef3e75427ac6ae4",
+    "apps/studio/index.html": "6410b6ff5d3b357bbc164b31e9a22d6678059d363077be9e76cdf26ef60e5f9c",
+    "apps/studio/src/app.tsx": "8989a55ebdc294fd22c9d299bb616468a354fba30ff27c9cb56c52706df966c1",
+    "apps/studio/src/component-inspector.tsx": "2368672dab9fb361cfeb7e488252d39276cc5138192c234676dc0b2551103b17",
+    "apps/studio/src/form-drafts.tsx": "d0be6b2b3a9e1bc4bdcac302b378c41438b6a5cc0de68f7c42a0eed7f82a9a69",
+    "apps/studio/src/foundation-domains.tsx": "c98ed9e9ab8c7e21f399b7aa4b4f1c8383a52cdda678ca7a614f883615af1ea4",
+    "apps/studio/src/foundation-inspector.tsx": "32a3e2b1bc590684b01f02918bc9c2d47c39e367886b3f3138ffa39bbe12a60a",
+    "apps/studio/src/foundation-panel.tsx": "50847be3a381467897f1030012e7db5b267c547ae0c731cfca0757e70a30071e",
+    "apps/studio/src/foundation-workspace.css": "63f89a0b8940b8c7f006e2b38a86ef0e3fae7022de88e54607bfc82e7b342e8a",
+    "apps/studio/src/icons.tsx": "107d700620aa5f626b4a3dab648406a88b0eceb341b16282025e1d2e54258895",
+    "apps/studio/src/styles.css": "4ab648258019b4a2eb16a5a4f7f6c6cbff7e59688ffe21124a8d62971bc8725c",
+    "apps/studio/src/system-panel.tsx": "22fdd54de1be12ba8db82d7528aa09c2bb0fd454f07fd6770b86ff9b9b6a5a58",
+    "apps/studio/src/token-atlas.tsx": "658648fae437e5a63efedf4f20d23d6eda51d2ded9de6c50c99d737992e31c81",
+    "apps/studio/src/token-value-editor.tsx": "4bb550494734600c6241ed4563f2ea58a1c4c2085cf24023e4a5676d8d4a4d15",
+    "apps/studio/src/token-visual.tsx": "ab5cdf66894f48e6aa65f3efb51bf63962066d385ebd36c67d17f6f96e660dff",
+    "apps/studio/src/ui-system.css": "6d7eff9a78819b47443fafc0fdbfdf58841cb025dbc558d6f4e8dda8b51bf568",
+    "apps/studio/src/ui.tsx": "27e041e09b8ca9398407549cabf59c43aa4f0cd18f46b197e7f2e18df87e6093",
+    "apps/studio/src/workbench-panels.tsx": "847b4c87bb7a591f4e41d2ddaddfc58d34b7c1b95120d56db504260c8d49bcd0",
+    "apps/studio/test/token-value-editor.test.ts": "4c77e9f0795a3c3d4caff4a60898a86134c6bd436f3307be18384f8dbc9e4281",
+    "apps/studio/test/token-visual.test.ts": "c3138fa04bc96923430c88ce670ebf3b8c23ff4a2ee2387df56a6fc29ba50379",
+    "scripts/verify-studio.mjs": "fda6c69c714c0003bc44b5d95c18fa76d8de015ca6928df74645ce6bc51392b1",
+    "scripts/verify-workbench.mjs": "d20328dafabd6cbab4bda1f09f417f684621c50c1a757ee5d616b1fdd7eaa679",
+    "scripts/workbench-completion-cases.mjs": "4648b317305e570a6fef8a87fc67d4eb85e54e08be19fc774b59aa7739cd6eb8"
+  },
+  "limitations": [
+    "13 literal types receive bounded display projections, not full target capability evidence.",
+    "Unchanged 119-row Foundation inventory remains incomplete.",
+    "Physical trackpad/OS IME, manual AT, native compilation and device execution not verified."
+  ],
+  "liveVerification": {
+    "waitedForSavedState": true,
+    "savedRevisionUnchangedAfterReload": true,
+    "theme": "dark",
+    "brand": "#b9ff46",
+    "pendingEditsAfterReload": false,
+    "origin": "http://127.0.0.1:4317/"
+  },
+  "documentation": {
+    "status": "EXTRACTED_AND_VERIFIED",
+    "files": [
+      "apps/studio/DESIGN.md",
+      "apps/studio/.impeccable/design.json",
+      "apps/studio/.impeccable/surfaces/workbench.md"
+    ],
+    "colors": 53,
+    "typographyRecipes": 12,
+    "radiusRoles": 8,
+    "spacingSteps": 8,
+    "componentStates": 34,
+    "previewSnippets": 10,
+    "extractedColorAgreement": true,
+    "componentReferencesValid": true,
+    "sourceCascadeExceptionsRecorded": true
+  }
+}

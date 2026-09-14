@@ -20,7 +20,7 @@ export async function verifyEditorCompletion({ page, origin, database, root, id,
   await viewport(1312, 958); await capture("02-domains-light");
   await clickElement("Array.from(document.querySelectorAll('.domain-directory-row')).find(e=>e.querySelector('strong').textContent==='Typography')");
   await clickElement(text("Semantic"));
-  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.foundation-table tbody tr')).filter(e=>e.getClientRects().length).every(e=>e.textContent.includes('Semantic'))"));
+  assert.ok(await page.evaluate("document.querySelectorAll('.material-group').length>0 && Array.from(document.querySelectorAll('.material-group > header')).every(e=>e.textContent.includes('Semantic'))"));
   await clickElement("Array.from(document.querySelectorAll('[data-testid^=foundation-row-]')).find(e=>e.textContent.includes('typography.body'))?.querySelector('button')");
   await capture("03-typography-light");
   await clickElement(text("Connections"));
@@ -111,7 +111,7 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   assert.equal(await revision(), initial); await capture("desktop-light");
   await click("dtcg-import-apply"); await approve(); const saved = await revision(); assert.notEqual(saved, initial);
   await click("undo"); await until(`(${id("save-status")}).textContent.includes('Saved')`); await click("redo"); await until(`(${id("save-status")}).textContent.includes('Saved')`);
-  await clickElement(text("Tokens"));
+  await clickElement(text("Tokens")); await click("token-view-list");
   const row = name => `Array.from(document.querySelectorAll('.foundation-table tbody tr')).find(e=>e.querySelector('.token-name-cell > span:last-child')?.firstChild.textContent===${JSON.stringify(name)})`;
   await until(row("measure")); await clickElement(`${row("measure")}.querySelector('button')`);
   assert.equal(await page.evaluate(`(${label("Value source", "select")}).value`), "expression");
@@ -127,7 +127,7 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   await clickElement(`${row("title")}.querySelector('button')`); await fillElement(label("Token description", "textarea"), "Composite type with a live font size"); await approve();
   assert.equal(await page.evaluate(`(${label("Value source", "select")}).value`), "expression");
   await clickElement(text("Connections")); assert.ok(await page.evaluate("document.querySelector('.relationship-tree').textContent.includes('title')"));
-  await clickElement(text("Tokens")); await clickElement(`${row("measure")}.querySelector('button')`); await capture("property-binding-light");
+  await clickElement(text("Tokens")); await click("token-view-list"); await clickElement(`${row("measure")}.querySelector('button')`); await capture("property-binding-light");
   await click("studio-theme-toggle"); await capture("property-binding-dark");
   // Malformed advanced input remains editable and reset restores its live binding.
   await clickElement(text("Edit expression JSON", "summary")); await fillElement(label("Binding expression", "textarea"), '{"ref":null}');
@@ -140,7 +140,7 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   await chooseFile("base.json", { scale: { $type: "number", $value: 2 }, semantic: { $type: "number", $value: "{scale}" } }, "Choose referenced files");
   await until(`!${id("dtcg-import-apply")}.disabled`); await clickElement(text("dark")); await capture("resolver-dark");
   await click("dtcg-import-apply"); await approve();
-  await clickElement(text("Tokens")); await until(row("semantic")); assert.ok(await page.evaluate(`${row("semantic")}.textContent.includes('9')`));
+  await clickElement(text("Tokens")); await click("token-view-list"); await until(row("semantic")); assert.ok(await page.evaluate(`${row("semantic")}.textContent.includes('9')`));
   await clickElement(text("Files")); await clickElement(text("Export", "[role=tab]")); await until(`!${id("dtcg-export")}.disabled`);
   await capture("export-dark"); await clickElement(text("Resolved values")); assert.equal(await page.evaluate(`${id("dtcg-export")}.disabled`), false);
   await clickElement(text("Import")); await fill("dtcg-source", "{"); await until(`${id("dtcg-import-apply")}.disabled`); assert.ok(await page.evaluate("document.querySelector('.exchange-preview [role=alert]').textContent.length>0"));
@@ -165,4 +165,48 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   assert.ok(await page.evaluate("document.documentElement.scrollWidth<=window.innerWidth+1"));
   await viewport(1600, 1080); await clickElement(text("Files")); await clickElement(text("Export", "[role=tab]")); await capture("export-light");
   record("dtcgResolverAndExchange", { suppliedFilesOnly: true, selectedContextApplied: true, exportModes: ["references", "resolved"], invalidSourceRecovery: true, prefixConflictRecovery: true, selectedTabVisibleOnResizeAndKeys: true, tabKeysPreserveParentScroll: true, desktopWidths: [1600, 1312], mobileWidth: 390, themes: ["light", "dark"] });
+}
+
+
+/** Runs against the existing disposable starter project after the completion cases. */
+export async function verifyMaterialWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record }) {
+  await click("view-foundation"); await clickElement(text("Tokens")); await click("token-view-visual");
+  for (const [name, value] of [["Filter domain", "all"], ["Filter tier", "all"], ["Filter type", "all"]]) await selectElement(label(name, "select"), value);
+  await fill("foundation-search", "");
+  const before = await revision();
+  const types = await page.evaluate("[...new Set(Array.from(document.querySelectorAll('.material-select [data-visual-type]')).map(e=>e.dataset.visualType))].sort()");
+  assert.deepEqual(types, ["border", "color", "cubicBezier", "dimension", "duration", "fontFamily", "fontWeight", "gradient", "number", "shadow", "strokeStyle", "transition", "typography"].sort());
+  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.material-select .token-visual')).every(e=>{const r=e.getBoundingClientRect();return r.width>=80&&r.height>=100})"), "Each material has a full display surface, including shadows");
+  await fill("foundation-search", "space.");
+  const names = await page.evaluate("Array.from(document.querySelectorAll('.material-select .sr-only')).map(e=>e.textContent)");
+  assert.ok(names.indexOf("space.2") < names.indexOf("space.12"), "Numeric scales use natural ordering");
+  const first = await page.evaluate("document.querySelector('.material-token').dataset.testid");
+  await clickElement(`${id(first)}.querySelector('.material-select')`);
+  await clickElement(`${id(first)}.querySelector('input[type=checkbox]')`);
+  await click("token-view-list");
+  assert.equal(await page.evaluate(`${id(first)}.querySelector('input').checked`), true);
+  assert.equal(await page.evaluate(`${id(first)}.querySelector('button').getAttribute('aria-pressed')`), "true");
+  await clickElement(text("Clear selection")); await click("token-view-visual");
+  assert.equal(await revision(), before, "Browsing and selection do not edit a project");
+  record("materialAtlas", { types: 13, naturalScales: true, selectionSurvivesListSwitch: true, readonlyBrowsing: true });
+
+  await fill("foundation-search", "duration.300"); await clickElement("document.querySelector('.material-select')");
+  await clickElement(label("Replay motion", "button"));
+  assert.ok(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations().length>0"));
+  await page.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }); await settled();
+  await clickElement(label("Replay motion", "button"));
+  assert.equal(await page.evaluate("document.querySelector('.inspector-material .motion-dot').getAnimations().length"), 0);
+  await page.send("Emulation.setEmulatedMedia", { features: [] });
+  assert.equal(await revision(), before);
+  record("materialMotion", { tokenDrivenPlayback: true, cancelsOnReducedMotion: true, noSourceEdit: true });
+
+  await fill("foundation-token-name", "");
+  await clickElement(text("Definition", "summary"));
+  await click("review-changes");
+  await until("Boolean(document.querySelector('.input-notice'))");
+  assert.equal(await page.evaluate(`${id("foundation-token-name")}.closest('details').open`), true, "Invalid draft focus reveals its collapsed group");
+  await until(`document.activeElement===${id("foundation-token-name")}`);
+  await click("reset-pending-input");
+  assert.equal(await page.evaluate(`${id("foundation-token-name")}.value`), "duration.300");
+  record("collapsedDraftRecovery", { detailsRevealed: true, invalidControlFocused: true, resetPreservesSource: true });
 }

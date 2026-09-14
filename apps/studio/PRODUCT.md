@@ -30,11 +30,13 @@ The current owner request authorizes a complete editor-gap audit, catalog expans
 
 ## Brand Commitments
 
-Name: Axiom Studio. User-pinned references: Linear, Geist, Figma and Apple. Base typeface: Geist or SUIT. The owner explicitly rejects the current green sidebar, weak editing affordances and overall visual quality; the incumbent appearance is evidence of what to replace.
+Name: Axiom Studio. Base typeface: Geist or SUIT; the working application uses locally hosted SUIT. The owner's 2026-09-14 request replaces the previous violet identity with the fluorescent lime in the supplied Sixfold navigation reference (dominant original-image RGB 185,255,70), dark as the first-run theme, and continued light-theme support. References include the supplied dark form and builder-inspector screenshots, Figma, Framer, Webflow, Linear, Geist and Apple. Thin rounded outline icons, more generous gaps and vertically weighted spacing, carefully placed glow/glass/shader effects, and motion informed by transitions.dev are explicit commitments. The earlier rejection of a green sidebar referred to the old implementation, not a ban on the newly requested lime brand.
 
 ## Evidence on Hand
 
-Foundation 1.0.0 has 56 approved bodies and governed annexes. ADR-0014 and studio-delivery-evidence.md document the current bounded implementation. PR #29 passed Windows and Ubuntu CI on ca6a23e7 and merged at e72dfb11. Three sample components and four source generators exist. Native compilation and device execution are not established by those tests.
+Foundation 1.0.0 has 56 approved bodies and governed annexes. The current implementation at 5d6b893 includes the 239-entry catalog, domain/token/theme workspaces, reviewed DTCG interchange and four bounded target source generators. PR #30 is open; that head passed Windows and Ubuntu CI with 358 tests and 18 workbench flows. The implementation continuation documents distinguish supported behavior from the remaining 119-requirement inventory. Native compilation and device execution are not established by those tests.
+
+The owner wants domain-appropriate visual token browsing alongside the existing list, and a contextual property inspector using pickers, grouped controls and progressive disclosure instead of a long wall of inputs. The existing code-first workflow remains selected; no new image-comp approval is needed. Existing project values and saved appearance preferences must survive an interface redesign.
 
 ## Product Principles
 

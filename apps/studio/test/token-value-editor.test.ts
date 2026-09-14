@@ -63,8 +63,12 @@ test("compound fixtures expose their independent fields, lists and controls whil
   assert.equal(controls.validateTokenEditorValue("shadow", value).valid, true);
   const html = controls.render("shadow", value);
   assert.match(html, /aria-label="Hex sRGB"/); assert.doesNotMatch(html, /data-testid="token-value-input"/, "nested colors never duplicate the root test identity");
-  for (const label of ["offsetX", "offsetY", "blur", "spread", "Inset shadow", "Remove shadow", "Add shadow"]) assert.ok(html.includes(label), label);
-  assert.match(html, /value="-2.5"/); assert.match(html, /value="rem" selected/);
+  for (const label of ["X", "Y", "Blur", "Spread"]) {
+    assert.ok(html.includes(`aria-label="${label}"`), `${label} measurement is independently editable`);
+    assert.ok(html.includes(`aria-label="${label} unit"`), `${label} retains its own source unit`);
+  }
+  for (const label of ["Inset shadow", "Remove shadow", "Add shadow"]) assert.ok(html.includes(label), label);
+  assert.match(html, /value="-2.5"/); assert.match(html, /<select aria-label="X unit"><option>px<\/option><option selected="">rem<\/option>/);
   const gradient: JsonValue = [{ color: { colorSpace: "srgb", components: [1, 0, 0] }, position: -0.1 }, { color: { colorSpace: "srgb", components: [0, 0, 1] }, position: 1.2 }];
   assert.equal(controls.validateTokenEditorValue("gradient", gradient).valid, true, "DTCG out-of-range stops are preserved with warnings");
   const rendered = controls.render("gradient", gradient); assert.match(rendered, /value="-0.1"/); assert.match(rendered, /value="1.2"/);

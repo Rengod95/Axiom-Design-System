@@ -1,4 +1,4 @@
-import { verifyEditorCompletion, verifyFoundationInterop } from "./workbench-completion-cases.mjs";
+import { verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench } from "./workbench-completion-cases.mjs";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -15,7 +15,7 @@ const started = Date.now();
 function record(name, details) { evidence.cases[name] = { ...details, elapsedMs: Date.now() - started }; console.error(`Workbench verified ${name} (${Date.now() - started} ms)`); }
 let browser, server, temp, page;
 const id = value => `document.querySelector(${JSON.stringify(`[data-testid=${JSON.stringify(value)}]`)})`;
-const label = (value, tag = "input,select,textarea,button") => `Array.from(document.querySelectorAll(${JSON.stringify(tag)})).find(e=>e.getAttribute('aria-label')===${JSON.stringify(value)} && e.getClientRects().length)`;
+const label = (value, tag = "input,select,textarea,button") => `(()=>{const matches=Array.from(document.querySelectorAll(${JSON.stringify(tag)})).filter(e=>e.getAttribute('aria-label')===${JSON.stringify(value)});return matches.find(e=>e.getClientRects().length)||matches[0]})()`;
 const text = (value, tag = "button") => `Array.from(document.querySelectorAll(${JSON.stringify(tag)})).find(e=>e.textContent.trim()===${JSON.stringify(value)} && e.getClientRects().length)`;
 const settled = () => page.evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))");
 async function until(expression) {
@@ -25,11 +25,13 @@ async function until(expression) {
 }
 async function clickElement(expression) {
   await until(`(${expression}) && !(${expression}).matches(':disabled')`);
+  await revealControl(expression);
   await page.evaluate(`(${expression}).scrollIntoView({block:'center',inline:'nearest'})`);
   const point = await page.evaluate(`(()=>{const e=(${expression}),r=e.getBoundingClientRect(); if(!r.width||!r.height)throw Error('Hidden control'); return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
   assert.equal(await page.evaluate(`(()=>{const e=(${expression}),hit=document.elementFromPoint(${point.x},${point.y});return e===hit||e.contains(hit)})()`), true, `Control is obscured: ${expression}`);
   for (const type of ["mousePressed", "mouseReleased"]) await page.send("Input.dispatchMouseEvent", { type, button: "left", clickCount: 1, ...point });
   await settled();
+  if (await page.evaluate(`(${expression})?.tagName==='SUMMARY'`)) await delay(280);
 }
 const click = testId => clickElement(id(testId));
 async function key(key, code, extra = {}) {
@@ -37,7 +39,12 @@ async function key(key, code, extra = {}) {
   await page.send("Input.dispatchKeyEvent", { type: "keyUp", key, code, ...extra });
   await settled();
 }
+async function revealControl(expression) {
+  const ancestor = await page.evaluate(`(()=>{const target=(${expression});let e=target;let closed=null;for(;e;e=e.parentElement)if(e.tagName==='DETAILS'&&!e.open&&!e.querySelector(':scope > summary')?.contains(target))closed=e;return closed?Array.from(document.querySelectorAll('details')).indexOf(closed):-1})()`);
+  if(ancestor >= 0) { await clickElement(`document.querySelectorAll('details')[${ancestor}].querySelector('summary')`); await delay(280); await revealControl(expression); }
+}
 async function fillElement(expression, value) {
+  await revealControl(expression);
   await until(`(${expression}) && !(${expression}).matches(':disabled')`);
   await page.evaluate(`(${expression}).focus()`);
   await key("a", "KeyA", { modifiers: 2, windowsVirtualKeyCode: 65 });
@@ -133,7 +140,7 @@ try {
   await page.send("Input.imeSetComposition", { text: "한글", selectionStart: 2, selectionEnd: 2 });
   await page.send("Input.insertText", { text: "한글" }); await fill("foundation-classification-name", "Workbench domain");
   await click("foundation-classification-apply");
-  await clickElement(text("Tokens"));
+  await clickElement(text("Tokens")); await click("token-view-list");
   await clickElement(label("Select Workbench spacing", "input")); await clickElement(label("Select Workbench alias", "input"));
   const domain = await page.evaluate(`Array.from((${label("Selected tokens domain", "select")}).options).find(o=>o.textContent==='Workbench domain').value`);
   await selectElement(label("Selected tokens domain", "select"), domain); await click("foundation-bulk-classify");
@@ -226,6 +233,7 @@ try {
   await selectElement(label("Editing scope", "select"), scope); await until(`(${numeric}).value==='24'`);
   record("processRestart", { dedicatedProfile: true, ordinaryBrowserShutdown: true, tokenAndContextValue: true, catalogComponent: true, localeAndAppearance: true });
   await verifyEditorCompletion({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, select, selectElement, until, settled, approve, revision, record });
+  await verifyMaterialWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
   await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   assert.deepEqual(browser.cdp.errors, []); evidence.status = "PASSED";
 } catch (error) { evidence.error = { message: error.message, stack: error.stack }; process.exitCode = 1; }
