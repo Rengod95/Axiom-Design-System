@@ -6,7 +6,7 @@ import type { Point, Rect, Viewport } from "./canvas-geometry.ts";
 import type { Locale } from "./locales.ts";
 import { Preview } from "./preview.tsx";
 import { editingTarget } from "./ui-utils.ts";
-import { copy, IconButton } from "./ui.tsx";
+import { Select, copy, IconButton } from "./ui.tsx";
 import { pinchViewport, wheelViewport } from "./canvas-input.ts";
 
 export interface CanvasFrame extends Rect {}
@@ -161,7 +161,7 @@ export function Canvas(props: Props) {
       <IconButton icon="grid" label={copy(locale, "격자 표시", "Show grid")} aria-pressed={grid} onClick={() => setGrid(value => !value)} />
       <button type="button" className={`tool-text ${snapping ? "active" : ""}`} aria-pressed={snapping} onClick={() => setSnapping(value => !value)}>{copy(locale, "스냅", "Snap")}</button>
     </div>
-    {selectedIds.length > 1 && mode === "edit" && <div className="canvas-alignment" data-canvas-ui="true" role="toolbar" aria-label={copy(locale, "선택 정렬", "Align selection")}><select aria-label={copy(locale, "정렬과 분배", "Align and distribute")} data-testid="canvas-align" defaultValue="" disabled={disabled} onChange={event => {
+    {selectedIds.length > 1 && mode === "edit" && <div className="canvas-alignment" data-canvas-ui="true" role="toolbar" aria-label={copy(locale, "선택 정렬", "Align selection")}><Select aria-label={copy(locale, "정렬과 분배", "Align and distribute")} data-testid="canvas-align" defaultValue="" disabled={disabled} onChange={event => {
       const operation = event.target.value, ids = selectedIds.filter(id => frames[id]), bounds = unionBounds(ids.map(id => frames[id]!));
       if (!bounds || !operation) return;
       const ordered = [...ids].sort((a, b) => operation === "distribute-y" ? frames[a]!.y - frames[b]!.y : frames[a]!.x - frames[b]!.x);
@@ -173,7 +173,7 @@ export function Canvas(props: Props) {
         else if (operation === "distribute-x") { next.x = cursor; cursor += frame.width + horizontalGap; } else if (operation === "distribute-y") { next.y = cursor; cursor += frame.height + verticalGap; }
         return [id, next]; })));
       event.target.value = "";
-    }}><option value="">{copy(locale, "정렬과 분배…", "Align and distribute…")}</option>{[["left", "왼쪽", "Left"], ["center", "가로 가운데", "Horizontal center"], ["right", "오른쪽", "Right"], ["top", "위", "Top"], ["middle", "세로 가운데", "Vertical center"], ["bottom", "아래", "Bottom"], ["distribute-x", "가로 간격 균등", "Distribute horizontally"], ["distribute-y", "세로 간격 균등", "Distribute vertically"]].map(([value, ko, en]) => <option key={value} value={value} disabled={value!.startsWith("distribute") && selectedIds.length < 3}>{copy(locale, ko!, en!)}</option>)}</select><span className="badge">{selectedIds.length}</span></div>}
+    }}><option value="">{copy(locale, "정렬과 분배…", "Align and distribute…")}</option>{[["left", "왼쪽", "Left"], ["center", "가로 가운데", "Horizontal center"], ["right", "오른쪽", "Right"], ["top", "위", "Top"], ["middle", "세로 가운데", "Vertical center"], ["bottom", "아래", "Bottom"], ["distribute-x", "가로 간격 균등", "Distribute horizontally"], ["distribute-y", "세로 간격 균등", "Distribute vertically"]].map(([value, ko, en]) => <option key={value} value={value} disabled={value!.startsWith("distribute") && selectedIds.length < 3}>{copy(locale, ko!, en!)}</option>)}</Select><span className="badge">{selectedIds.length}</span></div>}
     <div className="canvas-zoom" data-canvas-ui="true" role="toolbar" aria-label={copy(locale, "확대와 축소", "Zoom controls")}>
       <IconButton icon="minus" data-testid="zoom-out" label={copy(locale, "축소", "Zoom out")} onClick={() => zoom(view.zoom / 1.2)} />
       <label className="zoom-field"><input data-testid="zoom-level" aria-label={copy(locale, "확대 비율 (%)", "Zoom percentage")} inputMode="numeric" value={zoomDraft} onChange={event => setZoomDraft(event.target.value)} onBlur={() => { const value = Number(zoomDraft); if (zoomDraft.trim() && Number.isFinite(value)) zoom(clampZoom(value / 100)); else setZoomDraft(String(Math.round(view.zoom * 100))); }} onKeyDown={event => { if (event.key === "Enter") event.currentTarget.blur(); }} /><span>%</span></label>

@@ -143,10 +143,27 @@
       "semantics": "Dedicated complex interactions and native execution remain separately verified."
     },
     "fontAsset": {
-      "package": "@sun-typeface/suit",
-      "version": "2.0.5",
+      "package": "geist",
+      "version": "1.7.2",
       "license": "OFL-1.1",
-      "file": "fonts/variable/woff2/SUIT-Variable.woff2"
+      "files": [
+        "dist/fonts/geist-sans/Geist-Variable.woff2",
+        "dist/fonts/geist-mono/GeistMono-Variable.woff2"
+      ],
+      "usage": "Local font assets only; no Geist/Next JavaScript imports in the Studio bundle",
+      "fallback": {
+        "package": "@sun-typeface/suit",
+        "version": "2.0.5",
+        "license": "OFL-1.1",
+        "file": "fonts/variable/woff2/SUIT-Variable.woff2",
+        "usage": "Korean glyph fallback"
+      }
+    },
+    "selectPopup": {
+      "owner": "apps/studio/src/ui.tsx",
+      "dependency": "react-dom@19.3.0 createPortal",
+      "scope": "Single-value authored listbox with native form semantics; popup stays within owning modal top layer",
+      "authority": "docs/implementation/studio-compact-glass.md"
     }
   },
   "allowedTargetTestAssets": [

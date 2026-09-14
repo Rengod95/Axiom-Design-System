@@ -27,8 +27,8 @@ export function useFormDraft(form: Omit<FormDraft, "focus"> & { focus?(): void }
         const previousFocus = document.activeElement;
         for (let parent: HTMLElement | null = control ?? element ?? null; parent; parent = parent.parentElement) if (parent instanceof HTMLDetailsElement) parent.open = true;
         const focus = () => { if (control?.isConnected && [previousFocus, control, document.body].includes(document.activeElement)) { control.scrollIntoView({ block: "nearest" }); control.focus({ preventScroll: true }); } };
-        // A newly disclosed subtree is not focusable until content-visibility has opened.
-        requestAnimationFrame(() => { const animations = control?.closest("details")?.getAnimations({ subtree: true }) ?? []; void Promise.allSettled(animations.map(animation => animation.finished)).then(focus); });
+        // Native disclosure also needs a rendered frame when reduced motion removes its transitions.
+        requestAnimationFrame(() => { const animations = control?.closest("details")?.getAnimations({ subtree: true }) ?? []; void Promise.allSettled(animations.map(animation => animation.finished)).then(() => requestAnimationFrame(focus)); });
       },
     });
   }, [registry, form.id, form.label, form.dirty, form.valid]);

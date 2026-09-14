@@ -1,429 +1,294 @@
 ---
 name: "Axiom UI"
-description: "A material workbench with signal lime, SUIT, and independent light and dark Studio themes."
+description: "A compact glass workbench with Geist, achromatic planes and fluorescent green action."
 colors:
-  brand: "#b9ff46"
-  accent: "#b9ff46"
-  accent-hover: "#a9ef36"
-  accent-soft: "#eaf7d7"
-  accent-ink: "#355b0b"
-  surface: "#fcfcfa"
-  surface-subtle: "#f3f4f0"
-  surface-hover: "#e9ece4"
-  surface-active: "#dde3d5"
-  canvas: "#eef0e9"
-  canvas-dot: "#d5d9cf"
-  ink: "#21241d"
-  ink-secondary: "#575d50"
-  ink-tertiary: "#68705f"
-  line: "#e0e4da"
-  line-strong: "#c5cdba"
-  control-border: "#7a826f"
+  brand: "#a3ff47"
+  accent: "#a3ff47"
+  accent-hover: "#92ee36"
+  accent-soft: "#e7f6dc"
+  accent-ink: "#32630b"
+  surface: "#fafafa"
+  surface-subtle: "#f2f2f2"
+  surface-hover: "#e8e8e8"
+  surface-active: "#dedede"
+  canvas: "#ededed"
+  canvas-dot: "#d1d1d1"
+  ink: "#202020"
+  ink-secondary: "#595959"
+  ink-tertiary: "#707070"
+  line: "#d2d2d2"
+  line-strong: "#cccccc"
+  control-border: "#d5d5d5"
   positive: "#24714c"
   positive-soft: "#e9f5ed"
   warning: "#8c570d"
   warning-soft: "#fff4dd"
   negative: "#b23242"
   negative-soft: "#fff0f1"
-  focus: "#568b12"
-  selection: "#d8f7ad"
-  overlay: "rgb(18 23 35 / 32%)"
-  on-accent: "#172108"
-  accent-dark: "#b9ff46"
-  accent-hover-dark: "#c9ff75"
-  accent-soft-dark: "#29351c"
-  accent-ink-dark: "#c6fa80"
-  surface-dark: "#171816"
-  surface-subtle-dark: "#1c1e1a"
-  surface-hover-dark: "#272a24"
-  surface-active-dark: "#34392c"
-  canvas-dark: "#10110f"
-  canvas-dot-dark: "#2a2e25"
-  ink-dark: "#f0f2eb"
-  ink-secondary-dark: "#b7beae"
-  ink-tertiary-dark: "#929c87"
-  line-dark: "#2e3228"
-  line-strong-dark: "#484f3e"
-  control-border-dark: "#747f66"
-  positive-dark: "#8bdbb0"
-  positive-soft-dark: "#213e30"
-  warning-dark: "#efc575"
-  warning-soft-dark: "#44351c"
-  negative-dark: "#ff9aa9"
-  negative-soft-dark: "#472a30"
-  focus-dark: "#b9ff46"
-  selection-dark: "#3e5426"
-  overlay-dark: "rgb(0 0 0 / 58%)"
-  shadow-specimen-ground: "#dfe2d9"
+  focus: "#43830c"
+  selection: "#d4f5bd"
+  glass-panel: "rgb(250 250 250 / 58%)"
+  glass-header: "rgb(255 255 255 / 60%)"
+  glass-raised: "rgb(255 255 255 / 74%)"
+  glass-edge: "rgb(255 255 255 / 75%)"
+  glass-sheen: "rgb(255 255 255 / 48%)"
+  dark-accent-hover: "#b6ff70"
+  dark-accent-soft: "#26331c"
+  dark-accent-ink: "#a3ff47"
+  dark-surface: "#171717"
+  dark-surface-subtle: "#202020"
+  dark-surface-hover: "#2b2b2b"
+  dark-surface-active: "#353535"
+  dark-canvas: "#101010"
+  dark-canvas-dot: "#262626"
+  dark-ink: "#f0f0f0"
+  dark-ink-secondary: "#b8b8b8"
+  dark-ink-tertiary: "#969696"
+  dark-line: "#272727"
+  dark-line-strong: "#3c3c3c"
+  dark-control-border: "#383838"
+  dark-positive: "#8bdbb0"
+  dark-positive-soft: "#213e30"
+  dark-warning: "#efc575"
+  dark-warning-soft: "#44351c"
+  dark-negative: "#ff9aa9"
+  dark-negative-soft: "#472a30"
+  dark-focus: "#a3ff47"
+  dark-selection: "#375025"
+  dark-glass-panel: "rgb(23 23 23 / 58%)"
+  dark-glass-header: "rgb(29 29 29 / 60%)"
+  dark-glass-raised: "rgb(35 35 35 / 72%)"
+  dark-glass-edge: "rgb(255 255 255 / 9%)"
+  dark-glass-sheen: "rgb(255 255 255 / 6%)"
+  on-accent: "#152009"
 typography:
   heading:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "24px"
-    fontWeight: 650
-    lineHeight: "32px"
-    letterSpacing: "-0.025em"
+    fontFamily: "Geist,SUIT,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "20px"
+    fontWeight: 600
+    lineHeight: "28px"
+    letterSpacing: "-.025em"
   title:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "18px"
-    fontWeight: 650
-    lineHeight: "26px"
-    letterSpacing: "-0.015em"
+    fontFamily: "Geist,SUIT,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "16px"
+    fontWeight: 600
+    lineHeight: "24px"
+    letterSpacing: "-.015em"
   body:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "14px"
-    fontWeight: 450
-    lineHeight: "22px"
+    fontFamily: "Geist,SUIT,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: "20px"
+    letterSpacing: "normal"
   label:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "13px"
-    fontWeight: 550
+    fontFamily: "Geist,SUIT,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
+    fontSize: "12px"
+    fontWeight: 500
     lineHeight: "18px"
+    letterSpacing: "normal"
   caption:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "12px"
-    fontWeight: 450
-    lineHeight: "18px"
-  button:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "13px"
-    fontWeight: 550
-    lineHeight: 1.4
-    letterSpacing: "0px"
-  button-large:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "14px"
-    fontWeight: 550
-    lineHeight: 1.4
-    letterSpacing: "0px"
-  field-control:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "14px"
-    fontWeight: 450
-    lineHeight: 1.4
-  field-label:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "13px"
-    fontWeight: 550
-    lineHeight: 1.4
-  section-title:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "13px"
-    fontWeight: 650
-    lineHeight: 1.5
-  badge:
-    fontFamily: "SUIT,Geist,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
-    fontSize: "12px"
-    fontWeight: 550
-    lineHeight: "16px"
-  material-code:
-    fontFamily: "ui-monospace,Consolas,monospace"
+    fontFamily: "Geist,SUIT,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif"
     fontSize: "12px"
     fontWeight: 400
     lineHeight: "18px"
+    letterSpacing: "normal"
+  material-code:
+    fontFamily: "'Geist Mono',ui-monospace,Consolas,monospace"
+    fontSize: "11px"
+    lineHeight: "16px"
 rounded:
-  sm: "6px"
-  control: "10px"
+  small: "6px"
+  control: "8px"
+  sheet: "10px"
+  specimen: "7px"
+  option: "5px"
+  floating: "12px"
   panel: "16px"
-  sheet: "12px"
   pill: "999px"
-  floating: "14px"
-  choice: "7px"
-  segment: "8px"
 spacing:
-  space-1: "4px"
-  space-2: "8px"
-  space-3: "12px"
-  space-4: "16px"
-  space-5: "20px"
-  space-6: "24px"
-  space-8: "32px"
-  space-10: "40px"
+  1: "4px"
+  2: "8px"
+  3: "12px"
+  4: "16px"
+  5: "20px"
+  6: "24px"
+  8: "32px"
+  10: "40px"
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.on-accent}"
-    typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "8px 12px"
-    height: "40px"
-  button-primary-hover:
-    backgroundColor: "{colors.accent-hover}"
-  button-primary-dark:
-    backgroundColor: "{colors.accent-dark}"
-    textColor: "{colors.on-accent}"
-  button-primary-dark-hover:
-    backgroundColor: "{colors.accent-hover-dark}"
+    padding: "5px 9px"
+    height: "32px"
   button-secondary:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.surface-subtle}"
     textColor: "{colors.ink}"
-    typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "8px 12px"
-    height: "40px"
-  button-secondary-hover:
-    backgroundColor: "{colors.surface-hover}"
+    padding: "5px 9px"
+    height: "32px"
   button-subtle:
     backgroundColor: "transparent"
     textColor: "{colors.ink-secondary}"
-    typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "8px 12px"
-    height: "40px"
-  button-subtle-hover:
-    backgroundColor: "{colors.surface-hover}"
-    textColor: "{colors.ink}"
+    padding: "5px 9px"
+    height: "32px"
   button-danger:
     backgroundColor: "{colors.negative-soft}"
     textColor: "{colors.negative}"
-    typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "8px 12px"
-    height: "40px"
-  button-small:
-    typography: "{typography.button}"
-    padding: "8px"
+    padding: "5px 9px"
     height: "32px"
+  button-small:
+    padding: "3px 8px"
+    height: "28px"
   button-large:
-    typography: "{typography.button-large}"
-    padding: "8px 16px"
-    height: "48px"
-  icon-button:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink-secondary}"
-    rounded: "{rounded.control}"
-    padding: "7px"
-    width: "40px"
-    height: "40px"
-  icon-button-selected:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.accent-ink}"
-  text-field:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    typography: "{typography.field-control}"
-    rounded: "{rounded.control}"
-    padding: "7px 12px"
-    height: "40px"
-  inspector-field:
+    padding: "7px 16px"
+    height: "36px"
+  input:
     backgroundColor: "{colors.surface-subtle}"
     textColor: "{colors.ink}"
-    typography: "{typography.field-control}"
     rounded: "{rounded.control}"
-    padding: "7px 12px"
-    height: "40px"
-  field-select:
-    backgroundColor: "{colors.surface}"
+    padding: "5px 8px"
+    height: "32px"
+  select:
+    backgroundColor: "{colors.surface-subtle}"
     textColor: "{colors.ink}"
-    typography: "{typography.field-control}"
-    rounded: "{rounded.control}"
-    padding: "8px 12px"
-    height: "40px"
-  workspace-navigation:
+    rounded: "{rounded.small}"
+    padding: "6px 8px 6px 10px"
+    height: "28px"
+  navigation:
     backgroundColor: "transparent"
     textColor: "{colors.ink-secondary}"
-    typography: "{typography.label}"
     rounded: "{rounded.pill}"
-    padding: "12px 16px"
-    height: "48px"
-  workspace-navigation-selected:
+    padding: "7px 10px"
+    height: "36px"
+  navigation-selected:
     backgroundColor: "{colors.brand}"
     textColor: "{colors.on-accent}"
-  object-navigation:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink-secondary}"
-    rounded: "{rounded.control}"
-    padding: "8px 10px"
-    height: "36px"
-  object-navigation-selected:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.accent-ink}"
   choice-chip:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.surface-subtle}"
     textColor: "{colors.ink}"
-    typography: "{typography.button}"
     rounded: "{rounded.control}"
-    padding: "8px 12px"
-    height: "32px"
+    height: "28px"
   choice-chip-selected:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.accent-ink}"
-  badge:
-    backgroundColor: "{colors.surface-hover}"
-    textColor: "{colors.ink-secondary}"
-    typography: "{typography.badge}"
-    rounded: "{rounded.sm}"
-    padding: "3px 8px"
-    height: "24px"
-  badge-accent:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.accent-ink}"
-  badge-success:
-    backgroundColor: "{colors.positive-soft}"
-    textColor: "{colors.positive}"
-  badge-warning:
-    backgroundColor: "{colors.warning-soft}"
-    textColor: "{colors.warning}"
-  catalog-card:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.surface-active}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.panel}"
-  catalog-card-selected:
-    backgroundColor: "{colors.accent-soft}"
   material-card:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
     rounded: "{rounded.sheet}"
+    padding: "3px"
   material-card-selected:
-    backgroundColor: "{colors.accent-soft}"
-  section-heading:
-    typography: "{typography.section-title}"
-    padding: "16px"
+    backgroundColor: "{colors.surface-active}"
+  section-add:
+    backgroundColor: "{colors.surface-subtle}"
+    rounded: "{rounded.small}"
+    padding: "5px"
+    height: "24px"
+    width: "24px"
   section-content:
-    padding: "24px 16px"
+    padding: "0 12px 12px"
   tab:
-    backgroundColor: "transparent"
     textColor: "{colors.ink-secondary}"
-    padding: "16px 0"
+    padding: "11px 0"
   tab-selected:
-    textColor: "{colors.accent-ink}"
+    textColor: "{colors.ink}"
 ---
 
 # Design System: Axiom UI
 
 ## Overview
 
-**Creative North Star: "The material workbench"**
+**Creative North Star: "Compact glass workbench"**
 
-Axiom UI is a precise, tactile editor whose actual values carry the visual interest. Signal lime marks primary action and selection; charcoal or chalk planes carry the work. SUIT, rounded outline icons, and generous vertical grouping give Korean and English authoring the same measured rhythm.
+Axiom UI is a compact glass workbench. Achromatic planes recede behind the authored materials; fluorescent green identifies action. Geist, thin rounded SVG icons and tightly grouped controls give English and Korean authoring a consistent rhythm.
 
-The interface is built directly in code. Flat structural panels, restrained glow on active navigation, and glass on floating canvas tools establish depth without competing with the authored system. This identity belongs to Studio: a person's colors, type, shadows, and motion remain independently authored content.
+Translucent headers, rails, inspectors and overlapping menus share neutral edge light and soft backdrop diffusion. Both themes retain the same hierarchy. Studio appearance stays independent from the user's authored colors, typography and saved theme preferences.
 
 **Key Characteristics:**
 
-- One fluorescent signal color across dark and light Studio appearances.
-- Shared SUIT roles, rounded controls, and vertically separated property groups.
-- Actual material specimens connected to contextual controls and reviewed changes.
-- Thin SVG outlines, tonal structural layers, and purposeful motion.
+- Achromatic grounds with a fluorescent action accent.
+- Compact controls and aligned panel bars.
+- Material specimens with contextual creation and inspection.
+- Shared glass depth in dark and light appearances.
 
-This code-derived authority refreshes the explicitly replaced violet world. The durable brief is [PRODUCT.md](PRODUCT.md); the selected-token composition and evidence limits live in the [workbench surface record](.impeccable/surfaces/workbench.md). The [direction contract](../../docs/implementation/studio-lime-redesign.md) records seed and reference provenance. No shipping raster imagery is used for the new identity: the interface uses code, inline SVG, and the locally bundled font.
-
-The frontmatter is normative for extracted reusable tokens. The [v2 sidecar](.impeccable/design.json) adds elevation, motion, responsive and cascade metadata, and self-contained snippets. Runtime imports [styles.css](src/styles.css), [ui-system.css](src/ui-system.css), then [foundation-workspace.css](src/foundation-workspace.css). A later file does not override a more specific selector automatically. Component heights are minimum heights unless explicit geometry is noted below; they do not promise every native field or compact tool has that size.
+This refresh follows the owner's explicit replacement of the earlier spacing, font and neutral palette. [PRODUCT.md](PRODUCT.md) records durable commitments; the [surface contract](.impeccable/surfaces/workbench.md) and [compact review](../../docs/implementation/studio-compact-finish-review.md) record composition and evidence. [styles.css](src/styles.css), [ui-system.css](src/ui-system.css), then [foundation-workspace.css](src/foundation-workspace.css) define the effective cascade. Frontmatter owns reusable tokens; the [sidecar](.impeccable/design.json) extends it with material, motion and snippets.
 
 ## Colors
 
-Signal lime sits on slightly green neutral planes, with readable neutral ink and separate feedback colors.
+The brand and accent roles are fluorescent green. Accent-soft and accent-ink support action, links and relationship cues; positive, warning and negative preserve feedback meaning. Neutral surface, hover, active, canvas, ink and line roles are achromatic in both themes. Glass roles vary opacity, not hue.
 
-### Primary
+Line separates structure, line-strong marks a stronger boundary and control-border supplies eligible control edges. Filled controls and specimen selection do not receive an additional accent outline. Authored color and shadow specimens remain independent content; shadow comparisons use a stable neutral ground.
 
-The brand role is **Signal lime**, sampled from the owner's original navigation reference. Accent supplies primary buttons; accent-hover supplies theme-specific hover feedback. Accent-soft and accent-ink identify selected objects, chips, links, tabs, and relationship cues. On-accent is the dark foreground for both themes' solid lime actions.
+**The Independent Values Rule.** Studio appearance never rewrites authored token values or saved appearance preferences.
 
-### Neutral
+**The One Selected Surface Rule.** Use a neutral fill for selected specimens and segmented choices; preserve a distinct keyboard focus outline.
 
-Surface is the main editing plane; surface-subtle separates the rail and inset controls. Surface-hover and surface-active express interaction. Canvas and canvas-dot support document space. Ink, ink-secondary, and ink-tertiary step from primary content to supporting metadata. Line divides structure; line-strong strengthens secondary controls and non-editable edges; control-border identifies ordinary editable fields. Both palettes have corresponding roles in the frontmatter.
-
-Shadow-specimen-ground is a fixed neutral comparison stage in both appearances, and its shadow object uses the light surface color. This makes authored shadow differences inspectable on stable ground; it is not a dark-theme panel token.
-
-### Feedback and focus
-
-Positive, warning, and negative each have a paired soft surface. Preserve their meaning and pair color with text or an actual state. Focus supplies the visible keyboard outline; selection supplies native text selection. Overlay dims the work below a dialog.
-
-**The Independent Values Rule.** Studio appearance is separate from authored ADS theme contexts and token values. Preserve authored purple, other project colors, and explicit saved appearance preferences when changing the editor identity.
-
-**The Boundaries Have Jobs Rule.** Structural separators use line, secondary edges use line-strong, and ordinary editable fields use control-border. Inset inspector fields are a documented tonal exception; focus and invalid state still need their own visible treatment.
-
-The CSS root defines light values. App initializes from the saved axiom.ui.theme preference and falls back to dark, then writes the chosen value to the root data-theme attribute. A saved light preference remains valid.
+CSS root values describe light appearance. The app restores the saved appearance and defaults to dark only when there is no saved choice.
 
 ## Typography
 
-**Interface Font:** Locally hosted SUIT Variable, with Geist and platform sans-serif fallbacks from the frontmatter.
-**Code Font:** The platform monospace stack in material-code.
+Geist Variable is locally bundled for the interface; SUIT is the Korean glyph fallback. Geist Mono is locally bundled for code and material measurements. Shared heading, title, body, label and caption recipes are normative in frontmatter and demonstrated by Axiom UI.
 
-The complete shared recipes are heading, title, body, label, and caption. Heading and title establish screen and section hierarchy; body explains an action; label names a control; caption carries metadata. Button, field-control, field-label, section-title, badge, and material-code record actual component recipes where line-height or weight differs from the named type samples.
-
-The role sizes form a practical editor hierarchy rather than a fixed ratio. Axiom UI demonstrates all five complete recipes. Root body weight comes from weight-regular; ordinary paragraphs still use a unitless line-height of 1.6. Buttons and managed fields use leading-label at 1.4. Badge and material-code keep their own line boxes. The SUIT wordmark retains its local branding recipe; it is not a general heading style.
-
-**The Scope Shared Roles Rule.** Use shared role variables for Studio chrome, and inspect the actual cascade before claiming every element uses a complete type recipe. Authored typography specimens render the user's value with documented display bounds.
+The complete role recipes do not override every local text style. Buttons use medium weight and 1.4 leading; managed fields use 12px with 1.4 leading; Select uses 450 weight and an 18px line box; badges use their local 11px/16px recipe. Existing root headings and the wordmark retain local weights. Reuse complete roles for new surfaces rather than copying incidental literals.
 
 ## Layout
 
-The desktop workbench fills the dynamic viewport. Its main grid has a 60px header, flexible working row, and 32px status row. The default rail is 228px; the effective inspector is 348px after the shared stylesheet loads. The middle pane remains minmax(0, 1fr), and working panels scroll independently.
+Desktop rows are a 52px header, flexible work row and 28px status bar. Rail and inspector defaults are 196px and 304px. Foundation navigation, canvas tools bar, selection actions and token context header align on 44px bars. The middle pane uses minmax(0,1fr); workspaces scroll independently. Foundation subsection tabs remain sticky inside their scrolling pane.
 
-Use the extracted spacing rhythm. Shared sections separate controls by 20px and use 24px vertical by 16px horizontal content padding. Row fields align labels and values; related dimensions use two equal columns with 16px vertical and 12px horizontal gaps. Actions wrap rather than hiding their labels.
+Control size variants use 28/32/36px minimum heights. Workspace choices are 36px with 7px vertical and 10px horizontal padding. Foundation roots use 16px insets; inspector content uses 12px. Section content uses 10px gaps and 0 12px 12px padding. Related measurements use two columns with 8px gaps. Descriptions follow section titles by 4px.
 
-The domain directory uses two columns with 28px vertical and 24px horizontal gaps. Material groups are separated by 36px. General specimen grids grow from 156px minimum columns; colors start at 96px, typography at 220px. Specimens precede their name, readable measurement recipe, and usage or alias metadata. Values wrap; they are not a substitute for precise source inspection.
+Material families are separated by 24px. General, color and typography columns start at 140px, 88px and 220px respectively. Color surfaces remain square. A family supplies context; cards show local leaf names, and section add inherits classification and prefix. Full paths remain accessible and in source. Bulk checks appear only after selecting the explicit selection mode; List remains available.
 
-At 1200px the earlier stylesheet reduces the rail to 200px and compresses header content; its inspector override is superseded by the later shared root. At 1100px the shared stylesheet fixes the rail at 200px and inspector at 316px, while domain and control galleries become one column and material gutters reduce to 16px. Earlier 900px rules hide additional header detail and compact local layouts; their width variables are likewise superseded. At 720px the app uses a single pane with Browse, Workspace, and Inspect tabs. Its rows become 48px, 40px, flexible content, and 28px. The selected pane owns the width. Narrow color grids use an 86px minimum.
-
-Small-screen shared buttons and managed fields receive larger minimum targets, but higher-specificity size variants and compact toolbar rules remain. The mobile base minimum does not make every small Button or icon 48px. The inspector's 300px container rule tightens label proportions and horizontal padding.
+An inherited 1200px rule sets the rail to 200px. At 1100px, the effective rail/inspector become 180px/288px and domain galleries become one column. At 720px, a single working pane replaces the three-column composition, with 52/40/flexible/28px rows and Browse/Workspace/Inspect choices. Narrow root insets become 12px and color minima 82px. Compact contextual targets retain exceptions to the shared mobile button minimum.
 
 ## Elevation & Depth
 
-Tonal layering establishes structural depth; soft shadows belong to floating tools and dialogs. Selection rings mean selection, not elevation. Exact shadow, glow, and blur recipes live in the sidecar because they do not fit the frontmatter schema.
+**The Shared Glass Rule.** Use translucent structural planes and frosted raised surfaces with restrained neutral edge light; reduced transparency restores solid surfaces.
 
-Canvas tools mix the current surface with transparency, blur the backdrop, and retain a stronger edge plus a subtle inset highlight. Active workspace navigation carries the lime pill and a small ambient glow. The inspector and side rail remain flat.
+Headers, sidebar, inspector and status use the shared glass roles over an achromatic ambient ground. Panes receive diagonal neutral sheen and inset edge light. Raised menus, tools and dialogs add soft depth. Chrome uses 24px blur; popup saturation is 1.08, chrome saturation 1.04, and dialogs use 28px blur. Primary actions retain a restrained accent glow. Exact material, shadows and motion live in the sidecar.
 
-**The Elevate by Role Rule.** Keep structural panes flat. Use floating-shadow for detached tools and dialog-shadow for modal surfaces. Preserve the stable light ground behind authored shadow specimens.
-
-Motion is informed by the transitions.dev reference recorded in the direction contract: fast color feedback, smooth-out selection and disclosure, and a short dialog reveal. The navigation marker animates translation and opacity while its measured height is set directly. Native disclosure animates block-size and opacity where browser support permits; children remain mounted. Reduced-motion rules remove nonessential animation and transitions. Static review images do not establish temporal visual approval.
+Selection moves by translation and opacity; disclosure and menus use semantic fast/reveal timing. Reduced motion removes nonessential transitions and animations. Reduced transparency removes blur and restores opaque surfaces. The static finish review does not establish temporal motion quality.
 
 ## Shapes
 
-Shared controls have soft, contained corners; panels are broader, and material sheets sit between them. Full pills belong to workspace navigation and the brand swatch. Badges use the small radius. Choice options, segmented switches, and floating canvas tools retain dedicated shapes.
+Controls use contained rounded corners, while navigation retains a full pill. Material wrappers and their inner specimens have separate radii; rectangular color surfaces always use equal width and height. Borders establish structure without outlining every container.
 
-Icons use a 20-unit view box, 1.4-unit current-color stroke, rounded caps and joins, and no fill. They default to 16px; workspace navigation displays them at 20px. Keep accessible names on icon-only actions. Do not replace inline SVG with font glyphs.
+SVG icons use rounded caps/joins and a 1.4-unit stroke in a 20-unit view box. Most controls display 16px icons, workspace navigation 17px. Icon-only controls retain accessible names and titles.
 
 ## Components
 
-### Buttons
+### Buttons, inputs and checkbox
 
-Four tones share Button: primary, secondary, subtle, and danger. Primary uses solid lime and dark text; secondary retains a neutral fill and outline; subtle has a transparent resting surface; danger pairs negative ink with its soft surface. The sm, md, and lg APIs change minimum size and horizontal padding. Padding and text can make the smallest button taller than its minimum.
+Primary is solid accent with dark text; secondary is tonal fill with a transparent resting border; subtle starts transparent; danger pairs negative ink and its soft surface. Minimum height is represented by frontmatter height recipes. Hover and pressed feedback use semantic surface roles; disabled and busy semantics remain explicit.
 
-Hover changes surface color; active secondary, subtle, danger, and icon controls use surface-active. Primary active uses accent-hover. Disabled controls retain reduced opacity and disabled semantics; aria-busy uses the progress cursor. Keyboard focus uses the shared outline. IconButton is 40px square by default, with compact and narrow-screen overrides.
+Managed inputs use filled neutral grounds, compact padding and visible invalid treatment. Fields may stack or align labels with values. Checkboxes use a 15px neutral filled box with a compact accent check or indeterminate mark. Source/review state, composition and rejected-input recovery remain functional contracts.
 
-### Inputs / Fields
+### Authored dropdown
 
-Field supports stacked and aligned-row labels. Managed text fields use field-control and the neutral editable boundary. Managed selects have automatic height with the shared minimum and explicit block padding; textareas start at a 76px minimum. Outside those managed selectors, native controls retain fallback padding and the base native select remains 32px high.
+Select renders a compact trigger and frosted listbox with an inset chevron. It supports Arrow/Home/End/Page keys, typeahead, Enter/Space, Escape cancellation, Tab continuation and outside dismissal. A hidden native form proxy preserves labels, required validation, reset and fieldsets. Popups clamp to the viewport and stay inside an owning dialog's top layer. Consumer component previews retain their authored controls.
 
-Inspector fields use surface-subtle with a transparent resting border. The current resting selector is more specific than its hover/focus border selectors, so those intended border shifts do not reliably override it; keyboard focus still uses the global outline, and invalid state uses the important error edge. The sidecar records this cascade as an implementation limitation, not a desired state rule.
+### Chips, tabs and cards
 
-Color editors place picker, Hex, and Alpha together. Color-space and channel controls disclose progressively; non-sRGB values expose that group. Shadow editors pair X/Y and Blur/Spread before Inset and compact color controls. Units remain visible. Input composition and invalid buffers retain the existing reviewed workflow.
+Choice chips and Specimens/List segments use a neutral selected fill. Subsection tabs use neutral ink and an underline, keyboard navigation and horizontal reveal without moving their parent panel. Badges use compact tonal or semantic pairs. Catalog and specimen selection use neutral fills without a competing accent border. A specimen is a bounded display projection of the authored value, not a replacement value.
 
-### Chips and choice controls
+### Navigation and contextual inspector
 
-Choice chips are small Button instances with pressed state, accent-soft fill, accent-ink text, and an accent edge. Badges use neutral or semantic soft pairs. Grouped choices use an inset track and tonal selected option; segmented workspace modes use their own rounded track. These patterns retain distinct state semantics.
+The rail has a fluorescent workspace pill and quieter object navigation. The former lower Axiom UI footer is absent; Quick search exposes the system gallery. Canvas category, interaction mode and theme use named icon controls. The component inspector starts with Design/Source and compact property sections instead of a large identity heading.
 
-### Cards / Containers
-
-Catalog cards use panel corners and an actual component specimen above the name. Their selected edge and ring use accent. Material cards use sheet corners, a transparent resting edge, neutral hover edge, and accent-ink selected edge with a soft ring. They render color, gradient, shadow, radius, size, spacing, typography, border, easing, duration, opacity, layers, or scalar values according to the authored token.
-
-Material visualizations are bounded display projections. Units, source recipe, unresolved state, and usage explain what is shown. Supported color specimens preserve source color space and alpha; they do not normalize the source to the Studio palette.
-
-### Navigation
-
-The rail has lime pill workspace navigation and quieter nested object selection. The marker is measured from the active item; text stays stationary. Tabs use an active underline and accent ink, retain Arrow/Home/End behavior, and reveal the selected tab by scrolling only its horizontal strip. Narrow viewports select one working pane.
-
-### Contextual inspector
-
-The selected token's material precedes value controls. Editing scope and value source remain explicit; Definition, Lifecycle, resolved origin, Usage, and Manage disclose according to context. The component inspector begins with the selected Part and groups Layout, Fill, Text, and Border and corners, with secondary content and source contracts below. A binding carries a small material preview and a path to its token. Apply to preview feeds the existing review boundary; draft, reviewed, and saved work remain distinct.
+Layout choices, paired dimensions, inline binding actions and an all-sides padding diagram precede advanced metadata. The diagram describes the currently supported uniform value, not independently editable sides. Token context uses a 44px bar; material and value come before collapsed metadata. Contextual creation prepopulates family defaults. Draft, review, save and Undo remain distinct.
 
 ## Do's and Don'ts
 
-### Do:
+- **Do** reuse semantic roles and shared primitives.
+- **Do** keep related measurements together and disclose advanced metadata.
+- **Do** preserve readable focus, Korean input composition, reduced motion and reviewed source changes.
+- **Do** inspect selector precedence when extending a control.
 
-- **Do** reuse semantic CSS roles and shared primitives before adding another local recipe.
-- **Do** preserve the same role meanings in dark and light Studio appearances.
-- **Do** keep authored material values independent from the Studio brand.
-- **Do** group related measurements and leave vertical space between property groups.
-- **Do** pair specimens with readable names, measurement recipes, bindings, and unresolved states.
-- **Do** retain accessible icon labels, visible focus, reduced motion, and Korean input composition.
-- **Do** verify selector precedence when extending shared controls or responsive behavior.
-- **Do** keep review and source-provenance states explicit at the point of change.
+- **Don't** tint neutral Studio surfaces with the accent.
+- **Don't** repeat the full token path beneath a family heading.
+- **Don't** add competing selection borders to filled specimen or view controls.
+- **Don't** treat static captures or source generation as proof of motion quality, native execution or Foundation completion.
 
-### Don't:
-
-- **Don't** change saved appearance or authored project values to enforce a new default.
-- **Don't** replace ordinary editable boundaries with faint structural separators.
-- **Don't** make structural panes glow or float just because active navigation and tools do.
-- **Don't** squeeze three desktop panes into a narrow viewport.
-- **Don't** substitute truncated composite JSON for a readable material caption.
-- **Don't** treat a static capture, catalog entry, or generated source as proof of temporal behavior or native execution.
+Known drift is not canonized: a more specific managed-field transparent-border selector still outranks ordinary hover/focus border declarations; the keyboard outline and important invalid edge remain. Legacy eyebrow styling and incidental heading weights are not new reusable type rules. Native execution, assistive-technology certification and full Foundation completion are outside this design record.

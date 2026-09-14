@@ -35,6 +35,7 @@ function checkSource(path, source) {
     if (!target.startsWith(".")) {
       if (path === resolve(BROWSER_ROOT, "browser-services.ts") && target === "@noble/hashes/sha2.js") return;
       if (isStudio && ["react", "react-dom/client"].includes(target)) return;
+      if (path === resolve(MODULES[5], "src/ui.tsx") && target === "react-dom") return;
       if (neutral || !NODE_BUILTINS.has(target)) throw new Error(`Unapproved dependency in ${label}: ${target}`);
       return;
     }
@@ -72,7 +73,7 @@ const sources = MODULES.flatMap((root) => files(resolve(root, "src"))).filter((p
 if (sources.filter((path) => within(CORE_ROOT, path)).length < 2) throw new Error("Core implementation is missing");
 for (const path of sources) checkSource(path, readFileSync(path, "utf8"));
 const pkg = JSON.parse(readFileSync(resolve(ROOT, "package.json"), "utf8"));
-if (JSON.stringify(pkg.dependencies) !== JSON.stringify({ "@noble/hashes": "2.4.0", "@sun-typeface/suit": "2.0.5", "react": "19.3.0", "react-dom": "19.3.0" })) throw new Error("Runtime dependencies differ from ADR-0015");
+if (JSON.stringify(pkg.dependencies) !== JSON.stringify({ "@noble/hashes": "2.4.0", "@sun-typeface/suit": "2.0.5", "geist": "1.7.2", "react": "19.3.0", "react-dom": "19.3.0" })) throw new Error("Runtime dependencies differ from ADR-0015");
 if (pkg.devDependencies["fake-indexeddb"] !== "6.2.5") throw new Error("Browser test emulator differs from ADR-0013");
 for (const [name, version] of Object.entries({ "@types/react": "19.3.0", "@types/react-dom": "19.3.0", "esbuild": "0.28.2" })) if (pkg.devDependencies[name] !== version) throw new Error(`Studio tooling pin differs: ${name}`);
 const catalog = JSON.parse(readFileSync(resolve(ROOT, "docs/foundation/annexes/command-catalog.json"), "utf8"));

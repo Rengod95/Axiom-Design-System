@@ -4,7 +4,7 @@ import type { FoundationTokenType, JsonValue, StudioCategory, StudioComponent, S
 import type { StudioController, StudioState } from "./controller.ts";
 import type { Locale } from "./locales.ts";
 import { useFormDraft } from "./form-drafts.tsx";
-import { Button, Field, Section, copy } from "./ui.tsx";
+import { Select, Button, Field, Section, copy } from "./ui.tsx";
 import { TokenValueEditor, defaultTokenValue } from "./token-value-editor.tsx";
 import { object } from "./ui-utils.ts";
 
@@ -37,9 +37,9 @@ export function AppearanceRules({ state, controller, component, partId, category
   };
   useFormDraft({ id: "appearance-rules", label: t("타이포그래피·효과·상태 규칙", "Typography, effects and state rules"), dirty, valid: binding !== "literal" || valid, apply: () => apply(), reset });
   return <Section title={t("타이포그래피·효과·상태", "Typography, effects and states")} defaultOpen={false}><div data-draft-form="appearance-rules" className="form-stack">
-    <Field label={t("규칙 범위", "Rule scope")}><select aria-label={t("규칙 범위", "Rule scope")} data-testid="appearance-rule-condition" disabled={dirty} value={condition} onChange={event => setCondition(event.target.value as typeof condition)}>{[["base", t("기본", "Base")], ["outlined", "Outlined"], ...component.catalog || component.archetype === "button" ? [["disabled", t("비활성", "Disabled")], ["pressed", t("누름", "Pressed")]] : []].map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></Field>
-    <Field label={t("편집할 속성", "Property")}><select data-testid="appearance-rule-property" aria-label={t("편집할 속성", "Property")} disabled={dirty} value={property} onChange={event => { setProperty(event.target.value); setEpoch(n => n + 1); }}>{Object.entries(PROPERTIES).map(([id, labels]) => <option key={id} value={id}>{t(...labels)}</option>)}</select></Field>
-    <Field label={t("토큰 연결", "Token binding")}><select aria-label={t("토큰 연결", "Token binding")} data-testid="appearance-rule-binding" value={binding} onChange={event => { setBinding(event.target.value); setDirty(true); }}><option value="literal">{t("직접 값", "Literal")}</option>{compatible.map(token => <option key={token.id} value={token.id}>{token.name}</option>)}</select></Field>
+    <Field label={t("규칙 범위", "Rule scope")}><Select aria-label={t("규칙 범위", "Rule scope")} data-testid="appearance-rule-condition" disabled={dirty} value={condition} onChange={event => setCondition(event.target.value as typeof condition)}>{[["base", t("기본", "Base")], ["outlined", "Outlined"], ...component.catalog || component.archetype === "button" ? [["disabled", t("비활성", "Disabled")], ["pressed", t("누름", "Pressed")]] : []].map(([value, label]) => <option key={value} value={value}>{label}</option>)}</Select></Field>
+    <Field label={t("편집할 속성", "Property")}><Select data-testid="appearance-rule-property" aria-label={t("편집할 속성", "Property")} disabled={dirty} value={property} onChange={event => { setProperty(event.target.value); setEpoch(n => n + 1); }}>{Object.entries(PROPERTIES).map(([id, labels]) => <option key={id} value={id}>{t(...labels)}</option>)}</Select></Field>
+    <Field label={t("토큰 연결", "Token binding")}><Select aria-label={t("토큰 연결", "Token binding")} data-testid="appearance-rule-binding" value={binding} onChange={event => { setBinding(event.target.value); setDirty(true); }}><option value="literal">{t("직접 값", "Literal")}</option>{compatible.map(token => <option key={token.id} value={token.id}>{token.name}</option>)}</Select></Field>
     {binding === "literal" && <TokenValueEditor key={`${property}/${condition}/${epoch}`} locale={locale} type={type} value={value} onChange={next => { setValue(next); setDirty(true); }} onValidityChange={next => { setValid(next); if (!next) setDirty(true); }} />}
     <div className="form-actions"><Button data-testid="appearance-rule-apply" tone="primary" disabled={!valid && binding === "literal"} onClick={() => apply()}>{t("규칙 반영", "Apply rule")}</Button>{dirty && <Button onClick={reset}>{t("입력 초기화", "Reset input")}</Button>}</div>
     {declared !== undefined && <Button tone="subtle" data-testid="appearance-rule-reset" disabled={dirty} onClick={() => apply(null)}>{t("규칙 제거 · 상속 복원", "Remove rule · restore inheritance")}</Button>}

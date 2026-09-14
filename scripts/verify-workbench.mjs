@@ -1,4 +1,4 @@
-import { verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench } from "./workbench-completion-cases.mjs";
+import { verifyCompactWorkbench, verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench } from "./workbench-completion-cases.mjs";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -196,6 +196,7 @@ try {
   await click(`token-${tokenId}`); await selectElement(label("Editing scope", "select"), "base"); await fill("foundation-token-name", ""); await clickElement(text("Manage", "summary"));
   assert.equal(await page.evaluate(`(${text("Duplicate token")}).disabled`), true);
   assert.equal(await page.evaluate(`(${text("Delete token…")}).disabled`), true);
+  await click("token-selection-mode");
   await clickElement(label("Select Workbench spacing", "input"));
   assert.equal(await page.evaluate(`(${text("Delete…")}).disabled`), true, "Bulk deletion must not unmount an inspector with unapplied input");
   await clickElement(text("Clear selection"));
@@ -236,6 +237,7 @@ try {
   record("processRestart", { dedicatedProfile: true, ordinaryBrowserShutdown: true, shutdownElapsedMs, tokenAndContextValue: true, catalogComponent: true, localeAndAppearance: true });
   await verifyEditorCompletion({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, select, selectElement, until, settled, approve, revision, record });
   await verifyMaterialWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
+  await verifyCompactWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
   await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   assert.deepEqual(browser.cdp.errors, []); evidence.status = "PASSED";
 } catch (error) { evidence.error = { message: error.message, stack: error.stack }; process.exitCode = 1; }

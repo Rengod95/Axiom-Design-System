@@ -6,7 +6,7 @@ import { ComponentInspector } from "./component-inspector.tsx";
 import { Icon } from "./icons.tsx";
 import type { Locale, MessageKey } from "./locales.ts";
 import { translate } from "./locales.ts";
-import { Button, copy } from "./ui.tsx";
+import { Select, Button, copy } from "./ui.tsx";
 import { downloadText } from "./ui-utils.ts";
 
 export function DiagnosticList({ diagnostics, locale }: { diagnostics: Diagnostic[]; locale: Locale }) {
@@ -36,13 +36,13 @@ export function Inspector({ state, controller, tokenId, component, selectedPart,
     setTab(next); event.currentTarget.querySelector<HTMLButtonElement>(`#inspector-tab-${next}`)?.focus();
   };
   const disabled = state.busy || state.retryable || Boolean(state.candidate);
-  return <aside className="inspector" aria-label={t("inspector")}><div className="inspector-header"><h2>{token?.name ?? component?.name ?? t("emptySelection")}</h2><p className="object-id">{token?.id ?? selectedPart ?? component?.id}</p><div className="tabs" role="tablist" aria-label={t("inspector")} onKeyDown={tabKey}><button id="inspector-tab-design" type="button" role="tab" tabIndex={tab === "design" ? 0 : -1} aria-selected={tab === "design"} aria-controls="inspector-design-panel" className={tab === "design" ? "active" : ""} onClick={() => setTab("design")}>{t("design")}</button><button id="inspector-tab-source" type="button" data-testid="source-tab" role="tab" tabIndex={tab === "source" ? 0 : -1} aria-selected={tab === "source"} aria-controls="inspector-source-panel" className={tab === "source" ? "active" : ""} onClick={() => setTab("source")}><span className="row"><Icon name="code" size={12} />{t("source")}</span></button></div></div>
+  return <aside className="inspector" aria-label={t("inspector")}><div className="inspector-header inspector-tabs-only"><div className="tabs" role="tablist" aria-label={t("inspector")} onKeyDown={tabKey}><button id="inspector-tab-design" type="button" role="tab" tabIndex={tab === "design" ? 0 : -1} aria-selected={tab === "design"} aria-controls="inspector-design-panel" className={tab === "design" ? "active" : ""} onClick={() => setTab("design")}>{t("design")}</button><button id="inspector-tab-source" type="button" data-testid="source-tab" role="tab" tabIndex={tab === "source" ? 0 : -1} aria-selected={tab === "source"} aria-controls="inspector-source-panel" className={tab === "source" ? "active" : ""} onClick={() => setTab("source")}><span className="row"><Icon name="code" size={12} />{t("source")}</span></button></div></div>
     <div className={`inspector-body ${tab === "source" ? "source-panel" : ""}`} id="inspector-panel">
       <div hidden={tab !== "design"} role="tabpanel" id="inspector-design-panel" aria-labelledby="inspector-tab-design"><fieldset className="inspector-fields" disabled={disabled}>
         {component ? <ComponentInspector state={state} controller={controller} component={component} selectedPart={selectedPart} category={category} locale={locale} {...(onSelectToken ? { onSelectToken } : {})} {...(onSelectPart ? { onSelectPart } : {})} {...(onDirtyChange ? { onDirtyChange } : {})} /> : token ? <Button tone="subtle" onClick={() => onSelectToken?.(token.id)} disabled={!onSelectToken}>{c("Foundation에서 토큰 편집", "Edit token in Foundation")}</Button> : <p className="help">{t("emptySelection")}</p>}
       </fieldset></div>
       <div hidden={tab !== "source"} className="source-panel" role="tabpanel" id="inspector-source-panel" aria-labelledby="inspector-tab-source">
-        <div className="field"><label htmlFor="source-document">{t("documentSource")}</label><select id="source-document" value={sourceId} onChange={event => { setSourceId(event.target.value); setOriginal(""); }}>{Object.keys(working?.documents ?? {}).map(id => <option value={id} key={id}>{id}</option>)}</select><p className="help">{t("sourceHelp")}</p></div>
+        <div className="field"><label htmlFor="source-document">{t("documentSource")}</label><Select id="source-document" value={sourceId} onChange={event => { setSourceId(event.target.value); setOriginal(""); }}>{Object.keys(working?.documents ?? {}).map(id => <option value={id} key={id}>{id}</option>)}</Select><p className="help">{t("sourceHelp")}</p></div>
         <label className="sr-only" htmlFor="source-editor">{t("documentSource")}</label><textarea id="source-editor" data-testid="source-editor" className="json-editor" value={source} spellCheck={false} disabled={disabled || !document} onChange={event => controller.setBuffer(sourceId, event.target.value)} />
         <Button tone="primary" data-testid="source-preview" disabled={disabled || !state.pendingBuffers.includes(sourceId)} onClick={() => controller.previewBuffer(sourceId)}>{t("previewSource")}</Button>
         <Button data-testid="source-capture" disabled={disabled || state.buffers[sourceId] === undefined} onClick={() => void controller.captureBuffer(sourceId)}>{t("captureDraft")}</Button>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { foundationValueReferences, parseJson } from "../../../modules/ads-core/src/index.ts";
 import type { FoundationTokenRow, FoundationTokenValue, JsonValue } from "../../../modules/ads-core/src/index.ts";
 import type { Locale } from "./locales.ts";
-import { Field, copy } from "./ui.tsx";
+import { Select, Field, copy } from "./ui.tsx";
 import { tokenValueSummary } from "./token-value-editor.tsx";
 
 const pointers = (value: JsonValue | undefined, path = "", result: { path: string; label: string }[] = []) => {
@@ -30,8 +30,8 @@ export function FoundationExpressionEditor({ value, tokens, ownerId, locale, onC
     {references.map(({ ref, path }, index) => {
       const target = tokens.find(item => item.id === ref.id), choices = pointers(target?.resolvedValue);
       return <div className="expression-binding" key={path}>
-        <Field label={t("원본 토큰", "Source token")}><select aria-label={`${t("연결 원본", "Binding source")} ${index + 1}`} value={ref.id} onChange={event => update(index, event.target.value)}><option value="">{t("토큰 선택", "Choose a token")}</option>{tokens.filter(item => item.id !== ownerId).map(item => <option value={item.id} key={item.id}>{item.name} · {item.typeRef.id}</option>)}</select></Field>
-        <Field label={t("가져올 속성", "Source property")}><select aria-label={`${t("연결 속성", "Binding property")} ${index + 1}`} value={ref.path ?? ""} onChange={event => update(index, ref.id, event.target.value)}>{choices.length === 0 && <option value="">$value</option>}{ref.path && !choices.some(item => item.path === ref.path) && <option value={ref.path}>{ref.path}</option>}{choices.map(item => <option value={item.path} key={item.path}>{item.label}</option>)}</select></Field>
+        <Field label={t("원본 토큰", "Source token")}><Select aria-label={`${t("연결 원본", "Binding source")} ${index + 1}`} value={ref.id} onChange={event => update(index, event.target.value)}><option value="">{t("토큰 선택", "Choose a token")}</option>{tokens.filter(item => item.id !== ownerId).map(item => <option value={item.id} key={item.id}>{item.name} · {item.typeRef.id}</option>)}</Select></Field>
+        <Field label={t("가져올 속성", "Source property")}><Select aria-label={`${t("연결 속성", "Binding property")} ${index + 1}`} value={ref.path ?? ""} onChange={event => update(index, ref.id, event.target.value)}>{choices.length === 0 && <option value="">$value</option>}{ref.path && !choices.some(item => item.path === ref.path) && <option value={ref.path}>{ref.path}</option>}{choices.map(item => <option value={item.path} key={item.path}>{item.label}</option>)}</Select></Field>
         {"composite" in value && <code className="field-hint">{path.replace(/^\/composite/, "").replace(/\/ref$/, "") || "$value"}</code>}
       </div>;
     })}

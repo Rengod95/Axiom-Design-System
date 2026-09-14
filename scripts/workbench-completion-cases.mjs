@@ -1,4 +1,50 @@
 import assert from "node:assert/strict";
+
+/** Exercise the authored controls through the visible browser UI, not the form proxy. */
+export async function verifyCompactWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record }) {
+  const before = await revision();
+  const press = async key => { for (const type of ["keyDown", "keyUp"]) await page.send("Input.dispatchKeyEvent", { type, key, code: key === " " ? "Space" : key.length === 1 ? `Key${key.toUpperCase()}` : key }); await settled(); };
+  await click("view-foundation"); await clickElement(text("Tokens")); await click("token-view-visual"); await fill("foundation-search", "");
+  for (const name of ["Filter domain", "Filter tier", "Filter type"]) await selectElement(label(name, "select"), "all");
+  const source = label("Filter type", "select"), trigger = `(${source}).parentElement.querySelector('[data-select-trigger]')`;
+  await clickElement(trigger); await until("document.querySelector('.select-popup')");
+  await press("End"); assert.equal(await page.evaluate("document.querySelector('.select-popup [data-active=true]').textContent"), "typography");
+  await press("Home"); await press("ArrowDown"); await press("Enter");
+  assert.equal(await page.evaluate(`(${source}).value`), "color");
+  assert.equal(await page.evaluate("document.querySelector('.select-popup')===null"), true);
+  await press("g"); await until("document.querySelector('.select-popup [data-active=true]')?.textContent==='gradient'");
+  await press("Escape"); assert.equal(await page.evaluate(`(${source}).value`), "color", "Escape preserves the committed choice");
+  await clickElement(trigger); await clickElement(text("Aliases only"));
+  assert.equal(await page.evaluate("document.querySelector('.select-popup')===null"), true, "An outside click dismisses the menu");
+  await clickElement(text("Aliases only"));
+  await clickElement(trigger); await clickElement("Array.from(document.querySelectorAll('.select-option')).find(e=>e.textContent==='dimension')");
+  assert.equal(await page.evaluate(`(${source}).value`), "dimension");
+  await clickElement(trigger); await press("Home"); await press("Tab");
+  assert.equal(await page.evaluate(`(${source}).value`), "all", "Tab commits the active option and continues focus navigation");
+  assert.notEqual(await page.evaluate(`document.activeElement===(${trigger})`), true);
+  await selectElement(source, "color"); await fill("foundation-search", "color.brand.");
+  assert.equal(await page.evaluate("Array.from(document.querySelectorAll('.material-name')).some(e=>e.textContent==='200')"), true);
+  assert.equal(await page.evaluate("Array.from(document.querySelectorAll('.material-color .token-visual')).every(e=>Math.abs(e.clientWidth-e.clientHeight)<1)"), true);
+  await clickElement("document.querySelector('.material-group .section-add-token')");
+  assert.equal(await page.evaluate(`${id("foundation-token-name")}.value`), "color.brand.");
+  assert.equal(await page.evaluate(`${id("foundation-token-type")}.value`), "color");
+  assert.equal(await page.evaluate(`(${label("Domain", "select")}).selectedOptions[0].textContent`), "Color");
+  assert.equal(await page.evaluate(`(${label("Tier", "select")}).selectedOptions[0].textContent`), "Primitive");
+  // Switching an untouched creation context must remount defaults without losing another edited form.
+  await fill("foundation-search", "color.neutral."); await clickElement("document.querySelector('.material-group .section-add-token')");
+  assert.equal(await page.evaluate(`${id("foundation-token-name")}.value`), "color.neutral.");
+  await clickElement(text("Cancel")); await fill("foundation-search", ""); await selectElement(source, "all");
+  const geometry = await page.evaluate("(()=>{const p=document.querySelector('.foundation-panel'),n=document.querySelector('.foundation-navigation'),top=n.getBoundingClientRect().top;p.scrollTop=400;return{top}})()");
+  await settled();
+  assert.ok(Math.abs(await page.evaluate("document.querySelector('.foundation-navigation').getBoundingClientRect().top") - geometry.top) < 1, "Foundation tabs stay fixed in their scrolling pane");
+  await page.evaluate("document.querySelector('.foundation-panel').scrollTop=0");
+  const appearance = await page.evaluate("(()=>{const s=getComputedStyle(document.documentElement);return{font:s.getPropertyValue('--font-ui'),neutral:['--surface','--surface-subtle','--surface-hover','--surface-active','--canvas','--line','--line-strong'].map(k=>s.getPropertyValue(k).trim()),glass:getComputedStyle(document.querySelector('.sidebar')).backdropFilter,nav:document.querySelector('.workspace-nav .nav-item').getBoundingClientRect().height,footer:document.querySelector('.statusbar').getBoundingClientRect().height}})()");
+  assert.ok(appearance.font.startsWith("Geist"));
+  assert.ok(appearance.neutral.every(value => /^#([0-9a-f]{2})\1\1$/i.test(value)), "Studio neutrals are achromatic");
+  assert.ok(appearance.glass.includes("blur")); assert.equal(appearance.nav, 36); assert.equal(appearance.footer, 28);
+  assert.equal(await revision(), before, "Browsing, changing UI filters and cancelling contextual creation preserve the project");
+  record("compactGlassControls", { visibleDropdownKeyboardAndPointer: true, typeahead: true, escapeAndOutsideDismissal: true, tabCommit: true, contextualCreation: true, contextualReentry: true, squareColorSurfaces: true, localTokenLabels: true, stickyNavigation: true, neutralShades: true, geist: true, navHeight: 36, footerHeight: 28 });
+}
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -19,7 +65,7 @@ export async function verifyEditorCompletion({ page, origin, database, root, id,
   assert.equal(await page.evaluate("Boolean(document.querySelector('.unassigned-row'))"), false);
   await viewport(1312, 958); await capture("02-domains-light");
   await clickElement("Array.from(document.querySelectorAll('.domain-directory-row')).find(e=>e.querySelector('strong').textContent==='Typography')");
-  await clickElement(text("Semantic"));
+  await selectElement(label("Filter tier", "select"), await page.evaluate(`Array.from((${label("Filter tier", "select")}).options).find(e=>e.textContent==='Semantic').value`));
   assert.ok(await page.evaluate("document.querySelectorAll('.material-group').length>0 && Array.from(document.querySelectorAll('.material-group > header')).every(e=>e.textContent.includes('Semantic'))"));
   await clickElement("Array.from(document.querySelectorAll('[data-testid^=foundation-row-]')).find(e=>e.textContent.includes('typography.body'))?.querySelector('button')");
   await capture("03-typography-light");
@@ -176,12 +222,14 @@ export async function verifyMaterialWorkbench({ page, id, label, text, click, cl
   const before = await revision();
   const types = await page.evaluate("[...new Set(Array.from(document.querySelectorAll('.material-select [data-visual-type]')).map(e=>e.dataset.visualType))].sort()");
   assert.deepEqual(types, ["border", "color", "cubicBezier", "dimension", "duration", "fontFamily", "fontWeight", "gradient", "number", "shadow", "strokeStyle", "transition", "typography"].sort());
-  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.material-select .token-visual')).every(e=>{const r=e.getBoundingClientRect();return r.width>=80&&r.height>=100})"), "Each material has a full display surface, including shadows");
+  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.material-select .token-visual')).every(e=>{const r=e.getBoundingClientRect();return r.width>=80&&(e.dataset.visualType==='color'?Math.abs(r.height-r.width)<1:r.height>=100)})"), "Color surfaces stay square; other material types keep a readable display");
   await fill("foundation-search", "space.");
   const names = await page.evaluate("Array.from(document.querySelectorAll('.material-select .sr-only')).map(e=>e.textContent)");
   assert.ok(names.indexOf("space.2") < names.indexOf("space.12"), "Numeric scales use natural ordering");
   const first = await page.evaluate("document.querySelector('.material-token').dataset.testid");
   await clickElement(`${id(first)}.querySelector('.material-select')`);
+  assert.equal(await page.evaluate("document.querySelectorAll('.material-token input[type=checkbox]').length"), 0);
+  await click("token-selection-mode");
   await clickElement(`${id(first)}.querySelector('input[type=checkbox]')`);
   await click("token-view-list");
   assert.equal(await page.evaluate(`${id(first)}.querySelector('input').checked`), true);
@@ -215,13 +263,18 @@ export async function verifyMaterialWorkbench({ page, id, label, text, click, cl
   assert.equal(await revision(), before);
   record("materialMotion", { inheritedReducedMotion, explicitPreferenceCases: true, tokenDrivenPlayback: true, controlledDocumentClock: true, nativeSeekingMovesSpecimen: true, cancelsOnReducedMotion: true, noSourceEdit: true });
 
-  await fill("foundation-token-name", "");
-  await clickElement(text("Definition", "summary"));
-  await click("review-changes");
-  await until("Boolean(document.querySelector('.input-notice'))");
-  assert.equal(await page.evaluate(`${id("foundation-token-name")}.closest('details').open`), true, "Invalid draft focus reveals its collapsed group");
-  await until(`document.activeElement===${id("foundation-token-name")}`);
-  await click("reset-pending-input");
-  assert.equal(await page.evaluate(`${id("foundation-token-name")}.value`), "duration.300");
-  record("collapsedDraftRecovery", { detailsRevealed: true, invalidControlFocused: true, resetPreservesSource: true });
+  try {
+    for (const preference of ["no-preference", "reduce"]) {
+      await page.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: preference }] }); await settled();
+      await fill("foundation-token-name", "");
+      await clickElement(text("Definition", "summary"));
+      await click("review-changes");
+      await until("Boolean(document.querySelector('.input-notice'))");
+      assert.equal(await page.evaluate(`${id("foundation-token-name")}.closest('details').open`), true, "Invalid draft focus reveals its collapsed group");
+      await until(`document.activeElement===${id("foundation-token-name")}`);
+      await click("reset-pending-input");
+      assert.equal(await page.evaluate(`${id("foundation-token-name")}.value`), "duration.300");
+    }
+  } finally { await page.send("Emulation.setEmulatedMedia", { features: [] }); }
+  record("collapsedDraftRecovery", { detailsRevealed: true, invalidControlFocused: true, bothMotionPreferences: true, resetPreservesSource: true });
 }

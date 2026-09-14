@@ -1,10 +1,159 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
-import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
+import { Children, Fragment, isValidElement, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import type { ButtonHTMLAttributes, InputHTMLAttributes, KeyboardEvent, ReactNode, SelectHTMLAttributes } from "react";
 import { Icon } from "./icons.tsx";
 import type { IconName } from "./icons.tsx";
 import type { Locale } from "./locales.ts";
 
 export const copy = (locale: Locale, ko: string, en: string): string => locale === "ko" ? ko : en;
+
+type SelectOption = { value: string; label: string; disabled: boolean; hidden: boolean; group: number };
+type SelectGroup = { label?: string; options: number[] };
+type SelectProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, "multiple" | "size"> & { triggerIcon?: IconName; iconOnly?: boolean };
+
+function selectText(node: ReactNode): string {
+  return Children.toArray(node).map(child => typeof child === "string" || typeof child === "number" ? String(child) : isValidElement<{ children?: ReactNode }>(child) ? selectText(child.props.children) : "").join("");
+}
+
+/** The native element remains the form owner; the authored popup never opens a browser menu. */
+export function Select({ children, value, defaultValue, className = "", style, disabled, id: suppliedId, tabIndex, autoFocus, onChange, onInvalid, triggerIcon, iconOnly = false, ...props }: SelectProps) {
+  const generatedId = useId(), id = suppliedId ?? `select-${generatedId}`, listId = `${id}-listbox`;
+  const native = useRef<HTMLSelectElement>(null), trigger = useRef<HTMLButtonElement>(null), popup = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false), [active, setActive] = useState(-1), [nativeValue, setNativeValue] = useState(String(value ?? defaultValue ?? ""));
+  const [inferredLabel, setInferredLabel] = useState(""), [invalid, setInvalid] = useState(false), [inheritedDisabled, setInheritedDisabled] = useState(false);
+  const [position, setPosition] = useState({ left: 0, top: 0, width: 180, maxHeight: 280, side: "bottom" });
+  const typeahead = useRef({ text: "", at: 0 });
+  const { options, groups } = useMemo(() => {
+    const options: SelectOption[] = [], groups: SelectGroup[] = [{ options: [] }];
+    const visit = (nodes: ReactNode, group: number, groupDisabled = false) => Children.forEach(nodes, child => {
+      if (!isValidElement<{ children?: ReactNode; value?: string | number; label?: string; disabled?: boolean; hidden?: boolean }>(child)) return;
+      if (child.type === "optgroup") {
+        const nextGroup = groups.length;
+        groups.push({ label: child.props.label ?? "", options: [] });
+        visit(child.props.children, nextGroup, groupDisabled || child.props.disabled === true);
+      } else if (child.type === "option") {
+        const text = selectText(child.props.children), index = options.length;
+        options.push({ value: String(child.props.value ?? text), label: child.props.label ?? text, disabled: groupDisabled || child.props.disabled === true, hidden: child.props.hidden === true, group });
+        groups[group]!.options.push(index);
+      } else if (child.type === Fragment) visit(child.props.children, group, groupDisabled);
+    });
+    visit(children, 0);
+    // Preserve native order when ordinary options occur after an optgroup.
+    const orderedGroups: (SelectGroup & { source: number })[] = [];
+    options.forEach((option, index) => {
+      if (orderedGroups.at(-1)?.source !== option.group) orderedGroups.push({ ...groups[option.group]!, options: [], source: option.group });
+      orderedGroups.at(-1)!.options.push(index);
+    });
+    return { options, groups: orderedGroups };
+  }, [children]);
+  const selected = options.findIndex(option => option.value === String(value ?? nativeValue));
+  const enabled = options.flatMap((option, index) => !option.disabled && !option.hidden ? [index] : []);
+  const unavailable = disabled || inheritedDisabled;
+  const label = props["aria-label"] ?? (props["aria-labelledby"] ? undefined : inferredLabel || undefined);
+  const testId = (props as Record<string, unknown>)["data-testid"] as string | undefined;
+
+  // Form reset, dynamically replaced options and disabled fieldsets also own select state.
+  useLayoutEffect(() => {
+    const element = native.current;
+    if (!element) return;
+    setNativeValue(element.value);
+    setInheritedDisabled(element.matches(":disabled"));
+    setInferredLabel([...element.labels ?? []].map(label => label.textContent?.trim()).filter(Boolean).join(" ") || element.closest(".field")?.querySelector(".field-label")?.textContent?.trim() || "");
+  });
+  useEffect(() => {
+    const element = native.current, form = element?.form;
+    if (!element || !form) return;
+    let frame = 0;
+    const reset = () => { setOpen(false); frame = requestAnimationFrame(() => { setNativeValue(element.value); setInvalid(false); }); };
+    form.addEventListener("reset", reset);
+    return () => { cancelAnimationFrame(frame); form.removeEventListener("reset", reset); };
+  }, [props.form]);
+  useEffect(() => { if (unavailable) setOpen(false); }, [unavailable]);
+  useEffect(() => { if (autoFocus && !unavailable) trigger.current?.focus(); }, [autoFocus, unavailable]);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const button = trigger.current;
+    if (!button) return;
+    const place = () => {
+      const rect = button.getBoundingClientRect(), viewport = window.visualViewport;
+      const leftEdge = viewport?.offsetLeft ?? 0, topEdge = viewport?.offsetTop ?? 0;
+      const viewportWidth = viewport?.width ?? window.innerWidth, viewportHeight = viewport?.height ?? window.innerHeight;
+      if (rect.bottom <= topEdge || rect.top >= topEdge + viewportHeight || rect.right <= leftEdge || rect.left >= leftEdge + viewportWidth) { setOpen(false); return; }
+      const below = topEdge + viewportHeight - rect.bottom - 12, above = rect.top - topEdge - 12;
+      const side = below < 180 && above > below ? "top" : "bottom", maxHeight = Math.max(48, Math.min(280, side === "top" ? above : below));
+      const width = Math.min(Math.max(rect.width, 180), viewportWidth - 16);
+      setPosition({ left: Math.min(Math.max(leftEdge + 8, rect.left), leftEdge + viewportWidth - width - 8), top: side === "top" ? rect.top - 4 : rect.bottom + 4, width, maxHeight, side });
+    };
+    const dismiss = (event: Event) => { if (event.target instanceof Node && !button.parentElement?.contains(event.target) && !popup.current?.contains(event.target)) setOpen(false); };
+    const blur = () => setOpen(false);
+    place();
+    const observer = new ResizeObserver(place); observer.observe(button);
+    window.addEventListener("resize", place); window.addEventListener("scroll", place, true); window.addEventListener("blur", blur);
+    window.visualViewport?.addEventListener("resize", place); window.visualViewport?.addEventListener("scroll", place);
+    document.addEventListener("pointerdown", dismiss, true); document.addEventListener("focusin", dismiss);
+    return () => {
+      observer.disconnect(); window.removeEventListener("resize", place); window.removeEventListener("scroll", place, true); window.removeEventListener("blur", blur);
+      window.visualViewport?.removeEventListener("resize", place); window.visualViewport?.removeEventListener("scroll", place);
+      document.removeEventListener("pointerdown", dismiss, true); document.removeEventListener("focusin", dismiss);
+    };
+  }, [open]);
+  useLayoutEffect(() => {
+    if (!open || active < 0) return;
+    const menu = popup.current, option = document.getElementById(`${listId}-${active}`);
+    if (!menu || !option) return;
+    const top = option.offsetTop, bottom = top + option.offsetHeight;
+    if (top < menu.scrollTop + 4) menu.scrollTop = top - 4;
+    else if (bottom > menu.scrollTop + menu.clientHeight - 4) menu.scrollTop = bottom - menu.clientHeight + 4;
+  }, [active, open, listId, position.maxHeight]);
+  useEffect(() => { if (open && !enabled.includes(active)) setActive(enabled.includes(selected) ? selected : enabled[0] ?? -1); }, [open, active, selected, options]);
+
+  const show = (index = enabled.includes(selected) ? selected : enabled[0] ?? -1) => {
+    if (unavailable || !enabled.length) return;
+    typeahead.current = { text: "", at: 0 }; setActive(index); setOpen(true);
+  };
+  const choose = (index: number, restoreFocus = true) => {
+    const option = options[index], element = native.current;
+    if (!option || option.disabled || option.hidden || unavailable || !element) return;
+    if (element.value !== option.value) {
+      element.value = option.value;
+      // A real change event retains currentTarget, form ownership and React's controlled value restoration.
+      element.dispatchEvent(new Event("input", { bubbles: true }));
+      element.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    setOpen(false); typeahead.current = { text: "", at: 0 };
+    if (restoreFocus) trigger.current?.focus({ preventScroll: true });
+  };
+  const keyboard = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.isDefaultPrevented() || unavailable || event.nativeEvent.isComposing) return;
+    if (event.key === "Escape" && open) { event.preventDefault(); event.stopPropagation(); setOpen(false); return; }
+    if (event.key === "Tab") { if (open) choose(active, false); return; }
+    if (event.altKey && event.key === "ArrowUp") { event.preventDefault(); setOpen(false); return; }
+    if (event.ctrlKey || event.metaKey || event.altKey && event.key !== "ArrowDown") return;
+    if (["ArrowDown", "ArrowUp", "Home", "End", "PageDown", "PageUp"].includes(event.key)) {
+      event.preventDefault();
+      if (!open) { show(event.key === "Home" ? enabled[0] : event.key === "End" ? enabled.at(-1) : undefined); return; }
+      const current = Math.max(0, enabled.indexOf(active));
+      const next = event.key === "Home" ? 0 : event.key === "End" ? enabled.length - 1 : current + (event.key === "ArrowUp" ? -1 : event.key === "PageUp" ? -10 : event.key === "PageDown" ? 10 : 1);
+      setActive(enabled[Math.max(0, Math.min(enabled.length - 1, next))] ?? -1); return;
+    }
+    if (event.key === "Enter" || event.key === " " && (!typeahead.current.text || performance.now() - typeahead.current.at >= 700)) { event.preventDefault(); if (open) choose(active); else show(); return; }
+    if (event.key.length !== 1 || !enabled.length) return;
+    event.preventDefault();
+    const now = performance.now(), previous = now - typeahead.current.at < 700 ? typeahead.current.text : "";
+    const text = `${previous}${event.key}`.toLocaleLowerCase(), repeated = [...text].every(letter => letter === text[0]);
+    const query = repeated ? text[0]! : text, start = previous && !repeated ? Math.max(0, enabled.indexOf(active)) : (Math.max(-1, enabled.indexOf(open ? active : selected)) + 1) % enabled.length;
+    const match = [...enabled.slice(start), ...enabled.slice(0, start)].find(index => options[index]!.label.trim().toLocaleLowerCase().startsWith(query));
+    typeahead.current = { text, at: now };
+    if (match !== undefined) { setActive(match); setOpen(true); }
+  };
+
+  return <span className={`select-control ${iconOnly ? "select-icon-only" : ""} ${className}`} style={style} data-open={open || undefined}>
+    <select {...props} id={id} ref={native} className="select-native" value={value} defaultValue={defaultValue} disabled={disabled} tabIndex={-1} aria-hidden="true" onFocus={event => { props.onFocus?.(event); trigger.current?.focus({ preventScroll: true }); }} onChange={event => { setNativeValue(event.currentTarget.value); setInvalid(!event.currentTarget.validity.valid); onChange?.(event); }} onInvalid={event => { event.preventDefault(); setInvalid(true); onInvalid?.(event); trigger.current?.focus({ preventScroll: true }); }}>{children}</select>
+    <button ref={trigger} id={`${id}-trigger`} type="button" role="combobox" className="select-trigger" data-select-trigger="" data-select-for={testId} disabled={unavailable} tabIndex={tabIndex} title={props.title ?? options[selected]?.label} aria-label={label} aria-labelledby={props["aria-labelledby"]} aria-describedby={props["aria-describedby"]} aria-required={props.required || undefined} aria-invalid={props["aria-invalid"] ?? (invalid || undefined)} aria-haspopup="listbox" aria-expanded={open} aria-controls={open ? listId : undefined} aria-activedescendant={open && active >= 0 ? `${listId}-${active}` : undefined} onClick={() => { if (open) setOpen(false); else show(); }} onKeyDown={keyboard}>{triggerIcon && <span className="select-leading-icon"><Icon name={triggerIcon} size={16} /></span>}<span className={`select-value ${iconOnly ? "sr-only" : ""}`}>{options[selected]?.label ?? ""}</span><Icon name="chevron" size={12} /></button>
+    {open && createPortal(<div ref={popup} id={listId} role="listbox" className="select-popup" aria-label={label} aria-labelledby={props["aria-labelledby"]} data-side={position.side} style={{ left: position.left, top: position.top, width: position.width, maxHeight: position.maxHeight }} onMouseDown={event => event.preventDefault()}>{groups.map((group, groupIndex) => <div key={groupIndex} role={group.label === undefined ? "presentation" : "group"} aria-label={group.label}>{group.label !== undefined && <div className="select-group-label" aria-hidden="true">{group.label}</div>}{group.options.filter(index => !options[index]!.hidden).map(index => { const option = options[index]!; return <div key={index} id={`${listId}-${index}`} role="option" aria-selected={selected === index} aria-disabled={option.disabled || undefined} className="select-option" data-active={active === index || undefined} onPointerMove={event => { if (event.pointerType === "mouse" && !option.disabled) setActive(index); }} onClick={() => choose(index)}><span>{option.label}</span>{selected === index && <Icon name="check" size={14} />}</div>; })}</div>)}</div>, trigger.current?.closest("dialog") ?? document.body)}
+  </span>;
+}
 
 /** A single moving surface connects workspace selections without moving their labels. */
 export function SelectionPill({ value }: { value: string }) {

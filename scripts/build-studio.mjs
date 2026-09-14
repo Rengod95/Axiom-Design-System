@@ -13,5 +13,6 @@ if (Object.values(result.metafile.outputs).some(output => output.imports.some(it
 await copyFile(resolve(ROOT, "apps/studio/index.html"), resolve(OUTPUT, "index.html"));
 await copyFile(resolve(ROOT, "node_modules/@sun-typeface/suit/fonts/variable/woff2/SUIT-Variable.woff2"), resolve(OUTPUT, "SUIT-Variable.woff2"));
 await copyFile(resolve(ROOT, "node_modules/@sun-typeface/suit/LICENSE"), resolve(OUTPUT, "SUIT-OFL.txt"));
+await copyFile(resolve(ROOT, "node_modules/geist/LICENSE.txt"), resolve(OUTPUT, "Geist-OFL.txt"));
 await writeFile(resolve(OUTPUT, "build-evidence.json"), `${JSON.stringify({ kind: "axiom-studio-build", inputs: Object.keys(result.metafile.inputs).sort(), outputs: Object.fromEntries(Object.entries(result.metafile.outputs).map(([path, value]) => [path, { bytes: value.bytes }])) }, null, 2)}\n`);
 console.log(`Built local Studio: ${Object.keys(result.metafile.inputs).length} inputs; no Node adapter or external imports`);
