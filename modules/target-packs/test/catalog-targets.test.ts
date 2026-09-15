@@ -5,7 +5,7 @@ import vm from "node:vm";
 import React from "react";
 import * as jsxRuntime from "react/jsx-runtime";
 import { renderToStaticMarkup } from "react-dom/server";
-import { canonicalJson, inspectStudioProject, planStudioComponentCreate, planStudioComponentEdit } from "../../ads-core/src/index.ts";
+import { canonicalJson, inspectStudioProject, planStudioComponentCreate, planStudioComponentEdit, planStudioInstanceEdit } from "../../ads-core/src/index.ts";
 import type { ProjectSnapshot, StudioComponentEdit, StudioComponentPlan } from "../../ads-core/src/index.ts";
 import { generateTargetPack } from "../src/index.ts";
 import { DIGEST, projectFixture } from "./target-fixture.ts";
@@ -146,17 +146,23 @@ test("compound React templates retain nested Trigger content, slots, unique rela
   edit({ kind: "element-add", parentId: panel.id, element: "text" });
   const body = projection().parts.find(part => part.elementKind === "text" && part.id !== caption.id)!;
   edit({ kind: "part-text", partId: body.id, text: "Authored answer" });
+  const child = planStudioComponentCreate(project, { catalogId: "catalog.button" }, id); assert.equal(child.valid, true);
+  const sourceComponentId = child.changes.upserts.find(item => item.document.kind === "component")!.document.id;
+  const inserted = planStudioInstanceEdit(child.project, component.id, { kind: "insert", ownerPartRef: panel.id, slotRef: null, sourceComponentId }, id);
+  assert.equal(inserted.valid, true, canonicalJson(inserted.diagnostics)); project = inserted.project;
   const { Component } = await compiledComponent(project, component.id);
   const props = { expandedKeys: ["one"], items: [{ key: "one", label: "First" }, { key: "two", label: "Second" }], onExpandedKeysChangeRequest() {} };
   const markup = renderToStaticMarkup(React.createElement(Component, props));
   assert.equal(markup.split("&lt;Details&gt;").length - 1, 2);
   assert.equal(markup.split("Authored answer").length - 1, 2);
+  assert.equal((markup.match(/<button\b/g) ?? []).length, 4, "Each repeated Content includes its real Button instance");
   assert.match(markup, new RegExp(`<button[^>]*>[\\s\\S]*?<span[^>]*data-part="${box.id}"[^>]*><span[^>]*data-part="${caption.id}"`));
   assert.doesNotMatch(markup, /<button[^>]*>(?:(?!<\/button>)[\s\S])*<div/);
   const controls = [...markup.matchAll(/aria-controls="([^"]+)"/g)].map(match => match[1]!);
   assert.equal(new Set(controls).size, 2); controls.forEach(control => assert.ok(markup.includes(`id="${control}"`)));
   const replacement = renderToStaticMarkup(React.createElement(Component, { ...props, panel: "Consumer answer" }));
   assert.doesNotMatch(replacement, /Authored answer/); assert.equal(replacement.split("Consumer answer").length - 1, 2);
+  assert.equal((replacement.match(/<button\b/g) ?? []).length, 2, "Consumer Content replaces the authored instance subtree");
   for (const target of ["react-native", "swiftui", "compose"] as const) { const result = generateTargetPack(project, { target }, DIGEST); assert.equal(result.valid, false); assert.equal(result.pack, undefined); }
 });
 

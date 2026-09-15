@@ -12,7 +12,7 @@ export async function verifyCompoundWorkspace({ page, origin, database, root, id
   await fill("project-name", "Compound anatomy"); await click("starter-enabled"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
   const originals = Object.fromEntries((await saved()).map(entry => [entry.document.id, entry.originalText]));
   await click("view-library"); await fill("catalog-search", "Accordion"); await click("catalog-catalog.accordion"); await click("catalog-add"); await approve();
-  const source = () => saved().then(entries => entries.find(entry => entry.document.catalogProfile?.catalogId === "catalog.accordion").document);
+  const source = () => saved().then(entries => entries.find(entry => entry.document.kind === "component" && entry.document.catalogProfile?.catalogId === "catalog.accordion").document);
   const component = await source(), componentId = component.id;
   const role = value => component.parts.find(part => part.studioRole === value);
   const preview = id(`preview-${componentId}`);
