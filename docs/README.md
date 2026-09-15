@@ -31,3 +31,5 @@ The [2026-09-14 editor follow-up](implementation/editor-completion-followup.md) 
 15. [Contextual Foundation and component composition](adr/0018-contextual-foundation-and-component-composition.md), with the [fresh 56-document implementation audit](implementation/foundation-audit-2026-09-15.md). Earlier audit artifacts remain historical evidence.
 
 16. [Element composition, policy and behavior authoring](adr/0019-element-composition-policy-and-behavior-authoring.md), [policy contracts](implementation/foundation-policy-authoring.md), [behavior contracts](implementation/component-behavior-authoring.md), [Library design baselines](implementation/library-component-design-baselines.md) and [native runtime verification](implementation/native-runtime-verification.md).
+
+17. [Compound anatomy and canvas insertion](adr/0020-compound-anatomy-and-canvas-insertion.md).

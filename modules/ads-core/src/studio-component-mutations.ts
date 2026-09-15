@@ -1,3 +1,5 @@
+import { normalizeStudioStructure } from "./studio-structure-authoring.ts";
+import { sourceElementContent } from "./studio-element-contract.ts";
 import { addStudioElement } from "./studio-elements.ts";
 import { mutateStudioBehavior } from "./studio-behavior.ts";
 import type { AdsDocument, JsonObject, JsonValue } from "./contracts.ts";
@@ -11,7 +13,7 @@ import { STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
 import { KernelError } from "./kernel-error.ts";
 
 const EDIT_FIELDS: Readonly<Record<string, readonly string[]>> = {
-  "element-add": ["parentId", "element"], "behavior-set": ["behavior"],
+  "structure-normalize": [], "element-add": ["parentId", "element"], "behavior-set": ["behavior"],
   "part-element": ["category", "partId", "element"], "slot-update": ["slotId", "required", "multiple"],
   "motion-track-set": ["track", "trackId"], "motion-track-delete": ["trackId"],
   "part-text": ["partId", "text"], "part-parent": ["partId", "parentId"], "appearance-rule": ["category", "partId", "condition", "property", "value"], "variant-default": ["value"], "slot-add": ["partId", "required", "multiple"], "slot-delete": ["slotId"],
@@ -23,7 +25,8 @@ function expectFields(edit: StudioComponentEdit): void {
   const raw: unknown = edit;
   if (!isObject(raw) || typeof raw.kind !== "string" || !Object.hasOwn(EDIT_FIELDS, raw.kind)) fail("Unknown component edit.");
   const fields = EDIT_FIELDS[raw.kind]!;
-  if (Object.keys(raw).some(key => key !== "kind" && !fields.includes(key)) || fields.some(field => !Object.hasOwn(raw, field))) fail("Component edit contains missing or unsupported fields.");
+  const optional = raw.kind === "element-add" ? ["category", "frame"] : [];
+  if (Object.keys(raw).some(key => key !== "kind" && !fields.includes(key) && !optional.includes(key)) || fields.some(field => !Object.hasOwn(raw, field))) fail("Component edit contains missing or unsupported fields.");
 }
 
 /** Mutate only explicitly addressed contract fields on a detached candidate graph. */
@@ -37,7 +40,12 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
   const layout = design && part ? catalogObjects(design.layout).find(layout => layout.targetPartRef === part.id) : undefined;
   const values = catalogObjects(contract.values);
   switch (edit.kind) {
-    case "element-add": addStudioElement(component, designs, edit.parentId, edit.element, id); break;
+    case "structure-normalize": normalizeStudioStructure(component, designs, id); break;
+    case "element-add": {
+      if ((edit.frame === undefined) !== (edit.category === undefined)) fail("Drawn elements require both a category and bounds.");
+      if (edit.frame && (!isObject(edit.frame) || Object.keys(edit.frame).length !== 4 || ["x", "y", "width", "height"].some(key => { const value = edit.frame![key as keyof typeof edit.frame]; return typeof value !== "number" || !Number.isFinite(value) || value < (key === "x" || key === "y" ? 0 : 1) || value > 4096; }))) fail("Drawn element bounds must be finite, positive and within 4096px.");
+      addStudioElement(component, designs, edit.parentId, edit.element, id, edit.frame && edit.category ? { category: edit.category, frame: edit.frame } : undefined); break;
+    }
     case "behavior-set": mutateStudioBehavior(component, edit.behavior); break;
     case "name": component.name = edit.name; for (const design of designs) design.name = `${edit.name} ${String(design.category)}`; break;
     case "purpose": component.purpose = edit.purpose; break;
@@ -46,16 +54,17 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
     case "part-text": if (!hasCatalogProfile(component)) fail("Part-specific content requires a catalog definition."); else part!.studioText = edit.text; break;
     case "part-element": {
       const recipe = getStudioCatalogRecipe(catalogIdentity(component)!);
-      if (recipe?.semantic.kind !== "layout") fail("Element mapping is available for custom layout definitions. Interactive catalog components retain their semantic HTML.");
+      if (recipe?.semantic.kind !== "layout" && !part!.studioElement) fail("Semantic anchors retain their HTML behavior. Select an authored child element.");
       const mapping = catalogObjects(design!.nodeMappings).find(item => item.partRef === part!.id);
       if (!mapping) fail("The selected element has no design mapping.");
       mapping.element = edit.element; break;
     }
     case "part-parent": {
-      if (!hasCatalogProfile(component) || part!.required === true || part!.parent === null) fail("Required semantic parts retain their parent.");
+      if (!hasCatalogProfile(component) || part!.required === true || part!.parent === null || getStudioCatalogRecipe(catalogIdentity(component)!)?.parts.some(anchor => anchor.role === part!.studioRole)) fail("Required semantic parts retain their parent.");
       let parent = parts.find(item => item.id === edit.parentId); if (!parent) fail("Choose an existing parent.");
       const seen = new Set<string>([String(part!.id)]);
       while (parent) { if (seen.has(String(parent.id))) fail("A part cannot be its own ancestor."); seen.add(String(parent.id)); parent = parts.find(item => item.id === parent!.parent); }
+      if (designs.some(design => sourceElementContent(component, design, edit.parentId) === "none")) fail("Choose a container that accepts authored children.");
       part!.parent = edit.parentId; syncOrder(component, designs); break;
     }
     case "part-add": {
@@ -115,6 +124,7 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
     case "variant-default": if (!["filled", "outlined"].includes(edit.value)) fail("Invalid variant."); else catalogObjects(contract.variants)[0]!.default = edit.value; break;
     case "slot-add": {
       if (!hasCatalogProfile(component) || typeof edit.required !== "boolean" || typeof edit.multiple !== "boolean") fail("Invalid slot contract.");
+      if (designs.some(design => sourceElementContent(component, design, String(part!.id)) !== "flow")) fail("Component content areas require a flow container. Text and native triggers cannot accept arbitrary component content.");
       if (catalogObjects(component.slots).some(slot => slot.ownerPartRef === part!.id)) fail("This Part already owns a slot.");
       const slot = { id: id(), ownerPartRef: part!.id!, contentKinds: ["text", "component"], min: edit.required ? 1 : 0, max: edit.multiple ? "unbounded" : 1, defaultContent: [], allowedContractRefs: [] };
       (component.slots as JsonValue[]).push(slot); (contract.exposedSlots as JsonValue[]).push(slot.id); break;

@@ -44,7 +44,8 @@ export interface StudioCatalogProjection {
 }
 export type StudioSizePolicy = { mode: "hug" | "fill" } | { mode: "fixed"; value: number };
 export type StudioComponentEdit =
-  | { kind: "element-add"; parentId: string; element: "box" | "frame" | "text" }
+  | { kind: "structure-normalize" }
+  | { kind: "element-add"; parentId: string; element: "box" | "frame" | "text"; category?: StudioCategory; frame?: { x: number; y: number; width: number; height: number } }
   | { kind: "behavior-set"; behavior: import("./studio-behavior.ts").StudioBehaviorDefinition | null }
   | { kind: "name"; name: string }
   | { kind: "purpose"; purpose: string }

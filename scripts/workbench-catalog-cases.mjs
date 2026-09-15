@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 const CATALOG_CASES = [
   { name: "Checkbox", catalogId: "catalog.checkbox", shape: "checkbox", selector: "label.catalog-check input[type=checkbox]", roles: ["root", "control", "label"] },
   { name: "TextInput", catalogId: "catalog.textinput", shape: "text-input", selector: "input[type=text]", roles: ["root", "label", "input"] },
-  { name: "Card", catalogId: "catalog.card", shape: "card", selector: "article > h3", roles: ["root", "header", "body", "actions"] },
+  { name: "Card", catalogId: "catalog.card", shape: "card", selector: "article > header[data-part-id] > h3", roles: ["root", "header", "body", "actions"] },
   { name: "Calendar", catalogId: "catalog.calendar", shape: "calendar", structure: "calendar", roles: ["root", "body", "calendar_header", "previous", "heading", "next", "weekdays", ...Array.from({ length: 5 }, (_, i) => `week_${i + 1}`), ...Array.from({ length: 35 }, (_, i) => `day_${i + 1}`)] },
   { name: "Tree", catalogId: "catalog.tree", shape: "tree", structure: "tree", roles: ["root", "body", "branch", "item_one", "item_two", "item_three"] },
   { name: "DonutChart", catalogId: "catalog.donutchart", shape: "donutchart", structure: "donutchart", roles: ["root", "body", "plot", "axis", "series", "legend"] },

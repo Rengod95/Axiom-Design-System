@@ -1,6 +1,7 @@
 import { verifyPolicyWorkspace } from "./workbench-policy-cases.mjs";
 import { verifyBehaviorEditor } from "./workbench-behavior-cases.mjs";
 import { verifyCompositionWorkspace } from "./workbench-composition-cases.mjs";
+import { verifyCompoundWorkspace } from "./workbench-compound-cases.mjs";
 import { verifyAuthoringWorkspace } from "./workbench-authoring-cases.mjs";
 import { verifyCompactWorkbench, verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench, verifyPanelVisibility, verifyBindingPurposeFilters, verifyBindingRepair } from "./workbench-completion-cases.mjs";
 import { verifyFoundationBlueprints } from "./workbench-foundation-cases.mjs";
@@ -259,6 +260,7 @@ try {
   await verifyCatalogBlueprints({ page, id, label, click, fill, selectElement, until, settled, approve, revision, record });
   await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   await verifyCompositionWorkspace({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
+  await verifyCompoundWorkspace({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, text, click, clickElement, fill, until, settled, approve, revision, record });
   await verifyBehaviorEditor({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   await verifyPolicyWorkspace({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   await verifyAuthoringWorkspace({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, selectElement, until, settled, approve, revision, record });

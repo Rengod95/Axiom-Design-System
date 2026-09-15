@@ -1,3 +1,4 @@
+import { sourceElementContent } from "./studio-element-contract.ts";
 import { inspectStudioComposition, inspectStudioCompositionGraph } from "./studio-composition.ts";
 import type { AdsDocument, Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
 import type { StudioArchetype, StudioDocumentReport, StudioPartRole } from "./studio-contracts.ts";
@@ -185,7 +186,7 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
     const ids = parts.map(part => part.id);
     for (const [index, mapping] of mappings.entries()) {
       if (mapping.element === undefined) continue;
-      if (getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout") add(document.id, `/nodeMappings/${index}/element`, "Only custom layout definitions support explicit HTML element mapping.");
+      if (getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout" && !parts.find(part => part.id === mapping.partRef)?.studioElement) add(document.id, `/nodeMappings/${index}/element`, "Only authored elements may change HTML mapping; semantic anchors retain their behavior.");
       const phrasing = new Set(["span", "p", "h1", "h2", "h3", "h4", "h5", "h6", "code"]);
       if (phrasing.has(String(mapping.element)) && parts.some(child => child.parent === mapping.partRef && !["span", "code"].includes(String(mappings.find(item => item.partRef === child.id)?.element)))) add(document.id, `/nodeMappings/${index}/element`, "Text and heading elements may contain only span or code elements. Use a frame for block children.");
       if (mapping.role === "body" && objects(owner.document.slots).some(slot => slot.ownerPartRef === mapping.partRef) && phrasing.has(String(mapping.element))) add(document.id, `/nodeMappings/${index}/element`, "A content area accepts arbitrary content and needs a container element.");
@@ -195,7 +196,15 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
     if (layouts.length !== parts.length || new Set(layouts.map(item => item.targetPartRef)).size !== parts.length || layouts.some(item => !ids.includes(item.targetPartRef))) add(document.id, "/layout", "Every logical part needs one layout declaration.");
     for (const [index, layout] of layouts.entries()) {
       const part = parts.find(item => item.id === layout.targetPartRef);
-      if ((layout.mode === "free" || layout.position !== undefined) && getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout") add(document.id, `/layout/${index}`, "Free positioning requires a custom layout definition.");
+      if ((layout.mode === "free" || layout.position !== undefined) && getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout" && !part?.studioElement) add(document.id, `/layout/${index}`, "Free positioning requires an authored container element.");
+      if (part?.studioElement === "text" && parts.some(child => child.parent === part.id)) add(document.id, `/layout/${index}`, "Text elements are leaves. Choose Box or Frame for nested children.");
+      if (part?.studioElement && objects(owner.document.slots).some(slot => slot.ownerPartRef === part.id) && sourceElementContent(owner.document, document, String(part.id)) !== "flow") add(document.id, `/layout/${index}`, "A component content area requires a flow container, not a text leaf or trigger descendant.");
+      if (part?.studioElement && typeof part.parent === "string") {
+        const content = sourceElementContent(owner.document, document, part.parent);
+        const tag = mappings.find(mapping => mapping.partRef === part.id)?.element;
+        if (content === "none" || content === "phrasing" && !["span", "code"].includes(String(tag))) add(document.id, `/layout/${index}`, "Authored children must preserve native content rules; use span inside triggers/text and containers for block content.");
+        if (typeof tag !== "string") add(document.id, `/nodeMappings`, "Authored elements need an explicit HTML mapping.");
+      }
       const expected = parts.filter(item => item.parent === part?.id).map(item => item.id);
       if (!same(layout.childOrder, expected)) add(document.id, `/layout/${index}/childOrder`, "Child order must preserve the pinned component reading order.");
     }
@@ -219,4 +228,4 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
 }
 
 /** Read validated component roles without tying stable IDs to presentation names. */
-export function studioParts(document: AdsDocument) { return objects(document.parts).map(part => ({ id: String(part.id), name: String(part.name), parent: part.parent as string | null, role: part.studioRole as StudioPartRole, ...(typeof part.studioText === "string" ? { text: part.studioText } : {}) })); }
+export function studioParts(document: AdsDocument) { return objects(document.parts).map(part => ({ id: String(part.id), name: String(part.name), parent: part.parent as string | null, role: part.studioRole as StudioPartRole, required: part.required === true, ...(part.studioElement ? { elementKind: part.studioElement as "box" | "frame" | "text" } : {}), ...(typeof part.studioText === "string" ? { text: part.studioText } : {}) })); }

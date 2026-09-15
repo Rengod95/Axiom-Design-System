@@ -16,18 +16,21 @@ const compiled = await build({ absWorkingDir: root, stdin: { contents: `
   import { createElement } from 'react';
   import { renderToStaticMarkup } from 'react-dom/server';
   import { ComponentInspector } from './apps/studio/src/component-inspector.tsx';
+  import { StructureTree } from './apps/studio/src/structure-tree.tsx';
   import { FormDraftProvider } from './apps/studio/src/form-drafts.tsx';
   import { Inspector } from './apps/studio/src/inspector.tsx';
   export * from './apps/studio/src/component-inspector.tsx';
+  export function renderTree(component, part) { return renderToStaticMarkup(createElement(StructureTree,{component,selectedPart:part,category:'Web',locale:'en',disabled:false,onSelect(){},onEdit(){return true}})); }
   export function render(state, id, part, category='Web', locale='en', whole=false) {
     const component=state.projection.components.find(item=>item.id===id);
     const controller={component(){},inputError(){},getSnapshot(){return state},exportSource(){return Promise.resolve(null)}};
     return renderToStaticMarkup(createElement(FormDraftProvider,null,createElement(whole?Inspector:ComponentInspector,{state,controller,component,selectedPart:part,category,locale,tokenId:null})));
   }
-`, resolveDir: root, loader: "tsx" }, bundle: true, platform: "node", format: "cjs", target: "node24", jsx: "automatic", write: false, logLevel: "silent" });
+`, resolveDir: root, loader: "tsx" }, loader: { ".css": "empty" }, bundle: true, platform: "node", format: "cjs", target: "node24", jsx: "automatic", write: false, logLevel: "silent" });
 const filename = join(directory, "inspector.cjs"); await writeFile(filename, compiled.outputFiles[0]!.text);
 const ui = (await import(pathToFileURL(filename).href)).default as {
   render(state: StudioState, id: string, part: string | null, category?: StudioCategory, locale?: string, whole?: boolean): string;
+  renderTree(component: StudioComponent, part: string | null): string;
   inspectorNumber(text: string, min?: number, max?: number): number | null;
   movedChildren(component: StudioComponent, id: string, direction: -1 | 1): string[] | null;
   inspectorSource(state: StudioState, component: StudioComponent, id: string, category: StudioCategory): { declarations: Record<string, unknown>; values: { id: string; name: string; type: unknown }[] };
@@ -44,10 +47,10 @@ test("builtin inspector exposes editable properties and preserves required seman
   const h = fixture(), state = h.state(), before = canonicalJson(state);
   const html = ui.render(state, "component.button", "component.button.root");
   for (const selector of ["component-name", "component-purpose", "sample-label", "part-name", "layout-gap", "layout-padding", "layout-minHeight", "layout-axis", "motion-duration"]) assert.ok(tag(html, selector), selector);
-  assert.match(tag(html, "part-delete"), /disabled=""/);
+  assert.equal(tag(html, "part-delete"), "", "Structure actions belong to the left tree");
   assert.equal(tag(html, "part-add"), ""); assert.equal(tag(html, "layout-width"), ""); assert.equal(tag(html, "a11y-label"), "");
   assert.match(tag(html, "value-delete-component.button.disabled"), /disabled=""/);
-  assert.match(html, /required semantic structure/);
+  assert.doesNotMatch(html, /class="element-tree"/);
   for (const field of ["background", "color", "borderColor", "borderWidth", "borderRadius", "fontSize", "opacity"]) assert.ok(tag(html, `appearance-${field}-binding`), field);
   assert.equal(canonicalJson(state), before, "rendering never modifies source");
 });
@@ -57,7 +60,7 @@ test("catalog properties expose authored part, size, value, accessibility and mo
   assert.equal(created.valid, true);
   const state = h.state(created.project), component = state.projection!.components.find(item => item.name === "Consent")!, rootPart = component.parts.find(item => item.parent === null)!;
   const html = ui.render(state, component.id, rootPart.id);
-  for (const selector of ["part-add", "layout-width", "layout-height", "layout-alignment", "value-add", "a11y-label", "a11y-description", "motion-easing"]) assert.ok(tag(html, selector), selector);
+  for (const selector of ["layout-width", "layout-height", "layout-alignment", "value-add", "a11y-label", "a11y-description", "motion-easing"]) assert.ok(tag(html, selector), selector);
   const source = ui.inspectorSource(state, component, rootPart.id, "Web");
   const checked = source.values.find(value => value.name === "checked")!;
   assert.match(tag(html, `value-${checked.id}`), /<select/); assert.match(tag(html, `value-delete-${checked.id}`), /disabled=""/);
@@ -74,6 +77,11 @@ test("new optional parts can move among exact siblings and be deleted without en
   const state = h.state(changed.project), next = state.projection!.components.find(item => item.id === component.id)!, help = next.parts.find(item => item.name === "Help")!;
   const html = ui.render(state, next.id, help.id);
   assert.doesNotMatch(tag(html, "part-delete"), /disabled/);
+  assert.match(tag(ui.renderTree(next, help.id), "part-delete"), /<button/);
+  assert.doesNotMatch(tag(ui.renderTree(next, help.id), "part-delete"), /disabled/);
+  const labelPart = next.parts.find(part => part.role === "label")!;
+  assert.match(tag(ui.renderTree(next, labelPart.id), "part-delete"), /disabled/);
+  assert.equal(tag(ui.renderTree(next, rootPart.id), "part-delete"), "");
   const ordered = ui.movedChildren(next, help.id, -1)!;
   assert.deepEqual(new Set(ordered), new Set(next.parts.filter(part => part.parent === rootPart.id).map(part => part.id)));
   assert.equal(ordered.at(-2), help.id); assert.equal(ui.movedChildren(next, help.id, 1), null);

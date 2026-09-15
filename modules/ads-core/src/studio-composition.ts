@@ -1,3 +1,4 @@
+import { sourceElementContent } from "./studio-element-contract.ts";
 import type { AdsDocument, Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
 import { isObject, isValidId } from "./documents.ts";
 import { inspectTypedValue } from "./type-validation.ts";
@@ -81,7 +82,7 @@ export function inspectStudioCompositionGraph(documents: Record<string, Document
       if (reserved.has(instance.id)) add(component.id, path, "Instance identity must be unique across the project.");
       reserved.add(instance.id);
       const owner = parts.find(part => part.id === instance.ownerPartRef), slot = slots.find(slot => slot.id === instance.slotRef);
-      if (!owner || getStudioCatalogRecipe(catalogIdentity(component) ?? "")?.semantic.kind !== "layout") add(component.id, path, "Instances must be placed in an element of a custom layout component.");
+      if (!owner) add(component.id, path, "Instances need an existing owner element.");
       if (instance.slotRef !== null && (!slot || slot.ownerPartRef !== instance.ownerPartRef)) add(component.id, path, "Content insertion requires a slot owned by the selected element.");
       if (!source) { add(component.id, path, "The referenced catalog component is missing; remove or replace the instance.", true); return; }
       if (source.kind !== "component" || !catalogIdentity(source)) { add(component.id, path, "An existing instance source must be a catalog component; this reference has an incompatible kind or profile."); return; }
@@ -90,7 +91,7 @@ export function inspectStudioCompositionGraph(documents: Record<string, Document
         if (design && (design.kind !== "design" || design.category !== category || !isObject(design.componentRef) || design.componentRef.id !== source.id)) add(component.id, path, "Instance designs must belong to their pinned source component and category.");
         const ownerDesign = Object.values(documents).find(entry => entry.document.kind === "design" && entry.document.category === category && isObject(entry.document.componentRef) && entry.document.componentRef.id === component.id)?.document;
         const element = catalogObjects(ownerDesign?.nodeMappings).find(mapping => mapping.partRef === instance.ownerPartRef)?.element;
-        if (["span", "p", "h1", "h2", "h3", "h4", "h5", "h6", "code"].includes(String(element))) add(component.id, path, "Insert components into a frame, not inside text or heading content.");
+        if (!ownerDesign || sourceElementContent(component, ownerDesign, instance.ownerPartRef) !== "flow" || ["span", "p", "h1", "h2", "h3", "h4", "h5", "h6", "code"].includes(String(element))) add(component.id, path, "Insert components into a frame, not inside text or heading content.");
       }
       if (instance.status !== "current") { add(component.id, path, "The source version changed. Review an explicit instance update or remove this instance before export.", true); return; }
       const values = isObject(source.publicContract) ? catalogObjects(source.publicContract.values) : [];

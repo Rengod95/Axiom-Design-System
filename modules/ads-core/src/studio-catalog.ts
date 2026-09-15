@@ -84,7 +84,7 @@ export function getStudioCatalogRecipe(id: string): StudioCatalogRecipe | null {
     case "avatar": case "image": roles = ["root", "image", "fallback"]; slotRoles = []; semantic.role = "img"; value("src", STRING, ""); value("alt", STRING, entry.name); value("fallback", STRING, name === "avatar" ? "AX" : "Image"); break;
     case "separator": roles = ["root"]; slotRoles = []; semantic.role = "separator"; semantic.orientation = "horizontal"; value("orientation", { kind: "enum", values: ["horizontal", "vertical"] }, "horizontal"); break;
     case "tabs": roles = ["root", "list", "trigger", "panel"]; slotRoles = ["panel"]; semantic.role = "tablist"; semantic.host = "collection"; collection(); controlled("selectedKey", STRING, "first"); break;
-    case "accordion": roles = ["root", "trigger", "indicator", "panel"]; slotRoles = ["panel"]; semantic.role = "group"; semantic.host = "collection"; collection(); controlled("expandedKeys", { kind: "list", items: STRING }, ["first"]); value("multiple", BOOLEAN, name === "accordion"); break;
+    case "accordion": roles = ["root", "item", "header", "trigger", "indicator", "panel"]; slotRoles = ["panel"]; semantic.role = "group"; semantic.host = "collection"; collection(); controlled("expandedKeys", { kind: "list", items: STRING }, ["first"]); value("multiple", BOOLEAN, name === "accordion"); break;
     case "dialog": case "popover": case "tooltip":
       roles = kind === "tooltip" ? ["root", "trigger", "content"] : ["root", "trigger", "backdrop", "title", "body", "close"];
       slotRoles = kind === "tooltip" ? ["content"] : ["body"]; semantic.role = kind === "tooltip" ? "tooltip" : name === "alertdialog" ? "alertdialog" : "dialog";
@@ -103,5 +103,5 @@ export function getStudioCatalogRecipe(id: string): StudioCatalogRecipe | null {
   }
   // Similar provider catalog names may require stronger contracts than their broad family.
   if (["hovercard", "previewcard", "previewtrigger"].includes(name)) { semantic.kind = "popover"; semantic.role = "dialog"; semantic.modal = false; semantic.limitations = ["Interactive preview uses an explicit nonmodal popup; it is not a tooltip."]; }
-  return { entry, semantic, parts: roles.map(role => ({ role, required: role === "root" || !["description", "error", "header", "actions", "fallback"].includes(role) })), values, events, slots: slotRoles.map(role => ({ role, required: role === "body" })) };
+  return { entry, semantic, parts: roles.map(role => ({ role, required: role === "root" || !(kind === "accordion" && role === "item") && !["description", "error", "header", "actions", "fallback"].includes(role) })), values, events, slots: slotRoles.map(role => ({ role, required: role === "body" })) };
 }

@@ -5,8 +5,8 @@ import vm from "node:vm";
 import React from "react";
 import * as jsxRuntime from "react/jsx-runtime";
 import { renderToStaticMarkup } from "react-dom/server";
-import { canonicalJson, planStudioComponentCreate, planStudioComponentEdit } from "../../ads-core/src/index.ts";
-import type { StudioComponentPlan } from "../../ads-core/src/index.ts";
+import { canonicalJson, inspectStudioProject, planStudioComponentCreate, planStudioComponentEdit, planStudioInstanceEdit } from "../../ads-core/src/index.ts";
+import type { ProjectSnapshot, StudioComponentEdit, StudioComponentPlan } from "../../ads-core/src/index.ts";
 import { generateTargetPack } from "../src/index.ts";
 import { DIGEST, projectFixture } from "./target-fixture.ts";
 
@@ -17,12 +17,16 @@ function fixture(catalogId: string) {
   return { plan, component, id };
 }
 async function reactComponent(catalogId: string) {
-  const { plan, component } = fixture(catalogId), generated = generateTargetPack(plan.project, { target: "react" }, DIGEST);
+  const { plan, component } = fixture(catalogId);
+  return compiledComponent(plan.project, component.id);
+}
+async function compiledComponent(project: ProjectSnapshot, componentId: string) {
+  const generated = generateTargetPack(project, { target: "react" }, DIGEST);
   assert.equal(generated.valid, true, canonicalJson(generated.diagnostics)); const pack = generated.pack!;
   const transformed = await transform(pack.files.find(file => file.path === "src/index.tsx")!.text, { loader: "tsx", format: "cjs", jsx: "automatic" });
   const module = { exports: {} as Record<string, unknown> };
   vm.runInNewContext(transformed.code, { module, exports: module.exports, require: (name: string) => name === "react" ? React : name === "react/jsx-runtime" ? jsxRuntime : {}, console });
-  return { Component: module.exports[pack.manifest.publicApiMap[component.id]!] as React.ComponentType<Record<string, unknown>>, exports: module.exports, pack };
+  return { Component: module.exports[pack.manifest.publicApiMap[componentId]!] as React.ComponentType<Record<string, unknown>>, exports: module.exports, pack };
 }
 
 test("generated React catalog emits real input/select/table semantics and escapes consumer text", async () => {
@@ -117,12 +121,49 @@ test("toggle groups retain pressed-button semantics and CSS never reveals hidden
   assert.match(pack.files.find(file => file.path === "src/styles.css")!.text, /\[hidden\]\{display:none!important\}/);
 });
 
-test("reordered logical parts cannot silently retain hard-coded recipe presentation", () => {
+test("React renders reordered logical parts in source order while unmapped native targets reject", async () => {
   const { plan, component, id } = fixture("catalog.card");
   const parts = component.parts as { id: string; studioRole: string }[], root = parts.find(part => part.studioRole === "root")!;
   const edit = planStudioComponentEdit(plan.project, { componentId: component.id, edit: { kind: "part-order", parentId: root.id, childIds: ["body", "header", "actions"].map(role => parts.find(part => part.studioRole === role)!.id) } }, id);
   assert.equal(edit.valid, true, canonicalJson(edit.diagnostics));
-  for (const target of ["react", "react-native", "swiftui", "compose"] as const) { const result = generateTargetPack(edit.project, { target }, DIGEST); assert.equal(result.valid, false); assert.equal(result.pack, undefined); assert.match(result.diagnostics[0]!.message, /part order/); }
+  const { Component } = await compiledComponent(edit.project, component.id);
+  const markup = renderToStaticMarkup(React.createElement(Component, { body: "Body", header: "Header", actions: "Actions" }));
+  const positions = ["body", "header", "actions"].map(role => markup.indexOf(`data-part="${parts.find(part => part.studioRole === role)!.id}"`));
+  assert.ok(positions.every(position => position >= 0)); assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
+  for (const target of ["react-native", "swiftui", "compose"] as const) { const result = generateTargetPack(edit.project, { target }, DIGEST); assert.equal(result.valid, false); assert.equal(result.pack, undefined); assert.match(result.diagnostics[0]!.message, /part order/); }
+});
+
+test("compound React templates retain nested Trigger content, slots, unique relationships and native rejection", async () => {
+  const { plan, component, id } = fixture("catalog.accordion"); let project = plan.project;
+  const projection = () => inspectStudioProject(project).components.find(item => item.id === component.id)!;
+  const edit = (edit: StudioComponentEdit) => { const next = planStudioComponentEdit(project, { componentId: component.id, edit }, id); assert.equal(next.valid, true, canonicalJson(next.diagnostics)); project = next.project; };
+  const trigger = projection().parts.find(part => part.role === "trigger")!, panel = projection().parts.find(part => part.role === "panel")!;
+  edit({ kind: "element-add", parentId: trigger.id, element: "box" });
+  const box = projection().parts.find(part => part.elementKind === "box")!;
+  edit({ kind: "element-add", parentId: box.id, element: "text" });
+  const caption = projection().parts.find(part => part.elementKind === "text")!;
+  edit({ kind: "part-text", partId: caption.id, text: "<Details>" });
+  edit({ kind: "element-add", parentId: panel.id, element: "text" });
+  const body = projection().parts.find(part => part.elementKind === "text" && part.id !== caption.id)!;
+  edit({ kind: "part-text", partId: body.id, text: "Authored answer" });
+  const child = planStudioComponentCreate(project, { catalogId: "catalog.button" }, id); assert.equal(child.valid, true);
+  const sourceComponentId = child.changes.upserts.find(item => item.document.kind === "component")!.document.id;
+  const inserted = planStudioInstanceEdit(child.project, component.id, { kind: "insert", ownerPartRef: panel.id, slotRef: null, sourceComponentId }, id);
+  assert.equal(inserted.valid, true, canonicalJson(inserted.diagnostics)); project = inserted.project;
+  const { Component } = await compiledComponent(project, component.id);
+  const props = { expandedKeys: ["one"], items: [{ key: "one", label: "First" }, { key: "two", label: "Second" }], onExpandedKeysChangeRequest() {} };
+  const markup = renderToStaticMarkup(React.createElement(Component, props));
+  assert.equal(markup.split("&lt;Details&gt;").length - 1, 2);
+  assert.equal(markup.split("Authored answer").length - 1, 2);
+  assert.equal((markup.match(/<button\b/g) ?? []).length, 4, "Each repeated Content includes its real Button instance");
+  assert.match(markup, new RegExp(`<button[^>]*>[\\s\\S]*?<span[^>]*data-part="${box.id}"[^>]*><span[^>]*data-part="${caption.id}"`));
+  assert.doesNotMatch(markup, /<button[^>]*>(?:(?!<\/button>)[\s\S])*<div/);
+  const controls = [...markup.matchAll(/aria-controls="([^"]+)"/g)].map(match => match[1]!);
+  assert.equal(new Set(controls).size, 2); controls.forEach(control => assert.ok(markup.includes(`id="${control}"`)));
+  const replacement = renderToStaticMarkup(React.createElement(Component, { ...props, panel: "Consumer answer" }));
+  assert.doesNotMatch(replacement, /Authored answer/); assert.equal(replacement.split("Consumer answer").length - 1, 2);
+  assert.equal((replacement.match(/<button\b/g) ?? []).length, 2, "Consumer Content replaces the authored instance subtree");
+  for (const target of ["react-native", "swiftui", "compose"] as const) { const result = generateTargetPack(project, { target }, DIGEST); assert.equal(result.valid, false); assert.equal(result.pack, undefined); }
 });
 
 test("unchanged declaration counts cannot replace required value types, event payloads or slot ownership", () => {
