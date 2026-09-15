@@ -1,3 +1,4 @@
+import { semanticParentRole } from "./studio-element-contract.ts";
 import { applyCatalogDesignBaseline } from "./studio-catalog-design-baseline.ts";
 import { remapStudioBehavior } from "./studio-behavior.ts";
 import { studioInstances } from "./studio-composition.ts";
@@ -83,6 +84,13 @@ export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: Ad
   const root = parts[0]!; for (const part of parts.slice(1)) part.parent = root.id;
   const partId = (role: string): string => parts.find(part => part.studioRole === role)!.id;
   for (const visual of presentation.parts) { const part = parts.find(item => item.studioRole === visual.role); if (part && part !== root) part.parent = partId(visual.parent); }
+  if (["accordion", "tabs", "choice-group", "menu", "navigation", "table"].includes(recipe.semantic.kind)) {
+    const roles = parts.map(part => part.studioRole);
+    for (const part of parts) if (recipe.parts.some(anchor => anchor.role === part.studioRole)) { const parent = semanticParentRole(recipe.semantic.kind, part.studioRole, roles); part.parent = parent === null ? null : partId(parent); }
+    const ordered: typeof parts = [];
+    const visit = (part: typeof root) => { ordered.push(part); for (const child of parts.filter(item => item.parent === part.id)) visit(child); };
+    visit(root); parts.splice(0, parts.length, ...ordered);
+  }
   const events = recipe.events.map(event => ({ id: id(), name: event.name, payloadType: structuredClone(event.payloadType), phase: "intent", cancellable: false, visibility: "public" }));
   const values = recipe.values.map(value => ({ id: id(), name: value.name, type: structuredClone(value.type), ownership: "consumer", defaultValue: structuredClone(value.defaultValue), visibility: "public", ...(value.requestEvent ? { requestEventRef: events.find(event => event.name === value.requestEvent)!.id } : {}) }));
   const slots = recipe.slots.map(slot => ({ id: id(), ownerPartRef: partId(slot.role), contentKinds: ["text", "component"], min: slot.required ? 1 : 0, max: "unbounded", defaultContent: [], allowedContractRefs: [] }));
@@ -107,7 +115,7 @@ export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: Ad
     if (presentation.border) declarations.borderColor = binding("borderColor", color(.8));
     Object.assign(design, { componentRef: { id: component.id, expectedKind: "component" }, foundationRef: { id: foundation.id, expectedKind: "foundation" }, category,
       nodeMappings: parts.map(part => ({ partRef: part.id, role: part.studioRole })),
-      layout: parts.map(part => ({ targetPartRef: part.id, mode: "stack", axis: presentation.parts.find(item => item.role === part.studioRole)?.axis ?? (part === root || part.studioRole === "body" ? presentation.axis : ["actions", "list", "toolbar"].includes(part.studioRole) && ["tabs", "toolbar", "navigation"].includes(recipe.semantic.kind) ? "horizontal" : "vertical"), size: {}, gap: dimension(part === root || parts.some(child => child.parent === part.id) ? presentation.gap : 0), padding: dimension(partPadding(part.studioRole)), minHeight: dimension(part === root ? presentation.minHeight && category === "Mobile" ? Math.max(presentation.minHeight, 48) : presentation.minHeight : 0), childOrder: parts.filter(child => child.parent === part.id).map(child => child.id) })),
+      layout: parts.map(part => ({ targetPartRef: part.id, mode: "stack", axis: presentation.parts.find(item => item.role === part.studioRole)?.axis ?? (part === root || part.studioRole === "body" ? presentation.axis : (part.studioRole === "trigger" && recipe.semantic.kind === "accordion" || ["actions", "list", "toolbar"].includes(part.studioRole) && ["tabs", "toolbar", "navigation"].includes(recipe.semantic.kind)) ? "horizontal" : "vertical"), size: {}, gap: dimension(part === root || (category === "Web" || recipe.semantic.kind === "layout") && parts.some(child => child.parent === part.id) ? presentation.gap : 0), padding: dimension(partPadding(part.studioRole)), minHeight: dimension(part === root ? presentation.minHeight && category === "Mobile" ? Math.max(presentation.minHeight, 48) : presentation.minHeight : 0), childOrder: parts.filter(child => child.parent === part.id).map(child => child.id) })),
       appearance: [{ id: id(), targetPartRef: root.id, variants: {}, states: {}, declarations, explicitPriority: 0, refines: [] }], targetOverrides: [] });
     applyCatalogDesignBaseline(design, recipe.semantic.kind, parts, id, binding);
     return design;

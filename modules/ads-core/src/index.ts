@@ -60,3 +60,5 @@ export type { StudioElementKind } from "./studio-elements.ts";
 export * from "./foundation-policy-contracts.ts";
 export { planFoundationPolicyEdit } from "./foundation-policy-authoring.ts";
 export { inspectFoundationPolicies } from "./foundation-policy-evaluation.ts";
+
+export { canContainStudioElement, getStudioElementParentIssue, elementContentContext, semanticElementContent, semanticParentRole } from "./studio-element-contract.ts";

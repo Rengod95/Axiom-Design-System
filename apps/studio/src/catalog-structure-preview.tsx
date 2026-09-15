@@ -9,13 +9,14 @@ import type { Locale } from "./locales.ts";
 interface PartProps { "data-part-id": string | undefined; "data-testid": string; className: string; style: CSSProperties }
 
 /** Source-backed design composition. It intentionally has no pretend date/chart/editor runtime. */
-export function CatalogStructurePreview({ component, category, locale, partProps }: { component: StudioComponent; category: StudioCategory; locale: Locale; partProps(role: string): PartProps }) {
+export function CatalogStructurePreview({ component, category, locale, partProps, renderAuthoredPart, renderInstances }: { component: StudioComponent; category: StudioCategory; locale: Locale; partProps(role: string): PartProps; renderAuthoredPart?(partId: string): ReactNode; renderInstances?(partId: string): ReactNode }) {
   const unique = useId(), entry = getStudioCatalogEntry(component.catalog!.catalogId)!, presentation = studioCatalogPresentation(entry, component.catalog!.semantic.kind);
   const design = category === "Web" ? component.web : component.mobile, root = component.parts.find(part => part.role === "root")!;
   const byRole = (role: string) => component.parts.find(part => part.role === role);
   const image = (text: string): ReactNode => <svg className="catalog-structure-image" viewBox="0 0 200 112" role="img" aria-label={text} fill="none"><rect width="200" height="112" rx="4" fill="currentColor" opacity=".07" /><circle cx="146" cy="29" r="11" fill="currentColor" opacity=".2" /><path d="m0 106 57-61 42 39 26-27 75 49" fill="currentColor" opacity=".15" /></svg>;
   const render = (partId: string): ReactNode => {
     const part = component.parts.find(item => item.id === partId); if (!part) return null;
+    if (part.elementKind && renderAuthoredPart) return renderAuthoredPart(partId);
     const attrs = partProps(part.role), childIds = design.layout[part.id]?.childOrder ?? component.parts.filter(item => item.parent === part.id).map(item => item.id);
     const layout = design.layout[part.id], role = part.role, shape = presentation.shape;
     const style: CSSProperties = { ...attrs.style, ...(childIds.length ? { display: "flex", flexDirection: layout?.axis === "horizontal" ? "row" : "column" } : {}) };
@@ -37,7 +38,7 @@ export function CatalogStructurePreview({ component, category, locale, partProps
     if (role === "calendar_header") return <div key={part.id} {...common}>{childIds.map(render)}</div>;
     if (role === "weekdays") return <div key={part.id} {...common} className={`${className} catalog-weekdays`}>{part.text?.trim().split(/\s+/).map((day, index) => <span key={index}>{day}</span>)}</div>;
     const text = part.text ?? (role === "body" && childIds.length === 0 ? component.sampleContent.body : undefined);
-    return <div key={part.id} {...common}>{text !== undefined && <span className="catalog-structure-text">{text}</span>}{childIds.map(render)}</div>;
+    return <div key={part.id} {...common}>{text !== undefined && <span className="catalog-structure-text">{text}</span>}{childIds.map(render)}{renderInstances?.(part.id)}</div>;
   };
   const authored = presentation.parts.length > 0 && presentation.parts.some(part => byRole(part.role));
   // Opening a legacy root/body document is read-only. Show its identity honestly, without inventing saved parts.

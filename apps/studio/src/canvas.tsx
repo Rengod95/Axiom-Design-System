@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent } from "react";
 import type { StudioCategory, StudioComponent } from "../../../modules/ads-core/src/index.ts";
+import { canContainStudioElement, getStudioCatalogRecipe } from "../../../modules/ads-core/src/index.ts";
 import { canvasPoint, clampZoom, fitBounds, intersects, snap, unionBounds, zoomAt } from "./canvas-geometry.ts";
 import type { Point, Rect, Viewport } from "./canvas-geometry.ts";
 import type { Locale } from "./locales.ts";
@@ -8,6 +9,9 @@ import { Preview } from "./preview.tsx";
 import { editingTarget } from "./ui-utils.ts";
 import { Select, copy, IconButton } from "./ui.tsx";
 import { pinchViewport, wheelViewport } from "./canvas-input.ts";
+import { drawingMoved, drawingRect } from "./canvas-drawing.ts";
+import type { DrawingTool } from "./canvas-drawing.ts";
+import "./canvas-authoring.css";
 
 export interface CanvasFrame extends Rect {}
 interface Props {
@@ -20,17 +24,31 @@ interface Props {
   previewBackground?: string | undefined;
   previewForeground?: string | undefined;
 }
-type Gesture = { kind: "pan"; point: Point; view: Viewport } | { kind: "marquee"; point: Point; additive: string[] } | { kind: "move" | "resize"; point: Point; originals: Record<string, CanvasFrame> };
+type DrawGesture = { kind: "draw"; point: Point; end: Point; origin: Point; componentId: string; parentId: string; element: DrawingTool; rect: Rect; category: StudioCategory; free: boolean; };
+type Gesture = { kind: "pan"; point: Point; view: Viewport } | { kind: "marquee"; point: Point; additive: string[] } | { kind: "move" | "resize"; point: Point; originals: Record<string, CanvasFrame> } | DrawGesture;
 
 export function Canvas(props: Props) {
   const { components, category, mode, locale, selectedIds, selectedPart, frames, onSelect, onFrames, disabled } = props;
   const root = useRef<HTMLDivElement>(null), size = useRef({ width: 800, height: 600 }), initial = useRef(false);
   const [view, setView] = useState<Viewport>({ x: 64, y: 64, zoom: 1 }), viewRef = useRef(view);
-  const [tool, setTool] = useState<"select" | "hand">("select"), [space, setSpace] = useState(false), spaceRef = useRef(false);
+  const [tool, setTool] = useState<"select" | "hand" | DrawingTool>("select"), [space, setSpace] = useState(false), spaceRef = useRef(false);
+  const [drawing, setDrawing] = useState<DrawGesture | null>(null), [drawMessage, setDrawMessage] = useState("");
+  const pendingSelection = useRef<{ componentId: string; known: Set<string> } | null>(null);
   const [grid, setGrid] = useState(true), [snapping, setSnapping] = useState(true), [marquee, setMarquee] = useState<Rect | null>(null), [transient, setTransient] = useState<Record<string, CanvasFrame>>({});
   const [zoomDraft, setZoomDraft] = useState("100");
   const gesture = useRef<Gesture | null>(null), changes = useRef<Record<string, CanvasFrame>>({}), current = useRef(props);
   current.current = props; viewRef.current = view;
+  const isDrawing = tool === "box" || tool === "frame" || tool === "text";
+  const chooseTool = (next: typeof tool) => { setTool(next); setDrawMessage(""); root.current?.focus({ preventScroll: true }); };
+  useEffect(() => {
+    const pending = pendingSelection.current;
+    if (!pending) return;
+    const added = components.find(component => component.id === pending.componentId)?.parts.find(part => !pending.known.has(part.id));
+    if (added) { pendingSelection.current = null; onSelect([pending.componentId], added.id); }
+  }, [components, onSelect]);
+  useEffect(() => {
+    if (mode !== "edit" || disabled) { gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); setDrawing(null); setTool("select"); }
+  }, [mode, disabled]);
   useEffect(() => setZoomDraft(String(Math.round(view.zoom * 100))), [view.zoom]);
   const screenPoint = (event: { clientX: number; clientY: number }): Point => { const bounds = root.current!.getBoundingClientRect(); return { x: event.clientX - bounds.left, y: event.clientY - bounds.top }; };
   const fit = (selected = false) => { const rects = Object.entries(current.current.frames).filter(([id]) => !selected || current.current.selectedIds.includes(id)).map(([, frame]) => frame); setView(fitBounds(unionBounds(rects), size.current)); };
@@ -47,12 +65,13 @@ export function Canvas(props: Props) {
       if (!(event.target instanceof Node) || !element.contains(event.target)) return;
       if (event.target instanceof Element && event.target.closest("[data-canvas-ui]")) return;
       event.preventDefault();
-      if (!nativePinch) setView(before => wheelViewport(before, event, screenPoint(event), size.current.height));
+      if (!nativePinch && gesture.current?.kind !== "draw") setView(before => wheelViewport(before, event, screenPoint(event), size.current.height));
     };
     const nativeGesture = (event: Event) => {
       const input = event as Event & { scale?: number; clientX?: number; clientY?: number };
       if (!(event.target instanceof Node) || !element.contains(event.target)) return;
       event.preventDefault();
+      if (gesture.current?.kind === "draw") return;
       if (event.type === "gestureend") { nativePinch = null; return; }
       if (event.type === "gesturestart") nativePinch = { view: viewRef.current, scale: input.scale ?? 1, point: typeof input.clientX === "number" && typeof input.clientY === "number" ? screenPoint({ clientX: input.clientX, clientY: input.clientY }) : { x: size.current.width / 2, y: size.current.height / 2 } };
       else if (nativePinch && typeof input.scale === "number" && input.scale > 0) setView(zoomAt(nativePinch.view, nativePinch.view.zoom * input.scale / nativePinch.scale, nativePinch.point));
@@ -63,7 +82,7 @@ export function Canvas(props: Props) {
       if (event.pointerType !== "touch" || current.current.mode === "run" || event.target instanceof Element && event.target.closest("[data-canvas-ui]")) return;
       if (event.type === "pointerdown") {
         touches.set(event.pointerId, screenPoint(event)); element.setPointerCapture(event.pointerId);
-        if (touches.size === 2) { gesture.current = null; touchStart = { view: viewRef.current, points: [...touches.values()] as [Point, Point] }; }
+        if (touches.size === 2) { gesture.current = null; setDrawing(null); touchStart = { view: viewRef.current, points: [...touches.values()] as [Point, Point] }; }
       } else if (event.type === "pointermove" && touches.has(event.pointerId)) {
         const previous = touches.get(event.pointerId)!, point = screenPoint(event); touches.set(event.pointerId, point);
         if (touchStart && touches.size === 2) setView(pinchViewport(touchStart.view, touchStart.points, [...touches.values()] as [Point, Point]));
@@ -80,28 +99,45 @@ export function Canvas(props: Props) {
       // Native controls remain usable while running the component.
       if (current.current.mode === "run" && event.target instanceof Element && event.target.closest(".component-root")) return;
       const key = event.key.toLowerCase(), command = event.ctrlKey || event.metaKey;
+      const active = current.current, owner = active.selectedIds.length === 1 ? active.components.find(component => component.id === active.selectedIds[0]) : undefined;
+      const selectedElement = owner?.parts.find(part => part.id === active.selectedPart && part.parent !== null);
+      const elementDesign = owner && (active.category === "Web" ? owner.web : owner.mobile);
       if (key === " ") { event.preventDefault(); spaceRef.current = true; setSpace(true); }
       else if (key === "h" && !command) setTool("hand");
       else if (key === "v" && !command) setTool("select");
+      else if (["b", "f", "t"].includes(key) && !command && !event.altKey && current.current.mode === "edit" && !current.current.disabled) { event.preventDefault(); setDrawMessage(""); setTool(key === "b" ? "box" : key === "f" ? "frame" : "text"); }
       else if ((key === "=" || key === "+") && !event.altKey) { event.preventDefault(); zoom(viewRef.current.zoom * 1.2); }
       else if (key === "-" && !event.altKey) { event.preventDefault(); zoom(viewRef.current.zoom / 1.2); }
       else if (key === "0" && !event.altKey) { event.preventDefault(); zoom(1); }
       else if (event.shiftKey && key === "1") { event.preventDefault(); fit(); }
       else if (event.shiftKey && key === "2") { event.preventDefault(); fit(true); }
-      else if (key === "escape") { gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); current.current.onSelect([]); }
+      else if (key === "escape") { const wasDrawing = gesture.current?.kind === "draw"; gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); setDrawing(null); setTool("select"); setDrawMessage(""); if (!wasDrawing) current.current.onSelect([]); }
       else if (command && key === "a") { event.preventDefault(); current.current.onSelect(current.current.components.map(item => item.id)); }
-      else if (command && key === "d" && !current.current.disabled) { event.preventDefault(); current.current.onDuplicate(); }
-      else if ((key === "delete" || key === "backspace") && !current.current.disabled && current.current.selectedIds.length) { event.preventDefault(); current.current.onDelete(); }
+      else if (command && key === "d" && !active.disabled && active.mode === "edit") { event.preventDefault(); if (!selectedElement) active.onDuplicate(); }
+      else if ((key === "delete" || key === "backspace") && !active.disabled && active.mode === "edit" && active.selectedIds.length) {
+        event.preventDefault();
+        if (selectedElement && owner) {
+          const anchor = owner.catalog && getStudioCatalogRecipe(owner.catalog.catalogId)?.parts.some(part => part.role === selectedElement.role);
+          if (!anchor && !selectedElement.required && active.onElementEdit?.(owner.id, [{ kind: "part-delete", partId: selectedElement.id }])) active.onSelect([owner.id], selectedElement.parent!);
+        } else active.onDelete();
+      }
       else if (["arrowleft", "arrowright", "arrowup", "arrowdown"].includes(key)) {
         event.preventDefault(); const distance = event.shiftKey ? 10 : 1;
         const dx = key === "arrowleft" ? -distance : key === "arrowright" ? distance : 0, dy = key === "arrowup" ? -distance : key === "arrowdown" ? distance : 0;
         if (current.current.selectedIds.length && !current.current.disabled && current.current.mode === "edit") {
+          if (selectedElement && owner && elementDesign) {
+            if (elementDesign.layout[selectedElement.parent!]?.mode === "free") {
+              const position = elementDesign.layout[selectedElement.id]?.position ?? { x: 0, y: 0 };
+              active.onElementEdit?.(owner.id, [{ kind: "layout", category: active.category, partId: selectedElement.id, field: "position", value: { x: position.x + dx, y: position.y + dy } }]);
+            }
+            return;
+          }
           current.current.onFrames(Object.fromEntries(current.current.selectedIds.filter(id => current.current.frames[id]).map(id => [id, { ...current.current.frames[id]!, x: current.current.frames[id]!.x + dx, y: current.current.frames[id]!.y + dy }])));
         } else setView(before => ({ ...before, x: before.x - dx * 16, y: before.y - dy * 16 }));
       }
     };
     const release = (event: KeyboardEvent) => { if (event.key === " ") { spaceRef.current = false; setSpace(false); } };
-    const blur = () => { spaceRef.current = false; setSpace(false); gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); };
+    const blur = () => { spaceRef.current = false; setSpace(false); gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); setDrawing(null); };
     window.addEventListener("keydown", keyboard); window.addEventListener("keyup", release); window.addEventListener("blur", blur);
     return () => {
       observer.disconnect(); window.removeEventListener("wheel", wheel, true);
@@ -111,11 +147,31 @@ export function Canvas(props: Props) {
     };
   }, []);
   const capture = (event: PointerEvent, next: Gesture) => { event.preventDefault(); event.stopPropagation(); gesture.current = next; root.current?.setPointerCapture(event.pointerId); };
+  const startDrawing = (event: PointerEvent<HTMLDivElement>) => {
+    if (!isDrawing || disabled || mode !== "edit" || !props.onElementEdit || event.button !== 0 || !(event.target instanceof Element)) return;
+    if (event.target.closest("[data-canvas-ui],.frame-label,.resize-handle")) return;
+    event.preventDefault(); event.stopPropagation(); setDrawMessage("");
+    const frameElement = event.target.closest<HTMLElement>("[data-component-frame]");
+    const component = components.find(item => item.id === frameElement?.dataset.componentFrame);
+    let parent: HTMLElement | null = event.target.closest<HTMLElement>("[data-part-id]");
+    while (parent && (!component || !canContainStudioElement(component, category, parent.dataset.partId!))) parent = parent.parentElement?.closest<HTMLElement>("[data-part-id]") ?? null;
+    if (!component || !parent || !frameElement?.contains(parent)) {
+      setDrawMessage(copy(locale, "요소를 넣을 컴포넌트의 컨테이너 안에서 그리세요. 좌측 +로 빈 프레임을 만들 수도 있습니다.", "Draw inside a component container. Use + in the structure panel to create a blank frame."));
+      return;
+    }
+    const bounds = parent.getBoundingClientRect(), canvasBounds = root.current!.getBoundingClientRect();
+    const origin = canvasPoint({ x: bounds.left - canvasBounds.left, y: bounds.top - canvasBounds.top }, view);
+    origin.x += parent.clientLeft - parent.scrollLeft; origin.y += parent.clientTop - parent.scrollTop;
+    const point = canvasPoint(screenPoint(event), view), parentId = parent.dataset.partId!;
+    const design = category === "Web" ? component.web : component.mobile;
+    const action: DrawGesture = { kind: "draw", point, end: point, origin, componentId: component.id, parentId, element: tool, category, free: design.layout[parentId]?.mode === "free", rect: drawingRect(point, point, origin, { snap: snapping, square: false }) };
+    onSelect([component.id], parentId); root.current?.focus({ preventScroll: true }); capture(event, action); setDrawing(action);
+  };
   const down = (event: PointerEvent<HTMLDivElement>) => {
     if (event.target instanceof Element && event.target.closest("[data-canvas-ui]")) return;
     const point = screenPoint(event);
     if (event.button === 1 || tool === "hand" || spaceRef.current) { capture(event, { kind: "pan", point, view }); return; }
-    if (mode !== "edit" || event.button !== 0 || event.target instanceof Element && event.target.closest(".canvas-frame")) return;
+    if (isDrawing || mode !== "edit" || event.button !== 0 || event.target instanceof Element && event.target.closest(".canvas-frame")) return;
     capture(event, { kind: "marquee", point: canvasPoint(point, view), additive: event.shiftKey ? selectedIds : [] });
   };
   const move = (event: PointerEvent<HTMLDivElement>) => {
@@ -123,6 +179,10 @@ export function Canvas(props: Props) {
     const point = screenPoint(event);
     if (action.kind === "pan") { setView({ ...action.view, x: action.view.x + point.x - action.point.x, y: action.view.y + point.y - action.point.y }); return; }
     const world = canvasPoint(point, view), dx = world.x - action.point.x, dy = world.y - action.point.y;
+    if (action.kind === "draw") {
+      const next = { ...action, end: world, rect: drawingRect(action.point, world, action.origin, { snap: snapping && !event.altKey, square: event.shiftKey }) };
+      gesture.current = next; setDrawing(next); return;
+    }
     if (action.kind === "marquee") {
       const rect = { x: Math.min(world.x, action.point.x), y: Math.min(world.y, action.point.y), width: Math.abs(dx), height: Math.abs(dy) };
       setMarquee(rect); onSelect([...new Set([...action.additive, ...Object.entries(frames).filter(([, frame]) => intersects(frame, rect)).map(([id]) => id)])]); return;
@@ -132,12 +192,24 @@ export function Canvas(props: Props) {
   };
   const finish = (event: PointerEvent<HTMLDivElement>) => {
     if (!gesture.current) return;
+    const action = gesture.current;
     const edited = changes.current;
-    gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null);
+    gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); setDrawing(null);
     if (root.current?.hasPointerCapture(event.pointerId)) root.current.releasePointerCapture(event.pointerId);
+    if (action.kind === "draw") {
+      if (disabled || mode !== "edit" || action.category !== category || !props.onElementEdit) return;
+      const moved = drawingMoved(action.point, action.end, view.zoom);
+      if (!moved && action.element !== "text") return;
+      const component = components.find(item => item.id === action.componentId);
+      if (!component) return;
+      const frame = !moved ? { ...action.rect, width: 160, height: 28 } : action.rect;
+      pendingSelection.current = { componentId: component.id, known: new Set(component.parts.map(part => part.id)) };
+      if (!props.onElementEdit(component.id, [{ kind: "element-add", parentId: action.parentId, element: action.element, category, frame }])) pendingSelection.current = null;
+      setTool("select"); return;
+    }
     if (Object.keys(edited).length && !disabled) onFrames(edited);
   };
-  return <div ref={root} className={`canvas-viewport ${tool === "hand" || space ? "hand-tool" : ""}`} data-testid="canvas-viewport" role="region" aria-label={copy(locale, "디자인 캔버스", "Design canvas")} tabIndex={0} onPointerDownCapture={event => { if (tool === "hand" || spaceRef.current || event.button === 1) down(event); }} onPointerDown={down} onPointerMove={move} onPointerUp={finish} onPointerCancel={() => { gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); }}
+  return <div ref={root} className={`canvas-viewport ${tool === "hand" || space ? "hand-tool" : ""} ${isDrawing && !space ? "draw-tool" : ""}`} data-testid="canvas-viewport" data-tool={tool} role="region" aria-label={copy(locale, "디자인 캔버스", "Design canvas")} tabIndex={0} onPointerDownCapture={event => { if (tool === "hand" || spaceRef.current || event.button === 1) down(event); else if (isDrawing) startDrawing(event); }} onPointerDown={down} onPointerMove={move} onPointerUp={finish} onPointerCancel={() => { gesture.current = null; changes.current = {}; setTransient({}); setMarquee(null); setDrawing(null); }}
     style={{ "--preview-backdrop": props.previewBackground, "--preview-foreground": props.previewForeground, ...(grid ? { backgroundImage: "radial-gradient(var(--canvas-dot) 1px, transparent 1px)", backgroundSize: `${24 * view.zoom}px ${24 * view.zoom}px`, backgroundPosition: `${view.x}px ${view.y}px` } : {}) } as CSSProperties}>
     <div className="canvas-world" data-testid="canvas-world" style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.zoom})` }}>
       {components.map(component => {
@@ -149,7 +221,7 @@ export function Canvas(props: Props) {
             const ids = event.shiftKey ? selected ? selectedIds.filter(id => id !== component.id) : [...selectedIds, component.id] : selected ? selectedIds : [component.id];
             onSelect(ids); if (!disabled && mode === "edit") capture(event, { kind: "move", point: canvasPoint(screenPoint(event), view), originals: Object.fromEntries(ids.map(id => [id, frames[id]!])) });
           }}><span className="frame-diamond" aria-hidden="true" />{component.name}<span>{Math.round(frame.width)} × {Math.round(frame.height)}</span></button>
-          <div className="frame-content"><Preview allComponents={components} {...(!disabled && props.onElementEdit ? { onElementEdit: props.onElementEdit } : {})} components={[component]} category={category} mode={mode} selectedPart={selected ? selectedPart : null} onSelect={(id, partId) => onSelect([id], partId)} locale={locale} /></div>
+          <div className="frame-content"><Preview allComponents={props.allComponents ?? components} {...(!disabled && props.onElementEdit ? { onElementEdit: props.onElementEdit } : {})} components={[component]} category={category} mode={mode} selectedPart={selected ? selectedPart : null} onSelect={(id, partId) => onSelect([id], partId)} locale={locale} /></div>
           {selected && mode === "edit" && !disabled && <button type="button" className="resize-handle" aria-label={copy(locale, `${component.name} 크기 조절`, `Resize ${component.name}`)} onPointerDown={event => capture(event, { kind: "resize", point: canvasPoint(screenPoint(event), view), originals: { [component.id]: frame } })} onKeyDown={event => {
             if (!event.key.startsWith("Arrow")) return; event.preventDefault(); event.stopPropagation(); const increment = event.shiftKey ? 10 : 1;
             onFrames({ [component.id]: { ...frame, width: Math.max(160, frame.width + (event.key === "ArrowRight" ? increment : event.key === "ArrowLeft" ? -increment : 0)), height: Math.max(100, frame.height + (event.key === "ArrowDown" ? increment : event.key === "ArrowUp" ? -increment : 0)) } });
@@ -157,10 +229,13 @@ export function Canvas(props: Props) {
         </div>;
       })}
       {marquee && <div className="selection-marquee" style={{ left: marquee.x, top: marquee.y, width: marquee.width, height: marquee.height }} />}
+      {drawing && <div className="canvas-drawing" data-testid="canvas-drawing" style={{ left: drawing.origin.x + drawing.rect.x, top: drawing.origin.y + drawing.rect.y, width: drawing.rect.width, height: drawing.rect.height, "--drawing-scale": 1 / view.zoom } as CSSProperties}><span>{Math.round(drawing.rect.width)} × {Math.round(drawing.rect.height)}{!drawing.free && <small>{copy(locale, "자동 배치", "Auto layout")}</small>}</span></div>}
     </div>
     <div className="canvas-tools" data-canvas-ui="true" role="toolbar" aria-label={copy(locale, "캔버스 도구", "Canvas tools")}>
-      <IconButton icon="cursor" data-tool-label={copy(locale, "선택", "Select")} label={copy(locale, "파트 선택 (V)", "Select parts (V)")} aria-pressed={tool === "select"} className={tool === "select" ? "active" : ""} onClick={() => setTool("select")} />
-      <IconButton icon="hand" data-tool-label={copy(locale, "이동", "Pan")} label={copy(locale, "이동 (H / Space)", "Pan (H / Space)")} aria-pressed={tool === "hand"} className={tool === "hand" ? "active" : ""} onClick={() => setTool("hand")} />
+      <IconButton icon="cursor" data-tool-label={copy(locale, "선택", "Select")} label={copy(locale, "파트 선택 (V)", "Select parts (V)")} aria-pressed={tool === "select"} className={tool === "select" ? "active" : ""} onClick={() => chooseTool("select")} />
+      <IconButton icon="hand" data-tool-label={copy(locale, "이동", "Pan")} label={copy(locale, "이동 (H / Space)", "Pan (H / Space)")} aria-pressed={tool === "hand"} className={tool === "hand" ? "active" : ""} onClick={() => chooseTool("hand")} />
+      <span className="toolbar-divider" />
+      {(["box", "frame", "text"] as const).map((kind, index) => <IconButton key={kind} icon={kind === "box" ? "box" : kind === "frame" ? "frame" : "type"} data-testid={`canvas-draw-${kind}`} label={copy(locale, `${["박스 그리기", "프레임 그리기", "텍스트 추가"][index]} (${["B", "F", "T"][index]})`, `${kind === "text" ? "Add text" : `Draw ${kind}`} (${["B", "F", "T"][index]})`)} aria-pressed={tool === kind} className={tool === kind ? "active" : ""} disabled={disabled || mode !== "edit" || !props.onElementEdit} onClick={() => chooseTool(kind)} />)}
       <span className="toolbar-divider" />
       <IconButton icon="grid" label={copy(locale, "격자 표시", "Show grid")} aria-pressed={grid} onClick={() => setGrid(value => !value)} />
       <IconButton icon="magnet" data-testid="canvas-snap" label={copy(locale, "격자에 맞추기 · Alt로 일시 해제", "Snap to grid · Hold Alt to bypass")} aria-pressed={snapping} className={snapping ? "active" : ""} onClick={() => setSnapping(value => !value)} />
@@ -184,6 +259,6 @@ export function Canvas(props: Props) {
       <IconButton icon="plus" data-testid="zoom-in" label={copy(locale, "확대", "Zoom in")} onClick={() => zoom(view.zoom * 1.2)} />
       <span className="toolbar-divider" /><IconButton icon="fit" data-testid="zoom-fit" label={copy(locale, "전체 보기 (Shift 1)", "Zoom to fit (Shift 1)")} onClick={() => fit()} /><IconButton icon="component" data-testid="zoom-selection" label={copy(locale, "선택에 맞추기 (Shift 2)", "Zoom to selection (Shift 2)")} disabled={!selectedIds.length} onClick={() => fit(true)} />
     </div>
-    <span className="canvas-hint" data-canvas-ui="true">{mode === "edit" ? copy(locale, "파트 선택 · 드래그로 배치 · Space로 이동", "Select parts · Drag to arrange · Space to pan") : copy(locale, "클릭과 입력을 시험하세요 · 프로젝트는 변경되지 않습니다", "Try clicks and input · Project data stays unchanged")}</span>
+    <span className={`canvas-hint ${isDrawing || drawMessage ? "drawing-hint" : ""}`} data-canvas-ui="true" role="status">{drawMessage || (isDrawing ? copy(locale, "컨테이너 안에서 그리기 · Shift 비율 고정 · Esc 취소", "Draw inside a container · Shift to constrain · Esc to cancel") : mode === "edit" ? copy(locale, "B 박스 · F 프레임 · T 텍스트 · Space 이동", "B Box · F Frame · T Text · Space Pan") : copy(locale, "클릭과 입력을 시험하세요 · 프로젝트는 변경되지 않습니다", "Try clicks and input · Project data stays unchanged"))}</span>
   </div>;
 }

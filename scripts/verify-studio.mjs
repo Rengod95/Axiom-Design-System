@@ -133,7 +133,7 @@ try {
   // Direct selection on rendered child Part, not only the navigation tree.
   const bodyId = await page.evaluate(`document.querySelector('[data-testid="preview-component.card"] [data-part-id$=".body"]').dataset.partId`);
   await click(`preview-part-${bodyId}`);
-  await until(`${element(`part-${bodyId}`)}.getAttribute("aria-pressed") === "true"`);
+  await until(`${element(`part-${bodyId}`)}.getAttribute("aria-selected") === "true"`);
   await click("category-web");
   evidence.cases.authoring = { namedThemes: true, imeComposition: true, koreanContent: true, directPartSelection: true, webMobile: true };
   await click("source-tab");

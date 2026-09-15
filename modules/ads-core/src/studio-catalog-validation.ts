@@ -41,7 +41,9 @@ export function inspectCatalogComponent(document: JsonObject, add: Sink): void {
   const roots = parts.filter(part => part.parent === null);
   if (roots.length !== 1 || roots[0]?.studioRole !== "root") add("/parts", "Exactly one root semantic part must own the part tree.");
   for (const [index, part] of parts.entries()) {
-    if (!catalogKeys(part, ["id", "name", "studioRole", "parent", "roleRefs", "required", "cardinality", "relationships", "studioText"]) || part.studioText !== undefined && !text(part.studioText, true) || !isValidId(part.id) || !text(part.name) || typeof part.studioRole !== "string" || !NAME_PATTERN.test(part.studioRole)
+    if (!catalogKeys(part, ["id", "name", "studioRole", "parent", "roleRefs", "required", "cardinality", "relationships", "studioText", "studioElement"]) || part.studioText !== undefined && !text(part.studioText, true) || !isValidId(part.id) || !text(part.name) || typeof part.studioRole !== "string" || !NAME_PATTERN.test(part.studioRole)
+      || part.studioElement !== undefined && !["box", "frame", "text"].includes(String(part.studioElement))
+      || part.studioElement !== undefined && recipe.parts.some(anchor => anchor.role === part.studioRole)
       || typeof part.required !== "boolean" || !same(part.cardinality, { min: 1, max: 1 }) || !empty(part.roleRefs) || !empty(part.relationships)) add(`/parts/${index}`, "Invalid bounded logical part declaration.");
     if (part.parent !== null && !parts.some(parent => parent.id === part.parent)) add(`/parts/${index}/parent`, "A part parent must be in the same component.");
   }

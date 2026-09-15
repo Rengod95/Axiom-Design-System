@@ -7,6 +7,17 @@ import { copy } from "./ui.tsx";
 import { useFormDraft } from "./form-drafts.tsx";
 
 export type ElementEditHandler = (edits: StudioComponentEdit[]) => boolean;
+/** Editing chrome is a sibling overlay, never a textarea nested inside a semantic button. */
+export function InlineElementOverlay({ root, part, locale, onEdit, onClose }: { root: RefObject<HTMLDivElement | null>; part: StudioPart; locale: Locale; onEdit: ElementEditHandler; onClose(): void }) {
+  const [bounds, setBounds] = useState({ left: 0, top: 0, width: 200 });
+  useEffect(() => {
+    const container = root.current, target = container?.querySelector<HTMLElement>(`[data-part-id="${part.id}"]`);
+    if (!container || !target) return;
+    const outer = container.getBoundingClientRect(), inner = target.getBoundingClientRect(), scale = outer.width / (container.offsetWidth || outer.width);
+    if (scale > 0) setBounds({ left: (inner.left - outer.left) / scale, top: (inner.top - outer.top) / scale, width: Math.max(160, inner.width / scale) });
+  }, [root, part.id]);
+  return <div className="element-inline-overlay" data-element-handle data-canvas-ui style={bounds}><InlineElementText part={part} locale={locale} onEdit={onEdit} onClose={onClose} /></div>;
+}
 export function ElementSelection({ root, part, design, locale, onEdit }: { root: RefObject<HTMLDivElement | null>; part: StudioPart; design: StudioDesign; locale: Locale; onEdit: ElementEditHandler }) {
   const [bounds, setBounds] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
   const [ghost, setGhost] = useState<typeof bounds>(null);

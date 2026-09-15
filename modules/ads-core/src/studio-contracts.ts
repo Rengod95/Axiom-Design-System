@@ -10,7 +10,7 @@ export type StudioCategory = "Web" | "Mobile";
 export type StudioPartRole = string;
 export type StudioVisualProperty = "background" | "color" | "borderColor" | "borderWidth" | "borderRadius" | "fontSize" | "opacity" | "fontFamily" | "fontWeight" | "lineHeight" | "letterSpacing" | "boxShadow" | "backgroundImage" | "borderStyle" | "border" | "typography" | "transitionDuration" | "transitionTimingFunction" | "transition";
 export interface StudioStyle { background?: string; color?: string; borderColor?: string; borderWidth?: number; borderRadius?: number; fontSize?: number; opacity?: number; fontFamily?: string; fontWeight?: number; lineHeight?: number; letterSpacing?: number; boxShadow?: string; backgroundImage?: string; borderStyle?: "solid" | "dashed" | "dotted" | "double" | "groove" | "ridge" | "outset" | "inset"; transitionDelay?: string; transitionDuration?: string; transitionTimingFunction?: string }
-export interface StudioPart { id: string; name: string; parent: string | null; role: StudioPartRole; text?: string }
+export interface StudioPart { id: string; name: string; parent: string | null; role: StudioPartRole; text?: string; required?: boolean; elementKind?: "box" | "frame" | "text" }
 export interface StudioPartPresentation {
   base: StudioStyle; outlined: StudioStyle; disabled: StudioStyle; pressed: StudioStyle;
   combinations: Record<"filled" | "outlined" | "filled-disabled" | "outlined-disabled" | "filled-pressed" | "outlined-pressed", StudioStyle>;

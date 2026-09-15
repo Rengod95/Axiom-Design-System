@@ -4,7 +4,7 @@ import { AccessibilityInsight } from "./accessibility-insight.tsx";
 import { MotionInspector } from "./motion-inspector.tsx";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { getStudioCatalogRecipe, inspectTypedValue, isStudioTokenCompatible, parseJson } from "../../../modules/ads-core/src/index.ts";
+import { elementContentContext, getStudioCatalogRecipe, inspectTypedValue, isStudioTokenCompatible, parseJson } from "../../../modules/ads-core/src/index.ts";
 import type { JsonObject, JsonValue, StudioCategory, StudioComponent, StudioComponentEdit, StudioVisualProperty, TypeExpression } from "../../../modules/ads-core/src/index.ts";
 import type { StudioController, StudioState } from "./controller.ts";
 import type { Locale } from "./locales.ts";
@@ -52,10 +52,9 @@ export function ComponentInspector({ state, controller, component, selectedPart,
   const source = inspectorSource(state, component, part.id, category), layout = source.design.layout[part.id];
   const catalog = component.catalog, recipe = catalog ? getStudioCatalogRecipe(catalog.catalogId) : null;
   const [drafts, setDrafts] = useState<Record<string, string>>({}), draftRef = useRef(drafts);
-  const [addingPart, setAddingPart] = useState(false), [partName, setPartName] = useState(""), [partRole, setPartRole] = useState("help");
   const [addingValue, setAddingValue] = useState(false), [valueName, setValueName] = useState(""), [valueType, setValueType] = useState("string"), [valueDefault, setValueDefault] = useState('""'), [ownership, setOwnership] = useState<"consumer" | "local">("consumer");
   const [customType, setCustomType] = useState('{"kind":"string"}'), [formError, setFormError] = useState<string | null>(null);
-  const localDirty = Object.keys(drafts).length > 0 || addingPart || addingValue;
+  const localDirty = Object.keys(drafts).length > 0 || addingValue;
   useEffect(() => { onDirtyChange?.(localDirty); }, [localDirty, onDirtyChange]);
   useEffect(() => () => onDirtyChange?.(false), [onDirtyChange]);
   useEffect(() => { if (!state.plan && !state.error && !state.pendingBuffers.length) { draftRef.current = {}; setDrafts({}); setFormError(null); } }, [state.plan, state.error, state.pendingBuffers.length]);
@@ -119,7 +118,6 @@ export function ComponentInspector({ state, controller, component, selectedPart,
         : <div className="property-literal-row">{numberField(valueKey, type === "number" ? "0–1" : "px", typeof value === "number" ? value : object(value) && typeof value.value === "number" ? value.value : 0, number => change(type === "number" ? number : { value: number, unit: "px" }), property === "fontSize" ? Number.MIN_VALUE : 0, type === "number" ? 1 : 4096)}</div>)}
     </div>;
   };
-  const removePart = source.sourcePart?.required !== true && part.parent !== null && !component.parts.some(item => item.parent === part.id) && !rows(source.document?.slots).some(slot => slot.ownerPartRef === part.id);
   const valueEditor = (value: JsonObject): ReactNode => {
     const id = String(value.id), type = object(value.type) ? value.type : {}, current = value.defaultValue ?? null;
     const key = `value-${id}`, change = (next: JsonValue): StudioComponentEdit => ({ kind: "value-default", valueId: id, value: next });
@@ -132,13 +130,9 @@ export function ComponentInspector({ state, controller, component, selectedPart,
         : <Field label={t("기본값 JSON", "Default JSON")}><textarea aria-label={`${String(value.name)} JSON`} data-testid={key} className="json-editor json-value" value={drafts[keyFor(key)] ?? JSON.stringify(current, null, 2)} onChange={event => hold(key, event.currentTarget.value)} /><Button tone="secondary" onClick={() => { try { commit(key, drafts[keyFor(key)] ?? JSON.stringify(current), change(parseJson(drafts[keyFor(key)] ?? JSON.stringify(current)))); } catch { hold(key, drafts[keyFor(key)] ?? ""); } }}>{t("값 검토", "Preview value")}</Button></Field>}
     </div>;
   };
-  const resetForm = () => { draftRef.current = {}; setDrafts({}); setAddingPart(false); setAddingValue(false); setFormError(null); controller.clearInputError(); };
+  const resetForm = () => { draftRef.current = {}; setDrafts({}); setAddingValue(false); setFormError(null); controller.clearInputError(); };
   const applyForm = () => {
     if (Object.keys(draftRef.current).length) return false;
-    if (addingPart) {
-      if (!perform([{ kind: "part-add", parentId: part.id, name: partName, role: partRole }])) return false;
-      setAddingPart(false); setPartName("");
-    }
     if (addingValue) {
       try {
         const type = valueType === "custom" ? parseJson(customType) : { kind: valueType }, value = parseJson(valueDefault);
@@ -149,32 +143,25 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     return true;
   };
   useFormDraft({ id: "component-properties", label: t("컴포넌트 속성", "Component properties"), dirty: localDirty,
-    valid: !Object.keys(drafts).length && (!addingPart || !!partName.trim()) && (!addingValue || !!valueName.trim()), apply: applyForm, reset: resetForm });
+    valid: !Object.keys(drafts).length && (!addingValue || !!valueName.trim()), apply: applyForm, reset: resetForm });
   return <div className="component-property-editor" data-draft-form="component-properties">
     {localDirty && <div className="form-feedback" role="status"><p>{Object.keys(drafts).length ? t("입력값을 확인하세요. 마지막 정상 미리보기는 유지됩니다.", "Check the input. The last valid preview is retained.") : t("추가 중인 항목을 완료하거나 취소하세요.", "Complete or cancel the item being added.")}</p><Button data-testid="inspector-reset-input" onClick={resetForm}>{t("미반영 입력 초기화", "Reset uncommitted input")}</Button></div>}
     <Section title={t("요소", "Elements")}>
-      <ul className="element-tree" aria-label={t("요소 구조", "Element tree")}>{(() => {
-        const render = (parent: string | null, depth: number): ReactNode[] => component.parts.filter(item => item.parent === parent).flatMap(item => [<li key={item.id}><button type="button" aria-current={item.id === part.id} style={{ paddingInlineStart: 8 + depth * 12 }} onClick={() => onSelectPart?.(item.id)}><Icon name="component" size={14} /><span>{item.name}</span>{catalog?.slots.some(slot => slot.ownerPartRef === item.id) && <small>{t("콘텐츠", "Content")}</small>}</button></li>, ...render(item.id, depth + 1)]);
-        return render(null, 0);
-      })()}</ul>
-      {catalog?.semantic.kind === "layout" && selectField("part-element", t("HTML 요소", "HTML element"), source.design.elements?.[part.id] ?? "div", [
+      {(catalog?.semantic.kind === "layout" || part.elementKind) && selectField("part-element", t("HTML 요소", "HTML element"), source.design.elements?.[part.id] ?? "div", [
         { value: "div", label: t("프레임 · div", "Frame · div") }, { value: "section", label: t("영역 · section", "Section · section") }, { value: "article", label: t("아티클 · article", "Article · article") }, { value: "header", label: "Header" }, { value: "footer", label: "Footer" }, { value: "span", label: t("인라인 텍스트 · span", "Inline text · span") }, { value: "p", label: t("본문 · p", "Paragraph · p") }, ...[1, 2, 3, 4, 5, 6].map(level => ({ value: `h${level}`, label: `${t("제목", "Heading")} ${level}` })), { value: "code", label: "Code" }
-      ], element => ({ kind: "part-element", category, partId: part.id, element }))}
+      ].filter(option => !part.parent || elementContentContext(component.parts, source.design.elements ?? {}, catalog!.semantic.kind, part.parent) !== "phrasing" || ["span", "code"].includes(option.value)), element => ({ kind: "part-element", category, partId: part.id, element }))}
       {textField(`part-name/${part.id}`, t("이름", "Name"), part.name, name => ({ kind: "part-name", partId: part.id, name }), false, "part-name")}
-      {catalog && <>{textField(`part-text/${part.id}`, t("텍스트", "Text"), part.text ?? "", text => ({ kind: "part-text", partId: part.id, text }), true, "part-text")}{part.parent && source.sourcePart?.required !== true && selectField("part-parent", t("상위 요소", "Parent element"), part.parent, component.parts.filter(item => item.id !== part.id).map(item => ({ value: item.id, label: item.name })), parentId => ({ kind: "part-parent", partId: part.id, parentId }))}</>}
+      {(catalog?.semantic.kind === "layout" || part.elementKind) && <>{textField(`part-text/${part.id}`, t("텍스트", "Text"), part.text ?? "", text => ({ kind: "part-text", partId: part.id, text }), true, "part-text")}</>}
       <details><summary>{t("기술 정보", "Technical details")}</summary><p className="field-hint">{part.role} · <code>{part.id}</code></p></details>
-      <div className="button-row">{([-1, 1] as const).map(direction => <Button key={direction} tone="subtle" data-testid={`part-move-${direction === -1 ? "up" : "down"}`} disabled={!catalog || !movedChildren(component, part.id, direction)} onClick={() => { const childIds = movedChildren(component, part.id, direction); if (childIds && part.parent) perform([{ kind: "part-order", parentId: part.parent, childIds }]); }}>{direction === -1 ? t("앞으로", "Move earlier") : t("뒤로", "Move later")}</Button>)}<Button tone="danger" icon="trash" data-testid="part-delete" disabled={!removePart} onClick={() => { if (perform([{ kind: "part-delete", partId: part.id }])) onSelectPart?.(part.parent!); }}>{t("삭제", "Delete")}</Button></div>
-      {recipe?.semantic.kind === "layout" && <div className="element-add-tools">{(["box", "frame", "text"] as const).map(element => <Button key={element} icon={element === "text" ? "type" : "plus"} data-testid={`element-add-${element}`} onClick={() => perform([{ kind: "element-add", parentId: part.id, element }])}>{element === "box" ? "Box" : element === "frame" ? "Frame" : "Text"}</Button>)}</div>}
-      {catalog ? <><Button tone="subtle" icon="plus" data-testid="part-add" onClick={() => { setAddingPart(!addingPart); setFormError(null); if (!addingPart) { let index = 1; while (component.parts.some(item => item.role === `part${index}`)) index++; setPartRole(`part${index}`); } }}>{t("하위 요소 추가", "Add child element")}</Button>{addingPart && <div className="property-group"><Field label={t("새 요소 이름", "New element name")}><TextInput label={t("새 요소 이름", "New element name")} data-testid="part-add-name" value={partName} onCommit={setPartName} /></Field><Field label={t("코드 식별자", "Code identifier")}><TextInput label={t("코드 식별자", "Code identifier")} data-testid="part-add-role" value={partRole} onCommit={setPartRole} /></Field><Button data-testid="part-add-confirm" onClick={() => { if (perform([{ kind: "part-add", parentId: part.id, name: partName, role: partRole }])) { setAddingPart(false); setPartName(""); setFormError(null); } else setFormError(t("요소 이름과 식별자를 확인하세요.", "Check the element name and identifier.")); }}>{t("요소 추가", "Add element")}</Button></div>}</> : <p className="field-hint">{t("기본 컴포넌트의 의미 구조는 고정되어 있습니다.", "The builtin component keeps its required semantic structure.")}</p>}
-      {catalog && <div className="content-area-settings"><strong className="field-label">{t("콘텐츠 영역", "Content area")}</strong><p className="field-hint">{t("이 요소가 받을 콘텐츠의 규칙입니다. 변형 옵션은 스타일과 상태에서 편집합니다.", "Defines content this element accepts. Variant options are edited in styles and states.")}</p>{(() => {
+      {catalog && (catalog.slots.some(slot => slot.ownerPartRef === part.id) || elementContentContext(component.parts, source.design.elements ?? {}, catalog.semantic.kind, part.id) === "flow") && <div className="content-area-settings"><strong className="field-label">{t("콘텐츠 영역", "Content area")}</strong><p className="field-hint">{t("이 요소가 받을 콘텐츠의 규칙입니다. 변형 옵션은 스타일과 상태에서 편집합니다.", "Defines content this element accepts. Variant options are edited in styles and states.")}</p>{(() => {
         const slot = catalog.slots.find(item => item.ownerPartRef === part.id);
         const required = recipe?.slots.some(item => item.required && item.role === part.role);
         return slot ? <><label className="check-row"><input type="checkbox" data-testid="content-required" checked={slot.min !== 0} disabled={required} onChange={event => perform([{ kind: "slot-update", slotId: String(slot.id), required: event.target.checked, multiple: slot.max === "unbounded" }])} />{t("콘텐츠 필수", "Content required")}</label><label className="check-row"><input type="checkbox" data-testid="content-multiple" checked={slot.max === "unbounded"} onChange={event => perform([{ kind: "slot-update", slotId: String(slot.id), required: slot.min !== 0, multiple: event.target.checked }])} />{t("여러 콘텐츠 허용", "Allow multiple items")}</label><p className="field-hint">{t("텍스트와 컴포넌트를 받는 영역입니다. 아래 인스턴스에서 재사용할 컴포넌트를 삽입하세요.", "This area accepts text and components. Insert a reusable component in Instances below.")}</p><Button tone="subtle" icon="trash" disabled={required} onClick={() => perform([{ kind: "slot-delete", slotId: String(slot.id) }])}>{t("콘텐츠 영역 해제", "Remove content area")}</Button></> : <Button data-testid="slot-add-optional" icon="plus" tone="subtle" onClick={() => perform([{ kind: "slot-add", partId: part.id, required: false, multiple: true }])}>{t("콘텐츠 영역으로 사용", "Use as content area")}</Button>;
       })()}</div>}
     </Section>
-    {recipe?.semantic.kind === "layout" && <Section title={t("인스턴스", "Instances")}><InstanceInspector component={component} partId={part.id} state={state} controller={controller} locale={locale} {...(onSelectSource ? { onSelectSource } : {})} /></Section>}
+    {catalog && elementContentContext(component.parts, source.design.elements ?? {}, catalog.semantic.kind, part.id) === "flow" && <Section title={t("인스턴스", "Instances")}><InstanceInspector component={component} partId={part.id} state={state} controller={controller} locale={locale} {...(onSelectSource ? { onSelectSource } : {})} /></Section>}
     {layout && <Section title={t("레이아웃", "Layout")}>
-      {recipe?.semantic.kind === "layout" && selectField("layout-mode", t("배치", "Layout mode"), layout.mode ?? "stack", [{ value: "stack", label: t("자동 레이아웃", "Auto layout") }, { value: "free", label: t("자유 배치", "Free position") }], value => ({ kind: "layout", category, partId: part.id, field: "mode", value }))}
+      {(recipe?.semantic.kind === "layout" || part.elementKind === "box" || part.elementKind === "frame") && selectField("layout-mode", t("배치", "Layout mode"), layout.mode ?? "stack", [{ value: "stack", label: t("자동 레이아웃", "Auto layout") }, { value: "free", label: t("자유 배치", "Free position") }], value => ({ kind: "layout", category, partId: part.id, field: "mode", value }))}
       {part.parent && source.design.layout[part.parent]?.mode === "free" && <div className="element-position-grid">{(["x", "y"] as const).map(axis => numberField(`element-${axis}`, axis.toUpperCase(), layout.position?.[axis] ?? 0, value => ({ kind: "layout", category, partId: part.id, field: "position", value: { x: layout.position?.x ?? 0, y: layout.position?.y ?? 0, [axis]: value } }), -16384, 16384))}</div>}
       {catalog && <div className="inspector-size-grid">{(["width", "height"] as const).map(field => { const policy = layout[field] ?? { mode: "hug" }; return <div className="inspector-size-control" key={field}>{selectField(`layout-${field}`, field === "width" ? t("너비", "Width") : t("높이", "Height"), policy.mode, [{ value: "hug", label: t("콘텐츠 맞춤", "Hug") }, { value: "fill", label: t("채우기", "Fill") }, { value: "fixed", label: t("고정", "Fixed") }], mode => ({ kind: "layout", category, partId: part.id, field, value: mode === "fixed" ? { mode, value: 100 } : { mode } }))}{policy.mode === "fixed" && numberField(`layout-${field}-value`, "px", policy.value, value => ({ kind: "layout", category, partId: part.id, field, value: { mode: "fixed", value } }), 1)}</div>; })}</div>}
       <Field layout="row" label={t("방향", "Direction")}><div className="choice-control icon-choice" role="group" aria-label={t("레이아웃 방향", "Layout direction")} data-testid="layout-axis">{(["horizontal", "vertical"] as const).map(axis => <button key={axis} type="button" aria-label={axis === "horizontal" ? t("가로", "Row") : t("세로", "Column")} title={axis === "horizontal" ? t("가로", "Row") : t("세로", "Column")} aria-pressed={layout.axis === axis} onClick={() => commit("layout-axis", axis, { kind: "layout", category, partId: part.id, field: "axis", value: axis })}><Icon name={axis === "horizontal" ? "arrow" : "download"} /></button>)}</div></Field>

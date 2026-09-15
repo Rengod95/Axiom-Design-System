@@ -22,7 +22,7 @@ export async function verifyCompositionWorkspace({ page, origin, database, root,
   const ownerId = (await frameIds()).find(value => !before.includes(value)); assert.ok(ownerId); await click(`component-${ownerId}`);
   const ownerRoot = (await source(ownerId)).parts.find(part => part.parent === null);
   await selectElement(id("layout-mode"), "free");
-  for (const kind of ["frame", "box", "text"]) await click(`element-add-${kind}`);
+  for (const kind of ["frame", "box", "text"]) { await click(`part-${ownerRoot.id}`); await click(`element-add-${kind}`); }
   await approve();
   const definition = await source(ownerId), box = definition.parts.find(part => part.name === "Box 1"), textPart = definition.parts.find(part => part.studioText === "Text");
   assert.ok(box && textPart); assert.ok(definition.parts.some(part => part.name === "Frame 1"));
@@ -48,7 +48,7 @@ export async function verifyCompositionWorkspace({ page, origin, database, root,
   assert.equal(await page.evaluate(`(${textNode}).textContent`), "Build once. Reuse everywhere.");
   record("freeElements", { boxFrameText: true, pointerMoveAndResizeAtCanvasZoom: true, groupedReview: true, undoRedo: true, inlineTextSaveAndReload: true });
 
-  await clickElement(element(ownerRoot.name)); await selectElement(id("layout-mode"), "stack");
+  await clickElement(element((ownerRoot.name === "root" ? "Root" : ownerRoot.name))); await selectElement(id("layout-mode"), "stack");
   await selectElement(id("instance-source"), childId); await click("instance-insert"); await approve();
   const instance = (await source(ownerId)).studioComposition.instances[0]; assert.equal(instance.componentRef.id, childId);
   const nested = `document.querySelector('[data-instance-id="${instance.id}"] input[type=checkbox]')`;
@@ -57,11 +57,11 @@ export async function verifyCompositionWorkspace({ page, origin, database, root,
   assert.equal(await page.evaluate(`(${nested}).checked`), true); assert.deepEqual(await source(childId), childBefore);
   const composedRevision = await revision(); await click("mode-run"); await clickElement(nested); assert.equal(await page.evaluate(`(${nested}).checked`), false); assert.equal(await revision(), composedRevision);
   await click("mode-edit"); assert.equal(await page.evaluate(`(${nested}).checked`), true);
-  await clickElement(nested); assert.equal(await page.evaluate("document.querySelector('.element-tree button[aria-current=true] span').textContent"), ownerRoot.name, "Nested click selects its owning element, never a foreign part ID");
+  await clickElement(nested); assert.equal(await page.evaluate("document.querySelector('.element-tree button[aria-current=true] span').textContent"), (ownerRoot.name === "root" ? "Root" : ownerRoot.name), "Nested click selects its owning element, never a foreign part ID");
   await click(`component-${childId}`); await clickElement(text("Component", "summary")); await fill("component-name", "Consent checkbox"); await clickElement(text("Elements", "summary")); await approve();
-  await click(`component-${ownerId}`); await clickElement(element(ownerRoot.name)); assert.ok(await page.evaluate("Boolean(document.querySelector('.instance-placeholder'))"));
+  await click(`component-${ownerId}`); await clickElement(element((ownerRoot.name === "root" ? "Root" : ownerRoot.name))); assert.ok(await page.evaluate("Boolean(document.querySelector('.instance-placeholder'))"));
   assert.equal((await source(ownerId)).studioComposition.instances[0].componentRef.revision, instance.componentRef.revision);
-  await click("instance-refresh"); await approve(); await reload(); await click(`component-${ownerId}`); await clickElement(element(ownerRoot.name));
+  await click("instance-refresh"); await approve(); await reload(); await click(`component-${ownerId}`); await clickElement(element((ownerRoot.name === "root" ? "Root" : ownerRoot.name)));
   assert.equal(await page.evaluate(`(${nested}).checked`), true); assert.notEqual((await source(ownerId)).studioComposition.instances[0].componentRef.revision, instance.componentRef.revision);
   await mkdir(join(root, "dist/evidence"), { recursive: true });
   for (const theme of ["dark", "light"]) {

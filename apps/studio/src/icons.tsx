@@ -1,5 +1,6 @@
-export type IconName = "edit" | "magnet" | "undo" | "redo" | "download" | "arrow" | "chevron" | "close" | "check" | "component" | "token" | "layers" | "code" | "refresh" | "link" | "monitor" | "phone" | "search" | "plus" | "minus" | "settings" | "sun" | "moon" | "cursor" | "hand" | "fit" | "grid" | "library" | "folder" | "copy" | "trash" | "more" | "help" | "palette" | "type" | "filter" | "eye" | "eye-off" | "lock" | "unlock" | "panel" | "move" | "align" | "play" | "rotate" | "history" | "upload" | "panel-left";
+export type IconName = "box" | "frame" | "edit" | "magnet" | "undo" | "redo" | "download" | "arrow" | "chevron" | "close" | "check" | "component" | "token" | "layers" | "code" | "refresh" | "link" | "monitor" | "phone" | "search" | "plus" | "minus" | "settings" | "sun" | "moon" | "cursor" | "hand" | "fit" | "grid" | "library" | "folder" | "copy" | "trash" | "more" | "help" | "palette" | "type" | "filter" | "eye" | "eye-off" | "lock" | "unlock" | "panel" | "move" | "align" | "play" | "rotate" | "history" | "upload" | "panel-left";
 const paths: Record<IconName, string> = {
+  box: "M3 3h14v14H3Z", frame: "M6 1v18M14 1v18M1 6h18M1 14h18",
   edit: "m13 2 5 5L7 18H2v-5Zm-8 9 5 5M11 4l5 5",
   magnet: "M3 3h4v7a3 3 0 0 0 6 0V3h4v7a7 7 0 0 1-14 0Zm0 4h4m6 0h4",
   "panel-left": "M2 3h16v14H2Zm5 0v14",
