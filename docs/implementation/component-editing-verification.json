@@ -4,7 +4,7 @@
   "status": "LOCAL_GATES_PASSED_NATIVE_CI_SEPARATE",
   "baselineCommit": "81b276217a9d91f7591a990d424184cdb9dea808",
   "sourceSha256": {
-    ".github/workflows/native.yml": "d9acb54b30bc16f2d1e6bdea4fc6ae149ed20b281af99b362fb5ee960a972027",
+    ".github/workflows/native.yml": "b9ee66b55f9f2325d6909141eb81d6ea6580dced5fb037fbed224d178f23fae6",
     "apps/studio/src/app.tsx": "f3016bfeca4e2184f557eb88651358ee0836219e4154d3c55236b7ecae0417f5",
     "apps/studio/src/behavior-editor.css": "df3e61a4f2a4e55db6df9443aaf0ea3b83e6f16b0719c0a80e5ed36cecc047ba",
     "apps/studio/src/behavior-editor.tsx": "741e8ad8e20330da19b55714f48e5f3b8fad28d92887730ef19c86bfbc6caa8e",
@@ -84,14 +84,17 @@
     "scripts/native-fixtures.mjs": "5d821f01b6fcabd1ffa7038763e58b8c94db683fdc954d2f53f8dd7067da67d4",
     "scripts/native-verify.mjs": "11f6515a668002cdc56272c03cb417b6bb6191ba9f453071f6cabd42186eca8b",
     "scripts/verify-retirement.py": "fa68dbd477a7013ac4f4ea90a771ae1f4d02d798c9bc7562990eb513d6dec94f",
-    "scripts/verify-workbench.mjs": "9375805f48be7bef80dfd970e95cbabe8c8495b56ad68a098e64c9e2d2dc9cfd",
+    "scripts/verify-workbench.mjs": "571ba72bbe492a0c19648c408752e09f42997a8975bb8bf8aae493ec6b048f6c",
     "scripts/workbench-authoring-cases.mjs": "5d07e655b2d3621379608eff4552aad6d64341d51426d745f1305e41ff791927",
     "scripts/workbench-behavior-cases.mjs": "618bdafc52f1fec084a9800e3b5cf6f150c4dba97bba9bc3757e0b0235ecb0c6",
     "scripts/workbench-chrome-cases.mjs": "c03e8ba4e2e8534d8f8775bfc6c50b029fc37440e41ebfaaa30688ec22196ccf",
     "scripts/workbench-completion-cases.mjs": "76755d14b561ae689d2b23a295abfa66d27c1431e11ec3f9632ccfe047baba4b",
     "scripts/workbench-composition-cases.mjs": "047ee54fb6b0801777ba253ca41e3973e6597a056ace00f12d4cfdd5391a0d47",
     "scripts/workbench-policy-cases.mjs": "c27b4a38b1d85e124931da4f166d6ed05bef922627de5e99f6324ccb1674de84",
-    "scripts/native-process.mjs": "d238c3ab1113643c9c391de8e9e6b195f3ae74cbe22f30b37ad254e23481ce75"
+    "scripts/native-process.mjs": "d238c3ab1113643c9c391de8e9e6b195f3ae74cbe22f30b37ad254e23481ce75",
+    "modules/target-packs/src/constants.ts": "6d6b6b36d30ec9661d5387c0cd734d751497f16a33b8dfd92cd2ea9b39d30095",
+    "modules/target-packs/src/package-files.ts": "6a403602b973b754dd91b856bcac7d0ad909d8190e6aec972e4232be5c45bd2f",
+    "modules/target-packs/test/target-packs.test.ts": "1e5727a0814a6222807c4324ce547aa43d3f2513556f51737f07d57658b20b24"
   },
   "localGates": {
     "documentation": "retirement/reference and Foundation checks with negative cases",
@@ -590,6 +593,10 @@
     "nativeHarnessFollowup": {
       "passed": 4,
       "scope": "fixture preservation and actual process failure/timeout/output-limit capture"
+    },
+    "composeToolchainFollowup": {
+      "passed": 13,
+      "scope": "native fixture/process tests and target export tests including the Compose BOM minimum SDK/AGP contract; strict TypeScript, Foundation negative checks and 177-input build passed"
     }
   },
   "evidenceLogs": {
@@ -631,11 +638,29 @@
   "native": {
     "local": "BLOCKED: no JDK/Android SDK/Swift/Xcode on this Windows host",
     "ciWorkflow": ".github/workflows/native.yml",
-    "ciExecution": "Await the PR Native Runtime job artifacts; workflow existence is not evidence of execution.",
+    "ciExecution": "SwiftUI runtime passed on the documented second-run source commit. Android follow-up execution and current-head quality remain determined by PR CI artifacts.",
     "firstRun": {
       "id": 34926858200,
       "compose": "Runner sdkmanager PATH lookup failed before compilation; workflow now uses the installed ANDROID_HOME command path.",
       "swiftui": "Swift 6.1.2 / Xcode 16.4 compilation, simulator boot and app install passed; attached console timed out. SDK-matched simulator selection and native-written JSON evidence replace console termination as the completion signal."
+    },
+    "secondRun": {
+      "sourceCommit": "76fd690f6c6532908217682ebd1f4e56c0467173",
+      "id": 34927831869,
+      "swiftui": {
+        "jobId": 104249548200,
+        "status": "PASSED",
+        "observedToolchain": "Xcode 16.4, Swift 6.1.2, iOS Simulator 18.5, iPhone 16 Pro",
+        "scope": "Generated controls mounted in UIHostingController; nonempty output and changed render hashes after consumer state and dark appearance changes",
+        "limitations": "Exploratory observed compiler, not exact Swift 6.3.3 candidate certification; no native touch or assistive technology claim",
+        "artifactId": 10380930911,
+        "artifactSha256": "2861e3472a43a16dc6b4b5b4022ae56f366c595eb683bdeb6a347b03c683fd5d"
+      },
+      "compose": {
+        "status": "FAILED",
+        "cause": "Compose 1.12.0 AAR metadata from the pinned BOM requires compile SDK 37 and AGP 9.1+; exported SDK36/AGP9.0 was inconsistent.",
+        "correction": "Generator, Foundation matrix, workflow and user README now agree on AGP9.1.1 / Gradle9.3.1 / SDK37; actual Android rerun remains required."
+      }
     }
   },
   "limitations": [
@@ -643,5 +668,11 @@
     "Native custom composition, free HTML layout and authored behavior reject explicitly.",
     "No rich text/assets, arbitrary scripts, approved policy exception lifecycle or full Foundation/Figma parity.",
     "Physical trackpad, OS IME, touch and assistive-technology certification not claimed."
-  ]
+  ],
+  "ciQualityBeforeAndroidFollowup": {
+    "sourceCommit": "76fd690f6c6532908217682ebd1f4e56c0467173",
+    "runId": 34927831870,
+    "linux": "PASSED full gate",
+    "windows": "Storage and Studio passed; catalog creation workbench save condition exceeded the 30-second deadline. Diagnostic-only context added; full local reproduction and current-head CI remain required."
+  }
 }

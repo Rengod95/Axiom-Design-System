@@ -20,7 +20,7 @@ The [Native Runtime workflow](../../.github/workflows/native.yml) runs both plat
 
 ## Android consumer
 
-Supply JDK 17, Gradle 9.1.0, Android SDK 36 and build tools 36.0.0. Set `ANDROID_HOME` or `ANDROID_SDK_ROOT`; authorize exactly one connected Android device/emulator. CI provisions an API 35 Google APIs x86_64 Pixel 6 emulator. The captured device fingerprint and API describe the actual image; an API family is not an immutable system-image checksum.
+Supply JDK 17, Gradle 9.3.1, Android SDK 37 and build tools 36.0.0. Set `ANDROID_HOME` or `ANDROID_SDK_ROOT`; authorize exactly one connected Android device/emulator. CI provisions an API 35 Google APIs x86_64 Pixel 6 emulator. The captured device fingerprint and API describe the actual image; an API family is not an immutable system-image checksum.
 
 The harness adds instrumentation configuration to the generated Android library without changing its emitted Kotlin sources. It compiles the library and test APK, then runs five Compose UI cases in `connectedDebugAndroidTest`:
 
@@ -32,7 +32,9 @@ The harness adds instrumentation configuration to the generated Android library 
 
 The result requires at least five JUnit cases, zero failures, zero errors and zero skipped cases. Compiler logs, actual JUnit XML, direct dependency pins, Gradle lock and dependency verification metadata are retained. The first platform resolution writes a **consumer lock artifact**, not a preapproved checked-in transitive dependency baseline; review and retain that lock before promoting a release profile. No full-catalog, TalkBack, physical-device or IME claim follows from these five cases.
 
-The fixture uses the existing Compose BOM and test runner 1.7.0 / AndroidX JUnit extension 1.3.0. The instrumentation structure follows the official [Compose testing setup](https://developer.android.com/develop/ui/compose/testing) and [AndroidX Test releases](https://developer.android.com/jetpack/androidx/releases/test). AGP's Kotlin and Gradle compatibility follows the [AGP 9.0 release contract](https://developer.android.com/build/releases/agp-9-0-0-release-notes).
+The fixture uses the existing Compose BOM and test runner 1.7.0 / AndroidX JUnit extension 1.3.0. The instrumentation structure follows the official [Compose testing setup](https://developer.android.com/develop/ui/compose/testing) and [AndroidX Test releases](https://developer.android.com/jetpack/androidx/releases/test). AGP's Kotlin and Gradle compatibility follows the [AGP 9.1 release contract](https://developer.android.com/build/releases/agp-9-1-0-release-notes).
+
+The first actual Android build exposed an incompatible candidate tuple: BOM 2026.08.00 resolves Compose 1.12.0, whose AAR metadata requires API37 and AGP9.1 or later. The corrected export uses AGP9.1.1, Gradle9.3.1 and compileSdk37 while retaining JDK17, Kotlin2.2.10, build-tools36.0.0 and minSdk26. Google's [SDK repository](https://dl.google.com/android/repository/repository2-3.xml) identifies the stable package as `platforms;android-37.0`; the [AGP9.1.1 POM](https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/9.1.1/gradle-9.1.1.pom) confirms built-in Kotlin2.2.10. Runtime success remains dependent on the corrected CI run.
 
 ## iOS simulator consumer
 

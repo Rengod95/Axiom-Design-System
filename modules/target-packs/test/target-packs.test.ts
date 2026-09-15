@@ -25,6 +25,24 @@ test("four source targets retain stable identities, source evidence, independent
   assert.equal(canonicalJson(project),before);
 });
 
+test("Compose exports satisfy the pinned BOM's minimum native compiler contract", () => {
+  const result = generateTargetPack(projectFixture(), { target: "compose" }, DIGEST);
+  assert(result.pack, canonicalJson(result.diagnostics));
+  const pins = result.pack.manifest.target.dependencies;
+  // Compose 1.12.0 AAR metadata in BOM 2026.08.00 rejects SDK36 and AGP9.0.
+  assert.equal(pins.composeBom, "2026.08.00");
+  assert(Number(pins.compileSdk) >= 37);
+  assert.deepEqual([pins.agp, pins.gradle, pins.kotlin, pins.jdk], ["9.1.1", "9.3.1", "2.2.10", "17"]);
+  assert.equal(pins.minSdk, "26", "A compile SDK update must not silently raise device requirements");
+  const gradle = result.pack.files.find(file => file.path === "build.gradle.kts")!.text;
+  const readme = result.pack.files.find(file => file.path === "README.md")!.text;
+  assert(gradle.includes(`id("com.android.library") version "${pins.agp}"`));
+  assert(gradle.includes(`compileSdk = ${pins.compileSdk};`));
+  assert(gradle.includes(`buildToolsVersion = "${pins.buildTools}"`));
+  assert(gradle.includes(`org.jetbrains.kotlin.plugin.compose") version "${pins.kotlin}"`));
+  assert(readme.includes(`Gradle${pins.gradle}/JDK${pins.jdk} and Android SDK${pins.compileSdk}/build-tools${pins.buildTools}`));
+});
+
 test("unsupported source and portable-name collisions produce no partial output", () => {
   const project = projectFixture(); project.documents["component.button"]!.document.studioProfile = {id:"unknown",version:"0.1.0"};
   assert.equal(generateTargetPack(project,{target:"react"},DIGEST).pack,undefined);

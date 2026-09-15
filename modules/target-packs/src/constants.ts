@@ -8,7 +8,7 @@ export const TARGET_DEPENDENCIES = {
   react: { react: "19.3.0", "react-dom": "19.3.0", "@types/react": "19.3.0", "@types/react-dom": "19.3.0", typescript: "5.9.3" },
   "react-native": { react: "19.2.3", "react-native": "0.86.3", expo: "57.0.17", "@types/react": "19.3.0", typescript: "5.9.3" },
   swiftui: { swift: "6.3.3", swiftTools: "6.0", iOS: "17.0" },
-  compose: { agp: "9.0.1", gradle: "9.1.0", jdk: "17", kotlin: "2.2.10", composeBom: "2026.08.00", compileSdk: "36", buildTools: "36.0.0", minSdk: "26" },
+  compose: { agp: "9.1.1", gradle: "9.3.1", jdk: "17", kotlin: "2.2.10", composeBom: "2026.08.00", compileSdk: "37", buildTools: "36.0.0", minSdk: "26" },
 } as const;
 export const TARGET_FILE_PATTERN = /^(?:[A-Za-z0-9_-][A-Za-z0-9_.-]*\/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*$/;
 export const TARGET_RESERVED_NAME = /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i;
