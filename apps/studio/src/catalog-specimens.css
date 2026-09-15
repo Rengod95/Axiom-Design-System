@@ -3,7 +3,11 @@
 .catalog-component-preview .component-root { align-items: stretch; }
 .catalog-component-preview .component-root > :first-child { max-width: 100%; }
 .catalog-component-preview :where(button, input, textarea, select) { font: inherit; color: inherit; }
-.catalog-component-preview :where(button, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select) { min-height: 34px; padding: 7px 10px; border: 1px solid var(--catalog-border); border-radius: 6px; background: var(--catalog-fill); }
+.catalog-component-preview .component-root :is(button, textarea, select),
+.catalog-component-preview .component-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]) { min-height: 40px; padding: 8px 10px; border: 1px solid var(--catalog-border); border-radius: 8px; background: var(--catalog-fill); }
+.catalog-component-preview .component-root :is(input, textarea, select) { line-height: 1.5; }
+.catalog-component-preview .component-root button { justify-content: center; }
+.catalog-component-preview .component-root :is(input, textarea)::placeholder { color: inherit; opacity: .65; }
 .catalog-component-preview :where(button, input, textarea, select):focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 .catalog-component-preview :where(input[type="range"], progress, meter) { width: 100%; accent-color: currentColor; }
 .catalog-component-preview [data-preview-role="label"] { font-size: .875em; font-weight: 500; }
@@ -14,7 +18,11 @@
 .catalog-component-preview input[role="switch"]:checked::after { transform: translateX(14px); }
 .catalog-component-preview input[role="switch"]:checked { background: color-mix(in srgb, currentColor 18%, transparent); }
 .catalog-component-preview[data-preview-shape="chip"] [aria-pressed], .catalog-component-preview[data-preview-shape="badge"] [data-preview-role="root"], .catalog-component-preview[data-preview-shape="pill"] [data-preview-role="root"] { border-radius: 999px; width: fit-content; padding: 5px 12px; }
-.catalog-component-preview [aria-pressed="true"], .catalog-component-preview [aria-selected="true"], .catalog-component-preview [aria-current="page"] { background: color-mix(in srgb, currentColor 12%, transparent); }
+.catalog-component-preview .component-root [aria-pressed="true"], .catalog-component-preview .component-root [aria-selected="true"], .catalog-component-preview .component-root [aria-current="page"] { background-color: color-mix(in srgb, currentColor 12%, transparent); }
+.catalog-component-preview .component-root [role="tab"]:not(:focus-visible), .catalog-component-preview .component-root button[aria-pressed]:not(:focus-visible) { outline: none; }
+.catalog-component-preview .component-root [role="tablist"] { gap: 4px; padding: 4px; border: 0; border-radius: 8px; background: var(--catalog-fill); }
+.catalog-component-preview .component-root [role="tab"] { min-height: 36px; border: 0; background: transparent; }
+.catalog-component-preview .component-root [role="tab"][aria-selected="true"] { background: color-mix(in srgb, currentColor 12%, transparent); }
 .catalog-component-preview .catalog-segmented { display: flex; gap: 2px; padding: 3px; border-radius: 6px; background: var(--catalog-fill); }
 .catalog-component-preview .catalog-segmented button { flex: 1; border-color: transparent; }
 .catalog-component-preview .catalog-rating { display: flex; gap: 4px; }

@@ -66,7 +66,28 @@ test("disabled gradient controls and rulers expose real range inputs with decora
   assert.equal((gradient.html.match(/disabled=""/g) ?? []).length, 2);
   assert.match(gradient.html, /data-variant="gradient"/);
   const ruler = slider.render({ label: "Duration", value: 240, min: 0, max: 2000, step: 10, variant: "ruler", precision: false });
-  assert.match(ruler.html, /studio-slider-ticks" aria-hidden="true"/);
+  assert.match(ruler.html, /studio-slider-visual" aria-hidden="true"/);
+  assert.match(ruler.html, /studio-slider-ticks/);
   assert.equal((ruler.html.match(/<input/g) ?? []).length, 1);
   assert.equal(ruler.changes, 0);
+});
+
+test("every slider variant paints one decorative thumb on shared native travel", () => {
+  for (const variant of ["value", "gradient", "ruler"] as const) for (const value of [0, 50, 100]) {
+    const result = slider.render({ label: "Amount", value, min: 0, max: 100, variant });
+    assert.match(result.html, new RegExp(`--slider-progress:${value}%`));
+    assert.equal((result.html.match(/type="range"/g) ?? []).length, 1);
+    assert.equal((result.html.match(/class="studio-slider-thumb"/g) ?? []).length, 1);
+    assert.match(result.html, /studio-slider-controls/);
+    assert.equal(result.changes, 0);
+  }
+});
+
+test("ruler ticks remain bounded for non-finite counts without changing authored input", () => {
+  for (const ticks of [NaN, Infinity, -Infinity]) {
+    const result = slider.render({ label: "Duration", value: "175.125", min: 0, max: 2000, variant: "ruler", ticks });
+    assert.equal((result.html.match(/<i(?: |>)/g) ?? []).length, 21);
+    assert.match(result.html, /value="175.125"/);
+    assert.equal(result.changes, 0);
+  }
 });

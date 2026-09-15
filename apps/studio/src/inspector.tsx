@@ -16,10 +16,11 @@ export function DiagnosticList({ diagnostics, locale }: { diagnostics: Diagnosti
 
 interface InspectorProps {
   state: StudioState; controller: StudioController; tokenId: string | null; component: StudioComponent | null; selectedPart: string | null; category: StudioCategory; locale: Locale;
+  onSelectSource?: (id: string) => void;
   onSelectToken?: (id: string) => void; onSelectPart?: (id: string) => void;
   onDirtyChange?: (dirty: boolean) => void;
 }
-export function Inspector({ state, controller, tokenId, component, selectedPart, category, locale, onSelectToken, onSelectPart, onDirtyChange }: InspectorProps) {
+export function Inspector({ state, controller, tokenId, component, selectedPart, category, locale, onSelectSource, onSelectToken, onSelectPart, onDirtyChange }: InspectorProps) {
   const t = (key: MessageKey) => translate(locale, key), c = (ko: string, en: string) => copy(locale, ko, en);
   const [tab, setTab] = useState<"design" | "source">("design"), [sourceId, setSourceId] = useState(""), [original, setOriginal] = useState("");
   const working = state.plan?.project ?? state.project;
@@ -39,7 +40,7 @@ export function Inspector({ state, controller, tokenId, component, selectedPart,
   return <aside className="inspector" aria-label={t("inspector")}><div className="inspector-header inspector-tabs-only"><div className="tabs" role="tablist" aria-label={t("inspector")} onKeyDown={tabKey}><button id="inspector-tab-design" type="button" role="tab" tabIndex={tab === "design" ? 0 : -1} aria-selected={tab === "design"} aria-controls="inspector-design-panel" className={tab === "design" ? "active" : ""} onClick={() => setTab("design")}>{t("design")}</button><button id="inspector-tab-source" type="button" data-testid="source-tab" role="tab" tabIndex={tab === "source" ? 0 : -1} aria-selected={tab === "source"} aria-controls="inspector-source-panel" className={tab === "source" ? "active" : ""} onClick={() => setTab("source")}><span className="row"><Icon name="code" size={12} />{t("source")}</span></button></div></div>
     <div className={`inspector-body ${tab === "source" ? "source-panel" : ""}`} id="inspector-panel">
       <div hidden={tab !== "design"} role="tabpanel" id="inspector-design-panel" aria-labelledby="inspector-tab-design"><fieldset className="inspector-fields" disabled={disabled}>
-        {component ? <ComponentInspector state={state} controller={controller} component={component} selectedPart={selectedPart} category={category} locale={locale} {...(onSelectToken ? { onSelectToken } : {})} {...(onSelectPart ? { onSelectPart } : {})} {...(onDirtyChange ? { onDirtyChange } : {})} /> : token ? <Button tone="subtle" onClick={() => onSelectToken?.(token.id)} disabled={!onSelectToken}>{c("Foundation에서 토큰 편집", "Edit token in Foundation")}</Button> : <p className="help">{t("emptySelection")}</p>}
+        {component ? <ComponentInspector {...(onSelectSource ? { onSelectSource } : {})} state={state} controller={controller} component={component} selectedPart={selectedPart} category={category} locale={locale} {...(onSelectToken ? { onSelectToken } : {})} {...(onSelectPart ? { onSelectPart } : {})} {...(onDirtyChange ? { onDirtyChange } : {})} /> : token ? <Button tone="subtle" onClick={() => onSelectToken?.(token.id)} disabled={!onSelectToken}>{c("Foundation에서 토큰 편집", "Edit token in Foundation")}</Button> : <p className="help">{t("emptySelection")}</p>}
       </fieldset></div>
       <div hidden={tab !== "source"} className="source-panel" role="tabpanel" id="inspector-source-panel" aria-labelledby="inspector-tab-source">
         <div className="field"><label htmlFor="source-document">{t("documentSource")}</label><Select id="source-document" value={sourceId} onChange={event => { setSourceId(event.target.value); setOriginal(""); }}>{Object.keys(working?.documents ?? {}).map(id => <option value={id} key={id}>{id}</option>)}</Select><p className="help">{t("sourceHelp")}</p></div>

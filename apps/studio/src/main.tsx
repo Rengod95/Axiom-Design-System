@@ -10,6 +10,8 @@ import "./studio-chrome.css";
 import "./foundation-blueprint.css";
 import "./catalog-specimens.css";
 import "./studio-slider.css";
+import "./foundation-starters.css";
+import "./component-authoring.css";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("Studio root is missing.");
@@ -24,3 +26,7 @@ try {
   root.setAttribute("role", "alert");
   root.textContent = "작업 공간을 열지 못했습니다. 브라우저 저장소 접근을 확인한 뒤 새로고침하세요. / Studio could not open. Check browser storage access and reload.";
 }
+
+import "./element-authoring.css";
+import "./behavior-editor.css";
+import "./foundation-policy.css";

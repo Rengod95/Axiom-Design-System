@@ -169,6 +169,7 @@ test("create then delete has no adopted change, while local Undo and Redo remain
 /** Delay one captured read, without delaying transactions or subsequent independent reads. */
 class DelayedReadStore implements TransactionalStore {
   readonly memory = new MemoryStore();
+  reads = 0;
   #delay: { captured: () => void; wait: Promise<void> } | null = null;
   holdNextRead() {
     let captured!: () => void, release!: () => void;
@@ -176,6 +177,7 @@ class DelayedReadStore implements TransactionalStore {
     this.#delay = { captured, wait }; return { started, release };
   }
   async read() {
+    this.reads++;
     const delay = this.#delay; this.#delay = null;
     const state = await this.memory.read();
     if (delay) { delay.captured(); await delay.wait; }
@@ -200,14 +202,20 @@ test("a focus refresh cannot overwrite an edit, error or adopted revision that a
   assert.equal(controller.getSnapshot().authoring.revision, adopted.revision);
 });
 
-test("refresh resamples mismatched project/history reads and invalidates local Redo from an older base", async () => {
+test("refresh uses one coherent snapshot and a later refresh invalidates local Redo from an older base", async () => {
   const store = new DelayedReadStore(), { controller: first, service } = await setup(store), second = new StudioController(service, services);
   await second.connect();
   second.createComponent("catalog.checkbox", "Old base draft"); await second.undo();
   assert.equal(second.dirty, false); assert.equal(second.canRedo, true);
-  const held = store.holdNextRead(), refresh = second.refresh(); await held.started;
+  const previous = second.getSnapshot(), held = store.holdNextRead(), refresh = second.refresh(); await held.started;
   first.edit({ kind: "sample-content", id: "component.card", field: "body", value: "New base content" }); await apply(first);
   held.release(); await refresh;
+  // A concurrent commit can follow the read's snapshot. It must never mix new history with old documents.
+  assert.equal(second.getSnapshot().project!.revision, previous.project!.revision);
+  assert.equal(second.getSnapshot().authoring.revision, previous.project!.revision);
+  const reads = store.reads;
+  await second.refresh();
+  assert.equal(store.reads - reads, 1);
   assert.equal(second.getSnapshot().project!.revision, (await current(service)).revision);
   assert.equal(second.getSnapshot().authoring.revision, second.getSnapshot().project!.revision);
   assert.equal(second.canRedo, false);

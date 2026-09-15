@@ -186,28 +186,32 @@ export async function verifyEditorCompletion({ page, origin, database, root, id,
   assert.ok(await page.evaluate("document.querySelectorAll('.material-group').length>0 && Array.from(document.querySelectorAll('.material-group')).every(e=>e.dataset.tokenTier==='Semantic')"));
   await clickElement("Array.from(document.querySelectorAll('[data-testid^=foundation-row-]')).find(e=>e.textContent.includes('typography.body'))?.querySelector('button')");
   await capture("03-typography-light");
-  await clickElement(text("Connections"));
-  assert.ok(await page.evaluate("document.querySelectorAll('.relationship-tree ul ul').length > 0"));
-  await capture("04-connections-light");
+  assert.equal(await page.evaluate("Array.from(document.querySelectorAll('.foundation-navigation button')).some(e=>e.textContent==='Connections')"), false);
+  await selectElement(label("Filter domain", "select"), "all");
+  await selectElement(label("Filter tier", "select"), "all");
+  await clickElement("document.querySelector('[data-testid=\"foundation-row-token.content\"] button')");
+  await clickElement(text("Token usage", "summary"));
+  assert.ok(await page.evaluate("Boolean(document.querySelector('[data-testid=token-context]'))"));
+  await capture("04-token-context-light");
   const usageSelector = "document.querySelector('.relationship-usage-link[data-usage-category=Mobile]')";
   const usage = await page.evaluate(`(()=>{const e=${usageSelector};return{component:e.dataset.usageComponent,part:e.dataset.usagePart,label:e.textContent}})()`);
   assert.match(usage.label, /Mobile/); assert.match(usage.label, /Rule|Layout/);
-  assert.ok(await page.evaluate("new Set(Array.from(document.querySelectorAll('.relationship-usage-link')).map(e=>e.textContent)).size>10"));
+  assert.ok(await page.evaluate("new Set(Array.from(document.querySelectorAll('.relationship-usage-link')).map(e=>e.textContent)).size>=2"));
   const usageRevision = await revision();
   await clickElement(usageSelector);
   await until(`${id("category-mobile")}.getAttribute('aria-pressed')==='true'`);
   assert.equal(await page.evaluate(`${id("component-name")}.value`), "Button");
   assert.equal(await page.evaluate(`${id("part-name")}.value`), "root");
   assert.equal(await revision(), usageRevision);
-  await click("view-foundation"); await clickElement(text("Connections"));
+  await click("view-foundation");
   await clickElement(text("Themes")); await capture("05-themes-light");
   await click("studio-theme-toggle"); await capture("06-themes-dark");
-  record("starterWorkspace", { domains: 11, allTokensClassified: true, semanticFilter: true, aliasTree: true, distinguishableDesignPropertyUses: true, usagePartNavigation: true, themeWorkspace: true });
+  record("starterWorkspace", { domains: 11, allTokensClassified: true, semanticFilter: true, contextualDependencies: true, distinguishableDesignPropertyUses: true, usagePartNavigation: true, themeWorkspace: true });
 
   await click("view-library"); await fill("catalog-search", "");
   assert.ok(await page.evaluate("document.querySelectorAll('.catalog-thumbnail').length > 5"));
   await capture("07-library-dark");
-  await click("create-custom-component"); await until("document.querySelectorAll('[data-component-frame]').length===4");
+  await click("create-custom-component"); await until(id("component-composer")); await click("composer-create"); await until("document.querySelectorAll('[data-component-frame]').length===4");
   const componentId = await page.evaluate("Array.from(document.querySelectorAll('[data-component-frame]')).map(e=>e.dataset.componentFrame).find(id=>!id.startsWith('component.'))");
   await click(`component-${componentId}`);
   await fill("component-name", "Profile summary");
@@ -289,7 +293,7 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   assert.ok(await page.evaluate(`${row("measure")}.textContent.includes('24')`));
   await clickElement(`${row("title")}.querySelector('button')`); await fillElement(label("Token description", "textarea"), "Composite type with a live font size"); await approve();
   assert.equal(await page.evaluate(`(${label("Value source", "select")}).value`), "expression");
-  await clickElement(text("Connections")); assert.ok(await page.evaluate("document.querySelector('.relationship-tree').textContent.includes('title')"));
+  await clickElement(text("Token usage", "summary")); assert.ok(await page.evaluate("document.querySelector('.token-context').textContent.includes('space.base')"));
   await clickElement(text("Tokens")); await click("token-view-list"); await clickElement(`${row("measure")}.querySelector('button')`); await capture("property-binding-light");
   await click("studio-theme-toggle"); await capture("property-binding-dark");
   // Malformed advanced input remains editable and reset restores its live binding.

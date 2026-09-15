@@ -36,6 +36,8 @@ export { planFoundationEdit, MAX_FOUNDATION_AUTHORING_EDITS } from "./foundation
 export { inspectFoundationAuthoring } from "./foundation-authoring-projection.ts";
 export { FOUNDATION_STARTER_DOMAINS, FOUNDATION_BINDING_CATEGORIES, foundationStarterTokens } from "./foundation-starters.ts";
 export type { FoundationStarterOptions, FoundationStarterToken } from "./foundation-starters.ts";
+export { FOUNDATION_STARTER_TEMPLATES } from "./foundation-starter-presets.ts";
+export type { FoundationStarterTemplateId } from "./foundation-starter-presets.ts";
 export { MAX_FOUNDATION_CONTEXT_COMBINATIONS } from "./foundation-validation.ts";
 export type { FoundationAuthoringEdit, FoundationEditPlan, FoundationAuthoringProjection, FoundationAuthoringFilter, FoundationTokenRow, FoundationReference, FoundationClassification, FoundationClassificationKind, FoundationTokenChanges } from "./foundation-authoring-contracts.ts";
 
@@ -48,3 +50,13 @@ export type { StudioMotionTrack, ResolvedStudioMotion } from "./studio-motion.ts
 export { foundationValueReferences } from "./foundation-references.ts";
 export { resolveDtcgResolver } from "./dtcg-resolver.ts";
 export type { DtcgResolverReport } from "./dtcg-resolver.ts";
+
+export * from "./studio-composition.ts";
+export { planStudioInstanceEdit } from "./studio-instance-authoring.ts";
+export * from "./studio-behavior.ts";
+
+export type { StudioElementKind } from "./studio-elements.ts";
+
+export * from "./foundation-policy-contracts.ts";
+export { planFoundationPolicyEdit } from "./foundation-policy-authoring.ts";
+export { inspectFoundationPolicies } from "./foundation-policy-evaluation.ts";

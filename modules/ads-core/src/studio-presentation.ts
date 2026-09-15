@@ -110,7 +110,7 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
       const result = value(source[field], "dimension", field, `/layout/${index}/${field}`, part.id).resolved;
       return typeof result === "number" ? result : 0;
     };
-    layout[part.id] = { axis: source.axis === "horizontal" ? "horizontal" : "vertical", gap: numeric("gap"), padding: numeric("padding"), minHeight: numeric("minHeight"), childOrder: Array.isArray(source.childOrder) ? source.childOrder.map(String) : [] };
+    layout[part.id] = { ...(source.mode === "free" ? { mode: "free" as const } : {}), ...(isObject(source.position) ? { position: { x: Number(source.position.x), y: Number(source.position.y) } } : {}), axis: source.axis === "horizontal" ? "horizontal" : "vertical", gap: numeric("gap"), padding: numeric("padding"), minHeight: numeric("minHeight"), childOrder: Array.isArray(source.childOrder) ? source.childOrder.map(String) : [] };
     if (isObject(source.size)) for (const axis of ["width", "height"] as const) {
       const policy = source.size[axis];
       if (isObject(policy) && (policy.mode === "hug" || policy.mode === "fill")) layout[part.id]![axis] = { mode: policy.mode };
@@ -119,5 +119,7 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
     if (source.alignment === "start" || source.alignment === "center" || source.alignment === "end" || source.alignment === "stretch") layout[part.id]!.alignment = source.alignment;
     if (component.archetype === "button" && part.role === "root" && layout[part.id]!.minHeight < MIN_ACTION_HEIGHT) add(`/layout/${index}/minHeight`, "Button requires at least 44 logical px in this profile.");
   }
-  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout, ...(isObject(document.editorFrame) ? { editorFrame: document.editorFrame as unknown as NonNullable<StudioDesign["editorFrame"]> } : {}) };
+  const mappings = objectList(document.nodeMappings).filter(item => typeof item.element === "string");
+  const elements = Object.fromEntries(mappings.map(item => [String(item.partRef), item.element])) as NonNullable<StudioDesign["elements"]>;
+  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout, ...(mappings.length ? { elements } : {}), ...(isObject(document.editorFrame) ? { editorFrame: document.editorFrame as unknown as NonNullable<StudioDesign["editorFrame"]> } : {}) };
 }

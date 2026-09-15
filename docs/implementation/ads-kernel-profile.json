@@ -36,7 +36,13 @@
     "scripts/workbench-completion-cases.mjs",
     "scripts/workbench-foundation-cases.mjs",
     "scripts/workbench-chrome-cases.mjs",
-    "scripts/workbench-catalog-cases.mjs"
+    "scripts/workbench-catalog-cases.mjs",
+    "scripts/workbench-authoring-cases.mjs",
+    "scripts/native-fixtures.mjs",
+    "scripts/native-verify.mjs",
+    "scripts/workbench-behavior-cases.mjs",
+    "scripts/workbench-policy-cases.mjs",
+    "scripts/workbench-composition-cases.mjs"
   ],
   "allowedBrowserTestAssets": [
     "modules/browser-store/test/browser-harness.html",
@@ -68,7 +74,9 @@
     "docs/adr/0014-studio-authoring-and-target-delivery.md",
     "docs/adr/0015-studio-workbench-and-catalog-authoring.md",
     "docs/adr/0016-foundation-onboarding-and-editor-completion.md",
-    "docs/adr/0017-foundation-interchange-and-live-expressions.md"
+    "docs/adr/0017-foundation-interchange-and-live-expressions.md",
+    "docs/adr/0018-contextual-foundation-and-component-composition.md",
+    "docs/adr/0019-element-composition-policy-and-behavior-authoring.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -114,7 +122,12 @@
     "apps/studio/src/studio-chrome.css",
     "apps/studio/src/foundation-blueprint.css",
     "apps/studio/src/studio-slider.css",
-    "apps/studio/src/catalog-specimens.css"
+    "apps/studio/src/catalog-specimens.css",
+    "apps/studio/src/component-authoring.css",
+    "apps/studio/src/foundation-starters.css",
+    "apps/studio/src/element-authoring.css",
+    "apps/studio/src/behavior-editor.css",
+    "apps/studio/src/foundation-policy.css"
   ],
   "studio": {
     "profile": "axiom.studio",
@@ -274,5 +287,39 @@
       "editable Resolver graph",
       "policy and exception workflow"
     ]
+  },
+  "componentComposition": {
+    "authority": "docs/adr/0018-contextual-foundation-and-component-composition.md",
+    "starterTemplates": [
+      "essentials",
+      "radix",
+      "carbon",
+      "material",
+      "fluent",
+      "spectrum"
+    ],
+    "creation": "atomic reviewed component and Web/Mobile designs; blank, stack, article or existing semantic recipe",
+    "elementMapping": "closed HTML tags on catalog layout design nodeMappings; native mapping explicitly unsupported",
+    "contentAreas": "stable slot required/multiple contracts with reviewed instance insertion under ADR-0019",
+    "baselineBindings": "compatible canonical IDs, then unambiguous semantic intents across named themes, then explicit literal fallback",
+    "tokenUsage": "selected-token context; no global Connections workspace",
+    "fullFoundationCompletion": "NOT_CLAIMED"
+  },
+  "elementComposition": {
+    "adr": "docs/adr/0019-element-composition-policy-and-behavior-authoring.md",
+    "sourceExtension": "studioComposition",
+    "pins": "component plus both category design revisions",
+    "maxInstancesPerDefinition": 64,
+    "maxDepth": 8,
+    "maxExpandedInstances": 1024,
+    "delivery": "React composition; explicit native rejection of unmapped source",
+    "freeLayout": "custom layout definitions only",
+    "policyPredicates": [
+      "token-minimum",
+      "token-alias",
+      "token-binding"
+    ],
+    "behavior": "typed closed local state actions and declared events",
+    "nativeWorkflow": ".github/workflows/native.yml"
   }
 }

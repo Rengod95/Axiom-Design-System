@@ -2,6 +2,8 @@ import type { Candidate, CommandEnvelope, CommandResult, Diagnostic, DocumentEnt
 import { CODE, KERNEL_FORMAT_VERSION, MAX_BATCH_DOCUMENTS, MAX_COMMAND_BYTES, OPERATION_SCOPES, PROTOCOL_VERSION, DOMAIN_PROFILE, STRUCTURAL_PROFILE, STUDIO_PROFILE, VALIDATION_PROFILES } from "./constants.ts";
 import type { StudioAuthoringState } from "./contracts.ts";
 import { inspectStudioGraph } from "./studio-validation.ts";
+import { studioInstances } from "./studio-composition.ts";
+import { catalogIdentity } from "./studio-catalog-validation.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { inspectDocument, isObject, isValidId, validateReferences } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
@@ -69,6 +71,17 @@ function checkedState(state: KernelState | null): KernelState {
   if (state.project && (!isValidId(state.project.id) || !isValidId(state.project.revision) || !isObject(state.project.documents))) throw new KernelError(CODE.STATE_INVALID, "Invalid project snapshot.");
   validateSourceRecords(state);
   return structuredClone(state);
+}
+
+/** Select public authoring metadata from the same validated snapshot as its project. */
+function authoringState(state: KernelState, actorId: string): StudioAuthoringState {
+  const revision = state.project?.revision ?? null;
+  const pendingCandidates = state.candidates.filter(item => item.actorId === actorId && item.projectId === state.project?.id && ["pending", "approved"].includes(item.status))
+    .map(({ id, baseRevision, digest, status, diff, diagnostics }) => ({ id, baseRevision, digest, status, diff, diagnostics }));
+  const undo = state.undo.at(-1), redo = state.redo.at(-1);
+  return { revision, pendingCandidates,
+    ...(undo?.actorId === actorId && undo.applicableRevision === revision ? { undoHandle: undo.handle } : {}),
+    ...(redo?.actorId === actorId && redo.applicableRevision === revision ? { redoHandle: redo.handle } : {}) };
 }
 
 /** Reduce commands atomically through a persistence adapter; no domain execution. */
@@ -140,13 +153,15 @@ export class CommandService {
     authorize(principal, "project.read");
     const actorId = principal.id;
     const state = checkedState(await this.#store.read());
-    const revision = state.project?.revision ?? null;
-    const pendingCandidates = state.candidates.filter(item => item.actorId === actorId && item.projectId === state.project?.id && ["pending", "approved"].includes(item.status))
-      .map(({ id, baseRevision, digest, status, diff, diagnostics }) => ({ id, baseRevision, digest, status, diff, diagnostics }));
-    const undo = state.undo.at(-1), redo = state.redo.at(-1);
-    return structuredClone({ revision, pendingCandidates,
-      ...(undo?.actorId === actorId && undo.applicableRevision === revision ? { undoHandle: undo.handle } : {}),
-      ...(redo?.actorId === actorId && redo.applicableRevision === revision ? { redoHandle: redo.handle } : {}) });
+    return structuredClone(authoringState(state, actorId));
+  }
+
+  /** One authorized read pairs project documents with this actor's matching history handles. */
+  async getAuthoringSnapshot(principal: Principal): Promise<{ project: ProjectSnapshot | null; authoring: StudioAuthoringState }> {
+    authorize(principal, "project.read");
+    const actorId = principal.id;
+    const state = checkedState(await this.#store.read());
+    return structuredClone({ project: state.project, authoring: authoringState(state, actorId) });
   }
 
   /** Immutable source captures remain private to their authenticated author. */
@@ -233,6 +248,19 @@ export class CommandService {
     return [...Object.values(documents).filter((entry) => !VALIDATION_PROFILES.some((profile) => profile === entry.validationProfile)).flatMap((entry) => entry.diagnostics), ...structural, ...validateReferences(documents, projectId)];
   }
 
+  /** Preserve live instance sources while allowing pre-existing missing imports to be repaired. */
+  #validateCompositionTransition(before: Record<string, DocumentEntry>, after: Record<string, DocumentEntry>): void {
+    for (const { document } of Object.values(after)) {
+      if (document.kind !== "component" || !catalogIdentity(document)) continue;
+      for (const [index, instance] of studioInstances(document).entries()) {
+        const pins = [instance.componentRef, instance.designRefs.Web, instance.designRefs.Mobile];
+        if (pins.some(pin => Object.hasOwn(before, pin.id) && !Object.hasOwn(after, pin.id))) {
+          throw new KernelError(CODE.REFERENCE_MISSING, "Remove or replace the retained component instance before deleting its pinned component or design source.", { sourceRef: document.id, path: `/studioComposition/instances/${index}` });
+        }
+      }
+    }
+  }
+
   #id(): string {
     const id = this.#services.createId();
     if (!isValidId(id)) throw new KernelError(CODE.STATE_INVALID, "Identity service returned an invalid identifier.");
@@ -270,6 +298,7 @@ export class CommandService {
   }
 
   #propose(state: KernelState, project: ProjectSnapshot, principal: Principal, documents: Record<string, DocumentEntry>, diff: CommandResult["diff"]): CommandResult {
+    this.#validateCompositionTransition(project.documents, documents);
     const diagnostics = this.#validateDocuments(documents, project.id);
     const candidate: Candidate = { id: this.#id(), projectId: project.id, baseRevision: project.revision, digest: "", actorId: principal.id, documents, diff, diagnostics, status: "pending" };
     candidate.digest = this.#candidateDigest(candidate);
@@ -339,6 +368,7 @@ export class CommandService {
     authorize(principal, "review.apply");
     if (candidate.status !== "approved" || !approval || approval.principalId !== principal.id || approval.token !== envelope.payload.approvalToken
       || approval.digest !== candidate.digest || approval.baseRevision !== project.revision) throw new KernelError(CODE.APPROVAL_INVALID, "A current principal-bound approval is required.");
+    this.#validateCompositionTransition(project.documents, candidate.documents);
     const diagnostics = this.#validateDocuments(candidate.documents, project.id);
     const before = structuredClone(project.documents);
     const revision = this.#commit(state, project, envelope, principal, candidate.documents, candidate.diff.map((entry) => entry.id));

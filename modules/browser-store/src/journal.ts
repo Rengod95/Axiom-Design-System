@@ -19,9 +19,13 @@ function validateHead(value: unknown): BrowserHead {
   if (value.storageFormatVersion !== BROWSER_STORAGE_VERSION || !sequence(value.sequence) || !digest(value.commitDigest)) corrupt("Browser advisory head is malformed or unsupported.");
   return value as unknown as BrowserHead;
 }
-export type ValidatedBrowserSnapshots = Map<string, { projectId: string | null; revision: string | null }>;
+type ValidatedIdentity = Readonly<{ projectId: string | null; revision: string | null }>;
+export type ValidatedBrowserSnapshots = Map<string, ValidatedIdentity>;
 const MAX_CACHED_IDENTITIES = 1024;
 const MAX_CACHED_IDENTITY_CHARACTERS = 1024;
+// Only identities minted by a full decode authorize the parse-only path. The
+// supplied Map cannot forge validation or transplant an identity to other bytes.
+const validatedIdentityDigests = new WeakMap<ValidatedIdentity, string>();
 function decodeCommit(value: unknown, key: IDBValidKey, parent: BrowserHead | null, validated: ValidatedBrowserSnapshots): { commit: BrowserCommit; state: KernelState | null } {
   exact(value, ["storageFormatVersion", "sequence", "parentDigest", "projectId", "revision", "stateText", "stateDigest", "commitDigest"]);
   if (value.storageFormatVersion !== BROWSER_STORAGE_VERSION || !sequence(value.sequence) || value.sequence !== key || value.sequence !== (parent?.sequence ?? 0) + 1
@@ -33,16 +37,18 @@ function decodeCommit(value: unknown, key: IDBValidKey, parent: BrowserHead | nu
   try { kernelStateTextBytes(commit.stateText); }
   catch (cause) { return corrupt("Browser commit text exceeds its UTF-8 bound or contains malformed Unicode.", cause); }
   // Rehash every stored byte and recheck lineage on every read. Only the costly
-  // semantic decode of an already validated, identical historical snapshot is cached.
+  // semantic decode of an already validated, identical snapshot is cached.
   if (browserDigest(commit.stateText) !== commit.stateDigest || browserDigest(canonicalJson(metadata(commit))) !== commit.commitDigest) corrupt("Browser commit digest does not match its snapshot.");
-  let state: KernelState | null = null, identity = validated.get(commit.stateDigest);
+  const cached = validated.get(commit.stateDigest);
+  let state: KernelState | null = null, identity = cached && validatedIdentityDigests.get(cached) === commit.stateDigest ? cached : undefined;
   if (!identity) {
     try { state = decodeKernelState(commit.stateText); }
     catch (cause) { return corrupt("Browser commit contains invalid or noncanonical kernel state.", cause); }
-    identity = { projectId: state.project?.id ?? null, revision: state.project?.revision ?? null };
+    identity = Object.freeze({ projectId: state.project?.id ?? null, revision: state.project?.revision ?? null });
     // Oversized compatible identities remain valid; only their optimization is skipped.
     if ((identity.projectId?.length ?? 0) + (identity.revision?.length ?? 0) <= MAX_CACHED_IDENTITY_CHARACTERS) {
       if (validated.size >= MAX_CACHED_IDENTITIES) validated.delete(validated.keys().next().value!);
+      validatedIdentityDigests.set(identity, commit.stateDigest);
       validated.set(commit.stateDigest, identity);
     }
   }
@@ -77,8 +83,10 @@ export function readBrowserJournal(transaction: IDBTransaction, done: (recovered
         const cursor = request.result;
         if (!cursor) {
           if (!advisoryFound) corrupt("Browser head does not identify a retained commit.");
-          // Never retain or return a shared mutable decoded snapshot from the cache.
-          done({ head, state: state ?? (latestText === null ? null : decodeKernelState(latestText)) });
+          // decodeCommit has authenticated these exact bytes against a prior full
+          // decode. Parse afresh for caller isolation without repeating its entire
+          // canonical/shape walk over retained candidates and undo snapshots.
+          done({ head, state: state ?? (latestText === null ? null : JSON.parse(latestText) as KernelState) });
           return;
         }
         if (++count > BROWSER_MAX_COMMITS) throw new BrowserStoreError(BROWSER_STORE_ERROR.capacity, "Browser journal exceeds the supported commit capacity.");

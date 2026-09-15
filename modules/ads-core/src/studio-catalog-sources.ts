@@ -1,14 +1,74 @@
+import { applyCatalogDesignBaseline } from "./studio-catalog-design-baseline.ts";
+import { remapStudioBehavior } from "./studio-behavior.ts";
+import { studioInstances } from "./studio-composition.ts";
 import type { AdsDocument, JsonObject, JsonValue } from "./contracts.ts";
 import type { StudioCatalogRecipe } from "./studio-catalog-contracts.ts";
+import type { FoundationDocument, FoundationToken, ResolvedFoundationToken } from "./foundation-contracts.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { isObject } from "./documents.ts";
 import { catalogObjects } from "./studio-catalog-validation.ts";
 import { STUDIO_CATALOG_PROFILE } from "./studio-catalog-constants.ts";
-import { STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MOTION, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
+import { STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MAX_DIMENSION, STUDIO_MOTION, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
 import { studioCatalogPresentation } from "./studio-catalog-presentation.ts";
+import { resolveFoundationTokens } from "./foundation-resolution.ts";
+import { isStudioTokenCompatible } from "./studio-style-values.ts";
 
 const dimension = (value: number): JsonObject => ({ value, unit: "px" });
 const color = (value: number): JsonObject => ({ colorSpace: "srgb", components: [value, value, value], alpha: 1 });
+type BaselineProperty = "color" | "background" | "borderColor" | "borderRadius" | "fontSize";
+const BASELINE_TOKEN_INTENTS: Readonly<Record<BaselineProperty, { canonical: string; names: readonly string[] }>> = {
+  color: { canonical: "token.content", names: ["text.primary", "content.primary", "foreground", "text.default", "content.default"] },
+  background: { canonical: "token.surface", names: ["surface.raised", "surface.default", "surface.canvas", "background.default", "background"] },
+  borderColor: { canonical: "token.border", names: ["border.default", "border.subtle", "border.color", "bordercolor", "border"] },
+  borderRadius: { canonical: "token.radius", names: ["radius.control", "radius.default", "radius.component", "radius.md", "radii.md", "border.radius", "radius"] },
+  fontSize: { canonical: "token.fontSize", names: ["text.body.size", "font.size.body", "font.size.default", "font.size.base", "font.size.16", "font.size.14", "fontsize", "font.size"] },
+};
+const BASELINE_PATH_NAMESPACES = new Set(["semantic", "color", "colors"]);
+
+/** New defaults must render in every named theme; source values remain subject to normal projection validation. */
+function renderableBaselineToken(token: ResolvedFoundationToken, property: BaselineProperty): boolean {
+  if (!isStudioTokenCompatible(token, property) || !isObject(token.value)) return false;
+  const value = token.value;
+  if (token.type === "dimension") return Object.keys(value).every(key => key === "value" || key === "unit") && value.unit === "px"
+    && typeof value.value === "number" && Number.isFinite(value.value) && value.value >= 0 && (property !== "fontSize" || value.value > 0) && value.value <= STUDIO_MAX_DIMENSION;
+  return Object.keys(value).every(key => ["colorSpace", "components", "alpha", "hex"].includes(key)) && value.colorSpace === "srgb"
+    && Array.isArray(value.components) && value.components.length === 3 && value.components.every(channel => typeof channel === "number" && Number.isFinite(channel) && channel >= 0 && channel <= 1)
+    && (value.alpha === undefined || typeof value.alpha === "number" && Number.isFinite(value.alpha) && value.alpha >= 0 && value.alpha <= 1);
+}
+
+/** Names are optional default-selection hints, never type/domain authority or required user token names. */
+function baselineTokenBindings(document: AdsDocument): Map<BaselineProperty, string> {
+  const foundation = document as FoundationDocument;
+  const resolutions = [{}, ...foundation.themeSets.map(set => ({ themeSetId: set.id }))].map(selection => resolveFoundationTokens(foundation, selection));
+  const bindings = new Map<BaselineProperty, string>();
+  if (resolutions.some(result => !result.valid)) return bindings;
+  const resolved = resolutions.map(result => new Map(result.tokens.map(token => [token.id, token])));
+  const semanticTiers = new Set(catalogObjects(foundation.tiers).filter(tier => typeof tier.name === "string" && tier.name.toLowerCase() === "semantic").map(tier => tier.id));
+  const prefixes = catalogObjects(foundation.originalSources).flatMap(source => typeof source.importPrefix === "string" && source.importPrefix ? [source.importPrefix.toLowerCase()] : []).sort((a, b) => b.length - a.length);
+  const intentName = (token: FoundationToken): string => {
+    let name = token.name.toLowerCase();
+    const prefix = prefixes.find(prefix => name.startsWith(`${prefix}.`)); if (prefix) name = name.slice(prefix.length + 1);
+    const segments = name.split("."); while (segments.length > 1 && BASELINE_PATH_NAMESPACES.has(segments[0]!)) segments.shift();
+    return segments.join(".");
+  };
+  for (const property of Object.keys(BASELINE_TOKEN_INTENTS) as BaselineProperty[]) {
+    const intent = BASELINE_TOKEN_INTENTS[property];
+    const candidates = foundation.tokens.filter(token => (token.deprecated === undefined || token.deprecated === false) && resolved.every(tokens => {
+      const value = tokens.get(token.id); return value !== undefined && renderableBaselineToken(value, property);
+    }));
+    const canonical = candidates.find(token => token.id === intent.canonical);
+    if (canonical) { bindings.set(property, canonical.id); continue; }
+    const ranked = candidates.flatMap(token => {
+      const nameRank = intent.names.indexOf(intentName(token)); if (nameRank < 0) return [];
+      const semantic = token.tier !== undefined && semanticTiers.has(token.tier) || "ref" in token.value || "composite" in token.value;
+      return [{ id: token.id, semanticRank: semantic ? 0 : 1, nameRank }];
+    }).sort((a, b) => a.semanticRank - b.semanticRank || a.nameRank - b.nameRank);
+    const first = ranked[0], second = ranked[1];
+    // Multiple equally suitable namespaces need a user's choice, not insertion-order guessing.
+    if (first && (!second || first.semanticRank !== second.semanticRank || first.nameRank !== second.nameRank)) bindings.set(property, first.id);
+  }
+  return bindings;
+}
 
 /** Produce independent IDs for one definition and its two category designs. */
 export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: AdsDocument, name: string, id: () => string): AdsDocument[] {
@@ -31,8 +91,8 @@ export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: Ad
     behavior: { states: [], transitions: [], hostBindings: [], profile: { id: `axiom.behavior.${recipe.entry.id}`, version: STUDIO_CATALOG_PROFILE.version } },
     accessibility: { purpose: recipe.semantic.role, label: name, description: "", nameSources: [], descriptionSources: [], stateExposure: [], readingOrder: parts.map(part => part.id), focus: { mode: "semantic-profile" }, announcements: [], requirements: [] },
     motion: [], requirements: [], studioMotion: { ...STUDIO_MOTION, easing: "ease-out" }, previewContent: { label: name, title: name, body: `${name} content`, actionLabel: "Continue", closeLabel: "Close" } });
-  const tokens = new Set(catalogObjects(foundation.tokens).map(token => token.id));
-  const binding = (token: string, fallback: JsonValue): JsonValue => tokens.has(token) ? { tokenRef: token } : fallback;
+  const tokens = baselineTokenBindings(foundation);
+  const binding = (property: BaselineProperty, fallback: JsonValue): JsonValue => tokens.has(property) ? { tokenRef: tokens.get(property)! } : fallback;
   const designs = STUDIO_CATEGORIES.map(category => {
     const design = envelope("design", `${name} ${category}`);
     const partPadding = (role: string): number => {
@@ -43,12 +103,13 @@ export function createCatalogSources(recipe: StudioCatalogRecipe, foundation: Ad
       if (role === "body" && ["dropzone", "overlay", "loading-overlay", "navigation-progress", "affix"].includes(presentation.shape)) return 16;
       return 0;
     };
-    const declarations: JsonObject = { color: binding("token.content", color(.1)), fontSize: binding("token.fontSize", dimension(14)), background: presentation.surface ? binding("token.surface", color(1)) : { colorSpace: "srgb", components: [0, 0, 0], alpha: 0 }, borderWidth: dimension(presentation.border ? 1 : 0), borderRadius: binding("token.radius", dimension(8)) };
-    if (presentation.border) declarations.borderColor = binding("token.border", color(.8));
+    const declarations: JsonObject = { color: binding("color", color(.1)), fontSize: binding("fontSize", dimension(14)), background: presentation.surface ? binding("background", color(1)) : { colorSpace: "srgb", components: [0, 0, 0], alpha: 0 }, borderWidth: dimension(presentation.border ? 1 : 0), borderRadius: binding("borderRadius", dimension(8)) };
+    if (presentation.border) declarations.borderColor = binding("borderColor", color(.8));
     Object.assign(design, { componentRef: { id: component.id, expectedKind: "component" }, foundationRef: { id: foundation.id, expectedKind: "foundation" }, category,
       nodeMappings: parts.map(part => ({ partRef: part.id, role: part.studioRole })),
       layout: parts.map(part => ({ targetPartRef: part.id, mode: "stack", axis: presentation.parts.find(item => item.role === part.studioRole)?.axis ?? (part === root || part.studioRole === "body" ? presentation.axis : ["actions", "list", "toolbar"].includes(part.studioRole) && ["tabs", "toolbar", "navigation"].includes(recipe.semantic.kind) ? "horizontal" : "vertical"), size: {}, gap: dimension(part === root || parts.some(child => child.parent === part.id) ? presentation.gap : 0), padding: dimension(partPadding(part.studioRole)), minHeight: dimension(part === root ? presentation.minHeight && category === "Mobile" ? Math.max(presentation.minHeight, 48) : presentation.minHeight : 0), childOrder: parts.filter(child => child.parent === part.id).map(child => child.id) })),
       appearance: [{ id: id(), targetPartRef: root.id, variants: {}, states: {}, declarations, explicitPriority: 0, refines: [] }], targetOverrides: [] });
+    applyCatalogDesignBaseline(design, recipe.semantic.kind, parts, id, binding);
     return design;
   });
   return [component, ...designs];
@@ -64,6 +125,8 @@ export function duplicateComponentSources(component: AdsDocument, designs: AdsDo
   for (const entity of entities) entity.id = mapped(entity.id);
   for (const source of sources) source.revision = id();
   copy.name = name;
+  remapStudioBehavior(copy, ids, id);
+  for (const instance of studioInstances(copy)) { instance.id = id(); instance.ownerPartRef = ids.get(instance.ownerPartRef) ?? instance.ownerPartRef; if (instance.slotRef) instance.slotRef = ids.get(instance.slotRef) ?? instance.slotRef; }
   for (const part of catalogObjects(copy.parts)) part.parent = mapped(part.parent);
   for (const track of catalogObjects(copy.motion)) track.targetPartRef = mapped(track.targetPartRef);
   for (const slot of catalogObjects(copy.slots)) slot.ownerPartRef = mapped(slot.ownerPartRef);

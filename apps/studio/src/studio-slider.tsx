@@ -50,18 +50,23 @@ export function StudioSlider({ label, sliderLabel, value, min, max, step = 1, on
   const percent = (position - lower) / (upper - lower) * 100;
   const style = { "--slider-progress": `${percent}%`, ...(gradient ? { "--slider-gradient": gradient } : {}) } as CSSProperties;
   const change = (next: string) => { if (next !== text) onChange(next); };
-  const count = Math.min(41, Math.max(2, Math.round(ticks)));
+  const count = Number.isFinite(ticks) ? Math.min(41, Math.max(2, Math.round(ticks))) : DEFAULT_TICKS;
   return <div className="studio-slider" data-variant={variant} data-invalid={invalid || undefined} data-disabled={disabled || undefined} data-precision={precision} style={style}>
+    <div className="studio-slider-controls">
     <div className="studio-slider-track">
-      {variant === "ruler" && <span className="studio-slider-ticks" aria-hidden="true">{Array.from({ length: count }, (_, index) => <i key={index} data-major={index % 5 === 0 || undefined} />)}</span>}
       <input className="studio-slider-range" type="range" aria-label={sliderLabel ?? `${label} · ${locale === "ko" ? "슬라이더" : "slider"}`} aria-describedby={id} aria-valuetext={`${position}${unit ? ` ${unit}` : ""}`} min={lower} max={upper} step={hasRange ? step : 1} value={position} disabled={disabled || !hasRange} data-testid={testId ? `${testId}-slider` : undefined}
         onChange={event => change(String(event.currentTarget.valueAsNumber))}
         onKeyDown={event => { const next = sliderKeyboardValue(event.key, position, lower, upper, step); if (next !== null) { event.preventDefault(); if (next !== number) change(String(next)); } }} />
+      <span className="studio-slider-visual" aria-hidden="true"><span className="studio-slider-rail" /><span className="studio-slider-travel">
+        {variant === "ruler" && <span className="studio-slider-ticks">{Array.from({ length: count }, (_, index) => <i key={index} style={{ left: `${index / (count - 1) * 100}%` }} data-major={index % 5 === 0 || index === count - 1 || undefined} />)}</span>}
+        <span className="studio-slider-thumb" />
+      </span></span>
     </div>
     {precision && <div className="studio-slider-precision"><input className="studio-slider-value" type="text" inputMode="decimal" aria-label={label} aria-invalid={invalid} aria-describedby={id} value={compositionText ?? text} disabled={disabled} data-testid={testId}
       onCompositionStart={() => { composing.current = true; setCompositionText(text); }}
       onCompositionEnd={event => { composing.current = false; setCompositionText(null); change(event.currentTarget.value); }}
       onChange={event => { if (composing.current) setCompositionText(event.currentTarget.value); else change(event.currentTarget.value); }} />{unit && <span aria-hidden="true">{unit}</span>}</div>}
+    </div>
     <span id={id} className="sr-only">{locale === "ko" ? `슬라이더 범위 ${min}–${max}, 간격 ${step}. 정확한 값은 숫자 입력으로 편집합니다.` : `Slider range ${min}–${max}, step ${step}. Edit the number for an exact value.`}</span>
   </div>;
 }

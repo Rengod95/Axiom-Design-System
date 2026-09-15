@@ -1,3 +1,5 @@
+import { projectStudioInstances } from "./studio-composition.ts";
+import { readStudioBehavior } from "./studio-behavior.ts";
 import type { AdsDocument, Diagnostic, JsonObject, JsonValue, ProjectSnapshot } from "./contracts.ts";
 import type { StudioComponent, StudioEdit, StudioEditPlan, StudioProjection, StudioSelection, StudioTokenBindingIssue, StudioTokenBindingReplacement, StudioUsage } from "./studio-contracts.ts";
 import { canonicalJson, parseJson } from "./canonical-json.ts";
@@ -60,7 +62,7 @@ function inspectCapturedProject(input: ProjectSnapshot, selection: StudioSelecti
     const catalog = archetype === "catalog" ? getStudioCatalogRecipe(catalogIdentity(document)!) : null;
     const metadata = { id: document.id, archetype, parts };
     const design = (category: "Web" | "Mobile") => entries.find(item => item.document.kind === "design" && item.document.category === category && isObject(item.document.componentRef) && item.document.componentRef.id === document.id)!.document;
-    components.push({ ...metadata, ...(catalog ? { catalog: { catalogId: catalog.entry.id, kind: catalog.entry.kind, familyIds: catalog.entry.familyIds, semantic: catalog.semantic, values, events: list(contract.events), variants, slots: list(document.slots), accessibility: document.accessibility as JsonObject, behavior: document.behavior as JsonObject } } : {}), name: document.name, purpose: String(document.purpose), sampleContent: document.previewContent as unknown as StudioComponent["sampleContent"],
+    components.push({ ...(document.studioComposition ? { instances: projectStudioInstances(document, project.documents) } : {}), ...(document.studioBehavior ? { behavior: readStudioBehavior(document) } : {}), ...metadata, ...(catalog ? { catalog: { catalogId: catalog.entry.id, kind: catalog.entry.kind, familyIds: catalog.entry.familyIds, semantic: catalog.semantic, values, events: list(contract.events), variants, slots: list(document.slots), accessibility: document.accessibility as JsonObject, behavior: document.behavior as JsonObject } } : {}), name: document.name, purpose: String(document.purpose), sampleContent: document.previewContent as unknown as StudioComponent["sampleContent"],
       defaults: { disabled: values.find(item => item.name === "disabled")?.defaultValue === true, open: values.find(item => item.name === "open")?.defaultValue !== false, variant: variants[0]?.default === "outlined" ? "outlined" : "filled" },
       motion: document.studioMotion as unknown as StudioComponent["motion"],
       ...(catalog ? { motionTracks: resolveStudioMotion(document, foundation, diagnostics, (id, partId, path) => { const entries = usages[id] ??= []; if (!entries.some(item => item.documentId === document.id && item.path === path)) entries.push({ componentId: document.id, documentId: document.id, partId, path }); }) } : {}),

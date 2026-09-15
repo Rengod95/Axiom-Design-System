@@ -1,4 +1,4 @@
-import { canonicalJson, CommandService, createStudioStarter, inspectStudioProject, planStudioEdit, planFoundationEdit, planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentBatch, planStudioTokenBindingRepair, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
+import { planFoundationPolicyEdit, planStudioInstanceEdit, canonicalJson, CommandService, createStudioStarter, inspectStudioProject, planStudioEdit, planFoundationEdit, planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentBatch, planStudioTokenBindingRepair, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
 import type { StudioTokenBindingReplacement } from "../../../modules/ads-core/src/index.ts";
 import type { CommandEnvelope, CommandResult, Diagnostic, JsonObject, KernelServices, Principal, ProjectSnapshot, StudioEdit, StudioEditPlan, StudioProjection, StudioSelection, FoundationAuthoringEdit, StudioComponentEdit, StudioComponentPlan } from "../../../modules/ads-core/src/index.ts";
 import type { MessageKey } from "./locales.ts";
@@ -70,15 +70,9 @@ export class StudioController {
     finally { this.#patch({ busy: false, loading: false, retryable: this.#retry !== null }); }
   }
   async #load(clearDraft = false, isCurrent: () => boolean = () => true): Promise<void> {
-    // These public queries are separate reads. Never pair an old document snapshot with new history handles.
-    let project = await this.#service.getProject(this.#principal);
-    let authoring = await this.#service.getAuthoringState(this.#principal);
-    for (let attempt = 1; isCurrent() && authoring.revision !== (project?.revision ?? null) && attempt < 3; attempt++) {
-      project = await this.#service.getProject(this.#principal);
-      authoring = await this.#service.getAuthoringState(this.#principal);
-    }
+    // Documents and history are isolated together by one public, authorized snapshot read.
+    const { project, authoring } = await this.#service.getAuthoringSnapshot(this.#principal);
     if (!isCurrent()) return;
-    if (authoring.revision !== (project?.revision ?? null)) throw Object.assign(new Error("Project changed during the snapshot read."), { code: "REVISION_CONFLICT" });
     if (!clearDraft && this.dirty && project?.revision !== this.#state.project?.revision) {
       this.#patch({ authoring, error: "REVISION_CONFLICT", message: "conflict" });
       return;
@@ -139,7 +133,9 @@ export class StudioController {
     // Preview identities are isolated from the host allocator and never persisted.
     return planFoundationEdit(project, edit, () => `preview.import.${++next}`, this.#state.selection, this.#services.digest);
   }
-  createComponent(catalogId: string, name?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentCreate(project, { catalogId, ...(name ? { name } : {}) }, ids))); }
+  createComponent(catalogId: string, name?: string, structure?: "blank" | "stack" | "article"): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentCreate(project, { catalogId, ...(name ? { name } : {}), ...(structure ? { structure } : {}) }, ids))); }
+  policy(edit: import("../../../modules/ads-core/src/index.ts").FoundationPolicyEdit): boolean { return this.#editIntent(this.#intent(null, (project, selection, ids) => planFoundationPolicyEdit(project, edit, ids, selection))); }
+  instance(componentId: string, edit: import("../../../modules/ads-core/src/index.ts").StudioInstanceEdit): boolean { return this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioInstanceEdit(project, componentId, edit, ids))); }
   duplicateComponent(componentId: string, name?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentDuplicate(project, { componentId, ...(name ? { name } : {}) }, ids))); }
   deleteComponent(componentId: string): void { this.#editIntent({ key: null, plan: project => planStudioComponentDelete(project, { componentId }) }); }
   component(edits: { componentId: string; edit: StudioComponentEdit }[]): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentBatch(project, { edits }, ids))); }

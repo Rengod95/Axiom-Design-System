@@ -27,3 +27,7 @@ Current lifecycle authority remains [ADR-0006](adr/0006-product-reset-and-refere
 The [2026-09-14 editor follow-up](implementation/editor-completion-followup.md) retains all 119 requirement IDs and current source hashes after the property-input, token onboarding and custom-authoring corrections. Its outstanding obligations remain part of the Foundation implementation scope.
 
 14. [Foundation interchange and live expressions](adr/0017-foundation-interchange-and-live-expressions.md), with [incremental delivery evidence](implementation/foundation-interchange-continuation.md). The prior 119-row ledger remains a historical baseline; this increment updates FT03, FT07, FT08 and FT12 only.
+
+15. [Contextual Foundation and component composition](adr/0018-contextual-foundation-and-component-composition.md), with the [fresh 56-document implementation audit](implementation/foundation-audit-2026-09-15.md). Earlier audit artifacts remain historical evidence.
+
+16. [Element composition, policy and behavior authoring](adr/0019-element-composition-policy-and-behavior-authoring.md), [policy contracts](implementation/foundation-policy-authoring.md), [behavior contracts](implementation/component-behavior-authoring.md), [Library design baselines](implementation/library-component-design-baselines.md) and [native runtime verification](implementation/native-runtime-verification.md).

@@ -44,21 +44,25 @@ export interface StudioCatalogProjection {
 }
 export type StudioSizePolicy = { mode: "hug" | "fill" } | { mode: "fixed"; value: number };
 export type StudioComponentEdit =
+  | { kind: "element-add"; parentId: string; element: "box" | "frame" | "text" }
+  | { kind: "behavior-set"; behavior: import("./studio-behavior.ts").StudioBehaviorDefinition | null }
   | { kind: "name"; name: string }
   | { kind: "purpose"; purpose: string }
   | { kind: "frame"; category: StudioCategory; frame: { x: number; y: number; width: number; height?: number } }
   | { kind: "part-name"; partId: string; name: string }
   | { kind: "part-text"; partId: string; text: string }
+  | { kind: "part-element"; category: StudioCategory; partId: string; element: string }
   | { kind: "part-parent"; partId: string; parentId: string }
   | { kind: "part-add"; parentId: string; name: string; role: string }
   | { kind: "part-delete"; partId: string }
   | { kind: "part-order"; parentId: string; childIds: string[] }
-  | { kind: "layout"; category: StudioCategory; partId: string; field: "gap" | "padding" | "minHeight" | "axis" | "width" | "height" | "alignment"; value: JsonValue }
+  | { kind: "layout"; category: StudioCategory; partId: string; field: "gap" | "padding" | "minHeight" | "axis" | "width" | "height" | "alignment" | "mode" | "position"; value: JsonValue }
   | { kind: "appearance"; category: StudioCategory; partId: string; property: StudioVisualProperty; value: JsonValue }
   | { kind: "appearance-rule"; category: StudioCategory; partId: string; condition: "base" | "outlined" | "disabled" | "pressed"; property: StudioVisualProperty; value: JsonValue | null }
   | { kind: "variant-default"; value: "filled" | "outlined" }
   | { kind: "slot-add"; partId: string; required: boolean; multiple: boolean }
   | { kind: "slot-delete"; slotId: string }
+  | { kind: "slot-update"; slotId: string; required: boolean; multiple: boolean }
   | { kind: "value-default"; valueId: string; value: JsonValue }
   | { kind: "value-add"; name: string; type: TypeExpression; value: JsonValue; ownership: "consumer" | "local" }
   | { kind: "value-delete"; valueId: string }

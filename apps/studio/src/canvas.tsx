@@ -11,6 +11,8 @@ import { pinchViewport, wheelViewport } from "./canvas-input.ts";
 
 export interface CanvasFrame extends Rect {}
 interface Props {
+  allComponents?: StudioComponent[];
+  onElementEdit?: (componentId: string, edits: import("../../../modules/ads-core/src/index.ts").StudioComponentEdit[]) => boolean;
   components: StudioComponent[]; category: StudioCategory; mode: "edit" | "run"; locale: Locale;
   selectedIds: string[]; selectedPart: string | null; frames: Record<string, CanvasFrame>;
   onSelect(ids: string[], partId?: string): void; onFrames(frames: Record<string, CanvasFrame>): void;
@@ -147,7 +149,7 @@ export function Canvas(props: Props) {
             const ids = event.shiftKey ? selected ? selectedIds.filter(id => id !== component.id) : [...selectedIds, component.id] : selected ? selectedIds : [component.id];
             onSelect(ids); if (!disabled && mode === "edit") capture(event, { kind: "move", point: canvasPoint(screenPoint(event), view), originals: Object.fromEntries(ids.map(id => [id, frames[id]!])) });
           }}><span className="frame-diamond" aria-hidden="true" />{component.name}<span>{Math.round(frame.width)} × {Math.round(frame.height)}</span></button>
-          <div className="frame-content"><Preview components={[component]} category={category} mode={mode} selectedPart={selected ? selectedPart : null} onSelect={(id, partId) => onSelect([id], partId)} locale={locale} /></div>
+          <div className="frame-content"><Preview allComponents={components} {...(!disabled && props.onElementEdit ? { onElementEdit: props.onElementEdit } : {})} components={[component]} category={category} mode={mode} selectedPart={selected ? selectedPart : null} onSelect={(id, partId) => onSelect([id], partId)} locale={locale} /></div>
           {selected && mode === "edit" && !disabled && <button type="button" className="resize-handle" aria-label={copy(locale, `${component.name} 크기 조절`, `Resize ${component.name}`)} onPointerDown={event => capture(event, { kind: "resize", point: canvasPoint(screenPoint(event), view), originals: { [component.id]: frame } })} onKeyDown={event => {
             if (!event.key.startsWith("Arrow")) return; event.preventDefault(); event.stopPropagation(); const increment = event.shiftKey ? 10 : 1;
             onFrames({ [component.id]: { ...frame, width: Math.max(160, frame.width + (event.key === "ArrowRight" ? increment : event.key === "ArrowLeft" ? -increment : 0)), height: Math.max(100, frame.height + (event.key === "ArrowDown" ? increment : event.key === "ArrowUp" ? -increment : 0)) } });

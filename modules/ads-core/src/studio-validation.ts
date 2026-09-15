@@ -1,3 +1,4 @@
+import { inspectStudioComposition, inspectStudioCompositionGraph } from "./studio-composition.ts";
 import type { AdsDocument, Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
 import type { StudioArchetype, StudioDocumentReport, StudioPartRole } from "./studio-contracts.ts";
 import { canonicalJson, parseJson } from "./canonical-json.ts";
@@ -7,6 +8,8 @@ import { inspectFoundationDocument } from "./foundation-validation.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
 import { projectStudioDesign } from "./studio-presentation.ts";
 import { resolveStudioMotion } from "./studio-motion.ts";
+import { getStudioCatalogRecipe } from "./studio-catalog.ts";
+import { catalogIdentity } from "./studio-catalog-validation.ts";
 import { MAX_DOCUMENT_BYTES, MAX_STRUCTURE_DIAGNOSTICS, STUDIO_PROFILE } from "./constants.ts";
 import { STUDIO_ARCHETYPES, STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_ERROR, STUDIO_MAX_COMPONENTS, STUDIO_MAX_DIMENSION, STUDIO_MAX_RULES, STUDIO_MAX_THEME_SETS, STUDIO_PART_ROLES, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE, STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
 import { hasCatalogProfile, inspectCatalogComponent, inspectCatalogLayout, inspectCatalogPin, inspectEditorFrame } from "./studio-catalog-validation.ts";
@@ -31,6 +34,7 @@ export function studioArchetype(document: JsonObject): StudioArchetype | null {
 }
 
 function componentErrors(document: JsonObject, add: (path: string, message: string) => void): void {
+  inspectStudioComposition(document, add);
   if (hasCatalogProfile(document)) { inspectCatalogComponent(document, add); return; }
   if (!keys(document, [...ENVELOPE_KEYS, "purpose", "archetypeRef", "traitBindings", "publicContract", "parts", "slots", "behavior", "accessibility", "motion", "requirements", "studioMotion", "previewContent"])) add("", "Unknown executable component fields require a supported profile.");
   const archetype = studioArchetype(document);
@@ -99,11 +103,12 @@ function designErrors(document: JsonObject, add: (path: string, message: string)
     if (!isObject(ref) || ref.expectedKind !== kind || !isValidId(ref.id) || !keys(ref, ["id", "expectedKind", "revision"]) || ref.revision !== undefined && !isValidId(ref.revision)) add(`/${field}`, `A design needs an explicit local ${kind} with an optional valid revision pin.`);
   }
   if (!STUDIO_CATEGORIES.some(category => category === document.category) || !empty(document.targetOverrides)) add("/category", "Use an explicit Web/Mobile design without unsupported target overrides.");
-  for (const [index, mapping] of objects(document.nodeMappings).entries()) if (!keys(mapping, ["partRef", "role"]) || !isValidId(mapping.partRef)
+  for (const [index, mapping] of objects(document.nodeMappings).entries()) if (!keys(mapping, ["partRef", "role", ...(catalog ? ["element"] : [])]) || mapping.element !== undefined && (typeof mapping.element !== "string" || !["div", "section", "article", "header", "footer", "span", "p", "h1", "h2", "h3", "h4", "h5", "h6", "code"].includes(String(mapping.element))) || !isValidId(mapping.partRef)
     || typeof mapping.role !== "string" || (catalog ? !/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(mapping.role) : !["root", "label", "header", "body", "actions", "close"].includes(mapping.role))) add(`/nodeMappings/${index}`, "Invalid semantic part mapping.");
   for (const [index, layout] of objects(document.layout).entries()) {
-    if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder", ...(catalog ? ["alignment"] : [])]) || layout.mode !== "stack" || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
+    if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder", ...(catalog ? ["alignment", "position"] : [])]) || !(layout.mode === "stack" || catalog && layout.mode === "free") || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
       || !isObject(layout.size) || !catalog && Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/token dimensions is executable.");
+    if (layout.position !== undefined && (!isObject(layout.position) || !keys(layout.position, ["x", "y"]) || !boundedNumber(layout.position.x, 16384, -16384) || !boundedNumber(layout.position.y, 16384, -16384))) add(`/layout/${index}/position`, "Position requires finite x/y coordinates between -16384 and 16384.");
     if (catalog) inspectCatalogLayout(layout, `/layout/${index}`, add);
   }
   const rules = objects(document.appearance);
@@ -178,11 +183,19 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
     }
     const parts = objects(owner.document.parts), mappings = objects(document.nodeMappings), layouts = objects(document.layout);
     const ids = parts.map(part => part.id);
+    for (const [index, mapping] of mappings.entries()) {
+      if (mapping.element === undefined) continue;
+      if (getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout") add(document.id, `/nodeMappings/${index}/element`, "Only custom layout definitions support explicit HTML element mapping.");
+      const phrasing = new Set(["span", "p", "h1", "h2", "h3", "h4", "h5", "h6", "code"]);
+      if (phrasing.has(String(mapping.element)) && parts.some(child => child.parent === mapping.partRef && !["span", "code"].includes(String(mappings.find(item => item.partRef === child.id)?.element)))) add(document.id, `/nodeMappings/${index}/element`, "Text and heading elements may contain only span or code elements. Use a frame for block children.");
+      if (mapping.role === "body" && objects(owner.document.slots).some(slot => slot.ownerPartRef === mapping.partRef) && phrasing.has(String(mapping.element))) add(document.id, `/nodeMappings/${index}/element`, "A content area accepts arbitrary content and needs a container element.");
+    }
     if (mappings.length !== parts.length || new Set(mappings.map(item => item.partRef)).size !== parts.length || mappings.some(item => !ids.includes(item.partRef)
       || parts.find(part => part.id === item.partRef)?.studioRole !== item.role)) add(document.id, "/nodeMappings", "Every logical part needs one matching design mapping.");
     if (layouts.length !== parts.length || new Set(layouts.map(item => item.targetPartRef)).size !== parts.length || layouts.some(item => !ids.includes(item.targetPartRef))) add(document.id, "/layout", "Every logical part needs one layout declaration.");
     for (const [index, layout] of layouts.entries()) {
       const part = parts.find(item => item.id === layout.targetPartRef);
+      if ((layout.mode === "free" || layout.position !== undefined) && getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout") add(document.id, `/layout/${index}`, "Free positioning requires a custom layout definition.");
       const expected = parts.filter(item => item.parent === part?.id).map(item => item.id);
       if (!same(layout.childOrder, expected)) add(document.id, `/layout/${index}/childOrder`, "Child order must preserve the pinned component reading order.");
     }
@@ -201,6 +214,7 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
     const matches = entries.filter(entry => entry.document.kind === "design" && entry.document.category === category && isObject(entry.document.componentRef) && entry.document.componentRef.id === component.id);
     if (matches.length !== 1) add(component.id, "", `A Studio component requires exactly one ${category} design.`);
   }
+  diagnostics.push(...inspectStudioCompositionGraph(documents, projectId));
   return diagnostics.slice(0, MAX_STRUCTURE_DIAGNOSTICS);
 }
 

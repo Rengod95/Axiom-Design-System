@@ -1,4 +1,4 @@
-import { canonicalJson, inspectStudioProject } from "../../ads-core/src/index.ts";
+import { canonicalJson, inspectFoundationPolicies, inspectStudioProject } from "../../ads-core/src/index.ts";
 import type { ProjectSnapshot } from "../../ads-core/src/index.ts";
 import { TARGET_CODE, TARGET_DEPENDENCIES, TARGET_IDS, TARGET_PACK_VERSION } from "./constants.ts";
 import type { TargetDigest, TargetGeneration, TargetOptions, TargetFile, SourceFile } from "./contracts.ts";
@@ -25,13 +25,16 @@ export function generateTargetPack(project: ProjectSnapshot, options: TargetOpti
     if (typeof packageName!=="string" || packageName.length > 100 || !PACKAGE_NAME_PATTERN.test(packageName)) throw new TargetError(TARGET_CODE.INVALID, "Package name must be a portable npm-style owner name");
     const projection = inspectStudioProject(project, selected.selection);
     if (!projection.valid) return { valid: false, diagnostics: projection.diagnostics };
+    const policies = inspectFoundationPolicies(project);
+    if (!policies.valid || !policies.canDeliver) return { valid: false, diagnostics: [...projection.diagnostics, ...policies.diagnostics] };
+    const diagnostics = [...projection.diagnostics, ...policies.diagnostics];
     inspectGeneratorProjection(projection, selected.target);
     const generated = selected.target === "react" ? generateReactSources(projection) : selected.target === "react-native" ? generateNativeReactSources(projection) : selected.target === "swiftui" ? generateSwiftSources(projection) : generateComposeSources(projection);
     const files = inspectSourceFiles([...generated, ...packageFiles(projection, selected.target, packageName)]).map((file) => ({ ...file, kind: fileKind(file), digest: hashSource(file.text, digest) }));
     const dependencies = { ...TARGET_DEPENDENCIES[selected.target] };
     const licenses = Object.fromEntries(Object.keys(dependencies).map((dependency) => [dependency, selected.target === "react" || selected.target === "react-native" ? "MIT" : selected.target === "compose" ? dependency === "jdk" ? "host-supplied JDK license" : "Apache-2.0" : dependency === "swift" ? "Apache-2.0 WITH Swift-exception" : "Apple platform SDK license"]));
     const limitations = ["Builtin Button/Card/Toast and the explicitly listed catalog semantic realizations are generated. Unsupported catalog contracts reject output; this is not full-catalog certification.", "The selected theme is fixed to the source snapshot; other contexts require a new generated revision.", "Catalog component values remain consumer-owned. React callbacks receive typed request records; browser/native realization and native-device execution are separate. Raw resolved DTCG token data is preserved; only sRGB and declared logical visual dimensions execute in this target.", "No external font, icon or asset is imported. Source generation does not establish installation, assistive-technology, native-device or release evidence.", "The consumer owns callbacks and controlled open. Automatic dismissal is disabled.", "Dependency pins are direct dependencies; the consuming package manager must create and retain its transitive lock.", ...(selected.target === "swiftui" ? ["This package targets iOS17+ SwiftUI/UIKit and requires an Apple SDK build host."] : []), ...(selected.target === "compose" ? ["Native compilation is not run in the generating browser. The consumer supplies the reduced-motion policy."] : [])];
-    return { valid: true, diagnostics: projection.diagnostics, pack: { files, diagnostics: projection.diagnostics, manifest: {
+    return { valid: true, diagnostics, pack: { files, diagnostics, manifest: {
       formatVersion: TARGET_PACK_VERSION, generator: { id: "axiom.target-packs", version: TARGET_PACK_VERSION },
       source: { projectId: projection.projectId, revision: projection.revision, digest: hashSource(projection.sourceText, digest), themeContexts: projection.foundation.contexts },
       target: { id: selected.target, version: TARGET_PACK_VERSION, dependencies, licenses }, files: files.map(({ path, digest, kind }) => ({ path, digest, kind })),

@@ -21,18 +21,21 @@ export function inspectCatalogTarget(component: StudioComponent, target: TargetI
   const catalog = component.catalog, recipe = catalog && getStudioCatalogRecipe(catalog.catalogId);
   const fail = (message: string): never => { throw new TargetError(TARGET_CODE.UNSUPPORTED, message, component.id); };
   if (!catalog || !recipe) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Missing catalog source contract", component.id);
+  if (component.instances?.some(instance => instance.status !== "current")) fail("Review stale instance versions before export.");
+  if (target !== "react" && (component.instances?.length || component.behavior?.rules.length || Object.values(component.mobile.layout).some(layout => layout.mode === "free"))) fail("Authored composition, behavior and free layout need an explicit native mapping.");
   if (component.motionTracks?.length) fail("Authored motion tracks are available in Studio preview; this target still requires an explicit motion runtime mapping.");
   if (["catalog.grid", "catalog.simplegrid", "catalog.center", "catalog.space", "catalog.highlight", "catalog.codehighlight", "catalog.ringprogress", "catalog.semicircleprogress"].includes(catalog.catalogId)) fail("This catalog variant requires its own track/geometry/content realization; the broad family emitter cannot substitute a different presentation.");
   if (catalog.semantic.contract !== "defined" || !CATALOG_TARGET_KINDS[target].includes(catalog.semantic.kind)) fail(`Catalog ${catalog.catalogId} has no implemented ${target} realization.`);
   const customLayout = target === "react" && catalog.semantic.kind === "layout";
+  if (target !== "react" && Object.keys(component.mobile.elements ?? {}).length) fail("Authored HTML element semantics need a dedicated native realization before output.");
   if (!customLayout && component.parts.some(part => part.text !== undefined)) fail("Authored per-Part text needs an explicit target content mapping.");
   if (!customLayout && (component.parts.length !== recipe.parts.length || component.parts.some(part => !recipe.parts.some(expected => expected.role === part.role)))) fail("Custom logical parts require a target mapping before output.");
-  if (catalog.values.length !== recipe.values.length || catalog.events.length !== recipe.events.length) fail("Additional public values/events require explicit target API and behavior mappings.");
-  if (catalog.slots.length !== recipe.slots.length) fail("Additional content slots require explicit target content mappings.");
+  if (catalog.events.length !== recipe.events.length || catalog.values.length !== recipe.values.length && !(target === "react" && catalog.values.filter(value => !recipe.values.some(required => required.name === value.name)).every(value => value.ownership === "local" && typeof value.type === "object" && value.type !== null && !Array.isArray(value.type) && ["string", "number", "boolean", "enum"].includes(String(value.type.kind))))) fail("Additional public values/events require explicit target API and behavior mappings.");
+  if (!customLayout && catalog.slots.length !== recipe.slots.length) fail("Additional content slots require explicit target content mappings.");
   for (const expected of recipe.slots) {
     const part = component.parts.find(part => part.role === expected.role)!;
     const slots = catalog.slots.filter(slot => slot.ownerPartRef === part.id);
-    if (slots.length !== 1 || slots[0]!.min !== (expected.required ? 1 : 0) || slots[0]!.max !== "unbounded") fail("Content slot ownership/cardinality must match the implemented catalog API.");
+    if (!customLayout && (slots.length !== 1 || slots[0]!.min !== (expected.required ? 1 : 0) || slots[0]!.max !== "unbounded")) fail("Content slot ownership/cardinality must match the implemented catalog API.");
   }
   if (component.motion.durationMs !== 160 || component.motion.reducedDurationMs !== 0 || component.motion.cleanupMs !== 500 || component.motion.easing !== "ease-out") fail("Catalog motion authoring is preserved, but customized timelines/easing need a target motion mapping before output.");
   if (target === "react") {

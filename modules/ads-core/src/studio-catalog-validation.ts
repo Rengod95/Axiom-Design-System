@@ -1,4 +1,5 @@
 import { inspectStudioMotion } from "./studio-motion.ts";
+import { inspectStudioBehavior } from "./studio-behavior.ts";
 import type { JsonObject, JsonValue } from "./contracts.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
@@ -31,7 +32,7 @@ export function inspectCatalogPin(document: JsonObject, add: Sink): void {
 export function inspectCatalogComponent(document: JsonObject, add: Sink): void {
   inspectCatalogPin(document, add);
   const id = catalogIdentity(document), recipe = id && getStudioCatalogRecipe(id); if (!recipe) return;
-  if (!catalogKeys(document, [...ENVELOPE, "purpose", "archetypeRef", "traitBindings", "publicContract", "parts", "slots", "behavior", "accessibility", "motion", "requirements", "studioMotion", "previewContent"])) add("", "Unknown catalog fields require a separate authoring contract.");
+  if (!catalogKeys(document, [...ENVELOPE, "purpose", "archetypeRef", "traitBindings", "publicContract", "parts", "slots", "behavior", "accessibility", "motion", "requirements", "studioMotion", "studioBehavior", "studioComposition", "previewContent"])) add("", "Unknown catalog fields require a separate authoring contract.");
   if (!same(document.archetypeRef, { id: `axiom.archetype.${id}`, expectedKind: "archetype", version: STUDIO_ARCHETYPE_VERSION })) add("/archetypeRef", "Catalog archetype identity must match its pinned catalog entry.");
   if (!text(document.purpose) || !text(document.name)) add("/purpose", "Component name and purpose must be nonempty bounded text.");
   const parts = catalogObjects(document.parts), roles = new Map(parts.map(part => [part.studioRole, part]));
@@ -66,6 +67,7 @@ export function inspectCatalogComponent(document: JsonObject, add: Sink): void {
   for (const required of recipe.slots.filter(slot => slot.required)) if (!slots.some(slot => slot.ownerPartRef === roles.get(required.role)?.id && typeof slot.min === "number" && slot.min >= 1)) add("/slots", `Required ${required.role} content slot cannot be removed.`);
   for (const field of ["traitBindings", "requirements"]) if (!empty(document[field])) add(`/${field}`, "Unimplemented trait or obligation extensions cannot acquire an executable claim.");
   inspectStudioMotion(document, add);
+  inspectStudioBehavior(document, add);
   const behavior = document.behavior;
   if (!isObject(behavior) || !catalogKeys(behavior, ["states", "transitions", "hostBindings", "profile"]) || !empty(behavior.states) || !empty(behavior.transitions) || !empty(behavior.hostBindings) || !same(behavior.profile, { id: `axiom.behavior.${id}`, version: STUDIO_CATALOG_PROFILE.version })) add("/behavior", "Catalog behavior must retain its explicit semantic profile; no arbitrary state machine executes.");
   const accessibility = document.accessibility;

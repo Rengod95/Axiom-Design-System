@@ -17,7 +17,7 @@ import type { StudioUsage } from "./studio-contracts.ts";
 export const MAX_FOUNDATION_AUTHORING_EDITS = 128;
 const FIELDS: Readonly<Record<string, readonly [readonly string[], readonly string[]]>> = {
   "dtcg-import": [["sourceText", "sourceName", "conflicts"], ["prefix", "format", "inputs", "sources"]],
-  "template-apply": [["domains"], ["accent", "fontFamily", "density"]],
+  "template-apply": [["domains"], ["accent", "fontFamily", "density", "template"]],
   "token-create": [["name", "type", "value"], ["description", "domain", "tier"]],
   "token-update": [["id"], ["name", "description", "domain", "tier", "deprecated"]],
   "token-delete": [["id"], ["replacementId"]], "token-duplicate": [["id", "name"], []],

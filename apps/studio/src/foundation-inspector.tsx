@@ -1,13 +1,14 @@
+import { TokenUsage } from "./token-relationships.tsx";
 import { TokenVisual } from "./token-visual.tsx";
 import { FoundationExpressionEditor } from "./foundation-expression-editor.tsx";
 import { TokenSuggestions } from "./token-suggestions.tsx";
 import { useEffect, useMemo, useState } from "react";
 import { inspectFoundationAuthoring } from "../../../modules/ads-core/src/index.ts";
-import type { FoundationAuthoringProjection, FoundationTokenRow, FoundationTokenType, FoundationTokenValue, JsonValue } from "../../../modules/ads-core/src/index.ts";
+import type { FoundationAuthoringProjection, FoundationTokenRow, FoundationTokenType, FoundationTokenValue, JsonValue, StudioCategory } from "../../../modules/ads-core/src/index.ts";
 import type { StudioController, StudioState } from "./controller.ts";
 import type { Locale } from "./locales.ts";
 import { Select, Button, EmptyState, Field, Section, TextInput, copy } from "./ui.tsx";
-import { useFormDraft } from "./form-drafts.tsx";
+import { useFormDraft, useDraftRegistry } from "./form-drafts.tsx";
 import { TOKEN_TYPES, TokenValueEditor, defaultTokenValue, tokenValueSummary } from "./token-value-editor.tsx";
 import type { TokenCreationContext } from "./token-atlas.tsx";
 
@@ -16,7 +17,7 @@ const emptyExpression = (): FoundationTokenValue => ({ ref: { id: "", expectedKi
 
 interface Props {
   state: StudioState; controller: StudioController; locale: Locale; tokenId: string | null; creating: boolean;
-  onCreated(id: string): void; onCancel(): void; onSelectComponent(id: string, partId?: string): void;
+  onCreated(id: string): void; onCancel(): void; onSelectComponent(id: string, partId?: string, category?: StudioCategory): void;
   onDirtyChange?(dirty: boolean): void;
   externalDirty?: boolean;
   creationContext?: TokenCreationContext;
@@ -32,6 +33,7 @@ export function FoundationInspector(props: Props) {
 
 function TokenInspectorForm({ state, controller, locale, creating, creationContext, model, token, onCreated, onCancel, onSelectComponent, onDirtyChange, externalDirty = false }: Props & { model: FoundationAuthoringProjection; token: FoundationTokenRow | undefined }) {
   const t = (ko: string, en: string) => copy(locale, ko, en);
+  const registry = useDraftRegistry();
   const initialType = token?.typeRef.id ?? creationContext?.type ?? "color", initialPrefix = creationContext?.namePrefix?.replace(/\.+$/u, "");
   const [name, setName] = useState(token?.name ?? (initialPrefix ? `${initialPrefix}.` : "")), [description, setDescription] = useState(token?.description ?? "");
   const [type, setType] = useState<FoundationTokenType>(initialType);
@@ -110,7 +112,7 @@ function TokenInspectorForm({ state, controller, locale, creating, creationConte
       <div className="inspector-actions"><Button tone="primary" data-testid="foundation-token-apply" disabled={disabled || !name.trim() || invalidValue} onClick={apply}>{creating ? t("토큰 만들기", "Create token") : t("미리보기에 반영", "Apply to preview")}</Button>{creating && <Button onClick={onCancel}>{t("취소", "Cancel")}</Button>}{dirty && !creating && <Button disabled={disabled} onClick={resetForm}>{t("입력 되돌리기", "Reset form")}</Button>}</div>
     </fieldset>
     {!creating && token && <><Section title={t("해석 결과와 출처", "Resolved value and origin")} defaultOpen={false}><p className="token-summary">{tokenValueSummary(token.resolvedValue)}</p><ol className="provenance-list">{token.aliasChain.map(id => <li key={id}>{model.tokens.find(item => item.id === id)?.name ?? id}</li>)}</ol>{token.overrideTrace.map((trace, i) => <p className="field-hint" key={i}>{model.axes.find(axis => axis.id === trace.axisId)?.name ?? trace.axisId} / {trace.context}</p>)}<details><summary>{t("안정 ID", "Stable identity")}</summary><code>{token.id}</code></details></Section>
-      <Section title={`${t("사용처", "Usage")} · ${token.references.length}`} defaultOpen={false}><p className="field-hint">{t("현재 Studio가 해석하는 참조 범위입니다.", "References understood by the current Studio profile.")}</p>{token.references.length === 0 && <p>{t("아직 사용되지 않습니다.", "Not used yet.")}</p>}{token.references.map((reference, index) => <div key={`${reference.documentId}/${reference.path}/${index}`} className="usage-link">{reference.componentId ? <Button tone="subtle" onClick={() => onSelectComponent(reference.componentId!, reference.partId)}>{state.projection?.components.find(item => item.id === reference.componentId)?.name ?? reference.componentId}{reference.partId ? ` / ${reference.partId.split(".").at(-1)}` : ""}</Button> : <span>{reference.ownerTokenId ? model.tokens.find(item => item.id === reference.ownerTokenId)?.name ?? reference.ownerTokenId : reference.context ?? reference.kind}</span>}<small className="field-hint">{reference.kind}</small></div>)}</Section>
+      <Section title={t("이 토큰의 사용", "Token usage")} defaultOpen={false}>{(state.plan?.project ?? state.project) && <TokenUsage model={model} token={token} components={state.projection?.components ?? []} project={(state.plan?.project ?? state.project)!} locale={locale} onSelect={id => { if (registry.flush()) onCreated(id); }} onSelectComponent={onSelectComponent} />}</Section>
       <Section title={t("관리", "Manage")} defaultOpen={false}><Field label={t("복제 이름", "Duplicate name")}><TextInput label={t("복제 이름", "Duplicate name")} value={duplicateName} placeholder={`${token.name} ${t("복사", "copy")}`} disabled={disabled} onCommit={setDuplicateName} /></Field><Button icon="copy" disabled={disabled || dirty} onClick={() => { const ids = applied(() => controller.foundation({ kind: "token-duplicate", id: token.id, name: duplicateName.trim() || `${token.name} ${t("복사", "copy")}` })); if (ids[0] && !controller.getSnapshot().error) onCreated(ids[0]); }}>{t("토큰 복제", "Duplicate token")}</Button><Button tone="danger" icon="trash" disabled={disabled || dirty} onClick={() => setDeleting(!deleting)}>{t("토큰 삭제…", "Delete token…")}</Button>
         {deleting && <div className="manager-form"><p>{t("삭제는 검토할 변경안에 포함됩니다. 사용 중이면 같은 유형의 대체 토큰이 필요합니다.", "Deletion joins the reviewed proposal. A used token needs a replacement of the same type.")}</p><Field label={t("대체 토큰", "Replacement token")}><Select aria-label={t("대체 토큰", "Replacement token")} disabled={disabled} value={replacement} onChange={event => setReplacement(event.target.value)}><option value="">{t("대체 없음", "No replacement")}</option>{compatible.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</Select></Field><Button tone="danger" data-testid="foundation-token-delete" disabled={disabled || dirty || token.inUse && !replacement} onClick={() => { applied(() => controller.foundation({ kind: "token-delete", id: token.id, ...(replacement ? { replacementId: replacement } : {}) })); if (!controller.getSnapshot().error) onCancel(); }}>{t("삭제 변경안 만들기", "Propose deletion")}</Button></div>}
       </Section></>}

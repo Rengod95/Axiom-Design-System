@@ -8,6 +8,7 @@ import { checkAliasCycles, evaluateFoundation } from "./foundation-evaluation.ts
 import { STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
 import { FOUNDATION_BINDING_CATEGORIES } from "./foundation-starters.ts";
 import type { FoundationBindingCategory } from "./foundation-contracts.ts";
+import { checkFoundationPolicies } from "./foundation-policy-validation.ts";
 
 const tokenType = (value: unknown): value is FoundationTokenType => typeof value === "string" && (FOUNDATION_TOKEN_TYPES as readonly string[]).includes(value);
 export const MAX_FOUNDATION_CONTEXT_COMBINATIONS = 128;
@@ -74,7 +75,6 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
       if (key === "domains" && own(item, "allowedTypes") && (!Array.isArray(item.allowedTypes) || !item.allowedTypes.length || !item.allowedTypes.every(tokenType) || new Set(item.allowedTypes).size !== item.allowedTypes.length)) check.error(pointer(path, "allowedTypes"), "Allowed types must be a nonempty unique list of supported token types.");
       if (own(item, "bindingCategory") && (key !== "domains" || typeof item.bindingCategory !== "string" || !FOUNDATION_BINDING_CATEGORIES.includes(item.bindingCategory as FoundationBindingCategory))) check.error(pointer(path, "bindingCategory"), "Binding purpose must be a supported domain category.");
     }
-    if (key === "policies") check.error(path, "Policy execution is not supported by this authoring profile.", FOUNDATION_CODES.UNSUPPORTED);
   });
   const domainIds = new Set((snapshot.domains as JsonValue[]).filter(record).map(item => item.id));
   const domains = new Map((snapshot.domains as JsonValue[]).filter(record).map(item => [item.id, item]));
@@ -141,6 +141,7 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
     const profile = item.resolutionProfile;
     if (!record(profile) || profile.id !== FOUNDATION_RESOLVER_ID || profile.expectedKind !== "resolutionProfile" || profile.version !== FOUNDATION_RESOLVER_VERSION || Object.keys(profile).length !== 3) check.error(pointer(path, "resolutionProfile"), "Expected the pinned explicit-order resolver profile.");
   });
+  checkFoundationPolicies(snapshot, entities, check);
   if (!check.valid) return;
   const document = snapshot as unknown as FoundationDocument;
   checkAliasCycles(new Map(document.tokens.map(token => [token.id, token.value as FoundationTokenValue])), check, "/tokens");

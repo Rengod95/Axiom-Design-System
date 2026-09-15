@@ -1,3 +1,5 @@
+import { addStudioElement } from "./studio-elements.ts";
+import { mutateStudioBehavior } from "./studio-behavior.ts";
 import type { AdsDocument, JsonObject, JsonValue } from "./contracts.ts";
 import type { StudioComponentEdit } from "./studio-catalog-contracts.ts";
 import { isObject } from "./documents.ts";
@@ -9,6 +11,8 @@ import { STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
 import { KernelError } from "./kernel-error.ts";
 
 const EDIT_FIELDS: Readonly<Record<string, readonly string[]>> = {
+  "element-add": ["parentId", "element"], "behavior-set": ["behavior"],
+  "part-element": ["category", "partId", "element"], "slot-update": ["slotId", "required", "multiple"],
   "motion-track-set": ["track", "trackId"], "motion-track-delete": ["trackId"],
   "part-text": ["partId", "text"], "part-parent": ["partId", "parentId"], "appearance-rule": ["category", "partId", "condition", "property", "value"], "variant-default": ["value"], "slot-add": ["partId", "required", "multiple"], "slot-delete": ["slotId"],
   name: ["name"], purpose: ["purpose"], frame: ["category", "frame"], "part-name": ["partId", "name"], "part-add": ["parentId", "name", "role"], "part-delete": ["partId"], "part-order": ["parentId", "childIds"],
@@ -33,11 +37,20 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
   const layout = design && part ? catalogObjects(design.layout).find(layout => layout.targetPartRef === part.id) : undefined;
   const values = catalogObjects(contract.values);
   switch (edit.kind) {
+    case "element-add": addStudioElement(component, designs, edit.parentId, edit.element, id); break;
+    case "behavior-set": mutateStudioBehavior(component, edit.behavior); break;
     case "name": component.name = edit.name; for (const design of designs) design.name = `${edit.name} ${String(design.category)}`; break;
     case "purpose": component.purpose = edit.purpose; break;
     case "frame": design!.editorFrame = edit.frame; break;
     case "part-name": part!.name = edit.name; break;
     case "part-text": if (!hasCatalogProfile(component)) fail("Part-specific content requires a catalog definition."); else part!.studioText = edit.text; break;
+    case "part-element": {
+      const recipe = getStudioCatalogRecipe(catalogIdentity(component)!);
+      if (recipe?.semantic.kind !== "layout") fail("Element mapping is available for custom layout definitions. Interactive catalog components retain their semantic HTML.");
+      const mapping = catalogObjects(design!.nodeMappings).find(item => item.partRef === part!.id);
+      if (!mapping) fail("The selected element has no design mapping.");
+      mapping.element = edit.element; break;
+    }
     case "part-parent": {
       if (!hasCatalogProfile(component) || part!.required === true || part!.parent === null) fail("Required semantic parts retain their parent.");
       let parent = parts.find(item => item.id === edit.parentId); if (!parent) fail("Choose an existing parent.");
@@ -79,13 +92,13 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
     }
     case "layout": {
       if (!layout) fail("The selected part has no category layout.");
-      if (!["gap", "padding", "minHeight", "axis", "width", "height", "alignment"].includes(edit.field)) fail("Unsupported layout property.");
+      if (!["gap", "padding", "minHeight", "axis", "width", "height", "alignment", "mode", "position"].includes(edit.field)) fail("Unsupported layout property.");
       if (edit.field === "width" || edit.field === "height") {
         if (!isObject(edit.value)) fail("Width/height requires a hug/fill/fixed policy.");
         if (!isObject(layout.size)) fail("Invalid existing size map.");
         const size = { ...edit.value }; if (size.mode === "fixed" && typeof size.value === "number") size.value = { value: size.value, unit: "px" };
         layout.size[edit.field] = size;
-      } else layout[edit.field] = edit.field === "axis" || edit.field === "alignment" ? edit.value : typeof edit.value === "number" ? { value: edit.value, unit: "px" } : edit.value;
+      } else layout[edit.field] = edit.field === "axis" || edit.field === "alignment" || edit.field === "mode" || edit.field === "position" ? edit.value : typeof edit.value === "number" ? { value: edit.value, unit: "px" } : edit.value;
       break;
     }
     case "appearance": case "appearance-rule": {
@@ -111,6 +124,14 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
       const role = parts.find(part => part.id === slot.ownerPartRef)?.studioRole, recipe = getStudioCatalogRecipe(catalogIdentity(component)!);
       if (!recipe || recipe.slots.some(required => required.required && required.role === role)) fail("A required semantic slot cannot be deleted.");
       component.slots = catalogObjects(component.slots).filter(slot => slot.id !== edit.slotId); contract.exposedSlots = (contract.exposedSlots as JsonValue[]).filter(id => id !== edit.slotId); break;
+    }
+    case "slot-update": {
+      if (typeof edit.required !== "boolean" || typeof edit.multiple !== "boolean") fail("Invalid content area settings.");
+      const slot = catalogObjects(component.slots).find(item => item.id === edit.slotId); if (!slot) fail("Content area no longer exists.");
+      const role = parts.find(item => item.id === slot.ownerPartRef)?.studioRole;
+      const recipe = getStudioCatalogRecipe(catalogIdentity(component)!);
+      if (!recipe || !edit.required && recipe.slots.some(item => item.required && item.role === role)) fail("This component requires its content area.");
+      slot.min = edit.required ? 1 : 0; slot.max = edit.multiple ? "unbounded" : 1; break;
     }
     case "value-default": { const value = values.find(value => value.id === edit.valueId); if (!value) fail("Value port no longer exists."); value.defaultValue = edit.value; break; }
     case "value-add": {

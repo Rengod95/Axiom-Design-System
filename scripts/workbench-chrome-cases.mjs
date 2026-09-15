@@ -12,6 +12,17 @@ export async function verifyBlueprintChrome({ page, id, label, text, click, clic
     await settled();
     assert.equal(await page.evaluate(`document.activeElement===(${expression})`), true);
   };
+  const sliderGeometry = async expression => {
+    const geometry = await page.evaluate(`(()=>{const input=(${expression}),slider=input.closest('.studio-slider'),thumb=slider.querySelector('.studio-slider-thumb'),travel=slider.querySelector('.studio-slider-travel'),precision=slider.querySelector('.studio-slider-value');
+      const r=input.getBoundingClientRect(),t=thumb.getBoundingClientRect(),s=slider.getBoundingClientRect(),path=travel.getBoundingClientRect(),p=precision.getBoundingClientRect();
+      const ratio=(input.valueAsNumber-Number(input.min))/(Number(input.max)-Number(input.min));return{width:s.width,rangeWidth:r.width,centerErrorX:Math.abs(t.x+t.width/2-(path.x+path.width*ratio)),centerErrorY:Math.abs(t.y+t.height/2-(r.y+r.height/2)),overflow:slider.scrollWidth-slider.clientWidth,precisionBelow:p.y>=r.bottom,precisionPadding:getComputedStyle(precision).paddingLeft,precisionBorder:getComputedStyle(precision).borderLeftWidth};})()`);
+    assert.ok(geometry.centerErrorX <= .6 && geometry.centerErrorY <= .6, "The painted slider thumb stays centered on the native value and track");
+    assert.ok(geometry.rangeWidth >= 64, "Precision entry must not collapse the pointer range");
+    assert.ok(geometry.overflow <= 1, "The slider fits its property cell");
+    assert.equal(geometry.precisionPadding, "0px", "Generic text-field padding cannot crowd precise numeric entry");
+    assert.equal(geometry.precisionBorder, "0px", "The shared slider owns its precision field surface");
+    return geometry;
+  };
   const drag = async (expression, dx, dy) => {
     const point = await page.evaluate(`(()=>{const e=(${expression}),r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()`);
     assert.equal(await page.evaluate(`(()=>{const e=(${expression}),hit=document.elementFromPoint(${point.x},${point.y});return e===hit||e.contains(hit)})()`), true, "The gesture starts on the visible control");
@@ -101,8 +112,20 @@ export async function verifyBlueprintChrome({ page, id, label, text, click, clic
   for (const [name, minimum, maximum] of [["appearance-opacity-value", 0, 1], ["appearance-borderRadius-value", 0, 128], ["motion-duration", 0, 10000]]) {
     await focus(id(`${name}-slider`)); await press("Home");
     assert.equal(Number(await page.evaluate(`${id(name)}.value`)), minimum, `${name}: Home reaches the gesture minimum`);
+    await sliderGeometry(id(`${name}-slider`));
     await press("End");
     assert.equal(Number(await page.evaluate(`${id(name)}.value`)), maximum, `${name}: End reaches the gesture maximum`);
+    await sliderGeometry(id(`${name}-slider`));
+  }
+  const compactSliderGeometry = [];
+  for (const name of ["appearance-opacity-value", "appearance-borderRadius-value", "motion-duration"]) {
+    const expression = id(`${name}-slider`), previousWidth = await page.evaluate(`(${expression}).closest('.studio-slider').style.width`);
+    try {
+      await page.evaluate(`(${expression}).closest('.studio-slider').style.width='96px'`); await settled();
+      const geometry = await sliderGeometry(expression);
+      assert.equal(geometry.precisionBelow, true, "A narrow property cell moves precise entry below its full-width range");
+      compactSliderGeometry.push({ name, ...geometry });
+    } finally { await page.evaluate(`(${expression}).closest('.studio-slider').style.width=${JSON.stringify(previousWidth)}`); }
   }
   await fill("appearance-borderRadius-value", "12.75"); await fill("motion-duration", "175.5");
   await fill("appearance-opacity-value", "-");
@@ -112,6 +135,7 @@ export async function verifyBlueprintChrome({ page, id, label, text, click, clic
   assert.equal(await page.evaluate(`Boolean(${id("review-dialog")})`), false, "An incomplete precision draft blocks review without losing input");
   assert.equal(await revision(), sliderRevision);
   await fill("appearance-opacity-value", "0.375");
+  await sliderGeometry(id("appearance-opacity-value-slider"));
   assert.deepEqual(await page.evaluate(`[${id("appearance-opacity-value")}.value,${id("appearance-borderRadius-value")}.value,${id("motion-duration")}.value]`), ["0.375", "12.75", "175.5"], "Precision fields retain values finer than the slider step");
   await approve(); assert.notEqual(await revision(), sliderRevision);
   await click("undo");
@@ -139,5 +163,5 @@ export async function verifyBlueprintChrome({ page, id, label, text, click, clic
   const trackRevision = await revision(); await approve(); assert.notEqual(await revision(), trackRevision);
   assert.equal(await page.evaluate(`(${trackDuration}).value`), "287.125", "Review flushes valid motion precision directly from the registered form");
   await click("undo"); await until(`${saved} && (${trackDuration}).value===${JSON.stringify(originalTrackDuration)}`);
-  record("studioSliderAuthoring", { cleanMountAndFocus: true, opacityRadiusAndDurationHomeEnd: true, precisionBeyondStep: true, invalidDraftRetainedAndBlocksReview: true, reviewedUndoRestoresBindingsAndValues: true, motionTrackPrecisionFlushesOnReview: true, motionTrackUndo: true });
+  record("studioSliderAuthoring", { cleanMountAndFocus: true, opacityRadiusAndDurationHomeEnd: true, centeredMinMidMax: true, compactSliderGeometry, precisionBeyondStep: true, invalidDraftRetainedAndBlocksReview: true, reviewedUndoRestoresBindingsAndValues: true, motionTrackPrecisionFlushesOnReview: true, motionTrackUndo: true });
 }

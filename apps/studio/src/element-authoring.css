@@ -1,0 +1,20 @@
+.element-add-tools,.instance-insert-row,.instance-actions,.instance-value { display:flex; align-items:center; gap:var(--space-2); min-width:0; }
+.element-add-tools { margin-block:var(--space-2) var(--space-3); }
+.element-add-tools > * { flex:1; }
+.instance-insert-row > :first-child,.instance-value > :first-child { flex:1; min-width:0; }
+.instance-row { padding-block:var(--space-3); border-bottom:1px solid var(--line); }
+.instance-row summary { display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); cursor:pointer; }
+.instance-actions { padding-block:var(--space-2); flex-wrap:wrap; }
+.instance-row .field { margin-block:var(--space-2); }
+.instance-placeholder { padding:var(--space-3); font:var(--type-caption)/1.4 var(--font-ui); outline:1px dashed currentColor; opacity:.7; }
+.instance-content > .catalog-component-preview { margin:0; padding:0; }
+.instance-content .preview-metadata,.instance-content .run-controls,.instance-content .catalog-capability-note { display:none; }
+.element-direct-root { position:relative; }
+.element-selection { position:absolute; z-index:5; pointer-events:none; outline:1px solid var(--accent); }
+.catalog-component-preview .component-root .element-selection button { pointer-events:auto; position:absolute; min-width:0; min-height:0; line-height:1; display:grid; place-items:center; border:0; padding:0; background:var(--accent); color:var(--on-accent); }
+.catalog-component-preview .component-root .element-selection .element-move { inset:auto auto 100% 0; margin-bottom:3px; width:24px; height:20px; border-radius:var(--radius-sm); cursor:move; font-size:12px; }
+.catalog-component-preview .component-root .element-selection .element-resize { right:-5px; bottom:-5px; width:10px; height:10px; border-radius:2px; cursor:nwse-resize; }
+.catalog-component-preview .component-root .element-inline-text { position:absolute; inset:0; min-width:80px; resize:none; min-height:24px; padding:2px 4px; font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--focus); z-index:7; }
+.element-position-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-2); }
+
+.instance-value > input[type=checkbox] { flex:0 0 auto; width:16px; height:16px; }

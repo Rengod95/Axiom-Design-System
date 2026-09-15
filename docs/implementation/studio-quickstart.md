@@ -7,7 +7,7 @@ pnpm install --frozen-lockfile --ignore-scripts
 pnpm studio
 ```
 
-Open `http://127.0.0.1:4317`. Create a design system, select a shared token in the left navigation and edit its value in the inspector. Switch named themes to inspect context overrides. Select a component or its rendered Part to change sample content and the selected Web/Mobile layout. Run mode exercises activation and controlled Toast close requests. Edit mode selects Parts. The inspector's Source tab retains invalid JSON as an editable buffer and can capture it as a source draft.
+Open `http://127.0.0.1:4317`. Create a design system, select a shared token in the left navigation and edit its value in the inspector. Switch named themes to inspect context overrides. Select a component or one of its rendered elements to change content and the selected Web/Mobile layout. Try it exercises supported interactions in an isolated consumer simulation. Edit mode selects elements. The inspector's Source tab retains invalid JSON as an editable buffer and can capture it as a source draft.
 
 Edits first produce a transient preview. Review changes shows affected documents and source field differences. Applying the reviewed candidate creates one revision and one Undo entry. Closing the review keeps its candidate available for resumption; rejecting discards it. Undo/redo use the same persisted command service as the Node adapter. Export is disabled while a buffer or proposal is unapplied. The project-source button downloads the source-preserving project bundle. The Export dialog downloads an owned source ZIP for React/CSS, React Native/Expo, SwiftUI or Compose. Each archive carries exact source/context/profile pins and per-file hashes. A generated badge is separate from platform execution.
 
@@ -42,11 +42,15 @@ pnpm test:workbench
 pnpm test:targets
 ```
 
-The Studio runner launches a dedicated Chromium profile, uses real keyboard/pointer/composition input, checks reviewed mutation and recovery, and downloads all four archives. The target runner consumes emitted source in a Web SSR/hydration app and a separate locked Expo application. It emits evidence under `dist/evidence` and `dist/target-verification`; generated files are excluded from the active source tree. These checks fail if their required browser/compiler cannot run; native SwiftUI/Compose compilation remains explicitly unverified.
+The Studio runner launches a dedicated Chromium profile, uses real keyboard/pointer/composition input, checks reviewed mutation and recovery, and downloads all four archives. The target runner consumes emitted source in a Web SSR/hydration app and a separate locked Expo application. It emits evidence under `dist/evidence` and `dist/target-verification`; generated files are excluded from the active source tree. These checks fail if their required browser/compiler cannot run; native SwiftUI/Compose results are produced separately by the Native Runtime workflow; see [native verification](native-runtime-verification.md).
 
 ## Workbench operations
 
 The Library lists all 239 catalog identities, including 209 component entries that create independent component and Web/Mobile design documents. Parts, templates and utilities remain visibly separate reference entries. Adding an entry creates editable source; unsupported dedicated interactions and target contracts produce explicit diagnostics instead of unrelated fallback controls.
+
+Library → Create component opens the composer. Choose Blank frame, Content stack, Article, Button, Text field or Card, name it and inspect its actual source preview. Creation joins the current proposal; Save still uses common review. Elements contains structure selection and selected-element settings. Custom layout elements support a closed HTML tag selector; Content area declares the element's slot contract and cardinality. Content areas are not variant slots. In a custom layout, Instances inserts an existing Library-created definition into the selected frame or content area. Scalar consumer values and text content can be overridden per instance; source changes require Review update. Interactive catalog controls retain their own semantic HTML.
+
+Foundation → Templates offers Essentials and five [documented architecture adaptations](foundation-starter-architectures.md). Choose included domains before applying. Selection and preview do not change the project. Adoption adds missing tokens and preserves existing role bindings and authored values. To examine a token's connections, select it and open Token usage in the inspector: sources, dependent tokens and exact component/design/property links are contextual; the former global Connections tab has been removed.
 
 Foundation supports 13 structured value types, aliases, name/description, domain and tier classification, search/filter/sort, selected-token bulk edits, and guarded deletion with a compatible replacement. Themes edit axes, contexts, named sets, resolution order and token overrides. Apply an inspector form to the preview, then review the combined source change. Incomplete numeric/hex input remains in its form and blocks navigation/export until reset or repaired.
 
@@ -57,3 +61,14 @@ The right inspector edits component content, selected Part layout/appearance and
 Foundation → Files accepts DTCG JSON files or pasted text. Review the import preview, choose keep/update/reject for matching names, optionally add a prefix, and apply it to the common reviewed proposal. Resolver inputs use explicitly supplied local files and context chips; one selected combination becomes base tokens while its source definitions remain preserved. Property/composite bindings stay live when their source changes and survive name, description and deprecation edits. The inspector offers source-token/property controls and recoverable expression JSON input.
 
 Files → Export downloads the selected context with either references or resolved values. This does not include all theme/group/classification/policy authoring; use the top-bar project source bundle for the full ADS system. Preserved originals are available separately. See the [interchange continuation](foundation-interchange-continuation.md) for verified scope and remaining requirements.
+
+
+## Elements, instances and rules
+
+In Elements, add Box, Frame or Text to a selected container. Layout switches between automatic flow and free positioning. Free children expose a move handle and a corner resize handle; arrow keys nudge by one unit, Shift by ten. Double-click text to edit it in place, Ctrl/Command-Enter to apply, Escape to cancel. Source edits still need common review and support Undo/Redo.
+
+Instances reference a source definition rather than copying it. Insert a Library-created component into a custom frame; adjust its consumer values and text content, or Edit source. A changed source is shown as a placeholder until Review update. Required content and typed overrides are checked before adoption. React output renders actual nested component functions; native composition is explicitly unsupported.
+
+Foundation → Policies creates token inventory, layer-alias and property-binding requirements. Advisory findings allow delivery; required findings block every target export. Locate opens the exact affected component, category and element. Policies do not prevent saving unfinished drafts.
+
+Behavior adds local state and press/change/focus/blur rules, typed conditions, set/toggle actions and declared requests. Test them in the simulator or Interact mode. Local actions cannot write consumer-owned values. Authored behavior runs in generated React; native targets reject it until a native mapping exists. See [behavior authoring](component-behavior-authoring.md) and [policy authoring](foundation-policy-authoring.md).

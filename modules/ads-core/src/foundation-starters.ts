@@ -1,6 +1,8 @@
 import type { JsonObject, JsonValue } from "./contracts.ts";
 import type { FoundationBindingCategory, FoundationDocument, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
 import { isObject } from "./documents.ts";
+import { adaptFoundationStarterTokens, FOUNDATION_STARTER_TEMPLATES } from "./foundation-starter-presets.ts";
+import type { FoundationStarterTemplateId } from "./foundation-starter-presets.ts";
 
 export const FOUNDATION_STARTER_PROFILE = Object.freeze({ id: "axiom.foundation.essentials", version: "1.0.0" });
 
@@ -18,7 +20,7 @@ export const FOUNDATION_STARTER_DOMAINS = [
   { id: "layer", name: "Layer", types: ["number"] },
 ] as const;
 export const FOUNDATION_BINDING_CATEGORIES: readonly FoundationBindingCategory[] = [...FOUNDATION_STARTER_DOMAINS.map(domain => domain.id), "unrestricted"];
-export interface FoundationStarterOptions { domains: string[]; accent?: string; fontFamily?: string; density?: "comfortable" | "compact" }
+export interface FoundationStarterOptions { domains: string[]; template?: FoundationStarterTemplateId; accent?: string; fontFamily?: string; density?: "comfortable" | "compact" }
 export interface FoundationStarterToken { name: string; domain: string; type: FoundationTokenType; tier: "primitive" | "semantic"; literal?: JsonValue; alias?: string; darkAlias?: string }
 const dimension = (value: number): JsonObject => ({ value, unit: "px" });
 const color = (hex: string, alpha = 1): JsonObject => ({ colorSpace: "srgb", components: [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255), alpha });
@@ -26,7 +28,9 @@ const color = (hex: string, alpha = 1): JsonObject => ({ colorSpace: "srgb", com
 /** Curated defaults, not a claim that DTCG mandates domain names or scales. */
 export function foundationStarterTokens(options: FoundationStarterOptions): FoundationStarterToken[] {
   if (!Array.isArray(options.domains) || !options.domains.length || new Set(options.domains).size !== options.domains.length || options.domains.some(id => !FOUNDATION_STARTER_DOMAINS.some(domain => domain.id === id))) throw new Error("Choose known, unique starter domains.");
-  const accent = options.accent ?? "#5b50d6", family = options.fontFamily ?? "SUIT";
+  if (options.template !== undefined && !FOUNDATION_STARTER_TEMPLATES.some(template => template.id === options.template)) throw new Error("Choose a known starter template.");
+  const preset = options.template && options.template !== "essentials" ? FOUNDATION_STARTER_TEMPLATES.find(template => template.id === options.template) : null;
+  const accent = options.accent ?? preset?.accent ?? "#5b50d6", family = options.fontFamily ?? (preset ? "Geist" : "SUIT");
   if (!/^#[\da-f]{6}$/i.test(accent) || !family.trim() || family.length > 100 || options.density !== undefined && !["comfortable", "compact"].includes(options.density)) throw new Error("Invalid starter settings.");
   const tokens: FoundationStarterToken[] = [];
   const literal = (domain: string, name: string, type: FoundationTokenType, value: JsonValue) => tokens.push({ domain, name, type, tier: "primitive", literal: value });
@@ -93,7 +97,7 @@ export function foundationStarterTokens(options: FoundationStarterOptions): Foun
   literal("gradient", "gradient.scale.brand", "gradient", [{ color: color(accent), position: 0 }, { color: color("#171e29"), position: 1 }]);
   alias("gradient", "fill.brand", "gradient", "gradient.scale.brand");
   for (const [name, value] of Object.entries({ base: 0, raised: 1, dropdown: 100, overlay: 200, toast: 300 })) { literal("layer", `z.${name}`, "number", value); alias("layer", `layer.${name}`, "number", `z.${name}`); }
-  return tokens.filter(token => options.domains.includes(token.domain));
+  return options.template && options.template !== "essentials" ? adaptFoundationStarterTokens(tokens, options, options.template) : tokens.filter(token => options.domains.includes(token.domain));
 }
 
 /** Add missing tokens only. Existing values, IDs and overrides are never overwritten. */
@@ -113,7 +117,8 @@ export function applyFoundationStarter(foundation: FoundationDocument, options: 
     const existing = byName.get(spec.name);
     if (existing) { if (existing.typeRef.id !== spec.type) throw new Error(`Starter name ${spec.name} exists with another type. Rename it before applying this domain.`); continue; }
     const value: FoundationTokenValue = spec.alias ? { ref: { id: byName.get(spec.alias)!.id, expectedKind: "token" } } : { literal: spec.literal! };
-    const token = { id: createId(), name: spec.name, typeRef: { id: spec.type }, domain: domains.get(spec.domain)!, tier: tiers[spec.tier], value, metadata: { starter: FOUNDATION_STARTER_PROFILE.id, version: FOUNDATION_STARTER_PROFILE.version } };
+    const template = options.template && options.template !== "essentials" ? FOUNDATION_STARTER_TEMPLATES.find(template => template.id === options.template)! : null;
+    const token = { id: createId(), name: spec.name, typeRef: { id: spec.type }, domain: domains.get(spec.domain)!, tier: tiers[spec.tier], value, metadata: { starter: FOUNDATION_STARTER_PROFILE.id, version: FOUNDATION_STARTER_PROFILE.version, ...(template ? { template: template.id, templateVersion: "1.0.0", adaptation: "axiom-authored", reference: template.source } : {}) } };
     foundation.tokens.push(token); byName.set(spec.name, token); newNames.add(spec.name);
   }
   if (options.domains.includes("color")) {

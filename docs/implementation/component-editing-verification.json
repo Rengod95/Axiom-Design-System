@@ -1,0 +1,637 @@
+{
+  "kind": "axiom-component-editing-verification",
+  "recordedAt": "2026-09-15T03:52:06.560005+00:00",
+  "status": "LOCAL_GATES_PASSED_NATIVE_CI_SEPARATE",
+  "baselineCommit": "81b276217a9d91f7591a990d424184cdb9dea808",
+  "sourceSha256": {
+    ".github/workflows/native.yml": "46db4efa8096bdceb9e93c24cf40e5df7ce0ab8c03719168e633b93332e370ba",
+    "apps/studio/src/app.tsx": "f3016bfeca4e2184f557eb88651358ee0836219e4154d3c55236b7ecae0417f5",
+    "apps/studio/src/behavior-editor.css": "df3e61a4f2a4e55db6df9443aaf0ea3b83e6f16b0719c0a80e5ed36cecc047ba",
+    "apps/studio/src/behavior-editor.tsx": "741e8ad8e20330da19b55714f48e5f3b8fad28d92887730ef19c86bfbc6caa8e",
+    "apps/studio/src/canvas.tsx": "7ee10979debc1b57ed1004002b5e45d0e6831b9c0d9ba7bfd7adf8d3bdeb7a4e",
+    "apps/studio/src/catalog-preview.tsx": "edaaece4608bcfdf3997027bd06419a7f480e8cdc1bf16b985906c2ebebd96e6",
+    "apps/studio/src/catalog-specimens.css": "b3ff56a7ae9fd3abc31763093720df2b13b7d76d67d44a1a726849fd62405b3d",
+    "apps/studio/src/component-authoring.css": "ad911b994de63dfaf9a54a64ec60e8103a075a8aa890625bae5f4495b092564f",
+    "apps/studio/src/component-composer.tsx": "a62727333aec43feb6b366b16c30601de06a8bcc273e0c6944a72dfefa26a2ed",
+    "apps/studio/src/component-inspector.tsx": "bc2f698bc2c94e128575bd75762bbbb33d5a09b3ccf6485b4d872e83d41a2606",
+    "apps/studio/src/controller.ts": "4b59cdf7f0bb502bab30434e8d4c0e4b8d4ddb343061b48c501a0e97e1e1be13",
+    "apps/studio/src/element-authoring.css": "62c5dd1256aa08b91440df3ed10aa6ab3977f4176c565dd1369839bc6f2c5bff",
+    "apps/studio/src/element-selection.tsx": "4e357626928244206d01903d30f28c857480d66efb8177dd6a03fd0d61b446bf",
+    "apps/studio/src/foundation-inspector.tsx": "1b41bf9d075f6584b9e741761bb6c5672104587e94fccb9fb2368037652b1e3e",
+    "apps/studio/src/foundation-panel.tsx": "c0b98357512d94e55b58c40218335a792085012f99bd287ec777ae9908404b21",
+    "apps/studio/src/foundation-policy-panel.tsx": "3f39d2e420c74697d6ae3c180a91d5b80e0433ae9e0c9ff34ff9a806d0e94f2a",
+    "apps/studio/src/foundation-policy.css": "e6562cef63591c8b452b277d8ae09a6a38626696c0d33740388911d6887dcceb",
+    "apps/studio/src/foundation-starter-panel.tsx": "b7c6c666bcab0a7845337ef6e4462bdf5d744b41a6c14a454f0196280364f83f",
+    "apps/studio/src/foundation-starters.css": "ed9b963e81041d2d41ed9561fb882b9bdc711397b9a3aeaf9dea19fd232cb98a",
+    "apps/studio/src/inspector.tsx": "6097bfafd761f7db64ec37f65201051eb91a108d27d93dd157d3214aa6465f1c",
+    "apps/studio/src/instance-inspector.tsx": "f84de781b8fcbcb9c8448df9094c15a8469f9579d7cfe54b5968a780c1386d07",
+    "apps/studio/src/main.tsx": "d82526a46388e857f987feefea2299ae3b2c46aaf4c484f7e031f65cfc19cd0f",
+    "apps/studio/src/preview.tsx": "dbba1228258ae8bea411450acdab9d0b0720bfe7d7d7db4421135da6bb07a360",
+    "apps/studio/src/studio-slider.css": "b7b1a43eda8f80b908826d1a55266cd4f3c8acc0e287e1e4dcd4f5c8548f9550",
+    "apps/studio/src/studio-slider.tsx": "d71920412f8f5ad88ff72e5603aab54a0537b0767bffc2e0dc63fdb4714c4166",
+    "apps/studio/src/token-relationships.tsx": "fb5b7e4f926ab387387c4a0dbfb486256646739f835b6368febab06af2d4f1bb",
+    "apps/studio/src/workbench-panels.tsx": "2d856bff0f8fb7e85844e97b607515ba8ff5c72e51064f0c281db1757612a98d",
+    "apps/studio/test/catalog-preview.test.ts": "a7979a2847a3de1ff1c49246de1fa39af311be233737c743ec884822dcb70a40",
+    "apps/studio/test/controller-workflow.test.ts": "6794e303ae9e723238c13d0be4dbeff2c2f8494304381be83531c446e818214a",
+    "apps/studio/test/studio-slider.test.ts": "4fea3c0d8517e1d5c39d6edd8c25ae28006db01671ec876df17a2367d1e05472",
+    "modules/ads-core/src/command-service.ts": "ccd623efba6b2a9f576f2d03cda052ec3c6e94726a1fdb6a6853981836d49ca5",
+    "modules/ads-core/src/foundation-authoring.ts": "2fefac9c12e163c18bf49250d6d0be4eabc8b30a120cdc92409ec3db69f035df",
+    "modules/ads-core/src/foundation-policy-authoring.ts": "3cfb02c39d4ff3ab5fa249647477d9274003acf58ee78355e14533693cfd5e71",
+    "modules/ads-core/src/foundation-policy-contracts.ts": "1a1725f98e23f1a3ccfffd8e5cfce5ba81b3a519b252b8bf9cf7e2876a702d4f",
+    "modules/ads-core/src/foundation-policy-evaluation.ts": "4cc3099d4b7367c157640b9dede0b94b36a4fae2836d45ce9b1eda500f2cbe68",
+    "modules/ads-core/src/foundation-policy-validation.ts": "e30ce4816396eeed7060f2d4ce56cb432b9e17ae100020251ead449b15c38a20",
+    "modules/ads-core/src/foundation-starter-presets.ts": "17a25d25ea3641ef9a1c59fd8731fb22fe6db4a86c185f5b97f2417ef9de729b",
+    "modules/ads-core/src/foundation-starters.ts": "0a77e7e642b937931f612db11b4d1652a0c53e8dc131dabc0eaa2fc375d69b3a",
+    "modules/ads-core/src/foundation-validation.ts": "9eb202f5c8cb784e545f0a15c3132574cffd6254cd2714f8941378aeff8434bb",
+    "modules/ads-core/src/index.ts": "f0ae8fe7800eba392361cea9bd6a4a99612f9863a9637293cfcbbf0aa7eb9131",
+    "modules/ads-core/src/studio-behavior.ts": "59a8cd4ff8114039e0b51732a79c364847277e143b0032c5650eb1c4bba8406b",
+    "modules/ads-core/src/studio-catalog-contracts.ts": "debcb4c41d6bc6d7dc4437cd56e1c649f2b784500d2610c06dc365e76c7d4b2b",
+    "modules/ads-core/src/studio-catalog-design-baseline.ts": "0a0968de7fc916be50dd22f280f44a4da720f294ac533ac3666bf89e7d3693e3",
+    "modules/ads-core/src/studio-catalog-sources.ts": "6c42132cd66767c750563c61e8f11f26f64693d34a17b7009a8ac5cf384deb40",
+    "modules/ads-core/src/studio-catalog-validation.ts": "1e8c1f9c0d90afd279efcb1c6d0f79a204eff7431fd50c3af0e270b155fc055c",
+    "modules/ads-core/src/studio-component-authoring.ts": "30c130c5168be9f86d459051da30650962a37983a2e440e8459df94d5a9c4095",
+    "modules/ads-core/src/studio-component-mutations.ts": "8d2fcad08f392dbb3abc9af1931a55caf56e0dce771aff201b0cbd45796e0481",
+    "modules/ads-core/src/studio-composition.ts": "a5787b0830b2f25f30872847421c01196bb09e97af135d51540c38b85545500c",
+    "modules/ads-core/src/studio-contracts.ts": "468750fe67d7c6a328469c770e65947dc68eb9b72ce9b8ad685abd9577f2c831",
+    "modules/ads-core/src/studio-elements.ts": "d9d1af37376fac37281067e6565082a5b7bf1dcac22779edbdf16dac3c8a4f50",
+    "modules/ads-core/src/studio-instance-authoring.ts": "029e4590652584fce5ab02e2b776834e0f935d9e65d963890cbb55b23a3c1712",
+    "modules/ads-core/src/studio-presentation.ts": "2c96b9450a60bf2e32a8a096eacc0998f3454275adde5569dc709521da1cb3e1",
+    "modules/ads-core/src/studio-projection.ts": "462db4a8a6a61b39b0db256a62091f32062e1dc9833c53530e094915617d1854",
+    "modules/ads-core/src/studio-validation.ts": "f28beba0182cfabad6fa07334f6306f710e7b2a30d212d456d38f7b7fdd7af24",
+    "modules/ads-core/test/component-composer.test.ts": "dd2e28db7232b704af9d97537ddde1a62fcec786970f4e8f7340a8b6785539fd",
+    "modules/ads-core/test/foundation-policy.test.ts": "84ab51c4c0d3e1373c30e55c883dcb357858f92683de6310320217a9a0983056",
+    "modules/ads-core/test/foundation-starter-templates.test.ts": "b488c14676dd75f01ce97eba28a9619c0ead27960f506b6af66c60d4e4b08677",
+    "modules/ads-core/test/studio-authoring.test.ts": "9a94179f68637de070072a9809f44083f024c98fac99d9e9faeff9e529e6847a",
+    "modules/ads-core/test/studio-behavior.test.ts": "5b04a14cf47337c9f4ebe8156e625682c7124145ec738741b281ac847b8f10f5",
+    "modules/ads-core/test/studio-catalog-foundation.test.ts": "6b76a0e137e0689c3bf933b815d40fe51aac4754457c465b3aeb8101a6201510",
+    "modules/ads-core/test/studio-composition.test.ts": "f8b3b594e06052f35ed52e0a0cb8fff69433f29d88a9daad42d7a5d11240eb9d",
+    "modules/browser-store/src/journal.ts": "e9aaf25e57b295f5bdfdef1e2c8b3aae90443cba9b67651216e0670a02e370a6",
+    "modules/browser-store/test/indexed-db-store.test.ts": "a3af637d5a125bfac131ea446dbfb39bc64dbd4431efa4fbd1009d817b68e61b",
+    "modules/target-packs/src/catalog-capabilities.ts": "43ac4e853124b09c4a03562367fdad6609bc9866a9f166b7dab279f945144344",
+    "modules/target-packs/src/catalog-design-css.ts": "288cbd63aa5ab5ad33f047767cb81bfdcc83ff0ca561cb27bd8e47c27067fdb0",
+    "modules/target-packs/src/catalog-react-behavior.ts": "8b9d1774dd8d1442eeb938a0a923a7b1df1d8fc77b6cb4865068152c726c091f",
+    "modules/target-packs/src/catalog-react-composition.ts": "35f081d7175a9646e9684f044488594f89ee385f01edb7d38860cf9721327fca",
+    "modules/target-packs/src/catalog-react-generator.ts": "6300bf8298fa3c5cb94f90b69a4408c5510c32fe79340692c5c2699929ee759b",
+    "modules/target-packs/src/catalog-source-types.ts": "935567900bab80744bcdd8382c6f8391295360540b9c33871b64b78d9f7c2553",
+    "modules/target-packs/src/react-generator.ts": "e2a720958ea3be95a7d8217d590d68da6ecef2a087084e9a60e4ebda195ea87f",
+    "modules/target-packs/src/target-generator.ts": "e5f41908aebdba4cbdf5bc04c8fc8f6e61c5efa72fe8a4017f0dde6ccf7323d2",
+    "modules/target-packs/test/catalog-design-baseline.test.ts": "9c20c093ed5ec0f4a7782a92d3babb8f7b6482f64fb74eb4ba884c7445a4bf9e",
+    "modules/target-packs/test/catalog-react-behavior.test.ts": "0a3896bc3d90587da24f5034400e62edb7fb59eacf957652965759ae8940d6e4",
+    "modules/target-packs/test/component-composer-targets.test.ts": "bf68b536ba526869d8c46a3c54da6ca6b614eeda28c45a6f2096db6e7415c12d",
+    "modules/target-packs/test/component-instance-targets.test.ts": "f57613a2b6a61f48d75d2037b9b5494afdf9d6fbea7c591deebd9fc3ff4a540b",
+    "modules/target-packs/test/foundation-policy-targets.test.ts": "61baa2881e76872ef88425ba46ec2afdd75ebb509c4d804b681d2e8687dc5814",
+    "modules/target-packs/test/native-harness.test.ts": "a5f600264fc996ef8dcb051b6f7b0f07398253360e82693a26b748f6d9174b20",
+    "scripts/native-fixtures.mjs": "7ecd1480aab31d96346616df1ea0aafa6e8f09b2ed3eaa6982eadab8a0678157",
+    "scripts/native-verify.mjs": "66a60ba9eb08632e421a600f666cc7f4ce07650ea049dea1aec9361e4acd8075",
+    "scripts/verify-retirement.py": "2e94ecadfbf4b443bef4a97786aff3aeff73d9983c62dc2e034fe474be14d25d",
+    "scripts/verify-workbench.mjs": "9375805f48be7bef80dfd970e95cbabe8c8495b56ad68a098e64c9e2d2dc9cfd",
+    "scripts/workbench-authoring-cases.mjs": "5d07e655b2d3621379608eff4552aad6d64341d51426d745f1305e41ff791927",
+    "scripts/workbench-behavior-cases.mjs": "618bdafc52f1fec084a9800e3b5cf6f150c4dba97bba9bc3757e0b0235ecb0c6",
+    "scripts/workbench-chrome-cases.mjs": "c03e8ba4e2e8534d8f8775bfc6c50b029fc37440e41ebfaaa30688ec22196ccf",
+    "scripts/workbench-completion-cases.mjs": "76755d14b561ae689d2b23a295abfa66d27c1431e11ec3f9632ccfe047baba4b",
+    "scripts/workbench-composition-cases.mjs": "047ee54fb6b0801777ba253ca41e3973e6597a056ace00f12d4cfdd5391a0d47",
+    "scripts/workbench-policy-cases.mjs": "c27b4a38b1d85e124931da4f166d6ed05bef922627de5e99f6324ccb1674de84"
+  },
+  "localGates": {
+    "documentation": "retirement/reference and Foundation checks with negative cases",
+    "check": "187 source files, 20 negative cases; strict TypeScript",
+    "unitTests": {
+      "passed": 452,
+      "failed": 0,
+      "skipped": 0
+    },
+    "additionalCoreReview": {
+      "passed": 29,
+      "scope": "composition and command-service transition regression"
+    },
+    "build": {
+      "inputs": 177
+    },
+    "browserStorage": "PASSED",
+    "studio": "PASSED",
+    "workbench": {
+      "status": "PASSED",
+      "cases": {
+        "create": {
+          "components": 3,
+          "saved": true,
+          "elapsedMs": 1921
+        },
+        "typedToken": {
+          "finiteInputRejected": true,
+          "exactInvalidBufferRetainedAfterBlurAndNavigation": true,
+          "previewDoesNotCommit": true,
+          "reviewUndoRedo": true,
+          "elapsedMs": 5845
+        },
+        "aliasAndClassification": {
+          "sameTypeAlias": true,
+          "resolvedValue": "12 px",
+          "twoTokenBulkClassification": true,
+          "oneReview": true,
+          "browserComposition": true,
+          "elapsedMs": 9900
+        },
+        "themes": {
+          "axisWithTwoContexts": true,
+          "namedSet": true,
+          "explicitOverride": true,
+          "cleanContextBufferTracksUndoRedo": true,
+          "namedSetComparison": true,
+          "elapsedMs": 22370
+        },
+        "catalogSimulation": {
+          "nativeCheckboxClick": true,
+          "checkedChangeRequest": true,
+          "authoredDefaultUnchanged": true,
+          "exitRunResetsTransientState": true,
+          "elapsedMs": 29733
+        },
+        "libraryAndCanvas": {
+          "addedCatalogId": "catalog.checkbox",
+          "components": 4,
+          "zoomAndPanDoNotCommit": true,
+          "selectedFrameMove": true,
+          "frameReviewUndoRedo": true,
+          "elapsedMs": 44322
+        },
+        "dirtyManagement": {
+          "duplicateAndDeleteBlocked": true,
+          "crossPanelBulkDeleteBlocked": true,
+          "navigationPreservesDraft": true,
+          "explicitResetRestoresSource": true,
+          "elapsedMs": 45737
+        },
+        "hexEditing": {
+          "partialInputPreserved": true,
+          "invalidApplyBlocked": true,
+          "reviewedColorUndoRedo": true,
+          "elapsedMs": 65033
+        },
+        "sourceBundle": {
+          "downloaded": true,
+          "containsAuthoredTokenAndTheme": true,
+          "elapsedMs": 67734
+        },
+        "processRestart": {
+          "dedicatedProfile": true,
+          "ordinaryBrowserShutdown": true,
+          "shutdownElapsedMs": 149,
+          "tokenAndContextValue": true,
+          "catalogComponent": true,
+          "localeAndAppearance": true,
+          "elapsedMs": 75251
+        },
+        "starterWorkspace": {
+          "domains": 11,
+          "allTokensClassified": true,
+          "semanticFilter": true,
+          "contextualDependencies": true,
+          "distinguishableDesignPropertyUses": true,
+          "usagePartNavigation": true,
+          "themeWorkspace": true,
+          "elapsedMs": 80087
+        },
+        "directReview": {
+          "pendingTypedBindingFlushed": true,
+          "reviewedShadowVisible": true,
+          "elapsedMs": 84965
+        },
+        "blockedInspectorRecovery": {
+          "invalidTextRetained": true,
+          "resetRestoresLastGoodValue": true,
+          "commonReviewRecovered": true,
+          "elapsedMs": 88255
+        },
+        "trackpadGesture": {
+          "controlWheelZoomsCanvas": true,
+          "browserPageScaleUnchanged": true,
+          "projectRevisionUnchanged": true,
+          "physicalHardware": "unverified",
+          "elapsedMs": 88320
+        },
+        "motionAuthoring": {
+          "typedTrackReviewed": true,
+          "actualWebAnimation": true,
+          "pauseAndReset": true,
+          "elapsedMs": 93457
+        },
+        "responsiveAppearance": {
+          "desktopWidths": [
+            1440,
+            1312
+          ],
+          "mobileWidth": 390,
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "documentOverflow": false,
+          "elapsedMs": 94266
+        },
+        "materialAtlas": {
+          "types": 13,
+          "naturalScales": true,
+          "selectionSurvivesListSwitch": true,
+          "readonlyBrowsing": true,
+          "elapsedMs": 94935
+        },
+        "materialMotion": {
+          "inheritedReducedMotion": false,
+          "explicitPreferenceCases": true,
+          "tokenDrivenPlayback": true,
+          "controlledDocumentClock": true,
+          "nativeSeekingMovesSpecimen": true,
+          "cancelsOnReducedMotion": true,
+          "noSourceEdit": true,
+          "elapsedMs": 95634
+        },
+        "collapsedDraftRecovery": {
+          "detailsRevealed": true,
+          "invalidControlFocused": true,
+          "bothMotionPreferences": true,
+          "resetPreservesSource": true,
+          "elapsedMs": 97567
+        },
+        "compactGlassControls": {
+          "visibleDropdownKeyboardAndPointer": true,
+          "typeahead": true,
+          "escapeAndOutsideDismissal": true,
+          "tabCommit": true,
+          "contextualCreation": true,
+          "contextualReentry": true,
+          "squareColorSurfaces": true,
+          "localTokenLabels": true,
+          "stickyNavigation": true,
+          "neutralShades": true,
+          "geist": true,
+          "navHeight": 36,
+          "footerHeight": 28,
+          "elapsedMs": 99236
+        },
+        "bindingPurposeFilters": {
+          "sameTypeDomainsSeparated": {
+            "borderRadius": 12,
+            "fontSize": 8,
+            "borderWidth": 3,
+            "opacity": 8
+          },
+          "extendedLineHeight": 3,
+          "projectPreserved": true,
+          "elapsedMs": 99718
+        },
+        "panelVisibility": {
+          "independentPanels": true,
+          "releasedCanvasWidth": true,
+          "hiddenDraftPreserved": true,
+          "recoveryReopensInspector": true,
+          "persistedPreferences": true,
+          "mobileNavigation": true,
+          "opticalRadii": [
+            8,
+            12
+          ],
+          "objectRowGap": 2,
+          "flatHeaderFooter": true,
+          "elapsedMs": 101356
+        },
+        "foundationBlueprints": {
+          "singleDomainBlueprints": 11,
+          "brandSwatchesOneRow": 10,
+          "selectedThemeEdges": true,
+          "sharedRulers": [
+            "Spacing",
+            "Sizing"
+          ],
+          "actualTypography": {
+            "size": "40px",
+            "weight": "600",
+            "lineHeight": "50px"
+          },
+          "borderRows": true,
+          "openShadowPlane": true,
+          "reducedMotion": true,
+          "sourceUnchanged": true,
+          "elapsedMs": 103150
+        },
+        "blueprintChrome": {
+          "domainsInitiallyCollapsed": 11,
+          "searchRevealsMatches": true,
+          "domainPrefixOmitted": true,
+          "keyboardAndPointerResize": true,
+          "persistedWidth": 253,
+          "collapsePreservesWidth": true,
+          "nativeScrollbarPointerAndKeyboard": true,
+          "transparentTrack": true,
+          "noNativeGutter": true,
+          "activeDockForeground": {
+            "button": "rgb(21, 32, 9)",
+            "label": "rgb(21, 32, 9)",
+            "icon": "rgb(21, 32, 9)"
+          },
+          "modeHoverTooltip": true,
+          "projectPreserved": true,
+          "elapsedMs": 108200
+        },
+        "studioSliderAuthoring": {
+          "cleanMountAndFocus": true,
+          "opacityRadiusAndDurationHomeEnd": true,
+          "centeredMinMidMax": true,
+          "compactSliderGeometry": [
+            {
+              "name": "appearance-opacity-value",
+              "width": 96,
+              "rangeWidth": 80,
+              "centerErrorX": 0,
+              "centerErrorY": 0,
+              "overflow": 0,
+              "precisionBelow": true,
+              "precisionPadding": "0px",
+              "precisionBorder": "0px"
+            },
+            {
+              "name": "appearance-borderRadius-value",
+              "width": 96,
+              "rangeWidth": 80,
+              "centerErrorX": 0,
+              "centerErrorY": 0,
+              "overflow": 0,
+              "precisionBelow": true,
+              "precisionPadding": "0px",
+              "precisionBorder": "0px"
+            },
+            {
+              "name": "motion-duration",
+              "width": 96,
+              "rangeWidth": 80,
+              "centerErrorX": 0,
+              "centerErrorY": 0,
+              "overflow": 0,
+              "precisionBelow": true,
+              "precisionPadding": "0px",
+              "precisionBorder": "0px"
+            }
+          ],
+          "precisionBeyondStep": true,
+          "invalidDraftRetainedAndBlocksReview": true,
+          "reviewedUndoRestoresBindingsAndValues": true,
+          "motionTrackPrecisionFlushesOnReview": true,
+          "motionTrackUndo": true,
+          "elapsedMs": 131290
+        },
+        "catalogBlueprints": {
+          "created": [
+            {
+              "catalogId": "catalog.checkbox",
+              "componentId": "browser-c004f01f-3e84-47ac-86e3-1ddffe92b1d9",
+              "name": "Checkbox",
+              "shape": "checkbox",
+              "parts": 4
+            },
+            {
+              "catalogId": "catalog.textinput",
+              "componentId": "browser-3d59eff2-40c9-4a7c-925d-c288a56b28c2",
+              "name": "TextInput",
+              "shape": "text-input",
+              "parts": 5
+            },
+            {
+              "catalogId": "catalog.card",
+              "componentId": "browser-32580f8c-c954-4fe1-89fb-34837b64378b",
+              "name": "Card",
+              "shape": "card",
+              "parts": 4
+            },
+            {
+              "catalogId": "catalog.calendar",
+              "componentId": "browser-0af3d372-b81f-4655-83c3-92d3fb3847c4",
+              "name": "Calendar",
+              "shape": "calendar",
+              "parts": 47
+            },
+            {
+              "catalogId": "catalog.tree",
+              "componentId": "browser-d3d90b4f-128b-4b6a-920f-aabb786b470e",
+              "name": "Tree",
+              "shape": "tree",
+              "parts": 6
+            },
+            {
+              "catalogId": "catalog.donutchart",
+              "componentId": "browser-45ff10a5-c66e-4305-9186-14709012f492",
+              "name": "DonutChart",
+              "shape": "donutchart",
+              "parts": 6
+            }
+          ],
+          "providerReferences": [
+            {
+              "catalogId": "catalog.checkbox",
+              "references": 4
+            },
+            {
+              "catalogId": "catalog.textinput",
+              "references": 1
+            },
+            {
+              "catalogId": "catalog.card",
+              "references": 2
+            },
+            {
+              "catalogId": "catalog.calendar",
+              "references": 3
+            },
+            {
+              "catalogId": "catalog.tree",
+              "references": 2
+            },
+            {
+              "catalogId": "catalog.donutchart",
+              "references": 1
+            }
+          ],
+          "rejectedCreationPreservesSource": true,
+          "reviewedComponentAndBothDesigns": true,
+          "canonicalIdentityAndSelectedName": true,
+          "distinctAuthoredRenderers": true,
+          "structuralPartIds": true,
+          "defaultFramesContainContent": true,
+          "defaultFramesDoNotOverlap": true,
+          "calendarWeekdaysOneRow": true,
+          "treeProjectThemeFrameBackdrop": true,
+          "transparentTreeAndButtonWrappers": true,
+          "reloadPreservesSourceAndRendering": true,
+          "elapsedMs": 272581
+        },
+        "dtcgReviewedImport": {
+          "nativeFileInput": true,
+          "originalProjectPreservedBeforeApply": true,
+          "reviewSaveUndoRedo": true,
+          "livePropertyAndComposite": true,
+          "metadataPreservesReferences": true,
+          "deprecation": true,
+          "invalidExpressionReset": true,
+          "elapsedMs": 287493
+        },
+        "dtcgResolverAndExchange": {
+          "suppliedFilesOnly": true,
+          "selectedContextApplied": true,
+          "exportModes": [
+            "references",
+            "resolved"
+          ],
+          "invalidSourceRecovery": true,
+          "prefixConflictRecovery": true,
+          "selectedTabVisibleOnResizeAndKeys": true,
+          "tabKeysPreserveParentScroll": true,
+          "desktopWidths": [
+            1600,
+            1312
+          ],
+          "mobileWidth": 390,
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "elapsedMs": 294486
+        },
+        "freeElements": {
+          "boxFrameText": true,
+          "pointerMoveAndResizeAtCanvasZoom": true,
+          "groupedReview": true,
+          "undoRedo": true,
+          "inlineTextSaveAndReload": true,
+          "elapsedMs": 320400
+        },
+        "componentInstances": {
+          "actualNativeCheckbox": true,
+          "sourceUnchangedByOverride": true,
+          "transientRunState": true,
+          "ownerSelection": true,
+          "staleSourceExplicitReview": true,
+          "overrideSurvivesRefreshAndReload": true,
+          "originalBytesPreserved": true,
+          "elapsedMs": 375161
+        },
+        "behaviorEditor": {
+          "createLocalState": true,
+          "typedTriggerConditionActions": true,
+          "requestPayloadTrace": true,
+          "repeatedSimulation": true,
+          "simulationPreservesSource": true,
+          "incompleteInputRecovery": true,
+          "reviewUndoReload": true,
+          "elapsedMs": 395989
+        },
+        "policyDraftAndAdvisory": {
+          "invalidDraftRetained": true,
+          "cancelLeavesSourceUnchanged": true,
+          "reviewedSaveReload": true,
+          "originalSourcePreserved": true,
+          "advisoryExportAllowed": true,
+          "exactComponentElementAndCategoryLocate": true,
+          "elapsedMs": 401990
+        },
+        "policyRequiredDeliveryAndRecovery": {
+          "stableRuleIdentity": true,
+          "allFourExportTargetsBlocked": true,
+          "sourceStillEditable": true,
+          "editCancelPreservesRequiredRule": true,
+          "reviewedDeletion": true,
+          "savedUndoRedoAndReload": true,
+          "originalSourcePreserved": true,
+          "exportRecoveredAfterRedo": true,
+          "elapsedMs": 420235
+        },
+        "architectureTemplates": {
+          "choices": 6,
+          "onboarding": true,
+          "selectionDoesNotMutate": true,
+          "emptySelectionBlocksApply": true,
+          "keyboardCheckbox": true,
+          "actualDarkAliasPreview": true,
+          "reviewedRadixSaveAndReload": true,
+          "domains": 11,
+          "elapsedMs": 425658
+        },
+        "componentComposer": {
+          "starts": 6,
+          "nativeButtonAndInputPreview": true,
+          "semanticArticlePreview": true,
+          "cancelPreservesSource": true,
+          "nameFeedsLivePreview": true,
+          "reviewedArticleSaveAndReload": true,
+          "elapsedMs": 436880
+        },
+        "elementAndContentAuthoring": {
+          "hierarchicalSelection": true,
+          "headingTagChangedToParagraph": true,
+          "htmlMappingSavedAndReloaded": true,
+          "contentAreaAddUpdateRemove": true,
+          "requiredAndMultiplicitySavedAndReloaded": true,
+          "sourceContractNotInstanceInjection": true,
+          "elapsedMs": 466557
+        },
+        "atomicBindingRepair": {
+          "incompatibleDocuments": 2,
+          "incompatibleSites": 3,
+          "distinctRuleContexts": true,
+          "noPartialCommit": true,
+          "cancelPreservesSource": true,
+          "reviewedAtomicRepair": true,
+          "survivesReload": true,
+          "elapsedMs": 471411
+        }
+      },
+      "elapsedMs": 471555
+    },
+    "targetConsumers": "PASSED: React typecheck/SSR/hydration and RN typecheck/Hermes bundles"
+  },
+  "evidenceLogs": {
+    "check": {
+      "path": "dist/evidence/editing-check.log",
+      "sha256": "80d96d5a47ba5c7b7d1157fcf1d641d1b4a32b3fc09c800c745bec096737d917"
+    },
+    "tests": {
+      "path": "dist/evidence/editing-tests.log",
+      "sha256": "51cd486794f5efbb485c7466605a8278c23ccbba09afc6d1947f46525e535e2e"
+    },
+    "build": {
+      "path": "dist/evidence/editing-build.log",
+      "sha256": "9566a58139b4215d4eb9842f56709b941d14dc7a46c053b0ed91739e705a8f18"
+    },
+    "browser": {
+      "path": "dist/evidence/editing-browser.log",
+      "sha256": "2956153f7a00108f11d958468983736ae080bda388020f3f03249b6a03c4d524"
+    },
+    "studio": {
+      "path": "dist/evidence/editing-studio.log",
+      "sha256": "37cc698cccb9a2bc6aa34ac76ab413f96a60436878fbba9fe666f509b53862d6"
+    },
+    "workbench": {
+      "path": "dist/evidence/editing-workbench.log",
+      "sha256": "3133233fcd0542df725078a00d24656b9b81093ec39da7c60b0b934ff8c1c11b"
+    },
+    "targets": {
+      "path": "dist/evidence/editing-targets.log",
+      "sha256": "c718a01dfeb89e60e4300bf4f455dcfdb38b6e16350aab457307b59fc87ad260"
+    }
+  },
+  "visualReview": "component-editing-finish-review.md",
+  "detector": {
+    "antiPatterns": 0,
+    "advisories": 1,
+    "disposition": "10px resize handle uses an intentional 2px optical corner"
+  },
+  "native": {
+    "local": "BLOCKED: no JDK/Android SDK/Swift/Xcode on this Windows host",
+    "ciWorkflow": ".github/workflows/native.yml",
+    "ciExecution": "Await the PR Native Runtime job artifacts; workflow existence is not evidence of execution."
+  },
+  "limitations": [
+    "Catalog-backed reusable definitions; legacy fixed starter profiles remain distinct.",
+    "Native custom composition, free HTML layout and authored behavior reject explicitly.",
+    "No rich text/assets, arbitrary scripts, approved policy exception lifecycle or full Foundation/Figma parity.",
+    "Physical trackpad, OS IME, touch and assistive-technology certification not claimed."
+  ]
+}

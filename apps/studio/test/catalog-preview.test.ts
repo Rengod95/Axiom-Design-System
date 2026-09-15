@@ -53,7 +53,7 @@ test("catalog source identity renders the actual control or selectable specializ
     const rendered = views.preview(`catalog.${name}`);
     assert.match(rendered.html, expected, name); assert.equal(rendered.after, rendered.before, name);
     assert.ok(rendered.html.includes(`data-catalog-id="catalog.${name}"`));
-    assert.match(rendered.html, /<dt>Variant<\/dt>/); assert.match(rendered.html, /<dt>Parts<\/dt>/);
+    assert.match(rendered.html, /<dt>Variant<\/dt>/); assert.match(rendered.html, /<dt>Elements<\/dt>/);
     if (getStudioCatalogRecipe(`catalog.${name}`)!.semantic.kind === "unsupported") {
       for (const part of rendered.parts) assert.ok(rendered.html.includes(`data-part-id="${part.id}"`), `${name} exposes authored ${part.role} selection`);
       assert.match(rendered.html, /dedicated interactions and target output are not yet supported/);

@@ -1,3 +1,5 @@
+import { catalogReactComposition } from "./catalog-react-composition.ts";
+import { catalogReactBehavior } from "./catalog-react-behavior.ts";
 import type { StudioComponent } from "../../ads-core/src/index.ts";
 import { componentSymbol } from "./generator-input.ts";
 import { catalogProps } from "./catalog-source-types.ts";
@@ -5,11 +7,12 @@ import { TargetError } from "./target-error.ts";
 import { TARGET_CODE } from "./constants.ts";
 
 /** Each closed semantic branch emits its actual native HTML/ARIA contract. */
-export function catalogReactComponent(component: StudioComponent): string {
+export function catalogReactComponent(component: StudioComponent, components: StudioComponent[] = []): string {
   const name = componentSymbol(component), catalog = component.catalog!, semantic = catalog.semantic, api = catalogProps(component, name);
   const root = component.parts.find(part => part.role === "root")!;
   const part = (role: string): string => JSON.stringify(component.parts.find(part => part.role === role)?.id ?? root.id);
-  const attrs = `className=${JSON.stringify(name)} data-part=${part("root")} data-variant={variant}`;
+  const composition = catalogReactComposition(component, components), authoredBehavior = catalogReactBehavior(component);
+  const attrs = `className=${JSON.stringify(name)} data-part=${part("root")} data-variant={variant} ${authoredBehavior.attributes}`;
   const label = `<label htmlFor={id} data-part=${part("label")}>{label}</label>`;
   const description = `<span id={id+"-description"} data-part=${part("description")}>{description}</span>`;
   const body = `<div data-part=${part("body")}>{body}</div>`;
@@ -57,8 +60,10 @@ export function catalogReactComponent(component: StudioComponent): string {
     case "layout": {
       const render = (partId: string): string => {
         const current = component.parts.find(part => part.id === partId)!;
-        const text = current.text === undefined ? current.role === "body" ? `{body}` : "" : `{${JSON.stringify(current.text)}}`;
-        return `<div ${current.role === "root" ? attrs : `data-part=${JSON.stringify(current.id)}`}>${text}${(component.web.layout[current.id]?.childOrder ?? []).map(render).join("")}</div>`;
+        const slot = catalog.slots.find(slot => slot.ownerPartRef === current.id);
+        const text = current.text === undefined ? slot ? `{${current.role}}` : "" : `{${JSON.stringify(current.text)}}`;
+        const tag = component.web.elements?.[current.id] ?? "div";
+        return `<${tag} ${current.role === "root" ? attrs : `data-part=${JSON.stringify(current.id)}`}>${text}${(component.web.layout[current.id]?.childOrder ?? []).map(render).join("")}${composition.render(current.id)}</${tag}>`;
       };
       output = render(component.parts.find(part => part.role === "root")!.id); break;
     }
@@ -67,6 +72,6 @@ export function catalogReactComponent(component: StudioComponent): string {
     case "toolbar": output = `<div ${attrs} role=${JSON.stringify(semantic.role)} aria-label={label} onKeyDown={event=>catalogMoveFocus(event,"button")}>${body}</div>`; break;
     default: throw new TargetError(TARGET_CODE.UNSUPPORTED, `React has no catalog realization for ${semantic.kind}`, component.id);
   }
-  const required = catalog.slots.some(slot => slot.min !== 0 && component.parts.some(part => part.id === slot.ownerPartRef && part.role === "body"));
-  return `${api.declaration}\nexport function ${name}(props:${name}Props) { ${api.destructure} const id=React.useId(); ${hooks} ${required ? 'if(body==null)throw new Error("This component requires body content");' : ""} return ${output}; }\n`;
+  const required = catalog.slots.some(slot => slot.min !== 0 && !(component.instances ?? []).some(instance => instance.ownerPartRef === slot.ownerPartRef) && component.parts.some(part => part.id === slot.ownerPartRef && part.role === "body"));
+  return `${api.declaration}\nexport function ${name}(props:${name}Props) { ${api.destructure} ${composition.hooks} ${authoredBehavior.hooks} const id=React.useId(); ${hooks} ${required ? 'if(body==null)throw new Error("This component requires body content");' : ""} return ${output}; }\n`;
 }

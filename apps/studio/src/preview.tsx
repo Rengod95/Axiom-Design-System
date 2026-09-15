@@ -7,7 +7,9 @@ import type { Locale } from "./locales.ts";
 import { closeActionSize, inheritPreviewText } from "./preview-style.ts";
 import { CatalogPreview } from "./catalog-preview.tsx";
 
-interface Props { components: StudioComponent[]; category: StudioCategory; mode: "edit" | "run"; selectedPart: string | null; onSelect(componentId: string, partId: string): void; locale: Locale }
+interface Props {
+  allComponents?: StudioComponent[];
+  onElementEdit?: (componentId: string, edits: import("../../../modules/ads-core/src/index.ts").StudioComponentEdit[]) => boolean; components: StudioComponent[]; category: StudioCategory; mode: "edit" | "run"; selectedPart: string | null; onSelect(componentId: string, partId: string): void; locale: Locale }
 const partFor = (component: StudioComponent, role: StudioPart["role"]): StudioPart | undefined => component.parts.find(part => part.role === role);
 
 function ComponentPreview({ component, category, mode, selectedPart, onSelect, locale }: Omit<Props, "components"> & { component: StudioComponent }) {
