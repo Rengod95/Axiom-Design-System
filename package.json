@@ -18,7 +18,8 @@
     "studio": "node scripts/build-studio.mjs && node scripts/serve-studio.mjs",
     "delivery": "node apps/delivery/src/main.ts",
     "test:studio": "node scripts/verify-studio.mjs",
-    "test:targets": "node scripts/verify-targets.mjs"
+    "test:targets": "node scripts/verify-targets.mjs",
+    "test:workbench": "node scripts/verify-workbench.mjs"
   },
   "devDependencies": {
     "@types/node": "24.13.4",
@@ -31,6 +32,8 @@
   },
   "dependencies": {
     "@noble/hashes": "2.4.0",
+    "@sun-typeface/suit": "2.0.5",
+    "geist": "1.7.2",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   }

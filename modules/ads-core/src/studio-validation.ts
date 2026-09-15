@@ -1,3 +1,4 @@
+import { inspectStudioComposition, inspectStudioCompositionGraph } from "./studio-composition.ts";
 import type { AdsDocument, Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
 import type { StudioArchetype, StudioDocumentReport, StudioPartRole } from "./studio-contracts.ts";
 import { canonicalJson, parseJson } from "./canonical-json.ts";
@@ -6,8 +7,12 @@ import { inspectDocumentDomain } from "./domain-validation.ts";
 import { inspectFoundationDocument } from "./foundation-validation.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
 import { projectStudioDesign } from "./studio-presentation.ts";
+import { resolveStudioMotion } from "./studio-motion.ts";
+import { getStudioCatalogRecipe } from "./studio-catalog.ts";
+import { catalogIdentity } from "./studio-catalog-validation.ts";
 import { MAX_DOCUMENT_BYTES, MAX_STRUCTURE_DIAGNOSTICS, STUDIO_PROFILE } from "./constants.ts";
 import { STUDIO_ARCHETYPES, STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_ERROR, STUDIO_MAX_COMPONENTS, STUDIO_MAX_DIMENSION, STUDIO_MAX_RULES, STUDIO_MAX_THEME_SETS, STUDIO_PART_ROLES, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE, STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
+import { hasCatalogProfile, inspectCatalogComponent, inspectCatalogLayout, inspectCatalogPin, inspectEditorFrame } from "./studio-catalog-validation.ts";
 
 const ENVELOPE_KEYS = ["id", "kind", "schemaVersion", "revision", "name", "metadata", "extensions", "studioProfile"];
 const SAMPLE_FIELDS = ["label", "title", "body", "actionLabel", "closeLabel"];
@@ -22,15 +27,18 @@ function boundedNumber(value: unknown, maximum: number, minimum = 0): value is n
 
 /** Resolve only the exact builtin archetype pin, never a similarly named external registry entry. */
 export function studioArchetype(document: JsonObject): StudioArchetype | null {
+  if (hasCatalogProfile(document)) return "catalog";
   if (!isObject(document.archetypeRef)) return null;
   for (const [name, id] of Object.entries(STUDIO_ARCHETYPES)) if (same(document.archetypeRef, { id, expectedKind: "archetype", version: STUDIO_ARCHETYPE_VERSION })) return name as StudioArchetype;
   return null;
 }
 
 function componentErrors(document: JsonObject, add: (path: string, message: string) => void): void {
+  inspectStudioComposition(document, add);
+  if (hasCatalogProfile(document)) { inspectCatalogComponent(document, add); return; }
   if (!keys(document, [...ENVELOPE_KEYS, "purpose", "archetypeRef", "traitBindings", "publicContract", "parts", "slots", "behavior", "accessibility", "motion", "requirements", "studioMotion", "previewContent"])) add("", "Unknown executable component fields require a supported profile.");
   const archetype = studioArchetype(document);
-  if (!archetype) { add("/archetypeRef", "Only the pinned Button, plain Card and controlled Toast archetypes are executable."); return; }
+  if (!archetype || archetype === "catalog") { add("/archetypeRef", "Only pinned builtin or explicit catalog authoring archetypes are accepted."); return; }
   const roles = STUDIO_PART_ROLES[archetype];
   const parts = objects(document.parts);
   const byRole = new Map(parts.map(part => [part.studioRole, part]));
@@ -86,17 +94,22 @@ function isDimensionSource(value: unknown): boolean {
     || keys(value, ["value", "unit"]) && value.unit === "px" && boundedNumber(value.value, STUDIO_MAX_DIMENSION));
 }
 function designErrors(document: JsonObject, add: (path: string, message: string) => void): void {
-  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides"])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  const catalog = hasCatalogProfile(document);
+  if (catalog) inspectCatalogPin(document, add);
+  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides", "editorFrame", ...(catalog ? ["catalogProfile"] : [])])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  inspectEditorFrame(document.editorFrame, add);
   for (const [field, kind] of [["foundationRef", "foundation"], ["componentRef", "component"]] as const) {
     const ref = document[field];
     if (!isObject(ref) || ref.expectedKind !== kind || !isValidId(ref.id) || !keys(ref, ["id", "expectedKind", "revision"]) || ref.revision !== undefined && !isValidId(ref.revision)) add(`/${field}`, `A design needs an explicit local ${kind} with an optional valid revision pin.`);
   }
   if (!STUDIO_CATEGORIES.some(category => category === document.category) || !empty(document.targetOverrides)) add("/category", "Use an explicit Web/Mobile design without unsupported target overrides.");
-  for (const [index, mapping] of objects(document.nodeMappings).entries()) if (!keys(mapping, ["partRef", "role"]) || !isValidId(mapping.partRef)
-    || typeof mapping.role !== "string" || !["root", "label", "header", "body", "actions", "close"].includes(mapping.role)) add(`/nodeMappings/${index}`, "Invalid builtin part mapping.");
+  for (const [index, mapping] of objects(document.nodeMappings).entries()) if (!keys(mapping, ["partRef", "role", ...(catalog ? ["element"] : [])]) || mapping.element !== undefined && (typeof mapping.element !== "string" || !["div", "section", "article", "header", "footer", "span", "p", "h1", "h2", "h3", "h4", "h5", "h6", "code"].includes(String(mapping.element))) || !isValidId(mapping.partRef)
+    || typeof mapping.role !== "string" || (catalog ? !/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(mapping.role) : !["root", "label", "header", "body", "actions", "close"].includes(mapping.role))) add(`/nodeMappings/${index}`, "Invalid semantic part mapping.");
   for (const [index, layout] of objects(document.layout).entries()) {
-    if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder"]) || layout.mode !== "stack" || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
-      || !isObject(layout.size) || Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/token dimensions is executable.");
+    if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder", ...(catalog ? ["alignment", "position"] : [])]) || !(layout.mode === "stack" || catalog && layout.mode === "free") || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
+      || !isObject(layout.size) || !catalog && Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/token dimensions is executable.");
+    if (layout.position !== undefined && (!isObject(layout.position) || !keys(layout.position, ["x", "y"]) || !boundedNumber(layout.position.x, 16384, -16384) || !boundedNumber(layout.position.y, 16384, -16384))) add(`/layout/${index}/position`, "Position requires finite x/y coordinates between -16384 and 16384.");
+    if (catalog) inspectCatalogLayout(layout, `/layout/${index}`, add);
   }
   const rules = objects(document.appearance);
   if (rules.length > STUDIO_MAX_RULES) add("/appearance", "Too many appearance rules for the bounded profile.");
@@ -151,23 +164,38 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
   for (const entry of foundations) if (inspectStudioDocument(entry.document).valid) {
     resolutions.set(entry.document.id, [{}, ...objects(entry.document.themeSets).map(set => ({ themeSetId: String(set.id) }))].map(selection => resolveFoundationTokens(entry.document, selection)));
   }
+  for (const component of components) if (hasCatalogProfile(component) && inspectStudioDocument(component).valid) {
+    for (const resolved of resolutions.get(foundations[0]?.document.id ?? "") ?? []) {
+      if (diagnostics.length >= MAX_STRUCTURE_DIAGNOSTICS) break;
+      if (resolved.valid) resolveStudioMotion(component, resolved, diagnostics);
+    }
+  }
   for (const [id, entry] of Object.entries(documents)) if (entry.validationProfile === STUDIO_PROFILE && entry.document.id !== id) add(id, "/id", "Project record key must match the stable document ID.");
   for (const { document } of entries.filter(entry => entry.document.kind === "design")) {
     const componentRef = document.componentRef, foundationRef = document.foundationRef;
     const owner = isObject(componentRef) && typeof componentRef.id === "string" ? documents[componentRef.id] : undefined;
     const foundation = isObject(foundationRef) && typeof foundationRef.id === "string" ? documents[foundationRef.id] : undefined;
     if (!owner || owner.validationProfile !== STUDIO_PROFILE || owner.document.kind !== "component") { add(document.id, "/componentRef", "Design owner must be a Studio component."); continue; }
+    if (hasCatalogProfile(document) !== hasCatalogProfile(owner.document) || hasCatalogProfile(document) && !same(document.catalogProfile, owner.document.catalogProfile)) add(document.id, "/catalogProfile", "Design and component must use the same catalog authoring profile.");
     if (!foundation || foundation.validationProfile !== STUDIO_PROFILE || foundation.document.kind !== "foundation") add(document.id, "/foundationRef", "Design Foundation must have an executable Studio policy.");
     for (const [field, ref, entry, kind] of [["componentRef", componentRef, owner, "component"], ["foundationRef", foundationRef, foundation, "foundation"]] as const) {
       if (!isObject(ref) || !entry || ref.expectedKind !== kind || ref.id !== entry.document.id || !keys(ref, ["id", "expectedKind", "revision"]) || ref.revision !== undefined && ref.revision !== entry.document.revision) add(document.id, `/${field}`, "Local reference kind, identity and optional revision pin must match the adopted document.");
     }
     const parts = objects(owner.document.parts), mappings = objects(document.nodeMappings), layouts = objects(document.layout);
     const ids = parts.map(part => part.id);
+    for (const [index, mapping] of mappings.entries()) {
+      if (mapping.element === undefined) continue;
+      if (getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout") add(document.id, `/nodeMappings/${index}/element`, "Only custom layout definitions support explicit HTML element mapping.");
+      const phrasing = new Set(["span", "p", "h1", "h2", "h3", "h4", "h5", "h6", "code"]);
+      if (phrasing.has(String(mapping.element)) && parts.some(child => child.parent === mapping.partRef && !["span", "code"].includes(String(mappings.find(item => item.partRef === child.id)?.element)))) add(document.id, `/nodeMappings/${index}/element`, "Text and heading elements may contain only span or code elements. Use a frame for block children.");
+      if (mapping.role === "body" && objects(owner.document.slots).some(slot => slot.ownerPartRef === mapping.partRef) && phrasing.has(String(mapping.element))) add(document.id, `/nodeMappings/${index}/element`, "A content area accepts arbitrary content and needs a container element.");
+    }
     if (mappings.length !== parts.length || new Set(mappings.map(item => item.partRef)).size !== parts.length || mappings.some(item => !ids.includes(item.partRef)
       || parts.find(part => part.id === item.partRef)?.studioRole !== item.role)) add(document.id, "/nodeMappings", "Every logical part needs one matching design mapping.");
     if (layouts.length !== parts.length || new Set(layouts.map(item => item.targetPartRef)).size !== parts.length || layouts.some(item => !ids.includes(item.targetPartRef))) add(document.id, "/layout", "Every logical part needs one layout declaration.");
     for (const [index, layout] of layouts.entries()) {
       const part = parts.find(item => item.id === layout.targetPartRef);
+      if ((layout.mode === "free" || layout.position !== undefined) && getStudioCatalogRecipe(catalogIdentity(owner.document) ?? "")?.semantic.kind !== "layout") add(document.id, `/layout/${index}`, "Free positioning requires a custom layout definition.");
       const expected = parts.filter(item => item.parent === part?.id).map(item => item.id);
       if (!same(layout.childOrder, expected)) add(document.id, `/layout/${index}/childOrder`, "Child order must preserve the pinned component reading order.");
     }
@@ -179,15 +207,16 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
         diagnostics.push(...resolved.diagnostics.filter(item => item.severity === "error"));
         if (resolved.valid) projectStudioDesign(document, { id: owner.document.id, archetype, parts: studioParts(owner.document) }, resolved, diagnostics, Object.create(null));
       }
-      if (archetype !== "button" && objects(document.appearance).some(rule => isObject(rule.states) && Object.keys(rule.states).length)) add(document.id, "/appearance", "Only Button has pressed/disabled states in the builtin profile.");
+      if (archetype !== "button" && archetype !== "catalog" && objects(document.appearance).some(rule => isObject(rule.states) && Object.keys(rule.states).length)) add(document.id, "/appearance", "Only Button has pressed/disabled states in the builtin profile.");
     }
   }
   for (const component of components) for (const category of STUDIO_CATEGORIES) {
     const matches = entries.filter(entry => entry.document.kind === "design" && entry.document.category === category && isObject(entry.document.componentRef) && entry.document.componentRef.id === component.id);
     if (matches.length !== 1) add(component.id, "", `A Studio component requires exactly one ${category} design.`);
   }
+  diagnostics.push(...inspectStudioCompositionGraph(documents, projectId));
   return diagnostics.slice(0, MAX_STRUCTURE_DIAGNOSTICS);
 }
 
 /** Read validated component roles without tying stable IDs to presentation names. */
-export function studioParts(document: AdsDocument) { return objects(document.parts).map(part => ({ id: String(part.id), name: String(part.name), parent: part.parent as string | null, role: part.studioRole as StudioPartRole })); }
+export function studioParts(document: AdsDocument) { return objects(document.parts).map(part => ({ id: String(part.id), name: String(part.name), parent: part.parent as string | null, role: part.studioRole as StudioPartRole, ...(typeof part.studioText === "string" ? { text: part.studioText } : {}) })); }

@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash, randomUUID } from "node:crypto";
-import { CommandService, MemoryStore, canonicalJson } from "../../../modules/ads-core/src/index.ts";
-import type { KernelServices, KernelState, StoreUpdate, TransactionalStore } from "../../../modules/ads-core/src/index.ts";
+import { CommandService, MemoryStore, canonicalJson, inspectStudioTokenBindingIssues } from "../../../modules/ads-core/src/index.ts";
+import type { JsonObject, KernelServices, KernelState, StoreUpdate, TransactionalStore } from "../../../modules/ads-core/src/index.ts";
 import { StudioController, STUDIO_PRINCIPAL } from "../src/controller.ts";
 
 const services: KernelServices = { createId: randomUUID, digest: text => createHash("sha256").update(text).digest("hex") };
@@ -16,6 +16,31 @@ async function setup(store: TransactionalStore = new MemoryStore()) {
 }
 const tokenId = (controller: StudioController) => controller.getSnapshot().projection!.foundation.tokens.find(token => token.type === "color" && token.aliasChain.length === 0)!.id;
 async function apply(controller: StudioController) { await controller.review(); assert.ok(controller.getSnapshot().candidate, JSON.stringify(controller.getSnapshot().diagnostics)); await controller.approve(); assert.equal(controller.getSnapshot().error, null, JSON.stringify(controller.getSnapshot().diagnostics)); }
+
+test("saved type-only bindings across documents recover through one atomic reviewed controller plan", async () => {
+  const { store, service } = await setup();
+  await store.transact(state => {
+    const project = state!.project!, foundation = project.documents["foundation.system"]!.document;
+    foundation.domains = [{ id: "repair.spacing", name: "Spacing", bindingCategory: "spacing", allowedTypes: ["dimension"] }, { id: "repair.radius", name: "Radius", bindingCategory: "radius", allowedTypes: ["dimension"] }];
+    const tokens = foundation.tokens as JsonObject[]; tokens.find(item => item.id === "token.gap")!.domain = "repair.spacing"; tokens.find(item => item.id === "token.radius")!.domain = "repair.radius";
+    for (const kind of ["button", "card"]) ((project.documents[`design.${kind}.web`]!.document.appearance as JsonObject[])[0]!.declarations as JsonObject).borderRadius = { tokenRef: "token.gap" };
+    for (const entry of Object.values(project.documents)) entry.currentText = canonicalJson(entry.document);
+    return { state: state!, changed: true, value: undefined };
+  });
+  const controller = new StudioController(service, services); await controller.connect();
+  const baseline = (await service.getProject(STUDIO_PRINCIPAL))!, issues = inspectStudioTokenBindingIssues(baseline);
+  assert.equal(controller.getSnapshot().projection?.valid, false); assert.equal(issues.length, 2);
+  assert.equal(canonicalJson(await service.getProject(STUDIO_PRINCIPAL)), canonicalJson(baseline));
+  const choices = issues.map(issue => ({ documentId: issue.documentId, path: issue.path, tokenId: issue.tokenId, replacementTokenId: "token.radius" }));
+  assert.equal(controller.repairTokenBindings(choices.slice(0, 1)), false); assert.equal(controller.getSnapshot().plan, null); assert.equal(controller.getSnapshot().candidate, null);
+  assert.equal(controller.repairTokenBindings(choices), true); assert.equal(controller.getSnapshot().plan?.updates.length, 2); assert.equal(controller.getSnapshot().projection?.valid, true);
+  assert.equal(canonicalJson(await service.getProject(STUDIO_PRINCIPAL)), canonicalJson(baseline), "repair choices are not saved without review");
+  await apply(controller);
+  const adopted = (await service.getProject(STUDIO_PRINCIPAL))!;
+  assert.notEqual(adopted.revision, baseline.revision); assert.equal(inspectStudioTokenBindingIssues(adopted).length, 0);
+  for (const [id, entry] of Object.entries(adopted.documents)) assert.equal(entry.originalText, baseline.documents[id]!.originalText);
+  const reopened = new StudioController(service, services); await reopened.connect(); assert.equal(reopened.getSnapshot().projection?.valid, true);
+});
 
 test("token preview, reviewed save, controller reconnect and one Undo retain original bytes", async () => {
   const { controller, service } = await setup();

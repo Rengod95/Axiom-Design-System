@@ -1,6 +1,7 @@
 import type { StudioComponent, StudioProjection, StudioStyle } from "../../ads-core/src/index.ts";
 import type { SourceFile } from "./contracts.ts";
 import { colorChannels, componentSymbol, sourceLiteral } from "./generator-input.ts";
+import { CATALOG_COMPOSE_TYPES, catalogComposeComponent } from "./catalog-native-generator.ts";
 
 function composeValue(value: string | number): string {
   if (typeof value === "number") return `${value}f`;
@@ -18,6 +19,7 @@ function composeComponent(component: StudioComponent): string {
   const layout = component.mobile.layout[root.id]; const horizontal = layout?.axis === "horizontal"; const gap = layout?.gap ?? 0;
   const style = `private fun ${name}Visual(id: String, variant: AxiomVariant = AxiomVariant.Filled, disabled: Boolean = false, pressed: Boolean = false): AxiomVisual {\n var visual = AxiomVisual()\n val state = (if (variant == AxiomVariant.Outlined) "outlined" else "filled") + (if (disabled) "-disabled" else if (pressed) "-pressed" else "")\n when (id) {\n${component.parts.map((item) => { const values = component.mobile.parts[item.id]!; const layout = component.mobile.layout[item.id]; return `${sourceLiteral(item.id,"kotlin")} -> {\n when (state) {\n${Object.entries(values.combinations).map(([key, style]) => `"${key}" -> { ${assignments(style)} }`).join("\n")}\n }\n${layout ? ` visual = visual.copy(padding = ${layout.padding}f, minHeight = ${layout.minHeight}f)` : ""}\n }`; }).join("\n")}\n }\n return visual\n}\n`;
   const variant = component.defaults.variant === "outlined" ? "Outlined" : "Filled";
+  if (component.catalog) return catalogComposeComponent(component, style);
   if (component.archetype === "button") return `${style}
 @Composable
 public fun ${name}(onActivate: () -> Unit, label: String = ${sourceLiteral(component.sampleContent.label,"kotlin")}, disabled: Boolean = ${component.defaults.disabled}, variant: AxiomVariant = AxiomVariant.${variant}) {
@@ -68,18 +70,26 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.liveRegion
@@ -96,6 +106,7 @@ private class AxiomToastQueue { val entries = mutableStateListOf<String>(); fun 
 private val LocalAxiomToastHost = staticCompositionLocalOf<AxiomToastQueue?> { null }
 @Composable public fun AxiomToastHost(content: @Composable () -> Unit) { val queue = remember { AxiomToastQueue() }; CompositionLocalProvider(LocalAxiomToastHost provides queue) { Box { content() } } }
 @Composable public fun AxiomThemeProvider(content: @Composable () -> Unit) { MaterialTheme { content() } }
+${projection.components.some(component => component.catalog) ? CATALOG_COMPOSE_TYPES : ""}
 ${projection.components.map(composeComponent).join("\n")}
 ` }];
 }

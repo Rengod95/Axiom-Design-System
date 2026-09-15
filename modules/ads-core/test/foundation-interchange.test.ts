@@ -30,9 +30,9 @@ test("imports flat explicit types and aliases while preserving exact original by
 
 test("rejects unsupported exchange atomically and keeps raw sources available", () => {
   const unsupported = [
-    { group: { nested: { $type: "number", $value: 1 } } },
-    { $type: "number", base: { $value: 1 } },
-    { base: { $type: "number", $value: 1, $deprecated: true } },
+    { group: { nested: { $type: "unknown", $value: 1 } } },
+    { $type: "unknown", base: { $value: 1 } },
+    { base: { $type: "number", $value: 1, $deprecated: 1 } },
     { base: { $type: "number", $value: { $ref: "#/other/$value" } } },
     { base: { $type: "number", $value: 1 }, alias: { $type: "number", $value: "{missing}" } },
     { sets: {}, modifiers: {}, resolutionOrder: [] },
@@ -65,7 +65,8 @@ test("authored exchange refuses contextual flattening, unknown data and name col
   (collision.tokens as JsonObject[])[1]!.name = "one";
   assert.equal(exportFoundationDtcg(collision).valid, false);
   const dotted = foundation(); (dotted.tokens as JsonObject[])[0]!.name = "base.value";
-  assert.equal(exportFoundationDtcg(dotted).valid, false);
+  assert.equal(exportFoundationDtcg(dotted).valid, true);
+  assert.equal(JSON.parse(exportFoundationDtcg(dotted).text!).base.value.$value, 1);
   assert.equal(exportFoundationDtcg(foundation(), "original").valid, false);
 });
 

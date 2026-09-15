@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { canonicalJson, CommandService, MemoryStore, PROTOCOL_VERSION, STUDIO_FORMAT, STUDIO_PROFILE, createStudioStarter, inspectStudioDocument, inspectStudioProject, planStudioEdit } from "../src/index.ts";
-import type { AdsDocument, CommandEnvelope, CommandResult, JsonObject, Principal, ProjectSnapshot, StudioEdit, StudioEditPlan } from "../src/index.ts";
+import type { AdsDocument, CommandEnvelope, CommandResult, JsonObject, Principal, ProjectSnapshot, StudioEdit, StudioEditPlan, TransactionalStore } from "../src/index.ts";
 
 const OWNER: Principal = { id: "studio.owner", scopes: ["project.read", "project.write", "review.apply"] };
 const OTHER: Principal = { id: "studio.other", scopes: [...OWNER.scopes] };
@@ -67,6 +67,49 @@ test("starter adoption requires review and authoring queries keep approvals and 
   assert.equal((await h.service.getAuthoringState(OWNER)).undoHandle, applied.undoHandle);
   assert.equal((await h.service.getAuthoringState(OTHER)).undoHandle, undefined);
   await assert.rejects(() => h.service.getAuthoringState({ id: OWNER.id, scopes: [] }), { code: "SCOPE_REQUIRED" });
+});
+
+test("one authoring snapshot isolates actor metadata and source data without exposing approvals", async () => {
+  const h = await setup(false), candidate = await h.stage(h.starter), approval = await h.approve(candidate);
+  const stored = (await h.store.read())!;
+  let reads = 0;
+  const adapter: TransactionalStore = { read: async () => { reads++; return stored; }, transact: update => h.store.transact(update) };
+  const service = new CommandService(adapter, { createId: h.createId, digest });
+  const owner = await service.getAuthoringSnapshot(OWNER);
+  assert.equal(reads, 1);
+  assert.equal(owner.project!.revision, owner.authoring.revision);
+  assert.equal(owner.authoring.pendingCandidates[0]!.id, candidate.candidateId);
+  assert.equal(canonicalJson(owner).includes(approval.reviewToken!), false);
+  assert.deepEqual(owner.authoring, await h.service.getAuthoringState(OWNER));
+  owner.project!.name = "Detached name";
+  owner.authoring.pendingCandidates[0]!.diff.length = 0;
+  owner.authoring.pendingCandidates[0]!.diagnostics.length = 0;
+  assert.deepEqual(stored, await h.store.read());
+  const other = await service.getAuthoringSnapshot(OTHER);
+  assert.deepEqual(other.authoring.pendingCandidates, []);
+  const applied = await h.execute("transaction.apply", { candidateId: candidate.candidateId!, approvalToken: approval.reviewToken!, expectedRevision: (await h.current())! });
+  assert.equal(applied.status, "accepted", brief(applied));
+  const adopted = await h.service.getAuthoringSnapshot(OWNER);
+  assert.equal(adopted.project!.revision, adopted.authoring.revision);
+  assert.ok(adopted.authoring.undoHandle);
+  assert.equal((await h.service.getAuthoringSnapshot(OTHER)).authoring.undoHandle, undefined);
+});
+
+test("authoring snapshots authenticate before I/O and capture actor identity before an awaited read", async () => {
+  const h = await setup(false), candidate = await h.stage(h.starter);
+  let reads = 0, release!: () => void;
+  const wait = new Promise<void>(resolve => { release = resolve; });
+  const adapter: TransactionalStore = { read: async () => { reads++; await wait; return h.store.read(); }, transact: update => h.store.transact(update) };
+  const service = new CommandService(adapter, { createId: h.createId, digest });
+  await assert.rejects(service.getAuthoringSnapshot({ id: OWNER.id, scopes: [] }), { code: "SCOPE_REQUIRED" });
+  assert.equal(reads, 0);
+  const identity = { ...OWNER }, pending = service.getAuthoringSnapshot(identity);
+  assert.equal(reads, 1);
+  identity.id = OTHER.id;
+  release();
+  assert.equal((await pending).authoring.pendingCandidates[0]!.id, candidate.candidateId);
+  const empty = new CommandService(new MemoryStore(), { createId: h.createId, digest });
+  assert.deepEqual(await empty.getAuthoringSnapshot(OWNER), { project: null, authoring: { revision: null, pendingCandidates: [] } });
 });
 
 test("token alias/theme edits remain transient until apply and one Undo preserves original source", async () => {

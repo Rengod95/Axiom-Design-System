@@ -1,0 +1,51 @@
+import assert from "node:assert/strict";
+
+/** Editable rules, simulated runtime and ordinary review/Undo use one isolated browser database. */
+export async function verifyBehaviorEditor({ page, origin, database, id, label, text, click, clickElement, fill, selectElement, until, settled, approve, revision, record }) {
+  assert.match(database, /^axiom-studio-test-/);
+  const saved = () => page.evaluate(`new Promise((resolve,reject)=>{const request=indexedDB.open(${JSON.stringify(database)});request.onerror=()=>reject(request.error);request.onsuccess=()=>{const db=request.result,tx=db.transaction('commits','readonly'),cursor=tx.objectStore('commits').openCursor(null,'prev');cursor.onsuccess=()=>resolve(Object.values(JSON.parse(cursor.result.value.stateText).project.documents).map(entry=>entry.document));cursor.onerror=()=>reject(cursor.error);tx.oncomplete=()=>db.close();};})`);
+  const openBehavior = async () => { const selector = `${id("behavior-editor")}.closest('details')`; if (!await page.evaluate(`${selector}.open`)) await clickElement(`${selector}.querySelector('summary')`); await settled(); };
+  const simulationValue = () => page.evaluate("document.querySelector('[data-behavior-value=active]').textContent");
+  const run = () => clickElement("document.querySelector('.behavior-run-actions button')");
+  await page.send("Page.navigate", { url: `${origin}/?database=${database}` }); await until(id("onboarding"));
+  await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1080, deviceScaleFactor: 1, mobile: false });
+  if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
+  await fill("project-name", "Behavior authoring"); await click("starter-enabled"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await click("view-library"); await click("create-custom-component"); await until(id("component-composer"));
+  await click("composer-button"); await fill("composer-name", "Interactive button");
+  const previous = await page.evaluate("Array.from(document.querySelectorAll('[data-component-frame]')).map(node=>node.dataset.componentFrame)");
+  await click("composer-create"); await until(`!${id("component-composer")} && document.querySelectorAll('[data-component-frame]').length>${previous.length}`);
+  const componentId = await page.evaluate(`Array.from(document.querySelectorAll('[data-component-frame]')).map(node=>node.dataset.componentFrame).find(value=>!${JSON.stringify(previous)}.includes(value))`);
+  assert.ok(componentId); await approve(); await click(`component-${componentId}`); await openBehavior();
+  const creationRevision = await revision();
+  await click("behavior-state-create"); assert.equal(await revision(), creationRevision, "Local values wait for ordinary source review"); await approve();
+  await openBehavior(); await click("behavior-add"); await fill("behavior-name", "Toggle selection"); await click("behavior-apply"); await approve();
+  const toggleRevision = await revision(), toggleSource = (await saved()).find(document => document.id === componentId);
+  assert.equal(toggleSource.studioBehavior.rules.length, 1); assert.equal(toggleSource.studioBehavior.rules[0].actions[0].kind, "toggle");
+  const local = toggleSource.publicContract.values.find(value => value.name === "active"); assert.equal(local.ownership, "local"); assert.equal(local.defaultValue, false);
+  await openBehavior(); assert.equal(await simulationValue(), "false"); await run(); assert.equal(await simulationValue(), "true"); await run(); assert.equal(await simulationValue(), "false");
+  assert.equal(await revision(), toggleRevision, "Simulation never saves runtime values as defaults");
+  await selectElement(label("Behavior condition", "select"), local.id); await click("behavior-apply"); await approve();
+  await run(); assert.equal(await simulationValue(), "true"); await run(); assert.equal(await simulationValue(), "true");
+  assert.ok(await page.evaluate("document.querySelector('.behavior-trace').textContent.includes('Matched rules: 0')"));
+  await selectElement(label("Action 1", "select"), "emit");
+  assert.equal(await page.evaluate(`${id("behavior-apply")}.disabled`), true, "Built-in activation cannot be emitted twice by an authored press rule");
+  await selectElement(label("Behavior trigger", "select"), "focus"); await click("behavior-apply"); await approve(); await run();
+  assert.ok(await page.evaluate("document.querySelector('.behavior-trace').textContent.includes('activate {}')"), "Declared app request is visible in the runtime trace");
+  assert.equal(await simulationValue(), "false", "Emitting a request does not write unrelated local values");
+  const requestRevision = await revision();
+  const payload = label("Request data 1", "textarea");
+  await page.evaluate(`(()=>{const field=${payload};field.focus();field.setSelectionRange(0,field.value.length)})()`); await page.send("Input.insertText", { text: "{" }); await settled();
+  assert.equal(await page.evaluate(`${id("behavior-apply")}.disabled`), true); assert.equal(await revision(), requestRevision);
+  await clickElement("Array.from(document.querySelectorAll('.behavior-rule-form button')).find(button=>button.textContent==='Reset')");
+  assert.equal(await page.evaluate(`(${payload}).value`), "{}");
+  await click("undo"); await until(`document.querySelector('[data-testid=undo]')&&!${id("open-export")}.disabled`);
+  assert.notEqual(await revision(), requestRevision);
+  const restored = (await saved()).find(document => document.id === componentId);
+  assert.equal(restored.studioBehavior.rules[0].actions[0].kind, "toggle", "Undo restores the prior typed behavior rule");
+  const persistedRevision = await revision(), before = await page.evaluate("performance.timeOrigin");
+  await page.send("Page.reload"); await until(`performance.timeOrigin!==${before} && ${id("studio-app")} && !${id("open-export")}.disabled`);
+  assert.equal(await revision(), persistedRevision); await click(`component-${componentId}`); await openBehavior();
+  assert.equal(await simulationValue(), "false"); await run(); assert.equal(await simulationValue(), "true");
+  record("behaviorEditor", { createLocalState: true, typedTriggerConditionActions: true, requestPayloadTrace: true, repeatedSimulation: true, simulationPreservesSource: true, incompleteInputRecovery: true, reviewUndoReload: true });
+}

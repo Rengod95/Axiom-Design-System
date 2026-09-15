@@ -9,6 +9,12 @@ function invalid(cause: unknown): never {
   throw new KernelError(CODE.STATE_INVALID, "The supplied kernel state is not valid canonical JSON data.");
 }
 
+/** Preflight stored text before byte allocation or digest caching. This does not validate its state semantics. */
+export function kernelStateTextBytes(text: string): number {
+  if (typeof text !== "string") throw new KernelError(CODE.STATE_INVALID, "Canonical kernel state text must be a string.");
+  return utf8SourceBytes(text, MAX_CANONICAL_BYTES);
+}
+
 /** Canonicalize descriptor data, then inspect only its detached JSON snapshot. */
 export function encodeKernelState(value: unknown): string {
   try {
@@ -22,8 +28,7 @@ export function encodeKernelState(value: unknown): string {
 /** Decode this codec's exact representation; do not normalize damaged stored bytes. */
 export function decodeKernelState(text: string): KernelState {
   try {
-    if (typeof text !== "string") throw new KernelError(CODE.STATE_INVALID, "Canonical kernel state text must be a string.");
-    utf8SourceBytes(text, MAX_CANONICAL_BYTES);
+    kernelStateTextBytes(text);
     const snapshot: unknown = JSON.parse(text);
     // Native parsing permits the internal wrapper depth. Exact comparison catches
     // duplicate keys and number conversion loss as well as alternate spellings.

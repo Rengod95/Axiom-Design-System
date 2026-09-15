@@ -1,0 +1,527 @@
+{
+  "kind": "AxiomFoundationInterchangeContinuation",
+  "date": "2026-09-14",
+  "implementationParent": "7a424b68ae099658830a7a1e18743afbe128efc1",
+  "authority": "docs/adr/0017-foundation-interchange-and-live-expressions.md",
+  "priorLedger": "docs/implementation/editor-completion-followup.json",
+  "status": "SCOPED_INCREMENT_VERIFIED_FOUNDATION_INCOMPLETE",
+  "unchangedFoundationDocuments": 56,
+  "retainedRequirementInventory": 119,
+  "requirementDeltas": {
+    "FT03": {
+      "status": "B",
+      "scope": "deprecation and migration guidance with existing reviewed token lifecycle"
+    },
+    "FT07": {
+      "status": "P",
+      "scope": "property/composite dependency usage, replacement, component propagation and base tree"
+    },
+    "FT08": {
+      "status": "P",
+      "scope": "group/type/root/deprecation, normalized local inheritance, live token-value references, supplied-file Resolver permutation"
+    },
+    "FT12": {
+      "status": "P",
+      "scope": "GUI import preview/conflicts/prefix/review; selected-context references/resolved export; originals"
+    }
+  },
+  "gates": {
+    "retirement": "PASSED, 442 frozen files",
+    "retirementSelfTest": "PASSED",
+    "foundationSelfTest": "PASSED, 56 documents",
+    "check": "PASSED",
+    "unitTests": {
+      "status": "PASSED",
+      "count": 358
+    },
+    "build": "PASSED",
+    "browserStore": "PASSED",
+    "studio": "PASSED",
+    "workbench": {
+      "status": "PASSED",
+      "caseNames": [
+        "create",
+        "typedToken",
+        "aliasAndClassification",
+        "themes",
+        "catalogSimulation",
+        "libraryAndCanvas",
+        "dirtyManagement",
+        "hexEditing",
+        "sourceBundle",
+        "processRestart",
+        "starterWorkspace",
+        "directReview",
+        "blockedInspectorRecovery",
+        "trackpadGesture",
+        "motionAuthoring",
+        "responsiveAppearance",
+        "dtcgReviewedImport",
+        "dtcgResolverAndExchange"
+      ]
+    },
+    "targets": {
+      "status": "PASSED",
+      "limits": [
+        "Legacy Button/Card/Toast plus focused catalog Checkbox/Input/Select/Tabs/Dialog consumers are covered; other source capabilities need their own consumer verification.",
+        "RN export verifies JavaScript/Hermes bundles; it does not run native controls or assistive technology.",
+        "SwiftUI/Compose compilation and device execution are not run without their toolchains."
+      ]
+    }
+  },
+  "review": {
+    "disposition": "ship",
+    "scope": "R1 selected-tab visibility fix resolved by independent reviewer; not a new whole-surface certification",
+    "report": "docs/implementation/foundation-interchange-finish-review.md",
+    "designCheck": "docs/implementation/foundation-interchange-design-check.md",
+    "detectorPrimaryFindings": 0,
+    "detectorAdvisories": [
+      "pre-existing 18px typography specimen outside current UI type ramp"
+    ]
+  },
+  "captureDirectory": "dist/evidence/interop",
+  "remaining": [
+    "non-value DTCG document pointers",
+    "property-granularity self references",
+    "fully editable Resolver graph and complete official corpus",
+    "policy/exception workflows",
+    "instances and slot injection",
+    "trait/behavior graphs",
+    "four-edge layout and remaining canvas authoring",
+    "native motion and remaining target/host/delivery requirements"
+  ],
+  "sourceHashes": [
+    {
+      "path": "apps/studio/src/accessibility-insight.tsx",
+      "sha256": "2d589a4da46241c37fce999f3618a4beaf304d23ca9e8703a32abe09d6d115b9"
+    },
+    {
+      "path": "apps/studio/src/app.tsx",
+      "sha256": "372d858feff5bad1c7c424d82805a7746b7dea28528f0ccfaae16112de42c656"
+    },
+    {
+      "path": "apps/studio/src/appearance-rules.tsx",
+      "sha256": "4f1e5fc749ef0381755e387c9f173f3595550070d934067e52780362516f9a0c"
+    },
+    {
+      "path": "apps/studio/src/canvas-geometry.ts",
+      "sha256": "a7839f14ee258241f27018fe3137b41dd69cd1d9b2fbe3a3790d3f7eb092a981"
+    },
+    {
+      "path": "apps/studio/src/canvas-input.ts",
+      "sha256": "f4523e4c6e1d8399511b859eed1fe6bdef1a7815b2c9c036d4cb18f591bb90c9"
+    },
+    {
+      "path": "apps/studio/src/canvas.tsx",
+      "sha256": "70ccdc437203e0022c72951af34dab3ade87f721a33925d97bb57948a148d0c5"
+    },
+    {
+      "path": "apps/studio/src/catalog-preview.tsx",
+      "sha256": "181ac46b5ab5b9e8621434f3971161da204671730944ff874865253b916c988c"
+    },
+    {
+      "path": "apps/studio/src/catalog-thumbnail.tsx",
+      "sha256": "f2ee48f15330858034c41230aeeece2199e194b4f47f09e05f31b2d2a0d3e342"
+    },
+    {
+      "path": "apps/studio/src/component-inspector.tsx",
+      "sha256": "004a60deb57b655d7c113bbd9d8bbdba0d7b50bc27d95196f3c3d46274b19b3b"
+    },
+    {
+      "path": "apps/studio/src/controller.ts",
+      "sha256": "ac2c617c115f35bdc2dede333333c43129d11b6d2f3926d9376624f90c097aeb"
+    },
+    {
+      "path": "apps/studio/src/dialogs.tsx",
+      "sha256": "33bbdecb6bc0ef3bd3a3ff2661056e035c7d484337726d18bfc201f71dea4676"
+    },
+    {
+      "path": "apps/studio/src/draft-registry.ts",
+      "sha256": "91e6483cdafe691b2cb79309c03595d3fd37d5baf5252f086fddc74f01bcc9fa"
+    },
+    {
+      "path": "apps/studio/src/form-drafts.tsx",
+      "sha256": "aa15d658f80c1dabd811761483a93276f21b965e1ec5108528bf3416117b4333"
+    },
+    {
+      "path": "apps/studio/src/foundation-domains.tsx",
+      "sha256": "3bc41f58ecec68a6f7501c38b48c7d40873b219246bebece446a1270d1760a8c"
+    },
+    {
+      "path": "apps/studio/src/foundation-exchange-panel.tsx",
+      "sha256": "eb70986750560fea28b7ba834ac3ba01e1d4e08b4d364d5968a3aa39ecc3fe71"
+    },
+    {
+      "path": "apps/studio/src/foundation-expression-editor.tsx",
+      "sha256": "2d25bfe64ff2ac6c55afb5d34dc6ec31adbe3e6169ed2093d6895374acfa3c60"
+    },
+    {
+      "path": "apps/studio/src/foundation-inspector.tsx",
+      "sha256": "3f06609040e1a35d92184bf73940f09a2e24a0cee9c9a2e1144ea28eeaf50cf6"
+    },
+    {
+      "path": "apps/studio/src/foundation-panel.tsx",
+      "sha256": "578b822a11ccbfad806e5f1e956e4fd87732ef09f9d5b6f3cb8ed20742447523"
+    },
+    {
+      "path": "apps/studio/src/foundation-starter-panel.tsx",
+      "sha256": "1db48e872e7009633b877c020896767d36e95f1a7f6a74177c121b22c3e7ab25"
+    },
+    {
+      "path": "apps/studio/src/foundation-workspace.css",
+      "sha256": "db41fe37b41b32d13a2c6dc7ba4068b27b1f2abe52304d0c586c1749ae9b6740"
+    },
+    {
+      "path": "apps/studio/src/icons.tsx",
+      "sha256": "9c2ecb866c8761f9787d7a014bd4243ab8a9689ba6d9431ad6536b7163a15a28"
+    },
+    {
+      "path": "apps/studio/src/inspector.tsx",
+      "sha256": "777531d1d128cff8e82306b51e2d3d674951903d0fcd1469e31d46afe6b07304"
+    },
+    {
+      "path": "apps/studio/src/locales.ts",
+      "sha256": "754d6731758fc508f630239d43bf77f3c581169e1761a5954ed0ac0c7ffc8e72"
+    },
+    {
+      "path": "apps/studio/src/main.tsx",
+      "sha256": "10656a33f1b21f7a1b394284ec6f38b350035837755b9790f78e88c2f132e306"
+    },
+    {
+      "path": "apps/studio/src/motion-inspector.tsx",
+      "sha256": "4ad9dd1f3f05c3abfb3ba0a4ff7e2c4a37b5083dab5c34a8bef9bd796d7fbc65"
+    },
+    {
+      "path": "apps/studio/src/motion-preview.ts",
+      "sha256": "9d15cec2830c8bfc15a62c1231d42d35d1174ae0d16b0dc02bb3de74a6808e44"
+    },
+    {
+      "path": "apps/studio/src/preview-style.ts",
+      "sha256": "4b5b989ff280b458c8aed8d7ee77fbaf2056e0c06a9ca3dc7b8d9ee3b205970e"
+    },
+    {
+      "path": "apps/studio/src/preview.tsx",
+      "sha256": "035eed0bfe88d13436e1f43e6325d12ced34b0fb6237ef851d7aa3ce4cf368dd"
+    },
+    {
+      "path": "apps/studio/src/review-diff.ts",
+      "sha256": "8c047f71cd76d8f916f3f3fd708a13e55c2836931af26ec84210b7e5d298308f"
+    },
+    {
+      "path": "apps/studio/src/styles.css",
+      "sha256": "7b0c94022499cf4bc6286b1c286dee1a1a9793a2a571712aef86738f294b134b"
+    },
+    {
+      "path": "apps/studio/src/token-relationships.tsx",
+      "sha256": "85a4212b803d221501cbf1dd553d5026cb80fa809c3c1c40ff5cc8121f6a2d07"
+    },
+    {
+      "path": "apps/studio/src/token-specimen.tsx",
+      "sha256": "33cd840533f77469269e71c4c86c2602d06f68242a16c1a10aab710f4a46064e"
+    },
+    {
+      "path": "apps/studio/src/token-suggestions.tsx",
+      "sha256": "97f87f9920059ba2356d766248b37976684302b466f2ea9d0a3d55a2e65eadcb"
+    },
+    {
+      "path": "apps/studio/src/token-value-editor.tsx",
+      "sha256": "e4d810b01702bdddb01d88878a90498d0d32fab5bcc43b9730c1ab19b96dd1b2"
+    },
+    {
+      "path": "apps/studio/src/ui-system.css",
+      "sha256": "4ef468d24be0e6a39156946d11e117b61e5e13ac3e5d9120b14dce9e6c7cc91a"
+    },
+    {
+      "path": "apps/studio/src/ui-utils.ts",
+      "sha256": "6c06047ed88581f41d3abc622683db70b1aae8d79e6ed3645dba58369bc619b0"
+    },
+    {
+      "path": "apps/studio/src/ui.tsx",
+      "sha256": "73ae56ddf483ec757662b0bcc2d6c47121b1d5f9cc018a39788840620fe0092d"
+    },
+    {
+      "path": "apps/studio/src/workbench-panels.tsx",
+      "sha256": "c9a653da43b3c3bb22fbb1d43fe72fee5cd3956df8dc5bcbe2ca2a5d723bd34c"
+    },
+    {
+      "path": "modules/ads-core/src/bundle-constants.ts",
+      "sha256": "f9d36701bc6f962b14c79c0d961c3f9f6bad7e0e543b22d98430152ff7f6902f"
+    },
+    {
+      "path": "modules/ads-core/src/bundle-contracts.ts",
+      "sha256": "302e99a3ee34efe3216b888aa59aab2b9fa5a636989184d21348876ada9cea90"
+    },
+    {
+      "path": "modules/ads-core/src/canonical-json.ts",
+      "sha256": "702e99a3389f698ed5172e8b63f275ba32764947b626c6301c2b1aeb8a36e426"
+    },
+    {
+      "path": "modules/ads-core/src/command-service.ts",
+      "sha256": "effb0f4380a9eb4ef5f23dfc32388422ad47568e3465bdbe34b67ff972c5d3e4"
+    },
+    {
+      "path": "modules/ads-core/src/constants.ts",
+      "sha256": "45d5799b2d95c82c11d58a06b346b1af0cf7d114887be7219c976c423b02288a"
+    },
+    {
+      "path": "modules/ads-core/src/content-validation.ts",
+      "sha256": "eb0dfb6f0a329efd514dde9fd8074856efcecac9d11595877cc0859be1d2012f"
+    },
+    {
+      "path": "modules/ads-core/src/contracts.ts",
+      "sha256": "d985dd4881e88dc5d3cab9e427c34e0b500ece9721b06edb6c2a6c66e7f4f316"
+    },
+    {
+      "path": "modules/ads-core/src/documents.ts",
+      "sha256": "0d0f6e9b62e7d26aa98016103a64a22ee311e045ea73b31840acae34274483b9"
+    },
+    {
+      "path": "modules/ads-core/src/domain-contracts.ts",
+      "sha256": "19e50a8f7faa3b469c910e358fb8d97c07cdd9478439121da89b54f1bc06a2d2"
+    },
+    {
+      "path": "modules/ads-core/src/domain-validation.ts",
+      "sha256": "129e775867184d0213feb79e3c44d6cc8b794d7e4fec5138bfab32562d9cd2f6"
+    },
+    {
+      "path": "modules/ads-core/src/dtcg-format.ts",
+      "sha256": "f8af211efcf14d26028608c8efa1dd96bba6299b4d081e98c7a41d32b3524481"
+    },
+    {
+      "path": "modules/ads-core/src/dtcg-resolver.ts",
+      "sha256": "ee5fbd3137f526eca2cadb909b236bc84d84d6f50282bd8d70d87ae79760011b"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-contracts.ts",
+      "sha256": "00026f6b131df0ebdb5aa75f06b206f90b09f4cbc39f9f5dd303b213e2900718"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-internal.ts",
+      "sha256": "596669a2dcd1e6b0502bcc90c3cfc0a196ce0119ba27249b1004fad6298fbecc"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-projection.ts",
+      "sha256": "d4bb0b6ad57b53f26a032a78f333bb7d88981a301c7bc10922cad784e0bb2155"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-theme-ops.ts",
+      "sha256": "778b4977d1984bf782cb4ae50f435dbde351e7193c64369b0e7905511bb4a324"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-token-ops.ts",
+      "sha256": "ca353d195653b5cdfa9b36d777313ad430fff974a11ef0df05aba305da94e5f3"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring.ts",
+      "sha256": "e57b910015095e47c77926c9dd0a9e4c4f06fe9517cd9e1e0ee0e234a10994ec"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-constants.ts",
+      "sha256": "a32dde723e358862a678ef351ba37b3cd921b5382d667e0aa3d274b6526c3ddd"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-contracts.ts",
+      "sha256": "ab9055221734803f57a3c9eb8a4f9008e28132c83583f71ffa970158f4c3e47b"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-evaluation.ts",
+      "sha256": "2762abd3b0d3da7edf5792d41588c57a971e00f778aad00e789d98308f207729"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-import-authoring.ts",
+      "sha256": "1c6e3062aba728b082c710789ba252d33b54da5dc5535a4bcdffce671d188617"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-interchange.ts",
+      "sha256": "f45b35f6007005e9da7c80229b99c09038d2eca0b923a0c4e10fdcf0633f68ed"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-internal.ts",
+      "sha256": "70e06f5e5f4ed86e977adc19a1c9b98289a1983882a43407650a0e2a9f370dbd"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-references.ts",
+      "sha256": "4835de8a78af2c30ca4e647df1ab64de490f6fda2ca70823ba73a5225ab0c35b"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-resolution.ts",
+      "sha256": "95c26933f6cc315b77bedcfbca1d1df57786e22ce319d8870c3a90de2eeeed0b"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-starters.ts",
+      "sha256": "7f45e3afebf20394be3acda923eedf474f6b4499e4375d1a73ff621bfbac8df6"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-validation.ts",
+      "sha256": "97702b2e715f175266acdb6b1afd362c159c6dd52c783184ccbe9eb9611263bf"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-values.ts",
+      "sha256": "839c343fcc3c97bd1e9dce4029fd447bc665807c21d17c0399a36b376bcd4129"
+    },
+    {
+      "path": "modules/ads-core/src/generated/catalog-metadata.ts",
+      "sha256": "f442991e5db4234a6b5b5990c1ecd284c071128a4d998967d5c2ea3f76ab9024"
+    },
+    {
+      "path": "modules/ads-core/src/generated/catalog-structure.ts",
+      "sha256": "625a0e3bef714c36412be5c8b71d0bfd0c73a404402f60303d961fce3172e542"
+    },
+    {
+      "path": "modules/ads-core/src/generated/document-envelope.ts",
+      "sha256": "1a789bfeb750d6bb507b0c9ac963b318a7664d8238ececb01d88d811fbff5ca7"
+    },
+    {
+      "path": "modules/ads-core/src/generated/type-expression.ts",
+      "sha256": "a64686341cf49164dfe28ac10e3d4ac707b5eae04a9bef210c7b856ba208f745"
+    },
+    {
+      "path": "modules/ads-core/src/graph-contracts.ts",
+      "sha256": "e796f40716131550497fa4432ebb144633d321e82926606f394570974a6e6156"
+    },
+    {
+      "path": "modules/ads-core/src/index.ts",
+      "sha256": "9dad66d56dc482036d44c7970a04c0e12b30f1ca0a019ed7b8c795c0ba0bf86e"
+    },
+    {
+      "path": "modules/ads-core/src/kernel-error.ts",
+      "sha256": "28501d8ec0e2141ff98e42648ee8344b8a3b9e6c8e009fff7b6e0ba0e34b87f5"
+    },
+    {
+      "path": "modules/ads-core/src/kernel-state-codec.ts",
+      "sha256": "e619244aea5b1564d4c5201c0c77929e12eab8e76fa03449922e1113b4c6836e"
+    },
+    {
+      "path": "modules/ads-core/src/kernel-state-shape.ts",
+      "sha256": "88aa6cc5657c5c794c5cb10421299c110f5b649931899c4cb3dc96f845fa8214"
+    },
+    {
+      "path": "modules/ads-core/src/local-references.ts",
+      "sha256": "04552ab8e6cc4fa190a64811f436334eba70f64be713f89154f5f01a82eab93e"
+    },
+    {
+      "path": "modules/ads-core/src/memory-store.ts",
+      "sha256": "fae3113308cd6c6871e0699a64553e33a030cb65b1b8c2db9f6d3435c9d54f19"
+    },
+    {
+      "path": "modules/ads-core/src/project-bundle.ts",
+      "sha256": "950011826d8aa15149ad0c89385bb109bdbd83b02fcc0bf7c8897c50b9b6299b"
+    },
+    {
+      "path": "modules/ads-core/src/schema-validation.ts",
+      "sha256": "2c37017290816ab1c0a96577972383d1527ef10799831cb916ba230ed8decfb9"
+    },
+    {
+      "path": "modules/ads-core/src/source-import.ts",
+      "sha256": "889746b5c0eda8b8c5081af1866ce21940ace51e7960a3361bdd85a77ccec4f1"
+    },
+    {
+      "path": "modules/ads-core/src/source-records.ts",
+      "sha256": "cc9c72a5f4ecc3d8e1a32409c3e38da83d013226c7fa3791cbaee5d3d439df14"
+    },
+    {
+      "path": "modules/ads-core/src/structural-contracts.ts",
+      "sha256": "1f0489ea25da7e49c88881b82a8c45432ebcfda5fe3459f8eea00c61a14d1b14"
+    },
+    {
+      "path": "modules/ads-core/src/structural-validation.ts",
+      "sha256": "a7380d30051cbcfc41d96ba7cf03dcabdff2460ba86498b5db582eb9b8864a19"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-constants.ts",
+      "sha256": "6e2cf35f36719c339c17d663649433a64f02e0cfd540fb2b2ed99ebe581a25e3"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-contracts.ts",
+      "sha256": "9fcde1e8877b8e9c4573124ba7d91303759425389ba3bf82e49c1f2f2d056b26"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-data.ts",
+      "sha256": "adc374354e4455b13d20a9c18937bdb965edd43325a56662e233aa00d3dced4d"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-sources.ts",
+      "sha256": "7e52dc322b79753cf65cd7a5f85e84f76e135fb40577c47ef724a7e521548ba4"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-validation.ts",
+      "sha256": "8b0097b591c48945fcb604de978424bce1d7b1437809027fa42e2971af0ba346"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog.ts",
+      "sha256": "92738426ac119324014f0750c3a8088d2429f0fbc4987b440273ca29b873c2e0"
+    },
+    {
+      "path": "modules/ads-core/src/studio-component-authoring.ts",
+      "sha256": "4cc3098da6a4ac5e7b2bac0079ce941e798f3150eac74d01fe0b9be4d9a0d0a5"
+    },
+    {
+      "path": "modules/ads-core/src/studio-component-mutations.ts",
+      "sha256": "6a57ecc9e1428edf0afe948a6cefae499dd7375700c94c18fb0d1529fafce084"
+    },
+    {
+      "path": "modules/ads-core/src/studio-constants.ts",
+      "sha256": "f04ee93fde5c2dd503ab7c925faaad0d46a46516ef1992e245cf3a8e13bb02af"
+    },
+    {
+      "path": "modules/ads-core/src/studio-contracts.ts",
+      "sha256": "ecc23ce6b3bf850d1aff4c4d7bc2e76d6098db203e3c051fc38d999cae8092cd"
+    },
+    {
+      "path": "modules/ads-core/src/studio-motion.ts",
+      "sha256": "edf6ae4fc0df146246188304541784b4602a8794c5580f9068debf77e644e673"
+    },
+    {
+      "path": "modules/ads-core/src/studio-presentation.ts",
+      "sha256": "30cc6e1a8a2633d12de3cd45f09a524449a488aee64df8fa72f62a1a8ffa9d0b"
+    },
+    {
+      "path": "modules/ads-core/src/studio-projection.ts",
+      "sha256": "06dc8a0dac5f42edeee83265706958ef6a27cddd90bac88935c24d5adf8a3ebc"
+    },
+    {
+      "path": "modules/ads-core/src/studio-style-values.ts",
+      "sha256": "92134a4020279a84c0fc532b9a375dd77c7067db61503d4d355dcfc4de750be1"
+    },
+    {
+      "path": "modules/ads-core/src/studio-template.ts",
+      "sha256": "50fa13d5f83460fcc34c497ae49050013af1029f2a7c3ca2b20f587ae8e47224"
+    },
+    {
+      "path": "modules/ads-core/src/studio-validation.ts",
+      "sha256": "7108964169e34dba45a11aec7098b8079dbd3e81e349d36982d0421d41d3589e"
+    },
+    {
+      "path": "modules/ads-core/src/type-contracts.ts",
+      "sha256": "00355117f722634684449ce954f4a76d9773e474b141da274d53bdbf222788a3"
+    },
+    {
+      "path": "modules/ads-core/src/type-input.ts",
+      "sha256": "1f45248a0dc66984d8449e3f609973c09b2c836346f377bdb472d8819cf1714e"
+    },
+    {
+      "path": "modules/ads-core/src/type-validation.ts",
+      "sha256": "a2b009bd7b705d960e5186a59148c360a939d02d56f8d90e12e43bc352ca4e55"
+    },
+    {
+      "path": "modules/ads-core/src/validation-profile.ts",
+      "sha256": "9c163672bb6042a8c2d5ed307011650c43893c25133973c0290e81dd162f52dc"
+    },
+    {
+      "path": "modules/ads-core/test/foundation-interchange.test.ts",
+      "sha256": "a22895f7a2e664278da2a6b84a679681ec4ae43066a6437c681a75aee8868358"
+    },
+    {
+      "path": "modules/ads-core/test/foundation-interop.test.ts",
+      "sha256": "b65504f361a2d196d7e3cd6d6e384553dea8e4c65ce1aff2b352229fe7c6a26e"
+    },
+    {
+      "path": "scripts/verify-workbench.mjs",
+      "sha256": "8d53de4ebee468c25213d49613b013f227797b84fc2b069b7735c97430f2eae9"
+    },
+    {
+      "path": "scripts/workbench-completion-cases.mjs",
+      "sha256": "eff2f358a5d466668e7c25dbf347080d94786041b473542085f42c528f00f560"
+    }
+  ]
+}

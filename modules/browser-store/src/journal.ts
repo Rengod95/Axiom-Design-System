@@ -1,4 +1,4 @@
-import { canonicalJson, decodeKernelState, encodeKernelState } from "../../ads-core/src/index.ts";
+import { canonicalJson, decodeKernelState, encodeKernelState, kernelStateTextBytes } from "../../ads-core/src/index.ts";
 import type { KernelState } from "../../ads-core/src/index.ts";
 import { browserDigest } from "./browser-services.ts";
 import type { BrowserCommit, BrowserHead, RecoveredBrowserState } from "./contracts.ts";
@@ -19,22 +19,49 @@ function validateHead(value: unknown): BrowserHead {
   if (value.storageFormatVersion !== BROWSER_STORAGE_VERSION || !sequence(value.sequence) || !digest(value.commitDigest)) corrupt("Browser advisory head is malformed or unsupported.");
   return value as unknown as BrowserHead;
 }
-function decodeCommit(value: unknown, key: IDBValidKey, parent: BrowserHead | null): { commit: BrowserCommit; state: KernelState } {
+type ValidatedIdentity = Readonly<{ projectId: string | null; revision: string | null }>;
+export type ValidatedBrowserSnapshots = Map<string, ValidatedIdentity>;
+const MAX_CACHED_IDENTITIES = 1024;
+const MAX_CACHED_IDENTITY_CHARACTERS = 1024;
+// Only identities minted by the full codec proof authorize the parse-only path. The
+// supplied Map cannot forge validation or transplant an identity to other bytes.
+const validatedIdentityDigests = new WeakMap<ValidatedIdentity, string>();
+function rememberValidatedIdentity(state: KernelState, stateDigest: string, validated: ValidatedBrowserSnapshots): ValidatedIdentity {
+  const identity = Object.freeze({ projectId: state.project?.id ?? null, revision: state.project?.revision ?? null });
+  // Oversized compatible identities remain valid; only their optimization is skipped.
+  if ((identity.projectId?.length ?? 0) + (identity.revision?.length ?? 0) <= MAX_CACHED_IDENTITY_CHARACTERS) {
+    if (validated.size >= MAX_CACHED_IDENTITIES) validated.delete(validated.keys().next().value!);
+    validatedIdentityDigests.set(identity, stateDigest);
+    validated.set(stateDigest, identity);
+  }
+  return identity;
+}
+function decodeCommit(value: unknown, key: IDBValidKey, parent: BrowserHead | null, validated: ValidatedBrowserSnapshots): { commit: BrowserCommit; state: KernelState | null } {
   exact(value, ["storageFormatVersion", "sequence", "parentDigest", "projectId", "revision", "stateText", "stateDigest", "commitDigest"]);
   if (value.storageFormatVersion !== BROWSER_STORAGE_VERSION || !sequence(value.sequence) || value.sequence !== key || value.sequence !== (parent?.sequence ?? 0) + 1
     || value.parentDigest !== (parent?.commitDigest ?? null) || !digest(value.stateDigest) || !digest(value.commitDigest)
     || typeof value.stateText !== "string" || !(value.projectId === null || typeof value.projectId === "string") || !(value.revision === null || typeof value.revision === "string")) corrupt("Browser commit sequence, lineage or metadata is invalid.");
   const commit = value as unknown as BrowserCommit;
-  let state: KernelState;
-  try { state = decodeKernelState(commit.stateText); }
-  catch (cause) { return corrupt("Browser commit contains invalid or noncanonical kernel state.", cause); }
-  if (browserDigest(commit.stateText) !== commit.stateDigest || browserDigest(canonicalJson(metadata(commit))) !== commit.commitDigest
-    || (state.project?.id ?? null) !== commit.projectId || (state.project?.revision ?? null) !== commit.revision) corrupt("Browser commit digest or project metadata does not match its snapshot.");
+  // TextEncoder replaces lone UTF-16 surrogates. Reject them before hashing so
+  // a replacement character and malformed stored text cannot share a cache key.
+  try { kernelStateTextBytes(commit.stateText); }
+  catch (cause) { return corrupt("Browser commit text exceeds its UTF-8 bound or contains malformed Unicode.", cause); }
+  // Rehash every stored byte and recheck lineage on every read. Only the costly
+  // semantic decode of an already validated, identical snapshot is cached.
+  if (browserDigest(commit.stateText) !== commit.stateDigest || browserDigest(canonicalJson(metadata(commit))) !== commit.commitDigest) corrupt("Browser commit digest does not match its snapshot.");
+  const cached = validated.get(commit.stateDigest);
+  let state: KernelState | null = null, identity = cached && validatedIdentityDigests.get(cached) === commit.stateDigest ? cached : undefined;
+  if (!identity) {
+    try { state = decodeKernelState(commit.stateText); }
+    catch (cause) { return corrupt("Browser commit contains invalid or noncanonical kernel state.", cause); }
+    identity = rememberValidatedIdentity(state, commit.stateDigest, validated);
+  }
+  if (identity.projectId !== commit.projectId || identity.revision !== commit.revision) corrupt("Browser commit project metadata does not match its snapshot.");
   return { commit, state };
 }
 
 /** Cursor requests keep the native transaction active; no asynchronous work enters these handlers. */
-export function readBrowserJournal(transaction: IDBTransaction, done: (recovered: RecoveredBrowserState) => void, failed: (cause: unknown) => void): void {
+export function readBrowserJournal(transaction: IDBTransaction, done: (recovered: RecoveredBrowserState) => void, failed: (cause: unknown) => void, validated: ValidatedBrowserSnapshots = new Map()): void {
   let advisory: BrowserHead | null = null;
   let metaCount = 0;
   const meta = transaction.objectStore(BROWSER_STORES.meta).openCursor();
@@ -51,6 +78,7 @@ export function readBrowserJournal(transaction: IDBTransaction, done: (recovered
   function readCommits(): void {
     let head: BrowserHead | null = null;
     let state: KernelState | null = null;
+    let latestText: string | null = null;
     let count = 0;
     let advisoryFound = advisory === null;
     const request = transaction.objectStore(BROWSER_STORES.commits).openCursor();
@@ -59,13 +87,17 @@ export function readBrowserJournal(transaction: IDBTransaction, done: (recovered
         const cursor = request.result;
         if (!cursor) {
           if (!advisoryFound) corrupt("Browser head does not identify a retained commit.");
-          done({ head, state });
+          // decodeCommit has authenticated these exact bytes against a prior full
+          // decode. Parse afresh for caller isolation without repeating its entire
+          // canonical/shape walk over retained candidates and undo snapshots.
+          done({ head, state: state ?? (latestText === null ? null : JSON.parse(latestText) as KernelState) });
           return;
         }
         if (++count > BROWSER_MAX_COMMITS) throw new BrowserStoreError(BROWSER_STORE_ERROR.capacity, "Browser journal exceeds the supported commit capacity.");
-        const decoded = decodeCommit(cursor.value, cursor.key, head);
+        const decoded = decodeCommit(cursor.value, cursor.key, head, validated);
         head = { storageFormatVersion: BROWSER_STORAGE_VERSION, sequence: decoded.commit.sequence, commitDigest: decoded.commit.commitDigest };
         state = decoded.state; // Historical decoded snapshots are intentionally not retained.
+        latestText = decoded.commit.stateText;
         if (advisory?.sequence === head.sequence) {
           if (advisory.commitDigest !== head.commitDigest) corrupt("Browser advisory head digest does not match its commit.");
           advisoryFound = true;
@@ -77,7 +109,7 @@ export function readBrowserJournal(transaction: IDBTransaction, done: (recovered
 }
 
 /** Serialize descriptor-captured state and bind metadata to those exact bytes. */
-export function createBrowserCommit(state: unknown, parent: BrowserHead | null): BrowserCommit {
+export function createBrowserCommit(state: unknown, parent: BrowserHead | null, validated?: ValidatedBrowserSnapshots): BrowserCommit {
   if ((parent?.sequence ?? 0) >= BROWSER_MAX_COMMITS) throw new BrowserStoreError(BROWSER_STORE_ERROR.capacity, "Browser journal is full; export before changing storage or capacity.");
   let stateText: string;
   try { stateText = encodeKernelState(state); }
@@ -86,5 +118,10 @@ export function createBrowserCommit(state: unknown, parent: BrowserHead | null):
   const commit: BrowserCommit = { storageFormatVersion: BROWSER_STORAGE_VERSION, sequence: (parent?.sequence ?? 0) + 1, parentDigest: parent?.commitDigest ?? null,
     projectId: snapshot.project?.id ?? null, revision: snapshot.project?.revision ?? null, stateText, stateDigest: browserDigest(stateText), commitDigest: "" };
   commit.commitDigest = browserDigest(canonicalJson(metadata(commit)));
+  // encodeKernelState already proves canonical descriptor bytes and the complete
+  // detached state shape. Reusing that proof avoids decoding this same fresh
+  // snapshot on the next command. This caches validity, never commit/adoption:
+  // every read still rehashes stored bytes and checks the actual journal chain.
+  if (validated) rememberValidatedIdentity(snapshot, commit.stateDigest, validated);
   return commit;
 }

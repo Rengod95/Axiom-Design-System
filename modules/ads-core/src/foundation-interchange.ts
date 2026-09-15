@@ -1,3 +1,7 @@
+import { readDtcgTokens, putDtcgToken, writeDtcgValue } from "./dtcg-format.ts";
+import { resolveFoundationTokens } from "./foundation-resolution.ts";
+import { foundationPointerValue } from "./foundation-references.ts";
+import type { FoundationSelection } from "./foundation-contracts.ts";
 import type { JsonObject, JsonValue } from "./contracts.ts";
 import type { FoundationExchangeExport, FoundationExchangeOptions, FoundationExchangeReport, FoundationTokenType } from "./foundation-contracts.ts";
 import { FOUNDATION_CODES, FOUNDATION_TOKEN_TYPES } from "./foundation-constants.ts";
@@ -13,10 +17,11 @@ const EXCHANGE_VERSION = "2025.10" as const;
 const exchangeName = (name: string): boolean => name.length > 0 && !name.startsWith("$") && !/[.{}]/.test(name);
 function caught(check: FoundationCheck, error: unknown): void {
   if (error instanceof KernelError) check.error("", error.message, error.code);
+  else if (error instanceof Error && error.constructor === Error) check.error("", error.message, FOUNDATION_CODES.EXCHANGE);
   else check.caught(error);
 }
 
-/** Flat explicit-type tokens and whole-token aliases only; unsupported input is never partially imported. */
+/** Group/type inheritance and stable value references; unsupported input is never partially imported. */
 export function importDtcgFoundation(text: string, options: FoundationExchangeOptions): FoundationExchangeReport {
   const check = new FoundationCheck("memory:dtcg");
   const result: FoundationExchangeReport = { valid: false, diagnostics: check.diagnostics, originalText: typeof text === "string" ? text : "", formatVersion: EXCHANGE_VERSION };
@@ -30,37 +35,11 @@ export function importDtcgFoundation(text: string, options: FoundationExchangeOp
     const option = (key: string): unknown => descriptors[key] && "value" in descriptors[key]! ? descriptors[key]!.value : undefined;
     const id = option("id"), name = option("name"), revision = option("revision"), uri = option("sourceUri"), createId = option("createId"), digest = option("digest");
     if (!stableId(id) || !nonblank(name) || !nonblank(revision) || !nonblank(uri) || typeof createId !== "function" || typeof digest !== "function") { check.error("", "Expected valid import identity, source URI and explicit ID/digest services."); return result; }
-    const tokens: JsonObject[] = [];
-    const names = new Map<string, string>();
-    for (const [key, item] of Object.entries(source)) {
-      const path = pointer("", key); check.step(path);
-      if (key === "$description") { if (typeof item !== "string") check.error(path, "Description must be a string."); continue; }
-      if (key === "$extensions") { if (!record(item)) check.error(path, "Extensions must be an object."); continue; }
-      if (!exchangeName(key) || !record(item) || !own(item, "$value")) { check.error(path, "Only flat named tokens are imported; group inheritance, root tokens and resolver documents remain preserved but unsupported.", FOUNDATION_CODES.EXCHANGE); continue; }
-      for (const field of Object.keys(item)) if (!["$value", "$type", "$description", "$extensions"].includes(field)) check.error(pointer(path, field), "This token feature cannot be imported without loss.", FOUNDATION_CODES.EXCHANGE);
-      if (typeof item.$type !== "string" || !(FOUNDATION_TOKEN_TYPES as readonly string[]).includes(item.$type)) check.error(pointer(path, "$type"), "This import requires an explicit supported type on every token.", FOUNDATION_CODES.EXCHANGE);
-      if (own(item, "$description") && typeof item.$description !== "string") check.error(pointer(path, "$description"), "Description must be a string.");
-      if (own(item, "$extensions") && !record(item.$extensions)) check.error(pointer(path, "$extensions"), "Extensions must be an object.");
-      const tokenId: unknown = createId();
-      if (!stableId(tokenId)) { check.error(path, "ID service did not produce a stable token ID."); continue; }
-      names.set(key, tokenId);
-      const token: JsonObject = { id: tokenId, name: key, typeRef: { id: item.$type ?? null }, value: { literal: item.$value! } };
-      if (own(item, "$description")) token.description = item.$description!;
-      if (own(item, "$extensions")) token.extensions = item.$extensions!;
-      tokens.push(token);
-    }
-    for (const token of tokens) {
-      const sourceToken = source[token.name as string] as JsonObject;
-      if (typeof sourceToken.$value === "string" && /^\{[^{}]+\}$/.test(sourceToken.$value)) {
-        const target = names.get(sourceToken.$value.slice(1, -1));
-        if (!target) check.error(pointer(pointer("", token.name as string), "$value"), "Alias target is missing or requires an unsupported grouped/property reference.", FOUNDATION_CODES.EXCHANGE);
-        else token.value = { ref: { id: target, expectedKind: "token" } };
-      }
-    }
+    const { tokens, groups } = readDtcgTokens(source, createId as () => string, check);
     if (!check.valid) return result;
     const sourceDigest: unknown = digest(text);
     if (typeof sourceDigest !== "string" || !/^[a-f0-9]{64}$/.test(sourceDigest)) { check.error("", "Digest service must return a lowercase SHA-256 digest."); return result; }
-    const document: JsonObject = { id, name, kind: "foundation", schemaVersion: STUDIO_SCHEMA_VERSION, revision, studioProfile: { ...STUDIO_SOURCE_PROFILE }, tokens, domains: [], tiers: [], themeAxes: [], themeSets: [], policies: [], resolutionOrder: [], originalSources: [{ format: EXCHANGE_FORMAT, formatVersion: EXCHANGE_VERSION, uri, originalText: text, digest: sourceDigest }] };
+    const document: JsonObject = { id, name, kind: "foundation", schemaVersion: STUDIO_SCHEMA_VERSION, revision, studioProfile: { ...STUDIO_SOURCE_PROFILE }, tokens: tokens as unknown as JsonValue, domains: [], tiers: [], themeAxes: [], themeSets: [], policies: [], resolutionOrder: [], originalSources: [{ format: EXCHANGE_FORMAT, formatVersion: EXCHANGE_VERSION, uri, originalText: text, digest: sourceDigest, ...(Object.keys(groups).length ? { groups } : {}) }] };
     if (own(source, "$description")) document.description = source.$description!;
     if (own(source, "$extensions")) document.extensions = source.$extensions!;
     const validated = checkFoundationSnapshot(check.snapshot(document), check);
@@ -90,21 +69,52 @@ export function exportFoundationDtcg(input: unknown, mode: "original" | "authore
     const used = new Set<string>();
     const output: JsonObject = Object.create(null) as JsonObject;
     for (const token of document.tokens) {
-      if (!exchangeName(token.name) || used.has(token.name)) check.error("/tokens", "Authored exchange requires unique flat DTCG names.", FOUNDATION_CODES.EXCHANGE);
+      if (used.has(token.name)) check.error("/tokens", "Authored exchange requires unique DTCG paths.", FOUNDATION_CODES.EXCHANGE);
       used.add(token.name); names.set(token.id, token.name);
     }
     for (const token of document.tokens) {
-      const allowed = new Set(["id", "name", "typeRef", "value", "description", "extensions"]);
+      const allowed = new Set(["id", "name", "typeRef", "value", "description", "extensions", "deprecated"]);
       for (const key of Object.keys(token)) if (!allowed.has(key)) check.error(pointer(pointer("/tokens", token.id), key), "Unknown token field has no lossless DTCG mapping.", FOUNDATION_CODES.EXCHANGE);
-      const value: JsonValue = "literal" in token.value ? token.value.literal : `{${names.get(token.value.ref.id)!}}`;
+      const value = writeDtcgValue(token.value, names);
       const item: JsonObject = { $type: token.typeRef.id as FoundationTokenType, $value: value };
       if (token.description !== undefined) item.$description = token.description;
       if (token.extensions !== undefined) item.$extensions = token.extensions;
-      output[token.name] = item;
+      if (token.deprecated !== undefined) item.$deprecated = token.deprecated;
+      putDtcgToken(output, token.name, item);
+    }
+    for (const original of document.originalSources) if (record(original) && record(original.groups)) for (const [path, metadata] of Object.entries(original.groups)) {
+      if (!record(metadata)) continue;
+      try { const group = foundationPointerValue(output, path); if (record(group) && !own(group, "$value")) for (const [key, value] of Object.entries(metadata)) if (["$type", "$description", "$deprecated", "$extensions"].includes(key)) Object.defineProperty(group, key, { value, enumerable: true, configurable: true, writable: true }); } catch { /* A removed or renamed group is not resurrected. */ }
     }
     if (own(document, "description")) { if (typeof document.description !== "string") check.error("/description", "Description must be a string."); else output.$description = document.description; }
     if (document.extensions !== undefined) output.$extensions = document.extensions;
-    if (check.valid) { result.text = canonicalJson(output, MAX_DOCUMENT_BYTES); result.valid = true; }
+    if (check.valid) { let id = 0; readDtcgTokens(output, () => `export.check.${++id}`, check); result.text = canonicalJson(output, MAX_DOCUMENT_BYTES); result.valid = check.valid; }
   } catch (error) { caught(check, error); }
+  return result;
+}
+
+/** Explicit current-context snapshot for consumers; it never claims to preserve theme authoring. */
+export function exportResolvedFoundationDtcg(input: unknown, selection: FoundationSelection = {}): FoundationExchangeExport {
+  return exportSelectedFoundationDtcg(input, selection, "resolved");
+}
+
+/** A selected-context exchange is deliberately distinct from a lossless full-system export. */
+export function exportSelectedFoundationDtcg(input: unknown, selection: FoundationSelection = {}, values: "resolved" | "references" = "references"): FoundationExchangeExport {
+  const resolution = resolveFoundationTokens(input, selection), result: FoundationExchangeExport = { valid: resolution.valid, diagnostics: [...resolution.diagnostics], mode: "authored" };
+  if (!resolution.valid) return result;
+  try {
+    const output: JsonObject = Object.create(null);
+    const check = new FoundationCheck("memory:foundation"), document = checkFoundationSnapshot(check.snapshot(input), check)!;
+    if (values !== "resolved" && values !== "references") throw new Error("Unknown selected-context value mode.");
+    const expressions = new Map(document.tokens.map(token => [token.id, token.value]));
+    for (const id of document.resolutionOrder) for (const [tokenId, value] of Object.entries(document.themeAxes.find(axis => axis.id === id)!.overrides?.[resolution.contexts[id]!] ?? {})) expressions.set(tokenId, value);
+    const names = new Map(document.tokens.map(token => [token.id, token.name]));
+    for (const token of resolution.tokens) {
+      const authored = document.tokens.find(item => item.id === token.id)!;
+      putDtcgToken(output, token.name, { $type: token.type, $value: values === "resolved" ? token.value : writeDtcgValue(expressions.get(token.id)!, names), ...(authored.description !== undefined ? { $description: authored.description } : {}), ...(authored.deprecated !== undefined ? { $deprecated: authored.deprecated } : {}), ...(authored.extensions ? { $extensions: authored.extensions } : {}) });
+    }
+    result.text = canonicalJson(output, MAX_DOCUMENT_BYTES);
+    result.diagnostics.push({ code: FOUNDATION_CODES.EXCHANGE, phase: "document", severity: "warning", path: "", sourceRef: "memory:foundation", message: `Selected context with ${values === "resolved" ? "resolved values" : "live value references"}; theme definitions, groups, classifications and Axiom authoring metadata are not included. Export ADS to preserve the editable system.` });
+  } catch (error) { result.valid = false; result.diagnostics.push({ code: FOUNDATION_CODES.EXCHANGE, phase: "document", severity: "error", path: "", sourceRef: "memory:foundation", message: error instanceof Error ? error.message : "Export failed." }); }
   return result;
 }

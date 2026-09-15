@@ -1,6 +1,7 @@
 import type { StudioComponent, StudioDesign, StudioProjection, StudioStyle } from "../../ads-core/src/index.ts";
 import type { SourceFile } from "./contracts.ts";
 import { colorChannels, componentSymbol, sourceLiteral } from "./generator-input.ts";
+import { CATALOG_SWIFT_TYPES, catalogSwiftComponent } from "./catalog-native-generator.ts";
 
 function swiftValue(property: string, value: string | number): string {
   if (typeof value === "number") return String(value);
@@ -21,6 +22,7 @@ function swiftComponent(component: StudioComponent): string {
   const part = (role: string) => sourceLiteral(component.parts.find((item) => item.role === role)?.id ?? root.id, "swift");
   const layout = component.mobile.layout[root.id]; const axis = layout?.axis === "horizontal" ? "true" : "false"; const gap = layout?.gap ?? 0;
   const common = visualFunction(component, component.mobile);
+  if (component.catalog) return catalogSwiftComponent(component, common);
   if (component.archetype === "button") return `${common}
 public struct ${name}: View {
  public var label: String; public var disabled: Bool; public var variant: AxiomVariant; public var onActivate: () -> Void
@@ -99,6 +101,7 @@ public struct AxiomThemeProvider<Content: View>: View {
  public init(@ViewBuilder content: () -> Content) { self.content = content() }
  public var body: some View { content }
 }
+${projection.components.some(component => component.catalog) ? CATALOG_SWIFT_TYPES : ""}
 ${projection.components.map(swiftComponent).join("\n")}
 ` }];
 }

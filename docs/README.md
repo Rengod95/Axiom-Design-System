@@ -19,3 +19,15 @@ Current lifecycle authority remains [ADR-0006](adr/0006-product-reset-and-refere
 [Engineering principles](standards/source-code-and-module-structure.md), [retirement ledger](maintenance/pre-studio-retirement.md), and [reference restoration](../reference/pre-studio/README.md) continue to govern the preserved history. The new core, Node store, browser store, CLI, Studio, target generators and delivery adapter are allowed only within the [implementation profile](implementation/ads-kernel-profile.json). The earlier package graph, full ADS schemas and output target packages have not been restored.
 
 11. [Studio quickstart](implementation/studio-quickstart.md), [editor/target evidence](implementation/studio-delivery-evidence.md) and [dependency decisions](implementation/studio-dependency-notice.md)
+
+12. [Workbench extension](adr/0015-studio-workbench-and-catalog-authoring.md), [complete editor audit](implementation/editor-completeness-audit.md), [workbench evidence](implementation/workbench-evidence.md), and [Axiom UI design system](../apps/studio/DESIGN.md)
+
+13. [Foundation onboarding and editor completion](adr/0016-foundation-onboarding-and-editor-completion.md)
+
+The [2026-09-14 editor follow-up](implementation/editor-completion-followup.md) retains all 119 requirement IDs and current source hashes after the property-input, token onboarding and custom-authoring corrections. Its outstanding obligations remain part of the Foundation implementation scope.
+
+14. [Foundation interchange and live expressions](adr/0017-foundation-interchange-and-live-expressions.md), with [incremental delivery evidence](implementation/foundation-interchange-continuation.md). The prior 119-row ledger remains a historical baseline; this increment updates FT03, FT07, FT08 and FT12 only.
+
+15. [Contextual Foundation and component composition](adr/0018-contextual-foundation-and-component-composition.md), with the [fresh 56-document implementation audit](implementation/foundation-audit-2026-09-15.md). Earlier audit artifacts remain historical evidence.
+
+16. [Element composition, policy and behavior authoring](adr/0019-element-composition-policy-and-behavior-authoring.md), [policy contracts](implementation/foundation-policy-authoring.md), [behavior contracts](implementation/component-behavior-authoring.md), [Library design baselines](implementation/library-component-design-baselines.md) and [native runtime verification](implementation/native-runtime-verification.md).

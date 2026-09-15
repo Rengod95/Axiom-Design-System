@@ -4,6 +4,9 @@ import type { StudioComponent, StudioDesign, StudioLayout, StudioPart, StudioPar
 import { isObject, isValidId } from "./documents.ts";
 import { STUDIO_COLOR_PROPERTIES, STUDIO_ERROR, STUDIO_MAX_DIMENSION } from "./studio-constants.ts";
 
+import { STUDIO_EXTENDED_STYLE_TYPES, isStudioTokenCompatible, resolveExtendedStudioStyle } from "./studio-style-values.ts";
+import type { StudioTokenBindingProperty } from "./studio-style-values.ts";
+
 const PRESENTATION_STATES = ["filled", "outlined", "filled-disabled", "outlined-disabled", "filled-pressed", "outlined-pressed"] as const;
 const TOKEN_REFERENCE_KEY = "tokenRef";
 const CHANNEL_SCALE = 255;
@@ -18,12 +21,13 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
   const parts: Record<string, StudioPartPresentation> = Object.create(null);
   const layout: Record<string, StudioLayout> = Object.create(null);
   const add = (path: string, message: string, code?: string): void => { diagnostics.push(diagnostic(document.id, path, message, code)); };
-  function value(source: JsonValue | undefined, type: "color" | "dimension" | "number", path: string, partId: string): { resolved?: string | number; tokenId?: string } {
+  function value(source: JsonValue | undefined, type: "color" | "dimension" | "number", property: StudioTokenBindingProperty, path: string, partId: string): { resolved?: string | number; tokenId?: string } {
     let raw: JsonValue | undefined = source, token: ResolvedFoundationToken | undefined;
     if (isObject(source) && Object.hasOwn(source, TOKEN_REFERENCE_KEY)) {
       if (Object.keys(source).length !== 1 || !isValidId(source.tokenRef)) { add(path, "A visual token binding must name exactly one stable token ID."); return {}; }
       token = tokens.get(source.tokenRef);
       if (!token || token.type !== type) { add(path, "The visual token is missing or has an incompatible type."); return {}; }
+      if (!isStudioTokenCompatible(token, property)) { add(path, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind ${property}. Choose a compatible token or correct its domain purpose.`, STUDIO_ERROR.tokenBinding); return {}; }
       raw = token.value;
       for (const id of [...new Set([token.id, ...token.aliasChain])]) {
         const entries = usages[id] ??= [];
@@ -57,27 +61,44 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
         if (rule.variants.variant !== undefined && rule.variants.variant !== variant) continue;
         if (Object.keys(rule.states).some(key => !state.endsWith(`-${key}`))) continue;
         const specificity = Object.keys(rule.states).length + Object.keys(rule.variants).length;
-        const rank = specificity * 10_000 + Number(rule.explicitPriority);
+        const rank = specificity * 100_000 + Number(rule.explicitPriority) * 10;
         for (const [property, source] of Object.entries(rule.declarations)) {
           const path = `/appearance/${index}/declarations/${property}`;
-          const output = value(source, STUDIO_COLOR_PROPERTIES.has(property) ? "color" : property === "opacity" ? "number" : "dimension", path, part.id);
-          if (output.resolved === undefined) continue;
-          if (property === "fontSize" && output.resolved === 0) { add(path, "Text must have a positive size."); continue; }
-          const previous = winners.get(property);
-          if (previous?.rank === rank && previous.value !== output.resolved) { add(path, `Conflicting ${property} declarations at equal precedence.`, STUDIO_ERROR.conflict); continue; }
-          if (!previous || rank > previous.rank) winners.set(property, { rank, value: output.resolved, path, ...(output.tokenId ? { tokenId: output.tokenId } : {}) });
+          const outputs: { property: string; resolved: string | number; tokenId?: string; rank: number }[] = [];
+          if (Object.hasOwn(STUDIO_EXTENDED_STYLE_TYPES, property)) {
+            let raw = source, tokenId: string | undefined;
+            try {
+              if (isObject(source) && Object.hasOwn(source, TOKEN_REFERENCE_KEY)) {
+                if (Object.keys(source).length !== 1 || typeof source.tokenRef !== "string") throw new Error("Use exactly one stable token binding.");
+                const token = tokens.get(source.tokenRef);
+                if (!token || token.type !== STUDIO_EXTENDED_STYLE_TYPES[property]) throw new Error("Style token is missing or has an incompatible type.");
+                if (!isStudioTokenCompatible(token, property as StudioVisualProperty)) { add(path, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind ${property}. Choose a compatible token or correct its domain purpose.`, STUDIO_ERROR.tokenBinding); continue; }
+                raw = token.value; tokenId = token.id;
+                for (const id of new Set([token.id, ...token.aliasChain])) { const entries = usages[id] ??= []; if (!entries.some(item => item.documentId === document.id && item.path === path)) entries.push({ componentId: component.id, partId: part.id, documentId: document.id, path }); }
+              }
+              for (const [field, resolved] of Object.entries(resolveExtendedStudioStyle(property, raw))) outputs.push({ property: field, resolved, ...(tokenId ? { tokenId } : {}), rank: rank + (property === "typography" || property === "border" ? 0 : 1) });
+            } catch (error) { add(path, error instanceof Error ? error.message : "Invalid style value.", STUDIO_ERROR.unsupported); }
+          } else {
+            const output = value(source, STUDIO_COLOR_PROPERTIES.has(property) ? "color" : property === "opacity" ? "number" : "dimension", property as StudioVisualProperty, path, part.id);
+            if (output.resolved !== undefined) outputs.push({ property, resolved: output.resolved, ...(output.tokenId ? { tokenId: output.tokenId } : {}), rank: rank + 1 });
+          }
+          for (const output of outputs) {
+            if (output.property === "fontSize" && output.resolved === 0) { add(path, "Text must have a positive size."); continue; }
+            const previous = winners.get(output.property);
+            if (previous?.rank === output.rank && previous.value !== output.resolved) { add(path, `Conflicting ${output.property} declarations at equal precedence.`, STUDIO_ERROR.conflict); continue; }
+            if (!previous || output.rank > previous.rank) winners.set(output.property, { rank: output.rank, value: output.resolved, path, ...(output.tokenId ? { tokenId: output.tokenId } : {}) });
+          }
         }
       }
       const style: StudioStyle = {};
       for (const [property, winner] of winners) {
-        if ((property === "background" || property === "color" || property === "borderColor") && typeof winner.value === "string") style[property] = winner.value;
-        else if ((property === "borderWidth" || property === "borderRadius" || property === "fontSize" || property === "opacity") && typeof winner.value === "number") style[property] = winner.value;
+        Object.assign(style, { [property]: winner.value });
         presentation.provenance[`${state}.${property}`] = { documentId: document.id, path: winner.path, ...(winner.tokenId ? { tokenId: winner.tokenId } : {}) };
       }
       presentation.combinations[state] = style;
     }
     presentation.base = presentation.combinations.filled;
-    const changes = (style: StudioStyle): StudioStyle => Object.fromEntries(Object.entries(style).filter(([key, value]) => presentation.base[key as StudioVisualProperty] !== value));
+    const changes = (style: StudioStyle): StudioStyle => Object.fromEntries(Object.entries(style).filter(([key, value]) => presentation.base[key as keyof StudioStyle] !== value));
     presentation.outlined = changes(presentation.combinations.outlined);
     presentation.disabled = changes(presentation.combinations["filled-disabled"]);
     presentation.pressed = changes(presentation.combinations["filled-pressed"]);
@@ -85,12 +106,20 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
     const source = objectList(document.layout).find(item => item.targetPartRef === part.id);
     if (!source) continue;
     const index = objectList(document.layout).indexOf(source);
-    const numeric = (field: string): number => {
-      const result = value(source[field], "dimension", `/layout/${index}/${field}`, part.id).resolved;
+    const numeric = (field: "gap" | "padding" | "minHeight"): number => {
+      const result = value(source[field], "dimension", field, `/layout/${index}/${field}`, part.id).resolved;
       return typeof result === "number" ? result : 0;
     };
-    layout[part.id] = { axis: source.axis === "horizontal" ? "horizontal" : "vertical", gap: numeric("gap"), padding: numeric("padding"), minHeight: numeric("minHeight"), childOrder: Array.isArray(source.childOrder) ? source.childOrder.map(String) : [] };
+    layout[part.id] = { ...(source.mode === "free" ? { mode: "free" as const } : {}), ...(isObject(source.position) ? { position: { x: Number(source.position.x), y: Number(source.position.y) } } : {}), axis: source.axis === "horizontal" ? "horizontal" : "vertical", gap: numeric("gap"), padding: numeric("padding"), minHeight: numeric("minHeight"), childOrder: Array.isArray(source.childOrder) ? source.childOrder.map(String) : [] };
+    if (isObject(source.size)) for (const axis of ["width", "height"] as const) {
+      const policy = source.size[axis];
+      if (isObject(policy) && (policy.mode === "hug" || policy.mode === "fill")) layout[part.id]![axis] = { mode: policy.mode };
+      else if (isObject(policy) && policy.mode === "fixed" && isObject(policy.value) && typeof policy.value.value === "number") layout[part.id]![axis] = { mode: "fixed", value: policy.value.value };
+    }
+    if (source.alignment === "start" || source.alignment === "center" || source.alignment === "end" || source.alignment === "stretch") layout[part.id]!.alignment = source.alignment;
     if (component.archetype === "button" && part.role === "root" && layout[part.id]!.minHeight < MIN_ACTION_HEIGHT) add(`/layout/${index}/minHeight`, "Button requires at least 44 logical px in this profile.");
   }
-  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout };
+  const mappings = objectList(document.nodeMappings).filter(item => typeof item.element === "string");
+  const elements = Object.fromEntries(mappings.map(item => [String(item.partRef), item.element])) as NonNullable<StudioDesign["elements"]>;
+  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout, ...(mappings.length ? { elements } : {}), ...(isObject(document.editorFrame) ? { editorFrame: document.editorFrame as unknown as NonNullable<StudioDesign["editorFrame"]> } : {}) };
 }

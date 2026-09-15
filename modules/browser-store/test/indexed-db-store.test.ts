@@ -4,9 +4,12 @@ import type { TestContext } from "node:test";
 import { IDBFactory, IDBObjectStore, forceCloseDatabase } from "fake-indexeddb";
 import { IndexedDbStore, BrowserStoreError, browserDigest } from "../src/index.ts";
 import { BROWSER_MAX_COMMITS, BROWSER_STORE_ERROR } from "../src/constants.ts";
-import { createBrowserCommit } from "../src/journal.ts";
-import type { BrowserCommit, BrowserFaultPhase, IndexedDbStoreOptions } from "../src/contracts.ts";
+import { createBrowserCommit, readBrowserJournal } from "../src/journal.ts";
+import type { ValidatedBrowserSnapshots } from "../src/journal.ts";
+import type { BrowserCommit, BrowserFaultPhase, IndexedDbStoreOptions, RecoveredBrowserState } from "../src/contracts.ts";
 import type { KernelState, StoreUpdate } from "../../ads-core/src/index.ts";
+import { canonicalJson } from "../../ads-core/src/index.ts";
+import { MAX_CANONICAL_BYTES } from "../../ads-core/src/constants.ts";
 
 function state(name = "Initial"): KernelState {
   return { formatVersion: "0.1.0", project: { id: "project", name, revision: "revision", documents: {} }, candidates: [], receipts: [], history: [], undo: [], redo: [] };
@@ -43,6 +46,151 @@ async function records(factory: IDBFactory): Promise<BrowserCommit[]> {
   finally { database.close(); }
 }
 function code(expected: string) { return (error: unknown) => error instanceof BrowserStoreError && error.code === expected; }
+
+test("oversized stored state is rejected by the codec preflight before digest byte allocation", async (t) => {
+  const { factory, store } = setup(t), current = store();
+  await current.transact(() => ({ state: state(), value: null, changed: true }));
+  const commit = (await records(factory))[0]!;
+  commit.stateText = "x".repeat(MAX_CANONICAL_BYTES + 1);
+  await raw(factory, transaction => transaction.objectStore("commits").put(commit, commit.sequence));
+  await assert.rejects(() => current.read(), (error: unknown) => error instanceof BrowserStoreError && error.code === BROWSER_STORE_ERROR.corrupt && error.message.includes("UTF-8 bound"));
+});
+
+test("warm and cold readers reject a malformed-surrogate ancestor even when UTF-8 replacement preserves its digest", async (t) => {
+  const { factory, store } = setup(t), warm = store();
+  await warm.transact(() => ({ state: state("\uFFFD"), value: null, changed: true }));
+  await warm.transact(() => ({ state: state("Latest"), value: null, changed: true }));
+  assert.equal((await warm.read())!.project!.name, "Latest");
+  const ancestor = (await records(factory))[0]!;
+  const malformed = ancestor.stateText.replace("\uFFFD", "\uD800");
+  assert.notEqual(malformed, ancestor.stateText);
+  assert.equal(browserDigest(malformed), ancestor.stateDigest);
+  ancestor.stateText = malformed;
+  await raw(factory, transaction => transaction.objectStore("commits").put(ancestor, ancestor.sequence));
+  await assert.rejects(() => warm.read(), code(BROWSER_STORE_ERROR.corrupt));
+  await assert.rejects(() => store().read(), code(BROWSER_STORE_ERROR.corrupt));
+});
+
+test("cached historical validation still rejects changed bytes and digest-valid invalid state on the same connection", async (t) => {
+  for (const rehash of [false, true]) {
+    const { factory, store } = setup(t), current = store();
+    await current.transact(() => ({ state: state(), value: null, changed: true }));
+    const detached = await current.read(); detached!.project!.name = "Caller mutation";
+    assert.equal((await current.read())!.project!.name, "Initial");
+    const commit = (await records(factory))[0]!;
+    commit.stateText = canonicalJson({ ...state(), formatVersion: "invalid" });
+    if (rehash) {
+      commit.stateDigest = browserDigest(commit.stateText);
+      const { stateText: _stateText, commitDigest: _commitDigest, ...metadata } = commit;
+      commit.commitDigest = browserDigest(canonicalJson(metadata));
+    }
+    await raw(factory, transaction => { transaction.objectStore("commits").put(commit, commit.sequence); transaction.objectStore("meta").put({ storageFormatVersion: "0.1.0", sequence: commit.sequence, commitDigest: commit.commitDigest }, "head"); });
+    await assert.rejects(() => current.read(), code(BROWSER_STORE_ERROR.corrupt));
+    await assert.rejects(() => current.transact(() => ({ state: state("Overwrite"), value: null, changed: true })), code(BROWSER_STORE_ERROR.corrupt));
+  }
+});
+
+test("warm reads avoid repeating the canonical history walk while returning complete isolated snapshots", async (t) => {
+  const { store } = setup(t), writer = store(), current = store();
+  const snapshot = state();
+  const document = { id: "design.example", kind: "catalog", schemaVersion: "0.1.0", revision: "1", name: "Example",
+    parts: Array.from({ length: 40 }, (_, index) => ({ id: `part.${index}`, properties: { label: `Part ${index}`, padding: 8 } })) };
+  const documents = { [document.id]: { document, originalText: JSON.stringify(document), sourceUri: "memory:example", validation: "envelope-only" as const, diagnostics: [] } };
+  snapshot.project!.documents = documents;
+  for (let index = 0; index < 6; index++) {
+    snapshot.candidates.push({ id: `candidate.${index}`, projectId: "project", baseRevision: String(index), actorId: "actor", digest: "0".repeat(64), documents, diff: [], diagnostics: [], status: "applied" });
+    snapshot.undo.push({ handle: `undo.${index}`, actorId: "actor", applicableRevision: String(index), before: documents, after: documents });
+    snapshot.history.push({ revision: String(index), parentRevision: index ? String(index - 1) : null, actorId: "actor", operation: "edit", transactionId: `transaction.${index}`, affectedRefs: [] });
+  }
+  await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
+  const descriptors = Object.getOwnPropertyDescriptors;
+  let walks = 0;
+  t.mock.method(Object, "getOwnPropertyDescriptors", (value: object) => { walks++; return descriptors(value); });
+  const cold = await current.read(), coldWalks = walks;
+  walks = 0;
+  const warm = await current.read(), warmWalks = walks;
+  assert.deepEqual(cold, snapshot);
+  assert.deepEqual(warm, snapshot);
+  assert.ok(coldWalks > 100, "the initial read validates the complete retained history");
+  assert.ok(warmWalks < coldWalks / 10, "authenticated snapshots do not repeat the full descriptor walk");
+  warm!.project!.name = "Caller mutation";
+  warm!.candidates.length = 0;
+  warm!.undo[0]!.before[document.id]!.document.name = "Mutated undo";
+  assert.deepEqual(await current.read(), snapshot);
+  assert.deepEqual(await store().read(), snapshot, "reopening validates the same full history without a cache");
+});
+
+test("first read reuses the full fresh-write codec proof without retaining caller state or skipping cold validation", async (t) => {
+  const { store } = setup(t), writer = store(), snapshot = state();
+  const document = { id: "catalog.large", kind: "catalog", schemaVersion: "1.0.0", revision: "revision.source", name: "Large source", items: Array.from({ length: 200 }, (_, index) => ({ id: `item.${index}`, properties: { label: `Item ${index}`, nested: { value: index } } })) };
+  snapshot.project!.documents[document.id] = { document, originalText: JSON.stringify(document), sourceUri: "memory:large", validation: "envelope-only", diagnostics: [] };
+  await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
+  const expected = structuredClone(snapshot);
+  document.items[0]!.properties.label = "Caller changed after write";
+  const descriptors = Object.getOwnPropertyDescriptors; let walks = 0;
+  t.mock.method(Object, "getOwnPropertyDescriptors", (value: object) => { walks++; return descriptors(value); });
+  const immediate = await writer.read(), immediateWalks = walks;
+  walks = 0; const cold = await store().read(), coldWalks = walks;
+  assert.deepEqual(immediate, expected); assert.deepEqual(cold, expected);
+  assert.ok(coldWalks > 200, "A different connection still proves the complete stored state");
+  assert.ok(immediateWalks < coldWalks / 10, "The writer's first read does not repeat the just-completed canonical descriptor proof");
+  immediate!.project!.documents[document.id]!.document.name = "Mutated read";
+  assert.deepEqual(await writer.read(), expected, "A cached proof never shares the caller's original or returned state objects");
+});
+
+test("fresh-write validation rejects corrupted bytes and never treats a rolled-back write as committed", async (t) => {
+  for (const rehash of [false, true]) {
+    const { factory, store } = setup(t), writer = store();
+    await writer.transact(() => ({ state: state("Fresh"), value: null, changed: true }));
+    const commit = (await records(factory))[0]!;
+    commit.stateText = canonicalJson({ ...state("Fresh"), formatVersion: "invalid" });
+    if (rehash) {
+      commit.stateDigest = browserDigest(commit.stateText);
+      const { stateText: _text, commitDigest: _digest, ...metadata } = commit;
+      commit.commitDigest = browserDigest(canonicalJson(metadata));
+    }
+    await raw(factory, transaction => { transaction.objectStore("commits").put(commit, commit.sequence); transaction.objectStore("meta").put({ storageFormatVersion: "0.1.0", sequence: commit.sequence, commitDigest: commit.commitDigest }, "head"); });
+    await assert.rejects(() => writer.read(), code(BROWSER_STORE_ERROR.corrupt));
+  }
+  const { factory, store } = setup(t); let fail = true;
+  const writer = store({ fault: phase => { if (phase === "after-write" && fail) throw new Error("Abort fresh write"); } });
+  await assert.rejects(() => writer.transact(() => ({ state: state("Aborted"), value: null, changed: true })), code(BROWSER_STORE_ERROR.io));
+  assert.deepEqual(await records(factory), []); assert.equal(await writer.read(), null);
+  fail = false;
+  await writer.transact(() => ({ state: state("Retried"), value: null, changed: true }));
+  assert.equal((await writer.read())!.project!.name, "Retried");
+});
+
+test("forged or transplanted validation identities cannot authorize a parse-only read", async (t) => {
+  const { factory, store } = setup(t), current = store();
+  await current.transact(() => ({ state: state(), value: null, changed: true }));
+  const readWithCache = async (cache: ValidatedBrowserSnapshots): Promise<RecoveredBrowserState> => {
+    const database = await open(factory);
+    try {
+      return await new Promise((resolve, reject) => {
+        const transaction = database.transaction(["commits", "meta"]);
+        transaction.onabort = () => reject(transaction.error);
+        readBrowserJournal(transaction, resolve, reject, cache);
+      });
+    } finally { database.close(); }
+  };
+  const validated: ValidatedBrowserSnapshots = new Map();
+  await readWithCache(validated);
+  const identity = [...validated.values()][0]!;
+  assert.ok(Object.isFrozen(identity), "validated identity metadata cannot be changed after minting");
+  const commit = (await records(factory))[0]!;
+  commit.stateText = canonicalJson({ ...state(), formatVersion: "invalid" });
+  commit.stateDigest = browserDigest(commit.stateText);
+  const { stateText: _stateText, commitDigest: _commitDigest, ...metadata } = commit;
+  commit.commitDigest = browserDigest(canonicalJson(metadata));
+  await raw(factory, transaction => {
+    transaction.objectStore("commits").put(commit, commit.sequence);
+    transaction.objectStore("meta").put({ storageFormatVersion: "0.1.0", sequence: commit.sequence, commitDigest: commit.commitDigest }, "head");
+  });
+  for (const cached of [{ projectId: "project", revision: "revision" }, identity]) {
+    await assert.rejects(() => readWithCache(new Map([[commit.stateDigest, cached]])), code(BROWSER_STORE_ERROR.corrupt));
+  }
+});
 
 test("empty/read/reopen/close distinguish absence from committed state and return isolated values", async (t) => {
   const { store } = setup(t);

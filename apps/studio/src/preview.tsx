@@ -5,8 +5,11 @@ import { Icon } from "./icons.tsx";
 import { translate } from "./locales.ts";
 import type { Locale } from "./locales.ts";
 import { closeActionSize, inheritPreviewText } from "./preview-style.ts";
+import { CatalogPreview } from "./catalog-preview.tsx";
 
-interface Props { components: StudioComponent[]; category: StudioCategory; mode: "edit" | "run"; selectedPart: string | null; onSelect(componentId: string, partId: string): void; locale: Locale }
+interface Props {
+  allComponents?: StudioComponent[];
+  onElementEdit?: (componentId: string, edits: import("../../../modules/ads-core/src/index.ts").StudioComponentEdit[]) => boolean; components: StudioComponent[]; category: StudioCategory; mode: "edit" | "run"; selectedPart: string | null; onSelect(componentId: string, partId: string): void; locale: Locale }
 const partFor = (component: StudioComponent, role: StudioPart["role"]): StudioPart | undefined => component.parts.find(part => part.role === role);
 
 function ComponentPreview({ component, category, mode, selectedPart, onSelect, locale }: Omit<Props, "components"> & { component: StudioComponent }) {
@@ -48,22 +51,22 @@ function ComponentPreview({ component, category, mode, selectedPart, onSelect, l
     return roles.sort((a, b) => (layout?.childOrder.indexOf(partFor(component, a)?.id ?? "") ?? 0) - (layout?.childOrder.indexOf(partFor(component, b)?.id ?? "") ?? 0)).map(role => nodes[role]);
   };
   return <section className="preview-section" aria-label={component.name} data-testid={`preview-${component.id}`}>
-    <div className="preview-heading"><span>{String(component.archetype === "button" ? 1 : component.archetype === "card" ? 2 : 3).padStart(2, "0")}</span>{component.name}</div>
     <div className={`component-root ${mode === "edit" ? "edit-surface" : ""}`} onPointerDown={select}>
       {component.archetype === "button" && <button {...attrs("root")} className={`sample-button ${attrs("root").className}`} style={{ ...rootStyle, opacity: rootStyle.opacity ?? 1 }} disabled={mode === "run" && disabled} tabIndex={mode === "edit" ? -1 : 0} onPointerDown={() => { if (mode === "run" && !disabled) setPressed(true); }} onPointerUp={() => setPressed(false)} onPointerCancel={() => setPressed(false)} onPointerLeave={() => setPressed(false)} onBlur={() => setPressed(false)} onKeyDown={event => { if (mode === "run" && (event.key === " " || event.key === "Enter")) setPressed(true); }} onKeyUp={() => setPressed(false)} onClick={event => { if (mode === "edit") { event.preventDefault(); return; } setActivations(value => value + 1); }} data-testid="runtime-button"><span {...attrs("label")} style={style("label")}>{component.sampleContent.label}</span></button>}
       {component.archetype === "card" && <article {...attrs("root")} className={`sample-card ${attrs("root").className}`} style={rootStyle}>
-        {ordered({ header: <h2 key="header" {...attrs("header")} style={style("header")}>{component.sampleContent.title}</h2>, body: <p key="body" {...attrs("body")} style={style("body")}>{component.sampleContent.body}</p>, actions: component.sampleContent.actionLabel ? <div key="actions" {...attrs("actions")} style={style("actions")}><button className="button secondary" style={{ color: "inherit", fontSize: "inherit" }} tabIndex={mode === "edit" ? -1 : 0} onClick={event => { if (mode === "edit") event.preventDefault(); else setActivations(value => value + 1); }}>{component.sampleContent.actionLabel}</button></div> : null })}
+        {ordered({ header: <h2 key="header" {...attrs("header")} style={style("header")}>{component.sampleContent.title}</h2>, body: <p key="body" {...attrs("body")} style={style("body")}>{component.sampleContent.body}</p>, actions: component.sampleContent.actionLabel ? <div key="actions" {...attrs("actions")} style={style("actions")}><button className="button secondary" style={{ color: "inherit", fontSize: "inherit", background: "transparent", borderColor: "currentColor" }} tabIndex={mode === "edit" ? -1 : 0} onClick={event => { if (mode === "edit") event.preventDefault(); else setActivations(value => value + 1); }}>{component.sampleContent.actionLabel}</button></div> : null })}
       </article>}
       {component.archetype === "toast" && (present || mode === "edit") && <div {...attrs("root")} className={`sample-toast ${attrs("root").className}`} style={{ ...rootStyle, opacity: mode === "run" && !open ? 0 : rootStyle.opacity ?? 1, transition: `opacity ${component.motion.durationMs}ms` }}>
         {ordered({ body: <span key="body" {...attrs("body")} className={`toast-copy ${attrs("body").className}`} style={style("body")} role={mode === "run" && open ? "status" : undefined}>{component.sampleContent.body}</span>, close: <button key="close" {...attrs("close")} className={`toast-close ${attrs("close").className}`} style={style("close")} aria-label={component.sampleContent.closeLabel} disabled={mode === "run" && !open} tabIndex={mode === "edit" ? -1 : 0} onClick={event => { if (mode === "edit") event.preventDefault(); else requestClose(); }} data-testid="runtime-toast-close"><Icon name="close" size={13} /></button> })}
       </div>}
     </div>
-    {mode === "run" && <div className="run-controls"><span className="eyebrow">{t("sampleOnly")}</span>
+    <dl className="preview-metadata"><div><dt>{locale === "ko" ? "변형" : "Variant"}</dt><dd>{component.defaults.variant}</dd></div><div><dt>{locale === "ko" ? "파트" : "Parts"}</dt><dd>{component.parts.length}</dd></div><div><dt>{locale === "ko" ? "상태" : "State"}</dt><dd>{disabled ? locale === "ko" ? "비활성" : "Disabled" : locale === "ko" ? "활성" : "Enabled"}</dd></div></dl>
+    {mode === "run" && <div className="run-controls"><span>{t("sampleOnly")}</span>
       {component.archetype === "button" && <><label className="switch-row"><input type="checkbox" checked={disabled} onChange={event => setDisabled(event.target.checked)} />{t("disabled")}</label><p className="help">{t("activationCount")}: <output data-testid="activation-count">{activations}</output></p></>}
-      {component.archetype === "toast" && <><div className="property-row"><label htmlFor="close-response">{t("closeResponse")}</label><select id="close-response" className="tiny-select" value={decline ? "decline" : "accept"} onChange={event => setDecline(event.target.value === "decline")}><option value="accept">{t("accept")}</option><option value="decline">{t("decline")}</option></select></div><button ref={reopen} className="button secondary" data-testid="runtime-toast-show" onClick={() => setOpen(true)}>{t("showToast")}</button><p className="help">{t("closeRequests")}: <output data-testid="close-request-count">{requests}</output></p></>}
+      {component.archetype === "toast" && <><div className="property-row"><label htmlFor={`${component.id}-close-response`}>{t("closeResponse")}</label><select id={`${component.id}-close-response`} className="tiny-select" value={decline ? "decline" : "accept"} onChange={event => setDecline(event.target.value === "decline")}><option value="accept">{t("accept")}</option><option value="decline">{t("decline")}</option></select></div><button ref={reopen} className="button secondary" data-testid="runtime-toast-show" onClick={() => setOpen(true)}>{t("showToast")}</button><p className="help">{t("closeRequests")}: <output data-testid="close-request-count">{requests}</output></p></>}
       {component.archetype === "card" && <p className="help">{t("activationCount")}: {activations}</p>}
     </div>}
   </section>;
 }
 
-export function Preview(props: Props) { return <div className="preview-surface" data-testid="preview-surface">{props.components.map(component => <ComponentPreview key={component.id} {...props} component={component} />)}</div>; }
+export function Preview(props: Props) { return <div className="preview-surface" data-testid="preview-surface">{props.components.map(component => component.catalog ? <CatalogPreview key={component.id} {...props} component={component} /> : <ComponentPreview key={component.id} {...props} component={component} />)}</div>; }

@@ -1,0 +1,376 @@
+{
+  "kind": "axiom-studio-authoring-verification",
+  "version": 1,
+  "status": "PASSED_WITH_EXPLICIT_SCOPE",
+  "recordedAt": "2026-09-15T01:40:27.593485+00:00",
+  "baselineCommit": "81b276217a9d91f7591a990d424184cdb9dea808",
+  "subject": "Uncommitted working tree, including the previously staged storage performance fix; not a new commit, remote CI result or merged PR.",
+  "sourceSha256": {
+    "apps/studio/src/app.tsx": "7f609228dc5bd4c8c26064723a51b147f4f1bb06a0d898308cdaf09ed6c98a0f",
+    "apps/studio/src/catalog-preview.tsx": "4fa8aa026c1c844c00286980a5e3f26a7b79869e1bbe84d34399f5ed619b595f",
+    "apps/studio/src/component-authoring.css": "ad911b994de63dfaf9a54a64ec60e8103a075a8aa890625bae5f4495b092564f",
+    "apps/studio/src/component-composer.tsx": "a62727333aec43feb6b366b16c30601de06a8bcc273e0c6944a72dfefa26a2ed",
+    "apps/studio/src/component-inspector.tsx": "1eaf459470bf5b2653950f8714e31478f05bab2e4a2ddb87bf699db3e2cfde68",
+    "apps/studio/src/controller.ts": "464fda8be043a7c63f8b600cb82a74c0b2a18dd61e9aaaacab9be27b56c104c5",
+    "apps/studio/src/foundation-inspector.tsx": "1b41bf9d075f6584b9e741761bb6c5672104587e94fccb9fb2368037652b1e3e",
+    "apps/studio/src/foundation-panel.tsx": "46b8b7dc46208d536d3814730ca277b394fa53183d026898bdf94b8704e7dfa6",
+    "apps/studio/src/foundation-starter-panel.tsx": "b7c6c666bcab0a7845337ef6e4462bdf5d744b41a6c14a454f0196280364f83f",
+    "apps/studio/src/foundation-starters.css": "ed9b963e81041d2d41ed9561fb882b9bdc711397b9a3aeaf9dea19fd232cb98a",
+    "apps/studio/src/main.tsx": "9a16dbb41a00622a076786b0b6a9d745f242ddec23fe1c7bee329e43e8ad2a5f",
+    "apps/studio/src/studio-slider.css": "b7b1a43eda8f80b908826d1a55266cd4f3c8acc0e287e1e4dcd4f5c8548f9550",
+    "apps/studio/src/studio-slider.tsx": "d71920412f8f5ad88ff72e5603aab54a0537b0767bffc2e0dc63fdb4714c4166",
+    "apps/studio/src/token-relationships.tsx": "fb5b7e4f926ab387387c4a0dbfb486256646739f835b6368febab06af2d4f1bb",
+    "apps/studio/src/workbench-panels.tsx": "2d856bff0f8fb7e85844e97b607515ba8ff5c72e51064f0c281db1757612a98d",
+    "apps/studio/test/catalog-preview.test.ts": "a7979a2847a3de1ff1c49246de1fa39af311be233737c743ec884822dcb70a40",
+    "apps/studio/test/controller-workflow.test.ts": "6794e303ae9e723238c13d0be4dbeff2c2f8494304381be83531c446e818214a",
+    "apps/studio/test/studio-slider.test.ts": "4fea3c0d8517e1d5c39d6edd8c25ae28006db01671ec876df17a2367d1e05472",
+    "docs/implementation/ads-kernel-profile.json": "9a2c40256d52c7e0c0ea64db4e621b3a8dd9df2112099ecb5e01167ed7f40431",
+    "modules/ads-core/src/command-service.ts": "b5939cea27d08473736db66823a3194173bd9a66e0badb026c0e3cd298be36b3",
+    "modules/ads-core/src/foundation-authoring.ts": "2fefac9c12e163c18bf49250d6d0be4eabc8b30a120cdc92409ec3db69f035df",
+    "modules/ads-core/src/foundation-starter-presets.ts": "17a25d25ea3641ef9a1c59fd8731fb22fe6db4a86c185f5b97f2417ef9de729b",
+    "modules/ads-core/src/foundation-starters.ts": "0a77e7e642b937931f612db11b4d1652a0c53e8dc131dabc0eaa2fc375d69b3a",
+    "modules/ads-core/src/index.ts": "4ca896a897ca2166e41eb11d060788a6714655a25bd6d0987bf60085e4941eb3",
+    "modules/ads-core/src/studio-catalog-contracts.ts": "22d5cc495aa2033491c270c155aa0b4497157bf8540536f3fedb3c3c767ad298",
+    "modules/ads-core/src/studio-catalog-sources.ts": "a1dee8dc6da6605b4d000b967ec40f63f69eb267ab47b25f34cc3cc56f6f9d17",
+    "modules/ads-core/src/studio-component-authoring.ts": "982777237d6fd794da432b1f5f2b5d932da5d0ed800c69e1213464873e39087b",
+    "modules/ads-core/src/studio-component-mutations.ts": "a5d23a35ba03a8077622fae16b490682dd2852589086e03fae91afd8a899b491",
+    "modules/ads-core/src/studio-contracts.ts": "c6751b001c4b46720d5acb4301a9777eb287a0aeebf8b9f242066b81adc77d26",
+    "modules/ads-core/src/studio-presentation.ts": "26a261bd392dc7df31ebd860dad50e2a5cb8afdbb921e1b82c46b4c20267c2b7",
+    "modules/ads-core/src/studio-validation.ts": "7c9c098c7073a450e8fc40512122c2d0be5f51260b193b37ce325d6c2e41749d",
+    "modules/ads-core/test/component-composer.test.ts": "dd2e28db7232b704af9d97537ddde1a62fcec786970f4e8f7340a8b6785539fd",
+    "modules/ads-core/test/foundation-starter-templates.test.ts": "b488c14676dd75f01ce97eba28a9619c0ead27960f506b6af66c60d4e4b08677",
+    "modules/ads-core/test/studio-authoring.test.ts": "9a94179f68637de070072a9809f44083f024c98fac99d9e9faeff9e529e6847a",
+    "modules/ads-core/test/studio-catalog-foundation.test.ts": "6b76a0e137e0689c3bf933b815d40fe51aac4754457c465b3aeb8101a6201510",
+    "modules/browser-store/src/journal.ts": "e9aaf25e57b295f5bdfdef1e2c8b3aae90443cba9b67651216e0670a02e370a6",
+    "modules/browser-store/test/indexed-db-store.test.ts": "a3af637d5a125bfac131ea446dbfb39bc64dbd4431efa4fbd1009d817b68e61b",
+    "modules/target-packs/src/catalog-capabilities.ts": "8cc7868d7bf18d3ed0d5ea6da1097ebcc24fe8ccf99bbaaeb795fe72fff56f70",
+    "modules/target-packs/src/catalog-react-generator.ts": "a15c970a1392ab76204f08858b9b08da1e961de6e0627ad1a5866d7c3f3e6e62",
+    "modules/target-packs/test/component-composer-targets.test.ts": "bf68b536ba526869d8c46a3c54da6ca6b614eeda28c45a6f2096db6e7415c12d",
+    "scripts/verify-retirement.py": "298e2e49999af4a0b8f8de4a2dbd290513976e0757412a262176d681be6f69de",
+    "scripts/verify-workbench.mjs": "80cc085a4315a6e514ba039702415494bf5394b8a4bfbc4838de7247dfd92adf",
+    "scripts/workbench-authoring-cases.mjs": "5d07e655b2d3621379608eff4552aad6d64341d51426d745f1305e41ff791927",
+    "scripts/workbench-chrome-cases.mjs": "c03e8ba4e2e8534d8f8775bfc6c50b029fc37440e41ebfaaa30688ec22196ccf",
+    "scripts/workbench-completion-cases.mjs": "76755d14b561ae689d2b23a295abfa66d27c1431e11ec3f9632ccfe047baba4b"
+  },
+  "gates": {
+    "pnpm check": {
+      "status": "PASSED",
+      "generatedFieldRecords": 57,
+      "strictTypeScript": true,
+      "implementationSourceFiles": 171,
+      "negativeCases": 20,
+      "evidence": "Completed command output in the task; no separate log retained."
+    },
+    "pnpm build": {
+      "status": "PASSED",
+      "studioInputs": 158,
+      "evidence": "dist/studio/build-evidence.json",
+      "evidenceSha256": "18ec0fbb1698b9f77eb7b16adda3af87347bca5d81b421553cb89b13d7acb7ad"
+    },
+    "pnpm test": {
+      "status": "PASSED",
+      "tests": 414,
+      "passed": 414,
+      "failed": 0,
+      "skipped": 0,
+      "elapsedMs": 79214.8297,
+      "evidence": "dist/evidence/authoring-test.log",
+      "evidenceSha256": "af072f02c891806064b75f2710a347673ba05d9145ff81278d2398ff73cbf616"
+    },
+    "pnpm test:browser": {
+      "status": "PASSED",
+      "elapsedMs": 3563,
+      "browser": "Chrome/152.0.7977.83",
+      "evidence": "dist/evidence/authoring-test-browser.log",
+      "evidenceSha256": "136ac84e0cdc0bed9f40a26d9942449576c740f0c2820d671ac24c6db267e853",
+      "limitations": [
+        "Chromium only; Safari and Firefox are not certified.",
+        "Dedicated test profile; user eviction and power-loss durability are not tested.",
+        "Quota failure uses trusted injection; physical quota exhaustion is not claimed."
+      ]
+    },
+    "pnpm test:studio": {
+      "status": "PASSED",
+      "elapsedMs": 13639,
+      "browser": "Chrome/152.0.7977.83",
+      "evidence": "dist/evidence/studio.json",
+      "evidenceSha256": "02a78a6c279a7e64d769bed5ecf442fa7cb6180b6a02af7fc7e2978100d1015b",
+      "limitations": [
+        "Chromium only; Mobile is a DOM approximation.",
+        "Source download is not native installation or platform certification."
+      ]
+    },
+    "pnpm test:workbench": {
+      "status": "PASSED",
+      "elapsedMs": 337767,
+      "browser": "Chrome/152.0.7977.83",
+      "caseCount": 32,
+      "cases": [
+        "create",
+        "typedToken",
+        "aliasAndClassification",
+        "themes",
+        "catalogSimulation",
+        "libraryAndCanvas",
+        "dirtyManagement",
+        "hexEditing",
+        "sourceBundle",
+        "processRestart",
+        "starterWorkspace",
+        "directReview",
+        "blockedInspectorRecovery",
+        "trackpadGesture",
+        "motionAuthoring",
+        "responsiveAppearance",
+        "materialAtlas",
+        "materialMotion",
+        "collapsedDraftRecovery",
+        "compactGlassControls",
+        "bindingPurposeFilters",
+        "panelVisibility",
+        "foundationBlueprints",
+        "blueprintChrome",
+        "studioSliderAuthoring",
+        "catalogBlueprints",
+        "dtcgReviewedImport",
+        "dtcgResolverAndExchange",
+        "architectureTemplates",
+        "componentComposer",
+        "elementAndContentAuthoring",
+        "atomicBindingRepair"
+      ],
+      "newAuthoringCases": {
+        "architectureTemplates": {
+          "choices": 6,
+          "onboarding": true,
+          "selectionDoesNotMutate": true,
+          "emptySelectionBlocksApply": true,
+          "keyboardCheckbox": true,
+          "actualDarkAliasPreview": true,
+          "reviewedRadixSaveAndReload": true,
+          "domains": 11,
+          "elapsedMs": 291001
+        },
+        "componentComposer": {
+          "starts": 6,
+          "nativeButtonAndInputPreview": true,
+          "semanticArticlePreview": true,
+          "cancelPreservesSource": true,
+          "nameFeedsLivePreview": true,
+          "reviewedArticleSaveAndReload": true,
+          "elapsedMs": 302039
+        },
+        "elementAndContentAuthoring": {
+          "hierarchicalSelection": true,
+          "headingTagChangedToParagraph": true,
+          "htmlMappingSavedAndReloaded": true,
+          "contentAreaAddUpdateRemove": true,
+          "requiredAndMultiplicitySavedAndReloaded": true,
+          "sourceContractNotInstanceInjection": true,
+          "elapsedMs": 332755
+        }
+      },
+      "evidence": "dist/evidence/workbench.json",
+      "evidenceSha256": "d9397b1c6265e98f3989f17adca34dbe4a01e26376f19c62c903e30fca3599fe",
+      "limitations": [
+        "Chromium DOM execution; no native target certification.",
+        "CDP composition exercises browser IME events, not an operating-system keyboard.",
+        "Representative authoring flows; this is not full Foundation completion evidence."
+      ]
+    },
+    "pnpm test:targets": {
+      "status": "PASSED",
+      "targets": {
+        "react": {
+          "sourceGeneration": "passed",
+          "typecheck": "passed",
+          "ssr": "passed",
+          "hydration": "passed",
+          "browserInteraction": "passed",
+          "generatedCatalogRepresentatives": 35
+        },
+        "react-native": {
+          "sourceGeneration": "passed",
+          "typecheck": "passed",
+          "androidBundle": "passed",
+          "iosBundle": "passed",
+          "nativeExecution": "not-run",
+          "generatedCatalogRepresentatives": 22
+        },
+        "swiftui": {
+          "sourceGeneration": "passed",
+          "nativeCompilation": "not-run",
+          "nativeExecution": "not-run",
+          "generatedCatalogRepresentatives": 18
+        },
+        "compose": {
+          "sourceGeneration": "passed",
+          "nativeCompilation": "not-run",
+          "nativeExecution": "not-run",
+          "generatedCatalogRepresentatives": 18
+        }
+      },
+      "evidence": "dist/target-verification/evidence.json",
+      "evidenceSha256": "ddd03d32dc6747f27b061b7912a2688e3c9709c9cfcb54e32c055dc7396adf5e",
+      "limitations": [
+        "Legacy Button/Card/Toast plus focused catalog Checkbox/Input/Select/Tabs/Dialog consumers are covered; other source capabilities need their own consumer verification.",
+        "RN export verifies JavaScript/Hermes bundles; it does not run native controls or assistive technology.",
+        "SwiftUI/Compose compilation and device execution are not run without their toolchains."
+      ]
+    },
+    "retirementSelfTest": {
+      "status": "PASSED",
+      "evidence": "dist/evidence/authoring-retirement.json",
+      "result": {
+        "snapshotCommit": "1b7bd6843ac638fac89da424637afa755d076144",
+        "snapshotFilesVerified": 442,
+        "archiveFilesRestoredAndVerified": 442,
+        "retiredPathsAbsent": 428,
+        "approvedReplacementPathsPresent": [
+          "package.json",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "tsconfig.json"
+        ],
+        "activeFilesChecked": 433,
+        "localLinksChecked": 1518,
+        "preservedFilesUnchanged": [
+          ".gitignore",
+          "LICENSE"
+        ],
+        "scope": "frozen reference, approved phase boundaries and document integrity; not product tests",
+        "negativeCasesRejected": [
+          "snapshot-digest-corruption",
+          "retired-package-resurrection",
+          "broken-document-link",
+          "new-product-source",
+          "unapproved-profile-root",
+          "missing-implementation-authorization",
+          "frozen-manifest-resurrection",
+          "unapproved-browser-harness",
+          "unapproved-studio-page",
+          "unapproved-target-lock"
+        ]
+      },
+      "evidenceSha256": "46950f273e602c25541c08e155b71bdb61ef4a62f9e890a2e87655c44ef60447"
+    },
+    "foundationSelfTest": {
+      "status": "PASSED",
+      "evidence": "dist/evidence/authoring-foundation.json",
+      "result": {
+        "kind": "foundation-documentation-qa",
+        "status": "PASS",
+        "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
+        "verifiedAt": "2026-09-15T01:38:44.374043+00:00",
+        "checkerProvenance": "scripts/verify-foundation.py",
+        "counts": {
+          "documents": 56,
+          "domains": 12,
+          "decisions": 129,
+          "followups": 14,
+          "fieldRecords": 57,
+          "queries": 10,
+          "commands": 52,
+          "diagnostics": 30,
+          "localLinks": 1488,
+          "fragments": 129,
+          "checks": 2662
+        },
+        "errors": [],
+        "subjectPolicy": "QA excludes itself and manifest to avoid self-referential hashes. Historical QA is preserved separately at its original commit.",
+        "negativeCasesRejected": [
+          "missing-body",
+          "body-drift",
+          "broken-anchor",
+          "fenced-code-anchor",
+          "dependency-cycle",
+          "duplicate-json-key",
+          "non-json-constant",
+          "duplicate-followup",
+          "unknown-followup-owner",
+          "missing-command-projection",
+          "command-field-drift",
+          "field-table-drift",
+          "annex-drift",
+          "heading-slug-collisions",
+          "fence-close-with-info",
+          "literal-html-anchors",
+          "canonical-root-alias"
+        ]
+      },
+      "evidenceSha256": "dc4d142394f7b141b588e6346cf8a360870dcc165f874f54eafe2717b9da91b7"
+    }
+  },
+  "visualReview": {
+    "verdict": "SHIP",
+    "scope": "Bounded authoring increment; independent visual/source review, not full Foundation readiness.",
+    "report": "docs/implementation/studio-authoring-finish-review.md",
+    "conformance": "docs/implementation/studio-authoring-design-conformance.md",
+    "detector": "dist/evidence/authoring-detect.json",
+    "sliderGeometry": "dist/evidence/slider-verified.json",
+    "deliveryArtifacts": {
+      "dist/evidence/authoring-templates-desktop-dark.png": "5d614507d8ce6573366d19bad75eb6c21a87aec505b32abc18e6badde6156d7e",
+      "dist/evidence/authoring-templates-desktop-light.png": "804fbb2746c3ca69d0c3cc1caaad86e300bce59a48acfa4b06ae0b8b1e4280aa",
+      "dist/evidence/authoring-templates-narrow-dark.png": "5079a6cb7073703f7f082846036e58aa13b6c0d7accf50a885e0f3ed65de5a70",
+      "dist/evidence/authoring-templates-narrow-light.png": "f5434cc0cd0d2ab99b39abae88978dd6dd738b36e9f1b57a2e0e80c3ce5c6400",
+      "dist/evidence/authoring-composer-desktop-dark.png": "a535b4bec9d5cf8764e445f1f3e575a99a834b1bba047dbc5772c764e89ef645",
+      "dist/evidence/authoring-composer-narrow-dark.png": "5e28b824d846e34c86978a9cea2c036e8c9dbfdd45674cfe64bc36333b67ca48",
+      "dist/evidence/authoring-composer-desktop-light-v2.png": "8bd54172ae56d953d1ac883b872a961508a2a88f46d165da022f388741b2c1a4",
+      "dist/evidence/authoring-composer-narrow-light-v2.png": "fec007870283be49784fb417520517920e9ab90ef012ec650c17c91c9cb61c92",
+      "dist/evidence/authoring-elements-desktop.png": "67d4fd6cde941f7457aa1b82c9baef80efe4787255f69d04b40711984b199a86",
+      "dist/evidence/slider-verified-dark.png": "2f834e4b5b05a73bd96fe65c538b783f6b5feb0817db37d00331e88cbd7ab80a",
+      "dist/evidence/slider-verified-light.png": "cff1d097f0004eb76cf3442637902197452e7a5de1f05fc1a4cff60364c2a811"
+    },
+    "artifactNote": "The two light composer v2 hashes are explicitly frozen in the independent review. Other delivery captures were regenerated by the final workbench run against unchanged product source. Excludes blank viewport-v2 diagnostic captures."
+  },
+  "servedBuild": {
+    "checkedAt": "2026-09-15T01:37:15.2704789Z",
+    "requestMethod": "GET",
+    "readOnly": true,
+    "assets": [
+      {
+        "asset": "app.js",
+        "status": 200,
+        "bytes": 1516963,
+        "sha256": "C1FA24597AE7042FFDBF0540A199622F7EB594665CCFF77716B6059656A48829",
+        "matchesDisk": true,
+        "endpoint": "localhost"
+      },
+      {
+        "asset": "app.js",
+        "status": 200,
+        "bytes": 1516963,
+        "sha256": "C1FA24597AE7042FFDBF0540A199622F7EB594665CCFF77716B6059656A48829",
+        "matchesDisk": true,
+        "endpoint": "existing external preview"
+      },
+      {
+        "asset": "app.css",
+        "status": 200,
+        "bytes": 160298,
+        "sha256": "82AF9109DC502B7EF82568DFD7761FF42AD654600DD33D53830F9D5C4A265280",
+        "matchesDisk": true,
+        "endpoint": "localhost"
+      },
+      {
+        "asset": "app.css",
+        "status": 200,
+        "bytes": 160298,
+        "sha256": "82AF9109DC502B7EF82568DFD7761FF42AD654600DD33D53830F9D5C4A265280",
+        "matchesDisk": true,
+        "endpoint": "existing external preview"
+      }
+    ]
+  },
+  "foundationAudit": "docs/implementation/foundation-audit-2026-09-15.md",
+  "limitations": [
+    "Full Foundation implementation is incomplete; 56 document bodies were audited without declaring all contracts implemented.",
+    "Templates are documented Axiom adaptations, not exact upstream token exports or color algorithms.",
+    "Elements and Content area simplify UI vocabulary while retaining distinct Part and Slot source contracts; nested instances and actual content insertion remain open.",
+    "Baseline token selection is not the general policy/exception engine.",
+    "Native execution, physical trackpad hardware, OS-level IME and assistive technology are not certified.",
+    "Dedicated browser test profiles/databases were used; no user-authored project was rewritten for verification.",
+    "No new GitHub publication or merge occurred."
+  ],
+  "evidencePolicy": "Ignored dist artifacts are local evidence. This record is excluded from source hashes to avoid self-reference. Final documentation gates ran after all delivery documents and this record existed; only their result/count metadata was then refreshed here."
+}

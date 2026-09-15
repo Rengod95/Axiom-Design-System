@@ -1,0 +1,311 @@
+{
+  "kind": "AxiomStudioCompactVerification",
+  "date": "2026-09-14",
+  "implementationParent": "93bf8dbd9f4f77687cbced02d18b9030556115c1",
+  "scope": "Compact neutral glass Studio, authored dropdowns, contextual Foundation browsing and property editing",
+  "foundationCompletion": false,
+  "gates": {
+    "check": "PASSED:161 sources;20 negative cases",
+    "unit": {
+      "fail": 0,
+      "tests": 361,
+      "status": "PASSED",
+      "skipped": 0
+    },
+    "build": "PASSED:142 inputs;no external JS imports or Node adapter",
+    "browserStore": "PASSED",
+    "studio": "PASSED",
+    "workbench": {
+      "count": 22,
+      "status": "PASSED",
+      "caseNames": [
+        "create",
+        "typedToken",
+        "aliasAndClassification",
+        "themes",
+        "catalogSimulation",
+        "libraryAndCanvas",
+        "dirtyManagement",
+        "hexEditing",
+        "sourceBundle",
+        "processRestart",
+        "starterWorkspace",
+        "directReview",
+        "blockedInspectorRecovery",
+        "trackpadGesture",
+        "motionAuthoring",
+        "responsiveAppearance",
+        "materialAtlas",
+        "materialMotion",
+        "collapsedDraftRecovery",
+        "compactGlassControls",
+        "dtcgReviewedImport",
+        "dtcgResolverAndExchange"
+      ]
+    },
+    "selectProbe": {
+      "status": "PASSED",
+      "cases": {
+        "keyboardCancelDisabledSkip": true,
+        "typeaheadAndFormChange": true,
+        "tabCommitsAndMovesFocus": true,
+        "disabledAndOutsideDismissal": true,
+        "nativeFormContract": true,
+        "labelFocusAndReset": true,
+        "requiredValidation": true,
+        "disabledFieldset": true,
+        "viewportAndLongList": true
+      }
+    },
+    "targets": "PASSED:representative Web and React Native consumers; native execution not run",
+    "retirement": "PASSED:442 frozen files",
+    "retirementSelfTest": "PASSED:10 negative cases",
+    "foundationSelfTest": {
+      "kind": "foundation-documentation-qa",
+      "status": "PASS",
+      "scope": "Reproducible document integrity only. The separate semantic audit reviews completeness and contract quality; neither is product runtime evidence.",
+      "verifiedAt": "2026-09-14T16:06:24.36817+09:00",
+      "checkerProvenance": "scripts/verify-foundation.py",
+      "counts": {
+        "documents": 56,
+        "domains": 12,
+        "decisions": 129,
+        "followups": 14,
+        "fieldRecords": 57,
+        "queries": 10,
+        "commands": 52,
+        "diagnostics": 30,
+        "localLinks": 1247,
+        "fragments": 129,
+        "checks": 2421
+      },
+      "errors": [],
+      "subjectPolicy": "QA excludes itself and manifest to avoid self-referential hashes. Historical QA is preserved separately at its original commit.",
+      "negativeCasesRejected": [
+        "missing-body",
+        "body-drift",
+        "broken-anchor",
+        "fenced-code-anchor",
+        "dependency-cycle",
+        "duplicate-json-key",
+        "non-json-constant",
+        "duplicate-followup",
+        "unknown-followup-owner",
+        "missing-command-projection",
+        "command-field-drift",
+        "field-table-drift",
+        "annex-drift",
+        "heading-slug-collisions",
+        "fence-close-with-info",
+        "literal-html-anchors",
+        "canonical-root-alias"
+      ]
+    }
+  },
+  "review": {
+    "captureCount": 30,
+    "disposition": "ship",
+    "detector": {
+      "runs": 1,
+      "scope": "Repository root",
+      "result": []
+    },
+    "scope": "Full initial30-state review; fix round1 resolves M1 glass, M2 light separators, M3 aligned panel bars",
+    "report": "docs/implementation/studio-compact-finish-review.md",
+    "temporalMotion": "Not independently reviewed by static captures",
+    "temporaryCaptureFilesRemoved": 30,
+    "archiveHashesVerified": true
+  },
+  "captures": [
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-domains-dark.png",
+      "sha256": "2957d43e28aec717c4a8d3c922fdd6c368f608ba63055de9af999c36b91fa330",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-atlas-dark.png",
+      "sha256": "a3a590257a89c63053dd6cbd371be620bbab9063e1b1117e256c2c0ace2aa8d2",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-list-dark.png",
+      "sha256": "218612dda4a87ae1af95de8e9318d9e3680b7cf6ac896d36659c89b4bfd49285",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-color-inspector.png",
+      "sha256": "0084f4dd48fa7698efd3a4b1af1d87f29efff95b5c92ccade4f8e9f9ddb6414e",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-dropdown-dark.png",
+      "sha256": "84e3674d7e604b0f41629c3a1a07240be8bea5e844fc794e528fe0b643a5b2f6",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-spacing.png",
+      "sha256": "738948d9c641ad051bdbf47354741689bfc03504705fb476795e34bdb1719246",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-radius.png",
+      "sha256": "35ab5991c9ca1a433396b4da353faca2af12bc4756b3694770830ec3281aebdc",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-shadow.png",
+      "sha256": "32bce4d6c625d8eea404357860672de135372f77c3e1babd30b86ad1cb065fee",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-typography.png",
+      "sha256": "b66750599c581b2e58562296ca0390eee8a950b4aaf8af7b4a615981fa95a739",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-motion.png",
+      "sha256": "3cbc381e74455d16cd6c693f74442358f4103d462156ef7f078d3d8de3368cc2",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-opacity.png",
+      "sha256": "4a912172d33571517d0a400e505d0386c06007c2c22c2727f7e1644593f3e46e",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-sizing.png",
+      "sha256": "fb3d6571872c997884b6b5e4291c54bd244acb7a5fe16278f539112b2f259e8a",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-themes.png",
+      "sha256": "49d24acaa6dcaf685f4e145b472b07aab0e13dd0650e3f31dc032009a1af8b77",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-manage.png",
+      "sha256": "768fe75048cea6d71e3bbbf950c3226d9d5184ddb0fa46d30fc7ce691ce5ef71",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-files.png",
+      "sha256": "5c13affa173412d3f636ed4a35c46f5f2bb6ad82d6610ffd5f1615abe05b6620",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-create-context.png",
+      "sha256": "17530c9725bbedaffbfb4a57de4c622dc28efcd50bb8a8553218abc903cdf440",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-sticky-tokens.png",
+      "sha256": "ba57ae72306940696f3f4c40a95ca05015eb640c4526ce1684331c396a58cb13",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-library.png",
+      "sha256": "3db05920c8be4ca05ce3c8068e92fe6d3bff460276cf47c3078f7f3d2508d7a4",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-component-inspector.png",
+      "sha256": "881e92fd6d1749e9ca37a4704d0d05990e0ef442ade653478a648ead87146630",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-system-dark.png",
+      "sha256": "4c8f5d5822ce2f461a1f6931b655f8162656efd24469ec5f7094ffbcf8c72755",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-system-controls.png",
+      "sha256": "3d21ecfe5351e5da4889c0fae8d429ef9584de29812268551bcae2c83f43b54f",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-system-motion.png",
+      "sha256": "c17a654d2d971f310956ce9bbb0301e10e4333990f9a3f42cf67741bdac195d3",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-system-light.png",
+      "sha256": "3f1dff7a924a27bac9241370fd5cc494db4827f74ad4b3c5bfa262c9e962d156",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-domains-light.png",
+      "sha256": "326d57ec31dd789f18aa44d7729166578827a52349f1f1ab7bfa1f0bd9271305",
+      "width": 1440
+    },
+    {
+      "height": 1000,
+      "path": "dist/evidence/compact-dropdown-light.png",
+      "sha256": "56a593591e0b5e057717e47bf42a027df5d09821df7c0060554b65139d1b9c14",
+      "width": 1440
+    },
+    {
+      "height": 958,
+      "path": "dist/evidence/compact-user-1198.png",
+      "sha256": "d098ca1d07c81f39f4a13e791bc68b5bca8221f9fd92c649b9415f069d977449",
+      "width": 1198
+    },
+    {
+      "height": 958,
+      "path": "dist/evidence/compact-user-1401.png",
+      "sha256": "fb3b84b3da6273c65e13f68528a33c4d82cbcb0197d9e86ee2ccc61b73e224d0",
+      "width": 1401
+    },
+    {
+      "height": 844,
+      "path": "dist/evidence/compact-mobile.png",
+      "sha256": "5145ae46e221d10ef94978c426dfc4d2ea8176425e6eed30957240a2032d67dc",
+      "width": 390
+    },
+    {
+      "height": 844,
+      "path": "dist/evidence/compact-mobile-tokens.png",
+      "sha256": "29c85aaeb5f2aaa1fe6e98f36f7c17c0c0ddf42fb217f20578ceb11f44c77a9a",
+      "width": 390
+    },
+    {
+      "height": 844,
+      "path": "dist/evidence/compact-mobile-light.png",
+      "sha256": "997e2bb1e64d4eb158f120fbb43268894892d93cdd9801de9528810fbd0a2304",
+      "width": 390
+    }
+  ],
+  "liveLocal": {
+    "projectRevisionPreserved": true,
+    "pendingNotices": 0,
+    "savedStateCheckedBeforeReload": true
+  },
+  "limitations": [
+    "Native target execution and assistive-technology certification are not part of this UI evidence.",
+    "Studio fonts and colors are independent from authored design-system token values.",
+    "Static review does not certify temporal motion quality or full Foundation completion."
+  ]
+}

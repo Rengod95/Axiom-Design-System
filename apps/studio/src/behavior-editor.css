@@ -1,0 +1,32 @@
+.behavior-editor { display: grid; gap: var(--space-3); min-width: 0; }
+.behavior-editor > .field-hint { margin: 0; }
+.behavior-rule-list { display: grid; gap: 2px; }
+.behavior-rule-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); width: 100%; padding: var(--space-2); border: 0; border-radius: var(--radius-control); background: transparent; color: var(--ink); text-align: left; }
+.behavior-rule-row:hover { background: var(--surface-hover); }
+.behavior-rule-row[aria-pressed=true] { background: var(--surface-active); }
+.behavior-rule-row > span:first-child { display: grid; min-width: 0; gap: 2px; }
+.behavior-rule-row strong, .behavior-rule-row small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.behavior-rule-row strong { font-size: var(--type-label); font-weight: var(--weight-medium); }
+.behavior-rule-row small { font-size: var(--type-caption); color: var(--ink-secondary); }
+.behavior-rule-row > .chip { flex-shrink: 0; }
+.behavior-rule-form, .behavior-state-create { display: grid; gap: var(--space-2); min-width: 0; }
+.behavior-field-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: var(--space-2); }
+.behavior-field-pair > *, .behavior-editor .field { min-width: 0; }
+.behavior-editor input, .behavior-editor textarea { width: 100%; min-width: 0; }
+.behavior-editor textarea { resize: vertical; font: var(--type-caption)/var(--leading-body) var(--font-code); }
+.behavior-action-list { display: grid; gap: var(--space-3); }
+.behavior-action-row { display: grid; gap: var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--line); }
+.behavior-action-title { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.behavior-action-title > strong { font-size: var(--type-label); font-weight: var(--weight-strong); }
+.behavior-error { margin: 0; color: var(--negative); font-size: var(--type-caption); overflow-wrap: anywhere; }
+.behavior-simulator { display: grid; gap: var(--space-2); padding-top: var(--space-3); border-top: 1px solid var(--line); }
+.behavior-state-list { display: grid; gap: 2px; margin: 0; }
+.behavior-state-list > div { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-2) 0; }
+.behavior-state-list dt { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); min-width: 0; overflow-wrap: anywhere; }
+.behavior-state-list small { color: var(--ink-secondary); font-size: var(--type-caption); }
+.behavior-state-list dd { margin: 0; max-width: 50%; overflow-wrap: anywhere; }
+.behavior-state-list output { font-family: var(--font-code); font-size: var(--type-caption); }
+.behavior-run-actions { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.behavior-trace { display: grid; gap: var(--space-2); color: var(--ink-secondary); font-size: var(--type-caption); }
+.behavior-trace > div { display: grid; gap: var(--space-1); }
+.behavior-trace code { overflow-wrap: anywhere; white-space: pre-wrap; color: var(--ink); }

@@ -20,7 +20,17 @@ async function until(expression) {
   throw new Error(`Studio condition timed out: ${expression}; detail: ${JSON.stringify(detail)}; browser errors: ${browser.cdp.errors.join("; ")}`);
 }
 const element = id => `document.querySelector(${JSON.stringify(selector(id))})`;
+async function reveal(id) {
+  const domain = await page.evaluate(`(()=>{const target=${element(id)},toggle=target?.closest('.sidebar-domain')?.querySelector('.sidebar-domain-toggle[aria-expanded=false]');return toggle&&!toggle.contains(target)?toggle.dataset.testid:null})()`);
+  if (domain) await click(domain);
+  const index = await page.evaluate(`(()=>{const target=${element(id)};let closed=null;for(let e=target;e;e=e.parentElement)if(e.tagName==='DETAILS'&&!e.open&&!e.querySelector(':scope > summary')?.contains(target))closed=e;return closed?Array.from(document.querySelectorAll('details')).indexOf(closed):-1})()`);
+  if(index<0)return;
+  const point=await page.evaluate(`(()=>{const e=document.querySelectorAll('details')[${index}].querySelector('summary');e.scrollIntoView({block:'center'});const r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+  for(const type of ['mousePressed','mouseReleased'])await page.send('Input.dispatchMouseEvent',{type,button:'left',clickCount:1,...point});
+  await delay(280);await reveal(id);
+}
 async function click(id) {
+  await reveal(id);
   await until(`${element(id)} && !${element(id)}.disabled`);
   await page.evaluate(`${element(id)}.scrollIntoView({block:"center",inline:"nearest"})`);
   const bounds = await page.evaluate(`(()=>{const r=${element(id)}.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
@@ -29,6 +39,7 @@ async function click(id) {
   await page.evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))`);
 }
 async function fill(id, value) {
+  await reveal(id);
   await until(`${element(id)} && !${element(id)}.disabled`);
   await page.evaluate(`${element(id)}.focus()`);
   await page.send("Input.dispatchKeyEvent", { type: "keyDown", key: "a", code: "KeyA", modifiers: 2, windowsVirtualKeyCode: 65 });
@@ -60,7 +71,7 @@ try {
   page = await browser.cdp.page(url);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await fill("project-name", "검증 디자인 시스템");
-  await click("start-project");
+  await click("starter-enabled"); await click("start-project");
   await until(`${element("studio-app")}`);
   // Locale-independent settled creation, then retain the source revision for preview checks.
   await until(`${element("save-status")} && !${element("undo")}.disabled`);
@@ -71,6 +82,7 @@ try {
   await click("token-token.accent");
   const originalColor = await page.evaluate(`${element("token-value-input")}.value`);
   await fill("token-value-input", "#7451e8");
+  await click("foundation-token-apply");
   await until(`${element("review-changes")} && !${element("review-changes")}.disabled`);
   assert.equal(await page.evaluate(`${element("project-revision")}.title`), initialRevision);
   assert.equal(await page.evaluate(`${element("open-export")}.disabled`), true);
@@ -87,22 +99,28 @@ try {
   await until(`${element("token-value-input")}.value === "#7451e8"`);
   evidence.cases.reviewUndoRedo = { transientPreviewKeptRevision: true, exportBlockedUntilApply: true, oneUndoRestoresToken: true };
   await fill("token-value-input", "#123456");
+  await click("foundation-token-apply");
   await click("review-changes");
   await click("review-reject");
   await until(`!${element("review-dialog")} && ${element("token-value-input")}.value === "#7451e8"`);
   evidence.cases.reject = true;
+  await click("view-canvas");
   const lightPaint = await page.evaluate(`getComputedStyle(${element("runtime-button")}).backgroundColor`);
   await select("theme-select", "theme.dark");
   await until(`getComputedStyle(${element("runtime-button")}).backgroundColor !== ${JSON.stringify(lightPaint)}`);
+  await click("token-token.accent");
   // Base authoring intentionally stays on its stored value; context editing shows the override.
   assert.equal(await page.evaluate(`${element("token-value-input")}.value`), "#7451e8");
-  await page.evaluate(`(()=>{const e=document.getElementById("token-scope");e.value="theme";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await page.evaluate(`(()=>{const e=document.querySelector('[data-testid="foundation-token-scope"]');e.value=[...e.options].find(option=>option.textContent.includes("dark")).value;e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
   await until(`${element("token-value-input")}.value !== "#7451e8"`);
-  await page.evaluate(`(()=>{const e=document.getElementById("token-scope");e.value="base";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await select("foundation-token-scope", "base");
+  await click("view-canvas");
   await select("theme-select", "theme.light");
+  await click("token-token.accent");
   await until(`${element("token-value-input")}.value === "#7451e8"`);
   await click("component-component.card");
   const cardBody = "한글 입력을 보존하는 디자인 시스템";
+  await reveal("sample-body");
   await page.evaluate(`${element("sample-body")}.focus()`);
   // Genuine CDP composition (not a synthetic DOM event) remains transient until commit.
   await page.send("Input.imeSetComposition", { text: "한글", selectionStart: 2, selectionEnd: 2 });
@@ -131,16 +149,16 @@ try {
   evidence.cases.invalidSource = { exactBufferPreserved: true, capturedAsDraft: true, adoptedSourceUnchanged: true };
   await click("mode-run");
   await until(`${element("activation-count")}?.textContent === "0"`);
-  assert.ok(await page.evaluate(`(()=>{const r=${element("runtime-toast-close")}.getBoundingClientRect();return r.width>=44&&r.height>=44})()`));
+  assert.ok(await page.evaluate(`(()=>{const r=getComputedStyle(${element("runtime-toast-close")});return parseFloat(r.width)>=44&&parseFloat(r.height)>=44})()`));
   await page.evaluate(`${element("runtime-button")}.focus()`);
   await page.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", text: "\r", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
   await page.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
   await until(`${element("activation-count")}.textContent === "1"`);
-  await page.evaluate(`(()=>{const e=document.getElementById("close-response");e.value="decline";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await page.evaluate(`(()=>{const e=document.getElementById("component.toast-close-response");e.value="decline";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
   await click("runtime-toast-close");
   await until(`${element("close-request-count")}.textContent === "1"`);
   assert.equal(await page.evaluate(`${element("runtime-toast-close")} !== null`), true);
-  await page.evaluate(`(()=>{const e=document.getElementById("close-response");e.value="accept";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
+  await page.evaluate(`(()=>{const e=document.getElementById("component.toast-close-response");e.value="accept";e.dispatchEvent(new Event("change",{bubbles:true}));})()`);
   await click("runtime-toast-close");
   await until(`${element("runtime-toast-close")} === null`);
   evidence.cases.runtime = { keyboardActivation: true, declinedCloseRetainsToast: true, acceptedCloseCleansUp: true };

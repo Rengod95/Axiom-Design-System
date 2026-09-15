@@ -31,7 +31,19 @@
     "scripts/serve-studio.mjs",
     "scripts/verify-studio.mjs",
     "scripts/verify-targets.mjs",
-    "scripts/browser-driver.mjs"
+    "scripts/browser-driver.mjs",
+    "scripts/verify-workbench.mjs",
+    "scripts/workbench-completion-cases.mjs",
+    "scripts/workbench-foundation-cases.mjs",
+    "scripts/workbench-chrome-cases.mjs",
+    "scripts/workbench-catalog-cases.mjs",
+    "scripts/workbench-authoring-cases.mjs",
+    "scripts/native-fixtures.mjs",
+    "scripts/native-verify.mjs",
+      "scripts/native-process.mjs",
+    "scripts/workbench-behavior-cases.mjs",
+    "scripts/workbench-policy-cases.mjs",
+    "scripts/workbench-composition-cases.mjs"
   ],
   "allowedBrowserTestAssets": [
     "modules/browser-store/test/browser-harness.html",
@@ -54,13 +66,18 @@
     "typescript": "5.9.3",
     "nodeTypes": "24.13.4"
   },
-  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance; bounded Foundation resolver, Studio reviewed authoring and four target source delivery under ADR-0014",
+  "scope": "Native ADS envelope, explicit catalog structures/local references and bounded TypeExpr/content policies, source-preserving drafts and reviewed update/export/project-bundle restore with Node persistence; remaining types, external library versions and full semantic execution stay unverified; origin-scoped IndexedDB journal/receipt storage with real Chromium conformance; bounded Foundation resolver, Studio reviewed authoring and four target source delivery under ADR-0014; ADR-0015 typed Foundation management, catalog authoring, reviewed mixed document changes and token-based dual-theme editor workbench; ADR-0016 reviewed starter onboarding, domain workspaces, recoverable form drafts, custom Part structure, typed Web effects and bounded motion preview",
   "extensionAdrs": [
     "docs/adr/0010-source-preserving-draft-authoring.md",
     "docs/adr/0011-structural-domain-inspection-and-local-references.md",
     "docs/adr/0012-typed-values-and-project-bundles.md",
     "docs/adr/0013-browser-transactional-storage.md",
-    "docs/adr/0014-studio-authoring-and-target-delivery.md"
+    "docs/adr/0014-studio-authoring-and-target-delivery.md",
+    "docs/adr/0015-studio-workbench-and-catalog-authoring.md",
+    "docs/adr/0016-foundation-onboarding-and-editor-completion.md",
+    "docs/adr/0017-foundation-interchange-and-live-expressions.md",
+    "docs/adr/0018-contextual-foundation-and-component-composition.md",
+    "docs/adr/0019-element-composition-policy-and-behavior-authoring.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -95,7 +112,23 @@
   },
   "allowedStudioAssets": [
     "apps/studio/index.html",
-    "apps/studio/src/styles.css"
+    "apps/studio/src/styles.css",
+    "apps/studio/PRODUCT.md",
+    "apps/studio/DESIGN.md",
+    "apps/studio/.impeccable/config.json",
+    "apps/studio/.impeccable/design.json",
+    "apps/studio/.impeccable/surfaces/workbench.md",
+    "apps/studio/src/ui-system.css",
+    "apps/studio/src/foundation-workspace.css",
+    "apps/studio/src/studio-chrome.css",
+    "apps/studio/src/foundation-blueprint.css",
+    "apps/studio/src/studio-slider.css",
+    "apps/studio/src/catalog-specimens.css",
+    "apps/studio/src/component-authoring.css",
+    "apps/studio/src/foundation-starters.css",
+    "apps/studio/src/element-authoring.css",
+    "apps/studio/src/behavior-editor.css",
+    "apps/studio/src/foundation-policy.css"
   ],
   "studio": {
     "profile": "axiom.studio",
@@ -121,9 +154,173 @@
         "postinstall": "only esbuild@0.28.2 is allowed by pnpm-workspace; CI installs with ignore-scripts"
       }
     },
-    "nativeExecution": "UNVERIFIED"
+    "nativeExecution": "UNVERIFIED",
+    "maxThemeContextCombinations": 128,
+    "catalog": {
+      "inventoryEntries": 239,
+      "authorableComponents": 209,
+      "profile": "axiom.catalog-authoring",
+      "version": "0.1.0",
+      "semantics": "Dedicated complex interactions and native execution remain separately verified."
+    },
+    "fontAsset": {
+      "package": "geist",
+      "version": "1.7.2",
+      "license": "OFL-1.1",
+      "files": [
+        "dist/fonts/geist-sans/Geist-Variable.woff2",
+        "dist/fonts/geist-mono/GeistMono-Variable.woff2"
+      ],
+      "usage": "Local font assets only; no Geist/Next JavaScript imports in the Studio bundle",
+      "fallback": {
+        "package": "@sun-typeface/suit",
+        "version": "2.0.5",
+        "license": "OFL-1.1",
+        "file": "fonts/variable/woff2/SUIT-Variable.woff2",
+        "usage": "Korean glyph fallback"
+      }
+    },
+    "selectPopup": {
+      "owner": "apps/studio/src/ui.tsx",
+      "overlayOwner": "apps/studio/src/studio-overlays.tsx",
+      "dependency": "react-dom@19.3.0 createPortal",
+      "scope": "Single-value authored listbox with native form semantics; popup stays within owning modal top layer",
+      "authority": "docs/implementation/studio-compact-glass.md"
+    },
+    "bindingCompatibility": {
+      "authority": "docs/implementation/studio-panel-binding-refinement.md",
+      "domainField": "bindingCategory",
+      "categories": [
+        "color",
+        "spacing",
+        "sizing",
+        "radius",
+        "border",
+        "shadow",
+        "typography",
+        "motion",
+        "opacity",
+        "gradient",
+        "layer",
+        "unrestricted"
+      ],
+      "matching": "DTCG value type and explicit or pinned-starter-derived property purpose",
+      "unclassified": "type compatibility; separately labelled in UI",
+      "legacy": "read-only pinned starter provenance and consistent retained blueprint evidence",
+      "repair": "existing binding-only errors remain inspectable; a component mutation or atomic multi-document repair must restore full validity",
+      "repairChoices": "all recognized binding sites; compatible token or explicit current-theme literal; ordinary reviewed transaction"
+    },
+    "panelVisibility": {
+      "authority": "docs/implementation/studio-panel-binding-refinement.md",
+      "persistence": "browser layout preference",
+      "draftLifetime": "hidden panels remain mounted",
+      "mobile": "independent single-pane navigation"
+    }
   },
   "allowedTargetTestAssets": [
     "modules/target-packs/test/expo-consumer.lock.yaml"
-  ]
+  ],
+  "editorCompletion": {
+    "authority": "docs/adr/0016-foundation-onboarding-and-editor-completion.md",
+    "foundationStarter": {
+      "id": "axiom.foundation.essentials",
+      "version": "1.0.0",
+      "domains": 11,
+      "types": 13,
+      "adoption": "additive-reviewed-idempotent"
+    },
+    "formDrafts": "explicit-recovery-valid-input-flush",
+    "canvasInput": [
+      "normalized-wheel",
+      "native-gesture",
+      "two-touch-pointer"
+    ],
+    "catalogThumbnails": "local-static-svg",
+    "uiSystem": "shared-type-spacing-control-variants",
+    "motion": {
+      "maxTracks": 16,
+      "maxKeyframes": 32,
+      "properties": [
+        "opacity",
+        "translateY",
+        "scale"
+      ],
+      "timing": [
+        "tween",
+        "spring"
+      ],
+      "maxDurationMs": 10000,
+      "runtime": "isolated-web-animation-preview",
+      "targetOutput": "unsupported-explicit",
+      "pending": [
+        "behavior-trigger-binding",
+        "stagger",
+        "completion-effects",
+        "native-runtime"
+      ]
+    },
+    "extendedStyles": "typed-whole-token Web mappings; explicit native rejection"
+  },
+  "foundationInterchange": {
+    "authority": "docs/adr/0017-foundation-interchange-and-live-expressions.md",
+    "format": "DTCG 2025.10 bounded editable subset",
+    "groupAdoption": "normalized with original source preservation",
+    "valueExpressions": [
+      "literal",
+      "stable whole-token reference",
+      "stable token-value property reference",
+      "composite reference expression"
+    ],
+    "cycles": "token-granularity",
+    "resolver": "supplied local files; sets/modifiers/context/default/order; selected permutation adoption",
+    "maxSuppliedFiles": 32,
+    "lifecycle": "boolean or migration-guidance deprecation",
+    "export": [
+      "exact imported source",
+      "selected context with live references",
+      "selected context with resolved literals",
+      "full ADS project bundle"
+    ],
+    "fullDtcgConformance": "UNVERIFIED",
+    "remaining": [
+      "non-value document pointers",
+      "property-granularity self references",
+      "editable Resolver graph",
+      "policy and exception workflow"
+    ]
+  },
+  "componentComposition": {
+    "authority": "docs/adr/0018-contextual-foundation-and-component-composition.md",
+    "starterTemplates": [
+      "essentials",
+      "radix",
+      "carbon",
+      "material",
+      "fluent",
+      "spectrum"
+    ],
+    "creation": "atomic reviewed component and Web/Mobile designs; blank, stack, article or existing semantic recipe",
+    "elementMapping": "closed HTML tags on catalog layout design nodeMappings; native mapping explicitly unsupported",
+    "contentAreas": "stable slot required/multiple contracts with reviewed instance insertion under ADR-0019",
+    "baselineBindings": "compatible canonical IDs, then unambiguous semantic intents across named themes, then explicit literal fallback",
+    "tokenUsage": "selected-token context; no global Connections workspace",
+    "fullFoundationCompletion": "NOT_CLAIMED"
+  },
+  "elementComposition": {
+    "adr": "docs/adr/0019-element-composition-policy-and-behavior-authoring.md",
+    "sourceExtension": "studioComposition",
+    "pins": "component plus both category design revisions",
+    "maxInstancesPerDefinition": 64,
+    "maxDepth": 8,
+    "maxExpandedInstances": 1024,
+    "delivery": "React composition; explicit native rejection of unmapped source",
+    "freeLayout": "custom layout definitions only",
+    "policyPredicates": [
+      "token-minimum",
+      "token-alias",
+      "token-binding"
+    ],
+    "behavior": "typed closed local state actions and declared events",
+    "nativeWorkflow": ".github/workflows/native.yml"
+  }
 }

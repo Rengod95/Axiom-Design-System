@@ -1,0 +1,2387 @@
+{
+  "kind": "AxiomEditorCompletionFollowup",
+  "reviewDate": "2026-09-14",
+  "priorAudit": "docs/implementation/editor-completeness-audit.json",
+  "implementationParent": "7a77250694de533789561f88b041f45b9a5b3875",
+  "status": "SCOPED_CORRECTIONS_IMPLEMENTED_FOUNDATION_INCOMPLETE",
+  "userReport": "blocked-property-review and six token/custom-component/preview/gesture/authoring/UI-system requests",
+  "documents": [
+    {
+      "id": "GOV01",
+      "path": "docs/foundation/governance/authority-and-change-control.md",
+      "sha256": "38435dcbebc9f4f14fb569bcf0d97f67f0735795e95913a63cfed318123d44c5",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "RV01",
+        "RV02",
+        "QA02"
+      ]
+    },
+    {
+      "id": "GOV02",
+      "path": "docs/foundation/governance/glossary-and-naming.md",
+      "sha256": "d2e0d9be73fc746ebf169025ccd73e4b9520e8421400e5801ea81177dc6c7c69",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED06",
+        "ED10",
+        "ED11",
+        "QA03"
+      ]
+    },
+    {
+      "id": "GOV03",
+      "path": "docs/foundation/governance/version-and-compatibility.md",
+      "sha256": "f1a910cc57f73e79050c2877135bace124154d1a546e82750bbb59d11ba44aea",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP23",
+        "RV07",
+        "DL05"
+      ]
+    },
+    {
+      "id": "PRD01",
+      "path": "docs/foundation/product/purpose-and-users.md",
+      "sha256": "2c26015ccf61eaffca993f10f6a94c839c33f8edd1691dc695e83f1620fc77b3",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED01",
+        "ED02",
+        "CP01",
+        "DL01",
+        "DL02"
+      ]
+    },
+    {
+      "id": "PRD02",
+      "path": "docs/foundation/product/journeys-and-acceptance.md",
+      "sha256": "afa01139400a7f88a3f65c9b2507fa87cc8c22441c5d4cadf37bb550a37c84c9",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED01",
+        "ED03",
+        "FT01",
+        "CP09",
+        "AP02",
+        "SV04",
+        "DL01",
+        "DL04",
+        "QA05"
+      ]
+    },
+    {
+      "id": "PRD03",
+      "path": "docs/foundation/product/scope-catalog-and-roadmap.md",
+      "sha256": "2a6e7ecd9c80e7eae61e4f1b6acefa3b68cdb0a0a1f0b4c07b60cea7ed1313b7",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP01",
+        "CP24",
+        "TG04",
+        "TG05",
+        "TG06",
+        "TX07",
+        "SV05"
+      ]
+    },
+    {
+      "id": "BIZ01",
+      "path": "docs/foundation/business/open-core-and-rights.md",
+      "sha256": "6fca6da1a7a2834794ba1c3bb0ad557ecc42bdabbf3ac74ec283391fa3b57a81",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "DL03",
+        "AP04",
+        "QA05"
+      ]
+    },
+    {
+      "id": "BIZ02",
+      "path": "docs/foundation/business/pricing-entitlements-and-economics.md",
+      "sha256": "49adba1942b4977e3f4d27c49a4f75b7af7d015bfee4e92070873f382a55d6ee",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "AP04",
+        "AP02",
+        "QA04"
+      ]
+    },
+    {
+      "id": "BIZ03",
+      "path": "docs/foundation/business/positioning-and-go-to-market.md",
+      "sha256": "de6d26dd6b3f08d8b99c7629323088772cf1e51468d67a188078072e60b94ed5",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "QA05",
+        "TG02",
+        "TG03"
+      ]
+    },
+    {
+      "id": "BIZ04",
+      "path": "docs/foundation/business/research-and-customer-feedback.md",
+      "sha256": "a128f57210804e6b601bf3aff537edb1b0eae8b535fe917bbb48cf7210ec1244",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "QA05",
+        "DS08"
+      ]
+    },
+    {
+      "id": "BRD01",
+      "path": "docs/foundation/brand/library-and-guidelines.md",
+      "sha256": "eb4ae2c2fd119a8b8cd14b8e4edda32e9d1e306cca0f4a8085a0060eba0dda03",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "TX06",
+        "DL03"
+      ]
+    },
+    {
+      "id": "BRD02",
+      "path": "docs/foundation/brand/assets-and-provenance.md",
+      "sha256": "65737095a94b47c685b91d2ee4ece02167588393404eab095146b224b34591af",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "TX04",
+        "TX05",
+        "DL03"
+      ]
+    },
+    {
+      "id": "SYN01",
+      "path": "docs/foundation/syntax/standard-strategy.md",
+      "sha256": "35cc6a249f40e896b57ce6e89939a6dc69a9eb6f258915fe2fde1edabf8214cb",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "FT05",
+        "FT06",
+        "FT08",
+        "FT12",
+        "FT13",
+        "FT14"
+      ]
+    },
+    {
+      "id": "SYN02",
+      "path": "docs/foundation/syntax/project-documents-and-identity.md",
+      "sha256": "fb036e991c2713dd74decf82bb48722d7f195841d9e4b38edf1e93bf9fe39808",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED10",
+        "CP10",
+        "CP22",
+        "CP23",
+        "RV06",
+        "SV03"
+      ]
+    },
+    {
+      "id": "SYN03",
+      "path": "docs/foundation/syntax/foundation-and-token-semantics.md",
+      "sha256": "89edcad98074c2694eca0e0d743cd922c3e1d7a07f9bea16d9ca0eb24e2845b0",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "FT01",
+        "FT02",
+        "FT05",
+        "FT07",
+        "FT09",
+        "FT11"
+      ]
+    },
+    {
+      "id": "SYN04",
+      "path": "docs/foundation/syntax/interchange-and-migration.md",
+      "sha256": "eb050a515ae1ca3dcd622e8f6de855720e03ce7061e67e1cac4030082761882d",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "FT12",
+        "RV05",
+        "RV06",
+        "RV07"
+      ]
+    },
+    {
+      "id": "CMP01",
+      "path": "docs/foundation/components/definition-and-designs.md",
+      "sha256": "921376782416bda1a355c7767abded88a2051d983215ce223435851727509643",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP02",
+        "CP03",
+        "CP19",
+        "QA01"
+      ]
+    },
+    {
+      "id": "CMP02",
+      "path": "docs/foundation/components/traits-roles-and-archetypes.md",
+      "sha256": "6c216742f1228b7dcca57b9037cfe1b3a8c8b3cca2c0b2c1318bb07efe1dbdc9",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP04",
+        "CP07",
+        "CP11",
+        "CP23"
+      ]
+    },
+    {
+      "id": "CMP03",
+      "path": "docs/foundation/components/values-events-and-expressions.md",
+      "sha256": "42c1a1306c3bbce5ad19bc54c8066dc41f4d0df06ad6891ab0d25f41696137d0",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP05",
+        "CP06",
+        "ED10"
+      ]
+    },
+    {
+      "id": "CMP04",
+      "path": "docs/foundation/components/state-and-request-lifecycle.md",
+      "sha256": "14e1cf77191dfbf4e1fc4aaa295dd9c61051dc71c463a795f5dfa9b9c4503eef",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP07",
+        "PV03",
+        "CP16"
+      ]
+    },
+    {
+      "id": "CMP05",
+      "path": "docs/foundation/components/parts-slots-and-instances.md",
+      "sha256": "75716b2f1cb9ce92ff6221d74d46353c1968da88ac412818d5306067b8492e1e",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP08",
+        "CP09",
+        "CP10",
+        "TX01"
+      ]
+    },
+    {
+      "id": "CMP06",
+      "path": "docs/foundation/components/behavior-and-input-profiles.md",
+      "sha256": "94672cac56db1288ac122d1a86ff0e8c5c4e200c2650385e42e61c3362efee9c",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP11",
+        "CP12",
+        "CP04"
+      ]
+    },
+    {
+      "id": "CMP07",
+      "path": "docs/foundation/components/coordinators-and-hosts.md",
+      "sha256": "ac09fc7ee881b09c9e469922f6adfa798c4bd263d5310f8ce5d5026facfc26a6",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP13",
+        "PV03",
+        "HC01"
+      ]
+    },
+    {
+      "id": "CMP08",
+      "path": "docs/foundation/components/accessibility-contracts.md",
+      "sha256": "c835c6397cf0b084ec133dc7585c0383a3e61b84e0e260e26625adfb4fe71326",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP14",
+        "CP15",
+        "CV10",
+        "QA03"
+      ]
+    },
+    {
+      "id": "CMP09",
+      "path": "docs/foundation/components/motion-and-transitions.md",
+      "sha256": "cd8cf782c9ba2b605663427484a85bcce97d19c7f04d64ae503663cf5d25c9d3",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP16",
+        "CP17",
+        "CP18"
+      ]
+    },
+    {
+      "id": "CMP10",
+      "path": "docs/foundation/components/appearance-conditions-and-precedence.md",
+      "sha256": "d61739bac12b679f340a0fccd7e71de9b9a8724a7b7dce4516abf8f3e24eb1d8",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP19",
+        "CP20",
+        "CP21",
+        "FT10"
+      ]
+    },
+    {
+      "id": "CMP11",
+      "path": "docs/foundation/components/custom-definition-registry.md",
+      "sha256": "732d5da9fdf4a2db03a4e2d0b7ac2425e80a97147e4131091658f6b8063597a6",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP22",
+        "CP23",
+        "CP04"
+      ]
+    },
+    {
+      "id": "UX01",
+      "path": "docs/foundation/experience/onboarding-and-inspector.md",
+      "sha256": "e6075ee4f2d3c7f9eaa3200bc93f0bd6d16503047e48bac3ea62ea10ce0182d4",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED01",
+        "ED02",
+        "ED03",
+        "ED04",
+        "ED05",
+        "ED06",
+        "ED11",
+        "ED12",
+        "RV03"
+      ]
+    },
+    {
+      "id": "UX02",
+      "path": "docs/foundation/experience/canvas-and-direct-manipulation.md",
+      "sha256": "2284c0fc54eb6ae4bc74cc4eadef2d3f190a801ccd720594dc23550c4c0f9925",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED07",
+        "ED08",
+        "ED09",
+        "CV01",
+        "CV02",
+        "CV03",
+        "CV04",
+        "CV05",
+        "CV06",
+        "CV11"
+      ]
+    },
+    {
+      "id": "UX03",
+      "path": "docs/foundation/experience/layout-authoring.md",
+      "sha256": "66f0244eb8ac0c8df3d9c4a81a3defb899173002b5019aef122a48823fbea8f7",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CV07",
+        "CV08",
+        "CV09",
+        "CV10",
+        "CV04"
+      ]
+    },
+    {
+      "id": "UX04",
+      "path": "docs/foundation/experience/text-and-asset-editing.md",
+      "sha256": "e354ebbd517ec8fdfaa6c3cc57779e3ca68387c3d6217ce9bba9c99d78971c02",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "TX01",
+        "TX02",
+        "TX03",
+        "TX04",
+        "TX05",
+        "TX07"
+      ]
+    },
+    {
+      "id": "UX05",
+      "path": "docs/foundation/experience/foundation-editor.md",
+      "sha256": "12436bddc8d5b9f7ccb60744e80f8716871dd2cf61976b879588724f3846978f",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "FT01",
+        "FT02",
+        "FT03",
+        "FT04",
+        "FT06",
+        "FT07",
+        "FT09",
+        "FT10",
+        "FT11"
+      ]
+    },
+    {
+      "id": "UX06",
+      "path": "docs/foundation/experience/component-editing-panels.md",
+      "sha256": "60f683d171a91e21df14db4e1129d4c81a5c5183324b21a5a8ef68f5b13fc7d7",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED06",
+        "CP05",
+        "CP07",
+        "CP08",
+        "CP12",
+        "CP14",
+        "CP16",
+        "CP17",
+        "CP19"
+      ]
+    },
+    {
+      "id": "UX07",
+      "path": "docs/foundation/experience/preview-and-prototypes.md",
+      "sha256": "cb352ddc81ca6aba1b7dafb846eff67f186421494c351e12143d7be3a46fc651",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CP10",
+        "PV01",
+        "PV02",
+        "PV03",
+        "PV04",
+        "PV05",
+        "PV06"
+      ]
+    },
+    {
+      "id": "UX08",
+      "path": "docs/foundation/experience/editor-accessibility-and-language.md",
+      "sha256": "8663590c7cef9ad241f56f1a523b7189486b90210b352c2fe1c958019109df8e",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED09",
+        "ED11",
+        "TX02",
+        "QA03",
+        "DS02",
+        "DS06"
+      ]
+    },
+    {
+      "id": "ARC01",
+      "path": "docs/foundation/architecture/system-and-domain-boundaries.md",
+      "sha256": "e0f92d643da5f54c80e86b1fcb71b5f7422d83f2d4813d61c9cd576218eba02e",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "RV01",
+        "AP01",
+        "PV02",
+        "DL03"
+      ]
+    },
+    {
+      "id": "ARC02",
+      "path": "docs/foundation/architecture/modules-and-dependencies.md",
+      "sha256": "4963de1cebaeb3d4b0f8ec269342ec714b1737af5bbfd6d62441a002779dfee4",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CV02",
+        "CV12",
+        "TX02",
+        "AP01",
+        "DL03"
+      ]
+    },
+    {
+      "id": "ARC03",
+      "path": "docs/foundation/architecture/commands-revisions-and-undo.md",
+      "sha256": "10e2b386c749b665e176bcf51a4277c8dcf9f1f7311af5dd77942ab595705bd5",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "RV01",
+        "RV02",
+        "RV03",
+        "RV04",
+        "AP01"
+      ]
+    },
+    {
+      "id": "ARC04",
+      "path": "docs/foundation/architecture/storage-offline-and-recovery.md",
+      "sha256": "66025af8644115286354ffca42bfb21d019207398443acadca7ddaef91042df4",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED02",
+        "SV01",
+        "SV02",
+        "SV03",
+        "SV04",
+        "SV06"
+      ]
+    },
+    {
+      "id": "ARC05",
+      "path": "docs/foundation/architecture/collaboration-readiness.md",
+      "sha256": "ae5a62eddbd8df9d51fc732360a618bcc93af93c190d74934bd3e960f92bf96a",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "SV05",
+        "RV04",
+        "ED08"
+      ]
+    },
+    {
+      "id": "ARC06",
+      "path": "docs/foundation/architecture/browser-host-and-execution.md",
+      "sha256": "cca63cdb85e4e6ebc07d60d36db505123295be4a5c0be1ab09b9fa4933fbc70e",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "ED02",
+        "HC01",
+        "HC02",
+        "PV05",
+        "SV04"
+      ]
+    },
+    {
+      "id": "ARC07",
+      "path": "docs/foundation/architecture/public-api-mcp-and-entitlements.md",
+      "sha256": "eec706c39008b95de98c2ac8ca0d36611dded2c77388ff008e97173633b83a36",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "AP01",
+        "AP02",
+        "AP04",
+        "RV01"
+      ]
+    },
+    {
+      "id": "AI01",
+      "path": "docs/foundation/ai/authoring-context-and-providers.md",
+      "sha256": "88cecf7efa4cdcbbd47f56ec2adad4529366cc4b25a2285a309c1cc40e325d6e",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "AP02",
+        "AP04",
+        "SV04"
+      ]
+    },
+    {
+      "id": "AI02",
+      "path": "docs/foundation/ai/realization-and-independent-verification.md",
+      "sha256": "afef2747f0530687885998293cfad75d4972963ef11361f4dea884193e456b18",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "AP03",
+        "PV01",
+        "QA01",
+        "QA02"
+      ]
+    },
+    {
+      "id": "DLV01",
+      "path": "docs/foundation/delivery/target-and-style-profiles.md",
+      "sha256": "c303211e078e45734f4901299292d6ddcb7c72de74c36dd29835f485df7a4cb4",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "TG01",
+        "TG02",
+        "TG03",
+        "TG04",
+        "TG05",
+        "TG06",
+        "FT13"
+      ]
+    },
+    {
+      "id": "DLV02",
+      "path": "docs/foundation/delivery/project-init-and-doctor.md",
+      "sha256": "00e8a76dfbc39c9c0ecafe20c31e91454a829215548182693fe0ca52cf70cc9b",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "DL01",
+        "HC01",
+        "DL05"
+      ]
+    },
+    {
+      "id": "DLV03",
+      "path": "docs/foundation/delivery/user-owned-library-and-packaging.md",
+      "sha256": "6f9056cacddb7d8257de63fe84f23d97096a8b84248696ec9bf286db55a2d404",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "DL02",
+        "DL03",
+        "DL06"
+      ]
+    },
+    {
+      "id": "DLV04",
+      "path": "docs/foundation/delivery/diff-upgrades-and-rollback.md",
+      "sha256": "b8204a2666cfea10d3ed01b3dfcb4765ec78da6c199820be63c2ccfa2c7a353d",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "DL04",
+        "DL05",
+        "RV03"
+      ]
+    },
+    {
+      "id": "QAL01",
+      "path": "docs/foundation/quality/conformance-and-test-plans.md",
+      "sha256": "b418fdd30406f98b9526623aa0b651ed84a893e8acdd94df034960020bf266b6",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "QA01",
+        "QA02",
+        "QA03",
+        "TG06"
+      ]
+    },
+    {
+      "id": "QAL02",
+      "path": "docs/foundation/quality/evidence-and-freshness.md",
+      "sha256": "a04da25636d7a014062f3aea2f74676e246824bca29187fbc6eebb58b330ac3c",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "QA01",
+        "QA02",
+        "PV01"
+      ]
+    },
+    {
+      "id": "QAL03",
+      "path": "docs/foundation/quality/performance-capacity-and-budgets.md",
+      "sha256": "c7cae222f6e04f7bcf88170aa0603d8cb8d8eb3afeacd28ae5e8087b43088925",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "CV12",
+        "QA04",
+        "SV06"
+      ]
+    },
+    {
+      "id": "QAL04",
+      "path": "docs/foundation/quality/release-readiness.md",
+      "sha256": "9d4d15e1215d29f65c12a452a6bce6455c941e91c32426e0148893b1f8a2da38",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "QA02",
+        "QA03",
+        "QA05",
+        "TG06",
+        "SV04"
+      ]
+    },
+    {
+      "id": "OPS01",
+      "path": "docs/foundation/operations/security-and-data-boundaries.md",
+      "sha256": "c01d2f22a09ce84702c4f3df57c41abeb084d582a7b9c0c6265b6b71d2703f3f",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "HC01",
+        "HC02",
+        "PV02",
+        "TX05",
+        "AP02"
+      ]
+    },
+    {
+      "id": "OPS02",
+      "path": "docs/foundation/operations/hosting-observability-and-support.md",
+      "sha256": "20904684143fb319c00644c4e067e7f43642436d848c3146e0fd8cf3c89cdad4",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "QA04",
+        "AP04",
+        "SV02"
+      ]
+    },
+    {
+      "id": "OPS03",
+      "path": "docs/foundation/operations/release-and-supply-chain.md",
+      "sha256": "34ee423ee71561a693339724e4cc0eb89d3a0ce2c1cd8b44b0c63fa1804285e8",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "DL03",
+        "DL06",
+        "QA02"
+      ]
+    },
+    {
+      "id": "OPS04",
+      "path": "docs/foundation/operations/development-and-maintenance.md",
+      "sha256": "ad99a314c935a38d6d4612c03f5ec618c302cae49159c85327664c0c217628da",
+      "status": "UNCHANGED_AUTHORITY_FROM_FULL_REVIEW",
+      "featureIds": [
+        "DS08",
+        "QA05",
+        "QA04",
+        "CP01"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "id": "ED01",
+      "authority": "UX01, PRD02 · F",
+      "feature": "기본 DS로 처음 시작",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "11-domain / 13-type curated kit, configurable accent/density/font, 153 new tokens plus 9 linked sample identities; both themes resolve",
+      "remainingAcceptance": "Broader reusable user templates and AI/tutorial onboarding remain ED03/CP02.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "ED02",
+      "authority": "UX01, ARC04/06 · F",
+      "feature": "브라우저/로컬 폴더 동등한 시작",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · STORE 양 adapter, UI는 IndexedDB 하나",
+      "remainingAcceptance": "시작에서 위치 선택→권한 취소/재연결→같은 편집/review/export. 폴더 보관 도움말은 실행 경로 아님",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "ED03",
+      "authority": "UX01, AI01 · F",
+      "feature": "직접/AI/예제 학습 시작",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · 직접 starter만",
+      "remainingAcceptance": "같은 기능 권한으로 세 진입; 학습이 실제 token→Card→설치까지 연결; AI 제공자 실패에도 GUI 유지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "ED04",
+      "authority": "UX01, UX05, PRD03 · F",
+      "feature": "생성·검색·필터·목록 탐색",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Search and domain/type/tier filters, domain subpages and 239-entry library; 209 independent authoring entries",
+      "remainingAcceptance": "Theme/provider search and exhaustive keyboard discovery remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "ED05",
+      "authority": "UX01 · F",
+      "feature": "선택 없음의 작업대",
+      "previousBaselineState": "M",
+      "currentState": "B",
+      "currentEvidence": "Empty selection has explicit canvas and inspector guidance; no stale property target",
+      "remainingAcceptance": "Bounded empty-selection flow; no whole-workspace completion claim.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "ED06",
+      "authority": "UX01/02/06 · F,U",
+      "feature": "선택 개체별 Inspector",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Selected Part name/text/parent/layout/style, advanced typed bindings, slots and motion in context",
+      "remainingAcceptance": "Instance inspector and complete slot injection remain CP09/CP10.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "ED07",
+      "authority": "UX02 · F",
+      "feature": "깊은 선택·부모 이동·겹친 대상",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · UI closest data-part-id와 평면 layer 버튼",
+      "remainingAcceptance": "기본 parent 선택, deep modifier, 부모/자식 keyboard, breadcrumb 이동, 겹친 목록 선택; native 근사도 같은 stable ID",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "ED08",
+      "authority": "UX02, ARC05 · F",
+      "feature": "다중 선택·혼합값",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Additive/marquee component selection and reviewed frame geometry",
+      "remainingAcceptance": "Mixed-value property editing across heterogeneous objects remains.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "ED09",
+      "authority": "UX02/08 · F",
+      "feature": "편집/실행 모드",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · UI 명시 toggle와 일부 run controls",
+      "remainingAcceptance": "누르는 동안 임시 실행, 복귀 selection/focus, 중첩 control 이벤트 소유, 미완료 gesture 취소; shortcut이 IME를 방해하지 않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "ED10",
+      "authority": "GOV02, UX01 · F",
+      "feature": "이름·ID·API 표시 구분",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · UI 이름/ID, ST token rename helper",
+      "remainingAcceptance": "rename은 stable ID 유지; public name 변경 영향·충돌/예약명 안내; 사용자 표시명은 언어 전환으로 변하지 않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "ED11",
+      "authority": "UX01/08, GOV02 · F",
+      "feature": "오류에서 대상·원인·복구",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Named invalid form, preserve exact lexical input, focus recovery, explicit reset; valid forms join review directly",
+      "remainingAcceptance": "All diagnostics localization and complete source/geometry deep links remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "ED12",
+      "authority": "UX01 · F",
+      "feature": "맥락 도움말·즐겨찾기·전문 옵션",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Optional descriptions, advanced theme axis/context disclosure, chips and contextual help",
+      "remainingAcceptance": "Per-user favorites remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV01",
+      "authority": "UX02, SC22 · F,U",
+      "feature": "zoom·camera·pan",
+      "previousBaselineState": "M",
+      "currentState": "B",
+      "currentEvidence": "Anchored wheel zoom, Ctrl/Meta pinch, normalized delta units, native gesture listeners and two-touch geometry; no canonical camera edits",
+      "remainingAcceptance": "CDP Ctrl-wheel and pure geometry verified; physical trackpad/Safari hardware unverified.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV02",
+      "authority": "UX02, ARC02 · F",
+      "feature": "geometry bridge",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Zoom/pan/frame coordinate bridge and ID-based hit selection",
+      "remainingAcceptance": "Rotated geometry, iframe bridge and stale geometry receipts remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV03",
+      "authority": "UX02 · F",
+      "feature": "move/resize/rotate",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Frame move/resize, keyboard movement, review/Undo",
+      "remainingAcceptance": "Part-level move/resize and rotate remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV04",
+      "authority": "UX02/03 · F",
+      "feature": "auto-layout drag·reparent",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Optional Part reparenting, cycle rejection, DFS child/reading order and React custom layout realization",
+      "remainingAcceptance": "Pointer auto-layout drop/reparent, free layout and locked/instance slot constraints remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV05",
+      "authority": "UX02 · F",
+      "feature": "align/distribute/snap",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Selected frame align/distribute/snap with reviewed source changes",
+      "remainingAcceptance": "Full Part-level alignment/distribution and transformed geometry remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV06",
+      "authority": "UX02 · F",
+      "feature": "lock/hide/frame/group",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "편집 잠금과 runtime availability 구분, 표시 숨김과 문서 삭제 구분, 그룹 ID/관계 유지, 해제·복구 가능",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CV07",
+      "authority": "UX03 · F",
+      "feature": "hug/fill/fixed, min/max",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Catalog width/height hug/fill/fixed, alignment and minHeight controls",
+      "remainingAcceptance": "Min/max intrinsic cycles and cross-platform parity remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV08",
+      "authority": "UX03 · F",
+      "feature": "flow/stack/grid/free",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · ST 제한 stack/축·padding/gap",
+      "remainingAcceptance": "전체 모드와 grid/flow/free model, wrap/alignment/distribution/overflow/anchor; 미지원 native mapping 숨김 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CV09",
+      "authority": "UX03 · F",
+      "feature": "네 변 padding·크기·순서",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Scalar padding/gap/minHeight and explicit child order; width/height policy",
+      "remainingAcceptance": "Independent four-edge spacing remains.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CV10",
+      "authority": "UX03, CMP08 · F",
+      "feature": "반응형 배치와 의미 순서",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "긴 한/영, RTL, font scale, narrow bounds; 시각 order와 reading/focus order 차이 진단, 주요 조작 소실 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CV11",
+      "authority": "UX02, ARC03 · F",
+      "feature": "gesture 취소·history 묶음",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · CTRL field transient→review 한 batch",
+      "remainingAcceptance": "pointercancel/Escape/selection 삭제/panel 전환으로 미완료 drag 취소, preview frame마다 저장 안 함, rollback 한 번",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CV12",
+      "authority": "QAL03, SEL02 · F",
+      "feature": "실제 편집 workload·성능",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · 현재 resource caps는 안전 경계",
+      "remainingAcceptance": "S/M/L 제안 dataset 실제 hit/edit/zoom/text/layout 측정, p95/memory/hardware 기록, cancel/lazy/worker 적용 판단. 목표 수치 미승인을 pass gate로 발명 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "FT01",
+      "authority": "SYN03, UX05 · F,U",
+      "feature": "token 생성",
+      "previousBaselineState": "P",
+      "currentState": "B",
+      "currentEvidence": "Structured token creation, same-type alias, classification, common review/Undo and starter adoption",
+      "remainingAcceptance": "Within the explicit Studio literal/whole-alias profile.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT02",
+      "authority": "SYN03, UX05 · F,U",
+      "feature": "분류 생성·관리",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Domain/tier CRUD, replacement checks, type constraints, per-domain workspaces and starter classification",
+      "remainingAcceptance": "General policy binding and complete domain support declarations remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT03",
+      "authority": "UX05, SYN02 · F",
+      "feature": "token rename·copy·delete·deprecate",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Stable rename, duplicate, delete/replacement and dirty-form deletion protection",
+      "remainingAcceptance": "Deprecation lifecycle and reasons remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT04",
+      "authority": "UX05 · F",
+      "feature": "검색·filter·대량 편집",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Type/domain/tier/search, multi-row classification/deletion, one review",
+      "remainingAcceptance": "Per-hunk selective application and theme filter remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT05",
+      "authority": "SYN01/03 · F",
+      "feature": "13 literal 타입 의미 검사",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "B · FDN 검사 corpus",
+      "remainingAcceptance": "color/dimension/fontFamily/fontWeight/duration/cubicBezier/number/strokeStyle/border/transition/shadow/gradient/typography의 검사 범위. 모든 GUI·렌더·표준 resolver 완료로 확대 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "FT06",
+      "authority": "UX05, SYN01 · F",
+      "feature": "타입별 시각 editor",
+      "previousBaselineState": "P",
+      "currentState": "B",
+      "currentEvidence": "13 structured value editors, numeric/color lexical preservation and domain-sensitive value chips",
+      "remainingAcceptance": "Only the documented literal profile; not full DTCG Resolver or all-space paint conversion.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT07",
+      "authority": "SYN03 · F",
+      "feature": "전체 token alias·usage·provenance",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Typed alias picker, primitive-semantic tree, context trace, inspector usage navigation, motion token references",
+      "remainingAcceptance": "Property-level aliases and graph mutation/complete theme-only edge navigation remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT08",
+      "authority": "SYN01/03, SEL01 · F",
+      "feature": "부분 alias·group/type 상속·DTCG Resolver",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · FDN 명시 unsupported",
+      "remainingAcceptance": "공식 판본 corpus로 group inheritance/property reference/set/modifier/context/default/order·오류 의미; raw 보존을 interpret/GUI/output 합산 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "FT09",
+      "authority": "SYN03, UX05 · F",
+      "feature": "theme axes·sets CRUD",
+      "previousBaselineState": "P",
+      "currentState": "B",
+      "currentEvidence": "Axis/context/default/order and named-set CRUD, context validation and unified theme preview",
+      "remainingAcceptance": "Within one Foundation and explicit resolution order; arbitrary scoped resolver remains FT08.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT10",
+      "authority": "UX05 · F",
+      "feature": "theme 비교·동시 preview",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Named-set value comparison and shared active context",
+      "remainingAcceptance": "Simultaneous component artboards, detailed context diff/contrast remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT11",
+      "authority": "SYN03, UX05 · F",
+      "feature": "정책·예외",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · FDN nonempty policy 실행 거절",
+      "remainingAcceptance": "predicate/scope/severity/rationale와 token domain 정책, literal→기존/신규 token/예외 action; 예외 대상/이유/기간/승인자 추적, 기본 a11y 의무 면제 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "FT12",
+      "authority": "SYN01/04 · F",
+      "feature": "DTCG import/export",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · FDN flat importer와 원문 export, GUI 미연결",
+      "remainingAcceptance": "실제 파일선택→원본·유효/오류·unsupported path→매핑 review; authored/original 선택. group/theme/classification 손실을 조용히 flatten하지 않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "FT13",
+      "authority": "SYN01, DLV01 · F",
+      "feature": "타입·색의 실제 target 사용",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Whole-token Web typography, fonts, weight/line-height/tracking, shadows, gradients, borders and composite transitions; native unsupported rejection",
+      "remainingAcceptance": "All color-space conversion, native extended paint and full 4-target conformance remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "FT14",
+      "authority": "SYN01, SEL01 · F",
+      "feature": "표준 선택 실증",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · ADR14 literal/flat exchange 실증",
+      "remainingAcceptance": "DTCG A/B/C 비용·완전성 비교, read/preserve/interpret/edit/preview/output/runtime 개별 표. 이점 미입증이면 전체 DTCG 요구 유지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP01",
+      "authority": "PRD03, SEL11 · F,U",
+      "feature": "전체 catalog 탐색·적용",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "239 preserved identities, 209 create paths, local authored static SVG library specimens",
+      "remainingAcceptance": "30 non-component rows and specialized semantic runtimes are not independent runnable components.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP02",
+      "authority": "CMP01, UX06 · F",
+      "feature": "새 component·목적 정의",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Create blank layout component or catalog recipe; source identity/purpose/designs and review",
+      "remainingAcceptance": "Arbitrary archetype/trait composition and reusable user component templates remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP03",
+      "authority": "CMP01 · F",
+      "feature": "여러 named Design",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · ST 정확히 Web/Mobile 하나씩",
+      "remainingAcceptance": "같은 common contract의 복수 이름 Design, 독립 variant/state/theme, 공통 변경이 모든 Design/instance에 미치는 영향",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP04",
+      "authority": "CMP02/11 · F",
+      "feature": "trait/role/policy 조합",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · registry 구조만 SCH, ST builtin 정확한 계약",
+      "remainingAcceptance": "configuration/port 타입, value writer, input claim, 필수 role/의무, version/context 호환 검사; 맞는 독립 조합은 허용",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP05",
+      "authority": "CMP03, UX06 · F",
+      "feature": "public value/event/variant type editor",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Typed values, public ownership, existing filled/outlined default and conditional appearance",
+      "remainingAcceptance": "Full visual TypeExpr/enum axes/event editing and API migration remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP06",
+      "authority": "CMP03 · F",
+      "feature": "제한 Expr와 UIEffect",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · 구조 unknown 보존",
+      "remainingAcceptance": "declared path만 read, typed operators/0나눗셈/overflow/step bound, emit/request/owned commit/focus/host/motion/cleanup. 임의 JS·업무 실행 불허",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP07",
+      "authority": "CMP04, UX06 · F",
+      "feature": "ownership·state domain·Request",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · builtin disabled/open/closeRequest",
+      "remainingAcceptance": "local/consumer/runtime·presence/query/active/selected 분리, proposed~terminal lifecycle, stale generation, bounded queue, 중복 writer 거부",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP08",
+      "authority": "CMP05, UX02/06 · F",
+      "feature": "Part CRUD·내부 구조",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Optional Part CRUD/reparent, text, cycle guards, duplicate reference remap, exact order; React nested layout output",
+      "remainingAcceptance": "General role registry, arbitrary render-node mapping and copy individual Part remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP09",
+      "authority": "CMP05 · F",
+      "feature": "slot 계약·내용 주입",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Slot declarations, required/optional cardinality and exposure; dependencies protect Part deletion",
+      "remainingAcceptance": "Actual instance/component/asset slot injection and allowed-contract editor remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP10",
+      "authority": "CMP05, UX07 · F",
+      "feature": "instance 생성·override",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · SCH record와일부참조만",
+      "remainingAcceptance": "component/design pin, public props/slot contents/allowed overrides, provenance, reset/promote, 원본삭제 시 내용보존·replace/detach/미해결",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP11",
+      "authority": "CMP06 · F",
+      "feature": "behavior base 선택·fork",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · TGT custom builtin",
+      "remainingAcceptance": "React Aria/Base UI/shadcn 팩의 허용 목록/정확 버전, 교체 diff; 의무 변경은 독립 유형·새 oracle, 무검사 provider mix 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP12",
+      "authority": "CMP06, UX06 · F",
+      "feature": "behavior list/graph/preset/AI editor",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "상태·전이·guard/effect 시각 편집, 같은 의미의 목록/graph, preset 후 내부 편집; arbitrary code fallback 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP13",
+      "authority": "CMP07 · F",
+      "feature": "host/coordinator authoring",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · builtin Toast target host",
+      "remainingAcceptance": "8 coordinator family의명시scope/parent/lifetime/client·queue, nearestcompatible 제안+수동선택·실제경로·missing/ambiguous 복구",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP14",
+      "authority": "CMP08, UX06 · F",
+      "feature": "접근성 관계 editor",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Accessible name/description editing and source reading-order navigation",
+      "remainingAcceptance": "namedBy/describedBy/controls/owns/focusReturn/announces authoring and AT observation remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP15",
+      "authority": "CMP08, UX05 · F",
+      "feature": "contrast·터치·motion 도움",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Opaque authored color-pair contrast calculation, mandatory reduced-motion alternatives",
+      "remainingAcceptance": "Composite/state contrast, touch diagnostics, policy alternatives and manual AT remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP16",
+      "authority": "CMP09, UX06 · F",
+      "feature": "기본 motion authoring",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "16 tracks, tween/spring, 2–32 keyframes, typed values, duration/easing token refs, delay/interruption/reduced snap",
+      "remainingAcceptance": "Behavior trigger binding, stagger/completion effects, target runtime mappings remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP17",
+      "authority": "CMP09, UX06 · F",
+      "feature": "timeline·시연 controls",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Actual Web Animation play/pause/scrub/step/reset; review and cancellation; bounded single pending replay",
+      "remainingAcceptance": "Behavior rejection/enter-exit lifecycle oracle and native timeline runtime remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "CP18",
+      "authority": "CMP09, SEL22 · D",
+      "feature": "전문 다중 track·scroll motion",
+      "previousBaselineState": "D",
+      "currentState": "D",
+      "currentEvidence": "D",
+      "remainingAcceptance": "초기 keyframe/tween/spring을 완료한 뒤 선택. 기본 motion editor를 이 후속 범위에 함께 넣지 않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP19",
+      "authority": "CMP10 · F",
+      "feature": "variant×Part×state appearance",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · ST 6 fixed조합/7props, UI editor 없음",
+      "remainingAcceptance": "값의출처/priority/refines/동점충돌, variant/state 생성·편집·대응사항 검사; opacity만 전체appearance로 세지 않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP20",
+      "authority": "CMP10 · F",
+      "feature": "environment condition",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · arbitrary condition 미지원",
+      "remainingAcceptance": "viewport/container/input/hover/direction/textScale/reducedmotion typed 축, unknown fallback, Web expert조건 격리와native한계",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP21",
+      "authority": "CMP10, UX06 · F",
+      "feature": "override reset/promote",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "local↔shared scope와영향, 사용자 허용 override만, 조건/토큰/읽기순서 재검증 후review; 복구 provenance",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP22",
+      "authority": "CMP11 · F",
+      "feature": "registry 관리·Inspector hints",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · SCH 선언구조",
+      "remainingAcceptance": "local→project→library promotion/ID/version/refMap, 동적 control metadata·required/enum/bounds/visibility, unsupported types 보존·한계 안내",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP23",
+      "authority": "GOV03, CMP02/11 · F",
+      "feature": "version 호환·protected customization",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "독립 trait version 공존과연결port 호환 구분, breaking diff/migration/deprecation, 유형의무 제거 시 기존badge 무효",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "CP24",
+      "authority": "PRD03, catalog · F",
+      "feature": "dates/charts/editor/schedule 등 복잡군",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "도메인별 type/input/a11y/dataalternative/시간대/IME·history·요청 의미 계약 및4targetprofile; 일반 텍스트 placeholder로완료 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TX01",
+      "authority": "UX04, CMP05 · F",
+      "feature": "내부 text 직접 편집",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Per-Part plain text editing with safe React custom-layout output",
+      "remainingAcceptance": "Canvas caret, rich text runs/blocks/marks remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "TX02",
+      "authority": "UX04/08, SEL03 · F",
+      "feature": "IME·paste·selection·Undo",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · UI composition handlers와실제CDP imeSetComposition",
+      "remainingAcceptance": "Tiptap/대안 workload, 실제 Windows/macOS 입력기·한/영혼합·조합중Enter/Escape/shortcut·paste sanitize·range/history 관찰",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TX03",
+      "authority": "UX04, SYN01 · F",
+      "feature": "typography·locale·font",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Whole-token font/weight/line-height/letter-spacing/composite typography and Web CSS mapping",
+      "remainingAcceptance": "Missing font diagnostics, locale-aware shaping and text scaling matrix remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "TX04",
+      "authority": "BRD02, UX04 · F",
+      "feature": "실제 asset import·reuse",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · record 구조보존뿐",
+      "remainingAcceptance": "bytes저장/hash/크기/MIME/preview; 이미지·아이콘·SVG import reuse/crop/fit/replace/작은border 편집, undo파생출처",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TX05",
+      "authority": "BRD02, OPS01 · F",
+      "feature": "asset security·rights·relink",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "SVG/URL/archive격리, id/version권리record≠blobhash, use별alt·web/native embedding·missingplaceholder·hash재연결·권리만료",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TX06",
+      "authority": "BRD01 · F",
+      "feature": "독립 BrandLibrary·guideline",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "versioned logos/font/image/icon·usage guide, optionalclearspace/minsize수치검사, libraryupdate 영향; 주관적brand적합성 자동pass 금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TX07",
+      "authority": "UX04, PRD03 · D",
+      "feature": "전문 vector/완전 CMS",
+      "previousBaselineState": "D",
+      "currentState": "D",
+      "currentEvidence": "D",
+      "remainingAcceptance": "전체pathboolean·고급drawing·CMS는 후속/범위밖. 기본SVG안전import와richtext는현재필수",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "PV01",
+      "authority": "UX07, QAL02 · F",
+      "feature": "design/candidate/lastverified 구별",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · UI designsimulation/미실행ZIP badge",
+      "remainingAcceptance": "별도 source/revision/hash/environment/freshness, AI탐색후보/실제후보/lastverified 동시 비교, 실패후마지막유효본 보존",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "PV02",
+      "authority": "UX07, OPS01 · F",
+      "feature": "preview sandbox·geometry channel",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · 현재 trusted Reactpreview 같은앱",
+      "remainingAcceptance": "origin/revision/schema검사bridge, 후보code/asset격리, secret/권한노출 없음; stale geometry/preview 실패 recovery",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "PV03",
+      "authority": "UX07, CMP04 · F",
+      "feature": "forced state·외부응답 mock",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · Buttondisabled/Toastaccept/decline·count",
+      "remainingAcceptance": "delay/다른확정값/observedstate강제/clock controls, mock임을표시, 계약값의실제owner침범없음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "PV04",
+      "authority": "UX07 · F",
+      "feature": "Screen·Scenario authoring",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · SCH필드/로컬참조만",
+      "remainingAcceptance": "inlineinstances와theme/asset/layout Screen, 별도Scenario초기값/event/mock/trace/expectation, prototype links·sharedstepbudget",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "PV05",
+      "authority": "UX07 · F",
+      "feature": "native 실제preview 연결",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · Mobile폭근사와native소스",
+      "remainingAcceptance": "QR/devclient/Host simulator/device, 실제environment receipt, 근사/실행 정확도 표시·전환, unsupported연결 명시",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "PV06",
+      "authority": "UX07 · F",
+      "feature": "share·예제app pack",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "revision고정 previewlink권한/만료/회수, example sources/assets/mock/routes 소유권과export; 사용자업무API 포함금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "RV01",
+      "authority": "ARC03, UX01/05 · F",
+      "feature": "transient→review→원자apply",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "Valid pending forms flush before common review; invalid reset retains prior plan; no-op edits do not create history",
+      "remainingAcceptance": "Same authenticated whole-proposal transaction boundary; not arbitrary hunk selection.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "RV02",
+      "authority": "ARC03 · F",
+      "feature": "동일 요청 재생·lost reply",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "B · KRN/STORE/TEST",
+      "remainingAcceptance": "동일principal/project/key/request는원receipt, stale후에도추가revision/예산/외부효과없음; 미확정다른시도자동발급금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "RV03",
+      "authority": "ARC03, UX01, DLV04 · F",
+      "feature": "충돌 비교·선택 적용",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · 전체stale거절/rebase·전체후보approve",
+      "remainingAcceptance": "before/current/proposed 시각diff, 안전항목선택 시새closure/digest/review; 현재wholecandidate를partialhunk지원으로표시금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "RV04",
+      "authority": "ARC03, UX08 · F",
+      "feature": "Undo/redo·history",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · localdurableundo/redo·shortcut",
+      "remainingAcceptance": "historytimeline/origin/labels, source·draft·gesture별일관성. realtime개인Undo와sharedrevert는후속별도",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "RV05",
+      "authority": "SYN04 · F",
+      "feature": "source 오류초안·왕복",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "B · source tab/KRN 원문capture/export",
+      "remainingAcceptance": "valid원본·오류·unknown영역 보존의현재경로유지; 목록에서모든draft다시열기/원본비교/실패candidate복구 UX는추가 필요",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "RV06",
+      "authority": "SYN02/04 · F",
+      "feature": "프로젝트 import/copy/bundle",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · KRNbundle/API·UI다운로드만",
+      "remainingAcceptance": "GUI파일/bundle열기·identitycopy/refMap/update선택·복수workspace관리; 같은이름자동overwrite금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "RV07",
+      "authority": "SYN04, GOV03 · F",
+      "feature": "등록된 migration pair/lossreport",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · 채택된실제old/newpair없음",
+      "remainingAcceptance": "실제pair가생길때source/digest/precondition/ops/inverse/loss/target/userchoice포함해review. 빈framework를완료로계산금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "SV01",
+      "authority": "ARC04 · F",
+      "feature": "durablebrowser/Node store",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "B · STORE와fault/concurrency시험",
+      "remainingAcceptance": "process-crash/IndexedDBcomplete 범위유지. power-loss·eviction·모든browser를확대claim하지않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "SV02",
+      "authority": "ARC04 · F",
+      "feature": "공간부족·권한회수·내보내기복구",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · codederrors·retry·pending후보",
+      "remainingAcceptance": "quota/blocked/권한회수 시 unsaved/마지막유효본·경로이동·export·재시작복구를GUI에서실제완료",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "SV03",
+      "authority": "ARC04 · F",
+      "feature": "외부ADS파일 watch·merge",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · Nodejournal≠사용자ADS폴더watch",
+      "remainingAcceptance": "filehash관찰→before/current/proposed→review, rename/delete/권한회수·reconnect·실제폴더원문보존",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "SV04",
+      "authority": "ARC04, PRD02 · F",
+      "feature": "prepared offline/internalAI",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · localcore가능은pack실증아님",
+      "remainingAcceptance": "assets/font/deps/tools/registry/endpoint준비manifest→network차단→restart→편집/검사/출력/internalAI동작",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "SV05",
+      "authority": "ARC05 · D",
+      "feature": "realtime 협업·presence·개인Undo",
+      "previousBaselineState": "D",
+      "currentState": "D",
+      "currentEvidence": "D · stableID/revision/충돌기반만",
+      "remainingAcceptance": "실제sync/conflict/lease/privatecamera/sharedrevert 실증. 현재local동시연결시험을협업완료로확대하지않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "SV06",
+      "authority": "ARC04, SEL05 · F",
+      "feature": "이력정리·복구한계",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · finitejournal/canonicalcaps",
+      "remainingAcceptance": "checkpoint/export/compaction·보존refs정책, hardcap도달예고·자료유실없는정리. 안전cap을제품capacity약속으로사용금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "HC01",
+      "authority": "ARC06, OPS01 · F",
+      "feature": "Browser↔Host 연결",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "originchallenge/승인root/toolinventory/version/lease·job범위, disconnect후jobstatus·receipt복구; 바탕화면앱이곧제품Host는아님",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "HC02",
+      "authority": "ARC06, OPS01 · F",
+      "feature": "격리된 실행 job",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "승인jobplan/allowlist/network/timeout/budget/candidatearea/effects/rollback, sandbox없으면실행불가, 임의buildersecret접근금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "AP01",
+      "authority": "ARC07 · F",
+      "feature": "공식 API/MCP 전체표면",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · corepublicAPI/CLI7commands",
+      "remainingAcceptance": "catalog52command/10query transport와version/auth/pagination/parity, token/Part/behavior등typedoperation. document.import범용탈출로52구현합산금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "AP02",
+      "authority": "AI01, ARC07 · F",
+      "feature": "ContextBundle·AI 제공자",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "selection+refclosure+pinnedrevision+capabilities+allowedoperations+budget, officialBYOK/local/internalendpoint·secretstore·오류/비용UI",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "AP03",
+      "authority": "AI02 · F",
+      "feature": "구현후보·독립oracle·한도",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · deterministictemplate와고정test분리기반만",
+      "remainingAcceptance": "immutablecontract/TestPlan/discovery/oracle vsAI권한, attemptbudget·cancel·lastverified·실패후보보존, test삭제/skip/expectation변경차단",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "AP04",
+      "authority": "BIZ02, ARC07 · N,F",
+      "feature": "hosted entitlement·과금receipt",
+      "previousBaselineState": "N",
+      "currentState": "N",
+      "currentEvidence": "N · 유료서비스현재없음",
+      "remainingAcceptance": "가격/무료한도owner결정, 원자budgetreservation·effectreceipt, unknownpaidoutcome후자동새chargedattempt금지; localread/export유지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TG01",
+      "authority": "DLV01 · F",
+      "feature": "React/CSS 3종 출력",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "Existing 35 React semantic representatives plus tested nested custom layout and typed-effect CSS/SSR",
+      "remainingAcceptance": "Not all catalog semantics, providers or AT certification.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "TG02",
+      "authority": "DLV01 · F",
+      "feature": "RN Expo 3종 출력",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · TGT실제TS/HermesAndroid+iOSbundle",
+      "remainingAcceptance": "emulator/devicecontrols/IME/VoiceOver/TalkBack·host수명실행, bundle완료를native조작성pass로합산금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TG03",
+      "authority": "DLV01 · F",
+      "feature": "SwiftUI·Compose 출력",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · TGT실제source/package",
+      "remainingAcceptance": "Apple/Androidcompiler+simulator/device/AT·resources·cleanup, 도구없는환경은notRun/blocked. 생성파일존재만pass금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TG04",
+      "authority": "DLV01, annex target · F",
+      "feature": "전체8target/style profile",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · 4sourcegenerator",
+      "remainingAcceptance": "ReactSCSS/Tailwind/선정CSS-in-JS, bareRN 추가, 정확version/deps/SSR/RSC/scan등각환경검사; 전체cartesian조합약속아님",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TG05",
+      "authority": "PRD03, DLV01 · F",
+      "feature": "Axiom+선택제공자pack",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M · custombuiltin만",
+      "remainingAcceptance": "ReactAria/BaseUI/shadcn 차이/권리/behavior/style/deps manifest와실제oracle, native대응 목적명시",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "TG06",
+      "authority": "DLV01, QAL01 · F",
+      "feature": "전체카탈로그×적용profile 의무",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Explicit source capability gate and representative consumers; authored unmapped motion rejects export",
+      "remainingAcceptance": "Complete catalog/provider/profile matrix remains.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "DL01",
+      "authority": "DLV02 · F",
+      "feature": "init·환경감지·실제doctor",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · DLV파일hash계획/doctor",
+      "remainingAcceptance": "framework/dirs/aliases/provider/depslock감지+수동mapping→installplan→실제build/sample. generatedRelease와installedRelease분리",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "DL02",
+      "authority": "DLV03 · F",
+      "feature": "4deliverymode",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · UI4targetZIP, DLV소스폴더",
+      "remainingAcceptance": "sourcefolder/directappcopy/usernpm/Gitlibrary 각각검토·복원·설치흐름. 네타깃버튼은네전달방식이아님",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "DL03",
+      "authority": "DLV03, BRD02 · F",
+      "feature": "완결artifact·rights·ownership",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · TGTownedsource/manifest/notices",
+      "remainingAcceptance": "실제dependency·assetclosure와선택권리record고지, 공개artifactimport폐쇄, 구독종료후사용·noSaaSruntime유지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "DL04",
+      "authority": "DLV04 · F",
+      "feature": "사용자수정3-way upgrade",
+      "previousBaselineState": "B",
+      "currentState": "B",
+      "currentEvidence": "B · DLV전체파일현재baseline/hash/충돌",
+      "remainingAcceptance": "whole-file한정보존·stale·apply/rollback/recovery유지, GUI연결/선택hunk/이름변경·dependency/provider분리review는추가",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "DL05",
+      "authority": "DLV04 · F",
+      "feature": "partialhunk·여러connection·rollback",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · DLVconnectionreceipt/whole-file",
+      "remainingAcceptance": "hunk부분baseline보류정보, app별version/mixed상태·시험·후속upgrade, rollback후새사용자수정보존·환경snapshot",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "DL06",
+      "authority": "DLV03, OPS03 · F",
+      "feature": "실제publish·supplychain",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · sourceexport만",
+      "remainingAcceptance": "npm/Git게시별명시범위·권리·version·artifact검증/실패receipt; 정본문서Undo가외부publish를취소한다고표시금지",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "QA01",
+      "authority": "QAL01/02 · F",
+      "feature": "요구→oracle→evidence 탐색",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · staticfixture+실증문서",
+      "remainingAcceptance": "component/trait/target/requirement UI, setup/stimulus/expected·환경/fixture/oraclehash·timestamps·observations, codehash에연결된freshness",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "QA02",
+      "authority": "QAL01/02/04 · F",
+      "feature": "release 판단·manual gate",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · 시험runnerzero-skip·notRunbadge",
+      "remainingAcceptance": "both자동/수동분리, missing/discoveryempty/waived/stale인경우전체pass금지; 전체profile다시실행, exactartifact와검증본연결",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "QA03",
+      "authority": "UX08, QAL01 · F",
+      "feature": "Studio keyboard·AT·KO/EN",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · UIshortcuts/dialog/tab·locale/CDP",
+      "remainingAcceptance": "deepselect/move/resize/reorder/tokencreate/bulk/설치까지keyboard, macOS/Windows실제IME·AT, longstrings/textscale/narrow, 모든진단번역",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "QA04",
+      "authority": "QAL03, OPS02 · F",
+      "feature": "성능·관측·support",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "P · regression/logs·bound",
+      "remainingAcceptance": "실제workload p95/memory/coldwarm/cancel·resource, optindiagnosticbundle/최소repro·복원runbook, redaction·보관지역/기간선정",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "QA05",
+      "authority": "BIZ03/04, PRD02 · N,F",
+      "feature": "실제사용자여정·출시주장",
+      "previousBaselineState": "N",
+      "currentState": "N",
+      "currentEvidence": "N · 구현회귀는고객조사아님",
+      "remainingAcceptance": "consent/revision/environment/time/help/포기/repro 실제관찰. 문구·가격·성공률·native완료를연구가설에서사실로올리지않음",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "DS01",
+      "authority": "이번 사용자 · U",
+      "feature": "Axiom 자체 DS 전면 재설계",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Semantic dual themes and shared type/spacing/control-size/variant CSS, primitives and Axiom UI reference",
+      "remainingAcceptance": "Product-wide state inventory and independently verified all-state accessibility still required.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "DS02",
+      "authority": "UX01/08 · F + E",
+      "feature": "도구 중심 정보위계·가독성",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Domain workspaces, named themes before advanced forms, suggested values and 320px property panel",
+      "remainingAcceptance": "200% text scale and full diagnostic/deep selection accessibility remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "DS03",
+      "authority": "일반 편집기 · E",
+      "feature": "panel resize/collapse·layout 기억",
+      "previousBaselineState": "M",
+      "currentState": "M",
+      "currentEvidence": "M",
+      "remainingAcceptance": "keyboard등가separator와min/max, 좁은화면에서핵심명령/선택탐색유지; 선호layout은세션설정, 도메인정본에저장안함",
+      "reviewDisposition": "OBLIGATION_RETAINED_NO_NEW_CLOSURE"
+    },
+    {
+      "id": "DS04",
+      "authority": "일반 편집기 · E",
+      "feature": "zoom preset/fit selection·손도구 안내",
+      "previousBaselineState": "M",
+      "currentState": "B",
+      "currentEvidence": "Zoom presets, fit-all/selection, hand tool and modifier help",
+      "remainingAcceptance": "Physical platform gesture verification remains explicitly unverified.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "DS05",
+      "authority": "일반 편집기 · E",
+      "feature": "command palette·최근/즐겨찾기",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Command palette and search",
+      "remainingAcceptance": "Recent objects and favorites remain.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "DS06",
+      "authority": "UX08 · F + E",
+      "feature": "narrow/mobile에서동등작업",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "390px explicit Browse/Workspace/Inspect panels; review/export preserved, light/dark captures",
+      "remainingAcceptance": "Full mobile gesture/keyboard parity remains.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "DS07",
+      "authority": "일반 편집기 · E",
+      "feature": "진행·취소·오류의 일관된 피드백",
+      "previousBaselineState": "P",
+      "currentState": "P",
+      "currentEvidence": "Consistent pending-form recovery, shared proposal, busy/save/error and source buffer separation",
+      "remainingAcceptance": "Cancellation/progress for all long jobs remains.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    },
+    {
+      "id": "DS08",
+      "authority": "OPS04, BIZ04 · F + U",
+      "feature": "자체 DS 실제 사용 검증",
+      "previousBaselineState": "M",
+      "currentState": "P",
+      "currentEvidence": "Studio consumes its shared Axiom UI primitives and role tokens; reference surface demonstrates control sizes",
+      "remainingAcceptance": "Independent finish review and broader real-user/AT evidence do not imply Foundation completion.",
+      "reviewDisposition": "UPDATED_SCOPED_IMPLEMENTATION"
+    }
+  ],
+  "sources": [
+    {
+      "path": "apps/studio/src/accessibility-insight.tsx",
+      "sha256": "2d589a4da46241c37fce999f3618a4beaf304d23ca9e8703a32abe09d6d115b9"
+    },
+    {
+      "path": "apps/studio/src/app.tsx",
+      "sha256": "372d858feff5bad1c7c424d82805a7746b7dea28528f0ccfaae16112de42c656"
+    },
+    {
+      "path": "apps/studio/src/appearance-rules.tsx",
+      "sha256": "4f1e5fc749ef0381755e387c9f173f3595550070d934067e52780362516f9a0c"
+    },
+    {
+      "path": "apps/studio/src/canvas-geometry.ts",
+      "sha256": "a7839f14ee258241f27018fe3137b41dd69cd1d9b2fbe3a3790d3f7eb092a981"
+    },
+    {
+      "path": "apps/studio/src/canvas-input.ts",
+      "sha256": "f4523e4c6e1d8399511b859eed1fe6bdef1a7815b2c9c036d4cb18f591bb90c9"
+    },
+    {
+      "path": "apps/studio/src/canvas.tsx",
+      "sha256": "70ccdc437203e0022c72951af34dab3ade87f721a33925d97bb57948a148d0c5"
+    },
+    {
+      "path": "apps/studio/src/catalog-preview.tsx",
+      "sha256": "181ac46b5ab5b9e8621434f3971161da204671730944ff874865253b916c988c"
+    },
+    {
+      "path": "apps/studio/src/catalog-thumbnail.tsx",
+      "sha256": "f2ee48f15330858034c41230aeeece2199e194b4f47f09e05f31b2d2a0d3e342"
+    },
+    {
+      "path": "apps/studio/src/component-inspector.tsx",
+      "sha256": "004a60deb57b655d7c113bbd9d8bbdba0d7b50bc27d95196f3c3d46274b19b3b"
+    },
+    {
+      "path": "apps/studio/src/controller.ts",
+      "sha256": "ca8fee8b86bbd65d6877039eaf4ce4f42403a5618029cd5a6d4463b2e32410e6"
+    },
+    {
+      "path": "apps/studio/src/dialogs.tsx",
+      "sha256": "33bbdecb6bc0ef3bd3a3ff2661056e035c7d484337726d18bfc201f71dea4676"
+    },
+    {
+      "path": "apps/studio/src/draft-registry.ts",
+      "sha256": "91e6483cdafe691b2cb79309c03595d3fd37d5baf5252f086fddc74f01bcc9fa"
+    },
+    {
+      "path": "apps/studio/src/form-drafts.tsx",
+      "sha256": "aa15d658f80c1dabd811761483a93276f21b965e1ec5108528bf3416117b4333"
+    },
+    {
+      "path": "apps/studio/src/foundation-domains.tsx",
+      "sha256": "3bc41f58ecec68a6f7501c38b48c7d40873b219246bebece446a1270d1760a8c"
+    },
+    {
+      "path": "apps/studio/src/foundation-inspector.tsx",
+      "sha256": "27ad2c6fbf452c898d5dd1368965d540579ebf37b4b909bf5bff9a7df8f79e36"
+    },
+    {
+      "path": "apps/studio/src/foundation-panel.tsx",
+      "sha256": "3270f0f3e2ebf5ab900329425c3be7bf5b941461dbee36adefd859076d848407"
+    },
+    {
+      "path": "apps/studio/src/foundation-starter-panel.tsx",
+      "sha256": "1db48e872e7009633b877c020896767d36e95f1a7f6a74177c121b22c3e7ab25"
+    },
+    {
+      "path": "apps/studio/src/foundation-workspace.css",
+      "sha256": "2916325fe1bb9e7f3ff25fec6f0e456b8b3045eb0e69f5287b1fa1f60633fabd"
+    },
+    {
+      "path": "apps/studio/src/icons.tsx",
+      "sha256": "9c2ecb866c8761f9787d7a014bd4243ab8a9689ba6d9431ad6536b7163a15a28"
+    },
+    {
+      "path": "apps/studio/src/inspector.tsx",
+      "sha256": "777531d1d128cff8e82306b51e2d3d674951903d0fcd1469e31d46afe6b07304"
+    },
+    {
+      "path": "apps/studio/src/locales.ts",
+      "sha256": "754d6731758fc508f630239d43bf77f3c581169e1761a5954ed0ac0c7ffc8e72"
+    },
+    {
+      "path": "apps/studio/src/main.tsx",
+      "sha256": "10656a33f1b21f7a1b394284ec6f38b350035837755b9790f78e88c2f132e306"
+    },
+    {
+      "path": "apps/studio/src/motion-inspector.tsx",
+      "sha256": "4ad9dd1f3f05c3abfb3ba0a4ff7e2c4a37b5083dab5c34a8bef9bd796d7fbc65"
+    },
+    {
+      "path": "apps/studio/src/motion-preview.ts",
+      "sha256": "9d15cec2830c8bfc15a62c1231d42d35d1174ae0d16b0dc02bb3de74a6808e44"
+    },
+    {
+      "path": "apps/studio/src/preview-style.ts",
+      "sha256": "4b5b989ff280b458c8aed8d7ee77fbaf2056e0c06a9ca3dc7b8d9ee3b205970e"
+    },
+    {
+      "path": "apps/studio/src/preview.tsx",
+      "sha256": "035eed0bfe88d13436e1f43e6325d12ced34b0fb6237ef851d7aa3ce4cf368dd"
+    },
+    {
+      "path": "apps/studio/src/review-diff.ts",
+      "sha256": "8c047f71cd76d8f916f3f3fd708a13e55c2836931af26ec84210b7e5d298308f"
+    },
+    {
+      "path": "apps/studio/src/styles.css",
+      "sha256": "7b0c94022499cf4bc6286b1c286dee1a1a9793a2a571712aef86738f294b134b"
+    },
+    {
+      "path": "apps/studio/src/token-relationships.tsx",
+      "sha256": "52df5e3bea27639cfa6c4de5d044ecf8bdb4b3af213bfa947d889f94988e355a"
+    },
+    {
+      "path": "apps/studio/src/token-specimen.tsx",
+      "sha256": "33cd840533f77469269e71c4c86c2602d06f68242a16c1a10aab710f4a46064e"
+    },
+    {
+      "path": "apps/studio/src/token-suggestions.tsx",
+      "sha256": "97f87f9920059ba2356d766248b37976684302b466f2ea9d0a3d55a2e65eadcb"
+    },
+    {
+      "path": "apps/studio/src/token-value-editor.tsx",
+      "sha256": "e4d810b01702bdddb01d88878a90498d0d32fab5bcc43b9730c1ab19b96dd1b2"
+    },
+    {
+      "path": "apps/studio/src/ui-system.css",
+      "sha256": "4ef468d24be0e6a39156946d11e117b61e5e13ac3e5d9120b14dce9e6c7cc91a"
+    },
+    {
+      "path": "apps/studio/src/ui-utils.ts",
+      "sha256": "6c06047ed88581f41d3abc622683db70b1aae8d79e6ed3645dba58369bc619b0"
+    },
+    {
+      "path": "apps/studio/src/ui.tsx",
+      "sha256": "4c166aa3cfd9ed78bd23cb2afc9ae3711af93feca8d456d8d7c574094386148b"
+    },
+    {
+      "path": "apps/studio/src/workbench-panels.tsx",
+      "sha256": "c9a653da43b3c3bb22fbb1d43fe72fee5cd3956df8dc5bcbe2ca2a5d723bd34c"
+    },
+    {
+      "path": "modules/ads-core/src/bundle-constants.ts",
+      "sha256": "f9d36701bc6f962b14c79c0d961c3f9f6bad7e0e543b22d98430152ff7f6902f"
+    },
+    {
+      "path": "modules/ads-core/src/bundle-contracts.ts",
+      "sha256": "302e99a3ee34efe3216b888aa59aab2b9fa5a636989184d21348876ada9cea90"
+    },
+    {
+      "path": "modules/ads-core/src/canonical-json.ts",
+      "sha256": "702e99a3389f698ed5172e8b63f275ba32764947b626c6301c2b1aeb8a36e426"
+    },
+    {
+      "path": "modules/ads-core/src/command-service.ts",
+      "sha256": "effb0f4380a9eb4ef5f23dfc32388422ad47568e3465bdbe34b67ff972c5d3e4"
+    },
+    {
+      "path": "modules/ads-core/src/constants.ts",
+      "sha256": "45d5799b2d95c82c11d58a06b346b1af0cf7d114887be7219c976c423b02288a"
+    },
+    {
+      "path": "modules/ads-core/src/content-validation.ts",
+      "sha256": "eb0dfb6f0a329efd514dde9fd8074856efcecac9d11595877cc0859be1d2012f"
+    },
+    {
+      "path": "modules/ads-core/src/contracts.ts",
+      "sha256": "d985dd4881e88dc5d3cab9e427c34e0b500ece9721b06edb6c2a6c66e7f4f316"
+    },
+    {
+      "path": "modules/ads-core/src/documents.ts",
+      "sha256": "0d0f6e9b62e7d26aa98016103a64a22ee311e045ea73b31840acae34274483b9"
+    },
+    {
+      "path": "modules/ads-core/src/domain-contracts.ts",
+      "sha256": "19e50a8f7faa3b469c910e358fb8d97c07cdd9478439121da89b54f1bc06a2d2"
+    },
+    {
+      "path": "modules/ads-core/src/domain-validation.ts",
+      "sha256": "129e775867184d0213feb79e3c44d6cc8b794d7e4fec5138bfab32562d9cd2f6"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-contracts.ts",
+      "sha256": "a571cdb4a19447ac629a5c61a57c953df89ff18fb376e4cd07f52443437391cc"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-internal.ts",
+      "sha256": "4cae7737550843c32dba2bf31ef4b1b0587e5cf268e052158534f6c0722f7b22"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-projection.ts",
+      "sha256": "2c04de2cd01632dffc67d22108370097a597dd72b916c53aa65a618dfcd8e7bb"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-theme-ops.ts",
+      "sha256": "778b4977d1984bf782cb4ae50f435dbde351e7193c64369b0e7905511bb4a324"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring-token-ops.ts",
+      "sha256": "d9621dd354e7cd959d845548091cadd7157f215e7e3dec1bb758dff71935cb7d"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-authoring.ts",
+      "sha256": "80ac773594701db4f8c4a9ee26b11a33cb2890cfd0e5068bb7e60273a9e8cd3b"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-constants.ts",
+      "sha256": "a32dde723e358862a678ef351ba37b3cd921b5382d667e0aa3d274b6526c3ddd"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-contracts.ts",
+      "sha256": "6fc73a6999d0d6be3674c4cddc4e50358532d7a4f8f624e2095882c8812c1d24"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-evaluation.ts",
+      "sha256": "ed939e1123a143eb2973379b856ffcca4c968003977cb67845446fe64f1fa8e3"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-interchange.ts",
+      "sha256": "8ee76d6a9d755bc1a1685a672ec412cc919a6251ed532d23650d934ac2dcb1e1"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-internal.ts",
+      "sha256": "70e06f5e5f4ed86e977adc19a1c9b98289a1983882a43407650a0e2a9f370dbd"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-resolution.ts",
+      "sha256": "95c26933f6cc315b77bedcfbca1d1df57786e22ce319d8870c3a90de2eeeed0b"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-starters.ts",
+      "sha256": "7f45e3afebf20394be3acda923eedf474f6b4499e4375d1a73ff621bfbac8df6"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-validation.ts",
+      "sha256": "ce4e5a1c7d65301320bd9c608325c7cad0a61a49923d924b3a036aa1c9b2cddf"
+    },
+    {
+      "path": "modules/ads-core/src/foundation-values.ts",
+      "sha256": "839c343fcc3c97bd1e9dce4029fd447bc665807c21d17c0399a36b376bcd4129"
+    },
+    {
+      "path": "modules/ads-core/src/graph-contracts.ts",
+      "sha256": "e796f40716131550497fa4432ebb144633d321e82926606f394570974a6e6156"
+    },
+    {
+      "path": "modules/ads-core/src/index.ts",
+      "sha256": "bbee1b35585974ca8f97d9879cc69f41aa31f71eed16909f1d903227706c281c"
+    },
+    {
+      "path": "modules/ads-core/src/kernel-error.ts",
+      "sha256": "28501d8ec0e2141ff98e42648ee8344b8a3b9e6c8e009fff7b6e0ba0e34b87f5"
+    },
+    {
+      "path": "modules/ads-core/src/kernel-state-codec.ts",
+      "sha256": "e619244aea5b1564d4c5201c0c77929e12eab8e76fa03449922e1113b4c6836e"
+    },
+    {
+      "path": "modules/ads-core/src/kernel-state-shape.ts",
+      "sha256": "88aa6cc5657c5c794c5cb10421299c110f5b649931899c4cb3dc96f845fa8214"
+    },
+    {
+      "path": "modules/ads-core/src/local-references.ts",
+      "sha256": "04552ab8e6cc4fa190a64811f436334eba70f64be713f89154f5f01a82eab93e"
+    },
+    {
+      "path": "modules/ads-core/src/memory-store.ts",
+      "sha256": "fae3113308cd6c6871e0699a64553e33a030cb65b1b8c2db9f6d3435c9d54f19"
+    },
+    {
+      "path": "modules/ads-core/src/project-bundle.ts",
+      "sha256": "950011826d8aa15149ad0c89385bb109bdbd83b02fcc0bf7c8897c50b9b6299b"
+    },
+    {
+      "path": "modules/ads-core/src/schema-validation.ts",
+      "sha256": "2c37017290816ab1c0a96577972383d1527ef10799831cb916ba230ed8decfb9"
+    },
+    {
+      "path": "modules/ads-core/src/source-import.ts",
+      "sha256": "889746b5c0eda8b8c5081af1866ce21940ace51e7960a3361bdd85a77ccec4f1"
+    },
+    {
+      "path": "modules/ads-core/src/source-records.ts",
+      "sha256": "cc9c72a5f4ecc3d8e1a32409c3e38da83d013226c7fa3791cbaee5d3d439df14"
+    },
+    {
+      "path": "modules/ads-core/src/structural-contracts.ts",
+      "sha256": "1f0489ea25da7e49c88881b82a8c45432ebcfda5fe3459f8eea00c61a14d1b14"
+    },
+    {
+      "path": "modules/ads-core/src/structural-validation.ts",
+      "sha256": "a7380d30051cbcfc41d96ba7cf03dcabdff2460ba86498b5db582eb9b8864a19"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-constants.ts",
+      "sha256": "6e2cf35f36719c339c17d663649433a64f02e0cfd540fb2b2ed99ebe581a25e3"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-contracts.ts",
+      "sha256": "9fcde1e8877b8e9c4573124ba7d91303759425389ba3bf82e49c1f2f2d056b26"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-data.ts",
+      "sha256": "adc374354e4455b13d20a9c18937bdb965edd43325a56662e233aa00d3dced4d"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-sources.ts",
+      "sha256": "7e52dc322b79753cf65cd7a5f85e84f76e135fb40577c47ef724a7e521548ba4"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog-validation.ts",
+      "sha256": "8b0097b591c48945fcb604de978424bce1d7b1437809027fa42e2971af0ba346"
+    },
+    {
+      "path": "modules/ads-core/src/studio-catalog.ts",
+      "sha256": "92738426ac119324014f0750c3a8088d2429f0fbc4987b440273ca29b873c2e0"
+    },
+    {
+      "path": "modules/ads-core/src/studio-component-authoring.ts",
+      "sha256": "4cc3098da6a4ac5e7b2bac0079ce941e798f3150eac74d01fe0b9be4d9a0d0a5"
+    },
+    {
+      "path": "modules/ads-core/src/studio-component-mutations.ts",
+      "sha256": "6a57ecc9e1428edf0afe948a6cefae499dd7375700c94c18fb0d1529fafce084"
+    },
+    {
+      "path": "modules/ads-core/src/studio-constants.ts",
+      "sha256": "f04ee93fde5c2dd503ab7c925faaad0d46a46516ef1992e245cf3a8e13bb02af"
+    },
+    {
+      "path": "modules/ads-core/src/studio-contracts.ts",
+      "sha256": "ecc23ce6b3bf850d1aff4c4d7bc2e76d6098db203e3c051fc38d999cae8092cd"
+    },
+    {
+      "path": "modules/ads-core/src/studio-motion.ts",
+      "sha256": "edf6ae4fc0df146246188304541784b4602a8794c5580f9068debf77e644e673"
+    },
+    {
+      "path": "modules/ads-core/src/studio-presentation.ts",
+      "sha256": "30cc6e1a8a2633d12de3cd45f09a524449a488aee64df8fa72f62a1a8ffa9d0b"
+    },
+    {
+      "path": "modules/ads-core/src/studio-projection.ts",
+      "sha256": "06dc8a0dac5f42edeee83265706958ef6a27cddd90bac88935c24d5adf8a3ebc"
+    },
+    {
+      "path": "modules/ads-core/src/studio-style-values.ts",
+      "sha256": "92134a4020279a84c0fc532b9a375dd77c7067db61503d4d355dcfc4de750be1"
+    },
+    {
+      "path": "modules/ads-core/src/studio-template.ts",
+      "sha256": "50fa13d5f83460fcc34c497ae49050013af1029f2a7c3ca2b20f587ae8e47224"
+    },
+    {
+      "path": "modules/ads-core/src/studio-validation.ts",
+      "sha256": "7108964169e34dba45a11aec7098b8079dbd3e81e349d36982d0421d41d3589e"
+    },
+    {
+      "path": "modules/ads-core/src/type-contracts.ts",
+      "sha256": "00355117f722634684449ce954f4a76d9773e474b141da274d53bdbf222788a3"
+    },
+    {
+      "path": "modules/ads-core/src/type-input.ts",
+      "sha256": "1f45248a0dc66984d8449e3f609973c09b2c836346f377bdb472d8819cf1714e"
+    },
+    {
+      "path": "modules/ads-core/src/type-validation.ts",
+      "sha256": "a2b009bd7b705d960e5186a59148c360a939d02d56f8d90e12e43bc352ca4e55"
+    },
+    {
+      "path": "modules/ads-core/src/validation-profile.ts",
+      "sha256": "9c163672bb6042a8c2d5ed307011650c43893c25133973c0290e81dd162f52dc"
+    },
+    {
+      "path": "modules/target-packs/src/catalog-capabilities.ts",
+      "sha256": "0b52748620f030c4f040f7be265cd69d4fabdc4db9f614455205b50e44a15bdf"
+    },
+    {
+      "path": "modules/target-packs/src/catalog-native-generator.ts",
+      "sha256": "eee19370e8076a1ae7ea10b39a16b25e2f2c5e7d321194d9b8e2480d73a7f744"
+    },
+    {
+      "path": "modules/target-packs/src/catalog-native-react-generator.ts",
+      "sha256": "e24cd8c5009a6ad0bf9399495b0db9102d87eaf32f178fde478c0750cd8b6d33"
+    },
+    {
+      "path": "modules/target-packs/src/catalog-react-generator.ts",
+      "sha256": "40bf34c582bfe6c1f83718b623ccf39c19b7bd2ce8496718e184c52ed0e9d9ab"
+    },
+    {
+      "path": "modules/target-packs/src/catalog-react-runtime.ts",
+      "sha256": "39e51497d67d918a3f14dc20ff147ef6c464944c8b7655030f38e4dd0deed8f0"
+    },
+    {
+      "path": "modules/target-packs/src/catalog-source-types.ts",
+      "sha256": "a5576ca47d2a5f16a706f47ffd0df1f8498b1ed5ad1566273c6b4ac53b9590e6"
+    },
+    {
+      "path": "modules/target-packs/src/compose-generator.ts",
+      "sha256": "5ca5049d8c0b086d0a0eedfd2330ec91045acb6bd8c3fae806d98c15ea16bc4e"
+    },
+    {
+      "path": "modules/target-packs/src/constants.ts",
+      "sha256": "7e638d3ab585c35b11e7ced0a012cf371337c93041b2dc9c25b3f91aa3ce3181"
+    },
+    {
+      "path": "modules/target-packs/src/contracts.ts",
+      "sha256": "5eb27015d5dfca241a6edf07815e5e5ae3d11944a345cf1bd8eb5f8bd339b583"
+    },
+    {
+      "path": "modules/target-packs/src/generator-input.ts",
+      "sha256": "5dd7060eea9e91e546f4f2107680b0fd73a3a84c941776dbbc7040ab6dde51b1"
+    },
+    {
+      "path": "modules/target-packs/src/index.ts",
+      "sha256": "4c45fef2b8ac0fc0d7b1318c156cdcbb8463f947e63734784b96601b71b638e8"
+    },
+    {
+      "path": "modules/target-packs/src/manifest-shape.ts",
+      "sha256": "1ebe8bc2270a219725803f6f451c10b94aef6715c4c87ecfff37b53a56ebd9fe"
+    },
+    {
+      "path": "modules/target-packs/src/native-react-generator.ts",
+      "sha256": "4a8424af7339c0ba2eae06ba67545a744c723d432ff22f290222068d0aed9df3"
+    },
+    {
+      "path": "modules/target-packs/src/pack-inventory.ts",
+      "sha256": "2930926aadc399374d97560d88e878c3ab84e8e0c0c4dc7959cea5b372a3ec6a"
+    },
+    {
+      "path": "modules/target-packs/src/package-files.ts",
+      "sha256": "2180a76bb041c0bf2ceaf631d6a6c2e19b7c6c77a0d6298f1481aba71d771af4"
+    },
+    {
+      "path": "modules/target-packs/src/react-generator.ts",
+      "sha256": "df6af60e1c5fb843de8433a2b39969012442ee24f102bb02f5b7e0fadfc62a93"
+    },
+    {
+      "path": "modules/target-packs/src/react-runtime.ts",
+      "sha256": "a740f89506d3bbffaa22bb71064f4c7b01626f547a8c2ced0055ce43eadcd489"
+    },
+    {
+      "path": "modules/target-packs/src/source-archive.ts",
+      "sha256": "1c2f20631b90c40bf285d1341c7f8f07abc063afb5612e3a2a8d416435723ed2"
+    },
+    {
+      "path": "modules/target-packs/src/source-inventory.ts",
+      "sha256": "6d03b972cc8a97d363a7a8b339e840ff722ffff8b9b90b6c1b751a91b9de4c4a"
+    },
+    {
+      "path": "modules/target-packs/src/swift-generator.ts",
+      "sha256": "a5b619cbe6b70a9d7d7def337a4e79d357cf2c0ca341fed8a823d31406ab5957"
+    },
+    {
+      "path": "modules/target-packs/src/target-error.ts",
+      "sha256": "09e3e4f7c868ed9cf58b1f2ea34ccfd26febf739391076605f8ef33d1009d157"
+    },
+    {
+      "path": "modules/target-packs/src/target-generator.ts",
+      "sha256": "b9f8833a05adcf7abcc2aff3d3063f9894c1cdae98a9f8ee0120ca601b702cab"
+    },
+    {
+      "path": "modules/target-packs/src/upgrade-plan.ts",
+      "sha256": "12ad844429974dd128a44c0d0732675c8bc08b7386f07990ed180ff90152d8a9"
+    }
+  ],
+  "newStarter": {
+    "newTokens": 153,
+    "linkedSampleTokens": 9,
+    "domains": 11,
+    "types": 13
+  },
+  "tests": [
+    "modules/ads-core/test/editor-completion.test.ts",
+    "apps/studio/test/editor-input.test.ts",
+    "apps/studio/test/motion-preview.test.ts",
+    "modules/target-packs/test/editor-completion-targets.test.ts",
+    "scripts/workbench-completion-cases.mjs"
+  ],
+  "evidencePolicy": "Status B is bounded executable scope, not complete Foundation compliance. Retained requirements are not waived. Physical trackpad, native compiler/device and manual AT are unverified."
+}

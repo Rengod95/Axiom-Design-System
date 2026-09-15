@@ -134,7 +134,10 @@ async function launch(executable, profile) {
       try {
         const [port, endpoint] = (await readFile(portFile, "utf8")).trim().split(/\r?\n/);
         if (/^\d+$/.test(port) && endpoint?.startsWith("/devtools/browser/")) return { child, cdp: await Cdp.connect(`ws://127.0.0.1:${port}${endpoint}`) };
-      } catch (error) { if (error.code !== "ENOENT") throw error; }
+      } catch (error) {
+        // Chromium briefly holds this exclusively while publishing it on Windows.
+        if (!["ENOENT", "EBUSY", "EACCES", "EPERM"].includes(error.code)) throw error;
+      }
       await delay(100);
     }
     throw new Error(`Chromium startup timed out: ${stderr}`);

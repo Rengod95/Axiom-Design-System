@@ -1,24 +1,30 @@
+import { foundationValueReferences, foundationPointerValue, mapFoundationExpression } from "./foundation-references.ts";
+import { checkFoundationValue } from "./foundation-values.ts";
+import { TypeInputError } from "./type-input.ts";
 import type { JsonValue } from "./contracts.ts";
 import type { FoundationDocument, FoundationOverrideTrace, FoundationResolution, FoundationSelection, FoundationTokenValue } from "./foundation-contracts.ts";
 import { FOUNDATION_CODES } from "./foundation-constants.ts";
 import { FoundationCheck, own, pointer } from "./foundation-internal.ts";
+import { foundationDomainBindings } from "./foundation-starters.ts";
 
-/** Linear cycle inspection of one concrete effective token graph. */
-export function checkAliasCycles(values: ReadonlyMap<string, FoundationTokenValue>, check: FoundationCheck, path: string): void {
-  const done = new Set<string>();
+/** Iterative topology covers whole and property/composite edges without call-stack growth. */
+export function checkAliasCycles(values: ReadonlyMap<string, FoundationTokenValue>, check: FoundationCheck, path: string): string[] {
+  const state = new Map<string, number>(), order: string[] = [];
   for (const id of values.keys()) {
-    if (done.has(id)) continue;
-    const active = new Set<string>();
-    let current: string | undefined = id;
-    while (current !== undefined && !done.has(current)) {
-      check.step(path);
-      if (active.has(current)) { check.error(path, `Token alias cycle reaches ${current}.`, FOUNDATION_CODES.CYCLE); break; }
-      active.add(current);
-      const value: FoundationTokenValue | undefined = values.get(current);
-      current = value && "ref" in value ? value.ref.id : undefined;
+    if (state.get(id) === 2) continue;
+    const stack: { id: string; exit: boolean }[] = [{ id, exit: false }];
+    while (stack.length) {
+      check.step(path); const item = stack.pop()!;
+      if (item.exit) { state.set(item.id, 2); order.push(item.id); continue; }
+      if (state.get(item.id) === 2) continue;
+      if (state.get(item.id) === 1) { check.error(path, `Token alias cycle reaches ${item.id}.`, FOUNDATION_CODES.CYCLE); return []; }
+      const value = values.get(item.id);
+      if (!value) { check.error(path, `Referenced token ${item.id} is missing.`, FOUNDATION_CODES.ALIAS); return []; }
+      state.set(item.id, 1); stack.push({ id: item.id, exit: true });
+      for (const reference of foundationValueReferences(value).reverse()) stack.push({ id: reference.ref.id, exit: false });
     }
-    for (const seen of active) done.add(seen);
   }
+  return order;
 }
 
 /** Internal evaluation only accepts a detached, fully shape-checked Foundation. */
@@ -55,20 +61,35 @@ export function evaluateFoundation(document: FoundationDocument, selection: Foun
       trace.push({ axisId, context, path }); traces.set(tokenId, trace);
     }
   }
-  checkAliasCycles(values, check, "/tokens");
-  if (!check.valid || !includeTokens) { result.valid = check.valid; return result; }
-  for (const token of document.tokens) {
-    let value = values.get(token.id)!;
-    const chain: string[] = [];
-    const overrideTrace: FoundationOverrideTrace[] = [...(traces.get(token.id) ?? [])];
-    while ("ref" in value) {
-      check.step(paths.get(token.id)!);
-      chain.push(value.ref.id); overrideTrace.push(...(traces.get(value.ref.id) ?? []));
-      value = values.get(value.ref.id)!;
-    }
-    // Values are detached snapshots. Preserve DTCG representation (including none,
-    // optional alpha, font-weight names and out-of-range gradient source positions).
-    result.tokens.push({ id: token.id, name: token.name, type: token.typeRef.id, value: value.literal as JsonValue, aliasChain: chain, sourcePath: paths.get(chain.at(-1) ?? token.id)!, overrideTrace });
+  const order = checkAliasCycles(values, check, "/tokens");
+  const hasExpressions = [...values.values()].some(value => "composite" in value || "ref" in value && value.ref.path !== undefined);
+  if (!check.valid || !includeTokens && !hasExpressions) { result.valid = check.valid; return result; }
+  const resolved = new Map<string, { value: JsonValue; chain: string[]; trace: FoundationOverrideTrace[] }>();
+  const tokenById = new Map(document.tokens.map(token => [token.id, token]));
+  for (const id of order) {
+    const source = values.get(id)!, chain = new Set<string>(), trace = [...(traces.get(id) ?? [])];
+    const reference = (ref: { id: string; path?: string }): JsonValue => {
+      const target = resolved.get(ref.id);
+      if (!target) throw new Error(`Cannot resolve token ${ref.id}.`);
+      check.step(paths.get(id)!); chain.add(ref.id);
+      for (const ancestor of target.chain) { check.step(paths.get(id)!); chain.add(ancestor); }
+      for (const item of target.trace) { check.step(paths.get(id)!); if (!trace.some(previous => previous.path === item.path)) trace.push(item); }
+      return ref.path === undefined ? target.value : foundationPointerValue(target.value, ref.path);
+    };
+    try {
+      const value = "literal" in source ? source.literal : "ref" in source ? reference(source.ref) : mapFoundationExpression(source.composite, reference);
+      if ("composite" in source || "ref" in source && source.ref.path !== undefined) checkFoundationValue(tokenById.get(id)!.typeRef.id, value, paths.get(id)!, check);
+      resolved.set(id, { value, chain: [...chain], trace });
+    } catch (error) { if (error instanceof TypeInputError) throw error; check.error(paths.get(id)!, error instanceof Error ? error.message : "Cannot resolve expression.", FOUNDATION_CODES.ALIAS); return result; }
+  }
+  const domainBindings = includeTokens ? foundationDomainBindings(document) : new Map();
+  if (includeTokens) for (const token of document.tokens) {
+    const value = resolved.get(token.id)!;
+    let origin = token.id;
+    while (true) { check.step(paths.get(origin)!); const source = values.get(origin)!; if (!("ref" in source) || source.ref.path !== undefined) break; origin = source.ref.id; }
+    const category = token.domain ? domainBindings.get(token.domain)?.category : undefined;
+    result.tokens.push({ id: token.id, name: token.name, type: token.typeRef.id, value: value.value, aliasChain: value.chain, sourcePath: paths.get(origin)!, overrideTrace: value.trace,
+      ...(token.domain ? { domain: token.domain } : {}), ...(category ? { bindingCategory: category } : {}) });
   }
   result.valid = check.valid; return result;
 }
