@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
 import { access, mkdir, mkdtemp, readdir, readFile, realpath, writeFile } from "node:fs/promises";
 import { arch, release } from "node:os";
 import { dirname, join, relative, resolve, delimiter } from "node:path";
 import { fileURLToPath } from "node:url";
 import { nativeFixture, hash, ANDROID_TEST_PINS } from "./native-fixtures.mjs";
+import { captureNativeProcess } from "./native-process.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const OUTPUT = join(ROOT, "dist/native-verification");
@@ -21,19 +21,13 @@ async function command(executable, args, cwd = ROOT, timeout = 120000) {
     parameters = ["/d", "/s", "/c", `""${executable}" ${args.join(" ")}"`];
   }
   const started = Date.now();
-  const result = await new Promise((accept, reject) => {
-    const child = spawn(binary, parameters, { cwd, windowsHide: true, env: { ...process.env, CI: "1" } });
-    let output = "";
-    const timer = setTimeout(() => { child.kill(); reject(new Error(`Native command timed out: ${executable}`)); }, timeout);
-    const collect = data => { output += data; if (output.length > 16 * 1024 * 1024) { child.kill(); clearTimeout(timer); reject(new Error("Native command output exceeded its bounded capture")); } };
-    child.stdout.on("data", collect); child.stderr.on("data", collect);
-    child.once("error", error => { clearTimeout(timer); reject(error); });
-    child.once("close", code => { clearTimeout(timer); accept({ code, output }); });
-  });
   const index = evidence.commands.length;
-  evidence.commands.push({ executable, args, exitCode: result.code, elapsedMs: Date.now() - started, outputDigest: hash(result.output) });
+  process.stderr.write(`[native ${index}] Starting ${executable} ${args.join(" ")}\n`);
+  const result = await captureNativeProcess(binary, parameters, { cwd, timeout });
+  evidence.commands.push({ executable, args, exitCode: result.code, signal: result.signal, ...(result.error ? { error: result.error } : {}), elapsedMs: Date.now() - started, outputDigest: hash(result.output) });
   if (directory) await writeFile(join(directory, `command-${index}.log`), result.output);
-  if (result.code !== 0) throw new Error(`${executable} exited ${result.code}: ${result.output.slice(-12000)}`);
+  process.stderr.write(`[native ${index}] ${result.error ?? `Exited ${result.code}`} (${Date.now() - started}ms)\n`);
+  if (result.error || result.code !== 0) throw new Error(`${executable}: ${result.error ?? `exited ${result.code}`}\n${result.output.slice(-12000)}`);
   return result.output.trim();
 }
 
@@ -116,8 +110,9 @@ async function swiftui(tools) {
   evidence.observedToolchain = { xcode: await command(tools.xcodebuild, ["-version"]), swift: await command(tools.xcrun, ["swiftc", "--version"]), sdk: await command(tools.xcrun, ["--sdk", "iphonesimulator", "--show-sdk-version"]) };
   const sdk = await command(tools.xcrun, ["--sdk", "iphonesimulator", "--show-sdk-path"]);
   const inventory = JSON.parse(await command(tools.xcrun, ["simctl", "list", "devices", "available", "--json"]));
-  const destinations = Object.entries(inventory.devices).filter(([runtime]) => runtime.includes(".iOS-")).sort(([left], [right]) => right.localeCompare(left, undefined, { numeric: true })).flatMap(([runtime, devices]) => devices.filter(device => device.isAvailable && device.name.startsWith("iPhone") && device.deviceTypeIdentifier).map(device => ({ ...device, runtime })));
-  assert(destinations.length, "An installed iOS Simulator runtime and iPhone device type are required");
+  const sdkRuntime = `.iOS-${evidence.observedToolchain.sdk.replaceAll(".", "-")}`;
+  const destinations = Object.entries(inventory.devices).filter(([runtime]) => runtime.endsWith(sdkRuntime)).flatMap(([runtime, devices]) => devices.filter(device => device.isAvailable && device.name.startsWith("iPhone") && device.deviceTypeIdentifier).map(device => ({ ...device, runtime })));
+  assert(destinations.length, `An installed iPhone simulator matching the selected iOS SDK ${evidence.observedToolchain.sdk} is required`);
   const destination = destinations[0];
   const app = join(directory, "AxiomNativeProbe.app");
   await mkdir(app);
@@ -133,10 +128,15 @@ async function swiftui(tools) {
     await command(tools.xcrun, ["simctl", "boot", id]);
     await command(tools.xcrun, ["simctl", "bootstatus", id, "-b"], ROOT, 300000);
     await command(tools.xcrun, ["simctl", "install", id, app]);
-    const output = await command(tools.xcrun, ["simctl", "launch", "--console", "--terminate-running-process", id, "design.axiom.nativeprobe"], ROOT, 120000);
-    const encoded = output.match(/AXIOM_NATIVE_RESULT:([A-Za-z0-9+/=]+)/)?.[1];
-    assert(encoded, "The native process must emit its own runtime evidence");
-    evidence.runtime = JSON.parse(Buffer.from(encoded, "base64").toString("utf8"));
+    const container = await command(tools.xcrun, ["simctl", "get_app_container", id, "design.axiom.nativeprobe", "data"]);
+    await command(tools.xcrun, ["simctl", "launch", "--terminate-running-process", id, "design.axiom.nativeprobe"], ROOT, 120000);
+    const deadline = Date.now() + 60000;
+    while (Date.now() < deadline) {
+      try { evidence.runtime = JSON.parse(await readFile(join(container, "Documents/native-result.json"), "utf8")); break; }
+      catch (error) { if (error.code !== "ENOENT") throw error; }
+      await new Promise(accept => setTimeout(accept, 1000));
+    }
+    assert(evidence.runtime, "The real native process must persist its own runtime evidence within 60 seconds");
     assert.equal(evidence.runtime.status, "PASSED", "The mounted SwiftUI consumer must pass its runtime assertions");
     evidence.nativeExecution = "passed";
     evidence.status = "PASSED";

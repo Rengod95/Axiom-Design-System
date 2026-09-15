@@ -4,7 +4,7 @@
   "status": "LOCAL_GATES_PASSED_NATIVE_CI_SEPARATE",
   "baselineCommit": "81b276217a9d91f7591a990d424184cdb9dea808",
   "sourceSha256": {
-    ".github/workflows/native.yml": "46db4efa8096bdceb9e93c24cf40e5df7ce0ab8c03719168e633b93332e370ba",
+    ".github/workflows/native.yml": "d9acb54b30bc16f2d1e6bdea4fc6ae149ed20b281af99b362fb5ee960a972027",
     "apps/studio/src/app.tsx": "f3016bfeca4e2184f557eb88651358ee0836219e4154d3c55236b7ecae0417f5",
     "apps/studio/src/behavior-editor.css": "df3e61a4f2a4e55db6df9443aaf0ea3b83e6f16b0719c0a80e5ed36cecc047ba",
     "apps/studio/src/behavior-editor.tsx": "741e8ad8e20330da19b55714f48e5f3b8fad28d92887730ef19c86bfbc6caa8e",
@@ -80,17 +80,18 @@
     "modules/target-packs/test/component-composer-targets.test.ts": "bf68b536ba526869d8c46a3c54da6ca6b614eeda28c45a6f2096db6e7415c12d",
     "modules/target-packs/test/component-instance-targets.test.ts": "f57613a2b6a61f48d75d2037b9b5494afdf9d6fbea7c591deebd9fc3ff4a540b",
     "modules/target-packs/test/foundation-policy-targets.test.ts": "61baa2881e76872ef88425ba46ec2afdd75ebb509c4d804b681d2e8687dc5814",
-    "modules/target-packs/test/native-harness.test.ts": "a5f600264fc996ef8dcb051b6f7b0f07398253360e82693a26b748f6d9174b20",
-    "scripts/native-fixtures.mjs": "7ecd1480aab31d96346616df1ea0aafa6e8f09b2ed3eaa6982eadab8a0678157",
-    "scripts/native-verify.mjs": "66a60ba9eb08632e421a600f666cc7f4ce07650ea049dea1aec9361e4acd8075",
-    "scripts/verify-retirement.py": "2e94ecadfbf4b443bef4a97786aff3aeff73d9983c62dc2e034fe474be14d25d",
+    "modules/target-packs/test/native-harness.test.ts": "b6e34b1f417e30a3450ec0baaa8a81afa5ec7ad3414d1f28eb3a40923b96e65d",
+    "scripts/native-fixtures.mjs": "5d821f01b6fcabd1ffa7038763e58b8c94db683fdc954d2f53f8dd7067da67d4",
+    "scripts/native-verify.mjs": "11f6515a668002cdc56272c03cb417b6bb6191ba9f453071f6cabd42186eca8b",
+    "scripts/verify-retirement.py": "fa68dbd477a7013ac4f4ea90a771ae1f4d02d798c9bc7562990eb513d6dec94f",
     "scripts/verify-workbench.mjs": "9375805f48be7bef80dfd970e95cbabe8c8495b56ad68a098e64c9e2d2dc9cfd",
     "scripts/workbench-authoring-cases.mjs": "5d07e655b2d3621379608eff4552aad6d64341d51426d745f1305e41ff791927",
     "scripts/workbench-behavior-cases.mjs": "618bdafc52f1fec084a9800e3b5cf6f150c4dba97bba9bc3757e0b0235ecb0c6",
     "scripts/workbench-chrome-cases.mjs": "c03e8ba4e2e8534d8f8775bfc6c50b029fc37440e41ebfaaa30688ec22196ccf",
     "scripts/workbench-completion-cases.mjs": "76755d14b561ae689d2b23a295abfa66d27c1431e11ec3f9632ccfe047baba4b",
     "scripts/workbench-composition-cases.mjs": "047ee54fb6b0801777ba253ca41e3973e6597a056ace00f12d4cfdd5391a0d47",
-    "scripts/workbench-policy-cases.mjs": "c27b4a38b1d85e124931da4f166d6ed05bef922627de5e99f6324ccb1674de84"
+    "scripts/workbench-policy-cases.mjs": "c27b4a38b1d85e124931da4f166d6ed05bef922627de5e99f6324ccb1674de84",
+    "scripts/native-process.mjs": "d238c3ab1113643c9c391de8e9e6b195f3ae74cbe22f30b37ad254e23481ce75"
   },
   "localGates": {
     "documentation": "retirement/reference and Foundation checks with negative cases",
@@ -585,7 +586,11 @@
       },
       "elapsedMs": 471555
     },
-    "targetConsumers": "PASSED: React typecheck/SSR/hydration and RN typecheck/Hermes bundles"
+    "targetConsumers": "PASSED: React typecheck/SSR/hydration and RN typecheck/Hermes bundles",
+    "nativeHarnessFollowup": {
+      "passed": 4,
+      "scope": "fixture preservation and actual process failure/timeout/output-limit capture"
+    }
   },
   "evidenceLogs": {
     "check": {
@@ -626,7 +631,12 @@
   "native": {
     "local": "BLOCKED: no JDK/Android SDK/Swift/Xcode on this Windows host",
     "ciWorkflow": ".github/workflows/native.yml",
-    "ciExecution": "Await the PR Native Runtime job artifacts; workflow existence is not evidence of execution."
+    "ciExecution": "Await the PR Native Runtime job artifacts; workflow existence is not evidence of execution.",
+    "firstRun": {
+      "id": 34926858200,
+      "compose": "Runner sdkmanager PATH lookup failed before compilation; workflow now uses the installed ANDROID_HOME command path.",
+      "swiftui": "Swift 6.1.2 / Xcode 16.4 compilation, simulator boot and app install passed; attached console timed out. SDK-matched simulator selection and native-written JSON evidence replace console termination as the completion signal."
+    }
   },
   "limitations": [
     "Catalog-backed reusable definitions; legacy fixed starter profiles remain distinct.",

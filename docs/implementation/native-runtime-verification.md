@@ -36,7 +36,7 @@ The fixture uses the existing Compose BOM and test runner 1.7.0 / AndroidX JUnit
 
 ## iOS simulator consumer
 
-Supply macOS with Xcode, its iOS Simulator SDK and an installed iPhone simulator runtime. The script records Xcode, Swift and SDK versions, compiles the unchanged generated SwiftUI source plus an independent UIKit-hosted consumer in Swift 6 language mode, signs the simulator app locally, and creates its own simulator. It installs and launches the app using `simctl`, and removes only the simulator it created.
+Supply macOS with Xcode, its iOS Simulator SDK and an installed iPhone simulator runtime matching that SDK version. The script records Xcode, Swift and SDK versions, compiles the unchanged generated SwiftUI source plus an independent UIKit-hosted consumer in Swift 6 language mode, signs the simulator app locally, and creates its own simulator matching the selected SDK. It installs and launches the app using `simctl`, and removes only the simulator it created. The native app atomically writes its runtime result in its own Documents directory; the host requires that result within 60 seconds and rejects a missing or failed result. Console attachment is not an execution gate.
 
 The app mounts generated Button, input, Switch and Card controls in a real `UIHostingController`. Its assertions require rendered image output, different output after a consumer-owned state change, and different output after a light-to-dark appearance change. The native process returns image hashes and runtime results; a successful compiler exit alone cannot satisfy execution. The installed Xcode compiler is reported independently from the generator's Swift 6.3.3 candidate pin. A different observed compiler is exploratory execution evidence, not confirmation of that exact candidate profile.
 
@@ -44,6 +44,8 @@ This is **iOS Simulator execution on a macOS host**, not a macOS SwiftUI app, XC
 
 ## Evidence and current local boundary
 
-Every invocation writes `<target>-evidence.json` (or `host-probe-evidence.json`) and each prepared run has its own `native-evidence.json`. Evidence separates generated source digests from consumer-only additions; source files must remain byte-identical to their generated manifest. Command output hashes, log files, timing, host and target context accompany outcomes. Neither a missing toolchain nor an unrun CI workflow is a pass.
+The iOS app writes its own runtime assertions to its app container; the host requires that result within a fixed deadline. Console attachment is not treated as proof of process completion. Command capture retains partial logs on failures and timeouts.
+
+Every invocation writes `<target>-evidence.json` (or `host-probe-evidence.json`) and each prepared run has its own `native-evidence.json`. Evidence separates generated source digests from consumer-only additions; source files must remain byte-identical to their generated manifest. Command start/completion progress is emitted to stderr. Command output hashes, log files, timing, host and target context accompany outcomes, including bounded partial output on timeout or spawn failure. Neither a missing toolchain nor an unrun CI workflow is a pass.
 
 The Windows host inspection on 2026-09-15 found no Java, Gradle, Android SDK/adb, Swift or Xcode in PATH, declared SDK environments or standard installation locations. No callable remote-shell connector was configured for the referenced Mac. Local fixture and probe tests pass; actual native results must come from an executed platform job. The latest successful job's artifact, exact source commit and observed toolchain are the authority for any later runtime claim.

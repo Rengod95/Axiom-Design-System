@@ -31,7 +31,26 @@ for (const target of ["compose", "swiftui"] as const) test(`${target} native fix
   } else {
     assert(source.includes("UIHostingController") && source.includes("state.label=\"Native updated after mount\""));
     assert(source.includes('data.base64EncodedString()+"\\n"'));
+    assert(source.includes('data.write(to:documents.appendingPathComponent("native-result.json"),options:.atomic)'));
   }
+});
+
+test("native process failures retain bounded partial diagnostics and never become successful exits", async () => {
+  const { captureNativeProcess } = await import(new URL("../../../scripts/native-process.mjs", import.meta.url).href);
+  const failed = await captureNativeProcess(process.execPath, ["-e", 'process.stderr.write("compiler error detail"); process.exit(7)'], { cwd: ROOT });
+  assert.equal(failed.code, 7);
+  assert.equal(failed.output, "compiler error detail");
+  const timed = await captureNativeProcess(process.execPath, ["-e", 'process.stdout.write("native launched but pending"); setInterval(() => {}, 1000)'], { cwd: ROOT, timeout: 1000 });
+  assert.equal(timed.code, null);
+  assert.match(timed.error, /timed out/);
+  assert.equal(timed.output, "native launched but pending");
+  const missing = await captureNativeProcess(resolve(ROOT, "dist/not-a-native-compiler"), [], { cwd: ROOT });
+  assert.equal(missing.code, null);
+  assert.match(missing.error, /ENOENT/);
+  const bounded = await captureNativeProcess(process.execPath, ["-e", 'process.stdout.write("x".repeat(1000)); setInterval(() => {}, 1000)'], { cwd: ROOT, maxOutput: 64 });
+  assert.equal(bounded.code, null);
+  assert.equal(bounded.output.length, 64);
+  assert.match(bounded.error, /bounded capture/);
 });
 
 test("native probe remains explicit and invalid targets never escape its output path", () => {

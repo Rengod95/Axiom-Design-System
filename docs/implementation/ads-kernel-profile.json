@@ -40,6 +40,7 @@
     "scripts/workbench-authoring-cases.mjs",
     "scripts/native-fixtures.mjs",
     "scripts/native-verify.mjs",
+      "scripts/native-process.mjs",
     "scripts/workbench-behavior-cases.mjs",
     "scripts/workbench-policy-cases.mjs",
     "scripts/workbench-composition-cases.mjs"

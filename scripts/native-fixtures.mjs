@@ -146,6 +146,8 @@ import Darwin
  func digest(_ data:Data)->String {SHA256.hash(data:data).map{String(format:"%02x",$0)}.joined()}
  func finish(_ evidence:[String:Any]) {
   let data=try! JSONSerialization.data(withJSONObject:evidence,options:[.sortedKeys])
+  let documents=FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0]
+  try! data.write(to:documents.appendingPathComponent("native-result.json"),options:.atomic)
   FileHandle.standardOutput.write(Data(("AXIOM_NATIVE_RESULT:"+data.base64EncodedString()+"\\n").utf8))
   exit(evidence["status"] as? String == "PASSED" ? 0 : 1)
  }
