@@ -52,7 +52,7 @@ export class IndexedDbStore implements TransactionalStore {
       synchronous(result, "Store reducer");
       if (!result || typeof result.changed !== "boolean" || !Object.hasOwn(result, "value")) throw new BrowserStoreError(BROWSER_STORE_ERROR.state, "A synchronous store update result is required.");
       if (result.changed) {
-        const commit = createBrowserCommit(result.state, recovered.head);
+        const commit = createBrowserCommit(result.state, recovered.head, this.validatedSnapshots);
         this.inject("before-write");
         transaction.objectStore(BROWSER_STORES.commits).add(commit, commit.sequence);
         transaction.objectStore(BROWSER_STORES.meta).put({ storageFormatVersion: commit.storageFormatVersion, sequence: commit.sequence, commitDigest: commit.commitDigest }, BROWSER_STORES.head);

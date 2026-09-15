@@ -65,8 +65,8 @@
     "modules/ads-core/test/studio-behavior.test.ts": "5b04a14cf47337c9f4ebe8156e625682c7124145ec738741b281ac847b8f10f5",
     "modules/ads-core/test/studio-catalog-foundation.test.ts": "6b76a0e137e0689c3bf933b815d40fe51aac4754457c465b3aeb8101a6201510",
     "modules/ads-core/test/studio-composition.test.ts": "f8b3b594e06052f35ed52e0a0cb8fff69433f29d88a9daad42d7a5d11240eb9d",
-    "modules/browser-store/src/journal.ts": "e9aaf25e57b295f5bdfdef1e2c8b3aae90443cba9b67651216e0670a02e370a6",
-    "modules/browser-store/test/indexed-db-store.test.ts": "a3af637d5a125bfac131ea446dbfb39bc64dbd4431efa4fbd1009d817b68e61b",
+    "modules/browser-store/src/journal.ts": "694a04367dfcf89a116188b4a8775fdd0dea58c1bbf4998ba6d9f3ecf7cab081",
+    "modules/browser-store/test/indexed-db-store.test.ts": "a8d336f23297def19c6821798c025ba27f516c2d805736d8086834cae32d5e9b",
     "modules/target-packs/src/catalog-capabilities.ts": "43ac4e853124b09c4a03562367fdad6609bc9866a9f166b7dab279f945144344",
     "modules/target-packs/src/catalog-design-css.ts": "288cbd63aa5ab5ad33f047767cb81bfdcc83ff0ca561cb27bd8e47c27067fdb0",
     "modules/target-packs/src/catalog-react-behavior.ts": "8b9d1774dd8d1442eeb938a0a923a7b1df1d8fc77b6cb4865068152c726c091f",
@@ -84,7 +84,7 @@
     "scripts/native-fixtures.mjs": "5d821f01b6fcabd1ffa7038763e58b8c94db683fdc954d2f53f8dd7067da67d4",
     "scripts/native-verify.mjs": "11f6515a668002cdc56272c03cb417b6bb6191ba9f453071f6cabd42186eca8b",
     "scripts/verify-retirement.py": "fa68dbd477a7013ac4f4ea90a771ae1f4d02d798c9bc7562990eb513d6dec94f",
-    "scripts/verify-workbench.mjs": "571ba72bbe492a0c19648c408752e09f42997a8975bb8bf8aae493ec6b048f6c",
+    "scripts/verify-workbench.mjs": "6ee302f3a239b4b17ad187d6da0eb9ba2acd8e52e9627381d71d543cbcffd831",
     "scripts/workbench-authoring-cases.mjs": "5d07e655b2d3621379608eff4552aad6d64341d51426d745f1305e41ff791927",
     "scripts/workbench-behavior-cases.mjs": "618bdafc52f1fec084a9800e3b5cf6f150c4dba97bba9bc3757e0b0235ecb0c6",
     "scripts/workbench-chrome-cases.mjs": "c03e8ba4e2e8534d8f8775bfc6c50b029fc37440e41ebfaaa30688ec22196ccf",
@@ -94,7 +94,8 @@
     "scripts/native-process.mjs": "d238c3ab1113643c9c391de8e9e6b195f3ae74cbe22f30b37ad254e23481ce75",
     "modules/target-packs/src/constants.ts": "6d6b6b36d30ec9661d5387c0cd734d751497f16a33b8dfd92cd2ea9b39d30095",
     "modules/target-packs/src/package-files.ts": "6a403602b973b754dd91b856bcac7d0ad909d8190e6aec972e4232be5c45bd2f",
-    "modules/target-packs/test/target-packs.test.ts": "1e5727a0814a6222807c4324ce547aa43d3f2513556f51737f07d57658b20b24"
+    "modules/target-packs/test/target-packs.test.ts": "1e5727a0814a6222807c4324ce547aa43d3f2513556f51737f07d57658b20b24",
+    "modules/browser-store/src/indexed-db-store.ts": "16ff83df4f84d0374bda21d6764ba341832321b4198eb9edaecf34da7f3652f2"
   },
   "localGates": {
     "documentation": "retirement/reference and Foundation checks with negative cases",
@@ -597,6 +598,34 @@
     "composeToolchainFollowup": {
       "passed": 13,
       "scope": "native fixture/process tests and target export tests including the Compose BOM minimum SDK/AGP contract; strict TypeScript, Foundation negative checks and 177-input build passed"
+    },
+    "freshWriteCacheFollowup": {
+      "storageTestsPassed": 29,
+      "strictTypeScript": "PASSED",
+      "buildInputs": 177,
+      "proof": "The complete encode canonical/shape proof seeds a private digest-bound identity; all stored bytes and lineage are rechecked, and caller reads stay detached.",
+      "regressions": [
+        "first read vs cold connection descriptor walk",
+        "caller mutation isolation",
+        "corrupt bytes with and without rewritten digests",
+        "aborted write rollback",
+        "existing forged/transplanted identity and crash tests"
+      ],
+      "fullWorkbench": {
+        "status": "PASSED",
+        "cases": 37,
+        "beforeMs": 459635,
+        "afterMs": 434549,
+        "beforeCatalogMs": 142762,
+        "afterCatalogMs": 135669,
+        "assertions": "unchanged",
+        "scope": "Optimized product source; final diagnostic-predicate sample added afterwards without changing the pass condition or timeout."
+      },
+      "browserStorage": {
+        "status": "PASSED",
+        "elapsedMs": 3170,
+        "browser": "Chrome/152.0.7977.83"
+      }
     }
   },
   "evidenceLogs": {
@@ -627,6 +656,14 @@
     "targets": {
       "path": "dist/evidence/editing-targets.log",
       "sha256": "c718a01dfeb89e60e4300bf4f455dcfdb38b6e16350aab457307b59fc87ad260"
+    },
+    "freshCacheWorkbench": {
+      "path": "dist/evidence/workbench-after-fresh-cache.log",
+      "sha256": "0d8731c70d2fdcc8d4af089c6ac6363df74b5fd76974928d1bd44cb76794b8cf"
+    },
+    "freshCacheBrowser": {
+      "path": "dist/evidence/browser-store-after-fresh-cache.json",
+      "sha256": "e88fc9228f34e4081a7e5bfa0830eaf8486dd7bc065d4268174691e24c2410b9"
     }
   },
   "visualReview": "component-editing-finish-review.md",
@@ -638,7 +675,7 @@
   "native": {
     "local": "BLOCKED: no JDK/Android SDK/Swift/Xcode on this Windows host",
     "ciWorkflow": ".github/workflows/native.yml",
-    "ciExecution": "SwiftUI runtime passed on the documented second-run source commit. Android follow-up execution and current-head quality remain determined by PR CI artifacts.",
+    "ciExecution": "Both representative native consumers compiled and executed successfully on source 4f4b71e, with retained artifacts. Current-head PR gates remain separate from this exact-source native record.",
     "firstRun": {
       "id": 34926858200,
       "compose": "Runner sdkmanager PATH lookup failed before compilation; workflow now uses the installed ANDROID_HOME command path.",
@@ -661,6 +698,82 @@
         "cause": "Compose 1.12.0 AAR metadata from the pinned BOM requires compile SDK 37 and AGP 9.1+; exported SDK36/AGP9.0 was inconsistent.",
         "correction": "Generator, Foundation matrix, workflow and user README now agree on AGP9.1.1 / Gradle9.3.1 / SDK37; actual Android rerun remains required."
       }
+    },
+    "thirdRun": {
+      "sourceCommit": "4f4b71ef26c809a3daade95210584c75d3b861f0",
+      "id": 34929111813,
+      "compose": {
+        "status": "PASSED",
+        "nativeCompilation": "passed",
+        "nativeExecution": "passed",
+        "observedToolchain": {
+          "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+          "gradle": "Welcome to Gradle 9.3.1!\n\nHere are the highlights of this release:\n - Test reporting improvements\n - Error and warning improvements\n - Build authoring improvements\n\nFor more details see https://docs.gradle.org/9.3.1/release-notes.html\n\n\n------------------------------------------------------------\nGradle 9.3.1\n------------------------------------------------------------\n\nBuild time:    2026-01-29 14:15:01 UTC\nRevision:      44f4e8d3122ee6e7cbf5a248d7e20b4ca666bda3\n\nKotlin:        2.2.21\nGroovy:        4.0.29\nAnt:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024\nLauncher JVM:  17.0.20.1 (Eclipse Adoptium 17.0.20.1+1)\nDaemon JVM:    /usr/lib/jvm/temurin-17-jdk-amd64 (no Daemon JVM specified, using current Java home)\nOS:            Linux 6.17.0-1022-azure amd64"
+        },
+        "device": {
+          "adb": "emulator-5554          device product:sdk_gphone64_x86_64 model:sdk_gphone64_x86_64 device:emu64xa transport_id:1",
+          "api": "35",
+          "fingerprint": "google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys"
+        },
+        "artifactId": 10380968038,
+        "artifactSha256": "cc43a9ffc79eba8ed5d81b81b08dec894846a1acf2bd88c09e05f6efdea907fb",
+        "evidencePath": "dist/native-verification/ci-34929111813-compose/compose-evidence.json",
+        "testReports": [
+          {
+            "path": "build/outputs/androidTest-results/connected/debug/TEST-emulator-5554 - 15-_-.xml",
+            "digest": "65ef39ae907fedbd8d03e4b276f6e33dfdb11fb8d8024fa9672653206afc72c1",
+            "tests": 5,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        ],
+        "dependencyLocks": [
+          {
+            "path": "gradle.lockfile",
+            "digest": "c4fec4cddf141fea809e0aa400443a890141b076f1f826954f2bbb05cbd08346"
+          },
+          {
+            "path": "gradle/verification-metadata.xml",
+            "digest": "10b857129e498cb1e2ac16a27b28e0e8ea1e9c9f5ff3305dd13d8e7a0b480d55"
+          }
+        ]
+      },
+      "swiftui": {
+        "status": "PASSED",
+        "nativeCompilation": "passed",
+        "nativeExecution": "passed",
+        "observedToolchain": {
+          "xcode": "Xcode 16.4\nBuild version 16F6",
+          "swift": "swift-driver version: 1.120.5 Apple Swift version 6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)\nTarget: arm64-apple-macosx15.0",
+          "sdk": "18.5"
+        },
+        "device": {
+          "id": "CF31485E-76FB-4E31-96FC-113ACF42E4B4",
+          "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-5",
+          "type": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+          "execution": "iOS simulator"
+        },
+        "runtime": {
+          "assistiveTechnology": "not-run",
+          "cases": [
+            "generated controls mounted",
+            "nonempty native rendering",
+            "consumer state updates mounted UI",
+            "dark appearance changes rendering"
+          ],
+          "darkImageSHA256": "7284f4d005fb262545087cb037fd6ba9a52bd510d46f15d79d3844835ac22a73",
+          "execution": "iOS simulator UIKit-hosted SwiftUI",
+          "firstImageSHA256": "f5624bf1ed4bd85aa67b3b19ea01670abbee340057d9c1219990dbbb550a111e",
+          "nativeTouch": "not-run",
+          "os": "18.5",
+          "status": "PASSED",
+          "updatedImageSHA256": "ce76b1822ad924d690cbb35c8b6478f79ca0004bfe64af90c4ddc0f31b266d65"
+        },
+        "artifactId": 10381525294,
+        "artifactSha256": "6d9e24a1f624b43e7855c8e2141ea01722f07c5f7195e9afeb986699a68e4c7e",
+        "evidencePath": "dist/native-verification/ci-34929111813-swiftui/swiftui-evidence.json"
+      }
     }
   },
   "limitations": [
@@ -674,5 +787,12 @@
     "runId": 34927831870,
     "linux": "PASSED full gate",
     "windows": "Storage and Studio passed; catalog creation workbench save condition exceeded the 30-second deadline. Diagnostic-only context added; full local reproduction and current-head CI remain required."
-  }
+  },
+  "ciQualityBeforeFreshCache": {
+    "sourceCommit": "4f4b71ef26c809a3daade95210584c75d3b861f0",
+    "runId": 34929111812,
+    "linux": "PASSED full gate",
+    "windows": "DonutChart Apply wait exceeded deadline; existing diagnostic read showed Saved in this browser, no review/error/invalid input and unlocked inspector. Final exact completion-predicate sample added to avoid a stale pre-deadline result; no additional sleep or increased timeout."
+  },
+  "updatedAt": "2026-09-15T04:44:43.559628+00:00"
 }

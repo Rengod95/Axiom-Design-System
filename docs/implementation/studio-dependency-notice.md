@@ -8,7 +8,7 @@
 | Browser build | esbuild 0.28.2 | MIT; locally bundled assets, no CDN/eval |
 | RN/Expo consumer | Expo 57.0.17, React Native 0.86.3, React 19.2.3, React types 19.3.0 | MIT; independent runtime pin and committed transitive fixture lock |
 | SwiftUI candidate | Swift 6.3.3, Swift tools 6.0, iOS 17+ | Swift Apache-2.0 with Runtime Library Exception; Apple SDK terms separate; compiler not run |
-| Compose candidate | AGP 9.1.1, Gradle 9.3.1, JDK 17, Kotlin/Compose compiler 2.2.10, Compose BOM 2026.08.00, SDK 37/build-tools 36.0.0, minSdk 26 | AndroidX/Kotlin/AGP/Gradle Apache-2.0; JDK vendor terms separate; compiler not run |
+| Compose candidate | AGP 9.1.1, Gradle 9.3.1, JDK 17, Kotlin/Compose compiler 2.2.10, Compose BOM 2026.08.00, SDK 37/build-tools 36.0.0, minSdk 26 | AndroidX/Kotlin/AGP/Gradle Apache-2.0; JDK vendor terms separate; generated Kotlin compilation and five Android emulator tests passed in Native Runtime run 34929111813 at `4f4b71e` |
 
 The Web and RN React versions are intentionally different because the selected RN renderer targets React 19.2.3. Generated source package metadata keeps conditional export ordering (`types`, `react-native`, `default`) meaningful to TypeScript/Metro. Canonical ADS key sorting is not applied to that ordered host contract.
 

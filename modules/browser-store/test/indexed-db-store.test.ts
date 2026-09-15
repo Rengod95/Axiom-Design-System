@@ -91,7 +91,7 @@ test("cached historical validation still rejects changed bytes and digest-valid 
 });
 
 test("warm reads avoid repeating the canonical history walk while returning complete isolated snapshots", async (t) => {
-  const { store } = setup(t), current = store();
+  const { store } = setup(t), writer = store(), current = store();
   const snapshot = state();
   const document = { id: "design.example", kind: "catalog", schemaVersion: "0.1.0", revision: "1", name: "Example",
     parts: Array.from({ length: 40 }, (_, index) => ({ id: `part.${index}`, properties: { label: `Part ${index}`, padding: 8 } })) };
@@ -102,7 +102,7 @@ test("warm reads avoid repeating the canonical history walk while returning comp
     snapshot.undo.push({ handle: `undo.${index}`, actorId: "actor", applicableRevision: String(index), before: documents, after: documents });
     snapshot.history.push({ revision: String(index), parentRevision: index ? String(index - 1) : null, actorId: "actor", operation: "edit", transactionId: `transaction.${index}`, affectedRefs: [] });
   }
-  await current.transact(() => ({ state: snapshot, value: null, changed: true }));
+  await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
   const descriptors = Object.getOwnPropertyDescriptors;
   let walks = 0;
   t.mock.method(Object, "getOwnPropertyDescriptors", (value: object) => { walks++; return descriptors(value); });
@@ -118,6 +118,47 @@ test("warm reads avoid repeating the canonical history walk while returning comp
   warm!.undo[0]!.before[document.id]!.document.name = "Mutated undo";
   assert.deepEqual(await current.read(), snapshot);
   assert.deepEqual(await store().read(), snapshot, "reopening validates the same full history without a cache");
+});
+
+test("first read reuses the full fresh-write codec proof without retaining caller state or skipping cold validation", async (t) => {
+  const { store } = setup(t), writer = store(), snapshot = state();
+  const document = { id: "catalog.large", kind: "catalog", schemaVersion: "1.0.0", revision: "revision.source", name: "Large source", items: Array.from({ length: 200 }, (_, index) => ({ id: `item.${index}`, properties: { label: `Item ${index}`, nested: { value: index } } })) };
+  snapshot.project!.documents[document.id] = { document, originalText: JSON.stringify(document), sourceUri: "memory:large", validation: "envelope-only", diagnostics: [] };
+  await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
+  const expected = structuredClone(snapshot);
+  document.items[0]!.properties.label = "Caller changed after write";
+  const descriptors = Object.getOwnPropertyDescriptors; let walks = 0;
+  t.mock.method(Object, "getOwnPropertyDescriptors", (value: object) => { walks++; return descriptors(value); });
+  const immediate = await writer.read(), immediateWalks = walks;
+  walks = 0; const cold = await store().read(), coldWalks = walks;
+  assert.deepEqual(immediate, expected); assert.deepEqual(cold, expected);
+  assert.ok(coldWalks > 200, "A different connection still proves the complete stored state");
+  assert.ok(immediateWalks < coldWalks / 10, "The writer's first read does not repeat the just-completed canonical descriptor proof");
+  immediate!.project!.documents[document.id]!.document.name = "Mutated read";
+  assert.deepEqual(await writer.read(), expected, "A cached proof never shares the caller's original or returned state objects");
+});
+
+test("fresh-write validation rejects corrupted bytes and never treats a rolled-back write as committed", async (t) => {
+  for (const rehash of [false, true]) {
+    const { factory, store } = setup(t), writer = store();
+    await writer.transact(() => ({ state: state("Fresh"), value: null, changed: true }));
+    const commit = (await records(factory))[0]!;
+    commit.stateText = canonicalJson({ ...state("Fresh"), formatVersion: "invalid" });
+    if (rehash) {
+      commit.stateDigest = browserDigest(commit.stateText);
+      const { stateText: _text, commitDigest: _digest, ...metadata } = commit;
+      commit.commitDigest = browserDigest(canonicalJson(metadata));
+    }
+    await raw(factory, transaction => { transaction.objectStore("commits").put(commit, commit.sequence); transaction.objectStore("meta").put({ storageFormatVersion: "0.1.0", sequence: commit.sequence, commitDigest: commit.commitDigest }, "head"); });
+    await assert.rejects(() => writer.read(), code(BROWSER_STORE_ERROR.corrupt));
+  }
+  const { factory, store } = setup(t); let fail = true;
+  const writer = store({ fault: phase => { if (phase === "after-write" && fail) throw new Error("Abort fresh write"); } });
+  await assert.rejects(() => writer.transact(() => ({ state: state("Aborted"), value: null, changed: true })), code(BROWSER_STORE_ERROR.io));
+  assert.deepEqual(await records(factory), []); assert.equal(await writer.read(), null);
+  fail = false;
+  await writer.transact(() => ({ state: state("Retried"), value: null, changed: true }));
+  assert.equal((await writer.read())!.project!.name, "Retried");
 });
 
 test("forged or transplanted validation identities cannot authorize a parse-only read", async (t) => {

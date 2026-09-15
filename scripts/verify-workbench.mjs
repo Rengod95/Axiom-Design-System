@@ -28,7 +28,10 @@ const settled = () => page.evaluate("new Promise(resolve=>requestAnimationFrame(
 async function until(expression) {
   const deadline = Date.now() + 30_000;
   do { if (await page.evaluate(`Boolean(${expression})`)) return; await delay(80); } while (Date.now() < deadline);
-  const detail = await page.evaluate(`({saveStatus:${id("save-status")}?.textContent,revision:${id("project-revision")}?.title,component:${id("component-name")}?.value,review:${id("review-strip")}?.textContent,error:${id("operation-error")}?.textContent,activeElement:document.activeElement?.outerHTML.slice(0,400),invalidInputs:Array.from(document.querySelectorAll('[aria-invalid=true]')).map(e=>({id:e.dataset.testid,label:e.getAttribute('aria-label'),value:e.value})),disabledInspector:document.querySelector('.inspector-fields')?.disabled,head:document.body.innerText.slice(0,800),tail:document.body.innerText.slice(-1800)})`);
+  const detail = await page.evaluate(`({matched:Boolean(${expression}),exportDisabled:${id("open-export")}?.disabled,reviewDialog:${id("review-dialog")}?.open,saveStatus:${id("save-status")}?.textContent,revision:${id("project-revision")}?.title,component:${id("component-name")}?.value,review:${id("review-strip")}?.textContent,error:${id("operation-error")}?.textContent,activeElement:document.activeElement?.outerHTML.slice(0,400),invalidInputs:Array.from(document.querySelectorAll('[aria-invalid=true]')).map(e=>({id:e.dataset.testid,label:e.getAttribute('aria-label'),value:e.value})),disabledInspector:document.querySelector('.inspector-fields')?.disabled,head:document.body.innerText.slice(0,800),tail:document.body.innerText.slice(-1800)})`);
+  // A completed transaction may render while the final poll crosses its deadline.
+  // Sample the same predicate with the diagnostics; do not report stale failure.
+  if (detail.matched === true) return;
   throw new Error(`Workbench condition timed out: ${expression}; detail: ${JSON.stringify(detail)}; browser errors: ${browser.cdp.errors.join("; ")}`);
 }
 async function clickElement(expression) {
