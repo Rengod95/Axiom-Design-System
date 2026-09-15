@@ -29,7 +29,13 @@ export async function verifyCompoundWorkspace({ page, origin, database, root, id
   assert.equal(await page.evaluate(`Array.from(${nodes(caption.id)}).every(e=>e.parentElement.dataset.partId===${JSON.stringify(box.id)} && !!e.closest('button[aria-expanded]'))`), true);
   assert.equal(await page.evaluate(`${nodes(caption.id)}.length`), 3);
   assert.equal(await page.evaluate(`${preview}.querySelectorAll('button div,button p,button textarea').length`), 0);
-  record("compoundAnatomy", { actualItemHeaderTriggerContent: true, nestedPhrasingContainers: true, sharedCollectionTemplate: true, leftStructureOnly: true });
+  await clickElement(`${id(`part-${box.id}`)}.querySelector('.structure-disclosure')`);
+  await until(`${id(`part-${box.id}`)}.getAttribute('aria-expanded')==='false' && ${id(`part-${box.id}`)}.getAttribute('aria-selected')==='true'`);
+  assert.equal(await page.evaluate("Array.from(document.querySelectorAll('[role=treeitem][tabindex=\"0\"]')).filter(e=>e.getClientRects().length).length"), 1);
+  await page.evaluate(`${id(`part-${box.id}`)}.focus()`);
+  for (const type of ["keyDown", "keyUp"]) await page.send("Input.dispatchKeyEvent", { type, key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
+  await until(`${id(`part-${box.id}`)}.getAttribute('aria-expanded')==='true'`);
+  record("compoundAnatomy", { actualItemHeaderTriggerContent: true, nestedPhrasingContainers: true, sharedCollectionTemplate: true, leftStructureOnly: true, collapseRetainsVisibleKeyboardSelection: true });
 
   // Draw into Content at 75%, then into the new free-position Frame at 50%.
   await click(`part-${role("panel").id}`); await fill("layout-minHeight", "200"); await clickElement(text("Layout", "summary")); await approve();

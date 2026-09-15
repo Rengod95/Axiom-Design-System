@@ -21,11 +21,13 @@ export function StructureTree({ component, category, locale, selectedPart, disab
     let part = component.parts.find(item => item.id === selectedPart) ?? root;
     const parents: string[] = [];
     while (part.parent) { parents.push(part.parent); part = component.parts.find(item => item.id === part.parent) ?? root; }
-    setClosed(previous => previous.filter(id => !parents.includes(id)));
-    part = component.parts.find(item => item.id === selectedPart) ?? root;
+    setClosed(previous => previous.some(id => parents.includes(id)) ? previous.filter(id => !parents.includes(id)) : previous);
+  }, [selectedPart, component.parts, closed]);
+  useEffect(() => {
+    let part = component.parts.find(item => item.id === selectedPart) ?? root;
     while (!canContainStudioElement(component, category, part.id) && part.parent) part = component.parts.find(item => item.id === part.parent) ?? root;
     setInsertion(part.id);
-  }, [selectedPart, category, component.id]);
+  }, [selectedPart, category, component.parts]);
   const siblings = selected?.parent ? children(selected.parent) : [], at = siblings.findIndex(part => part.id === selectedPart);
   const removable = Boolean(selected?.parent && !selected.required && !anchor(selected) && !children(selected.id).length && !component.catalog?.slots.some(slot => slot.ownerPartRef === selected.id) && !component.instances?.some(instance => instance.ownerPartRef === selected.id));
   const remove = () => { if (removable && selected && onEdit([{ kind: "part-delete", partId: selected.id }])) onSelect(selected.parent!); };
@@ -43,7 +45,7 @@ export function StructureTree({ component, category, locale, selectedPart, disab
       else if (event.key === "ArrowLeft") { if (descendants.length && !collapsed) setClosed(previous => [...previous, part.id]); else target = visible.find(button => button.dataset.treePart === part.parent); }
       else target = visible[event.key === "Home" ? 0 : event.key === "End" ? visible.length - 1 : Math.max(0, Math.min(visible.length - 1, index + (event.key === "ArrowDown" ? 1 : -1)))];
       if (target) { target.focus(); onSelect(target.dataset.treePart!); }
-    }}><i className={`structure-disclosure ${collapsed ? "" : "open"}`} onClick={event => { if (!descendants.length) return; event.stopPropagation(); setClosed(previous => collapsed ? previous.filter(id => id !== part.id) : [...previous, part.id]); }} aria-hidden="true">{descendants.length > 0 && <Icon name="chevron" size={10} />}</i><Icon name={part.elementKind === "text" ? "type" : part.elementKind === "frame" ? "frame" : part.elementKind === "box" ? "box" : "layers"} size={13} /><span>{title(part)}</span><code>{part.elementKind ? design.elements?.[part.id] : part.role === "trigger" || part.role === "close" ? "button" : part.role === "header" && recipe?.semantic.kind === "accordion" ? "h3" : anchor(part) ? t("구성", "part") : ""}</code></button>{descendants.length > 0 && <ul role="group" hidden={collapsed}>{descendants.map(child => render(child, depth + 1))}</ul>}</li>;
+    }}><i className={`structure-disclosure ${collapsed ? "" : "open"}`} onClick={event => { if (!descendants.length) return; event.stopPropagation(); if (!collapsed && selectedPart !== part.id && selectedPart && isDescendant(selectedPart, part.id)) onSelect(part.id); setClosed(previous => collapsed ? previous.filter(id => id !== part.id) : [...previous, part.id]); }} aria-hidden="true">{descendants.length > 0 && <Icon name="chevron" size={10} />}</i><Icon name={part.elementKind === "text" ? "type" : part.elementKind === "frame" ? "frame" : part.elementKind === "box" ? "box" : "layers"} size={13} /><span>{title(part)}</span><code>{part.elementKind ? design.elements?.[part.id] : part.role === "trigger" || part.role === "close" ? "button" : part.role === "header" && recipe?.semantic.kind === "accordion" ? "h3" : anchor(part) ? t("구성", "part") : ""}</code></button>{descendants.length > 0 && <ul role="group" hidden={collapsed}>{descendants.map(child => render(child, depth + 1))}</ul>}</li>;
   };
   return <div className="structure-editor" data-testid="structure-editor"><ul ref={tree} className="element-tree" role="tree" aria-label={t("컴포넌트 구성요소", "Component structure")}>{render(root, 0)}</ul>
     {component.catalog?.semantic.host === "collection" && <p className="structure-caption">{t("반복되는 항목에 공통으로 적용되는 구조입니다.", "Shared structure for every collection item.")}</p>}
