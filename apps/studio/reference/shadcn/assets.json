@@ -1,0 +1,72 @@
+{
+  "https://avatar.vercel.sh/shadcn1": {
+    "sourceUrl": "https://avatar.vercel.sh/shadcn1",
+    "localPath": "assets/75ab6c162418c9cb.png",
+    "runtimePath": "/references/shadcn-assets/75ab6c162418c9cb.png",
+    "sha256": "82a889804014e7d2669ca3ccb9a0d44985c08dfacafb719195d97de423d25cc3",
+    "contentType": "image/png"
+  },
+  "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80": {
+    "sourceUrl": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80",
+    "localPath": "assets/f11297884467b806.jpg",
+    "runtimePath": "/references/shadcn-assets/f11297884467b806.jpg",
+    "sha256": "5f1f95810af0a046a9d561624a66bbf6eaa90c000dc3445fe62c41f6bd119290",
+    "contentType": "image/jpeg"
+  },
+  "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80": {
+    "sourceUrl": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80",
+    "localPath": "assets/6a3d9cfb6952e291.jpg",
+    "runtimePath": "/references/shadcn-assets/6a3d9cfb6952e291.jpg",
+    "sha256": "9b6e8e1c9deb3a6d4b251df0eb6065814e3483034ad944660930a7d6eccc26a8",
+    "contentType": "image/jpeg"
+  },
+  "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80": {
+    "sourceUrl": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80",
+    "localPath": "assets/2187d5022a268da6.jpg",
+    "runtimePath": "/references/shadcn-assets/2187d5022a268da6.jpg",
+    "sha256": "7989d8b3bd30cef1ee5847aeb75de9e657043f06fab59d7fbca5b29f6e78a0ef",
+    "contentType": "image/jpeg"
+  },
+  "https://github.com/shadcn.png": {
+    "sourceUrl": "https://github.com/shadcn.png",
+    "localPath": "assets/0a10b9bc070f3bdf.jpg",
+    "runtimePath": "/references/shadcn-assets/0a10b9bc070f3bdf.jpg",
+    "sha256": "513d06f542692036ff0bb17938f04b3efd60567ba2cae08049469d21f18e0524",
+    "contentType": "image/jpeg"
+  },
+  "https://github.com/evilrabbit.png": {
+    "sourceUrl": "https://github.com/evilrabbit.png",
+    "localPath": "assets/eb59b55e1933bc43.png",
+    "runtimePath": "/references/shadcn-assets/eb59b55e1933bc43.png",
+    "sha256": "ef407ec862dd072b8624fad7a331df80f56694e98bc1d89b0feb0ea0185e8954",
+    "contentType": "image/png"
+  },
+  "https://github.com/maxleiter.png": {
+    "sourceUrl": "https://github.com/maxleiter.png",
+    "localPath": "assets/96b8bd25ab6ed38f.png",
+    "runtimePath": "/references/shadcn-assets/96b8bd25ab6ed38f.png",
+    "sha256": "218688eaf50a9380355622deaa0d087a808e4967bb39bf653ccef7d46193a169",
+    "contentType": "image/png"
+  },
+  "/avatars/10.png": {
+    "sourceUrl": "https://ui.shadcn.com/avatars/10.png",
+    "localPath": "assets/e0695e6018dc524d.png",
+    "runtimePath": "/references/shadcn-assets/e0695e6018dc524d.png",
+    "sha256": "f3d8bf1fc6a80e70052daf44d139346b2a87b7a0c6f752970e351904ffbf8470",
+    "contentType": "image/png"
+  },
+  "/avatars/02.png": {
+    "sourceUrl": "https://ui.shadcn.com/avatars/02.png",
+    "localPath": "assets/0563f43f856374ea.png",
+    "runtimePath": "/references/shadcn-assets/0563f43f856374ea.png",
+    "sha256": "a81ec3c7852f7d20e541c0083ca6b7ace3e239e925613b6f1d918bf1ba572270",
+    "contentType": "image/png"
+  },
+  "/avatars/shadcn.jpg": {
+    "sourceUrl": "https://ui.shadcn.com/avatars/shadcn.jpg",
+    "localPath": "assets/90953dfb340a1a2c.jpg",
+    "runtimePath": "/references/shadcn-assets/90953dfb340a1a2c.jpg",
+    "sha256": "c080d627acdedca5ba0b7d8e30ddf4ddcc15aa56c896f67037c273233cde18c3",
+    "contentType": "image/jpeg"
+  }
+}

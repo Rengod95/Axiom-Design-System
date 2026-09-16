@@ -11,6 +11,12 @@ const ASSETS = new Map([["/", ["index.html", "text/html"]], ["/index.html", ["in
 ASSETS.set("/Geist-Variable.woff2", ["Geist-Variable.woff2", "font/woff2"]);
 ASSETS.set("/GeistMono-Variable.woff2", ["GeistMono-Variable.woff2", "font/woff2"]);
 ASSETS.set("/Geist-OFL.txt", ["Geist-OFL.txt", "text/plain"]);
+const references = JSON.parse(await readFile(resolve(ROOT, "references/assets.json"), "utf8"));
+if (!Array.isArray(references) || references.length > 3000) throw new Error("Invalid reference asset inventory.");
+for (const asset of references) {
+  if (typeof asset.path !== "string" || !/^references\/[a-zA-Z0-9_./-]+$/.test(asset.path) || asset.path.split("/").includes("..") || !["text/html", "text/javascript", "text/css", "image/png", "image/webp", "image/jpeg", "image/svg+xml", "font/woff2", "application/wasm", "text/plain", "application/json"].includes(asset.mime)) throw new Error("Invalid public reference asset.");
+  ASSETS.set(`/${asset.path}`, [asset.path, asset.mime]);
+}
 const server = createServer(async (request, response) => {
   try {
     if (!["GET", "HEAD"].includes(request.method)) { response.writeHead(405).end(); return; }
@@ -20,8 +26,11 @@ const server = createServer(async (request, response) => {
     const inside = relative(ROOT, path);
     if (isAbsolute(inside) || inside.startsWith("..") || !(await stat(path)).isFile()) { response.writeHead(403).end(); return; }
     const data = await readFile(path);
-    response.writeHead(200, { "Content-Type": `${entry[1]}; charset=utf-8`, "Content-Length": data.length, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff",
-      "Content-Security-Policy": "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'" });
+    const reference = entry[0].startsWith("references/");
+    response.writeHead(200, { "Content-Type": `${entry[1]}; charset=utf-8`, "Content-Length": data.length, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", ...(reference || entry[1] === "font/woff2" ? { "Access-Control-Allow-Origin": "*", "Cross-Origin-Resource-Policy": "cross-origin" } : {}),
+      "Content-Security-Policy": reference
+        ? "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"
+        : "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'" });
     response.end(request.method === "HEAD" ? undefined : data);
   } catch { response.writeHead(404).end(); }
 });

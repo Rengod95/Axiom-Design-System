@@ -41,6 +41,13 @@ export function foundationReferences(project: ProjectSnapshot, foundation: Found
       alias(value, { kind: "theme-alias", documentId: foundation.id, ownerTokenId: id, axisId: axis.id, context, path: `${path}/ref` });
     }
   });
+  (foundation.valueSets ?? []).forEach((group, index) => {
+    for (const [id, value] of Object.entries(group.values)) {
+      const path = `/valueSets/${index}/values/${authoringPointer(id)}`;
+      found.push({ reference: { tokenId: id, kind: "theme-override", documentId: foundation.id, ownerTokenId: id, valueSetId: group.id, path }, replace: () => { throw new Error("An owned group value must be removed with its token, not retargeted."); } });
+      alias(value, { kind: "theme-alias", documentId: foundation.id, ownerTokenId: id, valueSetId: group.id, path: `${path}/ref` });
+    }
+  });
   for (const { document } of Object.values(project.documents)) {
     if (document.kind === "component") {
       authoringList(document.motion).forEach((track, index) => {
@@ -59,7 +66,7 @@ export function foundationReferences(project: ProjectSnapshot, foundation: Found
       found.push({ reference: { tokenId: value.tokenRef, documentId: document.id, kind: "design", path, ...(componentId ? { componentId } : {}), ...(typeof partId === "string" ? { partId } : {}) }, replace: id => { value.tokenRef = id; } });
     };
     authoringList(document.appearance).forEach((rule, index) => { if (isObject(rule.declarations)) for (const [key, value] of Object.entries(rule.declarations)) binding(value, `/appearance/${index}/declarations/${authoringPointer(key)}`, rule.targetPartRef); });
-    authoringList(document.layout).forEach((rule, index) => { for (const key of ["gap", "padding", "minHeight"]) binding(rule[key], `/layout/${index}/${key}`, rule.targetPartRef); });
+    authoringList(document.layout).forEach((rule, index) => { for (const key of ["gap", "padding", "minHeight", "width", "height"]) binding(rule[key], `/layout/${index}/${key}`, rule.targetPartRef); });
   }
   return found;
 }

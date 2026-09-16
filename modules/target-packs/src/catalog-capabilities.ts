@@ -1,3 +1,4 @@
+import { studioLengthPixels } from "../../ads-core/src/index.ts";
 import { canonicalJson, getStudioCatalogRecipe, semanticElementContent, semanticParentRole } from "../../ads-core/src/index.ts";
 import type { StudioComponent, StudioSemanticKind } from "../../ads-core/src/index.ts";
 import type { TargetId } from "./contracts.ts";
@@ -21,6 +22,7 @@ export function inspectCatalogTarget(component: StudioComponent, target: TargetI
   const catalog = component.catalog, recipe = catalog && getStudioCatalogRecipe(catalog.catalogId);
   const fail = (message: string): never => { throw new TargetError(TARGET_CODE.UNSUPPORTED, message, component.id); };
   if (!catalog || !recipe) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Missing catalog source contract", component.id);
+  if (catalog.reference) fail("This pinned upstream template uses its original browser runtime. A target-specific source mapping is required; a generic substitute cannot preserve its design.");
   if (component.instances?.some(instance => instance.status !== "current")) fail("Review stale instance versions before export.");
   if (target !== "react" && (component.instances?.length || component.behavior?.rules.length || Object.values(component.mobile.layout).some(layout => layout.mode === "free"))) fail("Authored composition, behavior and free layout need an explicit native mapping.");
   if (component.motionTracks?.length) fail("Authored motion tracks are available in Studio preview; this target still requires an explicit motion runtime mapping.");
@@ -46,7 +48,7 @@ export function inspectCatalogTarget(component: StudioComponent, target: TargetI
     }
     for (const part of component.parts.filter(part => UNMAPPED_WEB_PARTS[catalog.semantic.kind]?.includes(part.role))) {
       const layout = component.web.layout[part.id]!, appearance = component.web.parts[part.id]!;
-      if (Object.values(appearance.combinations).some(style => Object.keys(style).length > 0) || layout.padding || layout.gap || layout.minHeight || layout.width || layout.height || layout.alignment) fail(`Logical ${part.role} is platform-owned in this HTML control; edited paint/layout needs an explicit mapping.`);
+      if (Object.values(appearance.combinations).some(style => Object.keys(style).length > 0) || studioLengthPixels(layout.padding) || studioLengthPixels(layout.gap) || studioLengthPixels(layout.minHeight) || layout.width || layout.height || layout.alignment) fail(`Logical ${part.role} is platform-owned in this HTML control; edited paint/layout needs an explicit mapping.`);
     }
     if (catalog.semantic.kind === "table" && component.parts.some(part => component.web.layout[part.id]!.axis !== "vertical" || component.web.layout[part.id]!.alignment)) fail("Native HTML table layout cannot adopt stack-axis or cross-axis alignment changes.");
   }
@@ -59,7 +61,7 @@ export function inspectCatalogTarget(component: StudioComponent, target: TargetI
     const design = component.mobile;
     for (const part of component.parts.filter(part => part.role !== "root")) {
       const layout = design.layout[part.id]!, appearance = design.parts[part.id]!;
-      if (Object.values(appearance.combinations).some(style => Object.keys(style).length > 0) || layout.padding || layout.gap || layout.minHeight || layout.width || layout.height || layout.alignment) fail("This native catalog profile currently maps authored root visuals; edited internal-part paint/layout requires a dedicated native mapping.");
+      if (Object.values(appearance.combinations).some(style => Object.keys(style).length > 0) || studioLengthPixels(layout.padding) || studioLengthPixels(layout.gap) || studioLengthPixels(layout.minHeight) || layout.width || layout.height || layout.alignment) fail("This native catalog profile currently maps authored root visuals; edited internal-part paint/layout requires a dedicated native mapping.");
     }
     const root = component.parts.find(part => part.role === "root")!;
     if ((target === "swiftui" || target === "compose") && design.layout[root.id]?.alignment) fail("This SwiftUI/Compose catalog profile does not map explicit cross-axis alignment yet.");

@@ -11,6 +11,8 @@ const STARTS = [
   { id: "stack", catalogId: "catalog.box", ko: "콘텐츠 스택", en: "Content stack", detail: ["제목 · 설명 · 콘텐츠 영역", "Heading, description and content area"], structure: "stack" },
   { id: "article", catalogId: "catalog.box", ko: "아티클", en: "Article", detail: ["의미 있는 문서 구조", "Semantic article structure"], structure: "article" },
   { id: "button", catalogId: "catalog.button", ko: "버튼", en: "Button", detail: ["활성화 · 비활성 상태", "Activation and disabled states"] },
+  { id: "checkbox", catalogId: "catalog.checkbox", ko: "체크박스", en: "Checkbox", detail: ["선택 값 · 레이블 · 비활성 상태", "Checked value, label and disabled state"] },
+  { id: "accordion", catalogId: "catalog.accordion", ko: "아코디언", en: "Accordion", detail: ["항목 · 트리거 · 펼침 영역", "Items, triggers and expandable content"] },
   { id: "input", catalogId: "catalog.textfield", ko: "입력 필드", en: "Text field", detail: ["레이블 · 입력 · 안내", "Label, input and supporting text"] },
   { id: "card", catalogId: "catalog.card", ko: "카드", en: "Card", detail: ["헤더 · 콘텐츠 · 액션 영역", "Header, content and actions"] },
 ] as const;

@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
+import { closeReferenceDialog, referenceTemplates, waitReferenceFrame } from "./verify-reference-studio.mjs";
 
 const CATALOG_CASES = [
-  { name: "Checkbox", catalogId: "catalog.checkbox", shape: "checkbox", selector: "label.catalog-check input[type=checkbox]", roles: ["root", "control", "label"] },
-  { name: "TextInput", catalogId: "catalog.textinput", shape: "text-input", selector: "input[type=text]", roles: ["root", "label", "input"] },
-  { name: "Card", catalogId: "catalog.card", shape: "card", selector: "article > header[data-part-id] > h3", roles: ["root", "header", "body", "actions"] },
-  { name: "Calendar", catalogId: "catalog.calendar", shape: "calendar", structure: "calendar", roles: ["root", "body", "calendar_header", "previous", "heading", "next", "weekdays", ...Array.from({ length: 5 }, (_, i) => `week_${i + 1}`), ...Array.from({ length: 35 }, (_, i) => `day_${i + 1}`)] },
-  { name: "Tree", catalogId: "catalog.tree", shape: "tree", structure: "tree", roles: ["root", "body", "branch", "item_one", "item_two", "item_three"] },
-  { name: "DonutChart", catalogId: "catalog.donutchart", shape: "donutchart", structure: "donutchart", roles: ["root", "body", "plot", "axis", "series", "legend"] },
+  { name: "Checkbox", catalogId: "catalog.checkbox", sourceRow: 73, selector: "[role=checkbox]", roles: ["root", "control", "label"] },
+  { name: "TextField", catalogId: "catalog.textfield", sourceRow: 156, selector: ".mantine-TextInput-input", roles: ["root", "label", "input"] },
+  { name: "Card", catalogId: "catalog.card", sourceRow: 70, selector: "[data-slot=card] form input[type=email]", roles: ["root", "header", "body", "actions"] },
+  { name: "Calendar", catalogId: "catalog.calendar", sourceRow: 69, selector: "table[role=grid]", roles: ["root", "body", "calendar_header", "previous", "heading", "next", "weekdays"] },
+  { name: "Tree", catalogId: "catalog.tree", sourceRow: 181, selector: ".mantine-Tree-root [role=treeitem]", roles: ["root", "body", "branch", "item_one", "item_two", "item_three"] },
+  { name: "DonutChart", catalogId: "catalog.donutchart", sourceRow: 21, selector: ".mantine-DonutChart-root svg path", roles: ["root", "body", "plot", "axis", "series", "legend"] },
 ];
 
 /** Actual library additions retain canonical source identity and their authored visual structure. */
@@ -20,7 +21,7 @@ export async function verifyCatalogBlueprints({ page, id, label, click, fill, se
   const openPanels = async () => { for (const panel of ["sidebar", "inspector"]) if (await page.evaluate(`${id(`toggle-${panel}`)}.getAttribute('aria-expanded')==='false'`)) await click(`toggle-${panel}`); };
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
   await openPanels(); await click("view-canvas"); await click("mode-edit"); await click("category-web");
-  const initialIds = await frameIds(), created = [], provenance = [];
+  const initialIds = await frameIds(), created = [], provenance = [], templates = await referenceTemplates();
   const verifyButtonWrapper = async () => {
     const wrapper = `${id("preview-component.button")}.querySelector('.component-root')`;
     await until(wrapper);
@@ -34,11 +35,21 @@ export async function verifyCatalogBlueprints({ page, id, label, click, fill, se
     await fill("catalog-search", entry.name); await click(`catalog-${entry.catalogId}`);
     assert.equal(await page.evaluate(`${id(`catalog-${entry.catalogId}`)}.getAttribute('aria-pressed')`), "true");
     assert.equal(await page.evaluate("document.querySelector('#studio-inspector .inspector-header h2').textContent"), entry.name);
-    const specimen = await page.evaluate(`${id(`catalog-${entry.catalogId}`)}.querySelector('.catalog-thumbnail').dataset.specimenShape`);
-    assert.equal(specimen, entry.shape, `${entry.name}: the chosen library specimen uses its canonical shape`);
+    const template = templates.find(item => item.catalogId === entry.catalogId);
+    assert.equal(template.sourceRow, entry.sourceRow);
+    const image = `${id(`catalog-${entry.catalogId}`)}.querySelector('img.reference-thumbnail')`;
+    await page.evaluate(`(${image}).decode()`);
+    const specimen = await page.evaluate(`({url:(${image}).getAttribute('src'),width:(${image}).naturalWidth,frames:${id(`catalog-${entry.catalogId}`)}.querySelectorAll('iframe').length})`);
+    assert.match(specimen.url, new RegExp(`^/references/${template.bundle}-previews/${entry.sourceRow}-(light|dark)\\.png$`));
+    assert.ok(specimen.width > 0); assert.equal(specimen.frames, 0, "Library cards use the original screenshot without mounting another runtime");
+    await click("catalog-preview-open");
+    const detail = await waitReferenceFrame(page, "document.querySelector('dialog[open] iframe.reference-frame')");
+    assert.equal(new URL(detail.src).searchParams.get("row"), String(entry.sourceRow));
+    await closeReferenceDialog(page);
     const references = await page.evaluate("Array.from(document.querySelectorAll('#studio-inspector [data-testid=catalog-provider-reference]')).map(e=>({href:e.getAttribute('href'),label:e.textContent.trim()}))");
     assert.ok(references.length > 0 && references.every(reference => /^https:\/\//.test(reference.href) && reference.label.length > 0), `${entry.name}: provenance has labeled provider reference links`);
-    provenance.push({ catalogId: entry.catalogId, references: references.length });
+    assert.equal(references.length, 1); assert.equal(references[0].href, template.docsUrl);
+    provenance.push({ catalogId: entry.catalogId, templateId: template.id, sourceRow: entry.sourceRow, references: references.length });
   };
 
   const add = async entry => {
@@ -56,30 +67,31 @@ export async function verifyCatalogBlueprints({ page, id, label, click, fill, se
   const verifyRendered = async (entry, component) => {
     const preview = id(`preview-${component.id}`);
     await until(preview);
-    const rendered = await page.evaluate(`(()=>{const e=${preview},frame=e.closest('[data-component-frame]');return{catalogId:e.dataset.catalogId,shape:e.dataset.previewShape,name:e.getAttribute('aria-label'),parts:Array.from(e.querySelectorAll('[data-part-id]')).map(part=>part.dataset.partId),structure:e.querySelector('.catalog-structure')?.dataset.structureKind??null,semantic:${entry.selector ? `Boolean(e.querySelector(${JSON.stringify(entry.selector)}))` : "true"},genericCard:Boolean(e.querySelector('article')),frame:{height:frame.offsetHeight,plannedHeight:parseFloat(frame.style.minHeight)}}})()`);
-    assert.equal(rendered.catalogId, entry.catalogId);
-    assert.equal(rendered.shape, entry.shape);
-    assert.equal(rendered.name, component.name);
+    const template = templates.find(item => item.catalogId === entry.catalogId);
+    assert.equal(component.studioReference.templateId, template.id);
+    const runtime = await waitReferenceFrame(page, `${preview}.querySelector('iframe.reference-frame')`);
+    assert.equal(new URL(runtime.src).pathname, `/references/${template.bundle}.html`);
+    assert.equal(new URL(runtime.src).searchParams.get("row"), String(entry.sourceRow));
+    const rendered = await page.evaluate(`(()=>{const e=${preview},frame=e.closest('[data-component-frame]');return{parts:Array.from(e.querySelectorAll('[data-part-id]')).map(part=>part.dataset.partId),frame:{height:frame.offsetHeight,plannedHeight:parseFloat(frame.style.minHeight)}}})()`);
+    const native = await runtime.evaluate(`(()=>{const root=document.querySelector('#reference-root');return{semantic:Boolean(root.querySelector(${JSON.stringify(entry.selector)})),mapped:Array.from(root.querySelectorAll('[data-reference-part]')).map(e=>e.dataset.referencePart)}})()`);
     assert.ok(Number.isFinite(rendered.frame.plannedHeight) && rendered.frame.height <= rendered.frame.plannedHeight + 1, `${entry.name}: default frame contains its rendered content (${rendered.frame.height}px actual, ${rendered.frame.plannedHeight}px planned)`);
-    assert.equal(rendered.semantic, true, `${entry.name}: the actual authored component has its distinct renderer`);
-    if (entry.structure) { assert.equal(rendered.structure, entry.structure); assert.equal(rendered.genericCard, false, `${entry.name}: structural rendering is not a generic card`); }
+    assert.equal(native.semantic, true, `${entry.name}: the pinned upstream DOM has its own semantic structure`);
     if (entry.catalogId === "catalog.calendar") {
-      const weekdays = await page.evaluate(`Array.from(${preview}.querySelector('[data-structure-part=weekdays]').children).map(day=>({text:day.textContent.trim(),top:day.getBoundingClientRect().top,width:day.getBoundingClientRect().width}))`);
-      assert.deepEqual(weekdays.map(day => day.text), ["M", "T", "W", "T", "F", "S", "S"]);
+      const weekdays = await runtime.evaluate("Array.from(document.querySelectorAll('table[role=grid] thead th')).map(day=>({text:day.textContent.trim(),top:day.getBoundingClientRect().top,width:day.getBoundingClientRect().width}))");
+      assert.equal(weekdays.length, 7);
+      assert.equal(new Set(weekdays.map(day => day.text)).size, 7, "The upstream calendar exposes all seven weekday names");
       assert.ok(weekdays.every(day => day.width > 0 && Math.abs(day.top - weekdays[0].top) < 1), "Calendar: all seven weekday columns remain on one row");
-    }
-    if (entry.catalogId === "catalog.tree") {
-      const backdrop = await page.evaluate(`({frame:getComputedStyle(${preview}.closest('[data-component-frame]')).backgroundColor,wrapper:getComputedStyle(${preview}.querySelector('.component-root')).backgroundColor})`);
-      assert.ok(!["transparent", "rgba(0, 0, 0, 0)"].includes(backdrop.frame), "Tree: the full canvas frame has a project-theme backdrop for transparent authored structure");
-      assert.equal(backdrop.wrapper, "rgba(0, 0, 0, 0)", "Tree: the preview wrapper stays transparent over the frame backdrop");
     }
     for (const role of entry.roles) {
       const part = component.parts.find(part => part.studioRole === role);
       assert.ok(part, `${entry.name}: source includes the ${role} part`);
-      assert.ok(rendered.parts.includes(part.id), `${entry.name}: authored ${role} has a rendered data-part-id`);
     }
     assert.ok(rendered.parts.every(partId => component.parts.some(part => part.id === partId)), `${entry.name}: rendered parts refer to the created source`);
-    if (entry.structure) assert.deepEqual([...new Set(rendered.parts)].sort(), component.parts.map(part => part.id).sort(), `${entry.name}: every authored structural part renders`);
+    const root = component.parts.find(part => part.parent === null);
+    assert.ok(native.mapped.includes(root.id), `${entry.name}: the authored root maps into the actual upstream DOM`);
+    assert.ok(native.mapped.every(partId => component.parts.some(part => part.id === partId)), `${entry.name}: mapped upstream nodes use owned source identities`);
+    // Compatibility recipe parts without a native selector stay in the source;
+    // claiming that every synthetic catalog part is an upstream DOM node is false.
     return rendered;
   };
 
@@ -107,10 +119,12 @@ export async function verifyCatalogBlueprints({ page, id, label, click, fill, se
     assert.equal((await project()).documents[componentId], undefined);
     await approve(); assert.notEqual(await revision(), before);
     const current = await project(), component = current.documents[componentId]?.document;
-    assert.ok(component); assert.equal(component.kind, "component"); assert.equal(component.name, entry.name); assert.equal(component.catalogProfile.catalogId, entry.catalogId);
+    const template = templates.find(item => item.catalogId === entry.catalogId);
+    assert.ok(component); assert.equal(component.kind, "component"); assert.equal(component.name, entry.name); assert.equal(component.catalogProfile.catalogId, template.sourceCatalogId);
     const designs = Object.values(current.documents).map(item => item.document).filter(document => document.kind === "design" && document.componentRef?.id === componentId);
     assert.deepEqual(designs.map(design => design.category).sort(), ["Mobile", "Web"]);
-    assert.ok(designs.every(design => design.catalogProfile.catalogId === entry.catalogId), `${entry.name}: both category designs retain canonical catalog identity`);
+    assert.ok(designs.every(design => design.catalogProfile.catalogId === template.sourceCatalogId), `${entry.name}: both category designs retain the selected source catalog identity`);
+    assert.ok(designs.every(design => design.appearance.length === 0 && design.referenceLayout.length === 0), `${entry.name}: insertion preserves original provider style and layout without synthesized defaults`);
     const sidebarParts = await page.evaluate(`${id(`component-${componentId}`)}.parentElement.querySelectorAll('[data-testid^=part-]').length`);
     assert.equal(sidebarParts, component.parts.length, `${entry.name}: the selected layer inventory matches authored source parts`);
     await verifyRendered(entry, component);
@@ -130,5 +144,5 @@ export async function verifyCatalogBlueprints({ page, id, label, click, fill, se
   }
   await verifyArrangement();
   await verifyButtonWrapper();
-  record("catalogBlueprints", { created: created.map(({ catalogId, componentId, name, shape, parts }) => ({ catalogId, componentId, name, shape, parts })), providerReferences: provenance.slice(1), rejectedCreationPreservesSource: true, reviewedComponentAndBothDesigns: true, canonicalIdentityAndSelectedName: true, distinctAuthoredRenderers: true, structuralPartIds: true, defaultFramesContainContent: true, defaultFramesDoNotOverlap: true, calendarWeekdaysOneRow: true, treeProjectThemeFrameBackdrop: true, transparentTreeAndButtonWrappers: true, reloadPreservesSourceAndRendering: true });
+  record("catalogBlueprints", { created: created.map(({ catalogId, componentId, name, sourceRow, parts }) => ({ catalogId, componentId, name, sourceRow, parts })), providerReferences: provenance.slice(1), rejectedCreationPreservesSource: true, reviewedComponentAndBothDesigns: true, canonicalIdentityAndSelectedName: true, distinctOriginalRenderers: true, mappedPartIdsBelongToSource: true, defaultFramesContainContent: true, defaultFramesDoNotOverlap: true, calendarWeekdaysOneRow: true, transparentSeedButtonWrapper: true, insertionPreservesNativeStyleAndLayout: true, reloadPreservesSourceAndRendering: true });
 }

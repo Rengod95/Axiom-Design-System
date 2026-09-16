@@ -13,6 +13,9 @@ function fixture() {
   let sequence = 0; const id = () => `binding.test.${++sequence}`;
   const documents = createStudioStarter("project.binding", OPTIONS);
   const project: ProjectSnapshot = { id: "project.binding", name: "Binding", revision: "initial", documents: Object.fromEntries(documents.map(document => [document.id, { document, originalText: canonicalJson(document), sourceUri: "memory:binding", validation: "envelope-only", validationProfile: STUDIO_PROFILE, diagnostics: [] }])) };
+  // These tests pin the pre-adoption domain contract. Explicit role policy is covered separately.
+  delete source(project).authoringProfile;
+  for (const token of source(project).tokens) delete token.role;
   const token = (name: string) => source(project).tokens.find(token => token.name === name)!;
   return { project, id, token };
 }

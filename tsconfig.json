@@ -15,5 +15,6 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["modules/**/*.ts", "apps/**/*.ts", "apps/**/*.tsx"]
+  "include": ["modules/**/*.ts", "apps/**/*.ts", "apps/**/*.tsx"],
+  "exclude": ["node_modules", "apps/studio/reference/**"]
 }

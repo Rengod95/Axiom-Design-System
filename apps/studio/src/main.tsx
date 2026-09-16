@@ -4,6 +4,7 @@ import { createBrowserServices, IndexedDbStore } from "../../../modules/browser-
 import { App } from "./app.tsx";
 import { StudioController } from "./controller.ts";
 import "./styles.css";
+import "./reference-preview.css";
 import "./ui-system.css";
 import "./foundation-workspace.css";
 import "./studio-chrome.css";

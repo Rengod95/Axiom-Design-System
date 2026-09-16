@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const OUTPUT = resolve(ROOT, "dist/studio");
+for (const provider of ["shadcn", "mantine", "react-aria", "base-ui"]) await import(`./build-reference-${provider}.mjs`);
+await import("./build-reference-frames.mjs");
 await mkdir(OUTPUT, { recursive: true });
 const result = await build({ absWorkingDir: ROOT, entryPoints: ["apps/studio/src/main.tsx"], outfile: "dist/studio/app.js", bundle: true, minify: true, loader: { ".woff2": "file" }, assetNames: "[name]",
   platform: "browser", format: "esm", target: ["es2023"], jsx: "automatic", sourcemap: true, metafile: true, legalComments: "eof", define: { "process.env.NODE_ENV": '"production"' } });

@@ -34,6 +34,8 @@ jobs:
         run: python scripts/verify-retirement.py --self-test
       - name: Verify Foundation document integrity and negative cases
         run: python scripts/verify-foundation.py --self-test
+      - name: Verify pinned reference sources, licenses, locks and previews
+        run: python scripts/verify-reference-templates.py --self-test
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
@@ -41,18 +43,30 @@ jobs:
         run: |
           npm install --global pnpm@11.19.0 --ignore-scripts
           pnpm install --frozen-lockfile --ignore-scripts
+      - name: Install locked shadcn reference runtime without lifecycle scripts
+        run: npm --prefix apps/studio/reference/shadcn ci --ignore-scripts
+      - name: Install locked Mantine reference runtime without lifecycle scripts
+        run: npm --prefix apps/studio/reference/mantine ci --ignore-scripts
+      - name: Install locked React Aria reference runtime without lifecycle scripts
+        run: npm --prefix apps/studio/reference/react-aria ci --ignore-scripts
+      - name: Install locked Base UI reference runtime without lifecycle scripts
+        run: npm --prefix apps/studio/reference/base-ui ci --ignore-scripts
       - name: Check module boundaries and strict TypeScript
         run: pnpm check
       - name: Run product behavior and filesystem tests
         run: pnpm test
       - name: Emit runnable JavaScript
         run: pnpm build
+      - name: Verify built reference bundles, notices and copied previews
+        run: python scripts/verify-reference-templates.py --built
       - name: Verify real Chromium transaction and restart behavior
         run: pnpm test:browser
       - name: Verify actual Studio editing and recovery in Chromium
         run: pnpm test:studio
       - name: Verify expanded workbench in Chromium
         run: pnpm test:workbench
+      - name: Verify reference insertion, sparse edits and iframe isolation in Chromium
+        run: pnpm test:references
       - name: Consume emitted Web and React Native target source
         run: pnpm test:targets
       - name: Retain actual browser and consumer evidence

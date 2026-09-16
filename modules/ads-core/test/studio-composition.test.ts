@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { canonicalJson, CommandService, MemoryStore, PROTOCOL_VERSION, STUDIO_FORMAT, createStudioStarter, inspectStudioProject, inspectStudioCompositionGraph, planStudioComponentCreate, planStudioComponentEdit, planStudioComponentDelete, planStudioComponentDuplicate, planStudioInstanceEdit, STUDIO_PROFILE } from "../src/index.ts";
+import { canonicalJson, CommandService, MemoryStore, PROTOCOL_VERSION, STUDIO_FORMAT, createStudioStarter, inspectStudioProject, inspectStudioCompositionGraph, planStudioComponentCreate, planStudioComponentEdit, planStudioComponentDelete, planStudioComponentDuplicate, planStudioInstanceEdit, studioReferenceForCatalog, STUDIO_PROFILE } from "../src/index.ts";
 import type { CommandResult, JsonObject, Principal, ProjectSnapshot, StudioComponentPlan, StudioInstance } from "../src/index.ts";
 
 const valid = (plan: StudioComponentPlan) => { assert.equal(plan.valid, true, JSON.stringify(plan.diagnostics)); return plan.project; };
@@ -23,6 +23,53 @@ test("instances store pinned references and individual values without duplicatin
   assert.equal(f.projected().instances![0]!.values[String(port.id)], true);
   f.project = valid(planStudioInstanceEdit(f.project, f.owner, { kind: "value", instanceId: instance.id, valueId: String(port.id), value: null, reset: true }, f.id));
   assert.deepEqual(f.projected().instances![0]!.values, {});
+});
+
+test("original template instances preserve their baseline and reject unmapped value and content overrides", () => {
+  for (const catalogId of ["catalog.checkbox", "catalog.card"]) {
+    const f = fixture(), template = studioReferenceForCatalog(catalogId)!;
+    const created = planStudioComponentCreate(f.project, { catalogId, referenceTemplateId: template.id }, f.id);
+    f.project = valid(created);
+    const child = created.changes.upserts.find(entry => entry.document.kind === "component")!.document;
+    const childBefore = canonicalJson(f.project.documents[child.id]), ownerRoot = f.projected().parts.find(part => part.parent === null)!;
+    f.project = valid(planStudioInstanceEdit(f.project, f.owner, { kind: "insert", ownerPartRef: ownerRoot.id, slotRef: null, sourceComponentId: child.id }, f.id));
+    const instance = f.projected().instances![0]!;
+    assert.deepEqual(instance.values, {}); assert.deepEqual(instance.slotContents, {});
+    assert.equal(canonicalJson(f.project.documents[child.id]), childBefore);
+    assert.equal(inspectStudioProject(f.project).valid, true, "Original runtime supplies its own required content");
+    const port = (child.publicContract as JsonObject).values as JsonObject[];
+    const checkedPort = port.find(value => value.name === "checked");
+    const before = canonicalJson(f.project);
+    for (const edit of [
+      ...(checkedPort ? [{ kind: "value" as const, instanceId: instance.id, valueId: String(checkedPort.id), value: true, reset: false }] : []),
+      { kind: "content" as const, instanceId: instance.id, slotId: String((child.slots as JsonObject[])[0]?.id ?? "slot.unmapped"), text: "Replacement" },
+    ]) {
+      const rejected = planStudioInstanceEdit(f.project, f.owner, edit, f.id);
+      assert.equal(rejected.valid, false); assert.deepEqual(rejected.changes.upserts, []);
+      assert.equal(canonicalJson(rejected.project), before); assert.equal(canonicalJson(f.project), before);
+      assert.ok(rejected.diagnostics.some(item => item.message.includes("provider-specific mapping")));
+    }
+    const childRoot = (child.parts as JsonObject[]).find(part => part.parent === null)!;
+    const unsupportedOwner = planStudioInstanceEdit(f.project, child.id, { kind: "insert", ownerPartRef: String(childRoot.id), slotRef: null, sourceComponentId: f.child }, f.id);
+    assert.equal(unsupportedOwner.valid, false, "Original React anatomy cannot silently ignore authored instance children");
+  }
+});
+
+test("raw current and stale instance documents cannot bypass original-template override restrictions", () => {
+  const f = fixture(), template = studioReferenceForCatalog("catalog.checkbox")!;
+  const created = planStudioComponentCreate(f.project, { catalogId: template.catalogId, referenceTemplateId: template.id }, f.id);
+  f.project = valid(created);
+  const child = created.changes.upserts.find(entry => entry.document.kind === "component")!.document;
+  const ownerRoot = f.projected().parts.find(part => part.parent === null)!;
+  f.project = valid(planStudioInstanceEdit(f.project, f.owner, { kind: "insert", ownerPartRef: ownerRoot.id, slotRef: null, sourceComponentId: child.id }, f.id));
+  const valueId = String(((child.publicContract as JsonObject).values as JsonObject[]).find(value => value.name === "checked")!.id);
+  for (const stale of [false, true]) for (const field of ["values", "slotContents"] as const) {
+    const imported = structuredClone(f.project), instance = ((imported.documents[f.owner]!.document.studioComposition as JsonObject).instances as JsonObject[])[0]!;
+    instance[field] = field === "values" ? { [valueId]: true } : { "slot.unmapped": "Replacement" };
+    if (stale) (instance.componentRef as JsonObject).revision = "revision.previous";
+    const diagnostic = inspectStudioCompositionGraph(imported.documents, imported.id).find(item => item.sourceRef === f.owner && item.path?.endsWith(`/${field}`) && item.message.includes("provider-specific mapping"));
+    assert.equal(diagnostic?.severity, "error", `${field}: ${stale ? "stale" : "current"} references retain the same override boundary`);
+  }
 });
 test("self/nested cycles, text destinations and incompatible prop values reject atomically", () => {
   const f = fixture(), root = f.projected().parts.find(part => part.parent === null)!;

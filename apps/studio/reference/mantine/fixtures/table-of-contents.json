@@ -1,0 +1,34 @@
+[
+  {
+    "depth": 2,
+    "title": "Usage"
+  },
+  {
+    "depth": 2,
+    "title": "use-scroll-spy options"
+  },
+  {
+    "depth": 2,
+    "title": "Pass props to controls"
+  },
+  {
+    "depth": 2,
+    "title": "Initial data"
+  },
+  {
+    "depth": 2,
+    "title": "Depth offset"
+  },
+  {
+    "depth": 2,
+    "title": "autoContrast"
+  },
+  {
+    "depth": 2,
+    "title": "Styles API"
+  },
+  {
+    "depth": 2,
+    "title": "Reinitialize"
+  }
+]

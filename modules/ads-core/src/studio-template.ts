@@ -4,6 +4,8 @@ import { isObject, isValidId } from "./documents.ts";
 import { KernelError } from "./kernel-error.ts";
 import { CODE } from "./constants.ts";
 import { applyFoundationStarter } from "./foundation-starters.ts";
+import { migrateFoundationValueSets } from "./foundation-value-sets.ts";
+import { FOUNDATION_AUTHORING_PROFILE } from "./foundation-roles.ts";
 import type { FoundationStarterOptions } from "./foundation-starters.ts";
 import type { FoundationDocument } from "./foundation-contracts.ts";
 import { STUDIO_ARCHETYPES, STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MOTION, STUDIO_PART_ROLES, STUDIO_RESOLVER, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
@@ -93,9 +95,12 @@ export function createStudioStarter(projectId: string, options?: FoundationStart
       if (!token || !target) continue;
       token.value = { ref: { id: target.id, expectedKind: "token" } };
       if (target.domain) token.domain = target.domain;
-      const semantic = foundation.tiers.filter(isObject).find(tier => typeof tier.name === "string" && tier.name.toLowerCase() === "semantic"); if (semantic && typeof semantic.id === "string") token.tier = semantic.id;
+      if (target.role) token.role = target.role;
+      const componentTier = foundation.tiers.filter(isObject).find(tier => tier.role === "component"); if (componentTier && typeof componentTier.id === "string") token.tier = componentTier.id;
       for (const axis of foundation.themeAxes) for (const overrides of Object.values(axis.overrides ?? {})) delete overrides[token.id];
     }
+    migrateFoundationValueSets(foundation, () => `foundation.starter.${++sequence}`);
+    foundation.authoringProfile = { ...FOUNDATION_AUTHORING_PROFILE };
   }
   return [source, ...components, ...components.flatMap(item => STUDIO_CATEGORIES.map(category => design(item, category)))];
 }

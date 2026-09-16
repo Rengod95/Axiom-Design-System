@@ -1,0 +1,527 @@
+{
+  "auditDate": "2026-09-15",
+  "provider": "Mantine",
+  "upstreamRepository": "https://github.com/mantinedev/mantine",
+  "version": "9.6.1",
+  "commit": "61049ecd950f6fb9ddc631decfec2edbdffe58e1",
+  "license": "MIT",
+  "licenseSource": "https://github.com/mantinedev/mantine/blob/61049ecd950f6fb9ddc631decfec2edbdffe58e1/LICENSE",
+  "counts": {
+    "Mantine Core": 118,
+    "Mantine Schedule": 11,
+    "Mantine Charts": 22,
+    "Mantine Dates": 15,
+    "Mantine Other Extensions": 9
+  },
+  "total": 175,
+  "verification": "Each entry matched a documentation MDX and component source file in the complete recursive tree of the exact release commit. Source bytes downloaded for default props, CSS and first referenced official demos. This does not claim visual parity in Axiom.",
+  "defaultThemeSource": "https://github.com/mantinedev/mantine/blob/61049ecd950f6fb9ddc631decfec2edbdffe58e1/packages/@mantine/core/src/core/MantineProvider/default-theme.ts",
+  "defaultColorsSource": "https://github.com/mantinedev/mantine/blob/61049ecd950f6fb9ddc631decfec2edbdffe58e1/packages/@mantine/core/src/core/MantineProvider/default-colors.ts",
+  "styleIsolationGuidance": "Use pinned native upstream React packages and their compiled CSS, with MantineProvider and its default theme scoped in an iframe or a portal-aware dedicated host. Studio Geist/green/12px styling must not leak into reference baselines. Every template needs an exact official demo ID, fixtures, size/variant and scheme; a library name alone is not a single visual design.",
+  "editableTemplateGuidance": "Represent approved upstream exports, props, children and slot anatomy in an allowlisted serializable template adapter. Render native Mantine as the reference baseline; map supported part styles through Mantine Styles API. Keep controlled state/events in the editor adapter and preserve native accessibility/interaction. Do not evaluate arbitrary JSX strings. For overlays, ensure portal target and Mantine CSS/provider scope match the preview host. Capture canonical reference and rendered template in the same browser/font/viewport/scheme/state before claiming identical design.",
+  "dedupNotes": [
+    "Mantine Dialog is a non-modal fixed surface; do not merge with Modal/AlertDialog solely because names sound similar.",
+    "Collapse is the animation container; Accordion owns trigger/disclosure semantics. Collapsible+Collapse may share a visual category but are not API-identical.",
+    "RangeSlider and Slider differ in value arity; preserve as distinct starter presets if merged into a range-control family.",
+    "Input is a low-level input body; TextInput owns label/description/error wrapper. Catalog-level canonical grouping must preserve both upstream templates.",
+    "Card extends Paper with sections; Paper is not an identical card preset.",
+    "DatePicker is inline calendar selection and DatePickerInput adds an input/popover. Do not collapse their reference designs.",
+    "Typography is the API export in 9.6.1; do not replace it with the older TypographyStylesProvider name."
+  ],
+  "packages": {
+    "@mantine/carousel": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "embla-carousel": ">=8.0.0",
+        "embla-carousel-react": ">=8.0.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": null,
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/charts": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "recharts": ">=3.2.1"
+      },
+      "dependencies": null,
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/code-highlight": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "clsx": "^2.1.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/core": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "@floating-ui/react": "^0.27.20",
+        "clsx": "^2.1.1",
+        "react-number-format": "^5.4.5",
+        "react-remove-scroll": "^2.7.2",
+        "type-fest": "^5.8.0"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css",
+        "./styles/*": "./styles/*"
+      }
+    },
+    "@mantine/dates": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "dayjs": ">=1.0.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "clsx": "^2.1.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/dropzone": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "react-dropzone": "20.1.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/lightbox": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "embla-carousel": ">=8.0.0",
+        "embla-carousel-react": ">=8.0.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "@mantine/store": "9.6.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/modals": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": null,
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        }
+      }
+    },
+    "@mantine/notifications": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "@mantine/store": "9.6.1",
+        "react-transition-group": "4.4.5"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/nprogress": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "@mantine/store": "9.6.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/schedule": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/dates": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "rrule": "^2.8.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/spotlight": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": {
+        "@mantine/store": "9.6.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    },
+    "@mantine/tiptap": {
+      "version": "9.6.1",
+      "license": "MIT",
+      "peerDependencies": {
+        "@mantine/core": "9.6.1",
+        "@mantine/hooks": "9.6.1",
+        "@tiptap/extension-link": ">=3.3.0",
+        "@tiptap/react": ">=3.3.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+      },
+      "dependencies": null,
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./lib/index.d.mts",
+            "default": "./esm/index.mjs"
+          },
+          "require": {
+            "types": "./lib/index.d.ts",
+            "default": "./cjs/index.cjs"
+          }
+        },
+        "./styles.css": "./styles.css",
+        "./styles.layer.css": "./styles.layer.css"
+      }
+    }
+  },
+  "unavailable": [],
+  "cachedFiles": 684,
+  "demoExternalImports": {
+    "@mantinex/mantine-logo": [
+      "Marquee"
+    ],
+    "@phosphor-icons/react": [
+      "ActionIcon",
+      "Affix",
+      "Alert",
+      "Avatar",
+      "Blockquote",
+      "EmptyState",
+      "NavLink",
+      "Spotlight",
+      "Tabs",
+      "ThemeIcon",
+      "Tree"
+    ],
+    "@tiptap/extension-highlight": [
+      "Rich text editor"
+    ],
+    "@tiptap/extension-subscript": [
+      "Rich text editor"
+    ],
+    "@tiptap/extension-superscript": [
+      "Rich text editor"
+    ],
+    "@tiptap/extension-text-align": [
+      "Rich text editor"
+    ],
+    "@tiptap/react": [
+      "Rich text editor"
+    ],
+    "@tiptap/starter-kit": [
+      "Rich text editor"
+    ],
+    "dayjs": [
+      "AgendaView",
+      "DayView",
+      "MobileMonthView",
+      "ResourcesDayView",
+      "ResourcesMonthView",
+      "ResourcesSchedule",
+      "ResourcesWeekView",
+      "WeekView",
+      "YearView"
+    ],
+    "react": [
+      "ActionBar",
+      "AlphaSlider",
+      "ColorPicker",
+      "Combobox",
+      "ComboboxPopover",
+      "DateInput",
+      "DatePicker",
+      "DatePickerInput",
+      "DayView",
+      "FileButton",
+      "FloatingIndicator",
+      "HueSlider",
+      "Lightbox",
+      "MiniCalendar",
+      "MobileMonthView",
+      "MonthPicker",
+      "MonthPickerInput",
+      "Overlay",
+      "ResourcesDayView",
+      "ResourcesMonthView",
+      "ResourcesSchedule",
+      "ResourcesWeekView",
+      "RollingNumber",
+      "Stepper",
+      "WeekView",
+      "YearPicker",
+      "YearPickerInput",
+      "YearView"
+    ]
+  },
+  "demoImportAnalysis": "Top-level TypeScript AST import declarations only; imports contained inside example-code string literals are excluded. type-only use and unused code-string-only bindings still require transpiler/tree shaking.",
+  "officialDocsHost": {
+    "appSource": "https://github.com/mantinedev/mantine/blob/61049ecd950f6fb9ddc631decfec2edbdffe58e1/apps/mantine.dev/src/pages/_app.tsx",
+    "themeSource": "https://github.com/mantinedev/mantine/blob/61049ecd950f6fb9ddc631decfec2edbdffe58e1/apps/mantine.dev/theme.ts",
+    "themeNotes": "Official docs retain the native default primary font, blue palette, defaultRadius and sizes. Monospace is prefixed with Menlo/Monaco. The Outfit docs CSS custom property styles documentation chrome, not the default Mantine component font.",
+    "codeHighlightProvider": "CodeHighlightAdapterProvider with createShikiAdapter; shiki createHighlighter langs tsx/scss/html/bash/json, themes empty.",
+    "globalManagers": [
+      "Notifications",
+      "ModalsProviderDemo"
+    ]
+  },
+  "nativeDefaultTokens": {
+    "primaryColor": "blue",
+    "primaryShade": {
+      "light": 6,
+      "dark": 8
+    },
+    "defaultRadius": "md",
+    "radiusPx": {
+      "xs": 2,
+      "sm": 4,
+      "md": 8,
+      "lg": 16,
+      "xl": 32
+    },
+    "fontSizesPx": {
+      "xs": 12,
+      "sm": 14,
+      "md": 16,
+      "lg": 18,
+      "xl": 20
+    },
+    "spacingPx": {
+      "xs": 10,
+      "sm": 12,
+      "md": 16,
+      "lg": 20,
+      "xl": 32
+    },
+    "fontWeights": {
+      "regular": 400,
+      "medium": 600,
+      "bold": 700
+    },
+    "buttonSm": {
+      "heightPx": 36,
+      "paddingInlinePx": 18,
+      "fontSizePx": 14,
+      "fontWeight": 600,
+      "radiusPx": 8
+    }
+  },
+  "implementationRiskNotes": [
+    "Use compiled npm styles.css rather than raw module.css which uses Mantine PostCSS syntax.",
+    "All Mantine 9.6.1 packages require React and ReactDOM ^19.2.0.",
+    "Mantine Portal defaults and root CSS variables need deliberate isolation when rendering inside a ShadowRoot; an iframe keeps native document/body semantics simpler.",
+    "Date and schedule official fixtures use current-day data; freeze clock and locale for deterministic visual comparisons.",
+    "Some usage demos intentionally have no visual pixels (Portal, VisuallyHidden), open only on interaction (manager/overlay), or require full viewport layout (AppShell).",
+    "AST extraction must omit documentation code strings and docs-only configurator UI, preserving native Demo/Wrapper, fixtures and initialValue controls."
+  ]
+}

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { foundationTab } from "./workbench-foundation-cases.mjs";
 
 /** Public UI authoring sequences use a dedicated database; source reads only verify saved results. */
 export async function verifyAuthoringWorkspace({ page, origin, database, root, id, label, text, click, clickElement, fill, selectElement, until, settled, approve, revision, record }) {
@@ -15,9 +16,9 @@ export async function verifyAuthoringWorkspace({ page, origin, database, root, i
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
   await fill("project-name", "Architecture authoring");
   assert.equal(await page.evaluate(`(${label("Token template", "select")}).options.length`), 6, "All architectures are available during onboarding");
-  await click("starter-enabled"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
   const baseline = await revision();
-  await click("view-foundation"); await clickElement(text("Templates"));
+  await click("view-foundation"); await clickElement(foundationTab("Domains")); await clickElement(text("Apply a template"));
   assert.equal(await page.evaluate("document.querySelectorAll('.starter-template-choice input').length"), 6);
   assert.equal(await page.evaluate("document.querySelectorAll('.foundation-navigation button').length && Array.from(document.querySelectorAll('.foundation-navigation button')).some(e=>e.textContent==='Connections')"), false);
   for (const template of ["essentials", "radix", "carbon", "material", "fluent", "spectrum"]) {
@@ -27,16 +28,12 @@ export async function verifyAuthoringWorkspace({ page, origin, database, root, i
     assert.equal(await revision(), baseline, "Selecting a template only changes its proposal controls");
     assert.equal(await page.evaluate(`${id("review-changes")}?.disabled ?? true`), true);
   }
-  await clickElement(text("Clear all"));
-  assert.equal(await page.evaluate(`${id("apply-foundation-template")}.disabled`), true);
-  assert.equal(await page.evaluate("document.querySelectorAll('.starter-domain-choice input:checked').length"), 0);
-  assert.ok(await page.evaluate("document.querySelector('.starter-domain-empty').textContent.includes('Select at least one')"));
-  await clickElement(text("Select all"));
-  const spacing = "document.querySelector('.starter-domain-choice input[aria-label=Spacing]')";
-  await page.evaluate(`(${spacing}).focus()`);
-  for (const type of ["keyDown", "keyUp"]) await page.send("Input.dispatchKeyEvent", { type, key: " ", code: "Space", windowsVirtualKeyCode: 32 }); await settled();
-  assert.equal(await page.evaluate(`(${spacing}).checked`), false, "Domain selection retains native keyboard semantics");
-  await clickElement(`(${spacing}).closest('label')`);
+  assert.equal(await page.evaluate("document.querySelectorAll('.starter-required-grid > span').length"), 11, "Every template includes the complete required domain baseline");
+  assert.equal(await page.evaluate("document.querySelectorAll('.starter-domain-choice input').length"), 0, "Required domains cannot be unchecked into an incomplete system");
+  assert.equal(await page.evaluate(`${id("apply-foundation-template")}.disabled`), false);
+  await page.evaluate("document.querySelector('.starter-template-choice input[value=essentials]').focus()");
+  for (const type of ["keyDown", "keyUp"]) await page.send("Input.dispatchKeyEvent", { type, key: "ArrowRight", code: "ArrowRight" }); await settled();
+  assert.equal(await page.evaluate("document.querySelector('.starter-template-choice input[value=radix]').checked"), true, "Architecture radios retain keyboard selection semantics");
   await clickElement("document.querySelector('.starter-template-choice input[value=radix]').closest('label')");
   for (const theme of ["dark", "light"]) {
     await appearance(theme); await viewport(1440, 1080); await page.evaluate("document.querySelector('.foundation-panel').scrollTop=0"); await capture(`templates-desktop-${theme}`);
@@ -52,15 +49,17 @@ export async function verifyAuthoringWorkspace({ page, origin, database, root, i
   const foundation = (await saved()).find(document => document.kind === "foundation");
   assert.ok(foundation.tokens.some(token => token.name === "radix.color.neutral.light.1" && token.metadata.template === "radix"));
   assert.equal(foundation.domains.length, 11);
-  record("architectureTemplates", { choices: 6, onboarding: true, selectionDoesNotMutate: true, emptySelectionBlocksApply: true, keyboardCheckbox: true, actualDarkAliasPreview: true, reviewedRadixSaveAndReload: true, domains: 11 });
+  record("architectureTemplates", { choices: 6, onboarding: true, selectionDoesNotMutate: true, requiredDomainsCannotBeOmitted: true, keyboardTemplateRadio: true, actualDarkAliasPreview: true, reviewedRadixSaveAndReload: true, domains: 11 });
 
   await click("view-library"); await click("create-custom-component"); await until(id("component-composer"));
-  assert.equal(await page.evaluate("document.querySelectorAll('.composer-starts input').length"), 6);
-  for (const start of ["blank", "stack", "article", "button", "input", "card"]) {
+  assert.equal(await page.evaluate("document.querySelectorAll('.composer-starts input').length"), 8);
+  for (const start of ["blank", "stack", "article", "button", "checkbox", "accordion", "input", "card"]) {
     await click(`composer-${start}`); assert.equal(await page.evaluate(`${id(`composer-${start}`)}.checked`), true);
     assert.equal(await page.evaluate(`${id("composer-create")}.disabled`), false);
     if (start === "article") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview article[data-part-id] h2[data-part-id]'))"));
     if (start === "button") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview button[data-part-id]'))"));
+    if (start === "checkbox") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview input[type=checkbox]'))"));
+    if (start === "accordion") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview button[aria-expanded]'))"));
     if (start === "input") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview input'))"));
     assert.equal(await revision(), templateRevision);
   }
@@ -86,7 +85,7 @@ export async function verifyAuthoringWorkspace({ page, origin, database, root, i
   await click(`component-${componentId}`);
   assert.ok(await page.evaluate(`Boolean(${id(`preview-${componentId}`)}.querySelector('article[data-part-id] h2[data-part-id]'))`));
   const component = (await saved()).find(document => document.id === componentId); assert.equal(component.name, "Release article");
-  record("componentComposer", { starts: 6, nativeButtonAndInputPreview: true, semanticArticlePreview: true, cancelPreservesSource: true, nameFeedsLivePreview: true, reviewedArticleSaveAndReload: true });
+  record("componentComposer", { starts: 8, nativeButtonAndInputPreview: true, nativeCheckboxAndAccordionPreview: true, semanticArticlePreview: true, cancelPreservesSource: true, nameFeedsLivePreview: true, reviewedArticleSaveAndReload: true });
 
   const heading = "Array.from(document.querySelectorAll('.element-tree button')).find(e=>e.querySelector('span').textContent==='Heading')";
   await clickElement(heading); assert.equal(await page.evaluate(`${id("part-element")}.value`), "h2");

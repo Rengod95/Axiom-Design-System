@@ -1,3 +1,4 @@
+import { studioLengthPixels } from "../../ads-core/src/index.ts";
 import type { StudioComponent, StudioProjection } from "../../ads-core/src/index.ts";
 import type { SourceFile } from "./contracts.ts";
 import { componentSymbol } from "./generator-input.ts";
@@ -33,7 +34,7 @@ export function ${name}({open, message = ${sample}.body, closeLabel = ${sample}.
  React.useEffect(() => { const animation = Animated.timing(opacity,{toValue:phase === "exiting" ? 0 : 1,duration,useNativeDriver:true}); animation.start(); return () => animation.stop(); },[phase,duration,opacity]);
  React.useEffect(() => { if (active && phase === "present" && Platform.OS === "ios") AccessibilityInfo.announceForAccessibility(message); },[active,phase]);
  if (!active || phase === "removed") return null;
- return <Animated.View style={[visual(${name}Design,${JSON.stringify(root.id)}),{opacity:Animated.multiply(opacity,${component.mobile.parts[root.id]!.combinations.filled.opacity??1})}]}><Text accessibilityLiveRegion="polite" style={[textVisual(${name}Design,${JSON.stringify(part("body"))},${JSON.stringify(root.id)}),visual(${name}Design,${JSON.stringify(part("body"))})]}>{message}</Text><Pressable accessibilityRole="button" accessibilityLabel={closeLabel} onPress={onCloseRequest} style={[visual(${name}Design,${JSON.stringify(part("close"))}),{minWidth:48,minHeight:${Math.max(48,component.mobile.layout[part("close")]?.minHeight??0)},justifyContent:"center",alignItems:"center"}]}><Text style={textVisual(${name}Design,${JSON.stringify(part("close"))},${JSON.stringify(root.id)})}>{closeLabel}</Text></Pressable></Animated.View>;
+ return <Animated.View style={[visual(${name}Design,${JSON.stringify(root.id)}),{opacity:Animated.multiply(opacity,${component.mobile.parts[root.id]!.combinations.filled.opacity??1})}]}><Text accessibilityLiveRegion="polite" style={[textVisual(${name}Design,${JSON.stringify(part("body"))},${JSON.stringify(root.id)}),visual(${name}Design,${JSON.stringify(part("body"))})]}>{message}</Text><Pressable accessibilityRole="button" accessibilityLabel={closeLabel} onPress={onCloseRequest} style={[visual(${name}Design,${JSON.stringify(part("close"))}),{minWidth:48,minHeight:${Math.max(48,studioLengthPixels(component.mobile.layout[part("close")]?.minHeight??0))},justifyContent:"center",alignItems:"center"}]}><Text style={textVisual(${name}Design,${JSON.stringify(part("close"))},${JSON.stringify(root.id)})}>{closeLabel}</Text></Pressable></Animated.View>;
 }
 `;
 }

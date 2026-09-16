@@ -1,0 +1,13 @@
+{
+  "name": "@axiom/reference-base-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Isolated pinned official Base UI reference templates.",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "@base-ui/react": "1.8.0"
+  }
+}

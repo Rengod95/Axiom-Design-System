@@ -4,9 +4,10 @@ import { verifyCompositionWorkspace } from "./workbench-composition-cases.mjs";
 import { verifyCompoundWorkspace } from "./workbench-compound-cases.mjs";
 import { verifyAuthoringWorkspace } from "./workbench-authoring-cases.mjs";
 import { verifyCompactWorkbench, verifyEditorCompletion, verifyFoundationInterop, verifyMaterialWorkbench, verifyPanelVisibility, verifyBindingPurposeFilters, verifyBindingRepair } from "./workbench-completion-cases.mjs";
-import { verifyFoundationBlueprints } from "./workbench-foundation-cases.mjs";
+import { verifyFoundationBlueprints, verifyThemeDraftWorkspace, foundationTab, tokenLayer, tokenDomain, openFoundationSettings, seedLegacyFoundation } from "./workbench-foundation-cases.mjs";
 import { verifyBlueprintChrome } from "./workbench-chrome-cases.mjs";
 import { verifyCatalogBlueprints } from "./workbench-catalog-cases.mjs";
+import { registerReferenceDebugger, verifyReferenceCheckboxSimulation } from "./verify-reference-studio.mjs";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -61,6 +62,7 @@ async function revealControl(expression) {
 async function fillElement(expression, value) {
   await revealControl(expression);
   await until(`(${expression}) && !(${expression}).matches(':disabled')`);
+  await until(`(${expression}).getClientRects().length>0`);
   await page.evaluate(`(${expression}).focus()`);
   await key("a", "KeyA", { modifiers: 2, windowsVirtualKeyCode: 65 });
   await page.send("Input.insertText", { text: value });
@@ -68,6 +70,7 @@ async function fillElement(expression, value) {
 }
 const fill = (testId, value) => fillElement(id(testId), value);
 async function selectElement(expression, value) {
+  await revealControl(expression);
   await until(`(${expression}) && !(${expression}).matches(':disabled')`);
   await page.evaluate(`(()=>{const e=(${expression});if(!Array.from(e.options).some(o=>o.value===${JSON.stringify(value)}))throw Error('Missing option');e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
   await settled();
@@ -119,15 +122,36 @@ try {
   await browser.cdp.send("Browser.setDownloadBehavior", { behavior: "allow", downloadPath: downloads });
   const url = `${origin}/?database=axiom-studio-test-${randomUUID()}`;
   page = await browser.cdp.page(url);
+  registerReferenceDebugger(page, browser.cdp);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1600, height: 1080, deviceScaleFactor: 1, mobile: false });
-  await fill("project-name", "Workbench 검증"); await click("starter-enabled"); await click("start-project");
+  await fill("project-name", "Workbench 검증"); await click("start-project");
   await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await seedLegacyFoundation({ page, database: new URL(url).searchParams.get("database"), id, until });
+  await click("view-canvas");
   assert.equal(await page.evaluate("document.querySelectorAll('[data-component-frame]').length"), 3);
-  const initialRevision = await revision();
+  const legacyRevision = await revision();
   await click("locale-toggle"); await until("document.documentElement.lang==='en'");
   record("create", { components: 3, saved: true });
 
-  await click("new-token"); await fill("foundation-token-name", "Workbench spacing"); await select("foundation-token-type", "dimension");
+  const settings = name => openFoundationSettings({ page, id, click, clickElement }, name);
+  await settings("Migration");
+  const legacyTokens = await page.evaluate("document.querySelectorAll('.sidebar [data-testid^=token-]').length");
+  await click("foundation-migrate"); assert.equal(await revision(), legacyRevision, "Migration is a reviewable proposal");
+  assert.equal(await page.evaluate(`${id("foundation-settings")}.getAttribute('aria-pressed')`), "true", "Preparing migration does not navigate before reviewed adoption");
+  await approve(); await until("document.querySelectorAll('.sidebar-domain-toggle').length===11");
+  await click("undo"); await until(`document.querySelectorAll('.sidebar [data-testid^=token-]').length===${legacyTokens}`);
+  await click("redo"); await until("document.querySelectorAll('.sidebar-domain-toggle').length===11");
+  await until(`(${foundationTab("Tokens")}).getAttribute('aria-selected')==='true'`);
+  assert.equal(await page.evaluate(`(${tokenLayer("Semantic")}).getAttribute('aria-selected')`), "true");
+  assert.equal(await page.evaluate(`(${tokenDomain("Color")}).getAttribute('aria-selected')`), "true");
+  assert.equal(await page.evaluate(`${id("token-view-visual")}.getAttribute('aria-pressed')`), "true");
+  const initialRevision = await revision();
+  assert.notEqual(initialRevision, legacyRevision);
+  record("foundationMigration", { legacyTokens, requiredDomains: 11, reviewedAtomicUndoRedo: true, proposalRetainsSettings: true, adoptedSemanticColorWorkspace: true });
+
+  await click("new-token"); await fill("foundation-token-name", "Workbench spacing");
+  const spacingDomain = await page.evaluate(`Array.from((${label("Domain", "select")}).options).find(o=>o.textContent==='Spacing').value`);
+  await selectElement(label("Domain", "select"), spacingDomain); await select("foundation-token-role", "spacing.length");
   const numeric = label("Value", "input");
   await fillElement(numeric, "-");
   await until(`${id("foundation-token-apply")}.disabled`);
@@ -137,7 +161,7 @@ try {
   assert.equal(await page.evaluate(`${id("view-foundation")}.getAttribute('aria-pressed')`), "true");
   assert.equal(await page.evaluate(`${id("open-export")}.disabled`), true);
   assert.equal(await revision(), initialRevision);
-  await fillElement(numeric, "12"); await click("foundation-token-apply");
+  await fillElement(numeric, "0.75"); await click("foundation-token-apply");
   const tokenId = await page.evaluate("Array.from(document.querySelectorAll('.sidebar [data-testid^=token-]')).find(e=>e.textContent==='Workbench spacing').dataset.testid.slice(6)");
   await until(`${id(`foundation-row-${tokenId}`)}`);
   assert.equal(await revision(), initialRevision);
@@ -146,51 +170,49 @@ try {
   await click("redo"); await until(`${id(`token-${tokenId}`)}`);
   record("typedToken", { finiteInputRejected: true, exactInvalidBufferRetainedAfterBlurAndNavigation: true, previewDoesNotCommit: true, reviewUndoRedo: true });
 
-  await click("new-token"); await fill("foundation-token-name", "Workbench alias"); await select("foundation-token-type", "dimension");
+  await click("new-token"); await fill("foundation-token-name", "Workbench alias"); await selectElement(label("Domain", "select"), spacingDomain); await select("foundation-token-role", "spacing.length");
   await selectElement(label("Value source", "select"), "alias"); await selectElement(label("Referenced token", "select"), tokenId); await click("foundation-token-apply");
   const aliasId = await page.evaluate("Array.from(document.querySelectorAll('.sidebar [data-testid^=token-]')).find(e=>e.textContent==='Workbench alias').dataset.testid.slice(6)");
-  await until(`${id(`foundation-row-${aliasId}`)}.querySelector('.material-value').textContent==='12px'`);
-  await clickElement(text("Manage")); await fill("foundation-classification-name", "Workbench domain");
-  assert.equal(await page.evaluate(`${id("foundation-token-apply")}.disabled`), false, "Independent property forms remain accessible");
+  await until(`${id(`foundation-row-${aliasId}`)}.querySelector('.material-value').textContent==='0.75rem'`);
+  await settings("Organization"); await clickElement(text("New classification")); await fill("foundation-classification-name", "Workbench domain");
+  await select("foundation-binding-category", "spacing");
+  assert.equal(await page.evaluate(`${id("foundation-classification-apply")}.disabled`), false, "Organization remains editable alongside the reviewed token proposal");
   // A genuine composition remains in the form and commits only after composition ends.
   await page.evaluate(`${id("foundation-classification-name")}.focus()`);
   await page.send("Input.imeSetComposition", { text: "한글", selectionStart: 2, selectionEnd: 2 });
   await page.send("Input.insertText", { text: "한글" }); await fill("foundation-classification-name", "Workbench domain");
   await click("foundation-classification-apply");
-  await clickElement(text("Tokens")); await click("token-view-list");
+  await clickElement(foundationTab("Tokens")); await click("token-view-list");
   await clickElement(label("Select Workbench spacing", "input")); await clickElement(label("Select Workbench alias", "input"));
   const domain = await page.evaluate(`Array.from((${label("Selected tokens domain", "select")}).options).find(o=>o.textContent==='Workbench domain').value`);
   await selectElement(label("Selected tokens domain", "select"), domain); await click("foundation-bulk-classify");
+  await clickElement(tokenDomain("Workbench domain"));
   assert.ok(await page.evaluate(`${id(`foundation-row-${tokenId}`)}.textContent.includes('Workbench domain') && ${id(`foundation-row-${aliasId}`)}.textContent.includes('Workbench domain')`));
   await approve();
-  record("aliasAndClassification", { sameTypeAlias: true, resolvedValue: "12 px", twoTokenBulkClassification: true, oneReview: true, browserComposition: true });
+  record("aliasAndClassification", { samePurposeAlias: true, resolvedValue: "0.75 rem", twoTokenBulkClassification: true, oneReview: true, browserComposition: true });
 
   await clickElement(text("Themes")); await clickElement(text("Theme axes and contexts", "summary")); await clickElement(text("New axis")); await fill("foundation-axis-name", "Density"); await fillElement(label("Context name list", "textarea"), "compact\ncomfortable");
   await selectElement(label("Default context", "select"), "compact"); await click("foundation-axis-apply");
-  await clickElement(text("New set")); await fill("foundation-theme-name", "Workbench compact"); await selectElement(label("Density context", "select"), "compact"); await click("foundation-theme-apply");
+  await clickElement(text("New theme")); await fill("foundation-theme-name", "Workbench compact"); await selectElement(label("Density context", "select"), "compact"); await click("foundation-theme-apply");
+  await clickElement("document.querySelector('.foundation-value-group-manager > summary')");
+  await fillElement(label("Value group name"), "Compact spacing"); await selectElement(label("Value group domain", "select"), domain.slice(3)); await clickElement(text("Create group"));
+  const groupConnection = "Array.from(document.querySelectorAll('.theme-group-row select')).find(e=>Array.from(e.options).some(o=>o.textContent==='Compact spacing'))";
+  const groupId = await page.evaluate(`Array.from((${groupConnection}).options).find(o=>o.textContent==='Compact spacing').value`);
+  await selectElement(groupConnection, groupId); await click("foundation-theme-apply");
   await approve();
   await click(`token-${tokenId}`);
-  const scope = await page.evaluate(`Array.from((${label("Editing scope", "select")}).options).find(o=>o.textContent==='Density / compact').value`);
-  await selectElement(label("Editing scope", "select"), scope); await fillElement(numeric, "24"); await click("foundation-token-apply"); await approve();
-  await until(`(${numeric}).value==='24'`); await click("undo"); await until(`(${numeric}).value==='12'`); await click("redo"); await until(`(${numeric}).value==='24'`);
+  const scope = `group:${groupId}`;
+  await selectElement(label("Editing scope", "select"), scope); await fillElement(numeric, "1.5"); await click("foundation-token-apply"); await approve();
+  await until(`(${numeric}).value==='1.5'`); await click("undo"); await until(`(${numeric}).value==='0.75'`); await click("redo"); await until(`(${numeric}).value==='1.5'`);
   await clickElement(text("Themes")); await selectElement(label("Token to compare", "select"), tokenId);
-  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.comparison-table tbody tr')).some(e=>e.textContent.includes('Workbench compact')&&e.textContent.includes('24 px'))"));
-  record("themes", { axisWithTwoContexts: true, namedSet: true, explicitOverride: true, cleanContextBufferTracksUndoRedo: true, namedSetComparison: true });
+  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.comparison-table tbody tr')).some(e=>e.textContent.includes('Workbench compact')&&e.textContent.includes('1.5rem'))"));
+  record("themes", { axisWithTwoContexts: true, namedSet: true, connectedValueGroup: true, explicitOverride: true, cleanContextBufferTracksUndoRedo: true, namedSetComparison: true });
 
   await click("view-library"); await fill("catalog-search", "Checkbox"); await click("catalog-catalog.checkbox"); await click("catalog-add");
   await until("document.querySelectorAll('[data-component-frame]').length===4"); await approve();
   const addedId = await page.evaluate("Array.from(document.querySelectorAll('[data-component-frame]')).map(e=>e.dataset.componentFrame).find(id=>!['component.button','component.card','component.toast'].includes(id))");
   assert.ok(addedId); await click(`component-${addedId}`);
-  const simulationRevision = await revision();
-  await click("mode-run");
-  const checkbox = `(${id(`preview-${addedId}`)}).querySelector('input[type=checkbox]')`;
-  await until(`${id(`catalog-requests-${addedId}`)}?.textContent.trim()==='0'`);
-  assert.equal(await page.evaluate(`(${checkbox}).checked`), false);
-  await clickElement(checkbox);
-  await until(`(${checkbox}).checked && ${id(`catalog-requests-${addedId}`)}.textContent.trim()==='1 checkedChangeRequest'`);
-  assert.equal(await revision(), simulationRevision); assert.equal(await page.evaluate(`Boolean(${id("review-strip")})`), false);
-  await click("mode-edit"); await until(`!(${checkbox}).checked && !${id(`catalog-requests-${addedId}`)}`);
-  record("catalogSimulation", { nativeCheckboxClick: true, checkedChangeRequest: true, authoredDefaultUnchanged: true, exitRunResetsTransientState: true });
+  await verifyReferenceCheckboxSimulation({ page, componentId: addedId, click, revision, record });
   const cleanRevision = await revision(), previousZoom = await page.evaluate(`${id("zoom-level")}.value`);
   await click("zoom-in"); assert.notEqual(await page.evaluate(`${id("zoom-level")}.value`), previousZoom); await click("zoom-fit");
   await page.evaluate(`${id("canvas-viewport")}.focus()`); await key("h", "KeyH");
@@ -211,7 +233,7 @@ try {
   await click(`token-${tokenId}`); await selectElement(label("Editing scope", "select"), "base"); await fill("foundation-token-name", ""); await clickElement(text("Manage", "summary"));
   assert.equal(await page.evaluate(`(${text("Duplicate token")}).disabled`), true);
   assert.equal(await page.evaluate(`(${text("Delete token…")}).disabled`), true);
-  await click("token-selection-mode");
+  await click("token-view-visual"); await click("token-selection-mode");
   await clickElement(label("Select Workbench spacing", "input"));
   assert.equal(await page.evaluate(`(${text("Delete…")}).disabled`), true, "Bulk deletion must not unmount an inspector with unapplied input");
   await clickElement(text("Clear selection"));
@@ -219,11 +241,12 @@ try {
   await clickElement(text("Reset form")); await until(`${id("foundation-token-name")}.value==='Workbench spacing'`);
   record("dirtyManagement", { duplicateAndDeleteBlocked: true, crossPanelBulkDeleteBlocked: true, navigationPreservesDraft: true, explicitResetRestoresSource: true });
 
-  await click("token-token.accent"); const originalHex = await page.evaluate(`${id("token-value-input")}.value`);
+  await click("token-token.accent"); const originalColorMode = await page.evaluate(`(${label("Value source", "select")}).value`);
+  if (originalColorMode !== "literal") await selectElement(label("Value source", "select"), "literal"); const originalHex = await page.evaluate(`${id("token-value-input")}.value`);
   await fill("token-value-input", "#12"); await until(`${id("foundation-token-apply")}.disabled`);
   await click("view-library"); assert.equal(await page.evaluate(`${id("token-value-input")}.value`), "#12");
   await fill("token-value-input", "#123456"); await click("foundation-token-apply"); await approve();
-  await click("undo"); await until(`${id("token-value-input")}.value===${JSON.stringify(originalHex)}`);
+  await click("undo"); await until(originalColorMode === "literal" ? `${id("token-value-input")}.value===${JSON.stringify(originalHex)}` : `(${label("Value source", "select")}).value===${JSON.stringify(originalColorMode)}`);
   await click("redo"); await until(`${id("token-value-input")}.value==='#123456'`);
   record("hexEditing", { partialInputPreserved: true, invalidApplyBlocked: true, reviewedColorUndoRedo: true });
 
@@ -232,7 +255,13 @@ try {
   await click("locale-toggle"); await until("document.documentElement.lang==='ko'"); await click("locale-toggle"); await until("document.documentElement.lang==='en'");
   await click("project-download");
   const deadline = Date.now() + 10_000;
-  while (!(await readdir(downloads)).includes("axiom-project.json")) { if (Date.now() > deadline) throw Error("Project source bundle download missing"); await delay(100); }
+  while (!(await readdir(downloads)).includes("axiom-project.json")) {
+    if (Date.now() > deadline) {
+      const detail = await page.evaluate(`({alerts:Array.from(document.querySelectorAll('[role=alert]')).map(e=>e.textContent),downloadDisabled:${id("project-download")}?.disabled,saveStatus:${id("save-status")}?.textContent,revision:${id("project-revision")}?.title,error:${id("operation-error")}?.textContent})`);
+      throw Error(`Project source bundle download missing; detail: ${JSON.stringify(detail)}; files: ${JSON.stringify(await readdir(downloads))}; browser errors: ${browser.cdp.errors.join("; ")}`);
+    }
+    await delay(100);
+  }
   const bundle = JSON.parse(await readFile(join(downloads, "axiom-project.json"), "utf8"));
   assert.ok(JSON.stringify(bundle).includes("Workbench spacing")); assert.ok(JSON.stringify(bundle).includes("Workbench compact"));
   record("sourceBundle", { downloaded: true, containsAuthoredTokenAndTheme: true });
@@ -243,12 +272,15 @@ try {
   assert.deepEqual(await page.evaluate("({theme:localStorage.getItem('axiom.ui.theme'),locale:localStorage.getItem('axiom.ui.locale')})"), { theme: "dark", locale: "en" });
   const shutdownElapsedMs = await closeBrowserNormally();
   browser = await launch(executable, profile); page = await browser.cdp.page(url);
+  await browser.cdp.send("Browser.setDownloadBehavior", { behavior: "allow", downloadPath: downloads });
+  registerReferenceDebugger(page, browser.cdp);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1600, height: 1080, deviceScaleFactor: 1, mobile: false });
   await until(`${id("studio-app")}`);
   assert.equal(await page.evaluate("document.documentElement.lang"), "en"); assert.equal(await page.evaluate("document.documentElement.dataset.theme"), "dark");
+  await click("view-canvas");
   assert.equal(await page.evaluate("document.querySelectorAll('[data-component-frame]').length"), 4);
   await click(`token-${tokenId}`); await until(`${id("foundation-token-name")}.value==='Workbench spacing'`);
-  await selectElement(label("Editing scope", "select"), scope); await until(`(${numeric}).value==='24'`);
+  await selectElement(label("Editing scope", "select"), scope); await until(`(${numeric}).value==='1.5'`);
   record("processRestart", { dedicatedProfile: true, ordinaryBrowserShutdown: true, shutdownElapsedMs, tokenAndContextValue: true, catalogComponent: true, localeAndAppearance: true });
   await verifyEditorCompletion({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, select, selectElement, until, settled, approve, revision, record });
   await verifyMaterialWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record });
@@ -259,6 +291,7 @@ try {
   await verifyBlueprintChrome({ page, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   await verifyCatalogBlueprints({ page, id, label, click, fill, selectElement, until, settled, approve, revision, record });
   await verifyFoundationInterop({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
+  await verifyThemeDraftWorkspace({ page, origin, database: `axiom-studio-test-${randomUUID()}`, downloads, id, label, text, click, clickElement, fill, fillElement, selectElement, until, approve, revision, record });
   await verifyCompositionWorkspace({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });
   await verifyCompoundWorkspace({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, text, click, clickElement, fill, until, settled, approve, revision, record });
   await verifyBehaviorEditor({ page, origin, database: `axiom-studio-test-${randomUUID()}`, root: ROOT, id, label, text, click, clickElement, fill, fillElement, selectElement, until, settled, approve, revision, record });

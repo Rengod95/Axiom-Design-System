@@ -1,10 +1,13 @@
 import type { JsonObject, JsonValue } from "./contracts.ts";
-import type { FoundationBindingCategory, FoundationDocument, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
+import type { FoundationBindingCategory, FoundationDocument, FoundationToken, FoundationTokenType, FoundationTokenValue } from "./foundation-contracts.ts";
 import { isObject } from "./documents.ts";
 import { adaptFoundationStarterTokens, FOUNDATION_STARTER_TEMPLATES } from "./foundation-starter-presets.ts";
 import type { FoundationStarterTemplateId } from "./foundation-starter-presets.ts";
+import { FOUNDATION_LENGTH_REFERENCE_PX, getFoundationRole } from "./foundation-roles.ts";
 
-export const FOUNDATION_STARTER_PROFILE = Object.freeze({ id: "axiom.foundation.essentials", version: "1.0.0" });
+export const FOUNDATION_STARTER_PROFILE = Object.freeze({ id: "axiom.foundation.essentials", version: "2.0.0" });
+const RETAINED_STARTER_VERSION = "1.0.0";
+const STARTER_ROLE_ADDITIONS = ["sizing.container.minimum", "shadow.scale.none", "elevation.none", "font.tracking.tight", "font.tracking.normal", "font.tracking.wide", "duration.reduced", "motion.duration.reduced"];
 
 export const FOUNDATION_STARTER_DOMAINS = [
   { id: "color", name: "Color", types: ["color"] },
@@ -21,20 +24,22 @@ export const FOUNDATION_STARTER_DOMAINS = [
 ] as const;
 export const FOUNDATION_BINDING_CATEGORIES: readonly FoundationBindingCategory[] = [...FOUNDATION_STARTER_DOMAINS.map(domain => domain.id), "unrestricted"];
 export interface FoundationStarterOptions { domains: string[]; template?: FoundationStarterTemplateId; accent?: string; fontFamily?: string; density?: "comfortable" | "compact" }
-export interface FoundationStarterToken { name: string; domain: string; type: FoundationTokenType; tier: "primitive" | "semantic"; literal?: JsonValue; alias?: string; darkAlias?: string }
-const dimension = (value: number): JsonObject => ({ value, unit: "px" });
+export interface FoundationStarterToken { name: string; domain: string; role: string; type: FoundationTokenType; tier: "primitive" | "semantic"; literal?: JsonValue; alias?: string; darkAlias?: string }
+const dimension = (value: number): JsonObject => ({ value: value / FOUNDATION_LENGTH_REFERENCE_PX, unit: "rem" });
+const borderWidth = (value: number): JsonObject => ({ value, unit: "px" });
 const color = (hex: string, alpha = 1): JsonObject => ({ colorSpace: "srgb", components: [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255), alpha });
+const STARTER_DEFAULT_ROLES: Record<string, string> = { color: "color.palette", spacing: "spacing.length", sizing: "sizing.length", radius: "radius.corner", border: "border.stroke", shadow: "shadow.elevation", typography: "typography.style", motion: "motion.duration", opacity: "opacity.level", gradient: "gradient.fill", layer: "layer.order" };
 
-/** Curated defaults, not a claim that DTCG mandates domain names or scales. */
+/** All new kits include the eleven Axiom domains; selections from older clients cannot remove the baseline. */
 export function foundationStarterTokens(options: FoundationStarterOptions): FoundationStarterToken[] {
   if (!Array.isArray(options.domains) || !options.domains.length || new Set(options.domains).size !== options.domains.length || options.domains.some(id => !FOUNDATION_STARTER_DOMAINS.some(domain => domain.id === id))) throw new Error("Choose known, unique starter domains.");
   if (options.template !== undefined && !FOUNDATION_STARTER_TEMPLATES.some(template => template.id === options.template)) throw new Error("Choose a known starter template.");
   const preset = options.template && options.template !== "essentials" ? FOUNDATION_STARTER_TEMPLATES.find(template => template.id === options.template) : null;
-  const accent = options.accent ?? preset?.accent ?? "#5b50d6", family = options.fontFamily ?? (preset ? "Geist" : "SUIT");
+  const accent = options.accent ?? preset?.accent ?? "#8dfc52", family = options.fontFamily ?? "Geist";
   if (!/^#[\da-f]{6}$/i.test(accent) || !family.trim() || family.length > 100 || options.density !== undefined && !["comfortable", "compact"].includes(options.density)) throw new Error("Invalid starter settings.");
   const tokens: FoundationStarterToken[] = [];
-  const literal = (domain: string, name: string, type: FoundationTokenType, value: JsonValue) => tokens.push({ domain, name, type, tier: "primitive", literal: value });
-  const alias = (domain: string, name: string, type: FoundationTokenType, target: string, darkAlias?: string) => tokens.push({ domain, name, type, tier: "semantic", alias: target, ...(darkAlias ? { darkAlias } : {}) });
+  const literal = (domain: string, name: string, type: FoundationTokenType, value: JsonValue, role = STARTER_DEFAULT_ROLES[domain]!) => tokens.push({ domain, name, role, type, tier: "primitive", literal: value });
+  const alias = (domain: string, name: string, type: FoundationTokenType, target: string, darkAlias?: string, role = STARTER_DEFAULT_ROLES[domain]!) => tokens.push({ domain, name, role, type, tier: "semantic", alias: target, ...(darkAlias ? { darkAlias } : {}) });
   const neutral = ["#ffffff", "#f8f9fb", "#eef0f4", "#dfe3ea", "#c5cbd5", "#9ba4b3", "#727d8e", "#525e70", "#384354", "#252e3c", "#171e29", "#0c111b"];
   [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].forEach((step, i) => literal("color", `color.neutral.${step}`, "color", color(neutral[i]!)));
   const accentValue = color(accent), channels = accentValue.components as number[];
@@ -43,9 +48,9 @@ export function foundationStarterTokens(options: FoundationStarterOptions): Foun
     literal("color", `color.brand.${step}`, "color", { ...accentValue, components: channels.map(channel => i < 5 ? channel + (1 - channel) * amount : channel * (1 - amount)) });
   });
   for (const [name, hex] of Object.entries({ success: "#147d4f", warning: "#a15b06", danger: "#c52c40", info: "#245dc5" })) {
-    literal("color", `color.${name}.600`, "color", color(hex)); alias("color", `feedback.${name}`, "color", `color.${name}.600`);
+    literal("color", `color.${name}.600`, "color", color(hex)); alias("color", `feedback.${name}`, "color", `color.${name}.600`, undefined, "color.feedback");
   }
-  for (const [name, light, dark] of [["surface.canvas", "50", "950"], ["surface.raised", "0", "900"], ["surface.subtle", "100", "800"], ["text.primary", "900", "50"], ["text.secondary", "600", "300"], ["text.inverse", "0", "950"], ["border.default", "300", "600"], ["border.strong", "500", "400"]]) alias("color", name!, "color", `color.neutral.${light}`, `color.neutral.${dark}`);
+  for (const [name, light, dark, role] of [["surface.canvas", "50", "950", "color.surface"], ["surface.raised", "0", "900", "color.surface"], ["surface.subtle", "100", "800", "color.surface"], ["text.primary", "900", "50", "color.content"], ["text.secondary", "600", "300", "color.content"], ["text.inverse", "0", "950", "color.content"], ["border.default", "300", "600", "color.border"], ["border.strong", "500", "400", "color.border"]]) alias("color", name!, "color", `color.neutral.${light}`, `color.neutral.${dark}`, role);
   // These generated literals are opaque sRGB. Choose each theme's foreground against its
   // actual action shade, not the accent seed or an assumed light/dark text polarity.
   const luminance = (name: string): number => {
@@ -62,42 +67,47 @@ export function foundationStarterTokens(options: FoundationStarterOptions): Foun
     // accents fall between both candidates; this bounded palette does not claim AA for those.
     return contrast("color.neutral.0") >= contrast("color.neutral.900") ? "color.neutral.0" : "color.neutral.900";
   };
-  alias("color", "action.primary.background", "color", "color.brand.600", "color.brand.400");
-  alias("color", "action.primary.foreground", "color", actionForeground("color.brand.600"), actionForeground("color.brand.400"));
-  alias("color", "focus.ring", "color", "color.brand.500", "color.brand.300");
+  alias("color", "action.primary.background", "color", "color.brand.600", "color.brand.400", "color.action");
+  alias("color", "action.primary.foreground", "color", actionForeground("color.brand.600"), actionForeground("color.brand.400"), "color.action");
+  alias("color", "focus.ring", "color", "color.brand.500", "color.brand.300", "color.focus");
   for (const step of [0, 1, 2, 3, 4, 6, 8, 12, 16, 24]) literal("spacing", `space.${step}`, "dimension", dimension(step * 4));
   for (const [name, step] of [["inline", 2], ["stack", 3], ["control", options.density === "compact" ? 2 : 3], ["section", 6], ["page", 8]] as const) alias("spacing", `spacing.${name}`, "dimension", `space.${step}`);
   for (const step of [16, 20, 24, 32, 40, 44, 48, 64, 96]) literal("sizing", `size.${step}`, "dimension", dimension(step));
-  for (const [name, step] of [["icon.small", 16], ["icon.default", 20], ["control.small", 32], ["control.default", options.density === "compact" ? 32 : 40], ["touch.minimum", 44]] as const) alias("sizing", `sizing.${name}`, "dimension", `size.${step}`);
+  for (const [name, step, role] of [["icon.small", 16, "sizing.icon"], ["icon.default", 20, "sizing.icon"], ["control.small", 32, "sizing.control"], ["control.default", options.density === "compact" ? 32 : 40, "sizing.control"], ["touch.minimum", 44, "sizing.target"], ["container.minimum", 96, "sizing.container"]] as const) alias("sizing", `sizing.${name}`, "dimension", `size.${step}`, undefined, role);
   for (const [name, value] of Object.entries({ none: 0, xs: 2, sm: 4, md: 8, lg: 12, xl: 20, full: 4096 })) literal("radius", `radius.scale.${name}`, "dimension", dimension(value));
-  for (const [name, scale] of [["control", "md"], ["surface", "lg"], ["overlay", "xl"], ["pill", "full"]]) alias("radius", `radius.${name}`, "dimension", `radius.scale.${scale}`);
-  literal("border", "stroke.solid", "strokeStyle", "solid");
-  for (const width of [0, 1, 2]) literal("border", `stroke.width.${width}`, "dimension", dimension(width));
-  literal("border", "border.scale.default", "border", { color: color("#c5cbd5"), width: dimension(1), style: "solid" });
+  for (const [name, scale] of [["control", "md"], ["surface", "lg"], ["overlay", "xl"], ["pill", "full"]]) alias("radius", `radius.${name}`, "dimension", `radius.scale.${scale}`, undefined, name === "pill" ? "radius.pill" : "radius.corner");
+  literal("border", "stroke.solid", "strokeStyle", "solid", "border.style");
+  for (const width of [0, 1, 2]) literal("border", `stroke.width.${width}`, "dimension", borderWidth(width), "border.width");
+  literal("border", "border.scale.default", "border", { color: color("#c5cbd5"), width: borderWidth(1), style: "solid" });
   alias("border", "border.control", "border", "border.scale.default");
   for (const [name, offsetY, blur, alpha] of [["sm", 2, 6, .08], ["md", 4, 16, .12], ["lg", 12, 32, .18]] as const) {
     literal("shadow", `shadow.scale.${name}`, "shadow", { color: color("#0c111b", alpha), offsetX: dimension(0), offsetY: dimension(offsetY), blur: dimension(blur), spread: dimension(0) });
     alias("shadow", `elevation.${name}`, "shadow", `shadow.scale.${name}`);
   }
-  literal("typography", "font.family.sans", "fontFamily", [family, "sans-serif"]);
-  literal("typography", "font.family.mono", "fontFamily", ["ui-monospace", "monospace"]);
-  for (const weight of [400, 500, 600, 700]) literal("typography", `font.weight.${weight}`, "fontWeight", weight);
-  for (const size of [12, 14, 16, 20, 24, 32, 40]) literal("typography", `font.size.${size}`, "dimension", dimension(size));
-  for (const [name, height] of [["tight", 1.25], ["normal", 1.5], ["relaxed", 1.75]] as const) literal("typography", `font.lineHeight.${name}`, "number", height);
+  literal("shadow", "shadow.scale.none", "shadow", { color: color("#000000", 0), offsetX: dimension(0), offsetY: dimension(0), blur: dimension(0), spread: dimension(0) });
+  alias("shadow", "elevation.none", "shadow", "shadow.scale.none");
+  literal("typography", "font.family.sans", "fontFamily", [family, "sans-serif"], "typography.family");
+  literal("typography", "font.family.mono", "fontFamily", ["ui-monospace", "monospace"], "typography.family");
+  for (const weight of [400, 500, 600, 700]) literal("typography", `font.weight.${weight}`, "fontWeight", weight, "typography.weight");
+  for (const size of [12, 14, 16, 20, 24, 32, 40]) literal("typography", `font.size.${size}`, "dimension", dimension(size), "typography.size");
+  for (const [name, height] of [["tight", 1.25], ["normal", 1.5], ["relaxed", 1.75]] as const) literal("typography", `font.lineHeight.${name}`, "number", height, "typography.line-height");
+  for (const [name, value] of [["tight", -0.32], ["normal", 0], ["wide", 0.64]] as const) literal("typography", `font.tracking.${name}`, "dimension", dimension(value), "typography.tracking");
   for (const [name, size, weight] of [["caption", 12, 400], ["label", 14, 500], ["body", 16, 400], ["heading", 24, 600], ["display", 40, 600]] as const) {
     literal("typography", `type.scale.${name}`, "typography", { fontFamily: [family, "sans-serif"], fontSize: dimension(size), fontWeight: weight, letterSpacing: dimension(0), lineHeight: name === "heading" || name === "display" ? 1.25 : 1.5 });
     alias("typography", `typography.${name}`, "typography", `type.scale.${name}`);
   }
   for (const duration of [0, 100, 150, 200, 300, 500]) literal("motion", `duration.${duration}`, "duration", { value: duration, unit: "ms" });
-  literal("motion", "easing.standard", "cubicBezier", [.2, 0, 0, 1]); literal("motion", "easing.linear", "cubicBezier", [0, 0, 1, 1]);
+  literal("motion", "easing.standard", "cubicBezier", [.2, 0, 0, 1], "motion.easing"); literal("motion", "easing.linear", "cubicBezier", [0, 0, 1, 1], "motion.easing");
   for (const [name, duration] of [["instant", 0], ["fast", 150], ["normal", 200], ["slow", 300]] as const) alias("motion", `motion.duration.${name}`, "duration", `duration.${duration}`);
-  literal("motion", "transition.scale.standard", "transition", { duration: { value: 200, unit: "ms" }, delay: { value: 0, unit: "ms" }, timingFunction: [.2, 0, 0, 1] });
-  alias("motion", "motion.transition.control", "transition", "transition.scale.standard");
+  literal("motion", "duration.reduced", "duration", { value: 0, unit: "ms" }, "motion.reduced");
+  alias("motion", "motion.duration.reduced", "duration", "duration.reduced", undefined, "motion.reduced");
+  literal("motion", "transition.scale.standard", "transition", { duration: { value: 200, unit: "ms" }, delay: { value: 0, unit: "ms" }, timingFunction: [.2, 0, 0, 1] }, "motion.transition");
+  alias("motion", "motion.transition.control", "transition", "transition.scale.standard", undefined, "motion.transition");
   for (const [name, value] of Object.entries({ invisible: 0, disabled: .4, muted: .64, opaque: 1 })) { literal("opacity", `alpha.${name}`, "number", value); alias("opacity", `opacity.${name}`, "number", `alpha.${name}`); }
   literal("gradient", "gradient.scale.brand", "gradient", [{ color: color(accent), position: 0 }, { color: color("#171e29"), position: 1 }]);
   alias("gradient", "fill.brand", "gradient", "gradient.scale.brand");
   for (const [name, value] of Object.entries({ base: 0, raised: 1, dropdown: 100, overlay: 200, toast: 300 })) { literal("layer", `z.${name}`, "number", value); alias("layer", `layer.${name}`, "number", `z.${name}`); }
-  return options.template && options.template !== "essentials" ? adaptFoundationStarterTokens(tokens, options, options.template) : tokens.filter(token => options.domains.includes(token.domain));
+  return options.template && options.template !== "essentials" ? adaptFoundationStarterTokens(tokens, options, options.template) : tokens;
 }
 
 /** Add missing tokens only. Existing values, IDs and overrides are never overwritten. */
@@ -109,8 +119,14 @@ export function applyFoundationStarter(foundation: FoundationDocument, options: 
     if (found) return String(found.id);
     const id = createId(); foundation[category].push({ id, name, ...extra }); return id;
   };
-  const tiers = { primitive: classification("tiers", "Primitive"), semantic: classification("tiers", "Semantic") };
-  const domains = new Map<string, string>(FOUNDATION_STARTER_DOMAINS.filter(domain => options.domains.includes(domain.id)).map(domain => [domain.id, classification("domains", domain.name, { allowedTypes: [...domain.types], bindingCategory: domain.id })]));
+  const tiers = { primitive: classification("tiers", "Primitive", { role: "primitive", order: 0 }), semantic: classification("tiers", "Semantic", { role: "semantic", order: 1 }) };
+  classification("tiers", "Component", { role: "component", order: 2 });
+  const domains = new Map<string, string>(FOUNDATION_STARTER_DOMAINS.map(domain => {
+    const found = records(foundation.domains).find(record => record.bindingCategory === domain.id);
+    if (found) return [domain.id, String(found.id)];
+    const id = createId(); foundation.domains.push({ id, name: records(foundation.domains).some(record => record.name === domain.name) ? `${domain.name} baseline` : domain.name, allowedTypes: [...domain.types], bindingCategory: domain.id });
+    return [domain.id, id];
+  }));
   const byName = new Map(foundation.tokens.map(token => [token.name, token]));
   const newNames = new Set<string>();
   for (const spec of blueprint) {
@@ -118,10 +134,10 @@ export function applyFoundationStarter(foundation: FoundationDocument, options: 
     if (existing) { if (existing.typeRef.id !== spec.type) throw new Error(`Starter name ${spec.name} exists with another type. Rename it before applying this domain.`); continue; }
     const value: FoundationTokenValue = spec.alias ? { ref: { id: byName.get(spec.alias)!.id, expectedKind: "token" } } : { literal: spec.literal! };
     const template = options.template && options.template !== "essentials" ? FOUNDATION_STARTER_TEMPLATES.find(template => template.id === options.template)! : null;
-    const token = { id: createId(), name: spec.name, typeRef: { id: spec.type }, domain: domains.get(spec.domain)!, tier: tiers[spec.tier], value, metadata: { starter: FOUNDATION_STARTER_PROFILE.id, version: FOUNDATION_STARTER_PROFILE.version, ...(template ? { template: template.id, templateVersion: "1.0.0", adaptation: "axiom-authored", reference: template.source } : {}) } };
+    const token = { id: createId(), name: spec.name, typeRef: { id: spec.type }, role: spec.role, domain: domains.get(spec.domain)!, tier: tiers[spec.tier], value, metadata: { starter: FOUNDATION_STARTER_PROFILE.id, version: FOUNDATION_STARTER_PROFILE.version, ...(template ? { template: template.id, templateVersion: FOUNDATION_STARTER_PROFILE.version, adaptation: "axiom-authored", reference: template.source } : {}) } };
     foundation.tokens.push(token); byName.set(spec.name, token); newNames.add(spec.name);
   }
-  if (options.domains.includes("color")) {
+  {
     let axis = foundation.themeAxes.find(axis => axis.contexts.includes("light") && axis.contexts.includes("dark"));
     if (!axis) { axis = { id: createId(), name: "Color scheme", contexts: ["light", "dark"], default: "light", scope: { id: foundation.id, expectedKind: "foundation" }, overrides: {} }; foundation.themeAxes.push(axis); foundation.resolutionOrder.push(axis.id); }
     axis.overrides ??= {}; axis.overrides.dark ??= {};
@@ -131,6 +147,21 @@ export function applyFoundationStarter(foundation: FoundationDocument, options: 
 }
 
 const STARTER_BINDING_BLUEPRINT = new Map(foundationStarterTokens({ domains: FOUNDATION_STARTER_DOMAINS.map(domain => domain.id) }).map(token => [token.name, token]));
+const STARTER_ROLE_BLUEPRINTS = new Map<string, ReadonlyMap<string, FoundationStarterToken>>([["essentials", STARTER_BINDING_BLUEPRINT]]);
+/** Suggest a migration role only for retained, pinned starter provenance and its matching authored blueprint. */
+export function inferFoundationStarterRole(token: FoundationToken): ReturnType<typeof getFoundationRole> {
+  if (token.metadata?.starter !== FOUNDATION_STARTER_PROFILE.id || ![RETAINED_STARTER_VERSION, FOUNDATION_STARTER_PROFILE.version].includes(String(token.metadata.version))) return;
+  if (token.metadata.version === RETAINED_STARTER_VERSION && STARTER_ROLE_ADDITIONS.some(name => token.name === name || token.name.endsWith(`.${name}`))) return;
+  let blueprint: ReadonlyMap<string, FoundationStarterToken> = STARTER_BINDING_BLUEPRINT;
+  if (token.metadata.template !== undefined) {
+    const template = FOUNDATION_STARTER_TEMPLATES.find(item => item.id === token.metadata?.template);
+    if (!template || token.metadata.templateVersion !== token.metadata.version || token.metadata.reference !== template.source || token.metadata.adaptation !== "axiom-authored") return;
+    if (!STARTER_ROLE_BLUEPRINTS.has(template.id)) STARTER_ROLE_BLUEPRINTS.set(template.id, new Map(foundationStarterTokens({ domains: FOUNDATION_STARTER_DOMAINS.map(domain => domain.id), template: template.id }).map(item => [item.name, item])));
+    blueprint = STARTER_ROLE_BLUEPRINTS.get(template.id)!;
+  }
+  const spec = blueprint.get(token.name);
+  return spec?.type === token.typeRef.id ? getFoundationRole(spec.role) : undefined;
+}
 /** Read-only compatibility for pre-purpose starter domains. Only retained, pinned starter provenance is evidence. */
 export function foundationDomainBindings(foundation: FoundationDocument): Map<string, { category: FoundationBindingCategory; source: "explicit" | "starter" }> {
   const bindings = new Map<string, { category: FoundationBindingCategory; source: "explicit" | "starter" }>();
@@ -141,7 +172,7 @@ export function foundationDomainBindings(foundation: FoundationDocument): Map<st
     }
     const evidence = new Set<FoundationBindingCategory>();
     for (const token of foundation.tokens) {
-      if (token.domain !== domain.id || token.metadata?.starter !== FOUNDATION_STARTER_PROFILE.id || token.metadata.version !== FOUNDATION_STARTER_PROFILE.version) continue;
+      if (token.domain !== domain.id || token.metadata?.starter !== FOUNDATION_STARTER_PROFILE.id || ![RETAINED_STARTER_VERSION, FOUNDATION_STARTER_PROFILE.version].includes(String(token.metadata.version))) continue;
       const spec = STARTER_BINDING_BLUEPRINT.get(token.name);
       if (spec && spec.type === token.typeRef.id) evidence.add(spec.domain as FoundationBindingCategory);
     }

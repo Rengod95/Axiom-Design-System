@@ -57,6 +57,7 @@ export function inspectFoundationPolicies(input: ProjectSnapshot): FoundationPol
           if (!matching(token, predicate)) return;
           inspect(token, token.value, `/tokens/${index}/value`);
           foundation.themeAxes.forEach((axis, axisIndex) => { for (const [context, overrides] of Object.entries(axis.overrides ?? {})) if (overrides[token.id]) inspect(token, overrides[token.id]!, `/themeAxes/${axisIndex}/overrides/${authoringPointer(context)}/${authoringPointer(token.id)}`); });
+          (foundation.valueSets ?? []).forEach((group, groupIndex) => { if (group.values[token.id]) inspect(token, group.values[token.id]!, `/valueSets/${groupIndex}/values/${authoringPointer(token.id)}`); });
         });
       } else if (rule.scope.kind === "design") {
         const scope = rule.scope;

@@ -1,3 +1,4 @@
+import { ReferenceCatalogPreview } from "./reference-preview.tsx";
 import { ElementSelection, InlineElementOverlay } from "./element-selection.tsx";
 import { executeStudioBehavior } from "../../../modules/ads-core/src/index.ts";
 import type { StudioBehaviorState, StudioBehaviorTrigger, StudioComponentEdit } from "../../../modules/ads-core/src/index.ts";
@@ -11,9 +12,10 @@ import { getStudioCatalogEntry, studioCatalogPresentation } from "../../../modul
 import { CatalogStructurePreview } from "./catalog-structure-preview.tsx";
 import { decorateCatalogParts } from "./catalog-authored-tree.tsx";
 
-interface Props { allComponents?: StudioComponent[]; onElementEdit?: (componentId: string, edits: StudioComponentEdit[]) => boolean; nested?: boolean; valueOverrides?: Record<string, JsonValue>; slotContent?: Record<string, string>; component: StudioComponent; category: StudioCategory; mode: "edit" | "run"; selectedPart: string | null; onSelect(componentId: string, partId: string): void; locale: Locale }
+export interface CatalogPreviewProps { allComponents?: StudioComponent[]; onElementEdit?: (componentId: string, edits: StudioComponentEdit[]) => boolean; nested?: boolean; valueOverrides?: Record<string, JsonValue>; slotContent?: Record<string, string>; component: StudioComponent; category: StudioCategory; mode: "edit" | "run"; selectedPart: string | null; onSelect(componentId: string, partId: string): void; locale: Locale }
 /** Isolated consumer simulation; interaction never writes the authored defaults. */
-export function CatalogPreview({ component, category, mode, selectedPart, onSelect, locale, allComponents = [], nested = false, valueOverrides = {}, slotContent = {}, onElementEdit }: Props) {
+export function CatalogPreview(props: CatalogPreviewProps) { return props.component.catalog?.reference ? <ReferenceCatalogPreview {...props} /> : <LegacyCatalogPreview {...props} />; }
+function LegacyCatalogPreview({ component, category, mode, selectedPart, onSelect, locale, allComponents = [], nested = false, valueOverrides = {}, slotContent = {}, onElementEdit }: CatalogPreviewProps) {
   const catalog = component.catalog!, kind = catalog.semantic.kind;
   const presentation = studioCatalogPresentation(getStudioCatalogEntry(catalog.catalogId)!, kind), shape = presentation.shape;
   const defaults = { ...Object.fromEntries(catalog.values.map(value => [String(value.name), value.defaultValue ?? null])), ...valueOverrides };

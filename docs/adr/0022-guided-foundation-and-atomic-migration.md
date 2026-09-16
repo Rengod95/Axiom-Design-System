@@ -1,0 +1,35 @@
+# ADR-0022 — Guided Foundation authoring and atomic migration
+
+Status: ACCEPTED for the owner-requested Foundation redesign implementation.
+
+Date: 2026-09-16. Owner: product owner; executor: Codex.
+
+## Owner direction
+
+The owner requested a Foundation redesign with required domains, purpose-driven controls, reusable token groups connected to themes, three primary views, subordinate administration, and rem defaults. After the implementation/UX audit, the owner selected Semantic-first entry and reviewed whole-project migration, then explicitly requested implementation with code quality, design and complete verification.
+
+## Contract
+
+- DTCG source validity remains separate from Axiom authoring readiness. An explicit versioned `authoringProfile` enables the guided domain/role contract. Existing and external files retain their identities and source bytes until a reviewed migration is applied.
+- Tokens gain an explicit optional role. Roles determine compatible value types, ranges, units and editing controls; human-readable names are not binding authority. New guided templates include the eleven domain categories. Advanced source changes use the same validator.
+- Reusable `valueSets` map existing token IDs to expressions. An axis can select ordered group IDs for a context. A named theme can replace a domain's inherited group selection with explicit group IDs. Base tokens remain the common fallback. Imported legacy axis overrides retain their ordered semantics; migration moves them into groups without changing token IDs or expressions. If domain scoping would suppress an override or conflict with an existing group, a separate scope-less group follows that axis's original groups. Original shared groups stay unchanged. Named themes and explicit context selections must both retain their prior resolved values.
+- Resolution order is base values, axis groups and axis overrides in declared axis order, followed by explicitly selected theme groups. Explicit theme groups suppress inherited groups for the same declared domain. Expressions resolve after source composition. Duplicate same-domain groups in a named theme are rejected instead of silently selecting a winner. Scope-less groups remain an advanced ordered layer.
+- Group CRUD, value edits, theme links and migration use curated authoring commands and the existing review/apply/receipt/Undo boundary. Group deletion requires replacement when referenced. Rename does not rewrite token paths. Token deletion/duplication traverses group expressions as well as axis overrides.
+- Migration runs on a detached complete project. It preserves IDs, source bytes, expressions and existing values, adds missing baseline roles with recorded origin, and refuses ambiguous mappings. Only a fully validated candidate may apply; review remains bound to its base revision. Existing store history supplies atomic rollback and restart recovery. Migration is idempotent.
+- Length units survive the Web presentation path. Native length conversion uses an explicit reference context and continues to report unsupported composites/targets. New authored lengths prefer rem, borders prefer px, and number/time types retain their meanings. Existing values are not silently reinterpreted.
+- The reviewed whole-project migration explicitly converts non-border pixel lengths using the recorded 16 px root reference, including known Design layout/appearance leaves. Aliases and property expressions remain expressions. Original source bytes and history are retained. Native generation can choose a different root reference explicitly.
+- Guided projects validate their default and named theme combinations; an explicitly requested context combination is validated during resolution. The legacy exhaustive axis-product limit remains for documents without the guided profile. Invalid selected combinations never yield partial resolved tokens.
+- Every value group is also validated as a standalone base overlay, including currently unconnected groups. Alias policies inspect its owned expressions. Adopting the guided profile cannot be undone through an ordinary weaker-format source update; verified history Undo/Redo and complete bundle recovery remain available.
+- Imported source paths retain an explicit source identity to stable token ID map. Reimport after a local rename uses that map. Equal names from an unrelated source are conflicts, not permission to overwrite. Guided imports require domain/role mapping before adoption; invalid input and its mappings can be saved as a separate recoverable repair draft.
+- Selected-theme DTCG export uses the same ordered expression composition as token resolution. Reference export retains the selected expressions and aliases; resolved export emits their resolved values. A successful roundtrip must not silently substitute the base theme.
+- Primary Foundation views are Domains, Tokens and Themes. Tokens opens at Semantic/Color for first use; subsequent navigation preserves meaningful context. Type names move out of default controls; administration groups policies, exchange and taxonomy. Preview theme remains local to Tokens.
+- The larger guided starter exposed repeated full-journal hashing during ordinary edits. The browser store may reuse a previously validated snapshot only through a private, bounded proof of exact current text equality. Every read still checks metadata and lineage. Missing, changed or evicted proofs require the existing UTF-8, digest and full codec validation; restart begins without proofs. Sharing independently copied text chunks does not change persisted bytes, history retention or transaction semantics.
+- Canonical encoding may reuse a string's checked byte count and quoted representation within one invocation, with bounded entry and character budgets. Full descriptor, Unicode, depth and output-byte preflight must finish before quoting. Source UTF-8 scanning must preserve the first-error order, including a surrogate pair crossing the scan boundary. This optimization supplies no persistent validation authority and does not skip cold journal validation.
+
+## Compatibility and limits
+
+Optional additive fields preserve existing documents, receipts and source bundles. This is a private Studio profile extension, not a claim of full DTCG/Resolver conformance or a new public ADS schema. Original template/provider capabilities stay explicit. A bounded Foundation-specific work budget may scale with token count while byte/depth limits remain enforced; stress rejection must be reported as a limit, not successful migration.
+
+## Verification
+
+Required evidence covers role violations and valid negative values, guided starter completeness, groups and themes resolving identical token IDs, deletion/duplication/reference integrity, migration preservation/idempotency/failure atomicity, rem preview/targets, context navigation, and review/Undo/reopen. All repository gates remain required. Native execution and assistive-technology certification are separate from source or browser tests.

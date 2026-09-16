@@ -3,9 +3,9 @@ import type { FoundationAuthoringProjection, FoundationTokenRow, FoundationToken
 import type { Locale } from "./locales.ts";
 import { copy, IconButton } from "./ui.tsx";
 import { specimenDimension, specimenSummary, TokenVisual } from "./token-visual.tsx";
-import { activeTokenReferences, TokenDependencyMap } from "./token-relationships.tsx";
+import { activeTokenReferences } from "./token-relationships.tsx";
 
-export interface TokenCreationContext { domain?: string; tier?: string; type?: FoundationTokenType; namePrefix?: string }
+export interface TokenCreationContext { domain?: string; tier?: string; type?: FoundationTokenType; namePrefix?: string; role?: string }
 interface Props {
   tokens: FoundationTokenRow[]; model: FoundationAuthoringProjection; locale: Locale; tokenId: string | null;
   selected: string[]; selectionMode: boolean; disabled: boolean;
@@ -49,13 +49,13 @@ export function TokenAtlas({ tokens, model, locale, tokenId, selected, selection
       </article>;
     };
     return <section className={`material-group atlas-${kind} ${linked ? "atlas-linked" : ""}`} key={key} data-token-tier={group.tier}>
-      <header><div className="material-group-heading"><h3>{group.title}</h3><span>{group.tokens.length}</span></div><IconButton icon="plus" className="section-add-token" disabled={disabled} label={t(`${group.title}에 토큰 추가`, `Add token to ${group.title}`)} data-testid={`foundation-add-group-${first.id}`} onClick={() => onCreate({ ...(first.domain ? { domain: first.domain } : {}), ...(first.tier ? { tier: first.tier } : {}), type: first.typeRef.id, ...(prefix ? { namePrefix: prefix } : {}) })} /></header>
-      {linked && !["typography", "border", "shadow", "ruler"].includes(kind) ? <TokenDependencyMap tokens={group.tokens} model={model} locale={locale} onSelect={onSelect} renderToken={token => renderToken(token, true)} /> : <>
+      <header><div className="material-group-heading"><h3>{group.title}</h3><span>{group.tokens.length}</span></div><IconButton icon="plus" className="section-add-token" disabled={disabled} label={t(`${group.title}에 토큰 추가`, `Add token to ${group.title}`)} data-testid={`foundation-add-group-${first.id}`} onClick={() => onCreate({ ...(first.domain ? { domain: first.domain } : {}), ...(first.tier ? { tier: first.tier } : {}), type: first.typeRef.id, ...(first.role ? { role: first.role } : {}), ...(prefix ? { namePrefix: prefix } : {}) })} /></header>
+      <>
         {kind === "ruler" && <div className="shared-ruler-heading"><span>{t("하나의 기준선", "Shared baseline")}</span><span>{t("상대 길이 · rem은 16px 기준", "Relative lengths · rem uses a 16px reference")}</span></div>}
         <div className={`material-grid material-${first.typeRef.id} atlas-${kind}-specimens`} style={{ "--specimen-count": Math.min(12, group.tokens.length) } as CSSProperties}>{group.tokens.map(token => renderToken(token))}</div>
-        {linked && <details className="specimen-connections"><summary>{t("참조 연결 보기", "View reference connections")}</summary><TokenDependencyMap tokens={group.tokens} model={model} locale={locale} onSelect={onSelect} renderToken={token => <button type="button" className="dependency-role-label" onClick={() => onSelect(token.id)}><strong>{token.name}</strong><small>{specimenSummary(token.typeRef.id, token.resolvedValue, locale)}</small></button>} /></details>}
-      </>}
+
+      </>
     </section>;
   };
-  return <div className="token-atlas blueprint-atlas" data-testid="token-atlas">{tiers.map(tier => <section className={`atlas-tier atlas-tier-${tier.toLowerCase() === "primitive" ? "primitive" : tier.toLowerCase() === "semantic" ? "semantic" : "custom"}`} key={tier}><header className="atlas-tier-heading"><h2>{tier}</h2><p>{tier.toLowerCase() === "primitive" ? t("디자인의 원재료가 되는 기본 스케일", "The base scales your system is built from.") : tier.toLowerCase() === "semantic" ? t("기본값을 역할에 연결한 토큰", "Values assigned to meaningful roles.") : t("함께 분류된 토큰", "Tokens in this classification.")}</p></header>{[...groups].filter(([, group]) => group.tier === tier).map(([key, group]) => renderGroup(group, key))}</section>)}</div>;
+  return <div className="token-atlas blueprint-atlas" data-testid="token-atlas">{tiers.map(tier => <section className={`atlas-tier atlas-tier-${tier.toLowerCase() === "primitive" ? "primitive" : tier.toLowerCase() === "semantic" ? "semantic" : "custom"}`} key={tier}>{[...groups].filter(([, group]) => group.tier === tier).map(([key, group]) => renderGroup(group, key))}</section>)}</div>;
 }

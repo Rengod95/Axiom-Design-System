@@ -16,8 +16,8 @@ const output = await build({ absWorkingDir: root, stdin: { contents: `
   import { renderToStaticMarkup } from 'react-dom/server';
   import { TokenValueEditor } from './apps/studio/src/token-value-editor.tsx';
   export * from './apps/studio/src/token-value-editor.tsx';
-  export function render(type, value, locale='en', disabled=false) {
-    return renderToStaticMarkup(createElement(TokenValueEditor, {type,value,locale,disabled,onChange(){}}));
+  export function render(type, value, locale='en', disabled=false, numericRange) {
+    return renderToStaticMarkup(createElement(TokenValueEditor, {type,value,locale,disabled,numericRange,onChange(){}}));
   }
 `, resolveDir: root, loader: "tsx" }, bundle: true, platform: "node", format: "cjs", target: "node24", jsx: "automatic", write: false, logLevel: "silent" });
 const filename = join(directory, "controls.cjs");
@@ -27,7 +27,8 @@ const controls = (await import(pathToFileURL(filename).href)).default as {
   defaultTokenValue(type: FoundationTokenType): JsonValue;
   validateTokenEditorValue(type: FoundationTokenType, value: JsonValue): { valid: boolean };
   tokenValueSummary(value: JsonValue): string; tokenSwatch(value: JsonValue): string | undefined;
-  render(type: FoundationTokenType, value: JsonValue, locale?: string, disabled?: boolean): string;
+  convertTokenMeasurement(value: Record<string, JsonValue>, nextUnit: string, rootFontSize?: number): Record<string, JsonValue>;
+  render(type: FoundationTokenType, value: JsonValue, locale?: string, disabled?: boolean, numericRange?: { min: number; max: number; step?: number }): string;
 };
 
 test("all thirteen creation defaults pass the independent public Foundation boundary and have structured controls", () => {
@@ -95,4 +96,24 @@ test("disabled structured controls and Korean labels are present for every type"
     assert.ok(inputs.length > 0); inputs.forEach(input => assert.match(input, /disabled=""/, `${type}: ${input}`));
   }
   assert.match(controls.render("color", controls.defaultTokenValue("color"), "ko"), /색 공간/);
+});
+
+test("unit selection converts quantities explicitly, preserving duration and compound measurement meaning", () => {
+  const original = { value: 16, unit: "px" };
+  assert.deepEqual(controls.convertTokenMeasurement(original, "rem"), { value: 1, unit: "rem" });
+  assert.deepEqual(controls.convertTokenMeasurement({ value: -0.25, unit: "rem" }, "px", 20), { value: -5, unit: "px" });
+  assert.deepEqual(controls.convertTokenMeasurement({ value: 250, unit: "ms" }, "s"), { value: .25, unit: "s" });
+  assert.deepEqual(controls.convertTokenMeasurement({ value: .25, unit: "s" }, "ms"), { value: 250, unit: "ms" });
+  assert.deepEqual(original, { value: 16, unit: "px" });
+  assert.throws(() => controls.convertTokenMeasurement(original, "s"));
+  assert.throws(() => controls.convertTokenMeasurement(original, "rem", 0));
+  assert.match(controls.render("dimension", original), /Switching units converts the value at 1rem = 16px/);
+});
+
+test("delay sliders accept signed time without applying its range to transition duration", () => {
+  const html = controls.render("transition", { duration: { value: 200, unit: "ms" }, delay: { value: -50, unit: "ms" }, timingFunction: [.2, 0, 0, 1] });
+  assert.match(html, /aria-label="Duration · slider"[^>]*min="0"/);
+  assert.match(html, /aria-label="Delay · slider"[^>]*min="-2000"/);
+  const standalone = controls.render("duration", { value: -.05, unit: "s" }, "en", false, { min: -2, max: 2, step: .01 });
+  assert.match(standalone, /aria-label="Value · slider"[^>]*min="-2"[^>]*max="2"/);
 });

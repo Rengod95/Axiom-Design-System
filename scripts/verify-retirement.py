@@ -7,6 +7,7 @@ import argparse
 import collections
 import hashlib
 import io
+import importlib.util
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -28,9 +29,12 @@ IMPLEMENTATION_PROFILE = "docs/implementation/ads-kernel-profile.json"
 IMPLEMENTATION_ROOTS = {"modules/ads-core", "modules/local-store", "apps/cli", "modules/browser-store", "modules/target-packs", "apps/studio", "apps/delivery"}
 IMPLEMENTATION_ROOT_FILES = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"}
 IMPLEMENTATION_SCRIPTS = {"scripts/run-tests.mjs", "scripts/check-implementation.mjs", "scripts/generate-ads-validator.mjs", "scripts/verify-browser-store.mjs", "scripts/build-studio.mjs", "scripts/serve-studio.mjs", "scripts/verify-studio.mjs", "scripts/verify-targets.mjs", "scripts/browser-driver.mjs", "scripts/verify-workbench.mjs", "scripts/workbench-completion-cases.mjs", "scripts/workbench-foundation-cases.mjs", "scripts/workbench-chrome-cases.mjs", "scripts/workbench-catalog-cases.mjs", "scripts/workbench-authoring-cases.mjs", 'scripts/native-fixtures.mjs', 'scripts/native-verify.mjs', 'scripts/native-process.mjs', 'scripts/workbench-behavior-cases.mjs', 'scripts/workbench-policy-cases.mjs', 'scripts/workbench-composition-cases.mjs', 'scripts/workbench-compound-cases.mjs'}
+IMPLEMENTATION_SCRIPTS |= {"scripts/build-reference-shadcn.mjs", "scripts/build-reference-mantine.mjs", "scripts/build-reference-react-aria.mjs", "scripts/build-reference-base-ui.mjs", "scripts/build-reference-frames.mjs", "scripts/verify-reference-templates.py", "scripts/verify-reference-studio.mjs", "scripts/derive-reference-bindings.mjs"}
+REFERENCE_ROOTS = {"apps/studio/reference/" + provider for provider in ("shadcn", "mantine", "react-aria", "base-ui")}
 BROWSER_TEST_ASSETS = {"modules/browser-store/test/browser-harness.html", "modules/browser-store/test/browser-harness.js"}
 TARGET_TEST_ASSETS = {"modules/target-packs/test/expo-consumer.lock.yaml"}
 STUDIO_ASSETS = {'apps/studio/.impeccable/surfaces/workbench.md', 'apps/studio/.impeccable/design.json', 'apps/studio/DESIGN.md', 'apps/studio/index.html', 'apps/studio/src/styles.css', 'apps/studio/src/ui-system.css', 'apps/studio/src/foundation-workspace.css', 'apps/studio/src/studio-chrome.css', 'apps/studio/src/foundation-blueprint.css', 'apps/studio/src/studio-slider.css', 'apps/studio/src/catalog-specimens.css', 'apps/studio/src/component-authoring.css', 'apps/studio/src/foundation-starters.css', 'apps/studio/src/element-authoring.css', 'apps/studio/src/behavior-editor.css', 'apps/studio/src/foundation-policy.css', 'apps/studio/.impeccable/config.json', 'apps/studio/PRODUCT.md', 'apps/studio/src/canvas-authoring.css', 'apps/studio/src/structure-tree.css'}
+STUDIO_ASSETS |= {"apps/studio/src/reference-preview.css"}
 APPROVED_REPLACEMENTS = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json"}
 RETIRED_DIRECTORIES = {"packages", "spec", "fixtures", "tokens"}
 UNCHANGED_PATHS = {"LICENSE", ".gitignore"}
@@ -82,6 +86,8 @@ def active_files(root: Path) -> list[Path]:
         ignored = {".git"}
         if profile and Path(directory) == root:
             ignored |= {"node_modules", "dist", "coverage"}
+        if profile and Path(directory).relative_to(root).as_posix() in REFERENCE_ROOTS:
+            ignored.add("node_modules")
         names[:] = [name for name in names if name not in ignored]
         for name in names:
             path = Path(directory) / name
@@ -120,7 +126,7 @@ def implementation_profile(root: Path) -> dict | None:
             "Implementation bootstrap ADR mismatch")
     require("Status: ACCEPTED" in (root / profile["adr"]).read_text(encoding="utf-8"),
             "Implementation bootstrap ADR not accepted")
-    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md", "docs/adr/0011-structural-domain-inspection-and-local-references.md", "docs/adr/0012-typed-values-and-project-bundles.md", "docs/adr/0013-browser-transactional-storage.md", "docs/adr/0014-studio-authoring-and-target-delivery.md", "docs/adr/0015-studio-workbench-and-catalog-authoring.md", "docs/adr/0016-foundation-onboarding-and-editor-completion.md", "docs/adr/0017-foundation-interchange-and-live-expressions.md", "docs/adr/0018-contextual-foundation-and-component-composition.md", 'docs/adr/0019-element-composition-policy-and-behavior-authoring.md', 'docs/adr/0020-compound-anatomy-and-canvas-insertion.md']
+    require(profile.get("extensionAdrs") == ["docs/adr/0010-source-preserving-draft-authoring.md", "docs/adr/0011-structural-domain-inspection-and-local-references.md", "docs/adr/0012-typed-values-and-project-bundles.md", "docs/adr/0013-browser-transactional-storage.md", "docs/adr/0014-studio-authoring-and-target-delivery.md", "docs/adr/0015-studio-workbench-and-catalog-authoring.md", "docs/adr/0016-foundation-onboarding-and-editor-completion.md", "docs/adr/0017-foundation-interchange-and-live-expressions.md", "docs/adr/0018-contextual-foundation-and-component-composition.md", 'docs/adr/0019-element-composition-policy-and-behavior-authoring.md', 'docs/adr/0020-compound-anatomy-and-canvas-insertion.md', 'docs/adr/0021-pinned-reference-templates.md', 'docs/adr/0022-guided-foundation-and-atomic-migration.md']
             and all("Status: ACCEPTED" in (root / adr).read_text(encoding="utf-8") for adr in profile["extensionAdrs"]),
             "Implementation extension ADR not accepted")
     require(profile.get("approval") == "docs/decisions/axiom-foundation-baseline-approval.json",
@@ -128,7 +134,26 @@ def implementation_profile(root: Path) -> dict | None:
     approval = json.loads((root / profile["approval"]).read_text(encoding="utf-8"))
     require(approval.get("fullDocumentationApproved") is True and approval.get("newImplementationAuthorized") is True,
             "Implementation authorization missing")
+    require({value.get("root") for value in profile.get("referenceTemplates", {}).get("packages", {}).values()} == REFERENCE_ROOTS,
+            "Unapproved reference package roots")
     return profile
+
+
+def verified_reference_files(root: Path) -> set[str]:
+    """Delegate the closed third-party source/asset inventory to its integrity guard."""
+    spec = importlib.util.spec_from_file_location("axiom_reference_integrity", root / "scripts/verify-reference-templates.py")
+    require(spec is not None and spec.loader is not None, "Reference integrity verifier missing")
+    module = importlib.util.module_from_spec(spec)
+    previous = sys.dont_write_bytecode
+    try:
+        sys.dont_write_bytecode = True
+        spec.loader.exec_module(module)
+    finally:
+        sys.dont_write_bytecode = previous
+    try:
+        return module.allowed_reference_files(root)[0]
+    except module.VerificationError as error:
+        raise VerificationError(str(error)) from error
 
 
 def read_inventory(root: Path, repository: Path) -> tuple[dict, dict]:
@@ -220,6 +245,7 @@ def verify_active_tree(root: Path, records: dict) -> tuple[int, int]:
     for path in FIXED_ACTIVE_PATHS:
         require((root / path).is_file(), f"Required phase file missing: {path}")
     files = active_files(root)
+    reference_files = verified_reference_files(root) if profile else set()
     links = 0
     for path in files:
         relative = path.relative_to(root).as_posix()
@@ -228,6 +254,8 @@ def verify_active_tree(root: Path, records: dict) -> tuple[int, int]:
             relative in IMPLEMENTATION_ROOT_FILES | IMPLEMENTATION_SCRIPTS | BROWSER_TEST_ASSETS | STUDIO_ASSETS | TARGET_TEST_ASSETS or
             any(relative.startswith(prefix + "/") for prefix in IMPLEMENTATION_ROOTS)
             and (path.suffix in {".ts", ".json", ".md"} or relative.startswith("apps/studio/src/") and path.suffix == ".tsx"))
+        if relative.startswith("apps/studio/reference/"):
+            permitted_implementation = relative in reference_files
         require(relative in FIXED_ACTIVE_PATHS or permitted_document or permitted_implementation,
                 f"Unapproved active file for current phase: {relative}")
         if path.suffix != ".md":
@@ -268,7 +296,7 @@ def run_self_tests(root: Path, repository: Path) -> list[str]:
     verified = []
     cases = ["snapshot-digest-corruption", "retired-package-resurrection", "broken-document-link", "new-product-source"]
     if implementation_profile(root):
-        cases += ["unapproved-profile-root", "missing-implementation-authorization", "frozen-manifest-resurrection", "unapproved-browser-harness", "unapproved-studio-page", "unapproved-target-lock"]
+        cases += ["unapproved-profile-root", "missing-implementation-authorization", "frozen-manifest-resurrection", "unapproved-browser-harness", "unapproved-studio-page", "unapproved-target-lock", "unlisted-reference-file", "unapproved-reference-package"]
     for case in cases:
         with tempfile.TemporaryDirectory(prefix="axiom-retirement-negative-") as directory:
             candidate = Path(directory)
@@ -314,6 +342,14 @@ def run_self_tests(root: Path, repository: Path) -> list[str]:
                 expected_message = "Unapproved active file"
             elif case == "unapproved-target-lock":
                 (candidate / "modules/target-packs/test/unapproved.yaml").write_text("dependencies: {}", encoding="utf-8")
+                expected_message = "Unapproved active file"
+            elif case == "unlisted-reference-file":
+                (candidate / "apps/studio/reference/react-aria/unapproved.css").write_text("body {}", encoding="utf-8")
+                expected_message = "Unapproved active file"
+            elif case == "unapproved-reference-package":
+                path = candidate / "apps/studio/reference/unapproved/index.ts"
+                path.parent.mkdir(parents=True)
+                path.write_text("export {};", encoding="utf-8")
                 expected_message = "Unapproved active file"
             else:
                 path = candidate / "src/unapproved.ts"

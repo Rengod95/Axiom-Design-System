@@ -2,6 +2,7 @@ import type { Diagnostic, JsonObject, JsonValue } from "./contracts.ts";
 import type { FoundationResolution } from "./foundation-contracts.ts";
 import { isObject, isValidId } from "./documents.ts";
 import { isStudioTokenCompatible } from "./studio-style-values.ts";
+import type { StudioTokenBindingProperty } from "./studio-style-values.ts";
 import { STUDIO_ERROR } from "./studio-constants.ts";
 import { KernelError } from "./kernel-error.ts";
 
@@ -55,20 +56,20 @@ export function inspectStudioMotion(document: JsonObject, add: (path: string, me
 export function resolveStudioMotion(document: JsonObject, foundation: FoundationResolution, diagnostics: Diagnostic[], use: (tokenId: string, partId: string, path: string) => void = () => {}): ResolvedStudioMotion[] {
   const tokens = new Map(foundation.tokens.map(token => [token.id, token]));
   let currentPart = "", currentPath = "";
-  const resolve = (source: JsonValue, type: string): JsonValue => {
+  const resolve = (source: JsonValue, type: string, property: StudioTokenBindingProperty): JsonValue => {
     if (!isObject(source) || !Object.hasOwn(source, "tokenRef")) return source;
     const token = typeof source.tokenRef === "string" && tokens.get(source.tokenRef);
     if (Object.keys(source).length !== 1 || !token || token.type !== type) throw new Error(`Motion requires an existing ${type} token.`);
-    if (!isStudioTokenCompatible(token, type === "duration" ? "motionDuration" : "motionEasing")) throw new KernelError(STUDIO_ERROR.tokenBinding, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind motion timing. Choose a motion token or correct its domain purpose.`);
+    if (!isStudioTokenCompatible(token, property)) throw new KernelError(STUDIO_ERROR.tokenBinding, `Token ${token.name} has role ${token.role ?? token.bindingCategory ?? "unclassified"}, which cannot bind ${property}. Choose a compatible motion token.`);
     for (const id of new Set([token.id, ...token.aliasChain])) use(id, currentPart, currentPath);
     return token.value;
   };
-  const duration = (source: JsonValue): number => { const value = resolve(source, "duration"); if (!isObject(value) || !keys(value, ["value", "unit"]) || !["ms", "s"].includes(String(value.unit)) || !number(value.value, 0, value.unit === "s" ? 10 : 10000)) throw new Error("Motion duration must be between zero and ten seconds."); return Number(value.value) * (value.unit === "s" ? 1000 : 1); };
-  const easing = (source: JsonValue): string => { const value = resolve(source, "cubicBezier"); if (!Array.isArray(value) || value.length !== 4 || value.some((numberValue, index) => !number(numberValue, index % 2 ? -100 : 0, index % 2 ? 100 : 1))) throw new Error("Motion easing requires four cubic-bezier coordinates."); return `cubic-bezier(${value.join(",")})`; };
+  const duration = (source: JsonValue, delay = false): number => { const value = resolve(source, "duration", delay ? "motionDelay" : "motionDuration"), bound = isObject(value) && value.unit === "s" ? 10 : 10000; if (!isObject(value) || !keys(value, ["value", "unit"]) || !["ms", "s"].includes(String(value.unit)) || !number(value.value, delay ? -bound : 0, bound)) throw new Error(delay ? "Motion delay must be between minus ten and ten seconds." : "Motion duration must be between zero and ten seconds."); return Number(value.value) * (value.unit === "s" ? 1000 : 1); };
+  const easing = (source: JsonValue): string => { const value = resolve(source, "cubicBezier", "motionEasing"); if (!Array.isArray(value) || value.length !== 4 || value.some((numberValue, index) => !number(numberValue, index % 2 ? -100 : 0, index % 2 ? 100 : 1))) throw new Error("Motion easing requires four cubic-bezier coordinates."); return `cubic-bezier(${value.join(",")})`; };
   const result: ResolvedStudioMotion[] = [];
   for (const [index, track] of (document.motion as unknown as StudioMotionTrack[] ?? []).entries()) try {
     currentPart = track.targetPartRef; currentPath = `/motion/${index}`;
-    const delayMs = duration(track.delay);
+    const delayMs = duration(track.delay, true);
     if (track.timing.kind === "tween") result.push({ ...track, durationMs: duration(track.timing.duration), delayMs, easing: easing(track.timing.easing) });
     else { const spring = sampleStudioSpring(track.timing.stiffness, track.timing.damping, track.timing.mass), from = track.keyframes[0]!.value, to = track.keyframes.at(-1)!.value;
       result.push({ ...track, durationMs: spring.durationMs, delayMs, easing: "linear", keyframes: spring.samples.map(sample => ({ offset: sample.offset, value: track.property === "opacity" ? Math.max(0, Math.min(1, from + (to - from) * sample.value)) : from + (to - from) * sample.value })) });

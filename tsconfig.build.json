@@ -8,5 +8,5 @@
     "sourceMap": true
   },
   "include": ["modules/*/src/**/*.ts", "apps/*/src/**/*.ts", "apps/*/src/**/*.tsx"],
-  "exclude": ["**/test/**"]
+  "exclude": ["**/test/**", "apps/studio/reference/**"]
 }

@@ -1,3 +1,5 @@
+import { inspectReferenceLayout } from "./studio-reference.ts";
+import { inspectReferenceDesign } from "./studio-reference-bindings.ts";
 import { sourceElementContent } from "./studio-element-contract.ts";
 import { inspectStudioComposition, inspectStudioCompositionGraph } from "./studio-composition.ts";
 import type { AdsDocument, Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
@@ -8,6 +10,7 @@ import { inspectDocumentDomain } from "./domain-validation.ts";
 import { inspectFoundationDocument } from "./foundation-validation.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
 import { projectStudioDesign } from "./studio-presentation.ts";
+import { resolveStudioDimension } from "./studio-style-values.ts";
 import { resolveStudioMotion } from "./studio-motion.ts";
 import { getStudioCatalogRecipe } from "./studio-catalog.ts";
 import { catalogIdentity } from "./studio-catalog-validation.ts";
@@ -91,13 +94,15 @@ function componentErrors(document: JsonObject, add: (path: string, message: stri
 }
 
 function isDimensionSource(value: unknown): boolean {
-  return isObject(value) && (keys(value, ["tokenRef"]) && isValidId(value.tokenRef)
-    || keys(value, ["value", "unit"]) && value.unit === "px" && boundedNumber(value.value, STUDIO_MAX_DIMENSION));
+  if (!isObject(value)) return false;
+  if (keys(value, ["tokenRef"]) && isValidId(value.tokenRef)) return true;
+  try { resolveStudioDimension(value); return true; } catch { return false; }
 }
 function designErrors(document: JsonObject, add: (path: string, message: string) => void): void {
   const catalog = hasCatalogProfile(document);
   if (catalog) inspectCatalogPin(document, add);
-  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides", "editorFrame", ...(catalog ? ["catalogProfile"] : [])])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides", "editorFrame", ...(catalog ? ["catalogProfile", "referenceLayout"] : [])])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  inspectReferenceLayout(document, add);
   inspectEditorFrame(document.editorFrame, add);
   for (const [field, kind] of [["foundationRef", "foundation"], ["componentRef", "component"]] as const) {
     const ref = document[field];
@@ -108,7 +113,7 @@ function designErrors(document: JsonObject, add: (path: string, message: string)
     || typeof mapping.role !== "string" || (catalog ? !/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(mapping.role) : !["root", "label", "header", "body", "actions", "close"].includes(mapping.role))) add(`/nodeMappings/${index}`, "Invalid semantic part mapping.");
   for (const [index, layout] of objects(document.layout).entries()) {
     if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder", ...(catalog ? ["alignment", "position"] : [])]) || !(layout.mode === "stack" || catalog && layout.mode === "free") || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
-      || !isObject(layout.size) || !catalog && Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/token dimensions is executable.");
+      || !isObject(layout.size) || !catalog && Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/rem or token dimensions is executable.");
     if (layout.position !== undefined && (!isObject(layout.position) || !keys(layout.position, ["x", "y"]) || !boundedNumber(layout.position.x, 16384, -16384) || !boundedNumber(layout.position.y, 16384, -16384))) add(`/layout/${index}/position`, "Position requires finite x/y coordinates between -16384 and 16384.");
     if (catalog) inspectCatalogLayout(layout, `/layout/${index}`, add);
   }
@@ -182,6 +187,8 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
     for (const [field, ref, entry, kind] of [["componentRef", componentRef, owner, "component"], ["foundationRef", foundationRef, foundation, "foundation"]] as const) {
       if (!isObject(ref) || !entry || ref.expectedKind !== kind || ref.id !== entry.document.id || !keys(ref, ["id", "expectedKind", "revision"]) || ref.revision !== undefined && ref.revision !== entry.document.revision) add(document.id, `/${field}`, "Local reference kind, identity and optional revision pin must match the adopted document.");
     }
+    if (document.referenceLayout !== undefined && !owner.document.studioReference) add(document.id, "/referenceLayout", "Reference layout masks require a pinned reference template.");
+    inspectReferenceDesign(owner.document, document, (path, message) => add(document.id, path, message));
     const parts = objects(owner.document.parts), mappings = objects(document.nodeMappings), layouts = objects(document.layout);
     const ids = parts.map(part => part.id);
     for (const [index, mapping] of mappings.entries()) {

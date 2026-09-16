@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { seedLegacyFoundation } from "./workbench-foundation-cases.mjs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -9,11 +10,13 @@ export async function verifyCompoundWorkspace({ page, origin, database, root, id
   await page.send("Page.navigate", { url: `${origin}/?database=${database}` }); await until(id("onboarding"));
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1600, height: 1080, deviceScaleFactor: 1, mobile: false });
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
-  await fill("project-name", "Compound anatomy"); await click("starter-enabled"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await fill("project-name", "Compound anatomy"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await seedLegacyFoundation({ page, database, id, until }); await click("view-canvas");
   const originals = Object.fromEntries((await saved()).map(entry => [entry.document.id, entry.originalText]));
-  await click("view-library"); await fill("catalog-search", "Accordion"); await click("catalog-catalog.accordion"); await click("catalog-add"); await approve();
+  await click("view-library"); await click("create-custom-component"); await click("composer-accordion"); await fill("composer-name", "Accordion"); await click("composer-create"); await approve();
   const source = () => saved().then(entries => entries.find(entry => entry.document.kind === "component" && entry.document.catalogProfile?.catalogId === "catalog.accordion").document);
   const component = await source(), componentId = component.id;
+  assert.equal(component.studioReference, undefined, "Compound element authoring uses an Accordion from the custom composer");
   const role = value => component.parts.find(part => part.studioRole === value);
   const preview = id(`preview-${componentId}`);
   const nodes = partId => `${preview}.querySelectorAll('[data-part-id="${partId}"]')`;

@@ -10,10 +10,13 @@ import { specimenColor, specimenSummary } from "./token-visual.tsx";
 /** The graph follows the selected theme's value expression, including property/composite references. */
 export function activeTokenReferences(model: FoundationAuthoringProjection, token: FoundationTokenRow) {
   let value = token.value;
-  for (const axisId of model.resolutionOrder) {
-    const axis = model.axes.find(item => item.id === axisId), context = model.contexts[axisId];
-    const overrides = context === undefined ? undefined : axis?.overrides?.[context];
-    if (overrides && Object.hasOwn(overrides, token.id)) value = overrides[token.id]!;
+  const suffix = `/${token.id.replace(/~/gu, "~0").replace(/\//gu, "~1")}`;
+  // Resolution traces include inherited dependencies: only this token's own writes select its expression.
+  for (const trace of token.overrideTrace) {
+    if (!trace.path.endsWith(suffix)) continue;
+    const groupIndex = /^\/valueSets\/(\d+)\/values\//u.exec(trace.path)?.[1];
+    const next = groupIndex !== undefined ? model.valueSets[Number(groupIndex)]?.values[token.id] : model.axes.find(axis => axis.id === trace.axisId)?.overrides?.[trace.context]?.[token.id];
+    if (next) value = next;
   }
   return foundationValueReferences(value);
 }

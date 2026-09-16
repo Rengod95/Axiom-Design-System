@@ -17,6 +17,34 @@ async function setup(store: TransactionalStore = new MemoryStore()) {
 const tokenId = (controller: StudioController) => controller.getSnapshot().projection!.foundation.tokens.find(token => token.type === "color" && token.aliasChain.length === 0)!.id;
 async function apply(controller: StudioController) { await controller.review(); assert.ok(controller.getSnapshot().candidate, JSON.stringify(controller.getSnapshot().diagnostics)); await controller.approve(); assert.equal(controller.getSnapshot().error, null, JSON.stringify(controller.getSnapshot().diagnostics)); }
 
+test("external repair bundles survive reconnect without changing adopted documents or pending preview", async () => {
+  const { controller, service } = await setup(), before = (await service.getProject(STUDIO_PRINCIPAL))!;
+  controller.edit({ kind: "token-value", id: tokenId(controller), value: color(0.6) });
+  const plan = canonicalJson(controller.getSnapshot().plan);
+  const source = '{ "broken": { "$type": "color", "$value": ';
+  await controller.captureExchangeDraft("source.tokens.json", source, "resolver", { scheme: "dark" }, { "./base.json": "{bad}" });
+  assert.equal(controller.getSnapshot().error, null, JSON.stringify(controller.getSnapshot().diagnostics));
+  assert.equal(canonicalJson(controller.getSnapshot().plan), plan);
+  assert.equal(canonicalJson(await service.getProject(STUDIO_PRINCIPAL)), canonicalJson(before));
+  const reopened = new StudioController(service, services); await reopened.connect();
+  assert.equal(reopened.getSnapshot().sourceDrafts.length, 1);
+  const repaired = JSON.parse(reopened.getSnapshot().sourceDrafts[0]!.originalText);
+  assert.equal(repaired.sourceText, source); assert.equal(repaired.exchangeFormat, "resolver"); assert.equal(repaired.sources["./base.json"], "{bad}");
+});
+
+test("guided migration is reviewed once, recovers after reopen and rolls back all documents together", async () => {
+  const { controller, service } = await setup(), before = (await service.getProject(STUDIO_PRINCIPAL))!;
+  assert.ok(controller.foundation({ kind: "foundation-migrate" }));
+  assert.equal(controller.getSnapshot().plan?.updates.length, 7);
+  assert.equal(canonicalJson(await service.getProject(STUDIO_PRINCIPAL)), canonicalJson(before));
+  await apply(controller);
+  const after = (await service.getProject(STUDIO_PRINCIPAL))!;
+  const reopened = new StudioController(service, services); await reopened.connect();
+  assert.equal(reopened.getSnapshot().projection?.valid, true);
+  await reopened.undo(); assert.equal(canonicalJson((await service.getProject(STUDIO_PRINCIPAL))!.documents), canonicalJson(before.documents));
+  await reopened.redo(); assert.equal(canonicalJson((await service.getProject(STUDIO_PRINCIPAL))!.documents), canonicalJson(after.documents));
+});
+
 test("saved type-only bindings across documents recover through one atomic reviewed controller plan", async () => {
   const { store, service } = await setup();
   await store.transact(state => {

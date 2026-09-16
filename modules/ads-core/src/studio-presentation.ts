@@ -1,10 +1,10 @@
 import type { AdsDocument, Diagnostic, JsonObject, JsonValue } from "./contracts.ts";
 import type { FoundationResolution, ResolvedFoundationToken } from "./foundation-contracts.ts";
-import type { StudioComponent, StudioDesign, StudioLayout, StudioPart, StudioPartPresentation, StudioStyle, StudioUsage, StudioVisualProperty } from "./studio-contracts.ts";
+import type { StudioComponent, StudioDesign, StudioLayout, StudioLength, StudioPart, StudioPartPresentation, StudioStyle, StudioUsage, StudioVisualProperty } from "./studio-contracts.ts";
 import { isObject, isValidId } from "./documents.ts";
-import { STUDIO_COLOR_PROPERTIES, STUDIO_ERROR, STUDIO_MAX_DIMENSION } from "./studio-constants.ts";
+import { STUDIO_COLOR_PROPERTIES, STUDIO_ERROR } from "./studio-constants.ts";
 
-import { STUDIO_EXTENDED_STYLE_TYPES, isStudioTokenCompatible, resolveExtendedStudioStyle } from "./studio-style-values.ts";
+import { STUDIO_EXTENDED_STYLE_TYPES, isStudioTokenCompatible, resolveExtendedStudioStyle, resolveStudioDimension, studioLengthPixels } from "./studio-style-values.ts";
 import type { StudioTokenBindingProperty } from "./studio-style-values.ts";
 
 const PRESENTATION_STATES = ["filled", "outlined", "filled-disabled", "outlined-disabled", "filled-pressed", "outlined-pressed"] as const;
@@ -14,7 +14,7 @@ const MIN_ACTION_HEIGHT = 44;
 function diagnostic(id: string, path: string, message: string, code: string = STUDIO_ERROR.invalid): Diagnostic { return { code, phase: "document", severity: "error", sourceRef: id, path, message }; }
 function objectList(value: JsonValue | undefined): JsonObject[] { return Array.isArray(value) ? value.filter(isObject) : []; }
 
-/** Resolve source values to the explicitly supported sRGB/px visual mapping with provenance. */
+/** Resolve source values to sRGB and unit-preserving px/rem visual mappings with provenance. */
 export function projectStudioDesign(document: AdsDocument, component: Pick<StudioComponent, "id" | "archetype" | "parts">, foundation: FoundationResolution,
   diagnostics: Diagnostic[], usages: Record<string, StudioUsage[]>): StudioDesign {
   const tokens = new Map(foundation.tokens.map(token => [token.id, token]));
@@ -27,7 +27,7 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
       if (Object.keys(source).length !== 1 || !isValidId(source.tokenRef)) { add(path, "A visual token binding must name exactly one stable token ID."); return {}; }
       token = tokens.get(source.tokenRef);
       if (!token || token.type !== type) { add(path, "The visual token is missing or has an incompatible type."); return {}; }
-      if (!isStudioTokenCompatible(token, property)) { add(path, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind ${property}. Choose a compatible token or correct its domain purpose.`, STUDIO_ERROR.tokenBinding); return {}; }
+      if (!isStudioTokenCompatible(token, property)) { add(path, `Token ${token.name} has purpose ${token.role ?? token.bindingCategory ?? "unclassified"}, which cannot bind ${property}. Choose a token with a compatible role and domain.`, STUDIO_ERROR.tokenBinding); return {}; }
       raw = token.value;
       for (const id of [...new Set([token.id, ...token.aliasChain])]) {
         const entries = usages[id] ??= [];
@@ -43,10 +43,8 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
       return { resolved: `rgba(${raw.components.map(channel => Math.round((channel as number) * CHANNEL_SCALE)).join(", ")}, ${raw.alpha ?? 1})`, ...tokenId };
     }
     if (type === "dimension") {
-      if (!isObject(raw) || Object.keys(raw).some(key => !["value", "unit"].includes(key)) || raw.unit !== "px" || typeof raw.value !== "number" || !Number.isFinite(raw.value) || raw.value < 0 || raw.value > STUDIO_MAX_DIMENSION) {
-        add(path, "This visual profile requires a bounded nonnegative px dimension; no implicit rem or native unit conversion is performed.", STUDIO_ERROR.unsupported); return {};
-      }
-      return { resolved: raw.value, ...tokenId };
+      try { return { resolved: resolveStudioDimension(raw), ...tokenId }; }
+      catch (error) { add(path, error instanceof Error ? error.message : "Invalid dimension.", STUDIO_ERROR.unsupported); return {}; }
     }
     if (typeof raw !== "number" || !Number.isFinite(raw) || raw < 0 || raw > 1) { add(path, "Opacity must be a finite number from zero through one."); return {}; }
     return { resolved: raw, ...tokenId };
@@ -72,7 +70,7 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
                 if (Object.keys(source).length !== 1 || typeof source.tokenRef !== "string") throw new Error("Use exactly one stable token binding.");
                 const token = tokens.get(source.tokenRef);
                 if (!token || token.type !== STUDIO_EXTENDED_STYLE_TYPES[property]) throw new Error("Style token is missing or has an incompatible type.");
-                if (!isStudioTokenCompatible(token, property as StudioVisualProperty)) { add(path, `Token ${token.name} belongs to ${token.bindingCategory}, which cannot bind ${property}. Choose a compatible token or correct its domain purpose.`, STUDIO_ERROR.tokenBinding); continue; }
+                if (!isStudioTokenCompatible(token, property as StudioVisualProperty)) { add(path, `Token ${token.name} has purpose ${token.role ?? token.bindingCategory ?? "unclassified"}, which cannot bind ${property}. Choose a token with a compatible role and domain.`, STUDIO_ERROR.tokenBinding); continue; }
                 raw = token.value; tokenId = token.id;
                 for (const id of new Set([token.id, ...token.aliasChain])) { const entries = usages[id] ??= []; if (!entries.some(item => item.documentId === document.id && item.path === path)) entries.push({ componentId: component.id, partId: part.id, documentId: document.id, path }); }
               }
@@ -83,7 +81,7 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
             if (output.resolved !== undefined) outputs.push({ property, resolved: output.resolved, ...(output.tokenId ? { tokenId: output.tokenId } : {}), rank: rank + 1 });
           }
           for (const output of outputs) {
-            if (output.property === "fontSize" && output.resolved === 0) { add(path, "Text must have a positive size."); continue; }
+            if (output.property === "fontSize" && studioLengthPixels(output.resolved as StudioLength) === 0) { add(path, "Text must have a positive size."); continue; }
             const previous = winners.get(output.property);
             if (previous?.rank === output.rank && previous.value !== output.resolved) { add(path, `Conflicting ${output.property} declarations at equal precedence.`, STUDIO_ERROR.conflict); continue; }
             if (!previous || output.rank > previous.rank) winners.set(output.property, { rank: output.rank, value: output.resolved, path, ...(output.tokenId ? { tokenId: output.tokenId } : {}) });
@@ -106,9 +104,9 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
     const source = objectList(document.layout).find(item => item.targetPartRef === part.id);
     if (!source) continue;
     const index = objectList(document.layout).indexOf(source);
-    const numeric = (field: "gap" | "padding" | "minHeight"): number => {
+    const numeric = (field: "gap" | "padding" | "minHeight"): StudioLength => {
       const result = value(source[field], "dimension", field, `/layout/${index}/${field}`, part.id).resolved;
-      return typeof result === "number" ? result : 0;
+      return result === undefined ? 0 : result as StudioLength;
     };
     layout[part.id] = { ...(source.mode === "free" ? { mode: "free" as const } : {}), ...(isObject(source.position) ? { position: { x: Number(source.position.x), y: Number(source.position.y) } } : {}), axis: source.axis === "horizontal" ? "horizontal" : "vertical", gap: numeric("gap"), padding: numeric("padding"), minHeight: numeric("minHeight"), childOrder: Array.isArray(source.childOrder) ? source.childOrder.map(String) : [] };
     if (isObject(source.size)) for (const axis of ["width", "height"] as const) {
@@ -117,9 +115,9 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
       else if (isObject(policy) && policy.mode === "fixed" && isObject(policy.value) && typeof policy.value.value === "number") layout[part.id]![axis] = { mode: "fixed", value: policy.value.value };
     }
     if (source.alignment === "start" || source.alignment === "center" || source.alignment === "end" || source.alignment === "stretch") layout[part.id]!.alignment = source.alignment;
-    if (component.archetype === "button" && part.role === "root" && layout[part.id]!.minHeight < MIN_ACTION_HEIGHT) add(`/layout/${index}/minHeight`, "Button requires at least 44 logical px in this profile.");
+    if (component.archetype === "button" && part.role === "root" && studioLengthPixels(layout[part.id]!.minHeight) < MIN_ACTION_HEIGHT) add(`/layout/${index}/minHeight`, "Button requires at least 44 logical px at the 16px root reference in this profile.");
   }
   const mappings = objectList(document.nodeMappings).filter(item => typeof item.element === "string");
   const elements = Object.fromEntries(mappings.map(item => [String(item.partRef), item.element])) as NonNullable<StudioDesign["elements"]>;
-  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout, ...(mappings.length ? { elements } : {}), ...(isObject(document.editorFrame) ? { editorFrame: document.editorFrame as unknown as NonNullable<StudioDesign["editorFrame"]> } : {}) };
+  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout, ...(document.referenceLayout ? { referenceLayout: Object.fromEntries(objectList(document.referenceLayout).map(row => [String(row.partRef), row.fields])) as Record<string, string[]> } : {}), ...(mappings.length ? { elements } : {}), ...(isObject(document.editorFrame) ? { editorFrame: document.editorFrame as unknown as NonNullable<StudioDesign["editorFrame"]> } : {}) };
 }

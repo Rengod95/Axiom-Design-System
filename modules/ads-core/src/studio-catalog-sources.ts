@@ -9,10 +9,10 @@ import { canonicalJson } from "./canonical-json.ts";
 import { isObject } from "./documents.ts";
 import { catalogObjects } from "./studio-catalog-validation.ts";
 import { STUDIO_CATALOG_PROFILE } from "./studio-catalog-constants.ts";
-import { STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MAX_DIMENSION, STUDIO_MOTION, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
+import { STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MOTION, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
 import { studioCatalogPresentation } from "./studio-catalog-presentation.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
-import { isStudioTokenCompatible } from "./studio-style-values.ts";
+import { isStudioTokenCompatible, resolveStudioDimension, studioLengthPixels } from "./studio-style-values.ts";
 
 const dimension = (value: number): JsonObject => ({ value, unit: "px" });
 const color = (value: number): JsonObject => ({ colorSpace: "srgb", components: [value, value, value], alpha: 1 });
@@ -30,8 +30,7 @@ const BASELINE_PATH_NAMESPACES = new Set(["semantic", "color", "colors"]);
 function renderableBaselineToken(token: ResolvedFoundationToken, property: BaselineProperty): boolean {
   if (!isStudioTokenCompatible(token, property) || !isObject(token.value)) return false;
   const value = token.value;
-  if (token.type === "dimension") return Object.keys(value).every(key => key === "value" || key === "unit") && value.unit === "px"
-    && typeof value.value === "number" && Number.isFinite(value.value) && value.value >= 0 && (property !== "fontSize" || value.value > 0) && value.value <= STUDIO_MAX_DIMENSION;
+  if (token.type === "dimension") { try { const length = resolveStudioDimension(value); return property !== "fontSize" || studioLengthPixels(length) > 0; } catch { return false; } }
   return Object.keys(value).every(key => ["colorSpace", "components", "alpha", "hex"].includes(key)) && value.colorSpace === "srgb"
     && Array.isArray(value.components) && value.components.length === 3 && value.components.every(channel => typeof channel === "number" && Number.isFinite(channel) && channel >= 0 && channel <= 1)
     && (value.alpha === undefined || typeof value.alpha === "number" && Number.isFinite(value.alpha) && value.alpha >= 0 && value.alpha <= 1);
@@ -134,6 +133,7 @@ export function duplicateComponentSources(component: AdsDocument, designs: AdsDo
   for (const source of sources) source.revision = id();
   copy.name = name;
   remapStudioBehavior(copy, ids, id);
+  if (isObject(copy.studioReference) && Array.isArray(copy.studioReference.valueIds)) copy.studioReference.valueIds = copy.studioReference.valueIds.map(mapped);
   for (const instance of studioInstances(copy)) { instance.id = id(); instance.ownerPartRef = ids.get(instance.ownerPartRef) ?? instance.ownerPartRef; if (instance.slotRef) instance.slotRef = ids.get(instance.slotRef) ?? instance.slotRef; }
   for (const part of catalogObjects(copy.parts)) part.parent = mapped(part.parent);
   for (const track of catalogObjects(copy.motion)) track.targetPartRef = mapped(track.targetPartRef);
@@ -145,6 +145,7 @@ export function duplicateComponentSources(component: AdsDocument, designs: AdsDo
     design.name = `${name} ${String(design.category)}`;
     if (isObject(design.componentRef)) { design.componentRef.id = copy.id; if (design.componentRef.revision !== undefined) design.componentRef.revision = copy.revision; }
     for (const mapping of catalogObjects(design.nodeMappings)) mapping.partRef = mapped(mapping.partRef);
+    for (const mapping of catalogObjects(design.referenceLayout)) mapping.partRef = mapped(mapping.partRef);
     for (const layout of catalogObjects(design.layout)) { layout.targetPartRef = mapped(layout.targetPartRef); if (Array.isArray(layout.childOrder)) layout.childOrder = layout.childOrder.map(mapped); }
     for (const rule of catalogObjects(design.appearance)) rule.targetPartRef = mapped(rule.targetPartRef);
     if (isObject(design.editorFrame) && typeof design.editorFrame.x === "number" && typeof design.editorFrame.y === "number") { design.editorFrame.x += 32; design.editorFrame.y += 32; }

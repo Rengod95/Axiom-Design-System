@@ -1,0 +1,40 @@
+{
+  "provider": "base-ui",
+  "width": 640,
+  "height": 400,
+  "capture": "Official initial demo; preview trigger/card are hovered to reveal their original popup. Source CSS unchanged; host centers and proportionally fits the demo.",
+  "assets": [
+    {
+      "sourceRow": 315,
+      "theme": "light",
+      "file": "315-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "826302426016af39a15782dc4df243673ee66a63bf31e4d96465418c8c5a436c"
+    },
+    {
+      "sourceRow": 315,
+      "theme": "dark",
+      "file": "315-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "d11bc757749ebe531e0823d109ba52bb638fc1e8d49d3273d48570911cb82c66"
+    },
+    {
+      "sourceRow": 317,
+      "theme": "light",
+      "file": "317-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "f1203a225135c6d5739a5d057b87d89e4fe869f5f17c276b4d99bb06fc94dd8d"
+    },
+    {
+      "sourceRow": 317,
+      "theme": "dark",
+      "file": "317-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "d54561b1d3d46179a7ddf5685da73dfe15fb18b770c4854a456f267bb0de6ebe"
+    }
+  ]
+}

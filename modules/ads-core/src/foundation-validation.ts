@@ -9,6 +9,7 @@ import { STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants
 import { FOUNDATION_BINDING_CATEGORIES } from "./foundation-starters.ts";
 import type { FoundationBindingCategory } from "./foundation-contracts.ts";
 import { checkFoundationPolicies } from "./foundation-policy-validation.ts";
+import { FOUNDATION_AUTHORING_PROFILE, inspectFoundationProfile } from "./foundation-roles.ts";
 
 const tokenType = (value: unknown): value is FoundationTokenType => typeof value === "string" && (FOUNDATION_TOKEN_TYPES as readonly string[]).includes(value);
 export const MAX_FOUNDATION_CONTEXT_COMBINATIONS = 128;
@@ -38,11 +39,12 @@ function tokenValue(value: JsonValue | undefined, type: FoundationTokenType, pat
 /** Internal: snapshot is JSON-safe. Returns a typed view only if every shape check succeeds. */
 export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCheck): FoundationDocument | undefined {
   if (!record(snapshot)) { check.error("", "Expected a Foundation document object."); return; }
-  fields(snapshot, ["id", "name", "kind", "schemaVersion", "revision", "studioProfile", "tokens", "domains", "tiers", "themeAxes", "themeSets", "policies", "originalSources", "resolutionOrder"], ["metadata", "extensions", "description"], "", check);
+  fields(snapshot, ["id", "name", "kind", "schemaVersion", "revision", "studioProfile", "tokens", "domains", "tiers", "themeAxes", "themeSets", "policies", "originalSources", "resolutionOrder"], ["metadata", "extensions", "description", "valueSets", "authoringProfile"], "", check);
   for (const key of ["id", "name", "revision"]) if (!nonblank(snapshot[key])) check.error(pointer("", key), "Expected a nonblank header string.");
   if (!stableId(snapshot.id)) check.error("/id", "Expected a stable Foundation ID.");
   if (snapshot.kind !== "foundation" || snapshot.schemaVersion !== STUDIO_SCHEMA_VERSION) check.error("/kind", "Executable Foundation requires kind foundation and the pinned schema version.");
   if (!record(snapshot.studioProfile) || snapshot.studioProfile.id !== STUDIO_SOURCE_PROFILE.id || snapshot.studioProfile.version !== STUDIO_SOURCE_PROFILE.version || Object.keys(snapshot.studioProfile).length !== 2) check.error("/studioProfile", "Expected the pinned Axiom Studio profile.");
+  if (own(snapshot, "authoringProfile") && (!record(snapshot.authoringProfile) || snapshot.authoringProfile.id !== FOUNDATION_AUTHORING_PROFILE.id || snapshot.authoringProfile.version !== FOUNDATION_AUTHORING_PROFILE.version || Object.keys(snapshot.authoringProfile).length !== 2)) check.error("/authoringProfile", "Unsupported Axiom authoring profile.");
   if (own(snapshot, "description") && typeof snapshot.description !== "string") check.error("/description", "Expected a description string.");
   for (const key of ["metadata", "extensions"]) if (own(snapshot, key) && !record(snapshot[key])) check.error(pointer("", key), "Expected an opaque JSON object.");
   const lists = ["tokens", "domains", "tiers", "themeAxes", "themeSets", "policies", "originalSources", "resolutionOrder"];
@@ -82,7 +84,8 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   (snapshot.tokens as JsonValue[]).forEach((item, index) => {
     const path = `/tokens/${index}`; check.step(path);
     if (!record(item)) { check.error(path, "Expected a token record."); return; }
-    fields(item, ["id", "name", "typeRef", "value"], ["domain", "tier", "description", "deprecated", "metadata", "extensions"], path, check);
+    fields(item, ["id", "name", "typeRef", "value"], ["domain", "tier", "role", "description", "deprecated", "metadata", "extensions"], path, check);
+    if (own(item, "role") && !nonblank(item.role)) check.error(`${path}/role`, "Expected a nonblank role identity.");
     identity(item, path);
     if (own(item, "deprecated") && typeof item.deprecated !== "boolean" && typeof item.deprecated !== "string") check.error(`${path}/deprecated`, "Deprecation must be a boolean or reason string.");
     displayFields(item, path, "tokens");
@@ -97,17 +100,54 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
     if (own(item, "tier") && (!stableId(item.tier) || !tierIds.has(item.tier))) check.error(pointer(path, "tier"), "Unknown token tier.");
   });
   (snapshot.tokens as JsonValue[]).forEach((item, index) => { if (record(item) && record(item.typeRef) && tokenType(item.typeRef.id)) tokenValue(item.value, item.typeRef.id, `/tokens/${index}/value`, tokens, check); });
+  const valueSets = new Map<string, JsonObject>();
+  if (own(snapshot, "valueSets") && !Array.isArray(snapshot.valueSets)) check.error("/valueSets", "Expected a list of reusable value groups.");
+  if (Array.isArray(snapshot.valueSets)) snapshot.valueSets.forEach((item, index) => {
+    const path = `/valueSets/${index}`; check.step(path);
+    if (!record(item)) { check.error(path, "Expected a value group."); return; }
+    fields(item, ["id", "name", "values"], ["domain", "description"], path, check);
+    identity(item, path); displayFields(item, path, "valueSets");
+    if (stableId(item.id)) valueSets.set(item.id, item);
+    if (own(item, "domain") && (!stableId(item.domain) || !domainIds.has(item.domain))) check.error(`${path}/domain`, "Unknown value group domain.");
+    if (!record(item.values)) { check.error(`${path}/values`, "Expected token identities mapped to values."); return; }
+    for (const [id, value] of Object.entries(item.values)) {
+      const token = tokens.get(id), at = pointer(`${path}/values`, id);
+      if (!token) check.error(at, "Value group targets an unknown token.");
+      else {
+        if (item.domain !== undefined && token.domain !== item.domain) check.error(at, "A value group can only contain tokens belonging to its domain.");
+        if (record(token.typeRef) && tokenType(token.typeRef.id)) tokenValue(value, token.typeRef.id, at, tokens, check);
+      }
+    }
+  });
+  const groupSelection = (ids: JsonValue | undefined, path: string): void => {
+    if (!Array.isArray(ids) || !ids.every(id => typeof id === "string" && valueSets.has(id)) || new Set(ids).size !== ids.length) { check.error(path, "Select unique existing value groups."); return; }
+    const selectedDomains = new Set<string>();
+    for (const id of ids as string[]) {
+      const domain = valueSets.get(id)!.domain;
+      if (typeof domain !== "string") continue;
+      if (selectedDomains.has(domain)) check.error(path, "Choose only one value group per domain in a theme selection.");
+      selectedDomains.add(domain);
+    }
+  };
   const axes = new Map<string, JsonObject>();
   (snapshot.themeAxes as JsonValue[]).forEach((item, index) => {
     const path = `/themeAxes/${index}`; check.step(path);
     if (!record(item)) { check.error(path, "Expected a ThemeAxis record."); return; }
-    fields(item, ["id", "contexts", "scope"], ["default", "overrides", "name", "description"], path, check);
+    fields(item, ["id", "contexts", "scope"], ["default", "overrides", "name", "description", "valueSetIds"], path, check);
     displayFields(item, path, "themeAxes");
     identity(item, path); if (stableId(item.id)) axes.set(item.id, item);
     if (!Array.isArray(item.contexts) || item.contexts.length === 0 || !item.contexts.every(nonblank) || new Set(item.contexts).size !== item.contexts.length) check.error(pointer(path, "contexts"), "Expected a nonempty list of unique context names.");
     if (own(item, "default") && (!nonblank(item.default) || !Array.isArray(item.contexts) || !item.contexts.includes(item.default))) check.error(pointer(path, "default"), "Default must name a declared context.");
     if (!record(item.scope) || item.scope.id !== snapshot.id || item.scope.expectedKind !== "foundation" || own(item.scope, "version") || own(item.scope, "revision") && item.scope.revision !== snapshot.revision) check.error(pointer(path, "scope"), "Axis scope must refer to this Foundation and, if pinned, its current revision.");
     else fields(item.scope, ["id", "expectedKind"], ["revision"], pointer(path, "scope"), check);
+    if (own(item, "valueSetIds")) {
+      if (!record(item.valueSetIds)) check.error(`${path}/valueSetIds`, "Expected context-to-group selections.");
+      else for (const [context, ids] of Object.entries(item.valueSetIds)) {
+        const at = pointer(`${path}/valueSetIds`, context);
+        if (!Array.isArray(item.contexts) || !item.contexts.includes(context)) check.error(at, "Value group context is not declared.");
+        groupSelection(ids, at);
+      }
+    }
     if (own(item, "overrides")) {
       if (!record(item.overrides)) { check.error(pointer(path, "overrides"), "Expected context-to-token override maps."); return; }
       for (const [context, map] of Object.entries(item.overrides)) {
@@ -127,7 +167,8 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   (snapshot.themeSets as JsonValue[]).forEach((item, index) => {
     const path = `/themeSets/${index}`; check.step(path);
     if (!record(item)) { check.error(path, "Expected a ThemeSet record."); return; }
-    fields(item, ["id", "contexts", "resolutionProfile"], ["name", "description"], path, check);
+    fields(item, ["id", "contexts", "resolutionProfile"], ["name", "description", "valueSetIds"], path, check);
+    if (own(item, "valueSetIds")) groupSelection(item.valueSetIds, `${path}/valueSetIds`);
     displayFields(item, path, "themeSets");
     identity(item, path);
     if (!record(item.contexts)) check.error(pointer(path, "contexts"), "Expected a complete context selection.");
@@ -144,7 +185,24 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
   checkFoundationPolicies(snapshot, entities, check);
   if (!check.valid) return;
   const document = snapshot as unknown as FoundationDocument;
+  inspectFoundationProfile(document, (path, message) => check.error(path, message));
+  if (!check.valid) return;
   checkAliasCycles(new Map(document.tokens.map(token => [token.id, token.value as FoundationTokenValue])), check, "/tokens");
+  // Reusable groups must be valid over base tokens even before a user attaches a theme.
+  // Otherwise a disconnected cycle or invalid property expression could be saved unnoticed.
+  for (const group of document.valueSets ?? []) {
+    const standalone = Object.assign({}, document);
+    standalone.themeAxes = []; standalone.resolutionOrder = [];
+    standalone.themeSets = [{ id: group.id, contexts: {}, valueSetIds: [group.id], resolutionProfile: { id: FOUNDATION_RESOLVER_ID, expectedKind: "resolutionProfile", version: FOUNDATION_RESOLVER_VERSION } }];
+    evaluateFoundation(standalone, { themeSetId: group.id }, check, false);
+  }
+  if (!check.valid) return;
+  // Guided projects validate the combinations users actually publish, not an exponential axis product.
+  if (document.authoringProfile) {
+    evaluateFoundation(document, {}, check, false);
+    for (const theme of document.themeSets) evaluateFoundation(document, { themeSetId: theme.id }, check, false);
+    return check.valid ? document : undefined;
+  }
   let combinations = 1n;
   for (const axis of document.themeAxes) combinations *= BigInt(axis.contexts.length);
   if (combinations > BigInt(MAX_FOUNDATION_CONTEXT_COMBINATIONS)) {
@@ -162,6 +220,7 @@ export function checkFoundationSnapshot(snapshot: JsonValue, check: FoundationCh
       positions[index] = 0;
     }
   }
+  for (const theme of document.themeSets) if (theme.valueSetIds?.length) evaluateFoundation(document, { themeSetId: theme.id }, check, false);
   return check.valid ? document : undefined;
 }
 

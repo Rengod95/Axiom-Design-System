@@ -1,5 +1,5 @@
-import { planFoundationPolicyEdit, planStudioInstanceEdit, canonicalJson, CommandService, createStudioStarter, inspectStudioProject, planStudioEdit, planFoundationEdit, planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentBatch, planStudioTokenBindingRepair, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
-import type { StudioTokenBindingReplacement } from "../../../modules/ads-core/src/index.ts";
+import { previewFoundationImportSource, planFoundationPolicyEdit, planStudioInstanceEdit, canonicalJson, CommandService, createStudioStarter, inspectStudioProject, planStudioEdit, planFoundationEdit, planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentBatch, planStudioTokenBindingRepair, PROTOCOL_VERSION } from "../../../modules/ads-core/src/index.ts";
+import type { SourceDraft, StudioTokenBindingReplacement } from "../../../modules/ads-core/src/index.ts";
 import type { CommandEnvelope, CommandResult, Diagnostic, JsonObject, KernelServices, Principal, ProjectSnapshot, StudioEdit, StudioEditPlan, StudioProjection, StudioSelection, FoundationAuthoringEdit, StudioComponentEdit, StudioComponentPlan } from "../../../modules/ads-core/src/index.ts";
 import type { MessageKey } from "./locales.ts";
 import type { FoundationStarterOptions } from "../../../modules/ads-core/src/index.ts";
@@ -13,6 +13,7 @@ export interface StudioState {
   plan: WorkbenchPlan | null; selection: StudioSelection; authoring: AuthoringView;
   candidate: ReviewSummary | null; buffers: Record<string, string>; pendingBuffers: string[];
   diagnostics: Diagnostic[]; error: string | null; message: MessageKey | null; retryable: boolean;
+  sourceDrafts: SourceDraft[];
 }
 interface Retry { command: CommandEnvelope; after: (result: CommandResult) => Promise<void> }
 interface EditIntent { key: string | null; sourceEdit?: { id: string; source: string }; plan(project: ProjectSnapshot, selection: StudioSelection): StudioEditPlan | StudioComponentPlan }
@@ -32,7 +33,7 @@ export class StudioController {
   #draftHistory: { state: StudioState; intents: EditIntent[] }[] = [];
   #draftFuture: { state: StudioState; intents: EditIntent[] }[] = [];
   #refreshing: Promise<void> | null = null;
-  #state: StudioState = { loading: true, busy: false, project: null, projection: null, plan: null, selection: {}, authoring: { revision: null, pendingCandidates: [] }, candidate: null, buffers: {}, pendingBuffers: [], diagnostics: [], error: null, message: null, retryable: false };
+  #state: StudioState = { loading: true, busy: false, project: null, projection: null, plan: null, selection: {}, authoring: { revision: null, pendingCandidates: [] }, candidate: null, buffers: {}, pendingBuffers: [], diagnostics: [], error: null, message: null, retryable: false, sourceDrafts: [] };
 
   constructor(service: CommandService, services: KernelServices, principal = STUDIO_PRINCIPAL) { this.#service = service; this.#services = services; this.#principal = principal; }
   getSnapshot = (): StudioState => this.#state;
@@ -71,7 +72,7 @@ export class StudioController {
   }
   async #load(clearDraft = false, isCurrent: () => boolean = () => true): Promise<void> {
     // Documents and history are isolated together by one public, authorized snapshot read.
-    const { project, authoring } = await this.#service.getAuthoringSnapshot(this.#principal);
+    const { project, authoring, sourceDrafts } = await this.#service.getAuthoringSnapshot(this.#principal);
     if (!isCurrent()) return;
     if (!clearDraft && this.dirty && project?.revision !== this.#state.project?.revision) {
       this.#patch({ authoring, error: "REVISION_CONFLICT", message: "conflict" });
@@ -81,7 +82,7 @@ export class StudioController {
     const shown = !clearDraft && this.#state.plan ? this.#state.plan.project : project;
     const projection = shown && Object.keys(shown.documents).length ? inspectStudioProject(shown, this.#state.selection) : null;
     if (clearDraft || changedBase) { this.#intents = []; this.#draftHistory = []; this.#draftFuture = []; }
-    this.#patch({ project, authoring, projection, diagnostics: projection?.diagnostics ?? [], ...(clearDraft ? { plan: null, candidate: null, buffers: {}, pendingBuffers: [] } : {}) });
+    this.#patch({ project, authoring, projection, sourceDrafts, diagnostics: projection?.diagnostics ?? [], ...(clearDraft ? { plan: null, candidate: null, buffers: {}, pendingBuffers: [] } : {}) });
   }
   connect(): Promise<void> { return this.#run(() => this.#load()); }
   refresh(): Promise<void> {
@@ -133,7 +134,7 @@ export class StudioController {
     // Preview identities are isolated from the host allocator and never persisted.
     return planFoundationEdit(project, edit, () => `preview.import.${++next}`, this.#state.selection, this.#services.digest);
   }
-  createComponent(catalogId: string, name?: string, structure?: "blank" | "stack" | "article"): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentCreate(project, { catalogId, ...(name ? { name } : {}), ...(structure ? { structure } : {}) }, ids))); }
+  createComponent(catalogId: string, name?: string, structure?: "blank" | "stack" | "article", referenceTemplateId?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentCreate(project, { catalogId, ...(name ? { name } : {}), ...(structure ? { structure } : {}), ...(referenceTemplateId ? { referenceTemplateId } : {}) }, ids))); }
   policy(edit: import("../../../modules/ads-core/src/index.ts").FoundationPolicyEdit): boolean { return this.#editIntent(this.#intent(null, (project, selection, ids) => planFoundationPolicyEdit(project, edit, ids, selection))); }
   instance(componentId: string, edit: import("../../../modules/ads-core/src/index.ts").StudioInstanceEdit): boolean { return this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioInstanceEdit(project, componentId, edit, ids))); }
   duplicateComponent(componentId: string, name?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentDuplicate(project, { componentId, ...(name ? { name } : {}) }, ids))); }
@@ -196,6 +197,19 @@ export class StudioController {
       const source = this.#state.buffers[id];
       if (source === undefined) return;
       await this.#send(this.#command("document.import", { sourceRefs: [{ uri: `axiom:studio-draft/${id}`, content: source }], formatProfile: "ads-studio", importMode: "draft" }), async () => { this.#patch({ message: "draftCaptured" }); });
+    });
+  }
+  /** Parse external token candidates before requesting their guided domain and role mappings. */
+  previewExchangeTokens(edit: Extract<FoundationAuthoringEdit, { kind: "dtcg-import" }>) {
+    return previewFoundationImportSource(edit, this.#services.createId, this.#services.digest);
+  }
+  /** Preserve an external repair bundle without adopting partial tokens or changing the document revision. */
+  captureExchangeDraft(sourceName: string, sourceText: string, format: "dtcg" | "resolver" = "dtcg", inputs: Record<string, string> = {}, sources: Record<string, string> = {}, options: Partial<Pick<Extract<FoundationAuthoringEdit, { kind: "dtcg-import" }>, "prefix" | "conflicts" | "mappings">> = {}): Promise<void> {
+    return this.#run(async () => {
+      const content = canonicalJson({ format: "axiom.foundation.exchange-draft", version: "1.0.0", sourceName, sourceText, exchangeFormat: format, inputs, sources, options });
+      await this.#send(this.#command("document.import", { sourceRefs: [{ uri: `axiom:foundation-exchange-draft/${encodeURIComponent(sourceName)}`, content }], formatProfile: "ads-envelope", importMode: "draft" }), async () => {
+        this.#patch({ sourceDrafts: await this.#service.listDrafts(this.#principal), message: "draftCaptured" });
+      });
     });
   }
   #summary(result: CommandResult, baseRevision: string): ReviewSummary {

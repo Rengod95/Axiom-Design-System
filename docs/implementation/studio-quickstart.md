@@ -4,6 +4,10 @@ The [ADR-0015 workbench](../adr/0015-studio-workbench-and-catalog-authoring.md) 
 
 ```sh
 pnpm install --frozen-lockfile --ignore-scripts
+npm --prefix apps/studio/reference/shadcn ci --ignore-scripts
+npm --prefix apps/studio/reference/mantine ci --ignore-scripts
+npm --prefix apps/studio/reference/react-aria ci --ignore-scripts
+npm --prefix apps/studio/reference/base-ui ci --ignore-scripts
 pnpm studio
 ```
 
@@ -11,7 +15,7 @@ Open `http://127.0.0.1:4317`. Create a design system, select a shared token in t
 
 Edits first produce a transient preview. Review changes shows affected documents and source field differences. Applying the reviewed candidate creates one revision and one Undo entry. Closing the review keeps its candidate available for resumption; rejecting discards it. Undo/redo use the same persisted command service as the Node adapter. Export is disabled while a buffer or proposal is unapplied. The project-source button downloads the source-preserving project bundle. The Export dialog downloads an owned source ZIP for React/CSS, React Native/Expo, SwiftUI or Compose. Each archive carries exact source/context/profile pins and per-file hashes. A generated badge is separate from platform execution.
 
-Browser storage is origin-scoped IndexedDB. Keep the same hostname and port to reopen this local workspace. Different origins, private profiles, cleared site data and eviction do not share it. The server serves only built HTML/JS/CSS and the pinned SUIT font/license on loopback; no network backend or remote account is involved. A saved document survives process restart in the tested Chromium profile. Unsaved field buffers are not automatically durable: capture a source draft or download the source before leaving. Safari, Firefox, full offline installation and eviction recovery are not certified by this increment.
+Browser storage is origin-scoped IndexedDB. Keep the same hostname and port to reopen this local workspace. Different origins, private profiles, cleared site data and eviction do not share it. The loopback server serves a closed inventory of built Studio files, local fonts, pinned reference bundles, styles, licenses and preview assets; no project-storage backend or remote account is involved. A saved document survives process restart in the tested Chromium profile. Unsaved field buffers are not automatically durable: capture a source draft or download the source before leaving. Safari, Firefox, full offline installation and eviction recovery are not certified by this increment.
 
 ## Node delivery and upgrades
 
@@ -39,14 +43,18 @@ pnpm build
 pnpm test:browser
 pnpm test:studio
 pnpm test:workbench
+pnpm test:references
 pnpm test:targets
+python scripts/verify-reference-templates.py --self-test --built
 ```
 
 The Studio runner launches a dedicated Chromium profile, uses real keyboard/pointer/composition input, checks reviewed mutation and recovery, and downloads all four archives. The target runner consumes emitted source in a Web SSR/hydration app and a separate locked Expo application. It emits evidence under `dist/evidence` and `dist/target-verification`; generated files are excluded from the active source tree. These checks fail if their required browser/compiler cannot run; native SwiftUI/Compose results are produced separately by the Native Runtime workflow; see [native verification](native-runtime-verification.md).
 
 ## Workbench operations
 
-The Library lists all 239 catalog identities, including 209 component entries that create independent component and Web/Mobile design documents. Parts, templates and utilities remain visibly separate reference entries. Adding an entry creates editable source; unsupported dedicated interactions and target contracts produce explicit diagnostics instead of unrelated fallback controls.
+The Library lists 225 canonical entries, including 196 components that create independent component and Web/Mobile design documents. Fourteen duplicate discovery names are consolidated while all 239 stored catalog identities remain valid and their aliases stay searchable. Parts, templates and utilities remain separate reference entries. The [duplicate review](library-duplicate-review.md) lists each consolidation.
+
+Templates prefer shadcn/ui; entries absent there use a pinned Mantine, React Aria or Base UI example. Library cards show actual light/dark captures. Open original preview to run the official example at a fitted or actual size. Insertion retains its original design and behavior. Only explicitly mapped text, paint, layout and container edits are currently supported; unmapped controls are disabled. Provider props, variants, slots, behavior overrides and Web/native source generation for these pinned examples remain unsupported and report diagnostics. Existing unpinned components retain their earlier authoring/export behavior. See [ADR-0021](../adr/0021-pinned-reference-templates.md) for the source, isolation and edit contract.
 
 Library → Create component opens the composer. Choose Blank frame, Content stack, Article, Button, Text field or Card, name it and inspect its actual source preview. Creation joins the current proposal; Save still uses common review. Elements contains structure selection and selected-element settings. Custom layout elements support a closed HTML tag selector; Content area declares the element's slot contract and cardinality. Content areas are not variant slots. In a custom layout, Instances inserts an existing Library-created definition into the selected frame or content area. Scalar consumer values and text content can be overridden per instance; source changes require Review update. Interactive catalog controls retain their own semantic HTML.
 
@@ -67,7 +75,7 @@ Files → Export downloads the selected context with either references or resolv
 
 In Elements, add Box, Frame or Text to a selected container. Layout switches between automatic flow and free positioning. Free children expose a move handle and a corner resize handle; arrow keys nudge by one unit, Shift by ten. Double-click text to edit it in place, Ctrl/Command-Enter to apply, Escape to cancel. Source edits still need common review and support Undo/Redo.
 
-Instances reference a source definition rather than copying it. Insert a Library-created component into a custom frame; adjust its consumer values and text content, or Edit source. A changed source is shown as a placeholder until Review update. Required content and typed overrides are checked before adoption. React output renders actual nested component functions; native composition is explicitly unsupported.
+Instances reference a source definition rather than copying it. Insert a component into a custom frame and use Edit source to change its definition. User-created definitions support typed consumer values and text overrides; pinned upstream templates currently retain their baseline instance values/content. A changed source is shown as a placeholder until Review update. Required content and typed overrides are checked before adoption. React output renders supported unpinned definitions as nested component functions; pinned reference and native composition export remain explicitly unsupported.
 
 Foundation → Policies creates token inventory, layer-alias and property-binding requirements. Advisory findings allow delivery; required findings block every target export. Locate opens the exact affected component, category and element. Policies do not prevent saving unfinished drafts.
 

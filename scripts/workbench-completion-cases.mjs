@@ -1,39 +1,41 @@
 import assert from "node:assert/strict";
+import { foundationTab, tokenLayer, tokenDomain, openFoundationSettings, seedLegacyFoundation } from "./workbench-foundation-cases.mjs";
 
 /** Exercise the authored controls through the visible browser UI, not the form proxy. */
 export async function verifyCompactWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record }) {
   const before = await revision();
   const press = async key => { for (const type of ["keyDown", "keyUp"]) await page.send("Input.dispatchKeyEvent", { type, key, code: key === " " ? "Space" : key.length === 1 ? `Key${key.toUpperCase()}` : key }); await settled(); };
   await click("view-foundation"); await clickElement(text("Tokens")); await click("token-view-visual"); await fill("foundation-search", "");
-  for (const name of ["Filter domain", "Filter tier", "Filter type"]) await selectElement(label(name, "select"), "all");
-  const source = label("Filter type", "select"), trigger = `(${source}).parentElement.querySelector('[data-select-trigger]')`;
+  await clickElement(tokenLayer("Primitive")); await clickElement(tokenDomain("Color"));
+  const source = label("Sort tokens", "select"), trigger = `(${source}).parentElement.querySelector('[data-select-trigger]')`;
   await clickElement(trigger); await until("document.querySelector('.select-popup')");
-  await press("End"); assert.equal(await page.evaluate("document.querySelector('.select-popup [data-active=true]').textContent"), "typography");
+  await press("End"); assert.equal(await page.evaluate("document.querySelector('.select-popup [data-active=true]').textContent"), "Most used");
   await press("Home"); await press("ArrowDown"); await press("Enter");
-  assert.equal(await page.evaluate(`(${source}).value`), "color");
+  assert.equal(await page.evaluate(`(${source}).value`), "name/true");
   assert.equal(await page.evaluate("document.querySelector('.select-popup')===null"), true);
-  await press("g"); await until("document.querySelector('.select-popup [data-active=true]')?.textContent==='gradient'");
-  await press("Escape"); assert.equal(await page.evaluate(`(${source}).value`), "color", "Escape preserves the committed choice");
-  await clickElement(trigger); await clickElement(text("Aliases only"));
+  await press("m"); await until("document.querySelector('.select-popup [data-active=true]')?.textContent==='Most used'");
+  await press("Escape"); assert.equal(await page.evaluate(`(${source}).value`), "name/true", "Escape preserves the committed choice");
+  await clickElement(trigger); await clickElement(text("Linked values"));
   assert.equal(await page.evaluate("document.querySelector('.select-popup')===null"), true, "An outside click dismisses the menu");
-  await clickElement(text("Aliases only"));
-  await clickElement(trigger); await clickElement("Array.from(document.querySelectorAll('.select-option')).find(e=>e.textContent==='dimension')");
-  assert.equal(await page.evaluate(`(${source}).value`), "dimension");
+  await clickElement(text("Linked values"));
+  await clickElement(trigger); await clickElement("Array.from(document.querySelectorAll('.select-option')).find(e=>e.textContent==='Most used')");
+  assert.equal(await page.evaluate(`(${source}).value`), "uses/true");
   await clickElement(trigger); await press("Home"); await press("Tab");
-  assert.equal(await page.evaluate(`(${source}).value`), "all", "Tab commits the active option and continues focus navigation");
+  assert.equal(await page.evaluate(`(${source}).value`), "name/false", "Tab commits the active option and continues focus navigation");
   assert.notEqual(await page.evaluate(`document.activeElement===(${trigger})`), true);
-  await selectElement(source, "color"); await fill("foundation-search", "color.brand.");
+  await fill("foundation-search", "color.brand.");
   assert.equal(await page.evaluate("Array.from(document.querySelectorAll('.material-name')).some(e=>e.textContent==='200')"), true);
   assert.equal(await page.evaluate("Array.from(document.querySelectorAll('.material-color .token-visual')).every(e=>Math.abs(e.clientWidth-e.clientHeight)<1)"), true);
   await clickElement("document.querySelector('.material-group .section-add-token')");
   assert.equal(await page.evaluate(`${id("foundation-token-name")}.value`), "color.brand.");
-  assert.equal(await page.evaluate(`${id("foundation-token-type")}.value`), "color");
+  assert.equal(await page.evaluate(`${id("foundation-token-role")}.value`), "color.palette");
+  assert.equal(await page.evaluate(`Boolean(${id("foundation-token-type")})`), false, "Raw value types are hidden by purpose-based authoring");
   assert.equal(await page.evaluate(`(${label("Domain", "select")}).selectedOptions[0].textContent`), "Color");
-  assert.equal(await page.evaluate(`(${label("Tier", "select")}).selectedOptions[0].textContent`), "Primitive");
+  assert.equal(await page.evaluate(`(${label("Layer", "select")}).selectedOptions[0].textContent`), "Primitive");
   // Switching an untouched creation context must remount defaults without losing another edited form.
   await fill("foundation-search", "color.neutral."); await clickElement("document.querySelector('.material-group .section-add-token')");
   assert.equal(await page.evaluate(`${id("foundation-token-name")}.value`), "color.neutral.");
-  await clickElement(text("Cancel")); await fill("foundation-search", ""); await selectElement(source, "all");
+  await clickElement(text("Cancel")); await fill("foundation-search", "");
   const geometry = await page.evaluate("(()=>{const p=document.querySelector('.foundation-panel'),n=document.querySelector('.foundation-navigation'),top=n.getBoundingClientRect().top;p.scrollTop=400;return{top}})()");
   await settled();
   assert.ok(Math.abs(await page.evaluate("document.querySelector('.foundation-navigation').getBoundingClientRect().top") - geometry.top) < 1, "Foundation tabs stay fixed in their scrolling pane");
@@ -175,21 +177,23 @@ export async function verifyEditorCompletion({ page, origin, database, root, id,
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
   if (await page.evaluate("document.documentElement.dataset.theme!=='light'")) await click("studio-theme-toggle");
   await fill("project-name", "Forma system"); await capture("01-onboarding-light");
-  assert.equal(await page.evaluate(`${id("starter-enabled")}.checked`), true);
+  assert.equal(await page.evaluate("document.querySelectorAll('.starter-required-grid > span').length"), 11);
   await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await click("view-foundation");
+  assert.deepEqual(await page.evaluate("Array.from(document.querySelectorAll('[role=tablist][aria-label=\"Foundation views\"] button')).map(e=>e.textContent.trim())"), ["Domains", "Tokens", "Themes"]);
+  assert.equal(await page.evaluate("document.querySelector('[role=tablist][aria-label=\"Token layer\"] [aria-selected=true]').textContent"), "Semantic");
   await click("view-foundation"); await clickElement(text("Domains"));
   assert.equal(await page.evaluate("document.querySelectorAll('[data-testid^=domain-page-]').length"), 11);
   assert.equal(await page.evaluate("Boolean(document.querySelector('.unassigned-row'))"), false);
+  assert.equal(await page.evaluate(`(${label("Preview theme", "select")}).getClientRects().length`), 0, "Preview theme belongs only to the Tokens workspace");
   await viewport(1312, 958); await capture("02-domains-light");
   await clickElement("Array.from(document.querySelectorAll('.domain-directory-row')).find(e=>e.querySelector('strong').textContent==='Typography')");
-  await selectElement(label("Filter tier", "select"), await page.evaluate(`Array.from((${label("Filter tier", "select")}).options).find(e=>e.textContent==='Semantic').value`));
+  await clickElement(tokenLayer("Semantic"));
   assert.ok(await page.evaluate("document.querySelectorAll('.material-group').length>0 && Array.from(document.querySelectorAll('.material-group')).every(e=>e.dataset.tokenTier==='Semantic')"));
   await clickElement("Array.from(document.querySelectorAll('[data-testid^=foundation-row-]')).find(e=>e.textContent.includes('typography.body'))?.querySelector('button')");
   await capture("03-typography-light");
   assert.equal(await page.evaluate("Array.from(document.querySelectorAll('.foundation-navigation button')).some(e=>e.textContent==='Connections')"), false);
-  await selectElement(label("Filter domain", "select"), "all");
-  await selectElement(label("Filter tier", "select"), "all");
-  await clickElement("document.querySelector('[data-testid=\"foundation-row-token.content\"] button')");
+  await click("token-token.content");
   await clickElement(text("Token usage", "summary"));
   assert.ok(await page.evaluate("Boolean(document.querySelector('[data-testid=token-context]'))"));
   await capture("04-token-context-light");
@@ -209,7 +213,8 @@ export async function verifyEditorCompletion({ page, origin, database, root, id,
   record("starterWorkspace", { domains: 11, allTokensClassified: true, semanticFilter: true, contextualDependencies: true, distinguishableDesignPropertyUses: true, usagePartNavigation: true, themeWorkspace: true });
 
   await click("view-library"); await fill("catalog-search", "");
-  assert.ok(await page.evaluate("document.querySelectorAll('.catalog-thumbnail').length > 5"));
+  await until("Array.from(document.querySelectorAll('.reference-thumbnail')).filter(image=>image.complete && image.naturalWidth>0).length > 5");
+  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.reference-thumbnail')).every(image=>image.getAttribute('src').startsWith('/references/'))"));
   await capture("07-library-dark");
   await click("create-custom-component"); await until(id("component-composer")); await click("composer-create"); await until("document.querySelectorAll('[data-component-frame]').length===4");
   const componentId = await page.evaluate("Array.from(document.querySelectorAll('[data-component-frame]')).map(e=>e.dataset.componentFrame).find(id=>!id.startsWith('component.'))");
@@ -270,15 +275,17 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   await page.send("Page.navigate", { url: `${origin}/?database=${database}` }); await until(id("onboarding")); await viewport(1600, 1080);
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
   if (await page.evaluate("document.documentElement.dataset.theme!=='light'")) await click("studio-theme-toggle");
-  await fill("project-name", "Orbit foundation"); await click("starter-enabled"); await click("start-project"); await until(id("studio-app"));
-  await click("view-foundation"); await clickElement(text("Files")); await until(id("dtcg-source"));
+  await fill("project-name", "Orbit foundation"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await seedLegacyFoundation({ page, database, id, until });
+  const files = () => openFoundationSettings({ page, id, click, clickElement }, "Files");
+  await files(); await until(id("dtcg-source"));
   const data = { space: { $type: "dimension", base: { $value: { value: 8, unit: "px" } }, control: { $value: "{space.base}" } }, measure: { $type: "number", $value: { $ref: "#/space/base/$value/value" } }, title: { $type: "typography", $value: { fontFamily: "SUIT", fontSize: "{space.base}", fontWeight: 450, letterSpacing: { value: 0, unit: "px" }, lineHeight: 1.5 } } };
   const initial = await revision();
   await chooseFile("tokens.json", data); await until(`${id("dtcg-source")}.value.includes('space') && !${id("dtcg-import-apply")}.disabled`);
   assert.equal(await revision(), initial); await capture("desktop-light");
   await click("dtcg-import-apply"); await approve(); const saved = await revision(); assert.notEqual(saved, initial);
   await click("undo"); await until(`(${id("save-status")}).textContent.includes('Saved')`); await click("redo"); await until(`(${id("save-status")}).textContent.includes('Saved')`);
-  await clickElement(text("Tokens")); await click("token-view-list");
+  await clickElement(foundationTab("Tokens")); await clickElement(tokenLayer("Unassigned")); await clickElement(tokenDomain("Unassigned")); await click("token-view-list");
   const row = name => `Array.from(document.querySelectorAll('.foundation-table tbody tr')).find(e=>e.querySelector('.token-name-cell > span:last-child')?.firstChild.textContent===${JSON.stringify(name)})`;
   await until(row("measure")); await clickElement(`${row("measure")}.querySelector('button')`);
   assert.equal(await page.evaluate(`(${label("Value source", "select")}).value`), "expression");
@@ -301,27 +308,27 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   await click("review-changes"); assert.ok(await page.evaluate("Boolean(document.querySelector('.input-notice'))"));
   await click("reset-pending-input"); assert.equal(await page.evaluate(`(${label("Binding property 1", "select")}).value`), "/value");
   record("dtcgReviewedImport", { nativeFileInput: true, originalProjectPreservedBeforeApply: true, reviewSaveUndoRedo: true, livePropertyAndComposite: true, metadataPreservesReferences: true, deprecation: true, invalidExpressionReset: true });
-  await clickElement(text("Files"));
+  await files();
   const resolver = { version: "2025.10", sets: { base: { sources: [{ $ref: "base.json" }] } }, modifiers: { scheme: { default: "light", contexts: { light: [], dark: [{ scale: { $type: "number", $value: 9 } }] } } }, resolutionOrder: [{ $ref: "#/sets/base" }, { $ref: "#/modifiers/scheme" }] };
   await chooseFile("resolver.json", resolver); await until(`${id("dtcg-import-apply")}.disabled`);
   await chooseFile("base.json", { scale: { $type: "number", $value: 2 }, semantic: { $type: "number", $value: "{scale}" } }, "Choose referenced files");
   await until(`!${id("dtcg-import-apply")}.disabled`); await clickElement(text("dark")); await capture("resolver-dark");
   await click("dtcg-import-apply"); await approve();
   await clickElement(text("Tokens")); await click("token-view-list"); await until(row("semantic")); assert.ok(await page.evaluate(`${row("semantic")}.textContent.includes('9')`));
-  await clickElement(text("Files")); await clickElement(text("Export", "[role=tab]")); await until(`!${id("dtcg-export")}.disabled`);
+  await files(); await clickElement(text("Export", "[role=tab]")); await until(`!${id("dtcg-export")}.disabled`);
   await capture("export-dark"); await clickElement(text("Resolved values")); assert.equal(await page.evaluate(`${id("dtcg-export")}.disabled`), false);
   await clickElement(text("Import")); await fill("dtcg-source", "{"); await until(`${id("dtcg-import-apply")}.disabled`); assert.ok(await page.evaluate("document.querySelector('.exchange-preview [role=alert]').textContent.length>0"));
-  await clickElement(text("Try an example")); await until(`!${id("dtcg-import-apply")}.disabled`); await clickElement(text("Reject conflicts")); await until(`${id("dtcg-import-apply")}.disabled`);
+  await clickElement(text("Try an example")); await until(`${id("dtcg-import-apply")}.disabled`); await clickElement(text("Reject conflicts")); await until(`${id("dtcg-import-apply")}.disabled`);
   await clickElement(text("Add a name prefix", "summary")); await fillElement(label("Import prefix"), "external"); await until(`!${id("dtcg-import-apply")}.disabled`);
   await viewport(1312, 958); await capture("user-1312");
   await viewport(390, 844, true); await clickElement("Array.from(document.querySelectorAll('.mobile-panel-tabs button')).find(e=>e.textContent.trim()==='Workspace')"); await capture("mobile-dark");
-  const strip = "document.querySelector('[role=tablist][aria-label=\"Foundation views\"]')";
+  const strip = "document.querySelector('[role=tablist][aria-label=\"Foundation settings task\"]')";
   const tabBounds = `(()=>{const bar=${strip},tab=bar.querySelector('[aria-selected=true]'),r=bar.getBoundingClientRect(),a=tab.getBoundingClientRect();return a.left>=r.left-1&&a.right<=r.right+1})()`;
   assert.ok(await page.evaluate(tabBounds), "Selected Files tab must remain visible after resize");
   const scrollState = `(()=>{const rows=[];let e=${strip}.parentElement;while(e){rows.push(e.scrollTop);e=e.parentElement}return rows})()`;
   const beforeTabKeys = await page.evaluate(scrollState);
   await page.evaluate(`${strip}.querySelector('[aria-selected=true]').focus({preventScroll:true})`);
-  for (const key of ["Home", "End", "ArrowLeft", "ArrowRight", "ArrowLeft"]) {
+  for (const key of ["Home", "End", "ArrowLeft", "ArrowLeft", "ArrowRight", "ArrowLeft"]) {
     for (const type of ["keyDown", "keyUp"]) await page.send("Input.dispatchKeyEvent", { type, key, code: key });
     await settled(); assert.ok(await page.evaluate(tabBounds));
   }
@@ -330,7 +337,7 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
   assert.ok(await page.evaluate("document.documentElement.scrollWidth<=window.innerWidth+1"));
   await click("studio-theme-toggle"); await capture("mobile-light");
   assert.ok(await page.evaluate("document.documentElement.scrollWidth<=window.innerWidth+1"));
-  await viewport(1600, 1080); await clickElement(text("Files")); await clickElement(text("Export", "[role=tab]")); await capture("export-light");
+  await viewport(1600, 1080); await files(); await clickElement(text("Export", "[role=tab]")); await capture("export-light");
   record("dtcgResolverAndExchange", { suppliedFilesOnly: true, selectedContextApplied: true, exportModes: ["references", "resolved"], invalidSourceRecovery: true, prefixConflictRecovery: true, selectedTabVisibleOnResizeAndKeys: true, tabKeysPreserveParentScroll: true, desktopWidths: [1600, 1312], mobileWidth: 390, themes: ["light", "dark"] });
 }
 
@@ -338,12 +345,19 @@ export async function verifyFoundationInterop({ page, origin, database, root, id
 /** Runs against the existing disposable starter project after the completion cases. */
 export async function verifyMaterialWorkbench({ page, id, label, text, click, clickElement, fill, selectElement, until, settled, revision, record }) {
   await click("view-foundation"); await clickElement(text("Tokens")); await click("token-view-visual");
-  for (const [name, value] of [["Filter domain", "all"], ["Filter tier", "all"], ["Filter type", "all"]]) await selectElement(label(name, "select"), value);
   await fill("foundation-search", "");
   const before = await revision();
-  const types = await page.evaluate("[...new Set(Array.from(document.querySelectorAll('.material-select [data-visual-type]')).map(e=>e.dataset.visualType))].sort()");
-  assert.deepEqual(types, ["border", "color", "cubicBezier", "dimension", "duration", "fontFamily", "fontWeight", "gradient", "number", "shadow", "strokeStyle", "transition", "typography"].sort());
-  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.material-color .token-visual')).every(e=>{const r=e.getBoundingClientRect();return r.width>=20&&Math.abs(r.height-r.width)<1}) && Boolean(document.querySelector('.shared-measure-track')) && Boolean(document.querySelector('.editorial-type'))"), "Color surfaces stay square; length and typography use purpose-specific displays");
+  const types = new Set(); let squares = false, rulers = false, editorial = false;
+  await clickElement(tokenLayer("Primitive"));
+  const domains = await page.evaluate("Array.from(document.querySelectorAll('[role=tablist][aria-label=\"Token domain\"] button')).map(e=>e.textContent.trim())");
+  for (const domain of domains) {
+    await clickElement(tokenDomain(domain));
+    const view = await page.evaluate("({types:Array.from(document.querySelectorAll('.material-token')).map(e=>Array.from(e.classList).find(c=>c.startsWith('material-token-'))?.slice(15)).filter(Boolean),squares:document.querySelectorAll('.material-color .token-visual').length>0&&Array.from(document.querySelectorAll('.material-color .token-visual')).every(e=>{const r=e.getBoundingClientRect();return r.width>=20&&Math.abs(r.height-r.width)<1}),rulers:Boolean(document.querySelector('.shared-measure-track')),editorial:Boolean(document.querySelector('.editorial-type'))})");
+    view.types.forEach(type=>types.add(type)); squares ||= view.squares; rulers ||= view.rulers; editorial ||= view.editorial;
+  }
+  assert.deepEqual([...types].sort(), ["border", "color", "cubicBezier", "dimension", "duration", "fontFamily", "fontWeight", "gradient", "number", "shadow", "strokeStyle", "transition", "typography"].sort());
+  assert.ok(squares && rulers && editorial, "Domain pages retain square color surfaces, shared length rulers and editorial typography");
+  await clickElement(tokenDomain("Spacing"));
   await fill("foundation-search", "space.");
   const names = await page.evaluate("Array.from(document.querySelectorAll('.material-select .sr-only')).map(e=>e.textContent)");
   assert.ok(names.indexOf("space.2") < names.indexOf("space.12"), "Numeric scales use natural ordering");
@@ -359,7 +373,7 @@ export async function verifyMaterialWorkbench({ page, id, label, text, click, cl
   assert.equal(await revision(), before, "Browsing and selection do not edit a project");
   record("materialAtlas", { types: 13, naturalScales: true, selectionSurvivesListSwitch: true, readonlyBrowsing: true });
 
-  await fill("foundation-search", "duration.300"); await clickElement("document.querySelector('.material-select')");
+  await clickElement(tokenDomain("Motion")); await fill("foundation-search", "duration.300"); await clickElement("document.querySelector('.material-select')");
   const inheritedReducedMotion = await page.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches");
   await page.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "no-preference" }] }); await settled();
   // Keep the real 300ms animation inspectable independently of CI/CDP latency.
@@ -388,7 +402,7 @@ export async function verifyMaterialWorkbench({ page, id, label, text, click, cl
     for (const preference of ["no-preference", "reduce"]) {
       await page.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: preference }] }); await settled();
       await fill("foundation-token-name", "");
-      await clickElement(text("Definition", "summary"));
+      await clickElement(text("Name and purpose", "summary"));
       await click("review-changes");
       await until("Boolean(document.querySelector('.input-notice'))");
       assert.equal(await page.evaluate(`${id("foundation-token-name")}.closest('details').open`), true, "Invalid draft focus reveals its collapsed group");

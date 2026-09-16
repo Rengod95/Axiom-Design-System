@@ -38,7 +38,7 @@ const ui = (await import(pathToFileURL(filename).href)).default as {
 function fixture() {
   let count = 0; const id = () => `inspector.generated.${++count}`;
   const project: ProjectSnapshot = { id: "project.inspector", name: "Inspector", revision: "project.initial", documents: Object.fromEntries(createStudioStarter("project.inspector").map(document => [document.id, { document, originalText: canonicalJson(document), sourceUri: "memory:initial", validation: "envelope-only", validationProfile: STUDIO_PROFILE, diagnostics: [] }])) };
-  const state = (working = project): StudioState => ({ loading: false, busy: false, project, projection: inspectStudioProject(working), plan: working === project ? null : { valid: true, diagnostics: [], baseRevision: project.revision, project: working, updates: [], impact: [] }, selection: {}, authoring: { revision: project.revision, pendingCandidates: [] }, candidate: null, buffers: {}, pendingBuffers: [], diagnostics: [], error: null, message: null, retryable: false });
+  const state = (working = project): StudioState => ({ loading: false, busy: false, project, projection: inspectStudioProject(working), plan: working === project ? null : { valid: true, diagnostics: [], baseRevision: project.revision, project: working, updates: [], impact: [] }, selection: {}, authoring: { revision: project.revision, pendingCandidates: [] }, candidate: null, buffers: {}, pendingBuffers: [], diagnostics: [], error: null, message: null, retryable: false, sourceDrafts: [] });
   return { project, state, id };
 }
 const tag = (html: string, selector: string): string => html.match(new RegExp(`<[^>]+data-testid="${selector}"[^>]*>`))?.[0] ?? "";

@@ -8,9 +8,11 @@ export const record = (value: unknown): value is JsonObject => value !== null &&
 export const nonblank = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
 export const stableId = (value: unknown): value is string => typeof value === "string" && ID_PATTERN.test(value) && !RESERVED_IDS.has(value);
 export const own = (value: object, key: string): boolean => Object.hasOwn(value, key);
+/** Foundation validates a token graph and declared themes within the unchanged document byte/depth limits. */
+export const MAX_FOUNDATION_STEPS = 1_048_576;
 export class FoundationCheck {
   readonly diagnostics: Diagnostic[] = [];
-  readonly budget = new TypeBudget();
+  readonly budget = new TypeBudget(MAX_FOUNDATION_STEPS);
   valid = true;
   readonly sourceRef: string;
   constructor(sourceRef: string) { this.sourceRef = sourceRef; }

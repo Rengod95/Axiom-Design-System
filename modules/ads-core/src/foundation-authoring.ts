@@ -9,6 +9,8 @@ import { authoringFoundation, authoringList, captureAuthoringProject, foundation
 import { applyFoundationTokenEdit } from "./foundation-authoring-token-ops.ts";
 import { applyFoundationThemeEdit } from "./foundation-authoring-theme-ops.ts";
 import { applyFoundationStarter } from "./foundation-starters.ts";
+import { applyFoundationMigration } from "./foundation-migration.ts";
+import { applyFoundationValueSetEdit, migrateFoundationValueSets } from "./foundation-value-sets.ts";
 import type { ProjectSnapshot } from "./contracts.ts";
 import type { FoundationSelection } from "./foundation-contracts.ts";
 import type { FoundationAuthoringEdit, FoundationEditPlan } from "./foundation-authoring-contracts.ts";
@@ -16,10 +18,15 @@ import type { StudioUsage } from "./studio-contracts.ts";
 
 export const MAX_FOUNDATION_AUTHORING_EDITS = 128;
 const FIELDS: Readonly<Record<string, readonly [readonly string[], readonly string[]]>> = {
-  "dtcg-import": [["sourceText", "sourceName", "conflicts"], ["prefix", "format", "inputs", "sources"]],
+  "dtcg-import": [["sourceText", "sourceName", "conflicts"], ["prefix", "format", "inputs", "sources", "mappings"]],
   "template-apply": [["domains"], ["accent", "fontFamily", "density", "template"]],
-  "token-create": [["name", "type", "value"], ["description", "domain", "tier"]],
-  "token-update": [["id"], ["name", "description", "domain", "tier", "deprecated"]],
+  "token-create": [["name", "type", "value"], ["description", "domain", "tier", "role"]],
+  "token-update": [["id"], ["name", "description", "domain", "tier", "role", "deprecated"]],
+  "foundation-migrate": [[], ["roles", "domains"]],
+  "value-set-create": [["name"], ["domain", "description", "copyFrom"]],
+  "value-set-update": [["id"], ["name", "description"]],
+  "value-set-delete": [["id"], ["replacementId"]],
+  "value-set-value": [["id", "tokenId", "value"], []],
   "token-delete": [["id"], ["replacementId"]], "token-duplicate": [["id", "name"], []],
   "token-alias": [["id", "targetId"], []], "token-literal": [["id", "value"], []], "token-expression": [["id", "value"], []],
   "classification-create": [["category", "name"], ["description", "allowedTypes", "bindingCategory"]],
@@ -29,7 +36,7 @@ const FIELDS: Readonly<Record<string, readonly [readonly string[], readonly stri
   "theme-axis-update": [["id"], ["name", "description", "default"]], "theme-axis-delete": [["id"], []],
   "theme-context-add": [["axisId", "name"], ["copyFrom"]], "theme-context-rename": [["axisId", "context", "name"], []],
   "theme-context-delete": [["axisId", "context"], ["replacement"]],
-  "theme-set-create": [["name", "contexts"], ["description"]], "theme-set-update": [["id"], ["name", "description", "contexts"]], "theme-set-delete": [["id"], []],
+  "theme-set-create": [["name", "contexts"], ["description", "valueSetIds"]], "theme-set-update": [["id"], ["name", "description", "contexts", "valueSetIds"]], "theme-set-delete": [["id"], []],
   "theme-override-set": [["axisId", "context", "id", "value"], []], "theme-override-remove": [["axisId", "context", "id"], []],
   "theme-order": [["axisIds"], []],
 };
@@ -53,7 +60,7 @@ function affectedUses(before: ProjectSnapshot, after: ProjectSnapshot): StudioUs
   for (const token of foundation.tokens) { if (previous.get(token.id) !== canonicalJson(token)) changed.add(token.id); previous.delete(token.id); }
   for (const id of previous.keys()) changed.add(id);
   // Theme structure can affect another context even when the currently shown value is unchanged.
-  if (canonicalJson(oldFoundation.themeAxes) !== canonicalJson(foundation.themeAxes) || canonicalJson(oldFoundation.themeSets) !== canonicalJson(foundation.themeSets) || canonicalJson(oldFoundation.resolutionOrder) !== canonicalJson(foundation.resolutionOrder)) for (const token of [...oldFoundation.tokens, ...foundation.tokens]) changed.add(token.id);
+  if (canonicalJson(oldFoundation.valueSets ?? []) !== canonicalJson(foundation.valueSets ?? []) || canonicalJson(oldFoundation.themeAxes) !== canonicalJson(foundation.themeAxes) || canonicalJson(oldFoundation.themeSets) !== canonicalJson(foundation.themeSets) || canonicalJson(oldFoundation.resolutionOrder) !== canonicalJson(foundation.resolutionOrder)) for (const token of [...oldFoundation.tokens, ...foundation.tokens]) changed.add(token.id);
   const references = [...foundationReferences(before, oldFoundation), ...foundationReferences(after, foundation)].map(item => item.reference);
   const aliases = new Map<string, Set<string>>();
   for (const reference of references) if (reference.ownerTokenId && (reference.kind === "alias" || reference.kind === "theme-alias")) {
@@ -85,13 +92,14 @@ export function planFoundationEdit(input: ProjectSnapshot, editInput: Foundation
     originalSelection = JSON.parse(canonicalJson(selection)) as FoundationSelection;
     const allocated = new Set(inspectLocalReferences(project.documents, project.id).entities.map(entity => entity.id));
     for (const entry of Object.values(project.documents)) allocated.add(entry.document.revision);
-    for (const field of ["tokens", "domains", "tiers", "themeAxes", "themeSets"] as const) for (const item of authoringList(foundation[field])) if (typeof item.id === "string") allocated.add(item.id);
+    for (const field of ["tokens", "domains", "tiers", "themeAxes", "themeSets", "valueSets"] as const) for (const item of authoringList(foundation[field])) if (typeof item.id === "string") allocated.add(item.id);
     const createdIds: string[] = [];
     const allocate = (entity: boolean): string => { const id = createId(); if (!isValidId(id) || allocated.has(id)) throw new Error("Identity service must return a fresh valid identity."); allocated.add(id); if (entity) createdIds.push(id); return id; };
     for (const edit of edits) {
       if (edit.kind === "dtcg-import") applyDtcgImport(foundation, edit, () => allocate(true), digest);
-      else if (edit.kind === "template-apply") applyFoundationStarter(foundation, edit, () => allocate(true));
-      else if (!applyFoundationTokenEdit(project, foundation, edit, () => allocate(true))) applyFoundationThemeEdit(foundation, edit, () => allocate(true), selection);
+      else if (edit.kind === "foundation-migrate") applyFoundationMigration(project, foundation, edit, () => allocate(true));
+      else if (edit.kind === "template-apply") { applyFoundationStarter(foundation, edit, () => allocate(true)); if (foundation.authoringProfile) migrateFoundationValueSets(foundation, () => allocate(true)); }
+      else if (!applyFoundationValueSetEdit(foundation, edit, () => allocate(true)) && !applyFoundationTokenEdit(project, foundation, edit, () => allocate(true))) applyFoundationThemeEdit(foundation, edit, () => allocate(true), selection);
       editIndex++;
     }
     const updates: FoundationEditPlan["updates"] = [];
@@ -106,7 +114,7 @@ export function planFoundationEdit(input: ProjectSnapshot, editInput: Foundation
     }
     const report = inspectStudioProject(project, selection);
     if (!report.valid) return { valid: false, diagnostics: report.diagnostics, baseRevision: baseline.revision, updates: [], impact: [], project: baseline, createdIds: [], selection: originalSelection };
-    const retainedIds = new Set([foundation.id, ...["tokens", "domains", "tiers", "themeAxes", "themeSets"].flatMap(key => authoringList(foundation[key]).map(item => item.id))]);
+    const retainedIds = new Set([foundation.id, ...["tokens", "domains", "tiers", "themeAxes", "themeSets", "valueSets"].flatMap(key => authoringList(foundation[key]).map(item => item.id))]);
     return { valid: true, diagnostics: report.diagnostics, baseRevision: baseline.revision, updates, impact: affectedUses(baseline, project), project, createdIds: createdIds.filter(id => retainedIds.has(id)), selection };
   } catch (error) {
     return { valid: false, diagnostics: [studioDiagnostic("memory:foundation-authoring", `/edits/${editIndex}`, error instanceof Error ? error.message : "Invalid Foundation edit.", "FOUNDATION_AUTHORING_INVALID")], baseRevision: baseline.revision, updates: [], impact: [], project: baseline, createdIds: [], selection: {} };

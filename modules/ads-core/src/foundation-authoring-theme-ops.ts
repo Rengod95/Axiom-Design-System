@@ -42,6 +42,17 @@ export function applyFoundationThemeEdit(foundation: FoundationDocument, edit: F
       if (edit.copyFrom !== undefined) {
         contextFor(axis, edit.copyFrom);
         if (axis.overrides && Object.hasOwn(axis.overrides, edit.copyFrom)) put(axis.overrides, edit.name, copy(axis.overrides[edit.copyFrom]));
+        if (axis.valueSetIds?.[edit.copyFrom]) {
+          const groups = foundation.valueSets ?? (foundation.valueSets = []), ids: string[] = [];
+          for (const id of axis.valueSetIds[edit.copyFrom]!) {
+            const source = groups.find(group => group.id === id);
+            if (!source) throw new Error("The source context contains a missing value group.");
+            const base = `${source.name} · ${edit.name}`; let name = base, suffix = 2;
+            while (groups.some(group => group.name === name)) name = `${base} ${suffix++}`;
+            const group = { ...copy(source), id: createId(), name }; groups.push(group); ids.push(group.id);
+          }
+          put(axis.valueSetIds, edit.name, ids);
+        }
       }
       axis.contexts.push(edit.name); return;
     }
@@ -51,6 +62,7 @@ export function applyFoundationThemeEdit(foundation: FoundationDocument, edit: F
       freshContext(axis, edit.name); axis.contexts = axis.contexts.map(value => value === edit.context ? edit.name : value);
       if (axis.default === edit.context) axis.default = edit.name;
       if (axis.overrides && Object.hasOwn(axis.overrides, edit.context)) { put(axis.overrides, edit.name, axis.overrides[edit.context]); delete axis.overrides[edit.context]; }
+      if (axis.valueSetIds && Object.hasOwn(axis.valueSetIds, edit.context)) { put(axis.valueSetIds, edit.name, axis.valueSetIds[edit.context]); delete axis.valueSetIds[edit.context]; }
       for (const theme of foundation.themeSets) if (theme.contexts[axis.id] === edit.context) put(theme.contexts, axis.id, edit.name);
       if (selection.contexts?.[axis.id] === edit.context) put(selection.contexts, axis.id, edit.name); return;
     }
@@ -62,17 +74,19 @@ export function applyFoundationThemeEdit(foundation: FoundationDocument, edit: F
       if (edit.replacement !== undefined) { contextFor(axis, edit.replacement); if (edit.replacement === edit.context) throw new Error("Context replacement must be a different context."); }
       axis.contexts = axis.contexts.filter(value => value !== edit.context);
       if (axis.overrides) delete axis.overrides[edit.context];
+      if (axis.valueSetIds) delete axis.valueSetIds[edit.context];
       if (axis.default === edit.context) axis.default = edit.replacement!;
       for (const theme of foundation.themeSets) if (theme.contexts[axis.id] === edit.context) put(theme.contexts, axis.id, edit.replacement!);
       if (selection.contexts?.[axis.id] === edit.context) put(selection.contexts, axis.id, edit.replacement!); return;
     }
     case "theme-set-create": {
       const theme: FoundationThemeSet = { id: createId(), name: edit.name, contexts: edit.contexts, resolutionProfile: { id: FOUNDATION_RESOLVER_ID, expectedKind: "resolutionProfile", version: FOUNDATION_RESOLVER_VERSION } };
+      if (edit.valueSetIds !== undefined) theme.valueSetIds = edit.valueSetIds;
       describe(theme, edit); foundation.themeSets.push(theme); return;
     }
     case "theme-set-update": {
       const theme = foundation.themeSets.find(item => item.id === edit.id); if (!theme) throw new Error("Selected ThemeSet is missing.");
-      describe(theme, edit); if (edit.contexts !== undefined) theme.contexts = edit.contexts; return;
+      describe(theme, edit); if (edit.contexts !== undefined) theme.contexts = edit.contexts; if (edit.valueSetIds !== undefined) theme.valueSetIds = edit.valueSetIds; return;
     }
     case "theme-set-delete": {
       if (!foundation.themeSets.some(item => item.id === edit.id)) throw new Error("Selected ThemeSet is missing.");
@@ -82,6 +96,20 @@ export function applyFoundationThemeEdit(foundation: FoundationDocument, edit: F
     case "theme-override-set": case "theme-override-remove": {
       const axis = axisFor(foundation, edit.axisId); contextFor(axis, edit.context);
       if (!foundation.tokens.some(token => token.id === edit.id)) throw new Error("Theme override token is missing.");
+      if (axis.valueSetIds) {
+        const token = foundation.tokens.find(item => item.id === edit.id)!;
+        const groups = foundation.valueSets ?? (foundation.valueSets = []);
+        const ids = axis.valueSetIds[edit.context] ?? [];
+        let group = groups.find(item => ids.includes(item.id) && item.domain === token.domain);
+        if (edit.kind === "theme-override-remove") { if (group) delete group.values[edit.id]; return; }
+        if (!group) {
+          const base = `${edit.context} · Values`; let name = base, suffix = 2;
+          while (groups.some(item => item.name === name)) name = `${base} ${suffix++}`;
+          group = { id: createId(), name, ...(token.domain ? { domain: token.domain } : {}), values: {} };
+          groups.push(group); ids.push(group.id); put(axis.valueSetIds, edit.context, ids);
+        }
+        put(group.values, edit.id, edit.value); return;
+      }
       if (edit.kind === "theme-override-remove") { const values = axis.overrides && Object.hasOwn(axis.overrides, edit.context) ? axis.overrides[edit.context] : undefined; if (values) delete values[edit.id]; return; }
       const overrides = axis.overrides ?? (axis.overrides = Object.create(null) as NonNullable<FoundationAxis["overrides"]>);
       if (!Object.hasOwn(overrides, edit.context)) put(overrides, edit.context, Object.create(null));

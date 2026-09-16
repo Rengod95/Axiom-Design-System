@@ -86,9 +86,9 @@ test("semantic aliases beat lower-level literal intents and equally ranked choic
   assert.deepEqual(create(document).declarations.color, gray(.1));
 });
 
-test("unsupported units, zero text size, deprecated tokens and arbitrary names keep valid literal defaults", () => {
+test("unrenderable lengths, zero text size, deprecated tokens and arbitrary names keep valid literal defaults", () => {
   const document = foundation();
-  document.tokens = [literal("token.fontSize", "font.size.body", "dimension", px(0)), literal("token.radius", "radius.control", "dimension", { value: 1, unit: "rem" }), { ...literal("token.content", "text.primary", "color", gray(.3)), deprecated: "Replace this token" }, literal("unrelated", "danger.text.primary", "color", gray(.5))];
+  document.tokens = [literal("token.fontSize", "font.size.body", "dimension", px(0)), literal("token.radius", "radius.control", "dimension", { value: 300, unit: "rem" }), { ...literal("token.content", "text.primary", "color", gray(.3)), deprecated: "Replace this token" }, literal("unrelated", "danger.text.primary", "color", gray(.5))];
   const { declarations } = create(document);
   assert.deepEqual(declarations.fontSize, px(14)); assert.deepEqual(declarations.borderRadius, px(8)); assert.deepEqual(declarations.color, gray(.1));
 });
@@ -96,10 +96,21 @@ test("unsupported units, zero text size, deprecated tokens and arbitrary names k
 test("a default candidate must stay renderable in every named theme", () => {
   const document = foundation();
   document.tokens = [literal("token.radius", "radius.control", "dimension", px(10)), literal("compatible", "radius.default", "dimension", px(7))];
-  document.themeAxes = [{ id: "axis.density", contexts: ["normal", "relative"], default: "normal", scope: { id: document.id, expectedKind: "foundation" }, overrides: { relative: { "token.radius": { literal: { value: 1, unit: "rem" } } } } }];
+  document.themeAxes = [{ id: "axis.density", contexts: ["normal", "relative"], default: "normal", scope: { id: document.id, expectedKind: "foundation" }, overrides: { relative: { "token.radius": { literal: { value: 300, unit: "rem" } } } } }];
   document.resolutionOrder = ["axis.density"];
   document.themeSets = [{ id: "theme.relative", contexts: { "axis.density": "relative" }, resolutionProfile: { id: "axiom.resolver.explicit-order", expectedKind: "resolutionProfile", version: "1.0.0" } }];
   assert.deepEqual(create(document).declarations.borderRadius, { tokenRef: "compatible" });
+});
+
+test("rem baseline tokens remain live in generated components and named themes", () => {
+  const document = foundation();
+  document.tokens = [literal("token.radius", "radius.control", "dimension", { value: .5, unit: "rem" }), literal("token.fontSize", "font.size.body", "dimension", { value: 1, unit: "rem" })];
+  document.themeAxes = [{ id: "axis.density", contexts: ["normal", "large"], default: "normal", scope: { id: document.id, expectedKind: "foundation" }, overrides: { large: { "token.radius": { literal: { value: .75, unit: "rem" } } } } }];
+  document.resolutionOrder = ["axis.density"];
+  document.themeSets = [{ id: "theme.large", contexts: { "axis.density": "large" }, resolutionProfile: { id: "axiom.resolver.explicit-order", expectedKind: "resolutionProfile", version: "1.0.0" } }];
+  const { declarations } = create(document);
+  assert.deepEqual(declarations.borderRadius, { tokenRef: "token.radius" });
+  assert.deepEqual(declarations.fontSize, { tokenRef: "token.fontSize" });
 });
 
 test("an empty Foundation can create a component without required token names or a minimum count", () => {

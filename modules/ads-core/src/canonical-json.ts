@@ -4,6 +4,8 @@ import { KernelError } from "./kernel-error.ts";
 
 const JSON_WHITESPACE = /[\x20\x09\x0a\x0d]/;
 const JSON_NUMBER = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/;
+const MAX_STRING_CACHE_ENTRIES = 4096;
+const MAX_STRING_CACHE_CHARACTERS = 4 * 1024 * 1024;
 
 /** Compare decimal values without assuming every finite IEEE-754 conversion is exact. */
 function decimalIdentity(literal: string): string {
@@ -17,19 +19,38 @@ function decimalIdentity(literal: string): string {
   return `${negative ? "-" : ""}${significant}e${power}`;
 }
 
-/** Count exact source UTF-8 without allocating or replacing invalid UTF-16. */
+/** Count exact source UTF-8 without encoding a buffer or replacing invalid UTF-16. */
 export function utf8SourceBytes(text: string, maximumBytes: number): number {
+  // Each source code unit consumes at least one byte. Never scan a suffix that
+  // cannot be reached before the first byte-limit error (one extra unit decides it).
+  const end = Number.isNaN(maximumBytes) ? text.length : Math.min(text.length, Math.max(1, Math.floor(maximumBytes) + 1));
+  const prefix = end < text.length ? text.slice(0, end) : text;
+  const nonAscii = /[\u0080-\uffff]/g;
   let bytes = 0;
-  for (let index = 0; index < text.length; index += 1) {
-    const code = text.charCodeAt(index);
+  let index = 0;
+  let match: RegExpExecArray | null;
+  while ((match = nonAscii.exec(prefix)) !== null) {
+    if (match.index > index) {
+      bytes += match.index - index;
+      if (bytes > maximumBytes) throw new KernelError(CODE.JSON_LIMIT, "JSON source exceeds the profile byte limit.");
+    }
+    index = match.index + 1;
+    const code = text.charCodeAt(match.index);
     if (code >= 0xd800 && code <= 0xdbff) {
-      const low = text.charCodeAt(++index);
+      // Read from the original even when the prefix ends inside this pair.
+      const low = text.charCodeAt(index);
       if (!(low >= 0xdc00 && low <= 0xdfff)) throw new KernelError(CODE.JSON_INVALID, "Source text contains an unpaired Unicode surrogate and cannot be preserved as UTF-8.");
+      index += 1;
+      nonAscii.lastIndex = index;
       bytes += 4;
     } else {
       if (code >= 0xdc00 && code <= 0xdfff) throw new KernelError(CODE.JSON_INVALID, "Source text contains an unpaired Unicode surrogate and cannot be preserved as UTF-8.");
-      bytes += code < 0x80 ? 1 : code < 0x800 ? 2 : 3;
+      bytes += code < 0x800 ? 2 : 3;
     }
+    if (bytes > maximumBytes) throw new KernelError(CODE.JSON_LIMIT, "JSON source exceeds the profile byte limit.");
+  }
+  if (prefix.length > index) {
+    bytes += prefix.length - index;
     if (bytes > maximumBytes) throw new KernelError(CODE.JSON_LIMIT, "JSON source exceeds the profile byte limit.");
   }
   return bytes;
@@ -60,13 +81,34 @@ export function canonicalJson(value: unknown, maximumBytes = MAX_CANONICAL_BYTES
   interface Container extends Shape { array: boolean; children: [string, unknown][] }
   const seen = new Set<object>();
   const containers = new Map<object, Container>();
+  // Per-call only. Reserve both the source key and an upper bound for its quoted
+  // UTF-16 output: at most 4 Mi characters (8 MiB), plus 4096 bounded map entries.
+  // Quoting is still deferred until the complete shape/byte/depth preflight passes.
+  const strings = new Map<string, { bytes: number; quoted?: string }>();
+  let stringCharacters = 0;
+  const inspectString = (text: string): number => {
+    const cached = strings.get(text);
+    if (cached) return cached.bytes;
+    const bytes = stringBytes(text, maximumBytes);
+    const reserved = text.length + bytes;
+    if (strings.size < MAX_STRING_CACHE_ENTRIES && stringCharacters + reserved <= MAX_STRING_CACHE_CHARACTERS) {
+      strings.set(text, { bytes });
+      stringCharacters += reserved;
+    }
+    return bytes;
+  };
+  const quoteString = (text: string): string => {
+    const cached = strings.get(text);
+    if (!cached) return JSON.stringify(text);
+    return cached.quoted ??= JSON.stringify(text);
+  };
   const bounded = (bytes: number): number => {
     if (bytes > maximumBytes) throw new KernelError(CODE.JSON_LIMIT, "Canonical JSON exceeds the profile byte limit.");
     return bytes;
   };
   const inspect = (item: unknown, depth: number): Shape => {
     if (depth > MAX_CANONICAL_DEPTH) throw new KernelError(CODE.JSON_LIMIT, "JSON nesting exceeds the profile limit.");
-    if (typeof item === "string") return { bytes: bounded(stringBytes(item, maximumBytes)), height: 0 };
+    if (typeof item === "string") return { bytes: bounded(inspectString(item)), height: 0 };
     if (item === null || typeof item === "boolean") return { bytes: bounded(JSON.stringify(item).length), height: 0 };
     if (typeof item === "number") {
       if (!Number.isFinite(item)) throw new KernelError(CODE.JSON_NUMBER, "JSON numbers must be finite.");
@@ -105,7 +147,7 @@ export function canonicalJson(value: unknown, maximumBytes = MAX_CANONICAL_BYTES
     let height = 0;
     for (const [key, child] of children) {
       const shape = inspect(child, depth + 1);
-      bytes = bounded(bytes + shape.bytes + (Array.isArray(item) ? 0 : stringBytes(key, maximumBytes) + 1));
+      bytes = bounded(bytes + shape.bytes + (Array.isArray(item) ? 0 : inspectString(key) + 1));
       height = Math.max(height, shape.height + 1);
     }
     const container: Container = { bytes, height, array: Array.isArray(item), children };
@@ -121,12 +163,13 @@ export function canonicalJson(value: unknown, maximumBytes = MAX_CANONICAL_BYTES
     if (fragments.length === 1024) { output.push(fragments.join("")); fragments = []; }
   };
   const emit = (item: unknown): void => {
+    if (typeof item === "string") { append(quoteString(item)); return; }
     if (item === null || typeof item !== "object") { append(JSON.stringify(item)!); return; }
     const container = containers.get(item)!;
     append(container.array ? "[" : "{");
     container.children.forEach(([key, child], index) => {
       if (index) append(",");
-      if (!container.array) { append(JSON.stringify(key)); append(":"); }
+      if (!container.array) { append(quoteString(key)); append(":"); }
       emit(child);
     });
     append(container.array ? "]" : "}");
