@@ -1,4 +1,4 @@
-/* Foundation material language: one drawing per domain, scales before roles. */
+/* Foundation material language: one drawing per domain, roles before raw scales. */
 .domain-directory .blueprint-domain-card { position: relative; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px 12px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb,var(--surface) 45%,transparent); overflow: hidden; }
 .domain-directory .blueprint-domain-card:hover { background: color-mix(in srgb,var(--surface-hover) 64%,transparent); border-color: var(--line-strong); }
 .domain-directory .blueprint-domain-card > .domain-blueprint { display: block; grid-column: 1 / -1; width: 100%; height: auto; max-height: 170px; color: var(--ink-secondary); }
@@ -136,3 +136,122 @@
   .blueprint-atlas .dependency-token > .material-select { grid-template-columns: 20px minmax(0,1fr); padding: 6px; gap: 5px; }
   .blueprint-atlas .dependency-token .token-visual { width: 20px; height: 20px; }
 }
+
+/* The Foundation workbench owns navigation, while the authored material owns the canvas. */
+.foundation-workbench { container-type: inline-size; scroll-padding-top: 190px; }
+.foundation-workbench .foundation-navigation { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 0 16px; position: sticky; top: 0; z-index: 12; background: var(--surface); border-bottom: 1px solid var(--line); }
+.foundation-workbench .foundation-navigation > .tabs { border: 0; padding: 0; min-width: 0; }
+.foundation-workbench .foundation-navigation > .icon-button { flex-shrink: 0; }
+.foundation-workbench .foundation-token-navigation { position: sticky; top: 44px; z-index: 10; background: var(--surface); border-bottom: 1px solid var(--line); }
+.foundation-layer-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-inline: 16px; }
+.foundation-layer-row > .tabs { flex: 1; min-width: 0; padding: 0; border: 0; }
+.foundation-layer-row > .button { flex-shrink: 0; }
+.foundation-token-navigation > .tabs { padding-inline: 16px; border-block: 1px solid var(--line); background: var(--surface-subtle); }
+.foundation-workspace-tools { display: flex; align-items: center; gap: 8px; padding: 10px 16px; }
+.foundation-workspace-tools > input { flex: 1; min-width: 120px; max-width: 420px; }
+.foundation-preview-theme { margin-left: auto; display: flex; align-items: center; gap: 4px; min-width: 0; color: var(--ink-secondary); }
+.foundation-preview-theme > .select-control { min-width: 100px; max-width: 180px; }
+.foundation-workspace-tools .button { white-space: nowrap; }
+.foundation-workbench .foundation-token-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 20px 8px; }
+.foundation-token-heading h2 { margin: 0; font-size: 18px; font-weight: var(--weight-strong); letter-spacing: -.025em; }
+.foundation-token-heading p { margin: 4px 0 0; font-size: var(--type-caption); color: var(--ink-secondary); }
+.foundation-workbench .atlas-toolbar { padding: 6px 20px 18px; gap: 8px; }
+.foundation-workbench .token-atlas { padding: 0 20px 24px; }
+.foundation-workbench .atlas-tier { gap: 26px; }
+.foundation-graph-workspace { min-width: 0; overflow-x: auto; padding: 8px 20px 24px; }
+.foundation-graph-workspace .token-dependency-map { min-width: 480px; }
+.foundation-workbench .domain-workspace { padding: 20px; }
+.foundation-workbench .domain-directory { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.foundation-workbench .domain-directory .domain-blueprint { max-height: 144px; }
+.foundation-workbench .domain-directory-label small { white-space: normal; line-height: 1.5; }
+.foundation-workbench .domain-workspace-heading { margin-bottom: 18px; }
+.foundation-settings-header { padding: 20px 20px 0; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+.foundation-settings-header h2,.foundation-migration h2 { font-size: var(--type-title); margin: 0 0 5px; }
+.foundation-settings-header p,.foundation-migration p { color: var(--ink-secondary); font-size: var(--type-body); max-width: 65ch; line-height: var(--leading-body); }
+.foundation-settings-header > .tabs { flex-basis: 100%; padding: 0; }
+.foundation-subpage-back { padding: 16px 20px 0; }
+.foundation-subpage-back .button > svg { transform: rotate(180deg); }
+.foundation-migration { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 20px; }
+.foundation-workbench .foundation-manager,.foundation-workbench .exchange-panel,.foundation-workbench .theme-comparison { padding: 20px; }
+.foundation-inspector-context-path { display: flex; flex-wrap: wrap; gap: 4px; color: var(--ink-secondary); font-size: var(--type-caption); margin-top: 4px; overflow-wrap: anywhere; }
+.foundation-edit-scope { padding: 10px 12px; margin: 0 12px 12px; background: var(--surface-subtle); border-radius: var(--radius-control); }
+.foundation-edit-scope > p { font-size: var(--type-caption); color: var(--ink-secondary); line-height: 1.5; margin-top: 6px; }
+.foundation-role-options { display: flex; flex-wrap: wrap; gap: 5px; }
+.foundation-role-options .button { min-height: 28px; padding-inline: 10px; }
+.foundation-role-description { font-size: var(--type-caption); line-height: 1.5; color: var(--ink-secondary); }
+.theme-value-preview { display: flex; align-items: center; gap: 8px; max-width: 280px; }
+.theme-value-preview > .token-visual { width: 44px; height: 32px; flex-shrink: 0; border-radius: var(--radius-nested, 8px); }
+.theme-value-preview > span { overflow-wrap: anywhere; }
+.theme-group-connections { width: 100%; padding-top: 12px; }
+.theme-group-connections header { margin-bottom: 14px; }
+.theme-group-connections h3 { margin: 0 0 4px; font-size: var(--type-body); font-weight: var(--weight-strong); }
+.theme-group-rows { display: grid; gap: 2px; }
+.theme-group-row { display: grid; grid-template-columns: minmax(120px,1fr) minmax(60px,.6fr) minmax(180px,1fr); align-items: center; gap: 14px; padding: 12px 10px; background: var(--surface-subtle); border-radius: var(--radius-nested); }
+.theme-group-row > div:first-child { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.theme-group-row strong { font-size: var(--type-body); font-weight: var(--weight-medium); }
+.theme-group-row small { color: var(--ink-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--type-caption); }
+.theme-value-preview { gap: 5px; }
+.theme-value-preview > .specimen-color { display: block; width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0; }
+.foundation-value-group-manager { margin-block: 20px; }
+.foundation-value-group-manager > summary { cursor: pointer; padding-block: 10px; font-weight: var(--weight-medium); }
+.migration-contract { display: flex; flex-wrap: wrap; gap: 6px; }
+.migration-contract > span { padding: 6px 10px; background: var(--surface-subtle); color: var(--ink-secondary); border-radius: var(--radius-nested); font-size: var(--type-caption); }
+.migration-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; width: 100%; padding-block: 8px; }
+.migration-summary p { display: flex; flex-direction: column; gap: 5px; margin: 0; }
+.migration-summary strong { color: var(--ink); font-size: 28px; font-weight: var(--weight-medium); letter-spacing: -.04em; }
+.migration-mappings { width: 100%; }
+.migration-mappings > summary { cursor: pointer; padding-block: 10px; }
+.migration-mappings > input { width: 100%; margin-block: 10px; }
+.migration-mapping-list { max-height: 460px; overflow: auto; }
+.migration-mapping-row { display: grid; grid-template-columns: minmax(150px,1.5fr) minmax(100px,1fr) minmax(160px,1fr); gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.migration-mapping-row > span { min-width: 0; overflow-wrap: anywhere; }
+.migration-mapping-row small { display: block; font-size: var(--type-caption); color: var(--ink-secondary); margin-top: 3px; }
+.foundation-workbench .theme-manager > section > .manager-form { max-width: none; }
+@container (max-width: 900px) {
+  .foundation-workbench .domain-directory { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .foundation-layer-row > .button { font-size: 0; width: 28px; padding: 0; }
+}
+@container (max-width: 560px) {
+  .foundation-workbench .domain-directory { grid-template-columns: minmax(0,1fr); }
+  .foundation-workspace-tools { flex-wrap: wrap; }
+  .foundation-workspace-tools > input { flex-basis: 100%; max-width: none; }
+  .foundation-preview-theme { margin-left: 0; flex: 1; }
+  .foundation-workbench .foundation-token-heading { padding-top: 14px; }
+  .foundation-workbench .foundation-token-heading h2 { font-size: 16px; }
+  .foundation-settings-header { align-items: flex-start; }
+  .foundation-settings-header > .button { margin-left: auto; }
+  .theme-group-row { grid-template-columns: minmax(0,1fr) minmax(140px,1fr); gap: 8px; }
+  .theme-group-row .theme-value-preview { display: none; }
+  .migration-summary { gap: 12px; }
+  .migration-mapping-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .migration-mapping-row > span { grid-column: 1 / -1; }
+}
+
+/* Semantic color roles form a compact material board; primitive palettes retain their continuous scales. */
+.foundation-workbench .atlas-tier-semantic:has(> .atlas-color) { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px 24px; align-items: start; }
+.foundation-workbench .atlas-tier-semantic > .atlas-color { padding-block: 4px 12px; }
+.foundation-workbench .atlas-tier-semantic .material-color { max-width: 100%; grid-template-columns: repeat(var(--specimen-count),minmax(0,112px)); }
+.foundation-workbench .atlas-tier-semantic .specimen-connections { font-size: 10px; }
+.foundation-workbench .atlas-tier-semantic .specimen-connections[open] { grid-column: 1 / -1; }
+.group-inherits-hint { margin: 0 12px 12px; }
+@container (max-width: 1000px) { .foundation-workbench .atlas-tier-semantic:has(> .atlas-color) { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@container (max-width: 540px) { .foundation-workbench .atlas-tier-semantic:has(> .atlas-color) { grid-template-columns: minmax(0,1fr); } }
+
+.import-mappings { margin-block: 16px; }
+.import-mappings h3 { margin-bottom: 6px; }
+.import-batch-mapping { display: flex; align-items: end; flex-wrap: wrap; gap: 8px; padding-block: 12px; }
+.import-batch-mapping > .field { flex: 1 1 130px; }
+.import-mapping-list { max-height: 400px; overflow: auto; }
+.import-mapping-row { display: grid; grid-template-columns: minmax(130px,1.4fr) repeat(3,minmax(100px,1fr)); gap: 8px; align-items: center; padding-block: 8px; border-bottom: 1px solid var(--line); }
+.import-mapping-row > span { min-width: 0; font-size: var(--type-caption); overflow-wrap: anywhere; }
+.import-mapping-row small { display: block; margin-top: 3px; color: var(--ink-secondary); }
+.exchange-repair-actions { display: grid; gap: 6px; justify-items: start; margin-block: 12px; }
+.exchange-repair-list > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px; }
+.foundation-workbench .atlas-tier-semantic > .atlas-color:has(.specimen-connections[open]) { grid-column: 1 / -1; }
+@container (max-width: 900px) { .import-mapping-row { grid-template-columns: repeat(3,minmax(0,1fr)); } .import-mapping-row > span { grid-column: 1/-1; } }
+
+.theme-group-connections { grid-column: 1 / -1; }
+.foundation-workbench .theme-manager [data-draft-form="foundation-manager-set"] > .manager-form { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+.foundation-workbench .theme-manager [data-draft-form="foundation-manager-set"] > .manager-form > .optional-field { align-self: end; }
+.foundation-workbench .theme-manager [data-draft-form="foundation-manager-set"] > .manager-form > :is(.theme-group-connections, .theme-inheritance) { grid-column: 1/-1; }
+@container (max-width: 700px) { .foundation-workbench .theme-manager [data-draft-form="foundation-manager-set"] > .manager-form { grid-template-columns: minmax(0,1fr); } }

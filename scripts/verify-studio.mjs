@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
 import { setTimeout as delay } from "node:timers/promises";
 import { browserPath, launch, terminate, within } from "./browser-driver.mjs";
+import { seedLegacyFoundation } from "./workbench-foundation-cases.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const evidence = { kind: "axiom-real-studio-regression", status: "FAILED", browser: null, cases: {}, limitations: ["Chromium only; Mobile is a DOM approximation.", "Source download is not native installation or platform certification."] };
@@ -67,14 +68,16 @@ try {
   browser = await launch(executable, profile);
   evidence.browser = (await browser.cdp.send("Browser.getVersion")).product;
   await browser.cdp.send("Browser.setDownloadBehavior", { behavior: "allow", downloadPath: downloads });
-  const url = `${origin}/?database=axiom-studio-test-${randomUUID()}`;
+  const database = `axiom-studio-test-${randomUUID()}`, url = `${origin}/?database=${database}`;
   page = await browser.cdp.page(url);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await fill("project-name", "검증 디자인 시스템");
-  await click("starter-enabled"); await click("start-project");
+  await click("start-project");
   await until(`${element("studio-app")}`);
   // Locale-independent settled creation, then retain the source revision for preview checks.
   await until(`${element("save-status")} && !${element("undo")}.disabled`);
+  await seedLegacyFoundation({ page, database, id: element, until });
+  await click("view-canvas");
   const initialRevision = await page.evaluate(`${element("project-revision")}.title`);
   evidence.cases.create = { documentsShown: await page.evaluate(`document.querySelectorAll('[data-testid^="component-component."]').length`), authoritativeSave: true };
   assert.equal(evidence.cases.create.documentsShown, 3);

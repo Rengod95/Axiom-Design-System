@@ -71,6 +71,10 @@ test("starter adoption requires review and authoring queries keep approvals and 
 
 test("one authoring snapshot isolates actor metadata and source data without exposing approvals", async () => {
   const h = await setup(false), candidate = await h.stage(h.starter), approval = await h.approve(candidate);
+  for (const actor of [OWNER, OTHER]) {
+    const draft = await h.execute("document.import", { sourceRefs: [{ uri: `memory:${actor.id}.draft`, content: `invalid draft for ${actor.id}` }], formatProfile: "ads-envelope", importMode: "draft" }, actor);
+    assert.equal(draft.status, "accepted", brief(draft));
+  }
   const stored = (await h.store.read())!;
   let reads = 0;
   const adapter: TransactionalStore = { read: async () => { reads++; return stored; }, transact: update => h.store.transact(update) };
@@ -80,13 +84,19 @@ test("one authoring snapshot isolates actor metadata and source data without exp
   assert.equal(owner.project!.revision, owner.authoring.revision);
   assert.equal(owner.authoring.pendingCandidates[0]!.id, candidate.candidateId);
   assert.equal(canonicalJson(owner).includes(approval.reviewToken!), false);
+  assert.equal(owner.sourceDrafts.length, 1);
+  assert.equal(owner.sourceDrafts[0]!.actorId, OWNER.id);
+  assert.equal(owner.sourceDrafts[0]!.originalText, `invalid draft for ${OWNER.id}`);
   assert.deepEqual(owner.authoring, await h.service.getAuthoringState(OWNER));
   owner.project!.name = "Detached name";
   owner.authoring.pendingCandidates[0]!.diff.length = 0;
   owner.authoring.pendingCandidates[0]!.diagnostics.length = 0;
+  owner.sourceDrafts[0]!.originalText = "Detached draft";
   assert.deepEqual(stored, await h.store.read());
   const other = await service.getAuthoringSnapshot(OTHER);
   assert.deepEqual(other.authoring.pendingCandidates, []);
+  assert.equal(other.sourceDrafts.length, 1);
+  assert.equal(other.sourceDrafts[0]!.actorId, OTHER.id);
   const applied = await h.execute("transaction.apply", { candidateId: candidate.candidateId!, approvalToken: approval.reviewToken!, expectedRevision: (await h.current())! });
   assert.equal(applied.status, "accepted", brief(applied));
   const adopted = await h.service.getAuthoringSnapshot(OWNER);
@@ -109,7 +119,7 @@ test("authoring snapshots authenticate before I/O and capture actor identity bef
   release();
   assert.equal((await pending).authoring.pendingCandidates[0]!.id, candidate.candidateId);
   const empty = new CommandService(new MemoryStore(), { createId: h.createId, digest });
-  assert.deepEqual(await empty.getAuthoringSnapshot(OWNER), { project: null, authoring: { revision: null, pendingCandidates: [] } });
+  assert.deepEqual(await empty.getAuthoringSnapshot(OWNER), { project: null, authoring: { revision: null, pendingCandidates: [] }, sourceDrafts: [] });
 });
 
 test("token alias/theme edits remain transient until apply and one Undo preserves original source", async () => {

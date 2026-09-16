@@ -161,7 +161,7 @@ async function verifyReferenceStudio() {
     const saved = `${id("studio-app")} && !${id("open-export")}.disabled`;
     const approve = async () => { await click("review-changes"); await until(`${id("review-dialog")}?.open`); await click("review-approve"); await until(`!${id("review-dialog")} && ${saved}`); };
     const project = () => page.evaluate(`new Promise((resolve,reject)=>{const r=indexedDB.open(${JSON.stringify(database)});r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,tx=db.transaction('commits','readonly'),get=tx.objectStore('commits').openCursor(null,'prev');get.onsuccess=()=>resolve(JSON.parse(get.result.value.stateText).project);get.onerror=()=>reject(get.error);tx.oncomplete=()=>db.close()}})`);
-    await fill("project-name", "Original reference regression"); await click("starter-enabled"); await click("start-project"); await until(saved);
+    await fill("project-name", "Original reference regression"); await click("start-project"); await until(saved);
     if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
     await click("view-library"); await select("Entry kind", "");
     await until("document.querySelectorAll('.catalog-select').length===225");

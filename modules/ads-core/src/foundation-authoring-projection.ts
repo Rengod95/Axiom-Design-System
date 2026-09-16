@@ -11,7 +11,7 @@ import type { FoundationSelection, FoundationTokenType } from "./foundation-cont
 import type { FoundationAuthoringFilter, FoundationAuthoringProjection, FoundationClassification, FoundationTokenRow } from "./foundation-authoring-contracts.ts";
 import { foundationDomainBindings } from "./foundation-starters.ts";
 
-const empty = (): FoundationAuthoringProjection => ({ valid: false, diagnostics: [], foundationId: null, revision: null, tokens: [], totalTokens: 0, matchingTokens: 0, domains: [], tiers: [], axes: [], themeSets: [], contexts: {}, resolutionOrder: [], references: [], referenceScope: "known-studio" });
+const empty = (): FoundationAuthoringProjection => ({ valid: false, diagnostics: [], foundationId: null, revision: null, tokens: [], totalTokens: 0, matchingTokens: 0, domains: [], tiers: [], axes: [], themeSets: [], valueSets: [], contexts: {}, resolutionOrder: [], references: [], referenceScope: "known-studio" });
 
 /** Search and reverse references describe known source locations and the selected resolved context separately. */
 export function inspectFoundationAuthoring(input: ProjectSnapshot, selection: FoundationSelection = {}, filterInput: FoundationAuthoringFilter = {}): FoundationAuthoringProjection {
@@ -29,6 +29,8 @@ export function inspectFoundationAuthoring(input: ProjectSnapshot, selection: Fo
     result.valid = studio.valid; result.diagnostics = studio.diagnostics;
     result.foundationId = foundation.id; result.revision = foundation.revision;
     result.axes = foundation.themeAxes; result.themeSets = foundation.themeSets;
+    result.valueSets = foundation.valueSets ?? [];
+    if (foundation.authoringProfile) result.authoringProfile = foundation.authoringProfile;
     result.contexts = studio.foundation.contexts; result.resolutionOrder = foundation.resolutionOrder;
     const references = foundationReferences(project, foundation).map(item => item.reference);
     result.references = references;
@@ -38,6 +40,8 @@ export function inspectFoundationAuthoring(input: ProjectSnapshot, selection: Fo
     const classify = (items: JsonValue[], field: "domain" | "tier"): FoundationClassification[] => authoringList(items).map(item => ({
       id: String(item.id), name: typeof item.name === "string" ? item.name : String(item.id),
       ...(typeof item.description === "string" ? { description: item.description } : {}),
+      ...(field === "tier" && typeof item.role === "string" ? { role: item.role } : {}),
+      ...(field === "tier" && typeof item.order === "number" ? { order: item.order } : {}),
       ...(field === "domain" && Array.isArray(item.allowedTypes) ? { allowedTypes: item.allowedTypes as FoundationTokenType[] } : {}),
       ...(field === "domain" && bindings.has(String(item.id)) ? { bindingCategory: bindings.get(String(item.id))!.category, bindingCategorySource: bindings.get(String(item.id))!.source } : {}),
       tokenCount: counts[field].get(String(item.id)) ?? 0,

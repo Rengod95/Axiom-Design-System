@@ -6,6 +6,7 @@ import { KernelError } from "./kernel-error.ts";
 import { inspectProfileDocument, strongestValidationProfile } from "./validation-profile.ts";
 import { BUNDLE_FORMAT } from "./bundle-constants.ts";
 import { decodeProjectBundle } from "./project-bundle.ts";
+import { assertFoundationProfileTransition } from "./foundation-profile-transition.ts";
 
 interface ImportSource { uri: string; content: string; expectedRevision?: string; draftId?: string }
 type ImportMode = "review" | "draft" | "update";
@@ -112,6 +113,7 @@ export function prepareImport(payload: JsonObject, state: KernelState, project: 
     if (imported.has(document.id)) throw new KernelError(CODE.DOCUMENT_EXISTS, "Import repeats a document identity.");
     imported.add(document.id);
     const existing = Object.hasOwn(documents, document.id) ? documents[document.id] : undefined;
+    if (mode === "update" && existing) assertFoundationProfileTransition(existing.document, document);
     const validationProfile = strongestValidationProfile(profile, original?.validationProfile, existing?.validationProfile);
     const structure = validationProfile ? inspectProfileDocument(document, validationProfile) : undefined;
     if (structure && !structure.valid) throw new ImportRejection(structure.diagnostics);

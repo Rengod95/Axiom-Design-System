@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { canonicalJson, createStudioStarter, FOUNDATION_STARTER_DOMAINS, FOUNDATION_STARTER_TEMPLATES, foundationStarterTokens, inspectStudioProject, planFoundationEdit, STUDIO_PROFILE } from "../src/index.ts";
+import { canonicalJson, createStudioStarter, FOUNDATION_STARTER_DOMAINS, FOUNDATION_STARTER_TEMPLATES, foundationStarterTokens, inspectStudioProject, planFoundationEdit, resolveFoundationTokens, STUDIO_PROFILE } from "../src/index.ts";
 import type { FoundationDocument, FoundationStarterOptions, FoundationStarterToken, JsonObject, ProjectSnapshot } from "../src/index.ts";
 
 const DOMAINS = FOUNDATION_STARTER_DOMAINS.map(domain => domain.id);
@@ -34,13 +34,17 @@ test("five additional documented architectures have independent scales, roles an
   assert.deepEqual(foundationStarterTokens(OPTIONS), foundationStarterTokens({ ...OPTIONS, template: "essentials" }), "Omitted template preserves the established Essentials blueprint");
 });
 
-test("every template and independently selected domain resolves without dangling or cross-domain aliases", () => {
-  for (const template of FOUNDATION_STARTER_TEMPLATES) for (const domain of FOUNDATION_STARTER_DOMAINS) {
-    const options = { ...OPTIONS, template: template.id, domains: [domain.id] }, tokens = foundationStarterTokens(options);
-    assert.ok(tokens.length > 0); assert.ok(tokens.every(token => token.domain === domain.id));
-    for (const token of tokens) for (const dark of [false, true]) { const value = resolve(tokens, token.name, dark); assert.equal(value.type, token.type); assert.notEqual(value.literal, undefined); }
-    const project = fixture(options);
-    for (const themeSetId of ["theme.light", "theme.dark"]) { const report = inspectStudioProject(project, { themeSetId }); assert.equal(report.valid, true, `${template.id}/${domain.id}: ${JSON.stringify(report.diagnostics)}`); }
+test("every template preserves the mandatory baseline when older clients select one domain", () => {
+  for (const template of FOUNDATION_STARTER_TEMPLATES) {
+    const baseline = foundationStarterTokens({ ...OPTIONS, template: template.id });
+    for (const domain of FOUNDATION_STARTER_DOMAINS) {
+      const tokens = foundationStarterTokens({ ...OPTIONS, template: template.id, domains: [domain.id] });
+      assert.deepEqual(tokens, baseline, `${template.id}/${domain.id} cannot remove mandatory domains`);
+    }
+    assert.deepEqual(new Set(baseline.map(token => token.domain)), new Set(DOMAINS));
+    for (const token of baseline) for (const dark of [false, true]) { const value = resolve(baseline, token.name, dark); assert.equal(value.type, token.type); assert.notEqual(value.literal, undefined); }
+    const project = fixture({ ...OPTIONS, template: template.id, domains: ["color"] });
+    for (const themeSetId of ["theme.light", "theme.dark"]) { const report = inspectStudioProject(project, { themeSetId }); assert.equal(report.valid, true, `${template.id}: ${JSON.stringify(report.diagnostics)}`); }
   }
 });
 
@@ -71,9 +75,24 @@ test("adding and reapplying different templates preserves authored tokens, IDs, 
     const next = applied.project.documents["foundation.system"]!.document as FoundationDocument;
     assert.equal(canonicalJson(next.tokens.slice(0, foundation.tokens.length)), beforeTokens);
     const oldTokenIds = new Set(foundation.tokens.map(token => token.id));
+    const oldGroupIds = new Set((foundation.valueSets ?? []).map(group => group.id));
+    const newTokenGroups = new Set((next.valueSets ?? []).filter(group => !oldGroupIds.has(group.id) && Object.keys(group.values).every(id => !oldTokenIds.has(id))).map(group => group.id));
+    assert.equal(canonicalJson((next.valueSets ?? []).filter(group => oldGroupIds.has(group.id))), canonicalJson(foundation.valueSets ?? []), "existing reusable groups are not overwritten");
     const priorAxes = structuredClone(next.themeAxes);
+    // Newly added template tokens may select their own inherited groups; original selections remain.
+    for (const axis of priorAxes) for (const [context, ids] of Object.entries(axis.valueSetIds ?? {})) axis.valueSetIds![context] = ids.filter(id => !newTokenGroups.has(id));
     for (const axis of priorAxes) for (const overrides of Object.values(axis.overrides ?? {})) for (const id of Object.keys(overrides)) if (!oldTokenIds.has(id)) delete overrides[id];
+    for (const axis of priorAxes) {
+      const prior = foundation.themeAxes.find(item => item.id === axis.id);
+      if (axis.overrides) for (const [context, values] of Object.entries(axis.overrides)) if (!Object.keys(values).length && prior?.overrides?.[context] === undefined) delete axis.overrides[context];
+      if (axis.overrides && !Object.keys(axis.overrides).length && prior?.overrides === undefined) delete axis.overrides;
+    }
     assert.equal(canonicalJson(priorAxes), beforeAxes);
+    for (const theme of foundation.themeSets) {
+      const before = resolveFoundationTokens(foundation, { themeSetId: theme.id }), after = resolveFoundationTokens(next, { themeSetId: theme.id });
+      assert.equal(after.valid, true, JSON.stringify(after.diagnostics));
+      for (const token of before.tokens) assert.deepEqual(after.tokens.find(item => item.id === token.id)?.value, token.value, `${template.id}/${theme.id}/${token.name}`);
+    }
     const again = planFoundationEdit(applied.project, { kind: "template-apply", ...OPTIONS, template: template.id, accent: "#000000", density: "compact" }, allocate);
     assert.equal(again.valid, true, JSON.stringify(again.diagnostics));
     assert.equal(canonicalJson(again.project.documents["foundation.system"]!.document), canonicalJson(next));
@@ -99,6 +118,6 @@ test("role mappings retain architecture differences rather than copying one pale
   assert.notDeepEqual(resolve(carbon, "carbon.role.layer.01", true).literal, resolve(carbon, "carbon.role.layer.03", true).literal);
   assert.ok(material.find(token => token.name === "material.sys.color.primary")!.alias!.endsWith(".40"));
   assert.ok(material.find(token => token.name === "material.sys.color.primary")!.darkAlias!.endsWith(".80"));
-  assert.equal((resolve(fluent, "radius.control").literal as JsonObject).value, 4);
+  assert.deepEqual(resolve(fluent, "radius.control").literal, { value: .25, unit: "rem" });
   assert.equal(spectrum.find(token => token.name === "spectrum.alias.accent.background.default")!.alias, "spectrum.accent.default");
 });

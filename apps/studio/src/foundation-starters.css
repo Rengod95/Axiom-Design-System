@@ -52,3 +52,11 @@
 .starter-options.compact .starter-domain-choice > svg { display: none; }
 @media(max-width: 760px) { .starter-options .starter-customization { grid-template-columns: repeat(2,minmax(0,1fr)); } .starter-preview-body { grid-template-columns: 1fr; } }
 @media(max-width: 480px) { .starter-template-grid,.starter-domain-grid { grid-template-columns: 1fr; } .starter-template-reference { align-items: flex-start; flex-direction: column; } }
+
+.starter-required-note { font-size: var(--type-label); color: var(--ink-secondary); line-height: 1.5; }
+.starter-required-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; margin-top: 12px; }
+.starter-required-grid > span { display: flex; align-items: center; gap: 8px; padding: 9px 10px; min-width: 0; background: var(--surface-subtle); border-radius: var(--radius-control); }
+.starter-required-grid strong { font-size: var(--type-caption); font-weight: var(--weight-medium); overflow-wrap: anywhere; }
+.starter-required-grid > span > svg:first-child { color: var(--ink-secondary); flex-shrink: 0; }
+.starter-required-grid > span > svg:last-child { color: var(--ink-secondary); margin-left: auto; flex-shrink: 0; }
+@media (max-width: 720px) { .starter-required-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }

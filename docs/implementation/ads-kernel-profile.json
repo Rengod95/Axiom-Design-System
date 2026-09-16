@@ -88,7 +88,8 @@
     "docs/adr/0018-contextual-foundation-and-component-composition.md",
     "docs/adr/0019-element-composition-policy-and-behavior-authoring.md",
     "docs/adr/0020-compound-anatomy-and-canvas-insertion.md",
-    "docs/adr/0021-pinned-reference-templates.md"
+    "docs/adr/0021-pinned-reference-templates.md",
+    "docs/adr/0022-guided-foundation-and-atomic-migration.md"
   ],
   "schemaCompiler": {
     "dialect": "2020-12",
@@ -238,7 +239,7 @@
     "authority": "docs/adr/0016-foundation-onboarding-and-editor-completion.md",
     "foundationStarter": {
       "id": "axiom.foundation.essentials",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "domains": 11,
       "types": 13,
       "adoption": "additive-reviewed-idempotent"

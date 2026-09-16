@@ -2,6 +2,7 @@ import { catalogReactBehaviorRuntime } from "./catalog-react-behavior.ts";
 import { CATALOG_REACT_AUTHORED_RUNTIME } from "./catalog-react-authored.ts";
 import { catalogDesignCss } from "./catalog-design-css.ts";
 import type { StudioComponent, StudioProjection } from "../../ads-core/src/index.ts";
+import { studioLengthCss } from "../../ads-core/src/index.ts";
 import type { SourceFile } from "./contracts.ts";
 import { componentSymbol } from "./generator-input.ts";
 import { REACT_LIFECYCLE_SOURCE } from "./react-runtime.ts";
@@ -17,7 +18,7 @@ function cssRules(component: StudioComponent): string {
     const selector = `.${name} [data-part=${JSON.stringify(part.id)}]`;
     const rootSelector = part.role === "root" ? `.${name}` : selector;
     const declarations = (style: typeof presentation.base) => Object.entries(style).map(([key, value]) => `${CSS_NAMES[key]}:${value}${typeof value === "number" && !["opacity", "fontWeight", "lineHeight"].includes(key) ? "px" : ""}`).join(";");
-    rules.push(`${rootSelector}{box-sizing:border-box;margin:0;border-style:solid;border-width:0;${declarations(presentation.base)};${part.role==="close"||part.role==="root"&&component.archetype==="button"?"min-width:44px;":""}${layout ? `display:flex;flex-direction:${layout.axis === "horizontal" ? "row" : "column"};gap:${layout.gap}px;padding:${layout.padding}px;min-height:${Math.max(part.role==="close"?44:0,layout.minHeight)}px;` : ""}}`);
+    rules.push(`${rootSelector}{box-sizing:border-box;margin:0;border-style:solid;border-width:0;${declarations(presentation.base)};${part.role==="close"||part.role==="root"&&component.archetype==="button"?"min-width:44px;":""}${layout ? `display:flex;flex-direction:${layout.axis === "horizontal" ? "row" : "column"};gap:${studioLengthCss(layout.gap)};padding:${studioLengthCss(layout.padding)};min-height:${part.role === "close" ? typeof layout.minHeight === "number" ? `${Math.max(44, layout.minHeight)}px` : `max(44px, ${studioLengthCss(layout.minHeight)})` : studioLengthCss(layout.minHeight)};` : ""}}`);
     if (layout) {
       if (layout.mode === "free") rules.push(`${rootSelector}{display:block;position:relative}`);
       if (part.parent && design.layout[part.parent]?.mode === "free") rules.push(`${rootSelector}{position:absolute;left:${layout.position?.x ?? 0}px;top:${layout.position?.y ?? 0}px}`);
@@ -31,7 +32,7 @@ function cssRules(component: StudioComponent): string {
     rules.push(`.${name} [hidden]{display:none!important}`);
     if (component.catalog.semantic.kind === "table") {
       const root = component.parts.find(part => part.role === "root")!;
-      rules.push(`table.${name}{display:table;border-collapse:separate;border-spacing:${design.layout[root.id]!.gap}px}table.${name} thead{display:table-header-group}table.${name} tbody{display:table-row-group}table.${name} tr{display:table-row}table.${name} td,table.${name} th{display:table-cell}`);
+      rules.push(`table.${name}{display:table;border-collapse:separate;border-spacing:${studioLengthCss(design.layout[root.id]!.gap)}}table.${name} thead{display:table-header-group}table.${name} tbody{display:table-row-group}table.${name} tr{display:table-row}table.${name} td,table.${name} th{display:table-cell}`);
     }
   }
   return rules.join("\n");

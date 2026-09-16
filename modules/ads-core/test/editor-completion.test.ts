@@ -26,11 +26,11 @@ test("starter covers 11 classified domains and all 13 types, connects new sample
   const { project } = fixture(true), foundation = project.documents["foundation.system"]!.document as FoundationDocument;
   const blueprint = foundationStarterTokens(OPTIONS);
   assert.equal(new Set(blueprint.map(token => token.type)).size, 13);
-  assert.equal(foundation.domains.length, 11); assert.equal(foundation.tiers.length, 2);
+  assert.equal(foundation.domains.length, 11); assert.deepEqual(new Set((foundation.tiers as JsonObject[]).map(tier => tier.role)), new Set(["primitive", "semantic", "component"]));
   assert.ok(foundation.tokens.every(token => token.domain && token.tier));
   for (const themeSetId of ["theme.light", "theme.dark"]) {
     const report = inspectStudioProject(project, { themeSetId }); assert.equal(report.valid, true, explain(report));
-    assert.equal(report.components[0]!.web.layout["component.button.root"]!.gap, 8);
+    assert.equal(report.components[0]!.web.layout["component.button.root"]!.gap, "0.5rem");
     assert.ok(report.foundation.tokens.find(token => token.id === "token.action")!.aliasChain.length >= 2);
   }
   const light = inspectStudioProject(project, { themeSetId: "theme.light" }), dark = inspectStudioProject(project, { themeSetId: "theme.dark" });
@@ -82,6 +82,13 @@ test("starter action foregrounds use the best generated neutral for each generat
 
 test("reapplying starters preserves saved legacy foreground aliases and dark overrides", () => {
   const { project, id } = fixture(true), foundation = project.documents["foundation.system"]!.document as FoundationDocument;
+  // This is deliberately a saved pre-adoption project, with axis overrides rather than groups.
+  delete foundation.authoringProfile;
+  for (const axis of foundation.themeAxes) {
+    axis.overrides = Object.fromEntries(axis.contexts.map(context => [context, Object.assign({}, ...(axis.valueSetIds?.[context] ?? []).map(id => foundation.valueSets!.find(group => group.id === id)!.values))]));
+    delete axis.valueSetIds;
+  }
+  delete foundation.valueSets;
   const byName = new Map(foundation.tokens.map(token => [token.name, token]));
   const foreground = byName.get("action.primary.foreground")!;
   foreground.value = { ref: { id: byName.get("color.neutral.0")!.id, expectedKind: "token" } };
@@ -129,8 +136,8 @@ test("motion validates timing and channels, resolves token usage, protects delet
 
 test("typed typography, shadow, gradient and transition generate finite CSS and reject executable values", () => {
   const blueprint = foundationStarterTokens(OPTIONS), literal = (name: string) => blueprint.find(token => token.name === name)!.literal!;
-  assert.equal(resolveExtendedStudioStyle("typography", literal("type.scale.body")).fontSize, 16);
-  assert.match(String(resolveExtendedStudioStyle("boxShadow", literal("shadow.scale.md")).boxShadow), /4px 16px/);
+  assert.equal(resolveExtendedStudioStyle("typography", literal("type.scale.body")).fontSize, "1rem");
+  assert.match(String(resolveExtendedStudioStyle("boxShadow", literal("shadow.scale.md")).boxShadow), /0.25rem 1rem/);
   assert.match(String(resolveExtendedStudioStyle("backgroundImage", literal("gradient.scale.brand")).backgroundImage), /^linear-gradient/);
   assert.deepEqual(resolveExtendedStudioStyle("transition", literal("transition.scale.standard")), { transitionDuration: "200ms", transitionDelay: "0ms", transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1)" });
   assert.throws(() => resolveExtendedStudioStyle("backgroundImage", "url(javascript:alert(1))")); assert.throws(() => resolveExtendedStudioStyle("fontWeight", "600;display:none"));

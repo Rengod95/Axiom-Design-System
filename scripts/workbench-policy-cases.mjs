@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { foundationTab, openFoundationSettings, seedLegacyFoundation } from "./workbench-foundation-cases.mjs";
 
 /** Real policy controls and export gates; the dedicated database is read only for saved-source assertions. */
 export async function verifyPolicyWorkspace({ page, origin, database, root, id, text, click, clickElement, fill, selectElement, until, settled, approve, revision, record }) {
@@ -9,7 +10,7 @@ export async function verifyPolicyWorkspace({ page, origin, database, root, id, 
   const saved = () => page.evaluate(`new Promise((resolve,reject)=>{const request=indexedDB.open(${JSON.stringify(database)});request.onerror=()=>reject(request.error);request.onsuccess=()=>{const db=request.result,tx=db.transaction('commits','readonly'),cursor=tx.objectStore('commits').openCursor(null,'prev');cursor.onsuccess=()=>{resolve(Object.values(JSON.parse(cursor.result.value.stateText).project.documents));};cursor.onerror=()=>reject(cursor.error);tx.oncomplete=()=>db.close();};})`);
   const policySource = async () => (await saved()).find(entry => entry.document.kind === "foundation").document.policies;
   const reload = async () => { const before = await page.evaluate("performance.timeOrigin"); await page.send("Page.reload"); await until(`performance.timeOrigin!==${before} && ${id("studio-app")} && !${id("open-export")}.disabled`); };
-  const policies = async () => { await click("view-foundation"); await clickElement(text("Policies")); await until(`${id("foundation-policies")}.getClientRects().length`); };
+  const policies = async () => { await openFoundationSettings({ page, id, click, clickElement }, "Policies"); await until(`${id("foundation-policies")}.getClientRects().length`); };
   const closeExport = () => clickElement(`${id("export-dialog")}?.querySelector('footer button:first-child')`);
   const cancelEditor = () => clickElement("Array.from(document.querySelectorAll('.policy-editor button')).find(e=>e.textContent.trim()==='Cancel')");
   const editRule = () => clickElement(`document.querySelector('.policy-rule button[aria-label=${JSON.stringify(`Edit ${ruleName}`)}]')`);
@@ -22,7 +23,8 @@ export async function verifyPolicyWorkspace({ page, origin, database, root, id, 
   await page.send("Page.navigate", { url: `${origin}/?database=${database}` }); await until(id("onboarding"));
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1080, deviceScaleFactor: 1, mobile: false });
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
-  await fill("project-name", "Foundation policies"); await click("starter-enabled"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await fill("project-name", "Foundation policies"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await seedLegacyFoundation({ page, database, id, until });
   if (await page.evaluate("document.documentElement.dataset.theme!=='dark'")) await click("studio-theme-toggle");
   await click("view-library"); await click("create-custom-component"); await until(id("component-composer"));
   await click("composer-stack"); await fill("composer-name", "Policy specimen"); await click("composer-create"); await approve();
@@ -31,8 +33,10 @@ export async function verifyPolicyWorkspace({ page, origin, database, root, id, 
   const baseline = await revision();
   await policies(); await clickElement(text("Add rule")); await fill("policy-name", "Incomplete rule");
   assert.equal(await page.evaluate(`${id("policy-apply")}.disabled`), true);
-  await clickElement(text("Templates"));
-  assert.ok(await page.evaluate(`${id("foundation-policies")}.getClientRects().length && ${id("policy-name")}.value==='Incomplete rule'`), "Invalid policy input remains visible after attempted navigation");
+  await clickElement(foundationTab("Domains"));
+  assert.equal(await page.evaluate(`${id("policy-name")}.value`), "Incomplete rule", "Browsing another Foundation page preserves the policy draft");
+  await policies();
+  assert.ok(await page.evaluate(`${id("foundation-policies")}.getClientRects().length && ${id("policy-name")}.value==='Incomplete rule'`), "Returning to policies reveals the same invalid draft");
   await cancelEditor(); assert.equal(await revision(), baseline); assert.equal((await policySource()).length, 0);
   await clickElement(text("Add rule")); await fill("policy-name", ruleName); await fill("policy-rationale", "Use shared spacing so product density stays consistent.");
   await selectElement(id("policy-component"), component.id); await selectElement(id("policy-category"), "Web");

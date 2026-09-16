@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { seedLegacyFoundation } from "./workbench-foundation-cases.mjs";
 
 /** Editable rules, simulated runtime and ordinary review/Undo use one isolated browser database. */
 export async function verifyBehaviorEditor({ page, origin, database, id, label, text, click, clickElement, fill, selectElement, until, settled, approve, revision, record }) {
@@ -10,7 +11,8 @@ export async function verifyBehaviorEditor({ page, origin, database, id, label, 
   await page.send("Page.navigate", { url: `${origin}/?database=${database}` }); await until(id("onboarding"));
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1080, deviceScaleFactor: 1, mobile: false });
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
-  await fill("project-name", "Behavior authoring"); await click("starter-enabled"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await fill("project-name", "Behavior authoring"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
+  await seedLegacyFoundation({ page, database, id, until }); await click("view-canvas");
   await click("view-library"); await click("create-custom-component"); await until(id("component-composer"));
   await click("composer-button"); await fill("composer-name", "Interactive button");
   const previous = await page.evaluate("Array.from(document.querySelectorAll('[data-component-frame]')).map(node=>node.dataset.componentFrame)");

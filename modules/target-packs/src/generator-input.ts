@@ -1,4 +1,5 @@
-import type { StudioComponent, StudioDesign, StudioProjection, StudioStyle } from "../../ads-core/src/index.ts";
+import type { StudioComponent, StudioDesign, StudioLength, StudioProjection, StudioStyle } from "../../ads-core/src/index.ts";
+import { studioLengthPixels } from "../../ads-core/src/index.ts";
 import { TARGET_CODE } from "./constants.ts";
 import { TargetError } from "./target-error.ts";
 import { inspectCatalogTarget } from "./catalog-capabilities.ts";
@@ -6,6 +7,23 @@ import type { TargetId } from "./contracts.ts";
 
 const COLOR_PATTERN = /^rgba\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*\)$/;
 const SAFE_SYMBOL = /^[A-Za-z][A-Za-z0-9_]*$/;
+const LENGTH_PROPERTIES = new Set(["borderWidth", "borderRadius", "fontSize", "letterSpacing"]);
+
+/** Convert a separate native projection; raw token data and the adopted source snapshot remain unchanged. */
+export function nativeLengthProjection(projection: StudioProjection, rootFontSize: number): StudioProjection {
+  const copy = structuredClone(projection);
+  for (const component of copy.components) for (const design of [component.web, component.mobile]) {
+    for (const part of Object.values(design.parts)) for (const style of [part.base, part.outlined, part.disabled, part.pressed, ...Object.values(part.combinations)]) {
+      for (const [key, value] of Object.entries(style)) if (LENGTH_PROPERTIES.has(key)) Object.assign(style, { [key]: studioLengthPixels(value as StudioLength, rootFontSize) });
+    }
+    for (const layout of Object.values(design.layout)) for (const field of ["gap", "padding", "minHeight"] as const) layout[field] = studioLengthPixels(layout[field], rootFontSize);
+  }
+  for (const component of copy.components) {
+    const root = component.parts.find(part => part.role === "root");
+    if (component.archetype === "button" && root && studioLengthPixels(component.mobile.layout[root.id]?.minHeight ?? 0) < 44) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Native rem conversion would reduce the Button target below 44 logical units; increase its minimum height or root font basis", root.id);
+  }
+  return copy;
+}
 
 /** Stable identity determines exported identifiers; display names remain escaped data. */
 export function componentSymbol(component: StudioComponent): string {
@@ -41,9 +59,10 @@ export function inspectGeneratorProjection(projection: StudioProjection, target:
         const extended = ["fontFamily", "fontWeight", "lineHeight", "letterSpacing", "boxShadow", "backgroundImage", "borderStyle", "transitionDuration", "transitionTimingFunction", "transitionDelay"].includes(property);
         if (extended) { if (target !== "react") throw new TargetError(TARGET_CODE.UNSUPPORTED, "Extended token-bound paint needs a native mapping before output", part.id); continue; }
         if (["background", "color", "borderColor"].includes(property)) { if (typeof value !== "string") throw new TargetError(TARGET_CODE.INVALID, "Color declaration must be resolved", part.id); colorChannels(value); }
+        else if (LENGTH_PROPERTIES.has(property)) { try { if (studioLengthPixels(value as StudioLength) < 0) throw new Error(); } catch { throw new TargetError(TARGET_CODE.UNSUPPORTED, "Visual length requires bounded px or rem", part.id); } }
         else if (typeof value !== "number" || !Number.isFinite(value) || value < 0) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Visual declaration cannot be represented", part.id);
       }
-      if (layout && (layout.gap < 0 || layout.padding < 0 || layout.minHeight < 0)) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Layout requires nonnegative logical dimensions", part.id);
+      if (layout && [layout.gap, layout.padding, layout.minHeight].some(value => studioLengthPixels(value) < 0)) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Layout requires nonnegative logical dimensions", part.id);
     }
   }
 }

@@ -3,7 +3,7 @@ import test from "node:test";
 import type { TestContext } from "node:test";
 import { IDBFactory, IDBObjectStore, forceCloseDatabase } from "fake-indexeddb";
 import { IndexedDbStore, BrowserStoreError, browserDigest } from "../src/index.ts";
-import { BROWSER_MAX_COMMITS, BROWSER_STORE_ERROR } from "../src/constants.ts";
+import { BROWSER_MAX_COMMITS, BROWSER_PROOF_MAX_CHARACTERS, BROWSER_STORE_ERROR } from "../src/constants.ts";
 import { createBrowserCommit, readBrowserJournal } from "../src/journal.ts";
 import type { ValidatedBrowserSnapshots } from "../src/journal.ts";
 import type { BrowserCommit, BrowserFaultPhase, IndexedDbStoreOptions, RecoveredBrowserState } from "../src/contracts.ts";
@@ -136,6 +136,78 @@ test("first read reuses the full fresh-write codec proof without retaining calle
   assert.ok(immediateWalks < coldWalks / 10, "The writer's first read does not repeat the just-completed canonical descriptor proof");
   immediate!.project!.documents[document.id]!.document.name = "Mutated read";
   assert.deepEqual(await writer.read(), expected, "A cached proof never shares the caller's original or returned state objects");
+});
+
+test("exact pooled text proofs reuse hashing while preserving every Unicode character and cold verification", async (t) => {
+  const { store } = setup(t), writer = store();
+  // Astral characters and BOMs cross fixed-size proof chunk boundaries.
+  const nameOffset = canonicalJson(state("")).indexOf('"name":""') + '"name":"'.length;
+  const snapshot = state("x".repeat(65_536 - nameOffset) + "\uFEFF" + "y".repeat(65_534) + "\u{1F680}" + "z".repeat(140_000));
+  await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
+  const encode = TextEncoder.prototype.encode; let fullHashes = 0;
+  t.mock.method(TextEncoder.prototype, "encode", function (this: TextEncoder, input?: string) {
+    if ((input?.length ?? 0) > 200_000) fullHashes++;
+    return encode.call(this, input);
+  });
+  assert.deepEqual(await writer.read(), snapshot);
+  assert.equal(fullHashes, 0, "warm reads compare all exact chunks rather than hash the same historical text again");
+  assert.deepEqual(await store().read(), snapshot);
+  assert.ok(fullHashes > 0, "another connection validates original bytes without trusting another cache");
+});
+
+test("repeated source records share exact proofs across snapshots larger than the unique-character budget", async (t) => {
+  const { store } = setup(t), writer = store();
+  const snapshot = state();
+  const document = { id: "catalog.repeated", kind: "catalog", schemaVersion: "1.0.0", revision: "1", name: "Repeated", content: "a".repeat(240_000) };
+  const documents = { [document.id]: { document, originalText: JSON.stringify(document), sourceUri: "memory:repeated", validation: "envelope-only" as const, diagnostics: [] } };
+  snapshot.project!.documents = documents;
+  let retainedCharacters = 0;
+  for (let index = 0; index < 7; index++) {
+    snapshot.candidates.push({ id: `candidate.${index}`, projectId: "project", baseRevision: String(index), actorId: "actor", digest: "0".repeat(64), documents, diff: [], diagnostics: [], status: "applied" });
+    snapshot.undo.push({ handle: `undo.${index}`, actorId: "actor", applicableRevision: String(index), before: documents, after: documents });
+    await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
+    retainedCharacters += canonicalJson(snapshot).length;
+  }
+  assert.ok(retainedCharacters > BROWSER_PROOF_MAX_CHARACTERS);
+  const encode = TextEncoder.prototype.encode; let fullHashes = 0;
+  t.mock.method(TextEncoder.prototype, "encode", function (this: TextEncoder, input?: string) {
+    if ((input?.length ?? 0) > 500_000) fullHashes++;
+    return encode.call(this, input);
+  });
+  assert.deepEqual(await writer.read(), snapshot);
+  assert.equal(fullHashes, 0, "all retained snapshots have exact proofs without retaining duplicated full texts");
+});
+
+test("proof reference capacity bypasses optimization and still validates complete snapshots", async (t) => {
+  const { store } = setup(t), writer = store();
+  const snapshot = Object.assign(state(), { extension: Array.from({ length: 40_000 }, () => ({ document: 0 })) });
+  await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
+  const encode = TextEncoder.prototype.encode; let fullHashes = 0;
+  t.mock.method(TextEncoder.prototype, "encode", function (this: TextEncoder, input?: string) {
+    if ((input?.length ?? 0) > 100_000) fullHashes++;
+    return encode.call(this, input);
+  });
+  assert.deepEqual(await writer.read(), snapshot);
+  assert.ok(fullHashes > 0, "too many proof references fall back to the full hash and codec path");
+});
+
+test("unique proof text exceeding the character budget is not retained or accepted without complete validation", async (t) => {
+  const { factory, store } = setup(t), writer = store();
+  const chunkSize = 65_536;
+  const uniqueText = Array.from({ length: Math.ceil(BROWSER_PROOF_MAX_CHARACTERS / chunkSize) + 1 }, (_, index) => `${String(index).padStart(8, "0")}${"x".repeat(chunkSize - 8)}`).join("");
+  const snapshot = state(uniqueText);
+  await writer.transact(() => ({ state: snapshot, value: null, changed: true }));
+  const encode = TextEncoder.prototype.encode; let fullHashes = 0;
+  t.mock.method(TextEncoder.prototype, "encode", function (this: TextEncoder, input?: string) {
+    if ((input?.length ?? 0) > BROWSER_PROOF_MAX_CHARACTERS) fullHashes++;
+    return encode.call(this, input);
+  });
+  assert.equal((await writer.read())!.project!.name, uniqueText);
+  assert.ok(fullHashes > 0, "unpoolable text is fully rehashed rather than exceeding the 32-Mi-character budget");
+  const commit = (await records(factory))[0]!;
+  commit.stateText = commit.stateText.replace("00000000", "10000000");
+  await raw(factory, transaction => transaction.objectStore("commits").put(commit, commit.sequence));
+  await assert.rejects(() => writer.read(), code(BROWSER_STORE_ERROR.corrupt));
 });
 
 test("fresh-write validation rejects corrupted bytes and never treats a rolled-back write as committed", async (t) => {

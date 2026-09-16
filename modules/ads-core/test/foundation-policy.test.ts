@@ -64,6 +64,25 @@ test("semantic alias policy checks base and every authored theme override by sta
   assert.equal(report.canDeliver, false); assert.ok(report.violations.some(item => item.tokenId === "token.action" && item.path.includes("/overrides/dark/")));
 });
 
+test("alias policy inspects unconnected value groups and preserves valid group references", () => {
+  const h = authoringFixture(true);
+  let plan = h.plan(h.project, [{ kind: "classification-create", category: "tier", name: "Primitive" }, { kind: "classification-create", category: "tier", name: "Semantic" }]);
+  const [primitive, semantic] = plan.createdIds;
+  plan = h.plan(plan.project, [{ kind: "token-update", id: "token.accent", tier: primitive! }, { kind: "token-update", id: "token.action", tier: semantic! }]);
+  const policy = planFoundationPolicyEdit(plan.project, { kind: "policy-create", rule: rule({ kind: "token-alias", tier: semantic!, targetTier: primitive! }) }, h.createId);
+  const created = h.plan(policy.project, { kind: "value-set-create", name: "Unconnected colors" });
+  assert.equal(created.valid, true, brief(created));
+  const groupId = created.createdIds[0]!;
+  const literal = h.plan(created.project, { kind: "value-set-value", id: groupId, tokenId: "token.action", value: { literal: { colorSpace: "srgb", components: [0.1, 0.2, 0.3], alpha: 1 } } });
+  assert.equal(literal.valid, true, brief(literal));
+  const report = inspectFoundationPolicies(literal.project);
+  assert.equal(report.canDeliver, false);
+  assert.ok(report.violations.some(item => item.tokenId === "token.action" && item.path === "/valueSets/0/values/token.action"));
+  const repaired = h.plan(literal.project, { kind: "value-set-value", id: groupId, tokenId: "token.action", value: { ref: { id: "token.accent", expectedKind: "token" } } });
+  assert.equal(repaired.valid, true, brief(repaired));
+  assert.equal(inspectFoundationPolicies(repaired.project).canDeliver, true);
+});
+
 test("malformed predicates, unknown classifications, approval claims and duplicate identities reject atomically", () => {
   const h = authoringFixture(true), before = canonicalJson(h.project);
   const invalid = [

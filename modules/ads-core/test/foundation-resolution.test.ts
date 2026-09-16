@@ -67,7 +67,7 @@ test("selection accessors are not invoked and execution work exhaustion clears p
   let called = false;
   const selection = Object.defineProperty({}, "contexts", { get() { called = true; return {}; }, enumerable: true });
   assert.equal(resolveFoundationTokens(themed(), selection).valid, false); assert.equal(called, false);
-  const tokens = Array.from({ length: 600 }, (_, index) => index === 0 ? token(`token.${index}`) : { ...token(`token.${index}`), value: ref(`token.${index - 1}`) });
+  const tokens = Array.from({ length: 1800 }, (_, index) => index === 0 ? token(`token.${index}`) : { ...token(`token.${index}`), value: ref(`token.${index - 1}`) });
   const result = resolveFoundationTokens(foundation(tokens));
   assert.equal(result.valid, false); assert.deepEqual(result.tokens, []);
   assert.ok(result.diagnostics.some(item => item.code === "JSON_LIMIT"));

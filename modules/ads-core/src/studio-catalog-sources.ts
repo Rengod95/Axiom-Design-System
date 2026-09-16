@@ -9,10 +9,10 @@ import { canonicalJson } from "./canonical-json.ts";
 import { isObject } from "./documents.ts";
 import { catalogObjects } from "./studio-catalog-validation.ts";
 import { STUDIO_CATALOG_PROFILE } from "./studio-catalog-constants.ts";
-import { STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MAX_DIMENSION, STUDIO_MOTION, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
+import { STUDIO_ARCHETYPE_VERSION, STUDIO_CATEGORIES, STUDIO_MOTION, STUDIO_SCHEMA_VERSION, STUDIO_SOURCE_PROFILE } from "./studio-constants.ts";
 import { studioCatalogPresentation } from "./studio-catalog-presentation.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
-import { isStudioTokenCompatible } from "./studio-style-values.ts";
+import { isStudioTokenCompatible, resolveStudioDimension, studioLengthPixels } from "./studio-style-values.ts";
 
 const dimension = (value: number): JsonObject => ({ value, unit: "px" });
 const color = (value: number): JsonObject => ({ colorSpace: "srgb", components: [value, value, value], alpha: 1 });
@@ -30,8 +30,7 @@ const BASELINE_PATH_NAMESPACES = new Set(["semantic", "color", "colors"]);
 function renderableBaselineToken(token: ResolvedFoundationToken, property: BaselineProperty): boolean {
   if (!isStudioTokenCompatible(token, property) || !isObject(token.value)) return false;
   const value = token.value;
-  if (token.type === "dimension") return Object.keys(value).every(key => key === "value" || key === "unit") && value.unit === "px"
-    && typeof value.value === "number" && Number.isFinite(value.value) && value.value >= 0 && (property !== "fontSize" || value.value > 0) && value.value <= STUDIO_MAX_DIMENSION;
+  if (token.type === "dimension") { try { const length = resolveStudioDimension(value); return property !== "fontSize" || studioLengthPixels(length) > 0; } catch { return false; } }
   return Object.keys(value).every(key => ["colorSpace", "components", "alpha", "hex"].includes(key)) && value.colorSpace === "srgb"
     && Array.isArray(value.components) && value.components.length === 3 && value.components.every(channel => typeof channel === "number" && Number.isFinite(channel) && channel >= 0 && channel <= 1)
     && (value.alpha === undefined || typeof value.alpha === "number" && Number.isFinite(value.alpha) && value.alpha >= 0 && value.alpha <= 1);

@@ -35,3 +35,5 @@ The [2026-09-14 editor follow-up](implementation/editor-completion-followup.md) 
 17. [Compound anatomy and canvas insertion](adr/0020-compound-anatomy-and-canvas-insertion.md).
 
 18. [Pinned original Library templates](adr/0021-pinned-reference-templates.md), [duplicate consolidation review](implementation/library-duplicate-review.md) and [visual review](implementation/library-reference-visual-review.md). The Studio quickstart includes the four locked reference-runtime installations.
+
+19. [Guided Foundation authoring and atomic migration](adr/0022-guided-foundation-and-atomic-migration.md), with [implementation evidence and limits](implementation/guided-foundation-evidence.md): required domain/role contracts, reusable value groups, Semantic-first navigation and preserved length units.

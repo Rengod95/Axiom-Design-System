@@ -11,8 +11,10 @@ export class TypeInputError extends Error {
 export const typePointer = (path: string, key: string): string => `${path}/${key.replaceAll("~", "~0").replaceAll("/", "~1")}`;
 export class TypeBudget {
   private steps = 0;
+  private readonly maxSteps: number;
+  constructor(maxSteps = MAX_TYPE_STEPS) { this.maxSteps = maxSteps; }
   step(path: string): void {
-    if (++this.steps > MAX_TYPE_STEPS) throw new TypeInputError(CODE.JSON_LIMIT, path, "Type inspection exceeds its work limit.");
+    if (++this.steps > this.maxSteps) throw new TypeInputError(CODE.JSON_LIMIT, path, "Type inspection exceeds its work limit.");
   }
 }
 

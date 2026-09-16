@@ -10,6 +10,7 @@ import { inspectDocumentDomain } from "./domain-validation.ts";
 import { inspectFoundationDocument } from "./foundation-validation.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
 import { projectStudioDesign } from "./studio-presentation.ts";
+import { resolveStudioDimension } from "./studio-style-values.ts";
 import { resolveStudioMotion } from "./studio-motion.ts";
 import { getStudioCatalogRecipe } from "./studio-catalog.ts";
 import { catalogIdentity } from "./studio-catalog-validation.ts";
@@ -93,8 +94,9 @@ function componentErrors(document: JsonObject, add: (path: string, message: stri
 }
 
 function isDimensionSource(value: unknown): boolean {
-  return isObject(value) && (keys(value, ["tokenRef"]) && isValidId(value.tokenRef)
-    || keys(value, ["value", "unit"]) && value.unit === "px" && boundedNumber(value.value, STUDIO_MAX_DIMENSION));
+  if (!isObject(value)) return false;
+  if (keys(value, ["tokenRef"]) && isValidId(value.tokenRef)) return true;
+  try { resolveStudioDimension(value); return true; } catch { return false; }
 }
 function designErrors(document: JsonObject, add: (path: string, message: string) => void): void {
   const catalog = hasCatalogProfile(document);
@@ -111,7 +113,7 @@ function designErrors(document: JsonObject, add: (path: string, message: string)
     || typeof mapping.role !== "string" || (catalog ? !/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(mapping.role) : !["root", "label", "header", "body", "actions", "close"].includes(mapping.role))) add(`/nodeMappings/${index}`, "Invalid semantic part mapping.");
   for (const [index, layout] of objects(document.layout).entries()) {
     if (!keys(layout, ["targetPartRef", "mode", "axis", "size", "gap", "padding", "minHeight", "childOrder", ...(catalog ? ["alignment", "position"] : [])]) || !(layout.mode === "stack" || catalog && layout.mode === "free") || typeof layout.axis !== "string" || !["horizontal", "vertical"].includes(layout.axis)
-      || !isObject(layout.size) || !catalog && Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/token dimensions is executable.");
+      || !isObject(layout.size) || !catalog && Object.keys(layout.size).length || !isDimensionSource(layout.gap) || !isDimensionSource(layout.padding) || !isDimensionSource(layout.minHeight)) add(`/layout/${index}`, "Only explicit stack layout with bounded px/rem or token dimensions is executable.");
     if (layout.position !== undefined && (!isObject(layout.position) || !keys(layout.position, ["x", "y"]) || !boundedNumber(layout.position.x, 16384, -16384) || !boundedNumber(layout.position.y, 16384, -16384))) add(`/layout/${index}/position`, "Position requires finite x/y coordinates between -16384 and 16384.");
     if (catalog) inspectCatalogLayout(layout, `/layout/${index}`, add);
   }

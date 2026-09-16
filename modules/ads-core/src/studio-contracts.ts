@@ -9,7 +9,9 @@ export interface StudioDocumentReport { profile: "foundation-studio"; valid: boo
 export type StudioCategory = "Web" | "Mobile";
 export type StudioPartRole = string;
 export type StudioVisualProperty = "background" | "color" | "borderColor" | "borderWidth" | "borderRadius" | "fontSize" | "opacity" | "fontFamily" | "fontWeight" | "lineHeight" | "letterSpacing" | "boxShadow" | "backgroundImage" | "borderStyle" | "border" | "typography" | "transitionDuration" | "transitionTimingFunction" | "transition";
-export interface StudioStyle { background?: string; color?: string; borderColor?: string; borderWidth?: number; borderRadius?: number; fontSize?: number; opacity?: number; fontFamily?: string; fontWeight?: number; lineHeight?: number; letterSpacing?: number; boxShadow?: string; backgroundImage?: string; borderStyle?: "solid" | "dashed" | "dotted" | "double" | "groove" | "ridge" | "outset" | "inset"; transitionDelay?: string; transitionDuration?: string; transitionTimingFunction?: string }
+/** Numeric lengths retain the existing px representation; rem remains relative until a target resolves it. */
+export type StudioLength = number | `${number}rem`;
+export interface StudioStyle { background?: string; color?: string; borderColor?: string; borderWidth?: StudioLength; borderRadius?: StudioLength; fontSize?: StudioLength; opacity?: number; fontFamily?: string; fontWeight?: number; lineHeight?: number; letterSpacing?: StudioLength; boxShadow?: string; backgroundImage?: string; borderStyle?: "solid" | "dashed" | "dotted" | "double" | "groove" | "ridge" | "outset" | "inset"; transitionDelay?: string; transitionDuration?: string; transitionTimingFunction?: string }
 export interface StudioPart { id: string; name: string; parent: string | null; role: StudioPartRole; text?: string; required?: boolean; elementKind?: "box" | "frame" | "text" }
 export interface StudioPartPresentation {
   base: StudioStyle; outlined: StudioStyle; disabled: StudioStyle; pressed: StudioStyle;
@@ -18,7 +20,7 @@ export interface StudioPartPresentation {
 }
 export interface StudioLayout {
   mode?: "stack" | "free"; position?: { x: number; y: number };
-  axis: "horizontal" | "vertical"; gap: number; padding: number; minHeight: number;
+  axis: "horizontal" | "vertical"; gap: StudioLength; padding: StudioLength; minHeight: StudioLength;
   childOrder: string[];
   width?: StudioSizePolicy; height?: StudioSizePolicy; alignment?: "start" | "center" | "end" | "stretch";
 }

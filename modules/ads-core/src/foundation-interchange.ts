@@ -1,7 +1,8 @@
 import { readDtcgTokens, putDtcgToken, writeDtcgValue } from "./dtcg-format.ts";
 import { resolveFoundationTokens } from "./foundation-resolution.ts";
+import { composeFoundationExpressions } from "./foundation-evaluation.ts";
 import { foundationPointerValue } from "./foundation-references.ts";
-import type { FoundationSelection } from "./foundation-contracts.ts";
+import type { FoundationDocument, FoundationSelection } from "./foundation-contracts.ts";
 import type { JsonObject, JsonValue } from "./contracts.ts";
 import type { FoundationExchangeExport, FoundationExchangeOptions, FoundationExchangeReport, FoundationTokenType } from "./foundation-contracts.ts";
 import { FOUNDATION_CODES, FOUNDATION_TOKEN_TYPES } from "./foundation-constants.ts";
@@ -100,21 +101,29 @@ export function exportResolvedFoundationDtcg(input: unknown, selection: Foundati
 
 /** A selected-context exchange is deliberately distinct from a lossless full-system export. */
 export function exportSelectedFoundationDtcg(input: unknown, selection: FoundationSelection = {}, values: "resolved" | "references" = "references"): FoundationExchangeExport {
-  const resolution = resolveFoundationTokens(input, selection), result: FoundationExchangeExport = { valid: resolution.valid, diagnostics: [...resolution.diagnostics], mode: "authored" };
-  if (!resolution.valid) return result;
+  const check = new FoundationCheck("memory:foundation");
+  const result: FoundationExchangeExport = { valid: false, diagnostics: check.diagnostics, mode: "authored" };
   try {
     const output: JsonObject = Object.create(null);
-    const check = new FoundationCheck("memory:foundation"), document = checkFoundationSnapshot(check.snapshot(input), check)!;
+    // Capture caller-owned inputs once so descriptor traps cannot change the selected theme
+    // or authored expressions between resolution and reference serialization.
+    const document = check.snapshot(input) as unknown as FoundationDocument;
+    const selected = check.snapshot(selection, "/selection") as unknown as FoundationSelection;
+    const resolution = resolveFoundationTokens(document, selected);
+    result.diagnostics.push(...resolution.diagnostics);
+    if (!resolution.valid) return result;
     if (values !== "resolved" && values !== "references") throw new Error("Unknown selected-context value mode.");
-    const expressions = new Map(document.tokens.map(token => [token.id, token.value]));
-    for (const id of document.resolutionOrder) for (const [tokenId, value] of Object.entries(document.themeAxes.find(axis => axis.id === id)!.overrides?.[resolution.contexts[id]!] ?? {})) expressions.set(tokenId, value);
+    const theme = selected.themeSetId === undefined ? undefined : document.themeSets.find(item => item.id === selected.themeSetId);
+    const expressions = values === "references" ? composeFoundationExpressions(document, resolution.contexts, theme, check).values : undefined;
+    if (!check.valid) return result;
     const names = new Map(document.tokens.map(token => [token.id, token.name]));
     for (const token of resolution.tokens) {
       const authored = document.tokens.find(item => item.id === token.id)!;
-      putDtcgToken(output, token.name, { $type: token.type, $value: values === "resolved" ? token.value : writeDtcgValue(expressions.get(token.id)!, names), ...(authored.description !== undefined ? { $description: authored.description } : {}), ...(authored.deprecated !== undefined ? { $deprecated: authored.deprecated } : {}), ...(authored.extensions ? { $extensions: authored.extensions } : {}) });
+      putDtcgToken(output, token.name, { $type: token.type, $value: values === "resolved" ? token.value : writeDtcgValue(expressions!.get(token.id)!, names), ...(authored.description !== undefined ? { $description: authored.description } : {}), ...(authored.deprecated !== undefined ? { $deprecated: authored.deprecated } : {}), ...(authored.extensions ? { $extensions: authored.extensions } : {}) });
     }
     result.text = canonicalJson(output, MAX_DOCUMENT_BYTES);
+    result.valid = true;
     result.diagnostics.push({ code: FOUNDATION_CODES.EXCHANGE, phase: "document", severity: "warning", path: "", sourceRef: "memory:foundation", message: `Selected context with ${values === "resolved" ? "resolved values" : "live value references"}; theme definitions, groups, classifications and Axiom authoring metadata are not included. Export ADS to preserve the editable system.` });
-  } catch (error) { result.valid = false; result.diagnostics.push({ code: FOUNDATION_CODES.EXCHANGE, phase: "document", severity: "error", path: "", sourceRef: "memory:foundation", message: error instanceof Error ? error.message : "Export failed." }); }
+  } catch (error) { result.valid = false; caught(check, error); }
   return result;
 }

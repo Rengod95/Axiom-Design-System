@@ -14,6 +14,7 @@ import { inspectLocalReferences } from "./local-references.ts";
 import { inspectProfileDocument } from "./validation-profile.ts";
 import { exportProjectBundle } from "./project-bundle.ts";
 import type { ProjectBundle } from "./bundle-contracts.ts";
+import { assertFoundationProfileTransitions } from "./foundation-profile-transition.ts";
 
 const ENVELOPE_FIELDS = new Set(["protocolVersion", "commandId", "actorId", "projectId", "baseRevision", "operation", "payload", "idempotencyKey", "origin", "transactionId", "requestedScopes"]);
 const ORIGINS = new Set(["GUI", "internalAI", "externalAPI"]);
@@ -157,11 +158,11 @@ export class CommandService {
   }
 
   /** One authorized read pairs project documents with this actor's matching history handles. */
-  async getAuthoringSnapshot(principal: Principal): Promise<{ project: ProjectSnapshot | null; authoring: StudioAuthoringState }> {
+  async getAuthoringSnapshot(principal: Principal): Promise<{ project: ProjectSnapshot | null; authoring: StudioAuthoringState; sourceDrafts: SourceDraft[] }> {
     authorize(principal, "project.read");
     const actorId = principal.id;
     const state = checkedState(await this.#store.read());
-    return structuredClone({ project: state.project, authoring: authoringState(state, actorId) });
+    return structuredClone({ project: state.project, authoring: authoringState(state, actorId), sourceDrafts: (state.drafts ?? []).filter(draft => draft.actorId === actorId && draft.projectId === state.project?.id) });
   }
 
   /** Immutable source captures remain private to their authenticated author. */
@@ -298,6 +299,7 @@ export class CommandService {
   }
 
   #propose(state: KernelState, project: ProjectSnapshot, principal: Principal, documents: Record<string, DocumentEntry>, diff: CommandResult["diff"]): CommandResult {
+    assertFoundationProfileTransitions(project.documents, documents);
     this.#validateCompositionTransition(project.documents, documents);
     const diagnostics = this.#validateDocuments(documents, project.id);
     const candidate: Candidate = { id: this.#id(), projectId: project.id, baseRevision: project.revision, digest: "", actorId: principal.id, documents, diff, diagnostics, status: "pending" };
@@ -368,6 +370,7 @@ export class CommandService {
     authorize(principal, "review.apply");
     if (candidate.status !== "approved" || !approval || approval.principalId !== principal.id || approval.token !== envelope.payload.approvalToken
       || approval.digest !== candidate.digest || approval.baseRevision !== project.revision) throw new KernelError(CODE.APPROVAL_INVALID, "A current principal-bound approval is required.");
+    assertFoundationProfileTransitions(project.documents, candidate.documents);
     this.#validateCompositionTransition(project.documents, candidate.documents);
     const diagnostics = this.#validateDocuments(candidate.documents, project.id);
     const before = structuredClone(project.documents);

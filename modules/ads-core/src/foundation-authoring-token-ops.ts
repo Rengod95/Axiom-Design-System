@@ -24,9 +24,9 @@ export function applyFoundationTokenEdit(project: ProjectSnapshot, foundation: F
   switch (edit.kind) {
     case "token-create": {
       const token: FoundationToken = { id: createId(), name: edit.name, typeRef: { id: edit.type }, value: edit.value };
-      changeFields(token, edit, ["description", "domain", "tier"]); foundation.tokens.push(token); return true;
+      changeFields(token, edit, ["description", "domain", "tier", "role"]); foundation.tokens.push(token); return true;
     }
-    case "token-update": changeFields(selected(foundation, edit.id), edit, ["name", "description", "domain", "tier", "deprecated"]); return true;
+    case "token-update": changeFields(selected(foundation, edit.id), edit, ["name", "description", "domain", "tier", "role", "deprecated"]); return true;
     case "token-alias": selected(foundation, edit.id).value = { ref: { id: edit.targetId, expectedKind: "token" } }; return true;
     case "token-expression": selected(foundation, edit.id).value = edit.value; return true;
     case "token-literal": selected(foundation, edit.id).value = { literal: edit.value }; return true;
@@ -34,6 +34,7 @@ export function applyFoundationTokenEdit(project: ProjectSnapshot, foundation: F
       const token = { ...copy(selected(foundation, edit.id)), id: createId(), name: edit.name };
       foundation.tokens.push(token);
       for (const axis of foundation.themeAxes) for (const map of Object.values(axis.overrides ?? {})) if (Object.hasOwn(map, edit.id)) put(map, token.id, copy(map[edit.id]));
+      for (const group of foundation.valueSets ?? []) if (Object.hasOwn(group.values, edit.id)) put(group.values, token.id, copy(group.values[edit.id]));
       return true;
     }
     case "token-delete": {
@@ -46,6 +47,7 @@ export function applyFoundationTokenEdit(project: ProjectSnapshot, foundation: F
       }
       foundation.tokens = foundation.tokens.filter(item => item.id !== edit.id);
       for (const axis of foundation.themeAxes) for (const map of Object.values(axis.overrides ?? {})) delete map[edit.id];
+      for (const group of foundation.valueSets ?? []) delete group.values[edit.id];
       return true;
     }
     case "classification-create": case "classification-update": case "classification-delete": {
@@ -60,10 +62,12 @@ export function applyFoundationTokenEdit(project: ProjectSnapshot, foundation: F
       if (!item) throw new Error("Selected classification is missing.");
       if (edit.kind === "classification-update") { changeFields(item, edit, ["name", "description", "allowedTypes", "bindingCategory"]); return true; }
       const uses = foundation.tokens.filter(token => token[edit.category] === edit.id);
-      if (uses.length && edit.replacementId === undefined) throw new Error("The classification is assigned to tokens; reclassify them or choose a replacement first.");
+      const groups = edit.category === "domain" ? (foundation.valueSets ?? []).filter(group => group.domain === edit.id) : [];
+      if ((uses.length || groups.length) && edit.replacementId === undefined) throw new Error("The classification is assigned to tokens or value groups; reclassify them or choose a replacement first.");
       if (edit.replacementId !== undefined) {
         if (edit.replacementId === edit.id || !records.some(record => record.id === edit.replacementId)) throw new Error("Classification replacement must be a different record in the same category.");
         for (const token of uses) token[edit.category] = edit.replacementId;
+        for (const group of groups) group.domain = edit.replacementId;
       }
       foundation[field] = foundation[field].filter(record => !isObject(record) || record.id !== edit.id); return true;
     }

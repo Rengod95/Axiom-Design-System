@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { CSSProperties } from "react";
 import type { FoundationTokenType, JsonValue } from "../../../modules/ads-core/src/index.ts";
+import { STUDIO_ROOT_FONT_SIZE } from "../../../modules/ads-core/src/index.ts";
 import { colorHex, object } from "./ui-utils.ts";
 import { copy } from "./ui.tsx";
 import type { Locale } from "./locales.ts";
@@ -8,8 +9,16 @@ import { Icon } from "./icons.tsx";
 
 const finite = (value: unknown, fallback = 0): number => typeof value === "number" && Number.isFinite(value) ? value : fallback;
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-export function specimenDimension(value: unknown): number {
-  return object(value) ? finite(value.value) * (value.unit === "rem" ? 16 : 1) : 0;
+/** Rulers use a labelled reference basis; unsupported units are never silently treated as px. */
+export function specimenDimension(value: unknown, rootFontSize = STUDIO_ROOT_FONT_SIZE): number {
+  return object(value) && ["px", "rem"].includes(String(value.unit)) ? finite(value.value) * (value.unit === "rem" ? rootFontSize : 1) : 0;
+}
+/** Preserve CSS-relative units in material specimens while bounding their displayed size. */
+export function specimenLength(value: unknown, min?: number, max?: number): number | string {
+  if (!object(value) || !["px", "rem"].includes(String(value.unit)) || typeof value.value !== "number" || !Number.isFinite(value.value)) return 0;
+  if (value.unit === "px") return clamp(value.value, min ?? -Infinity, max ?? Infinity);
+  const css = `${value.value}rem`;
+  return min !== undefined && max !== undefined ? `clamp(${min}px, ${css}, ${max}px)` : min !== undefined ? `max(${min}px, ${css})` : max !== undefined ? `min(${max}px, ${css})` : css;
 }
 /** CSS color syntax preserves the token's color space and alpha; it never rewrites source values. */
 export function specimenColor(value: unknown): string | undefined {
@@ -49,7 +58,8 @@ export function specimenSummary(type: FoundationTokenType, value: JsonValue | un
   return typeof value === "string" || typeof value === "number" ? String(value) : "—";
 }
 export function specimenShadow(value: unknown): string {
-  return (Array.isArray(value) ? value : [value]).filter(object).map(shadow => `${shadow.inset === true ? "inset " : ""}${specimenDimension(shadow.offsetX)}px ${specimenDimension(shadow.offsetY)}px ${Math.max(0, specimenDimension(shadow.blur))}px ${specimenDimension(shadow.spread)}px ${specimenColor(shadow.color) ?? "transparent"}`).join(", ") || "none";
+  const css = (measurement: unknown, minimum?: number) => { const length = specimenLength(measurement, minimum); return typeof length === "number" ? `${length}px` : length; };
+  return (Array.isArray(value) ? value : [value]).filter(object).map(shadow => `${shadow.inset === true ? "inset " : ""}${css(shadow.offsetX)} ${css(shadow.offsetY)} ${css(shadow.blur, 0)} ${css(shadow.spread)} ${specimenColor(shadow.color) ?? "transparent"}`).join(", ") || "none";
 }
 export function specimenTiming(type: FoundationTokenType, value: unknown) {
   const curve = type === "cubicBezier" ? value : object(value) ? value.timingFunction : null;
@@ -62,10 +72,10 @@ const fontWeight = (v: unknown): number => typeof v === "number" ? v : ({ thin: 
 
 export function specimenTypography(type: FoundationTokenType, value: JsonValue | undefined, name = ""): CSSProperties {
   const record = object(value) ? value : {};
-  if (type === "typography") return { fontFamily: fontFamily(record.fontFamily), fontWeight: fontWeight(record.fontWeight), fontSize: clamp(specimenDimension(record.fontSize), 1, 256), lineHeight: Math.max(.1, finite(record.lineHeight, 1.4)), letterSpacing: specimenDimension(record.letterSpacing) };
+  if (type === "typography") return { fontFamily: fontFamily(record.fontFamily), fontWeight: fontWeight(record.fontWeight), fontSize: specimenLength(record.fontSize, 1, 256), lineHeight: Math.max(.1, finite(record.lineHeight, 1.4)), letterSpacing: specimenLength(record.letterSpacing) };
   if (type === "fontFamily") return { fontFamily: fontFamily(value), fontSize: 42, fontWeight: 450 };
   if (type === "fontWeight") return { fontSize: 40, fontWeight: fontWeight(value) };
-  if (type === "dimension") return /spacing/i.test(name) ? { fontSize: 28, letterSpacing: specimenDimension(value) } : { fontSize: clamp(specimenDimension(value), 1, 256) };
+  if (type === "dimension") return /spacing/i.test(name) ? { fontSize: 28, letterSpacing: specimenLength(value) } : { fontSize: specimenLength(value, 1, 256) };
   return { fontSize: 24, lineHeight: Math.max(.1, finite(value, 1.4)) };
 }
 
@@ -89,12 +99,12 @@ export function TokenVisual({ type, value, domain = "", name = "", locale = "en"
   else if (presentation === "editorial" && (domainName === "typography" || ["typography", "fontFamily", "fontWeight"].includes(type))) content = <span className="visual-typography editorial-type" style={specimenTypography(type, value, name)}>{type === "fontWeight" ? "Sphinx 012345" : type === "fontFamily" ? "Form follows feeling." : /display|heading|title/i.test(name) ? copy(locale, "형태가 만드는 리듬", "A rhythm of form.") : copy(locale, "작은 차이가 만드는 새로운 감각. 가나다 Aa", "The details make the difference. Aa Bb Cc")}{type === "number" && <><br />{copy(locale, "문장 사이에 여유를 더합니다.", "Give every line room to breathe.")}</>}</span>;
   else if (type === "dimension") {
     const px = specimenDimension(value);
-    content = domainName === "typography" ? <span className="visual-typography" style={/spacing/i.test(name) ? { letterSpacing: clamp(px, -3, 8) } : { fontSize: clamp(px, 8, 56) }}>Aa 가</span>
-      : domainName.includes("radius") ? <div className="visual-radius" style={{ borderTopLeftRadius: clamp(px, 0, 64) }}><span>{finite(obj.value)}{String(obj.unit ?? "")}</span></div>
+    content = domainName === "typography" ? <span className="visual-typography" style={/spacing/i.test(name) ? { letterSpacing: specimenLength(value, -3, 8) } : { fontSize: specimenLength(value, 8, 56) }}>Aa 가</span>
+      : domainName.includes("radius") ? <div className="visual-radius" style={{ borderTopLeftRadius: specimenLength(value, 0, 64) }}><span>{finite(obj.value)}{String(obj.unit ?? "")}</span></div>
       : /siz/.test(domainName) ? <div className="visual-size" style={{ width: clamp(px, 8, 140), height: clamp(px, 8, 84) }} />
       : <div className="visual-ruler"><i style={{ width: clamp(px, 1, 180) }} /><span>{finite(obj.value)} {String(obj.unit ?? "")}</span></div>;
   } else if (["typography", "fontFamily", "fontWeight"].includes(type)) {
-    const style: CSSProperties = type === "typography" ? { fontFamily: fontFamily(obj.fontFamily), fontWeight: fontWeight(obj.fontWeight), fontSize: clamp(specimenDimension(obj.fontSize), 8, 56), lineHeight: clamp(finite(obj.lineHeight, 1.4), .8, 2), letterSpacing: clamp(specimenDimension(obj.letterSpacing), -3, 8) }
+    const style: CSSProperties = type === "typography" ? { fontFamily: fontFamily(obj.fontFamily), fontWeight: fontWeight(obj.fontWeight), fontSize: specimenLength(obj.fontSize, 8, 56), lineHeight: clamp(finite(obj.lineHeight, 1.4), .8, 2), letterSpacing: specimenLength(obj.letterSpacing, -3, 8) }
       : { fontFamily: type === "fontFamily" ? fontFamily(value) : undefined, fontWeight: type === "fontWeight" ? fontWeight(value) : 450 };
     content = <span className="visual-typography" style={style}>{type === "fontWeight" ? "Ag 012" : copy(locale, "가나다 Aa", "Form & type")}</span>;
   } else if (type === "border" || type === "strokeStyle") {

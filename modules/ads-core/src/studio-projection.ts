@@ -16,6 +16,7 @@ import { getStudioCatalogRecipe } from "./studio-catalog.ts";
 import { STUDIO_ERROR, STUDIO_VISUAL_PROPERTIES } from "./studio-constants.ts";
 import { isStudioTokenCompatible } from "./studio-style-values.ts";
 import type { StudioTokenBindingProperty } from "./studio-style-values.ts";
+import { assertFoundationProfileTransition } from "./foundation-profile-transition.ts";
 
 function list(value: JsonValue | undefined): JsonObject[] { return Array.isArray(value) ? value.filter(isObject) : []; }
 function copiedProject(value: ProjectSnapshot): ProjectSnapshot {
@@ -185,6 +186,7 @@ function planCapturedEdit(input: ProjectSnapshot, editInput: StudioEdit, createI
       if (edit.kind === "source") {
         const parsed = parseJson(edit.source);
         if (!isObject(parsed) || parsed.id !== document.id || parsed.kind !== document.kind || parsed.schemaVersion !== document.schemaVersion) throw new Error("Source editing cannot change document identity, kind or schema version.");
+        assertFoundationProfileTransition(document, parsed);
         document = parsed as AdsDocument;
       } else if (edit.kind === "component-name") document.name = edit.name;
       else if (edit.kind === "sample-content") {

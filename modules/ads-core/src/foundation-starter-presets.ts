@@ -1,4 +1,5 @@
 import type { JsonObject, JsonValue } from "./contracts.ts";
+import { FOUNDATION_LENGTH_REFERENCE_PX } from "./foundation-role-registry.ts";
 import type { FoundationStarterOptions, FoundationStarterToken } from "./foundation-starters.ts";
 
 /** Architecture references inform these editable Axiom adaptations, not upstream conformance. */
@@ -63,13 +64,13 @@ const RADIUS_NAMES = ["none", "xs", "sm", "md", "lg", "xl", "full"];
 const TYPE_NAMES = ["caption", "label", "body", "heading", "display"];
 const DURATION_STEPS = [0, 100, 150, 200, 300, 500];
 const rgb = (components: number[]): JsonObject => ({ colorSpace: "srgb", components, alpha: 1 });
-const dim = (value: number): JsonObject => ({ value, unit: "px" });
+const dim = (value: number): JsonObject => ({ value: value / FOUNDATION_LENGTH_REFERENCE_PX, unit: "rem" });
 
 /** Produce independent scales while preserving stable Axiom role adapters used by new projects. */
 export function adaptFoundationStarterTokens(base: FoundationStarterToken[], options: FoundationStarterOptions, id: PresetId): FoundationStarterToken[] {
   const preset = PRESETS[id], result: FoundationStarterToken[] = [], namespace = `${id}.`;
-  const primitive = (domain: string, name: string, type: FoundationStarterToken["type"], value: JsonValue) => result.push({ domain, name, type, tier: "primitive", literal: value });
-  const semantic = (domain: string, name: string, type: FoundationStarterToken["type"], alias: string, darkAlias?: string) => result.push({ domain, name, type, tier: "semantic", alias, ...(darkAlias ? { darkAlias } : {}) });
+  const primitive = (domain: string, name: string, type: FoundationStarterToken["type"], value: JsonValue, role = "color.palette") => result.push({ domain, name, role, type, tier: "primitive", literal: value });
+  const semantic = (domain: string, name: string, type: FoundationStarterToken["type"], alias: string, darkAlias?: string, role = "color.palette") => result.push({ domain, name, role, type, tier: "semantic", alias, ...(darkAlias ? { darkAlias } : {}) });
   const native = (name: string) => `${namespace}${preset.semanticPrefix}.${name}`;
   const neutral = (theme: string, index: number) => `${namespace}color.neutral.${theme}.${preset.steps[index]}`;
   const brand = (theme: string, index: number) => `${namespace}color.brand.${theme}.${preset.steps[index]}`;
@@ -103,28 +104,28 @@ export function adaptFoundationStarterTokens(base: FoundationStarterToken[], opt
   for (const [state, offset] of [["hover", 1], ["pressed", 2]] as const) semantic("color", native(`brand.background.${state}`), "color", brand("light", Math.max(0, Math.min(preset.steps.length - 1, preset.action[0] + offset * lightDirection))), brand("dark", Math.max(0, Math.min(preset.steps.length - 1, preset.action[1] + offset))));
   if (id === "material") semantic("color", native("primary.container"), "color", brand("light", 9), brand("dark", 3));
   semantic("color", native("focus.ring"), "color", brand("light", preset.action[0]), brand("dark", preset.action[1]));
-  COMMON_COLOR_NAMES.forEach((name, index) => semantic("color", name, "color", native(COMMON_COLOR_ROLES[id][index]!)));
-  semantic("color", "action.primary.background", "color", native(backgroundRole));
-  semantic("color", "action.primary.foreground", "color", native(foregroundRole));
-  semantic("color", "focus.ring", "color", native("focus.ring"));
+  COMMON_COLOR_NAMES.forEach((name, index) => semantic("color", name, "color", native(COMMON_COLOR_ROLES[id][index]!), undefined, base.find(token => token.name === name)!.role));
+  semantic("color", "action.primary.background", "color", native(backgroundRole), undefined, "color.action");
+  semantic("color", "action.primary.foreground", "color", native(foregroundRole), undefined, "color.action");
+  semantic("color", "focus.ring", "color", native("focus.ring"), undefined, "color.focus");
   for (const token of base.filter(token => token.domain === "color" && (token.name.startsWith("color.success") || token.name.startsWith("color.warning") || token.name.startsWith("color.danger") || token.name.startsWith("color.info")))) primitive("color", namespace + token.name, token.type, token.literal!);
-  for (const token of base.filter(token => token.domain === "color" && token.name.startsWith("feedback."))) { semantic("color", namespace + token.name, token.type, namespace + token.alias!); semantic("color", token.name, token.type, namespace + token.name); }
-  const nativeValueName = (name: string) => name.startsWith("duration.") ? `${namespace}duration.${preset.durations[DURATION_STEPS.indexOf(Number(name.split(".").at(-1)))]}` : namespace + name;
+  for (const token of base.filter(token => token.domain === "color" && token.name.startsWith("feedback."))) { semantic("color", namespace + token.name, token.type, namespace + token.alias!, undefined, token.role); semantic("color", token.name, token.type, namespace + token.name, undefined, token.role); }
+  const nativeValueName = (name: string) => name.startsWith("duration.") && name !== "duration.reduced" ? `${namespace}duration.${preset.durations[DURATION_STEPS.indexOf(Number(name.split(".").at(-1)))]}` : namespace + name;
   for (const token of base.filter(token => token.domain !== "color")) {
     const name = nativeValueName(token.name);
     if (token.alias) {
       const target = token.name === "sizing.control.default" && (id === "fluent" || id === "spectrum") ? "size.32" : token.alias;
-      semantic(token.domain, name, token.type, nativeValueName(target)); semantic(token.domain, token.name, token.type, name); continue;
+      semantic(token.domain, name, token.type, nativeValueName(target), undefined, token.role); semantic(token.domain, token.name, token.type, name, undefined, token.role); continue;
     }
     let value = token.literal!;
     if (token.name.startsWith("space.")) value = dim(preset.spacing[DIMENSION_STEPS.indexOf(Number(token.name.split(".").at(-1)))]!);
     if (token.name.startsWith("radius.scale.")) value = dim(preset.radius[RADIUS_NAMES.indexOf(token.name.split(".").at(-1)!)]!);
     if (token.name.startsWith("type.scale.")) { const index = TYPE_NAMES.indexOf(token.name.split(".").at(-1)!); value = { ...(value as JsonObject), fontSize: dim(preset.type[index]!), ...(index > 2 ? { lineHeight: 1.2 } : {}) }; }
-    if (token.name.startsWith("duration.")) value = { value: preset.durations[DURATION_STEPS.indexOf(Number(token.name.split(".").at(-1)))]!, unit: "ms" };
+    if (token.name.startsWith("duration.") && token.name !== "duration.reduced") value = { value: preset.durations[DURATION_STEPS.indexOf(Number(token.name.split(".").at(-1)))]!, unit: "ms" };
     if (token.name === "transition.scale.standard") value = { ...(value as JsonObject), duration: { value: preset.durations[3]!, unit: "ms" } };
     if (token.name === "border.scale.default") value = { ...(value as JsonObject), color: rgb([.68, .68, .68]) };
-    primitive(token.domain, name, token.type, value);
-    if (token.name === "font.size.16") semantic(token.domain, token.name, token.type, name);
+    primitive(token.domain, name, token.type, value, token.role);
+    if (token.name === "font.size.16") semantic(token.domain, token.name, token.type, name, undefined, token.role);
   }
-  return result.filter(token => options.domains.includes(token.domain));
+  return result;
 }

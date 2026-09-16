@@ -16,7 +16,7 @@ export interface TargetManifest {
 }
 export interface TargetPack { manifest: TargetManifest; files: TargetFile[]; diagnostics: Diagnostic[] }
 export interface TargetGeneration { valid: boolean; diagnostics: Diagnostic[]; pack?: TargetPack }
-export interface TargetOptions { target: TargetId; packageName?: string; selection?: StudioSelection }
+export interface TargetOptions { target: TargetId; packageName?: string; selection?: StudioSelection; /** Explicit native rem conversion basis; defaults to the documented 16 logical px profile. */ nativeRootFontSize?: number }
 export type FileAction = "create" | "replace" | "delete" | "preserve" | "unchanged" | "conflict";
 export interface UpgradeFile {
   path: string; action: FileAction;
