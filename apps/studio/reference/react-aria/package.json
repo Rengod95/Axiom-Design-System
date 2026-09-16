@@ -1,0 +1,16 @@
+{
+  "name": "@axiom/reference-react-aria",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Isolated pinned official React Aria reference templates.",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-aria-components": "1.21.1",
+    "react-aria": "3.52.1",
+    "lucide-react": "0.517.0",
+    "clsx": "2.1.1"
+  }
+}

@@ -55,12 +55,14 @@ export async function verifyAuthoringWorkspace({ page, origin, database, root, i
   record("architectureTemplates", { choices: 6, onboarding: true, selectionDoesNotMutate: true, emptySelectionBlocksApply: true, keyboardCheckbox: true, actualDarkAliasPreview: true, reviewedRadixSaveAndReload: true, domains: 11 });
 
   await click("view-library"); await click("create-custom-component"); await until(id("component-composer"));
-  assert.equal(await page.evaluate("document.querySelectorAll('.composer-starts input').length"), 6);
-  for (const start of ["blank", "stack", "article", "button", "input", "card"]) {
+  assert.equal(await page.evaluate("document.querySelectorAll('.composer-starts input').length"), 8);
+  for (const start of ["blank", "stack", "article", "button", "checkbox", "accordion", "input", "card"]) {
     await click(`composer-${start}`); assert.equal(await page.evaluate(`${id(`composer-${start}`)}.checked`), true);
     assert.equal(await page.evaluate(`${id("composer-create")}.disabled`), false);
     if (start === "article") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview article[data-part-id] h2[data-part-id]'))"));
     if (start === "button") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview button[data-part-id]'))"));
+    if (start === "checkbox") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview input[type=checkbox]'))"));
+    if (start === "accordion") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview button[aria-expanded]'))"));
     if (start === "input") assert.ok(await page.evaluate("Boolean(document.querySelector('.composer-preview input'))"));
     assert.equal(await revision(), templateRevision);
   }
@@ -86,7 +88,7 @@ export async function verifyAuthoringWorkspace({ page, origin, database, root, i
   await click(`component-${componentId}`);
   assert.ok(await page.evaluate(`Boolean(${id(`preview-${componentId}`)}.querySelector('article[data-part-id] h2[data-part-id]'))`));
   const component = (await saved()).find(document => document.id === componentId); assert.equal(component.name, "Release article");
-  record("componentComposer", { starts: 6, nativeButtonAndInputPreview: true, semanticArticlePreview: true, cancelPreservesSource: true, nameFeedsLivePreview: true, reviewedArticleSaveAndReload: true });
+  record("componentComposer", { starts: 8, nativeButtonAndInputPreview: true, nativeCheckboxAndAccordionPreview: true, semanticArticlePreview: true, cancelPreservesSource: true, nameFeedsLivePreview: true, reviewedArticleSaveAndReload: true });
 
   const heading = "Array.from(document.querySelectorAll('.element-tree button')).find(e=>e.querySelector('span').textContent==='Heading')";
   await clickElement(heading); assert.equal(await page.evaluate(`${id("part-element")}.value`), "h2");

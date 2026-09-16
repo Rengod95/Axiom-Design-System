@@ -5,6 +5,7 @@ import type { Rect } from "./canvas-geometry.ts";
 /** Default workspace arrangement is a view projection; saved frames always take precedence. */
 export function canvasFrames(components: StudioComponent[], category: StudioCategory): Record<string, Rect> {
   const sizes = components.map(component => {
+    if (component.catalog?.reference) return { width: category === "Mobile" ? 390 : 640, height: 520 };
     const entry = component.catalog && getStudioCatalogEntry(component.catalog.catalogId);
     const presentation = entry && component.catalog ? studioCatalogPresentation(entry, component.catalog.semantic.kind) : undefined;
     return { width: presentation ? category === "Mobile" ? Math.min(presentation.width, 320) : presentation.width : category === "Web" ? 360 : 320, height: presentation?.height ?? (component.archetype === "card" ? 260 : 224) };

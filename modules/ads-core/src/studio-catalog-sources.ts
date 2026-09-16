@@ -134,6 +134,7 @@ export function duplicateComponentSources(component: AdsDocument, designs: AdsDo
   for (const source of sources) source.revision = id();
   copy.name = name;
   remapStudioBehavior(copy, ids, id);
+  if (isObject(copy.studioReference) && Array.isArray(copy.studioReference.valueIds)) copy.studioReference.valueIds = copy.studioReference.valueIds.map(mapped);
   for (const instance of studioInstances(copy)) { instance.id = id(); instance.ownerPartRef = ids.get(instance.ownerPartRef) ?? instance.ownerPartRef; if (instance.slotRef) instance.slotRef = ids.get(instance.slotRef) ?? instance.slotRef; }
   for (const part of catalogObjects(copy.parts)) part.parent = mapped(part.parent);
   for (const track of catalogObjects(copy.motion)) track.targetPartRef = mapped(track.targetPartRef);
@@ -145,6 +146,7 @@ export function duplicateComponentSources(component: AdsDocument, designs: AdsDo
     design.name = `${name} ${String(design.category)}`;
     if (isObject(design.componentRef)) { design.componentRef.id = copy.id; if (design.componentRef.revision !== undefined) design.componentRef.revision = copy.revision; }
     for (const mapping of catalogObjects(design.nodeMappings)) mapping.partRef = mapped(mapping.partRef);
+    for (const mapping of catalogObjects(design.referenceLayout)) mapping.partRef = mapped(mapping.partRef);
     for (const layout of catalogObjects(design.layout)) { layout.targetPartRef = mapped(layout.targetPartRef); if (Array.isArray(layout.childOrder)) layout.childOrder = layout.childOrder.map(mapped); }
     for (const rule of catalogObjects(design.appearance)) rule.targetPartRef = mapped(rule.targetPartRef);
     if (isObject(design.editorFrame) && typeof design.editorFrame.x === "number" && typeof design.editorFrame.y === "number") { design.editorFrame.x += 32; design.editorFrame.y += 32; }

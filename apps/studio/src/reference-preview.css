@@ -1,0 +1,25 @@
+.reference-thumbnail { display:block; width:100%; height:100%; object-fit:scale-down; border-radius:8px; }
+.reference-frame-shell { position:relative; width:100%; min-width:0; overflow:hidden; border-radius:8px; }
+.reference-frame { display:block; width:100%; border:0; background:transparent; }
+.reference-loading { position:absolute; inset:0; display:grid; place-content:center; color:var(--ink-tertiary); font-size:12px; pointer-events:none; }
+.reference-error { position:absolute; inset:12px; background:var(--surface); color:var(--danger); padding:12px; font-size:12px; }
+.reference-canvas { position:relative; width:100%; min-width:0; }
+.reference-hit-layer { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.reference-hit { position:absolute; pointer-events:auto; background:transparent; border:0; padding:0; border-radius:0; outline:none; cursor:default; }
+.reference-hit:hover { outline:1px solid var(--accent); }
+.reference-hit.selected { outline:1px solid var(--accent); outline-offset:1px; }
+.reference-source { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:10px; color:var(--ink-tertiary); padding:4px 0 10px; }
+.reference-source a { color:inherit; }
+.reference-preview { padding:10px; }
+
+.frame-content.reference-frame-content { padding:0; align-items:flex-start; }
+.reference-frame-content .reference-preview { padding:12px; }
+.reference-frame-content .reference-source { color:#737373; }
+
+.workbench-dialog:has(.reference-dialog-preview) { width:min(820px,calc(100vw - 32px)); max-width:none; }
+.reference-dialog-preview { min-width:0; width:100%; }
+.reference-dialog-viewport { width:100%; overflow:auto; }
+.reference-dialog-stage { position:relative; }
+.reference-preview-controls { display:flex; align-items:center; gap:4px; padding:10px 16px; border-top:1px solid var(--line); }
+.reference-preview-controls > span { margin-right:auto; font-size:11px; color:var(--ink-tertiary); }
+.reference-preview-controls button[aria-pressed=true] { background:var(--surface-active); }

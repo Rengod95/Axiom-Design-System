@@ -1,0 +1,2725 @@
+{
+  "provider": "shadcn/ui",
+  "upstreamCommit": "2b3e6d4f8d9161fe5c19340dc383aade392012dd",
+  "sourcePackage": "shadcn@4.21.0",
+  "license": "MIT",
+  "retrievedAt": "2026-09-15T13:03:47.067997+00:00",
+  "templates": [
+    {
+      "sourceRow": 58,
+      "catalogId": "catalog.accordion",
+      "name": "Accordion",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/accordion",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"accordion-demo\"\n  align=\"start\"\n  previewClassName=\"*:data-[slot=accordion]:max-w-sm h-[300px]\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/accordion-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/accordion-demo.tsx",
+      "previewClassName": "*:data-[slot=accordion]:max-w-sm h-[300px]",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 59,
+      "catalogId": "catalog.alert",
+      "name": "Alert",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/alert",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"alert-demo\"\n  previewClassName=\"h-auto sm:h-72 p-6\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/alert-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/alert-demo.tsx",
+      "previewClassName": "h-auto sm:h-72 p-6",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 60,
+      "catalogId": "catalog.alertdialog",
+      "name": "Alert Dialog",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/alert-dialog",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"alert-dialog-demo\"\n  previewClassName=\"h-56\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/alert-dialog-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/alert-dialog-demo.tsx",
+      "previewClassName": "h-56",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 61,
+      "catalogId": "catalog.aspectratio",
+      "name": "Aspect Ratio",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/aspect-ratio",
+      "defaultDemo": "<ComponentPreview name=\"aspect-ratio-demo\" styleName=\"base-nova\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/aspect-ratio-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/aspect-ratio-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 62,
+      "catalogId": "catalog.attachment",
+      "name": "Attachment",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/attachment",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-rhea\"\n  name=\"attachment-demo\"\n  previewClassName=\"h-auto theme-blue bg-surface dark:bg-background\"\n/>",
+      "defaultStyle": "base-rhea",
+      "defaultDemoFile": "apps/v4/examples/base/attachment-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/attachment-demo.tsx",
+      "previewClassName": "h-auto theme-blue bg-surface dark:bg-background",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 63,
+      "catalogId": "catalog.avatar",
+      "name": "Avatar",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/avatar",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"avatar-demo\"\n  previewClassName=\"h-72\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/avatar-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/avatar-demo.tsx",
+      "previewClassName": "h-72",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 64,
+      "catalogId": "catalog.badge",
+      "name": "Badge",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/badge",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"badge-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/badge-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/badge-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 65,
+      "catalogId": "catalog.breadcrumb",
+      "name": "Breadcrumb",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/breadcrumb",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"breadcrumb-demo\"\n  previewClassName=\"p-2\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/breadcrumb-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/breadcrumb-demo.tsx",
+      "previewClassName": "p-2",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 66,
+      "catalogId": "catalog.bubble",
+      "name": "Bubble",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/bubble",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-rhea\"\n  name=\"bubble-demo\"\n  previewClassName=\"h-auto theme-blue\"\n/>",
+      "defaultStyle": "base-rhea",
+      "defaultDemoFile": "apps/v4/examples/base/bubble-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/bubble-demo.tsx",
+      "previewClassName": "h-auto theme-blue",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 67,
+      "catalogId": "catalog.button",
+      "name": "Button",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/button",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"button-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/button-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/button-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 68,
+      "catalogId": "catalog.buttongroup",
+      "name": "Button Group",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/button-group",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"button-group-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/button-group-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/button-group-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 69,
+      "catalogId": "catalog.calendar",
+      "name": "Calendar",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/calendar",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"calendar-demo\"\n  previewClassName=\"h-96\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/calendar-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/calendar-demo.tsx",
+      "previewClassName": "h-96",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 70,
+      "catalogId": "catalog.card",
+      "name": "Card",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/card",
+      "defaultDemo": "<ComponentPreview\n  name=\"card-demo\"\n  styleName=\"base-nova\"\n  previewClassName=\"h-[30rem]\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/card-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/card-demo.tsx",
+      "previewClassName": "h-[30rem]",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 71,
+      "catalogId": "catalog.carousel",
+      "name": "Carousel",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/carousel",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"carousel-demo\"\n  previewClassName=\"h-80 sm:h-[32rem]\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/carousel-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/carousel-demo.tsx",
+      "previewClassName": "h-80 sm:h-[32rem]",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 72,
+      "catalogId": "catalog.chart",
+      "name": "Chart",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/chart",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"chart-demo\"\n  className=\"theme-blue [&_.preview]:h-auto [&_.preview]:p-0 [&_.preview]:lg:min-h-[404px] [&_.preview>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/chart-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/chart-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default",
+      "outerClassName": "theme-blue [&_.preview]:h-auto [&_.preview]:p-0 [&_.preview]:lg:min-h-[404px] [&_.preview>div]:w-full [&_.preview>div]:border-none [&_.preview>div]:shadow-none"
+    },
+    {
+      "sourceRow": 73,
+      "catalogId": "catalog.checkbox",
+      "name": "Checkbox",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/checkbox",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"checkbox-demo\"\n  previewClassName=\"h-80\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/checkbox-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/checkbox-demo.tsx",
+      "previewClassName": "h-80",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 74,
+      "catalogId": "catalog.collapsible",
+      "name": "Collapsible",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/collapsible",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"collapsible-demo\" align=\"start\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/collapsible-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/collapsible-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 75,
+      "catalogId": "catalog.combobox",
+      "name": "Combobox",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/combobox",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"combobox-demo\"\n  description=\"A combobox with a list of frameworks.\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/combobox-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/combobox-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 76,
+      "catalogId": "catalog.command",
+      "name": "Command",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/command",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"command-demo\"\n  align=\"start\"\n  previewClassName=\"h-[24.5rem]\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/command-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/command-demo.tsx",
+      "previewClassName": "h-[24.5rem]",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 77,
+      "catalogId": "catalog.contextmenu",
+      "name": "Context Menu",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/context-menu",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"context-menu-demo\"\n  description=\"A context menu with sub menu items.\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/context-menu-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/context-menu-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 78,
+      "catalogId": "catalog.datatable",
+      "name": "Data Table",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/data-table",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"data-table-demo\"\n  align=\"start\"\n  previewClassName=\"items-start h-auto px-4 md:px-8\"\n  hideCode\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/data-table-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/data-table-demo.tsx",
+      "previewClassName": "items-start h-auto px-4 md:px-8",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 79,
+      "catalogId": "catalog.datepicker",
+      "name": "Date Picker",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/date-picker",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"date-picker-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/date-picker-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/date-picker-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 80,
+      "catalogId": "catalog.dialog",
+      "name": "Dialog",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/dialog",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"dialog-demo\"\n  description=\"A dialog for editing profile details.\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/dialog-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/dialog-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 81,
+      "catalogId": "catalog.direction",
+      "name": "Direction",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/direction",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"card-rtl\"\n  direction=\"rtl\"\n  previewClassName=\"h-auto\"\n  hideCode\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/card-rtl.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/card-rtl.tsx",
+      "previewClassName": "h-auto",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 82,
+      "catalogId": "catalog.drawer",
+      "name": "Drawer",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/drawer",
+      "defaultDemo": "<ComponentPreview styleName=\"base-rhea\" name=\"drawer-demo\" />",
+      "defaultStyle": "base-rhea",
+      "defaultDemoFile": "apps/v4/examples/base/drawer-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/drawer-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 83,
+      "catalogId": "catalog.dropdownmenu",
+      "name": "Dropdown Menu",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/dropdown-menu",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"dropdown-menu-demo\"\n  description=\"A dropdown menu with icons, shortcuts and sub menu items.\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/dropdown-menu-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/dropdown-menu-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 84,
+      "catalogId": "catalog.empty",
+      "name": "Empty",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/empty",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"empty-demo\"\n  previewClassName=\"h-96 p-0\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/empty-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/empty-demo.tsx",
+      "previewClassName": "h-96 p-0",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 85,
+      "catalogId": "catalog.field",
+      "name": "Field",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/field",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"field-demo\"\n  previewClassName=\"h-[800px] p-6 md:h-[850px]\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/field-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/field-demo.tsx",
+      "previewClassName": "h-[800px] p-6 md:h-[850px]",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 86,
+      "catalogId": "catalog.hovercard",
+      "name": "Hover Card",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/hover-card",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"hover-card-demo\"\n  previewClassName=\"h-80\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/hover-card-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/hover-card-demo.tsx",
+      "previewClassName": "h-80",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 87,
+      "catalogId": "catalog.input",
+      "name": "Input",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/input",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"input-demo\"\n  previewClassName=\"*:max-w-xs\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/input-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/input-demo.tsx",
+      "previewClassName": "*:max-w-xs",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 88,
+      "catalogId": "catalog.inputgroup",
+      "name": "Input Group",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/input-group",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"input-group-demo\"\n  previewClassName=\"h-[26rem]\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/input-group-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/input-group-demo.tsx",
+      "previewClassName": "h-[26rem]",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 89,
+      "catalogId": "catalog.inputotp",
+      "name": "Input OTP",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/input-otp",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"input-otp-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/input-otp-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/input-otp-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 90,
+      "catalogId": "catalog.item",
+      "name": "Item",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/item",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"item-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/item-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/item-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 91,
+      "catalogId": "catalog.kbd",
+      "name": "Kbd",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/kbd",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"kbd-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/kbd-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/kbd-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 92,
+      "catalogId": "catalog.label",
+      "name": "Label",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/label",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"label-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/label-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/label-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 93,
+      "catalogId": "catalog.marker",
+      "name": "Marker",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/marker",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-rhea\"\n  name=\"marker-demo\"\n  previewClassName=\"h-auto theme-blue\"\n/>",
+      "defaultStyle": "base-rhea",
+      "defaultDemoFile": "apps/v4/examples/base/marker-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/marker-demo.tsx",
+      "previewClassName": "h-auto theme-blue",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 94,
+      "catalogId": "catalog.menubar",
+      "name": "Menubar",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/menubar",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"menubar-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/menubar-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/menubar-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 95,
+      "catalogId": "catalog.message",
+      "name": "Message",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/message",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-rhea\"\n  name=\"message-demo\"\n  previewClassName=\"h-auto theme-blue\"\n/>",
+      "defaultStyle": "base-rhea",
+      "defaultDemoFile": "apps/v4/examples/base/message-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/message-demo.tsx",
+      "previewClassName": "h-auto theme-blue",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 96,
+      "catalogId": "catalog.messagescroller",
+      "name": "Message Scroller",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/message-scroller",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-rhea\"\n  name=\"message-scroller-demo\"\n  className=\"rounded-[34px] sm:rounded-4xl\"\n  previewClassName=\"h-auto theme-blue bg-surface dark:bg-background p-4 min-[480px]:p-8 min-[560px]:p-10 sm:px-10 sm:py-16\"\n/>",
+      "defaultStyle": "base-rhea",
+      "defaultDemoFile": "apps/v4/examples/base/message-scroller-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/message-scroller-demo.tsx",
+      "previewClassName": "h-auto theme-blue bg-surface dark:bg-background p-4 min-[480px]:p-8 min-[560px]:p-10 sm:px-10 sm:py-16",
+      "previewState": "default",
+      "outerClassName": "rounded-[34px] sm:rounded-4xl"
+    },
+    {
+      "sourceRow": 97,
+      "catalogId": "catalog.nativeselect",
+      "name": "Native Select",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/native-select",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"native-select-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/native-select-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/native-select-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 98,
+      "catalogId": "catalog.navigationmenu",
+      "name": "Navigation Menu",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/navigation-menu",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"navigation-menu-demo\"\n  previewClassName=\"h-96\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/navigation-menu-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/navigation-menu-demo.tsx",
+      "previewClassName": "h-96",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 99,
+      "catalogId": "catalog.pagination",
+      "name": "Pagination",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/pagination",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"pagination-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/pagination-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/pagination-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 100,
+      "catalogId": "catalog.popover",
+      "name": "Popover",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/popover",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"popover-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/popover-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/popover-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 101,
+      "catalogId": "catalog.progress",
+      "name": "Progress",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/progress",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"progress-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/progress-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/progress-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 102,
+      "catalogId": "catalog.questionnaire",
+      "name": "Questionnaire",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/questionnaire",
+      "defaultDemo": "<ComponentPreview\n  align=\"end\"\n  styleName=\"base-nova\"\n  name=\"questionnaire-demo\"\n  previewClassName=\"min-h-[560px] p-4 sm:p-8\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/questionnaire-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/questionnaire-demo.tsx",
+      "previewClassName": "min-h-[560px] p-4 sm:p-8",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 103,
+      "catalogId": "catalog.radiogroup",
+      "name": "Radio Group",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/radio-group",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"radio-group-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/radio-group-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/radio-group-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 104,
+      "catalogId": "catalog.resizable",
+      "name": "Resizable",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/resizable",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"resizable-demo\"\n  previewClassName=\"h-80\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/resizable-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/resizable-demo.tsx",
+      "previewClassName": "h-80",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 105,
+      "catalogId": "catalog.scrollarea",
+      "name": "Scroll Area",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/scroll-area",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"scroll-area-demo\"\n  previewClassName=\"h-96\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/scroll-area-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/scroll-area-demo.tsx",
+      "previewClassName": "h-96",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 106,
+      "catalogId": "catalog.select",
+      "name": "Select",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/select",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"select-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/select-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/select-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 107,
+      "catalogId": "catalog.separator",
+      "name": "Separator",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/separator",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"separator-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/separator-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/separator-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 108,
+      "catalogId": "catalog.sheet",
+      "name": "Sheet",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/sheet",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"sheet-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/sheet-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/sheet-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 109,
+      "catalogId": "catalog.sidebar",
+      "name": "Sidebar",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/sidebar",
+      "defaultDemo": "<ComponentPreview\n    styleName=\"base-nova\"\n    name=\"sidebar-demo\"\n    type=\"block\"\n    className=\"w-full\"\n  />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/sidebar-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/sidebar-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default",
+      "outerClassName": "w-full"
+    },
+    {
+      "sourceRow": 110,
+      "catalogId": "catalog.skeleton",
+      "name": "Skeleton",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/skeleton",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"skeleton-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/skeleton-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/skeleton-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 111,
+      "catalogId": "catalog.slider",
+      "name": "Slider",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/slider",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"slider-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/slider-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/slider-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 112,
+      "catalogId": "catalog.spinner",
+      "name": "Spinner",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/spinner",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"spinner-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/spinner-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/spinner-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 113,
+      "catalogId": "catalog.switch",
+      "name": "Switch",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/switch",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"switch-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/switch-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/switch-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 114,
+      "catalogId": "catalog.table",
+      "name": "Table",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/table",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"table-demo\"\n  previewClassName=\"h-[30rem]\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/table-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/table-demo.tsx",
+      "previewClassName": "h-[30rem]",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 115,
+      "catalogId": "catalog.tabs",
+      "name": "Tabs",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/tabs",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"tabs-demo\"\n  previewClassName=\"h-96\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/tabs-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/tabs-demo.tsx",
+      "previewClassName": "h-96",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 116,
+      "catalogId": "catalog.textarea",
+      "name": "Textarea",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/textarea",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"textarea-demo\"\n  previewClassName=\"*:max-w-xs\"\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/textarea-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/textarea-demo.tsx",
+      "previewClassName": "*:max-w-xs",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 117,
+      "catalogId": "catalog.toast",
+      "name": "Toast",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/toast",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"toast-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/toast-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/toast-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 118,
+      "catalogId": "catalog.toggle",
+      "name": "Toggle",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/toggle",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"toggle-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/toggle-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/toggle-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 119,
+      "catalogId": "catalog.togglegroup",
+      "name": "Toggle Group",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/toggle-group",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"toggle-group-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/toggle-group-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/toggle-group-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default"
+    },
+    {
+      "sourceRow": 120,
+      "catalogId": "catalog.tooltip",
+      "name": "Tooltip",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/tooltip",
+      "defaultDemo": "<ComponentPreview styleName=\"base-nova\" name=\"tooltip-demo\" />",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/tooltip-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/tooltip-demo.tsx",
+      "previewClassName": "",
+      "previewState": "open"
+    },
+    {
+      "sourceRow": 121,
+      "catalogId": "catalog.typography",
+      "name": "Typography",
+      "docsUrl": "https://ui.shadcn.com/docs/components/base/typography",
+      "defaultDemo": "<ComponentPreview\n  styleName=\"base-nova\"\n  name=\"typography-demo\"\n  className=\"[&_.preview]:h-auto!\"\n  hideCode\n/>",
+      "defaultStyle": "base-nova",
+      "defaultDemoFile": "apps/v4/examples/base/typography-demo.tsx",
+      "templateModule": "upstream/apps/v4/examples/base/typography-demo.tsx",
+      "previewClassName": "",
+      "previewState": "default",
+      "outerClassName": "[&_.preview]:h-auto!"
+    }
+  ],
+  "sources": [
+    {
+      "path": "upstream/LICENSE.md",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/LICENSE.md",
+      "upstreamSha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+      "vendoredSha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+      "transformations": [],
+      "originalPath": "upstream/LICENSE.md"
+    },
+    {
+      "path": "upstream/apps/v4/components/language-selector.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/components/language-selector.tsx",
+      "upstreamSha256": "e2259ad2b58f87b5b96f71feae23ffa3d2e76200b13dd9d10726d101992ce6d5",
+      "vendoredSha256": "e2259ad2b58f87b5b96f71feae23ffa3d2e76200b13dd9d10726d101992ce6d5",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/components/language-selector.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/components/message-animated.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/components/message-animated.tsx",
+      "upstreamSha256": "e2edda8611f14bf15aaa070123d3716525d54cc0c43e7da12a6f7e89b93e792f",
+      "vendoredSha256": "e2edda8611f14bf15aaa070123d3716525d54cc0c43e7da12a6f7e89b93e792f",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/components/message-animated.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/accordion-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/accordion-demo.tsx",
+      "upstreamSha256": "76f89511c074041f1f837abfda80edf952a320859c97761f5c2f02831733fdf2",
+      "vendoredSha256": "76f89511c074041f1f837abfda80edf952a320859c97761f5c2f02831733fdf2",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/accordion-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/alert-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/alert-demo.tsx",
+      "upstreamSha256": "d3822ecc439caf3b716e07a182c472adf4282c1c9517be50915e3b441376d633",
+      "vendoredSha256": "d3822ecc439caf3b716e07a182c472adf4282c1c9517be50915e3b441376d633",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/alert-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/alert-dialog-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/alert-dialog-demo.tsx",
+      "upstreamSha256": "4f18add6f4ac6afde2a4c8fb346a4da16694c0e83fc2cb7158a4fafee066bb7a",
+      "vendoredSha256": "4f18add6f4ac6afde2a4c8fb346a4da16694c0e83fc2cb7158a4fafee066bb7a",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/alert-dialog-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/aspect-ratio-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/aspect-ratio-demo.tsx",
+      "upstreamSha256": "6def4e7d7dc5e030275abb0c00ed44ec9ad289e1c2b198f6961d4c53aa37f156",
+      "vendoredSha256": "6def4e7d7dc5e030275abb0c00ed44ec9ad289e1c2b198f6961d4c53aa37f156",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/aspect-ratio-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/attachment-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/attachment-demo.tsx",
+      "upstreamSha256": "a8a93864f678d5a6d99a1dfd68534cd121edb85391592df6d1e98ce73f5b9e7f",
+      "vendoredSha256": "a8a93864f678d5a6d99a1dfd68534cd121edb85391592df6d1e98ce73f5b9e7f",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/attachment-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/avatar-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/avatar-demo.tsx",
+      "upstreamSha256": "2d96b83d39927d78489565d6f9afb87a6f0eb77c1cd211afd34801eecdedd15e",
+      "vendoredSha256": "2d96b83d39927d78489565d6f9afb87a6f0eb77c1cd211afd34801eecdedd15e",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/avatar-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/badge-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/badge-demo.tsx",
+      "upstreamSha256": "89f053edac9d636984cf9c54248d6866684550cedde12fceb26c09b81db86e9e",
+      "vendoredSha256": "89f053edac9d636984cf9c54248d6866684550cedde12fceb26c09b81db86e9e",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/badge-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/breadcrumb-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/breadcrumb-demo.tsx",
+      "upstreamSha256": "61483bbd0ac23692234c6c99b0b1f16e583a03b2dfdac52242b73bb7f390ef8c",
+      "vendoredSha256": "61483bbd0ac23692234c6c99b0b1f16e583a03b2dfdac52242b73bb7f390ef8c",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/breadcrumb-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/bubble-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/bubble-demo.tsx",
+      "upstreamSha256": "b0585b169d28e1ec0b1db3fe92aefb98a6af1a4edccd23ac8413b910ebe19f68",
+      "vendoredSha256": "b0585b169d28e1ec0b1db3fe92aefb98a6af1a4edccd23ac8413b910ebe19f68",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/bubble-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/button-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/button-demo.tsx",
+      "upstreamSha256": "29cac94b2017e1f7f0931f9fd8a064060a8c3a44e46c14821a09a36a8b2836a0",
+      "vendoredSha256": "29cac94b2017e1f7f0931f9fd8a064060a8c3a44e46c14821a09a36a8b2836a0",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/button-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/button-group-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/button-group-demo.tsx",
+      "upstreamSha256": "432deb944856e33e73d9e880b7e81532f4ccc8a339f55b8891f38f1b3aa34abd",
+      "vendoredSha256": "432deb944856e33e73d9e880b7e81532f4ccc8a339f55b8891f38f1b3aa34abd",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/button-group-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/calendar-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/calendar-demo.tsx",
+      "upstreamSha256": "44d94271b4a9db359e9839ebbb04ad9b0b6f4bd865ad602592fa4b35c54b07c5",
+      "vendoredSha256": "44d94271b4a9db359e9839ebbb04ad9b0b6f4bd865ad602592fa4b35c54b07c5",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/calendar-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/card-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/card-demo.tsx",
+      "upstreamSha256": "9fe011a4cd18ee259b8a149ad977751d046916d03636da3c97ca88173d16e276",
+      "vendoredSha256": "9fe011a4cd18ee259b8a149ad977751d046916d03636da3c97ca88173d16e276",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/card-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/card-rtl.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/card-rtl.tsx",
+      "upstreamSha256": "2fc2119646dcea0a631e5692e6418086cf8343be402f4dc178939cfbd974ff1c",
+      "vendoredSha256": "2fc2119646dcea0a631e5692e6418086cf8343be402f4dc178939cfbd974ff1c",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/card-rtl.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/carousel-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/carousel-demo.tsx",
+      "upstreamSha256": "bc546b88be83154786011ed53ddc1fddc22765f0fe81529472c668b27ce95d56",
+      "vendoredSha256": "bc546b88be83154786011ed53ddc1fddc22765f0fe81529472c668b27ce95d56",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/carousel-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/chart-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/chart-demo.tsx",
+      "upstreamSha256": "7d43821bc8556c7264b2d632afb6d5b4668b9fe169df958c72ed0f161ce74989",
+      "vendoredSha256": "7d43821bc8556c7264b2d632afb6d5b4668b9fe169df958c72ed0f161ce74989",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/chart-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/checkbox-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/checkbox-demo.tsx",
+      "upstreamSha256": "2d220ddbfcf8f16f991a85608bb9bd2217f323b1135ee014a07cbb8dd7d73e33",
+      "vendoredSha256": "2d220ddbfcf8f16f991a85608bb9bd2217f323b1135ee014a07cbb8dd7d73e33",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/checkbox-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/collapsible-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/collapsible-demo.tsx",
+      "upstreamSha256": "e2087c3fcc44adc3501c6d09589e4f27f5bc084f4d7402e25d606143f9654227",
+      "vendoredSha256": "e2087c3fcc44adc3501c6d09589e4f27f5bc084f4d7402e25d606143f9654227",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/collapsible-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/combobox-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/combobox-demo.tsx",
+      "upstreamSha256": "9cb9c735fd4a30e9dde964860e110d6eb5c9bed52f44c3aa1cec60f30d42ca24",
+      "vendoredSha256": "9cb9c735fd4a30e9dde964860e110d6eb5c9bed52f44c3aa1cec60f30d42ca24",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/combobox-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/command-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/command-demo.tsx",
+      "upstreamSha256": "94e0c12b815dba06479e6547fb4cd6f00d01ca0731ac03d3e4eb1f05665a1800",
+      "vendoredSha256": "94e0c12b815dba06479e6547fb4cd6f00d01ca0731ac03d3e4eb1f05665a1800",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/command-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/context-menu-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/context-menu-demo.tsx",
+      "upstreamSha256": "cd7a5a9c5e0757cbd8e8d4d98b6085c4f32656b1125c416b53d4650f1ab02419",
+      "vendoredSha256": "cd7a5a9c5e0757cbd8e8d4d98b6085c4f32656b1125c416b53d4650f1ab02419",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/context-menu-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/data-table-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/data-table-demo.tsx",
+      "upstreamSha256": "0c866650c361ca0ebc6745ccb2993eef6fb88520abb772a41e631d1ef3505e4e",
+      "vendoredSha256": "0c866650c361ca0ebc6745ccb2993eef6fb88520abb772a41e631d1ef3505e4e",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/data-table-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/date-picker-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/date-picker-demo.tsx",
+      "upstreamSha256": "6e2e2191ee17d699aa3821c6fef0ef14401ef0c7a9c59241d3c50b67d71591df",
+      "vendoredSha256": "6e2e2191ee17d699aa3821c6fef0ef14401ef0c7a9c59241d3c50b67d71591df",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/date-picker-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/dialog-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/dialog-demo.tsx",
+      "upstreamSha256": "35e451795f40bfd4ed6db6d3aad892d2a52f45af819739d8bf3fdaecd121cfbc",
+      "vendoredSha256": "35e451795f40bfd4ed6db6d3aad892d2a52f45af819739d8bf3fdaecd121cfbc",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/dialog-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/drawer-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/drawer-demo.tsx",
+      "upstreamSha256": "3fcf66184aa1380634f511eb3d7de1b4f14736da9ba92ab96d70c2b56e0680da",
+      "vendoredSha256": "3fcf66184aa1380634f511eb3d7de1b4f14736da9ba92ab96d70c2b56e0680da",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/drawer-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/dropdown-menu-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/dropdown-menu-demo.tsx",
+      "upstreamSha256": "1c06196af05a7e0a05b78d4fdec221b0f36ba24dfc570628b93303f8c0a4d4d1",
+      "vendoredSha256": "1c06196af05a7e0a05b78d4fdec221b0f36ba24dfc570628b93303f8c0a4d4d1",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/dropdown-menu-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/empty-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/empty-demo.tsx",
+      "upstreamSha256": "d4bfa1bd766fa59cdd531b9e54f1603ef571b3dfbf566eaf408139d71e05d101",
+      "vendoredSha256": "d4bfa1bd766fa59cdd531b9e54f1603ef571b3dfbf566eaf408139d71e05d101",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/empty-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/field-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/field-demo.tsx",
+      "upstreamSha256": "4ac44250626b200412bd8d7f933bfb9ad227b97e6f5c8e73164c0a6b792dc7cf",
+      "vendoredSha256": "4ac44250626b200412bd8d7f933bfb9ad227b97e6f5c8e73164c0a6b792dc7cf",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/field-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/hover-card-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/hover-card-demo.tsx",
+      "upstreamSha256": "4912ae2cda22e25d40b922bf14a0c7eee3ca71906409b95e740a7ebef2558a7a",
+      "vendoredSha256": "4912ae2cda22e25d40b922bf14a0c7eee3ca71906409b95e740a7ebef2558a7a",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/hover-card-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/input-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/input-demo.tsx",
+      "upstreamSha256": "b5aa22ce583b4cb4f78dda93f907fa9ad7823dd8db3edbc80769cf8581d0913f",
+      "vendoredSha256": "b5aa22ce583b4cb4f78dda93f907fa9ad7823dd8db3edbc80769cf8581d0913f",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/input-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/input-group-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/input-group-demo.tsx",
+      "upstreamSha256": "0467890a0bea6e7f1530a3ec112c934fb34a1dfe0ccce106f4c885ac39c4302e",
+      "vendoredSha256": "0467890a0bea6e7f1530a3ec112c934fb34a1dfe0ccce106f4c885ac39c4302e",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/input-group-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/input-otp-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/input-otp-demo.tsx",
+      "upstreamSha256": "60282187c19216a2961d6d6b0a7efa36f378ec7b9cbef15fd42cbc268390b041",
+      "vendoredSha256": "60282187c19216a2961d6d6b0a7efa36f378ec7b9cbef15fd42cbc268390b041",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/input-otp-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/item-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/item-demo.tsx",
+      "upstreamSha256": "7b46012ea81012bdfa2c62fe9a33dfc44a04e8c178055de7e9305cc6f0cf2bbb",
+      "vendoredSha256": "7b46012ea81012bdfa2c62fe9a33dfc44a04e8c178055de7e9305cc6f0cf2bbb",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/item-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/kbd-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/kbd-demo.tsx",
+      "upstreamSha256": "6e36026ff5df098042132fe787d21babcfc68f1c378909743b20db85e3934643",
+      "vendoredSha256": "6e36026ff5df098042132fe787d21babcfc68f1c378909743b20db85e3934643",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/kbd-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/label-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/label-demo.tsx",
+      "upstreamSha256": "10b1d4ad4e9af1f8f16905dc4f2e50ecf87b0da1829fe9225e16025f334c8c37",
+      "vendoredSha256": "10b1d4ad4e9af1f8f16905dc4f2e50ecf87b0da1829fe9225e16025f334c8c37",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/label-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/marker-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/marker-demo.tsx",
+      "upstreamSha256": "8ed6935873331a057de89d9fbcff6722158fe10863122421320a15ce30ee9337",
+      "vendoredSha256": "8ed6935873331a057de89d9fbcff6722158fe10863122421320a15ce30ee9337",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/marker-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/menubar-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/menubar-demo.tsx",
+      "upstreamSha256": "6bfba9844fe59bbb68e00e5342ff4821c6d4d38fcf73bc414e7899fe3589e1c0",
+      "vendoredSha256": "6bfba9844fe59bbb68e00e5342ff4821c6d4d38fcf73bc414e7899fe3589e1c0",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/menubar-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/message-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/message-demo.tsx",
+      "upstreamSha256": "053b71ab986a03be75b6eda9692e04ffa5b7513a0e1063d04aa7161a8ea01e2a",
+      "vendoredSha256": "053b71ab986a03be75b6eda9692e04ffa5b7513a0e1063d04aa7161a8ea01e2a",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/message-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/message-scroller-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/message-scroller-demo.tsx",
+      "upstreamSha256": "339a7629c3deb0d238566ef63207c38eb625f0a7bafa9bc0d778652e6f8f3454",
+      "vendoredSha256": "339a7629c3deb0d238566ef63207c38eb625f0a7bafa9bc0d778652e6f8f3454",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/message-scroller-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/native-select-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/native-select-demo.tsx",
+      "upstreamSha256": "e0c8a7178b4bcbab9069e84bacc71cfee0109458ca2fabde0587cd5e4f0a45e8",
+      "vendoredSha256": "e0c8a7178b4bcbab9069e84bacc71cfee0109458ca2fabde0587cd5e4f0a45e8",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/native-select-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/navigation-menu-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/navigation-menu-demo.tsx",
+      "upstreamSha256": "b801ab39c314dd6f7de2e1e32ddc8fadfed6d9d3e1b9978512f8ed27829d3b0e",
+      "vendoredSha256": "b801ab39c314dd6f7de2e1e32ddc8fadfed6d9d3e1b9978512f8ed27829d3b0e",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/navigation-menu-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/pagination-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/pagination-demo.tsx",
+      "upstreamSha256": "83d56ff42774402c843e1c9209c266ce366a5321c0912b20c6c560dec697ce12",
+      "vendoredSha256": "83d56ff42774402c843e1c9209c266ce366a5321c0912b20c6c560dec697ce12",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/pagination-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/popover-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/popover-demo.tsx",
+      "upstreamSha256": "1c4f7cd2f7f7cc24b83cb0100ca85d9c0352e24566701d57747ec244c2f4671d",
+      "vendoredSha256": "1c4f7cd2f7f7cc24b83cb0100ca85d9c0352e24566701d57747ec244c2f4671d",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/popover-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/progress-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/progress-demo.tsx",
+      "upstreamSha256": "649b235601426323bbab0a9b73245c88eb6e46db90847bc843396bfac2573787",
+      "vendoredSha256": "649b235601426323bbab0a9b73245c88eb6e46db90847bc843396bfac2573787",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/progress-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/questionnaire-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/questionnaire-demo.tsx",
+      "upstreamSha256": "02c1ac5242c4baf6b76817d0b9f24bdb36ee0bed068567dd82ec471deee63c57",
+      "vendoredSha256": "02c1ac5242c4baf6b76817d0b9f24bdb36ee0bed068567dd82ec471deee63c57",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/questionnaire-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/radio-group-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/radio-group-demo.tsx",
+      "upstreamSha256": "da4db59ebf87d6be6c3dfb4a116966e4d3c7b3dc130c86491b0a23f4adb7bfc4",
+      "vendoredSha256": "da4db59ebf87d6be6c3dfb4a116966e4d3c7b3dc130c86491b0a23f4adb7bfc4",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/radio-group-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/resizable-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/resizable-demo.tsx",
+      "upstreamSha256": "61ecdc315a40344562af9cc7f96250e9ba0b2f7f140a2be24d4d654bf657c733",
+      "vendoredSha256": "61ecdc315a40344562af9cc7f96250e9ba0b2f7f140a2be24d4d654bf657c733",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/resizable-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/scroll-area-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/scroll-area-demo.tsx",
+      "upstreamSha256": "42798039376e6e4a12a03e43619e80fa80a509b33222b23e3ac23c9526e4ac83",
+      "vendoredSha256": "42798039376e6e4a12a03e43619e80fa80a509b33222b23e3ac23c9526e4ac83",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/scroll-area-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/select-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/select-demo.tsx",
+      "upstreamSha256": "cc8c7490bf2ce6579bda00d18793e96053dc23e1b8cd393a005068b87a8dc8db",
+      "vendoredSha256": "cc8c7490bf2ce6579bda00d18793e96053dc23e1b8cd393a005068b87a8dc8db",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/select-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/separator-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/separator-demo.tsx",
+      "upstreamSha256": "c47774ff54446a0afee5ff56dd28918758135b9bd150f10aee38de8ab0b6186a",
+      "vendoredSha256": "c47774ff54446a0afee5ff56dd28918758135b9bd150f10aee38de8ab0b6186a",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/separator-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/sheet-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/sheet-demo.tsx",
+      "upstreamSha256": "f1909656ba0d543433f92e8c05e7a794a5fcac01ac31145bebdb4d09faa5ab6b",
+      "vendoredSha256": "f1909656ba0d543433f92e8c05e7a794a5fcac01ac31145bebdb4d09faa5ab6b",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/sheet-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/sidebar-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/sidebar-demo.tsx",
+      "upstreamSha256": "14bfec1e374257b63c62c6a21f8f7882e2c3a0422d6c02579f91f810e1139c3e",
+      "vendoredSha256": "14bfec1e374257b63c62c6a21f8f7882e2c3a0422d6c02579f91f810e1139c3e",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/sidebar-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/skeleton-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/skeleton-demo.tsx",
+      "upstreamSha256": "fa5eeeb6df4fe7b82785d3919f32d5c28eab357f7818f61ea18045392f9362af",
+      "vendoredSha256": "fa5eeeb6df4fe7b82785d3919f32d5c28eab357f7818f61ea18045392f9362af",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/skeleton-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/slider-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/slider-demo.tsx",
+      "upstreamSha256": "f5b3e618f4757e12241c2b8780c586c8fcf742cbff1c271460030800c800a79b",
+      "vendoredSha256": "f5b3e618f4757e12241c2b8780c586c8fcf742cbff1c271460030800c800a79b",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/slider-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/spinner-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/spinner-demo.tsx",
+      "upstreamSha256": "b03276e58d55e0c3c3a9a693ad235d9241d910f1496c76d585fbd354df3cce07",
+      "vendoredSha256": "b03276e58d55e0c3c3a9a693ad235d9241d910f1496c76d585fbd354df3cce07",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/spinner-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/switch-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/switch-demo.tsx",
+      "upstreamSha256": "1419e97d68f8f630b55c97b7d64dd0ed8adeac30342613af6a87d5404769636d",
+      "vendoredSha256": "1419e97d68f8f630b55c97b7d64dd0ed8adeac30342613af6a87d5404769636d",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/switch-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/table-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/table-demo.tsx",
+      "upstreamSha256": "96834b31d74c322372c4ffe5763fee79e765318d0a0c61cbdebc5f18c2cc080d",
+      "vendoredSha256": "96834b31d74c322372c4ffe5763fee79e765318d0a0c61cbdebc5f18c2cc080d",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/table-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/tabs-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/tabs-demo.tsx",
+      "upstreamSha256": "c18cc0202d363aaf330092d660f87685517dd430fdacb8b8db4c4a369a8b54df",
+      "vendoredSha256": "c18cc0202d363aaf330092d660f87685517dd430fdacb8b8db4c4a369a8b54df",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/tabs-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/textarea-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/textarea-demo.tsx",
+      "upstreamSha256": "8a4433051253c97f77fe0fc94b19472fae7648fecee7bfd827278c99cb6c8822",
+      "vendoredSha256": "8a4433051253c97f77fe0fc94b19472fae7648fecee7bfd827278c99cb6c8822",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/textarea-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/toast-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/toast-demo.tsx",
+      "upstreamSha256": "a59ce6cb148570f2352395943b0801b3c674b528166841ef30ba14c3abda548b",
+      "vendoredSha256": "a59ce6cb148570f2352395943b0801b3c674b528166841ef30ba14c3abda548b",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/toast-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/toggle-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/toggle-demo.tsx",
+      "upstreamSha256": "dcca7a53c5f4e1a27b45c75f6457905f5413181673a9122361f000452cce1d6e",
+      "vendoredSha256": "dcca7a53c5f4e1a27b45c75f6457905f5413181673a9122361f000452cce1d6e",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/toggle-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/toggle-group-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/toggle-group-demo.tsx",
+      "upstreamSha256": "05cd86b04d3da9b666433a0d2ac078c2fcfeea004e5133f9235fe6fa8e703ca4",
+      "vendoredSha256": "05cd86b04d3da9b666433a0d2ac078c2fcfeea004e5133f9235fe6fa8e703ca4",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/toggle-group-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/tooltip-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/tooltip-demo.tsx",
+      "upstreamSha256": "dfffd745f48178c6a1d35cac206ec87b902f09c25f16ad8288e20ed1fbfea606",
+      "vendoredSha256": "dfffd745f48178c6a1d35cac206ec87b902f09c25f16ad8288e20ed1fbfea606",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/tooltip-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/examples/base/typography-demo.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/examples/base/typography-demo.tsx",
+      "upstreamSha256": "4fb115115db5f65215a302c5c167ce642ef7f787b6250bf2795029239a7437e6",
+      "vendoredSha256": "4fb115115db5f65215a302c5c167ce642ef7f787b6250bf2795029239a7437e6",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/examples/base/typography-demo.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/hooks/use-mobile.ts",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/hooks/use-mobile.ts",
+      "upstreamSha256": "ff44ea76ec603273e44dc66adfa816749812ca174414bce67aa7fbcf95336854",
+      "vendoredSha256": "ff44ea76ec603273e44dc66adfa816749812ca174414bce67aa7fbcf95336854",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/hooks/use-mobile.ts"
+    },
+    {
+      "path": "upstream/apps/v4/lib/ai.ts",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/lib/ai.ts",
+      "upstreamSha256": "48f952151d1b5001014f47b185048b4226c16e9872fe045693506f76fb5076d0",
+      "vendoredSha256": "48f952151d1b5001014f47b185048b4226c16e9872fe045693506f76fb5076d0",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/lib/ai.ts"
+    },
+    {
+      "path": "upstream/apps/v4/lib/message-animations.ts",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/lib/message-animations.ts",
+      "upstreamSha256": "707774ef9839da290df0533c80b43b9fc42eb5cedbc66015d4d3ed842389d205",
+      "vendoredSha256": "707774ef9839da290df0533c80b43b9fc42eb5cedbc66015d4d3ed842389d205",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/lib/message-animations.ts"
+    },
+    {
+      "path": "upstream/apps/v4/registry/new-york-v4/ui/card.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/registry/new-york-v4/ui/card.tsx",
+      "upstreamSha256": "ef8305b12c3112dab42a4708b41b1ebcc042fa5ab4c20f039da8d45b09ed5059",
+      "vendoredSha256": "ef8305b12c3112dab42a4708b41b1ebcc042fa5ab4c20f039da8d45b09ed5059",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/registry/new-york-v4/ui/card.tsx"
+    },
+    {
+      "path": "upstream/apps/v4/registry/new-york-v4/ui/chart.tsx",
+      "sourceUrl": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/registry/new-york-v4/ui/chart.tsx",
+      "upstreamSha256": "35e2fa755465ef8eb8ff8b483d493204d452152e7a8863474b1a69f5d44484db",
+      "vendoredSha256": "35e2fa755465ef8eb8ff8b483d493204d452152e7a8863474b1a69f5d44484db",
+      "transformations": [],
+      "originalPath": "upstream/apps/v4/registry/new-york-v4/ui/chart.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/hooks/use-mobile.ts",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/use-mobile.json",
+      "upstreamSha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b",
+      "vendoredSha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b",
+      "transformations": [],
+      "registrySha256": "f4bfd840445a84352265d7cf66fcd886454b6a2f3834f7caf29d00f68620f87d",
+      "registryDependencies": [],
+      "packageDependencies": [],
+      "originalPath": "upstream/registry/base-nova/hooks/use-mobile.ts"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/accordion.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/accordion.json",
+      "upstreamSha256": "ad36d3b4996e7ca212175c5f9e0f5b19f8dc737572a0ca1a685ebd4193ed8351",
+      "vendoredSha256": "5cf2122f80f1e6b600f5493fa34d0791efaab7be1761c71cac4006b0f506f572",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "01509cb2a91779ee74c2d4a1f75842c0a258bed1758be4f2567af9daabdc39ac",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/accordion.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/alert-dialog.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/alert-dialog.json",
+      "upstreamSha256": "c84bd1caf46c3e7bb2d2e5b654aa87b2bcdc6bacc2a985cb30d6ccd8dce4e1fe",
+      "vendoredSha256": "c84bd1caf46c3e7bb2d2e5b654aa87b2bcdc6bacc2a985cb30d6ccd8dce4e1fe",
+      "transformations": [],
+      "registrySha256": "974543244faee02eb4ea40264b7e0bbda2b01c3f2c369de965d2ac771c57a8af",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/alert-dialog.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/alert.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/alert.json",
+      "upstreamSha256": "f253568242c1c69b343f12474002fdbe229f603158171c59e21c491ab79f2e6e",
+      "vendoredSha256": "f253568242c1c69b343f12474002fdbe229f603158171c59e21c491ab79f2e6e",
+      "transformations": [],
+      "registrySha256": "0799cfc29a481568f6e9b48e96518a446032350dec576bfe31b7f67b4b262028",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/alert.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/aspect-ratio.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/aspect-ratio.json",
+      "upstreamSha256": "6df19df6b983c450361081b695dbf3541a6fe4a9d2ec148766991e4eb0bf6473",
+      "vendoredSha256": "6df19df6b983c450361081b695dbf3541a6fe4a9d2ec148766991e4eb0bf6473",
+      "transformations": [],
+      "registrySha256": "8600bbd8874ad9f0c3f60625b7def0960369a93c5cac09ee5a5fad7500500248",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/aspect-ratio.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/avatar.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/avatar.json",
+      "upstreamSha256": "bff76087ea9af25c6aa5a5306088dc66e62204a126752c38561736acff00717f",
+      "vendoredSha256": "bff76087ea9af25c6aa5a5306088dc66e62204a126752c38561736acff00717f",
+      "transformations": [],
+      "registrySha256": "bbcabf0121fb2ff93a8522f8f80b74631e732a31399b1b7991c0b8c3167e2172",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/avatar.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/badge.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/badge.json",
+      "upstreamSha256": "d9fb280e266119c4b62a4c518e63152de27b094c68d3e5f8929d05bfb0c1bc6c",
+      "vendoredSha256": "d9fb280e266119c4b62a4c518e63152de27b094c68d3e5f8929d05bfb0c1bc6c",
+      "transformations": [],
+      "registrySha256": "ccc20021cdcbf0fb23c0d4d28f1da4adde8e51ba59f4b11dd2722ed97a5ee3a4",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/badge.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/breadcrumb.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/breadcrumb.json",
+      "upstreamSha256": "ff4288a3629605b172ba5222a51215e16b9b3ada29aafc47ca0fa27963f391b0",
+      "vendoredSha256": "2fc0691cfa1fdfe8d7717eaaf63e5f27f6ab4a0855379a10d72b818be8734374",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "5e7a33d921824d659494dc90411393cdf795c0ad5c94631da5c2883924623350",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/breadcrumb.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/button-group.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/button-group.json",
+      "upstreamSha256": "caa93aa4cfa2f60d40f6160e23b2e44a7ea3e4c5938b6dc6e0ed891b4bf0aa06",
+      "vendoredSha256": "caa93aa4cfa2f60d40f6160e23b2e44a7ea3e4c5938b6dc6e0ed891b4bf0aa06",
+      "transformations": [],
+      "registrySha256": "da9bceac03af172022b214f89561b2bf9e0cccac63d46cfe2e1c9f2c8e6792e9",
+      "registryDependencies": [
+        "separator"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/button-group.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/button.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/button.json",
+      "upstreamSha256": "313353436d0fcc8e44ab470adb614b9fd013d28626f624328ea0d66d41a6c81b",
+      "vendoredSha256": "313353436d0fcc8e44ab470adb614b9fd013d28626f624328ea0d66d41a6c81b",
+      "transformations": [],
+      "registrySha256": "9ba7e870178813f0552b818a913a2792fb500c779e36395740b4973e3025d427",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/button.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/calendar.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/calendar.json",
+      "upstreamSha256": "18a4f7615b8996a9eae65568610aacfd99c1650236facc1c94d229eeb5d939b4",
+      "vendoredSha256": "da3cff3ee3a804762ddf0822c9cbf3fd6e43faae5b8d3e6d5fbc395985290f07",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "cc9ff16599d1664cec2d6a91ba82d0927953d8eedd51a7d56bba48a6522c28eb",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn",
+        "react-day-picker@latest",
+        "date-fns"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/calendar.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/card.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/card.json",
+      "upstreamSha256": "645c3d73e387a99f1492220cc619453b0c7f5454134ee3cd548be7a80f7eccde",
+      "vendoredSha256": "645c3d73e387a99f1492220cc619453b0c7f5454134ee3cd548be7a80f7eccde",
+      "transformations": [],
+      "registrySha256": "e73e3fe00ab2e14c4db1dccb1ff5c67041a94c0926ac3216c1dc6dd6dee9d7e0",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/card.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/carousel.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/carousel.json",
+      "upstreamSha256": "64df310fc76336a5b1307bb736d5457fa3767393d4c5ff884851ccee568c8b6c",
+      "vendoredSha256": "210eab977a418264f94474dca663ee2f1e5e1592ca93af1932faf966d4568f5f",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "14737a7cf92048df9de47f9d1a9527d6d3beafba12115f52a3c353134ee2b50b",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn",
+        "embla-carousel-react"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/carousel.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/checkbox.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/checkbox.json",
+      "upstreamSha256": "0cc30ddee3fa93818799f48ad47a58a30652c956ce940373c3feb3559167f0af",
+      "vendoredSha256": "3ae3541fa65e1a514905accaeef22a60429fa4d00d66b3a090981534b6edf3c9",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "e6df7b595f25a7ee97c3fb94e0ddc35998f74c98b990d3030e485905ec677178",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/checkbox.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/collapsible.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/collapsible.json",
+      "upstreamSha256": "ead4349ff7b01d696ef89294a81d18ee1d3f732321398896462c834ab9b9e065",
+      "vendoredSha256": "ead4349ff7b01d696ef89294a81d18ee1d3f732321398896462c834ab9b9e065",
+      "transformations": [],
+      "registrySha256": "74f78cd88a30185243847968977cf1de9ffbf576547f2ec1f14b5ef55505b90d",
+      "registryDependencies": [],
+      "packageDependencies": [],
+      "originalPath": "upstream/registry/base-nova/ui/collapsible.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/combobox.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/combobox.json",
+      "upstreamSha256": "0df11848e07ee063e55845f475fe89797299079b0951a016a0784ddd832aff65",
+      "vendoredSha256": "013c793da8b4b8ebe7c33e1c366309f84060288198fafa666321b14a61bf31bb",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "d4b9231b00428269f6fa42bf3e26714f15c69245f35b62d1bbae6d1a4853d314",
+      "registryDependencies": [
+        "button",
+        "input-group"
+      ],
+      "packageDependencies": [
+        "cn",
+        "@base-ui/react"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/combobox.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/command.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/command.json",
+      "upstreamSha256": "8364ab717110bce154b9d452119d4f87a23a91160516cc0986865b709e407d2c",
+      "vendoredSha256": "2c863db790dc917a81676d52673578c2b3ae719d2c9e090f972fc63b7ebb8147",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "626b25da7b65ae2e800e5c7bc516f2223c2a144fb745ddaf0dcbf746d879f3d1",
+      "registryDependencies": [
+        "dialog",
+        "input-group"
+      ],
+      "packageDependencies": [
+        "cn",
+        "cmdk"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/command.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/context-menu.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/context-menu.json",
+      "upstreamSha256": "5be9c316de7e552c1a80e8d3ac8b1a94f9e6692b884632c47a14e9e8e5db0b22",
+      "vendoredSha256": "aa71a0d474a68096aec12344f553a1f5b33dbcbf3c9bb4fbb63d05a9ab5f0d79",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "57bfdd236a7f4cb83625edf4c33265ce009738947666d00311034a88f6868756",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/context-menu.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/dialog.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/dialog.json",
+      "upstreamSha256": "5be79d2cf2d2152a29d9f14c8e209ad57b696e9dfbf0b9cdf4523a7c710c8d02",
+      "vendoredSha256": "d637f93e374df90a4c038d7492f085d1699524e96a601c2f7f6974d51463ea66",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "40fc321d25eb9590d07db54b00d9bc1a74274a549aa06d5915a34ba302ed8b94",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/dialog.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/dropdown-menu.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/dropdown-menu.json",
+      "upstreamSha256": "ba92acc16e141ad77880f8c4a27f9854b8024075130df6f04b6b0bf9cfa9d3f2",
+      "vendoredSha256": "e61feb2fb7faf3fd6890592af85aa9082a44c1a662b314d46987ce9eb1813ae3",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "335c59dba30145f434a9cc9ccb0438a3c5e2afe857fc11b029de1ecb415224d7",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/dropdown-menu.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/empty.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/empty.json",
+      "upstreamSha256": "5cac88b6f80f40cf4aa5e4c3d5a6810f43e132a24032d1c55a7aecdae446cf15",
+      "vendoredSha256": "5cac88b6f80f40cf4aa5e4c3d5a6810f43e132a24032d1c55a7aecdae446cf15",
+      "transformations": [],
+      "registrySha256": "e89ffe0fc2969956f6e1d601bd3f00b068600ac08e31590f65344e79ff242230",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/empty.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/field.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/field.json",
+      "upstreamSha256": "d8a8444942021d020de9b5358a0a3d4f3a5ea572ceabaa38c318a9916903a5f8",
+      "vendoredSha256": "d8a8444942021d020de9b5358a0a3d4f3a5ea572ceabaa38c318a9916903a5f8",
+      "transformations": [],
+      "registrySha256": "586110f5563cbb5dc0929207ee34361f1349cf2f816465799c60b98821e4cedc",
+      "registryDependencies": [
+        "label",
+        "separator"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/field.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/hover-card.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/hover-card.json",
+      "upstreamSha256": "dbac09bf55d501e4f22e52dffe298f009b8cce8f1539902b3104a5c029163d0c",
+      "vendoredSha256": "dbac09bf55d501e4f22e52dffe298f009b8cce8f1539902b3104a5c029163d0c",
+      "transformations": [],
+      "registrySha256": "d5588ff6c235f25578739d9402e2577fe436814301403f228d42b65e1cdf8e48",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/hover-card.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/input-group.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/input-group.json",
+      "upstreamSha256": "d6c74e82a2aa02980b337da519fc5b74dfc841e92453e32dd241e6baa1d9d9a6",
+      "vendoredSha256": "d6c74e82a2aa02980b337da519fc5b74dfc841e92453e32dd241e6baa1d9d9a6",
+      "transformations": [],
+      "registrySha256": "acf9c5497a6c844dee87fbd4afefb6cd8be9ce50d050d14d58a340d955e517a1",
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/input-group.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/input-otp.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/input-otp.json",
+      "upstreamSha256": "800f2398fc404a1fa529d7af8c7647e22553205c482a15bc0c26775f145a6465",
+      "vendoredSha256": "3e788948530dd88b63fb63fa3db1fe4b191d66228fc0b745f9968571d9290e2a",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "1f8309b2749a129b011c93928416a0da7d6009b55ae8118d45850e488eac8989",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn",
+        "input-otp"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/input-otp.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/input.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/input.json",
+      "upstreamSha256": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+      "vendoredSha256": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+      "transformations": [],
+      "registrySha256": "bbad1bba130ac9750a61844eeb8f043e8a710846e07689fa85398b80a46c2741",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/input.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/item.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/item.json",
+      "upstreamSha256": "53baca07a17899f0746a99c56881be323b6fc2f263491cd0b4b3c9d2bf3acdd0",
+      "vendoredSha256": "53baca07a17899f0746a99c56881be323b6fc2f263491cd0b4b3c9d2bf3acdd0",
+      "transformations": [],
+      "registrySha256": "eb7167bffffb69a5e808fec2a80923fbf80f594d2f942efa2da1a605fdfd87b7",
+      "registryDependencies": [
+        "separator"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/item.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/kbd.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/kbd.json",
+      "upstreamSha256": "d17724eb15923ea4f0432cd1cf22538addb14a386f4f9326661efcce7f97e33b",
+      "vendoredSha256": "d17724eb15923ea4f0432cd1cf22538addb14a386f4f9326661efcce7f97e33b",
+      "transformations": [],
+      "registrySha256": "4cfe2ba8e19f4d19d090eb039e3f1c041c9cfb379ce948237a9b5018203f7a6c",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/kbd.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/label.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/label.json",
+      "upstreamSha256": "b3b7b21d2877838fc73713df48a47248392de04a3b3fafa8961369f33ab14530",
+      "vendoredSha256": "b3b7b21d2877838fc73713df48a47248392de04a3b3fafa8961369f33ab14530",
+      "transformations": [],
+      "registrySha256": "89b01e14fd39dceece9fa421e71e78ea83286bd43a2ca1c2f55d2e8d3958fff2",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/label.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/menubar.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/menubar.json",
+      "upstreamSha256": "6fae0773219629adf30c3ae5e8f68adc3ea8890f1c909f9e60bce5a0831b5a35",
+      "vendoredSha256": "c73588fa92df4bef65df3cb1f7a2beed917cd752bf28accd61c57d3f7d64d4e5",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "265f030bd11d52072325f749bfd2c8070a9a1cc48098aa3fb245b2460801e6cd",
+      "registryDependencies": [
+        "dropdown-menu"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/menubar.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/native-select.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",
+      "upstreamSha256": "17552c2df3b8f5ee44675979c3c29a02f48454e9204f2a02b64f4b7f28bdfc2c",
+      "vendoredSha256": "3d11010c308b8ffd4577b789f63a8bf690da53f084ac317b198cf40a3e74a17b",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "743d128b09f67c1921e3c302e778834639e5be92c454205cabfb61eed34b4ff1",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/native-select.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/navigation-menu.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/navigation-menu.json",
+      "upstreamSha256": "c5a00b4a8247724a86f93ccc6e128954b6dfdc721b000ab3eecce36bfca15f84",
+      "vendoredSha256": "84b558d5aa341da3c5dfe28896198a8ee22420c169f3bbf7572356facc06e873",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "1fdd735ea7449af8ebbd932b3e89b34a1efa8a3b193ac979d0d723660526c017",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/navigation-menu.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/pagination.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/pagination.json",
+      "upstreamSha256": "704e344b37ef890df419b5c226dca59d00605e59bde705f5e4aa2bdedef3dbcc",
+      "vendoredSha256": "12ab63b02c1b681940b5f57059803bd574035a7b7fcd677ee90ce6bd35e2c85d",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "d2c45af4aaf4a676f420c673f337e8ba89dc7db75bf9fa11143f8a947f3a7f42",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/pagination.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/popover.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/popover.json",
+      "upstreamSha256": "b6bc5045e7b67414816f813788b5f699d0cc5e4a23debe76c89a6ddb68079c26",
+      "vendoredSha256": "b6bc5045e7b67414816f813788b5f699d0cc5e4a23debe76c89a6ddb68079c26",
+      "transformations": [],
+      "registrySha256": "ba5fe84f353f6c0fd2133a2ab893f5e8861fc60dc4dea548a7ec875acaa37b2c",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/popover.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/progress.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/progress.json",
+      "upstreamSha256": "2c104695a495968e9ee426039e291abc4fb2ff32f36b5faa4e8b450c2a4cc14c",
+      "vendoredSha256": "2c104695a495968e9ee426039e291abc4fb2ff32f36b5faa4e8b450c2a4cc14c",
+      "transformations": [],
+      "registrySha256": "359e72beff723311ec2e4d5154a0f80dedd253bd6b16959a4db0773714ceab52",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/progress.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/questionnaire.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/questionnaire.json",
+      "upstreamSha256": "a55c087c6f6c0c7669cca4009f155ef90f1434ec4f5c60e5f0b6ffe024d4a219",
+      "vendoredSha256": "22f63f65de084a7b9e1c74b4329bb3a0660882ca36f4094485216cf9888d7073",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "7eac8ca2fb479be1a18c97cced020b93c22cec1926dea72c8be324cdb3b62fa9",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn",
+        "@shadcn/react"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/questionnaire.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/radio-group.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/radio-group.json",
+      "upstreamSha256": "f779542f2370b82fcbb91278fb94f7ad4af59d0f36512633492604b27da48e8d",
+      "vendoredSha256": "f779542f2370b82fcbb91278fb94f7ad4af59d0f36512633492604b27da48e8d",
+      "transformations": [],
+      "registrySha256": "874b30662ba338d06362491b663cae9198281a4bc385b6be6425f2de442384d7",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/radio-group.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/resizable.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/resizable.json",
+      "upstreamSha256": "c45c4e1a32aefb83d60406366e2368b9d8a6e772406f8b964154e7202d6304f7",
+      "vendoredSha256": "c45c4e1a32aefb83d60406366e2368b9d8a6e772406f8b964154e7202d6304f7",
+      "transformations": [],
+      "registrySha256": "7415e497f342485720b6c878c81604eda0aa8b479a2211e4355c324de89a1672",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn",
+        "react-resizable-panels"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/resizable.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/scroll-area.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/scroll-area.json",
+      "upstreamSha256": "829549f352f1e56dfe887446bcc3d1707c0ced739a9efcb75f0af364cd88c581",
+      "vendoredSha256": "829549f352f1e56dfe887446bcc3d1707c0ced739a9efcb75f0af364cd88c581",
+      "transformations": [],
+      "registrySha256": "be6cdcfbf02a2fa091ec92cb2bc34e35b8a4e4b3a2d041973cfcd68396e6da1d",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/scroll-area.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/select.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/select.json",
+      "upstreamSha256": "6918ba753234e510c57db3fe395f8b67936421db1efa2ed88694d186aa736c59",
+      "vendoredSha256": "0aea78072be05fd1d48f5b1d3c9e17e6509a6ad7beef0b51a52cf80d2d3c6171",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "425e9b0a28b72617f18fabd75384050113295b88e7ba01c35bede2c72bd5d476",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/select.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/separator.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/separator.json",
+      "upstreamSha256": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+      "vendoredSha256": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+      "transformations": [],
+      "registrySha256": "3ad65962485f464592201cb90017b3d52a5c9fe272ce41ee049485b4c42e0d76",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/separator.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/sheet.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/sheet.json",
+      "upstreamSha256": "7db65922fb40d9a1204527620b7469040259758595ae871bd7274305398c03de",
+      "vendoredSha256": "d407d448baa388498154c3f7d89148eebb8d8ccac07873f79f403700b0475361",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "72b36d92af7fcbc9bd2d1d4ef0cbc65f4fc8178f7bb2bedaf657460f15011cf4",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/sheet.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/sidebar.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/sidebar.json",
+      "upstreamSha256": "d08ce0624ed0a9a5ecb35698dadd11fe12ca87dd7dc78e02e7c5d9b7b5485a70",
+      "vendoredSha256": "ab3614b596c985b43d63bb9643a5babe3c7fd09c629fae9805a8458e3663dd93",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "02b1ea430fb246da062048f0161a01d1b34a2c787f6974958c9b20a3142120a6",
+      "registryDependencies": [
+        "button",
+        "input",
+        "separator",
+        "sheet",
+        "skeleton",
+        "tooltip",
+        "use-mobile"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/sidebar.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/skeleton.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/skeleton.json",
+      "upstreamSha256": "4c2af7fa9c645358a0fb188779deab6f0b981733b62befc25e18aaebea1350dc",
+      "vendoredSha256": "4c2af7fa9c645358a0fb188779deab6f0b981733b62befc25e18aaebea1350dc",
+      "transformations": [],
+      "registrySha256": "85692a09912f518ffd64c540dfcf098fe748a807baf288c107cf8126496cf886",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/skeleton.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/slider.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/slider.json",
+      "upstreamSha256": "1fd32ee03ddaa382aabccce0bd88669aa8f91e4fe487622a68745d2ed1d5f5b9",
+      "vendoredSha256": "1fd32ee03ddaa382aabccce0bd88669aa8f91e4fe487622a68745d2ed1d5f5b9",
+      "transformations": [],
+      "registrySha256": "646bcd7913417b786bbf7578484f851bf89c81a62f70ef9c4f3522e2af80a951",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/slider.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/spinner.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/spinner.json",
+      "upstreamSha256": "494f71fd2733709d0e43be44e3353d9df215b370137af0195251cbdfdcc9e17b",
+      "vendoredSha256": "5bd04a75492ef3d07ce651cc2b8e7eebed48f534d5321dd8e807f25c84f0868f",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "d949d0b91ff34620eecf2bb359536fd3e6942b518dc0a396b77fd02a90661b61",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/spinner.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/switch.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/switch.json",
+      "upstreamSha256": "d232e2ffcfa122c59099872bcb8395eaad36d42fa9d2e0e40382ad19994065e2",
+      "vendoredSha256": "d232e2ffcfa122c59099872bcb8395eaad36d42fa9d2e0e40382ad19994065e2",
+      "transformations": [],
+      "registrySha256": "1f22350ccbf358a3aa198305c41d91e146abc0a7d5b18a9a23488b8d6b264ab4",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/switch.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/table.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/table.json",
+      "upstreamSha256": "749b0501e97591f8d7c9ef81366d636e4b47857a15a28e6cf3b87841232e74bf",
+      "vendoredSha256": "749b0501e97591f8d7c9ef81366d636e4b47857a15a28e6cf3b87841232e74bf",
+      "transformations": [],
+      "registrySha256": "054c89df40058a96723c9ed8cde6308e738f3a303fd19301ce94ade032306b60",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/table.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/tabs.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/tabs.json",
+      "upstreamSha256": "958b817b256cffae986d046168b70dd0153d542b4c521ee8bbdda349010011ef",
+      "vendoredSha256": "958b817b256cffae986d046168b70dd0153d542b4c521ee8bbdda349010011ef",
+      "transformations": [],
+      "registrySha256": "b4552a0329dd9a6e2bfaf03405c133874df5a4930c7bb3dd84c9ab5c45b89402",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/tabs.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/textarea.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/textarea.json",
+      "upstreamSha256": "82601c91ffc6c727d924162c78d7cb853114bcced4e2eb922a68ca12d4239c0f",
+      "vendoredSha256": "82601c91ffc6c727d924162c78d7cb853114bcced4e2eb922a68ca12d4239c0f",
+      "transformations": [],
+      "registrySha256": "8f01f6bc4ee556263bae7644e8b527022fa77ff203f33a258bb47142ef7d9c81",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/textarea.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/toast.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/toast.json",
+      "upstreamSha256": "6d85d6762db4d66461a06db4f531a606357a2d8a554f1f094cda4662db7e85bf",
+      "vendoredSha256": "570877074a31750c026c33e0818a0d599b93510f8f669a25e891247855f2351a",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "161ed77c409fe7345ee6308f7cf66f7bcf2717d8d5e1a8b36a7f8e8fa0df745e",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn",
+        "@base-ui/react"
+      ],
+      "originalPath": "pristine/registry/base-nova/ui/toast.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/toggle-group.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/toggle-group.json",
+      "upstreamSha256": "143ec051e67e2d31729ba87f2a4bd7ab82efe9b82c6e68c0358bc814fbdea997",
+      "vendoredSha256": "143ec051e67e2d31729ba87f2a4bd7ab82efe9b82c6e68c0358bc814fbdea997",
+      "transformations": [],
+      "registrySha256": "9f103af4a048ec392cb09b886985ec733a360a0033cc7138349f1775851a89d4",
+      "registryDependencies": [
+        "toggle"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/toggle-group.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/toggle.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/toggle.json",
+      "upstreamSha256": "48ab6456afc25c4cf79537252cb9512c5c2846d2b1796170eab8aca91ebf7ddf",
+      "vendoredSha256": "48ab6456afc25c4cf79537252cb9512c5c2846d2b1796170eab8aca91ebf7ddf",
+      "transformations": [],
+      "registrySha256": "f06447a03bcc1e510f3a50d5e7735bd82bdc17bc77849596709727c215bcc20e",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/toggle.tsx"
+    },
+    {
+      "path": "upstream/registry/base-nova/ui/tooltip.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-nova/tooltip.json",
+      "upstreamSha256": "f83d5f511812573f4ac98b866d397a46fda0f27eeb0af0ea89af01969eefbc5a",
+      "vendoredSha256": "f83d5f511812573f4ac98b866d397a46fda0f27eeb0af0ea89af01969eefbc5a",
+      "transformations": [],
+      "registrySha256": "2f55867faecee2d3616cfd8c6a80b538909a21e62fdfa2788b1ead56093e5395",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-nova/ui/tooltip.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/attachment.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/attachment.json",
+      "upstreamSha256": "3d7829f816d5ee6dd1ab23c94a0d94c8dc707202f15fb7b0c61f3f4a6cad5f15",
+      "vendoredSha256": "3d7829f816d5ee6dd1ab23c94a0d94c8dc707202f15fb7b0c61f3f4a6cad5f15",
+      "transformations": [],
+      "registrySha256": "d357d3e342d2ca3029a2971cff3a146353c59f28d3fd610010f795041418f4cf",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/attachment.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/avatar.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/avatar.json",
+      "upstreamSha256": "bff76087ea9af25c6aa5a5306088dc66e62204a126752c38561736acff00717f",
+      "vendoredSha256": "bff76087ea9af25c6aa5a5306088dc66e62204a126752c38561736acff00717f",
+      "transformations": [],
+      "registrySha256": "3a379ec5ee3fbebfa877b0ad500431550014b2b45a221aba0db8745e5c47bc66",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/avatar.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/badge.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/badge.json",
+      "upstreamSha256": "ac9ecf5b24c1860de5b810b5edbf3682a958e6cd8317fcb8efb650fb899d7436",
+      "vendoredSha256": "ac9ecf5b24c1860de5b810b5edbf3682a958e6cd8317fcb8efb650fb899d7436",
+      "transformations": [],
+      "registrySha256": "3dd8f684122feb0b406b09fe8ecdf36d8f18a4dba52a815f83881bd83a86e7ef",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/badge.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/bubble.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/bubble.json",
+      "upstreamSha256": "defcae17bd4dce7ba77c2fbd4d7eb9c7a4beb07c35de0414ae7a09f67fa7ea5a",
+      "vendoredSha256": "defcae17bd4dce7ba77c2fbd4d7eb9c7a4beb07c35de0414ae7a09f67fa7ea5a",
+      "transformations": [],
+      "registrySha256": "16c63aa28bf8f6ae4a61dc485b644ec25e8f91ca176fd045d1e2665ca8504857",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/bubble.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/button.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/button.json",
+      "upstreamSha256": "091c4bd0726a66e33ec2c562bb27a7e260ca67ac36d421fe105797fa847175d8",
+      "vendoredSha256": "091c4bd0726a66e33ec2c562bb27a7e260ca67ac36d421fe105797fa847175d8",
+      "transformations": [],
+      "registrySha256": "96c7c8da6fb5642666bdf0a6a9e3b084bae190ba5418c8e2080a55e17d78f2ea",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/button.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/card.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/card.json",
+      "upstreamSha256": "e2ccbedbce03b11f75a34c37b29330624c79810a3a26cb55ff67e16082b76e80",
+      "vendoredSha256": "e2ccbedbce03b11f75a34c37b29330624c79810a3a26cb55ff67e16082b76e80",
+      "transformations": [],
+      "registrySha256": "1389e650fed536069777ba9f2879bf69d325a8eecc4b57b7ca1196ea18843f19",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/card.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/drawer.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/drawer.json",
+      "upstreamSha256": "3c0f280579741d2162c61ddf59668ef0ad9fe4f2e15a5c86e8417cb8cf073a57",
+      "vendoredSha256": "3c0f280579741d2162c61ddf59668ef0ad9fe4f2e15a5c86e8417cb8cf073a57",
+      "transformations": [],
+      "registrySha256": "c7ae61165fb0291bb21bc275587f2abd5679c16e10f0f2a5bca86a0995f71c6b",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn",
+        "@base-ui/react"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/drawer.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/dropdown-menu.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/dropdown-menu.json",
+      "upstreamSha256": "fcef98b6872807bd0e156e0e5dee0767e21fcd259fdcf7eae742dd4fab70cb85",
+      "vendoredSha256": "142496cbdac1f209790c64931d3f8b6106aadb71733c5f8b2843f7a3b7153828",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "78c1f2d28de70054a50405485b9307fe408295cbef040fd67cab6eb09ec5b152",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-rhea/ui/dropdown-menu.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/empty.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/empty.json",
+      "upstreamSha256": "df3711e509e2d0916c6f8f1f94b83a1d8c2718cdf22deab77624a662cc357964",
+      "vendoredSha256": "df3711e509e2d0916c6f8f1f94b83a1d8c2718cdf22deab77624a662cc357964",
+      "transformations": [],
+      "registrySha256": "07f554652039c9e1755fd37c684a4466ba16b9bca87226888258402c80d14301",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/empty.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/field.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/field.json",
+      "upstreamSha256": "1633fcae62bc969dc4b48136bda2783f167af8727a7c5d6454ff036e29e76acd",
+      "vendoredSha256": "1633fcae62bc969dc4b48136bda2783f167af8727a7c5d6454ff036e29e76acd",
+      "transformations": [],
+      "registrySha256": "3b0f69f7ea9b61d007364b21ae93f6cff6f743a5cea6958954af3898d7a9fcc8",
+      "registryDependencies": [
+        "label",
+        "separator"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/field.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/input-group.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/input-group.json",
+      "upstreamSha256": "0fb5a8d50c4a687b8cbd2f53786ac3d1968f508916874a02e79886c533791e9e",
+      "vendoredSha256": "0fb5a8d50c4a687b8cbd2f53786ac3d1968f508916874a02e79886c533791e9e",
+      "transformations": [],
+      "registrySha256": "5c74eb091e15c644c5203afaf9cf0cfcb7533456143f3a5bdc9363056c19a71b",
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea"
+      ],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/input-group.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/input.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/input.json",
+      "upstreamSha256": "c263a65e15e2d10303c2ae2c3dc94c3bb539911faa19109fefc25fadbc840e70",
+      "vendoredSha256": "c263a65e15e2d10303c2ae2c3dc94c3bb539911faa19109fefc25fadbc840e70",
+      "transformations": [],
+      "registrySha256": "6791d3a863a4590c9e6e1e10b51006a1f2a11c858240c69c06119bfed25137c3",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/input.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/label.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/label.json",
+      "upstreamSha256": "b3b7b21d2877838fc73713df48a47248392de04a3b3fafa8961369f33ab14530",
+      "vendoredSha256": "b3b7b21d2877838fc73713df48a47248392de04a3b3fafa8961369f33ab14530",
+      "transformations": [],
+      "registrySha256": "cd93596b2f4bfcbd99f97a703a427bfeaba9358682cdd65eb67b6a30b8a9c8cd",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/label.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/marker.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/marker.json",
+      "upstreamSha256": "6b0a6a0f510ac210bbc71808e2efa9195947db91e9962685e9674f5e802e30ed",
+      "vendoredSha256": "6b0a6a0f510ac210bbc71808e2efa9195947db91e9962685e9674f5e802e30ed",
+      "transformations": [],
+      "registrySha256": "c0371c6fb6a1ce92ef7ac6e0476a043adb3fe0093892ed37c831e41c1cca8cd0",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/marker.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/message-scroller.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/message-scroller.json",
+      "upstreamSha256": "105672edb7029e01550a6976ea7ffd488f7d621bf124ba4d2c90794088df983e",
+      "vendoredSha256": "59f2e1c828dc3f28bd5a874f9f9bbc318a2b0c6b36c70f3156ed701a7000f8af",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "b803a4011847e424a8e93be5ebde835765c055362251bba7bfe2fe713584e98c",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn",
+        "@shadcn/react"
+      ],
+      "originalPath": "pristine/registry/base-rhea/ui/message-scroller.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/message.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/message.json",
+      "upstreamSha256": "64e9ae0f9d1e268b0ed7b738a53d374d273fe1e7e2dd7b35ad7417e50a9bbe6c",
+      "vendoredSha256": "64e9ae0f9d1e268b0ed7b738a53d374d273fe1e7e2dd7b35ad7417e50a9bbe6c",
+      "transformations": [],
+      "registrySha256": "727b8837899726217a1309ce132929f95e818a8f4761a6e9047931890dacc990",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/message.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/radio-group.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/radio-group.json",
+      "upstreamSha256": "ab3e86be1f03fada2ee0c5c0708629d85b8179d13d2fcef2d124dfad67537757",
+      "vendoredSha256": "ab3e86be1f03fada2ee0c5c0708629d85b8179d13d2fcef2d124dfad67537757",
+      "transformations": [],
+      "registrySha256": "301cf9e98505aafb6fbc418eced3e82ef5f0ccd22195a5e0b8bf5a1cf29f6eb4",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/radio-group.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/separator.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/separator.json",
+      "upstreamSha256": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+      "vendoredSha256": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+      "transformations": [],
+      "registrySha256": "c0832c4921403bacd1ada4898e1feee9152805f14994c9028c55888e188da5cc",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/separator.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/spinner.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/spinner.json",
+      "upstreamSha256": "494f71fd2733709d0e43be44e3353d9df215b370137af0195251cbdfdcc9e17b",
+      "vendoredSha256": "5bd04a75492ef3d07ce651cc2b8e7eebed48f534d5321dd8e807f25c84f0868f",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "ec664aa30f660cab2d8e81e78bcfc89fa4cbbc51036d529dcb4473ef137f5e64",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "pristine/registry/base-rhea/ui/spinner.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/textarea.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/textarea.json",
+      "upstreamSha256": "0e88eb30a23efc04af6fdc545ed775e5ef6d85ada9e9430720ee47b1555c75e8",
+      "vendoredSha256": "0e88eb30a23efc04af6fdc545ed775e5ef6d85ada9e9430720ee47b1555c75e8",
+      "transformations": [],
+      "registrySha256": "443a5e40cb2f70598de4807fc0fe472ed3d25bec5269a0d676897a79f82ab214",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/textarea.tsx"
+    },
+    {
+      "path": "upstream/registry/base-rhea/ui/tooltip.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/base-rhea/tooltip.json",
+      "upstreamSha256": "d73780087f41454a5f06dbc8b2716c4d0ff3cfacf18f9e84771a998cd2cd1696",
+      "vendoredSha256": "d73780087f41454a5f06dbc8b2716c4d0ff3cfacf18f9e84771a998cd2cd1696",
+      "transformations": [],
+      "registrySha256": "792caf7b383809d6c46ea46f65e69efdf51f95090c43ea5602f734d8e235f849",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/base-rhea/ui/tooltip.tsx"
+    },
+    {
+      "path": "upstream/registry/radix-rhea/ui/bubble.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/radix-rhea/bubble.json",
+      "upstreamSha256": "1e1fcd3193a4bb654dc9ad1f08ba02608c1fa4d227b249def3dbf7c8eea5ffb2",
+      "vendoredSha256": "1e1fcd3193a4bb654dc9ad1f08ba02608c1fa4d227b249def3dbf7c8eea5ffb2",
+      "transformations": [],
+      "registrySha256": "697d33a90e275d7cb79f85cbe4de43f0774463bad40c5ad8a43458c74d32cba5",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/radix-rhea/ui/bubble.tsx"
+    },
+    {
+      "path": "upstream/registry/radix-rhea/ui/button.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/radix-rhea/button.json",
+      "upstreamSha256": "e0955d0d6fce129d99ec9ef237af6ab1dc104b1915a63d7fc7b1939a6b7017e8",
+      "vendoredSha256": "e0955d0d6fce129d99ec9ef237af6ab1dc104b1915a63d7fc7b1939a6b7017e8",
+      "transformations": [],
+      "registrySha256": "84393299c81102ba8a3f09bb97a2d536a6c75830d785d3b5f05403c7691af8a9",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/radix-rhea/ui/button.tsx"
+    },
+    {
+      "path": "upstream/registry/radix-rhea/ui/message-scroller.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/radix-rhea/message-scroller.json",
+      "upstreamSha256": "e43bec2304a889ce02fa7f5d59d1192831b80018cbedbeaa0456a2151594d9db",
+      "vendoredSha256": "4560a9f47683e5bd81c956f4b3eb8ece2ceaad686bfc3640a0c8428095fe3266",
+      "transformations": [
+        "select official lucide icon variant"
+      ],
+      "registrySha256": "44a3a3b206bcb79defb18136d4cb3458134c5d92f17b0f021c83842b9db443a6",
+      "registryDependencies": [
+        "button"
+      ],
+      "packageDependencies": [
+        "cn",
+        "@shadcn/react"
+      ],
+      "originalPath": "pristine/registry/radix-rhea/ui/message-scroller.tsx"
+    },
+    {
+      "path": "upstream/registry/radix-rhea/ui/message.tsx",
+      "sourceUrl": "https://ui.shadcn.com/r/styles/radix-rhea/message.json",
+      "upstreamSha256": "64e9ae0f9d1e268b0ed7b738a53d374d273fe1e7e2dd7b35ad7417e50a9bbe6c",
+      "vendoredSha256": "64e9ae0f9d1e268b0ed7b738a53d374d273fe1e7e2dd7b35ad7417e50a9bbe6c",
+      "transformations": [],
+      "registrySha256": "540d819876bc916c3b8501db254f962a0b58c8a22c56afae56c4c170ec8ed722",
+      "registryDependencies": [],
+      "packageDependencies": [
+        "cn"
+      ],
+      "originalPath": "upstream/registry/radix-rhea/ui/message.tsx"
+    },
+    {
+      "path": "upstream/packages/shadcn/src/tailwind.css",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/packages/shadcn/src/tailwind.css",
+      "upstreamSha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a",
+      "vendoredSha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a",
+      "originalPath": "upstream/packages/shadcn/src/tailwind.css",
+      "transformations": []
+    },
+    {
+      "path": "upstream/apps/v4/app/legacy-themes.css",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/app/legacy-themes.css",
+      "upstreamSha256": "b53f086328b730f0330d1d0eee6301564811511fa38cdbd3832db55ee3e32f85",
+      "vendoredSha256": "b53f086328b730f0330d1d0eee6301564811511fa38cdbd3832db55ee3e32f85",
+      "originalPath": "upstream/apps/v4/app/legacy-themes.css",
+      "transformations": []
+    },
+    {
+      "path": "upstream/apps/v4/components/component-preview.tsx",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/components/component-preview.tsx",
+      "upstreamSha256": "e5133f77d1325d4187cd0c4ad7073b093d32a1627dd1de2a7d93241d0db7e6ba",
+      "vendoredSha256": "e5133f77d1325d4187cd0c4ad7073b093d32a1627dd1de2a7d93241d0db7e6ba",
+      "originalPath": "upstream/apps/v4/components/component-preview.tsx",
+      "transformations": []
+    },
+    {
+      "path": "upstream/apps/v4/components/component-preview-tabs.tsx",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/components/component-preview-tabs.tsx",
+      "upstreamSha256": "0e533e724e74e6b13641649324aa169e0597a486eec28e86b7f915defb08c383",
+      "vendoredSha256": "0e533e724e74e6b13641649324aa169e0597a486eec28e86b7f915defb08c383",
+      "originalPath": "upstream/apps/v4/components/component-preview-tabs.tsx",
+      "transformations": []
+    },
+    {
+      "path": "upstream/apps/v4/content/docs/components/base/chart.mdx",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/content/docs/components/base/chart.mdx",
+      "upstreamSha256": "2d2a256a5fa2f2dd71faabde8f78108910d65a864fc708d015880bd7d45b2043",
+      "vendoredSha256": "2d2a256a5fa2f2dd71faabde8f78108910d65a864fc708d015880bd7d45b2043",
+      "originalPath": "upstream/apps/v4/content/docs/components/base/chart.mdx",
+      "transformations": []
+    },
+    {
+      "path": "upstream/apps/v4/content/docs/components/base/message-scroller.mdx",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/content/docs/components/base/message-scroller.mdx",
+      "upstreamSha256": "fd16afbed259a2f917c7a598701d2c623c20999eee954afc8e1cbdec7b501c51",
+      "vendoredSha256": "fd16afbed259a2f917c7a598701d2c623c20999eee954afc8e1cbdec7b501c51",
+      "originalPath": "upstream/apps/v4/content/docs/components/base/message-scroller.mdx",
+      "transformations": []
+    },
+    {
+      "path": "upstream/apps/v4/content/docs/components/base/sidebar.mdx",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/content/docs/components/base/sidebar.mdx",
+      "upstreamSha256": "3acdf8f48bef3ddbe6a31920106e56ab391ecfce8e4fb2ba93e8858e2790fbc7",
+      "vendoredSha256": "3acdf8f48bef3ddbe6a31920106e56ab391ecfce8e4fb2ba93e8858e2790fbc7",
+      "originalPath": "upstream/apps/v4/content/docs/components/base/sidebar.mdx",
+      "transformations": []
+    },
+    {
+      "path": "upstream/apps/v4/content/docs/components/base/typography.mdx",
+      "sourceUrl": "https://raw.githubusercontent.com/shadcn-ui/ui/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/content/docs/components/base/typography.mdx",
+      "upstreamSha256": "94675f629d08d41feca386477ee4b66f7e3db551980ea9061ac66d2c699cfd70",
+      "vendoredSha256": "94675f629d08d41feca386477ee4b66f7e3db551980ea9061ac66d2c699cfd70",
+      "originalPath": "upstream/apps/v4/content/docs/components/base/typography.mdx",
+      "transformations": []
+    }
+  ],
+  "externalImports": [
+    "@ai-sdk/react",
+    "@base-ui/react",
+    "@base-ui/react/accordion",
+    "@base-ui/react/alert-dialog",
+    "@base-ui/react/avatar",
+    "@base-ui/react/button",
+    "@base-ui/react/checkbox",
+    "@base-ui/react/collapsible",
+    "@base-ui/react/context-menu",
+    "@base-ui/react/dialog",
+    "@base-ui/react/drawer",
+    "@base-ui/react/input",
+    "@base-ui/react/menu",
+    "@base-ui/react/menubar",
+    "@base-ui/react/merge-props",
+    "@base-ui/react/navigation-menu",
+    "@base-ui/react/popover",
+    "@base-ui/react/preview-card",
+    "@base-ui/react/progress",
+    "@base-ui/react/radio",
+    "@base-ui/react/radio-group",
+    "@base-ui/react/scroll-area",
+    "@base-ui/react/select",
+    "@base-ui/react/separator",
+    "@base-ui/react/slider",
+    "@base-ui/react/switch",
+    "@base-ui/react/tabs",
+    "@base-ui/react/toast",
+    "@base-ui/react/toggle",
+    "@base-ui/react/toggle-group",
+    "@base-ui/react/tooltip",
+    "@base-ui/react/use-render",
+    "@shadcn/helpers/ai-sdk",
+    "@shadcn/react/message-scroller",
+    "@shadcn/react/questionnaire",
+    "@tabler/icons-react",
+    "@tanstack/react-table",
+    "ai",
+    "class-variance-authority",
+    "cmdk",
+    "cn",
+    "date-fns",
+    "embla-carousel-react",
+    "input-otp",
+    "lucide-react",
+    "motion/react",
+    "next/image",
+    "next/link",
+    "radix-ui",
+    "react",
+    "react-day-picker",
+    "react-resizable-panels",
+    "recharts",
+    "sonner"
+  ],
+  "unresolvedImports": [],
+  "themeSource": {
+    "url": "https://github.com/shadcn-ui/ui/blob/2b3e6d4f8d9161fe5c19340dc383aade392012dd/apps/v4/app/globals.css",
+    "upstreamSha256": "cbae6d633c38be59fc036d1e5cf60203ae7619ea6af9b4cdd8d632a211ccffa9",
+    "extraction": "Original @theme inline, :root and .dark values; standalone font/base setup and original accordion animation names. Restores exact same-commit shadcn Tailwind custom variants/utilities and legacy theme imports.",
+    "originalPath": "pristine/docs-globals.css",
+    "localPath": "theme.css",
+    "vendoredSha256": "317a7ffa6fff60308aaa6892ddb89bb325c140639c2e07bce77262613dafeb25"
+  },
+  "assets": [
+    {
+      "sourceUrl": "https://avatar.vercel.sh/shadcn1",
+      "localPath": "assets/75ab6c162418c9cb.png",
+      "runtimePath": "/references/shadcn-assets/75ab6c162418c9cb.png",
+      "sha256": "82a889804014e7d2669ca3ccb9a0d44985c08dfacafb719195d97de423d25cc3",
+      "contentType": "image/png"
+    },
+    {
+      "sourceUrl": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80",
+      "localPath": "assets/f11297884467b806.jpg",
+      "runtimePath": "/references/shadcn-assets/f11297884467b806.jpg",
+      "sha256": "5f1f95810af0a046a9d561624a66bbf6eaa90c000dc3445fe62c41f6bd119290",
+      "contentType": "image/jpeg"
+    },
+    {
+      "sourceUrl": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80",
+      "localPath": "assets/6a3d9cfb6952e291.jpg",
+      "runtimePath": "/references/shadcn-assets/6a3d9cfb6952e291.jpg",
+      "sha256": "9b6e8e1c9deb3a6d4b251df0eb6065814e3483034ad944660930a7d6eccc26a8",
+      "contentType": "image/jpeg"
+    },
+    {
+      "sourceUrl": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80",
+      "localPath": "assets/2187d5022a268da6.jpg",
+      "runtimePath": "/references/shadcn-assets/2187d5022a268da6.jpg",
+      "sha256": "7989d8b3bd30cef1ee5847aeb75de9e657043f06fab59d7fbca5b29f6e78a0ef",
+      "contentType": "image/jpeg"
+    },
+    {
+      "sourceUrl": "https://github.com/shadcn.png",
+      "localPath": "assets/0a10b9bc070f3bdf.jpg",
+      "runtimePath": "/references/shadcn-assets/0a10b9bc070f3bdf.jpg",
+      "sha256": "513d06f542692036ff0bb17938f04b3efd60567ba2cae08049469d21f18e0524",
+      "contentType": "image/jpeg"
+    },
+    {
+      "sourceUrl": "https://github.com/evilrabbit.png",
+      "localPath": "assets/eb59b55e1933bc43.png",
+      "runtimePath": "/references/shadcn-assets/eb59b55e1933bc43.png",
+      "sha256": "ef407ec862dd072b8624fad7a331df80f56694e98bc1d89b0feb0ea0185e8954",
+      "contentType": "image/png"
+    },
+    {
+      "sourceUrl": "https://github.com/maxleiter.png",
+      "localPath": "assets/96b8bd25ab6ed38f.png",
+      "runtimePath": "/references/shadcn-assets/96b8bd25ab6ed38f.png",
+      "sha256": "218688eaf50a9380355622deaa0d087a808e4967bb39bf653ccef7d46193a169",
+      "contentType": "image/png"
+    },
+    {
+      "sourceUrl": "https://ui.shadcn.com/avatars/10.png",
+      "localPath": "assets/e0695e6018dc524d.png",
+      "runtimePath": "/references/shadcn-assets/e0695e6018dc524d.png",
+      "sha256": "f3d8bf1fc6a80e70052daf44d139346b2a87b7a0c6f752970e351904ffbf8470",
+      "contentType": "image/png"
+    },
+    {
+      "sourceUrl": "https://ui.shadcn.com/avatars/02.png",
+      "localPath": "assets/0563f43f856374ea.png",
+      "runtimePath": "/references/shadcn-assets/0563f43f856374ea.png",
+      "sha256": "a81ec3c7852f7d20e541c0083ca6b7ace3e239e925613b6f1d918bf1ba572270",
+      "contentType": "image/png"
+    },
+    {
+      "sourceUrl": "https://ui.shadcn.com/avatars/shadcn.jpg",
+      "localPath": "assets/90953dfb340a1a2c.jpg",
+      "runtimePath": "/references/shadcn-assets/90953dfb340a1a2c.jpg",
+      "sha256": "c080d627acdedca5ba0b7d8e30ddf4ddcc15aa56c896f67037c273233cde18c3",
+      "contentType": "image/jpeg"
+    }
+  ],
+  "licenses": [
+    {
+      "path": "upstream/LICENSE.md",
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+      "license": "MIT"
+    }
+  ],
+  "runtimeAdapters": [
+    {
+      "path": "framework-adapters.tsx",
+      "purpose": "Render Next Link as native anchor and Next Image as native locally cached img, preserving DOM attributes and fill positioning."
+    },
+    {
+      "path": "entry.tsx",
+      "purpose": "Select exact demo export, provide original global Toaster/Tooltip/Direction contexts, announce ready/error to isolated iframe host. Preserve exact official ComponentPreview outer layout className constraints."
+    }
+  ],
+  "dependencyNotes": [
+    "React/ReactDOM19.3.0 matches Studio host requirement; isolated bundle includes its own renderer.",
+    "Original docs declare Base UI1.6.0; retained.",
+    "The official helper0.2.0 requires stable ai>=7, so its peer-compatible @ai-sdk/react4.0.104 + ai7.0.101 replace the docs application canary range without changing demo JSX or visual style."
+  ]
+}

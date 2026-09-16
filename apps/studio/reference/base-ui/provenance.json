@@ -1,0 +1,81 @@
+{
+  "provider": "Base UI",
+  "repository": "mui/base-ui",
+  "commit": "c70b606cc4c3ee226a187865e20ee6cee924cf27",
+  "package": "@base-ui/react",
+  "version": "1.8.0",
+  "license": "MIT",
+  "description": "Verbatim upstream component/demo/theme files. Demo adapters only supply documented initialProps and mount the first official demo in a separate iframe.",
+  "files": [
+    {
+      "path": "vendor/docs/src/app/(docs)/react/components/otp-field/demos/hero/css-modules/index.module.css",
+      "upstreamPath": "docs/src/app/(docs)/react/components/otp-field/demos/hero/css-modules/index.module.css",
+      "sha256": "768d9f6c2805786cc3d72b332b6c18ce31660bbc3158eebbab4c2bf70f81a16a",
+      "url": "https://github.com/mui/base-ui/blob/c70b606cc4c3ee226a187865e20ee6cee924cf27/docs/src/app/(docs)/react/components/otp-field/demos/hero/css-modules/index.module.css"
+    },
+    {
+      "path": "vendor/docs/src/app/(docs)/react/components/otp-field/demos/hero/css-modules/index.tsx",
+      "upstreamPath": "docs/src/app/(docs)/react/components/otp-field/demos/hero/css-modules/index.tsx",
+      "sha256": "4dc60bc51aedd54f9838f00b46527d8fe91ae233e0f379c35264541cb8d29541",
+      "url": "https://github.com/mui/base-ui/blob/c70b606cc4c3ee226a187865e20ee6cee924cf27/docs/src/app/(docs)/react/components/otp-field/demos/hero/css-modules/index.tsx"
+    },
+    {
+      "path": "vendor/docs/src/app/(docs)/react/components/otp-field/page.mdx",
+      "upstreamPath": "docs/src/app/(docs)/react/components/otp-field/page.mdx",
+      "sha256": "3b4042b750aafa7354f97b4e1bc29e81b33821fcce9bdcf1dcc93a0431c091f4",
+      "url": "https://github.com/mui/base-ui/blob/c70b606cc4c3ee226a187865e20ee6cee924cf27/docs/src/app/(docs)/react/components/otp-field/page.mdx"
+    },
+    {
+      "path": "vendor/docs/src/app/(docs)/react/components/preview-card/demos/hero/css-modules/index.tsx",
+      "upstreamPath": "docs/src/app/(docs)/react/components/preview-card/demos/hero/css-modules/index.tsx",
+      "sha256": "362f845d6643b74ac89d04858c52c92b4e1066f31ffd64b2f82548cf986b6eeb",
+      "url": "https://github.com/mui/base-ui/blob/c70b606cc4c3ee226a187865e20ee6cee924cf27/docs/src/app/(docs)/react/components/preview-card/demos/hero/css-modules/index.tsx"
+    },
+    {
+      "path": "vendor/docs/src/app/(docs)/react/components/preview-card/demos/index.module.css",
+      "upstreamPath": "docs/src/app/(docs)/react/components/preview-card/demos/index.module.css",
+      "sha256": "cc47d887f45c81391140399b206170ee1754da7b9373cdac433855f5be8d29bd",
+      "url": "https://github.com/mui/base-ui/blob/c70b606cc4c3ee226a187865e20ee6cee924cf27/docs/src/app/(docs)/react/components/preview-card/demos/index.module.css"
+    },
+    {
+      "path": "vendor/docs/src/app/(docs)/react/components/preview-card/page.mdx",
+      "upstreamPath": "docs/src/app/(docs)/react/components/preview-card/page.mdx",
+      "sha256": "34349d9531bc1c646f2f711c496adce79a88188bd206be90456a70779968dbda",
+      "url": "https://github.com/mui/base-ui/blob/c70b606cc4c3ee226a187865e20ee6cee924cf27/docs/src/app/(docs)/react/components/preview-card/page.mdx"
+    },
+    {
+      "path": "vendor/docs/src/demo-data/theme/css-modules/theme.css",
+      "upstreamPath": "docs/src/demo-data/theme/css-modules/theme.css",
+      "sha256": "568f6552a5cf9981429b9ea2fa64ca6fc6532da60f7f6d894d69638ac5280110",
+      "url": "https://github.com/mui/base-ui/blob/c70b606cc4c3ee226a187865e20ee6cee924cf27/docs/src/demo-data/theme/css-modules/theme.css"
+    }
+  ],
+  "templates": [
+    {
+      "sourceRow": 315,
+      "catalogId": "catalog.otpfield",
+      "providerName": "OTP Field",
+      "docsUrl": "https://base-ui.com/react/components/otp-field",
+      "docsSource": "docs/src/app/(docs)/react/components/otp-field/page.mdx",
+      "defaultDemoFile": "docs/src/app/(docs)/react/components/otp-field/demos/hero/css-modules/index.tsx",
+      "adaptations": [
+        "Mount the first documented CSS Modules hero demo.",
+        "Resolve original CSS Modules through the isolated esbuild local-css pipeline.",
+        "Independent iframe document supplies the font reset and matching light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 317,
+      "catalogId": "catalog.previewcard",
+      "providerName": "Preview Card",
+      "docsUrl": "https://base-ui.com/react/components/preview-card",
+      "docsSource": "docs/src/app/(docs)/react/components/preview-card/page.mdx",
+      "defaultDemoFile": "docs/src/app/(docs)/react/components/preview-card/demos/hero/css-modules/index.tsx",
+      "adaptations": [
+        "Mount the first documented CSS Modules hero demo.",
+        "Resolve original CSS Modules through the isolated esbuild local-css pipeline.",
+        "Independent iframe document supplies the font reset and matching light/dark color-scheme."
+      ]
+    }
+  ]
+}

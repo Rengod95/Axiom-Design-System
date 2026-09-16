@@ -1,0 +1,4 @@
+/* The editor owns the iframe viewport. Native Mantine owns component paint and sizing. */
+html, body { margin: 0; min-width: 0; }
+body { --docs-header-height: 0px; }
+.axiom-reference-demo { width: 100%; min-width: 0; }

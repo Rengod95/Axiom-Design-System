@@ -1,5 +1,6 @@
 import { inspectStudioMotion } from "./studio-motion.ts";
 import { inspectStudioBehavior } from "./studio-behavior.ts";
+import { inspectStudioReference } from "./studio-reference.ts";
 import type { JsonObject, JsonValue } from "./contracts.ts";
 import { canonicalJson } from "./canonical-json.ts";
 import { isObject, isValidId } from "./documents.ts";
@@ -32,7 +33,8 @@ export function inspectCatalogPin(document: JsonObject, add: Sink): void {
 export function inspectCatalogComponent(document: JsonObject, add: Sink): void {
   inspectCatalogPin(document, add);
   const id = catalogIdentity(document), recipe = id && getStudioCatalogRecipe(id); if (!recipe) return;
-  if (!catalogKeys(document, [...ENVELOPE, "purpose", "archetypeRef", "traitBindings", "publicContract", "parts", "slots", "behavior", "accessibility", "motion", "requirements", "studioMotion", "studioBehavior", "studioComposition", "previewContent"])) add("", "Unknown catalog fields require a separate authoring contract.");
+  inspectStudioReference(document, id, add);
+  if (!catalogKeys(document, [...ENVELOPE, "purpose", "archetypeRef", "traitBindings", "publicContract", "parts", "slots", "behavior", "accessibility", "motion", "requirements", "studioMotion", "studioBehavior", "studioComposition", "studioReference", "previewContent"])) add("", "Unknown catalog fields require a separate authoring contract.");
   if (!same(document.archetypeRef, { id: `axiom.archetype.${id}`, expectedKind: "archetype", version: STUDIO_ARCHETYPE_VERSION })) add("/archetypeRef", "Catalog archetype identity must match its pinned catalog entry.");
   if (!text(document.purpose) || !text(document.name)) add("/purpose", "Component name and purpose must be nonempty bounded text.");
   const parts = catalogObjects(document.parts), roles = new Map(parts.map(part => [part.studioRole, part]));

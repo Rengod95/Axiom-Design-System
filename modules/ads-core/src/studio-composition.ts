@@ -86,6 +86,9 @@ export function inspectStudioCompositionGraph(documents: Record<string, Document
       if (instance.slotRef !== null && (!slot || slot.ownerPartRef !== instance.ownerPartRef)) add(component.id, path, "Content insertion requires a slot owned by the selected element.");
       if (!source) { add(component.id, path, "The referenced catalog component is missing; remove or replace the instance.", true); return; }
       if (source.kind !== "component" || !catalogIdentity(source)) { add(component.id, path, "An existing instance source must be a catalog component; this reference has an incompatible kind or profile."); return; }
+      if (component.studioReference) add(component.id, path, "Original templates do not yet support authored component instance content.");
+      if (source.studioReference && Object.keys(instance.values).length) add(component.id, `${path}/values`, "Original template instances cannot override upstream values without a provider-specific mapping.");
+      if (source.studioReference && Object.keys(instance.slotContents).length) add(component.id, `${path}/slotContents`, "Original template instances cannot override upstream content without a provider-specific mapping.");
       for (const category of ["Web", "Mobile"] as const) {
         const design = documents[instance.designRefs[category].id]?.document;
         if (design && (design.kind !== "design" || design.category !== category || !isObject(design.componentRef) || design.componentRef.id !== source.id)) add(component.id, path, "Instance designs must belong to their pinned source component and category.");
@@ -101,7 +104,7 @@ export function inspectStudioCompositionGraph(documents: Record<string, Document
       }
       const sourceSlots = catalogObjects(source.slots);
       for (const id of Object.keys(instance.slotContents)) if (!sourceSlots.some(slot => slot.id === id && Array.isArray(slot.contentKinds) && slot.contentKinds.includes("text"))) add(component.id, `${path}/slotContents`, "Text content must target an exposed source slot.");
-      for (const slot of sourceSlots) if (Number(slot.min) > 0 && !instance.slotContents[String(slot.id)]?.trim()) add(component.id, `${path}/slotContents`, "Supply content for every required source slot.");
+      if (!source.studioReference) for (const slot of sourceSlots) if (Number(slot.min) > 0 && !instance.slotContents[String(slot.id)]?.trim()) add(component.id, `${path}/slotContents`, "Supply content for every required source slot.");
     });
     for (const slot of slots) {
       const count = instances.filter(instance => instance.slotRef === slot.id).length;

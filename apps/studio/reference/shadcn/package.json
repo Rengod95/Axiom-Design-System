@@ -1,0 +1,37 @@
+{
+  "name": "@axiom/reference-shadcn",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ai-sdk/react": "4.0.104",
+    "@base-ui/react": "1.6.0",
+    "@emotion/is-prop-valid": "1.4.0",
+    "@shadcn/helpers": "0.2.0",
+    "@shadcn/react": "0.3.1",
+    "@tabler/icons-react": "3.31.0",
+    "@tanstack/react-table": "9.0.0",
+    "ai": "7.0.101",
+    "class-variance-authority": "0.7.1",
+    "cmdk": "1.1.1",
+    "cn": "0.2.2",
+    "date-fns": "4.1.0",
+    "embla-carousel-react": "8.5.2",
+    "input-otp": "1.4.2",
+    "lucide-react": "0.474.0",
+    "motion": "12.12.1",
+    "radix-ui": "1.4.3",
+    "react": "19.3.0",
+    "react-day-picker": "9.7.0",
+    "react-dom": "19.3.0",
+    "react-resizable-panels": "4.0.0",
+    "recharts": "3.8.0",
+    "sonner": "2.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.0",
+    "esbuild": "0.28.2",
+    "tailwindcss": "4.3.0",
+    "tw-animate-css": "1.3.8"
+  }
+}

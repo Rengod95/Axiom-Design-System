@@ -1,3 +1,5 @@
+import { inspectReferenceLayout } from "./studio-reference.ts";
+import { inspectReferenceDesign } from "./studio-reference-bindings.ts";
 import { sourceElementContent } from "./studio-element-contract.ts";
 import { inspectStudioComposition, inspectStudioCompositionGraph } from "./studio-composition.ts";
 import type { AdsDocument, Diagnostic, DocumentEntry, JsonObject, JsonValue } from "./contracts.ts";
@@ -97,7 +99,8 @@ function isDimensionSource(value: unknown): boolean {
 function designErrors(document: JsonObject, add: (path: string, message: string) => void): void {
   const catalog = hasCatalogProfile(document);
   if (catalog) inspectCatalogPin(document, add);
-  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides", "editorFrame", ...(catalog ? ["catalogProfile"] : [])])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  if (!keys(document, [...ENVELOPE_KEYS, "componentRef", "foundationRef", "category", "nodeMappings", "layout", "appearance", "targetOverrides", "editorFrame", ...(catalog ? ["catalogProfile", "referenceLayout"] : [])])) add("", "Unknown design fields cannot be silently dropped by a target.");
+  inspectReferenceLayout(document, add);
   inspectEditorFrame(document.editorFrame, add);
   for (const [field, kind] of [["foundationRef", "foundation"], ["componentRef", "component"]] as const) {
     const ref = document[field];
@@ -182,6 +185,8 @@ export function inspectStudioGraph(documents: Record<string, DocumentEntry>, pro
     for (const [field, ref, entry, kind] of [["componentRef", componentRef, owner, "component"], ["foundationRef", foundationRef, foundation, "foundation"]] as const) {
       if (!isObject(ref) || !entry || ref.expectedKind !== kind || ref.id !== entry.document.id || !keys(ref, ["id", "expectedKind", "revision"]) || ref.revision !== undefined && ref.revision !== entry.document.revision) add(document.id, `/${field}`, "Local reference kind, identity and optional revision pin must match the adopted document.");
     }
+    if (document.referenceLayout !== undefined && !owner.document.studioReference) add(document.id, "/referenceLayout", "Reference layout masks require a pinned reference template.");
+    inspectReferenceDesign(owner.document, document, (path, message) => add(document.id, path, message));
     const parts = objects(owner.document.parts), mappings = objects(document.nodeMappings), layouts = objects(document.layout);
     const ids = parts.map(part => part.id);
     for (const [index, mapping] of mappings.entries()) {

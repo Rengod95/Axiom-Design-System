@@ -1,0 +1,344 @@
+{
+  "provider": "react-aria",
+  "width": 640,
+  "height": 400,
+  "capture": "Official initial demo; preview trigger/card are hovered to reveal their original popup. Source CSS unchanged; host centers and proportionally fits the demo.",
+  "assets": [
+    {
+      "sourceRow": 245,
+      "theme": "light",
+      "file": "245-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "3cde8c05cd38a3296e4ceed601bbb4cd7c094e83d1f75a8999834533c1e61f65"
+    },
+    {
+      "sourceRow": 245,
+      "theme": "dark",
+      "file": "245-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "72daed812faeeef22e1287f1b480ddffb2eac3b27e90e1996e0fa5aed7c9391e"
+    },
+    {
+      "sourceRow": 246,
+      "theme": "light",
+      "file": "246-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "86afe1207b0f48ea5388e40a9c7f972b42fb543820b552ee22aaa4b91bf2bade"
+    },
+    {
+      "sourceRow": 246,
+      "theme": "dark",
+      "file": "246-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "52c5e57009849a11f35d0761d16924f25240c4d2f76fd3a46a8527d7083ccef1"
+    },
+    {
+      "sourceRow": 247,
+      "theme": "light",
+      "file": "247-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "bb22c635884e9645edb44cf4bcdfef4cb0e17303db7a139b6bd4cff8cdd4e453"
+    },
+    {
+      "sourceRow": 247,
+      "theme": "dark",
+      "file": "247-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "88396158df67bc411778ec5d2fbfab8329448a09cbc729c093aa5d0b3a23c35d"
+    },
+    {
+      "sourceRow": 249,
+      "theme": "light",
+      "file": "249-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "ce19c63734fdcfbfc7a54da3f0872ffddde0f9b87831822901e90ba66aee1f05"
+    },
+    {
+      "sourceRow": 249,
+      "theme": "dark",
+      "file": "249-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "a15015bfe63cf2307b683dca9e2c745d2349d7547ff07368e1def02220a58b37"
+    },
+    {
+      "sourceRow": 251,
+      "theme": "light",
+      "file": "251-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "9d95975303e05c1ad6a1876941b630b52af14d423d6cde85bedd05d06f14c2b3"
+    },
+    {
+      "sourceRow": 251,
+      "theme": "dark",
+      "file": "251-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "2b162c2a87adc64cf08e085770145dc5278a7107986a76e661baa88ddb202bcc"
+    },
+    {
+      "sourceRow": 252,
+      "theme": "light",
+      "file": "252-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "638a82818b5ee3093d64190172d2a2007b2e11a5fcd375a940fa07a5c032f9c1"
+    },
+    {
+      "sourceRow": 252,
+      "theme": "dark",
+      "file": "252-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "3d2e2d9c7ad5ffdbbe556c6bb5719c81bc97d55e1a8e5eafae2302e6e0a953b4"
+    },
+    {
+      "sourceRow": 254,
+      "theme": "light",
+      "file": "254-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "7fe14f7b29e5bb2cb5fb44155ad1840a6c39ccba28a29ac520518d68ee3b483e"
+    },
+    {
+      "sourceRow": 254,
+      "theme": "dark",
+      "file": "254-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "75a105995ddcb7d0ed83463ab81b268902bf5657a90d90f96eade869e838f365"
+    },
+    {
+      "sourceRow": 256,
+      "theme": "light",
+      "file": "256-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "e1ae5663d1c488ecdd66e3d9f6d5c814ee2a6ce269ea330f8c4b70213aec7254"
+    },
+    {
+      "sourceRow": 256,
+      "theme": "dark",
+      "file": "256-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "70b798713988fba9288a85627777fd5e1ad55228b95b8727e2cc70048794f8a0"
+    },
+    {
+      "sourceRow": 261,
+      "theme": "light",
+      "file": "261-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "ec071b19abe2d958b7aba344fd5c1ab479754e1996fd3d4bc2965bb5ac4c2e4c"
+    },
+    {
+      "sourceRow": 261,
+      "theme": "dark",
+      "file": "261-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "092b9f0dae977b4ce2b495bb8fd7f8c16fb3d4ecba1ee96fa2f8b5944a320d34"
+    },
+    {
+      "sourceRow": 262,
+      "theme": "light",
+      "file": "262-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "a99a7d8f0fb5645618743e7036a777ede612f9d270596eb4413bf697b28712d4"
+    },
+    {
+      "sourceRow": 262,
+      "theme": "dark",
+      "file": "262-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "f27b642327e57283c2717a39c5463f2fde5bde9c1a1b007c27fa9cd96ec7680d"
+    },
+    {
+      "sourceRow": 265,
+      "theme": "light",
+      "file": "265-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "6bb3cd2b5cff1647584d21ff6c1b5e5bfa31e5335f35b5deeef770e683bf1b19"
+    },
+    {
+      "sourceRow": 265,
+      "theme": "dark",
+      "file": "265-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "7adc24927e9ea002fae8dcff3da2e3a42222f2512e7c566e30e21219f53dc1d6"
+    },
+    {
+      "sourceRow": 267,
+      "theme": "light",
+      "file": "267-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "74c6a36f27327d6fcf9a1086d2fcb1d3d099b7d0af354be1b7bb602797f28d93"
+    },
+    {
+      "sourceRow": 267,
+      "theme": "dark",
+      "file": "267-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "680b4b5799949fa7bc82693ff3c620ddfcdd64d2443c9ef033863c64d68ab870"
+    },
+    {
+      "sourceRow": 269,
+      "theme": "light",
+      "file": "269-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "b5d65b5093b0484ddd0a409cde2dbb73b9e038c47f4bab34d11105af5d532e9d"
+    },
+    {
+      "sourceRow": 269,
+      "theme": "dark",
+      "file": "269-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "d162e15146c7dd94aa508fa53bf96b62c5118fb68b05b589af610f05e1eced0c"
+    },
+    {
+      "sourceRow": 272,
+      "theme": "light",
+      "file": "272-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "ed8edb83d0f9f25b295d15c0f8db2d221d8eb721d1e0f31d0738dd92a03e32db"
+    },
+    {
+      "sourceRow": 272,
+      "theme": "dark",
+      "file": "272-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "2ec5f502aa2a646687718e4d359222844ec8a5bb0ee459c53f553688eb5fba60"
+    },
+    {
+      "sourceRow": 275,
+      "theme": "light",
+      "file": "275-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "47105adc5c1fa4f80e6bcb13b714c2e6bdeb7577e9f0fd8a587c422cd43038f3"
+    },
+    {
+      "sourceRow": 275,
+      "theme": "dark",
+      "file": "275-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "067f02ef4ae53249efcd57e2df3899019ca52d19447bc386e01d48fd44920c40"
+    },
+    {
+      "sourceRow": 276,
+      "theme": "light",
+      "file": "276-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "9bc89e51e464f08f4fb0faab25a6c6f7baab6712c40205dd618da397863700a8"
+    },
+    {
+      "sourceRow": 276,
+      "theme": "dark",
+      "file": "276-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "7fad3e034196775fd917e3511fe432e7f03f5a4d0a639b4226fb50a80e93d264"
+    },
+    {
+      "sourceRow": 283,
+      "theme": "light",
+      "file": "283-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "bc882d2541bcb60f599df68f48e41190e11649ad49145d5bf5cb1c0b57e5455d"
+    },
+    {
+      "sourceRow": 283,
+      "theme": "dark",
+      "file": "283-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "5334eba49b0b7e3042255c69d70c61557cefbd446e9090153a30fff28d34ad8b"
+    },
+    {
+      "sourceRow": 285,
+      "theme": "light",
+      "file": "285-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "77a6380ce6d41f3cea27c924c47bb3c8cf5f789cd140c2093caf8e0c41cf7096"
+    },
+    {
+      "sourceRow": 285,
+      "theme": "dark",
+      "file": "285-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "f35cea47324172c4f59fd622caa73c617ef3d52ec7cedcb4bd0b281c274b3386"
+    },
+    {
+      "sourceRow": 289,
+      "theme": "light",
+      "file": "289-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "78a3e839d0730b39146624aa56add07707816c417c4b3dbf897a933920c3ce71"
+    },
+    {
+      "sourceRow": 289,
+      "theme": "dark",
+      "file": "289-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "e91162429ad42683220c548e60e68970123c18fea0fa33a295e40618506e9f66"
+    },
+    {
+      "sourceRow": 290,
+      "theme": "light",
+      "file": "290-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "7e7bef67b5d7b4b17d59ed294af02910b91bb48d5a8fa6140c74d013a8d5027b"
+    },
+    {
+      "sourceRow": 290,
+      "theme": "dark",
+      "file": "290-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "a1c0df3ad0fe29e3579b417a8f1c8ff06ebc62a73469ede418e4552d4cd008b5"
+    },
+    {
+      "sourceRow": 293,
+      "theme": "light",
+      "file": "293-light.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "fd1a7cda39295ac792c84ded8cb4ef713eaafcfb12ed6f3501933e995c6554be"
+    },
+    {
+      "sourceRow": 293,
+      "theme": "dark",
+      "file": "293-dark.png",
+      "width": 640,
+      "height": 400,
+      "sha256": "bb6425e17f1e5642476f3fa0abd93374a4e593fc6f5056e1256155992f3d3e9c"
+    }
+  ]
+}

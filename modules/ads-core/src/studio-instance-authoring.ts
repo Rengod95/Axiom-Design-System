@@ -23,9 +23,10 @@ export function planStudioInstanceEdit(project: ProjectSnapshot, ownerId: string
     };
     if (data.kind === "insert") {
       if (typeof data.sourceComponentId !== "string" || typeof data.ownerPartRef !== "string" || data.slotRef !== null && typeof data.slotRef !== "string") throw new Error("Choose a source and destination element.");
+      if (owner.studioReference) throw new Error("Original templates do not yet support authored component instance content.");
       const source = context.component(data.sourceComponentId);
       const instance: StudioInstance = { id: context.id(), ownerPartRef: data.ownerPartRef, slotRef: data.slotRef, ...pin(source.id), values: {},
-        slotContents: Object.fromEntries(catalogObjects(source.slots).map(slot => [String(slot.id), isObject(source.previewContent) ? String(source.previewContent.body ?? "Content") : "Content"])) };
+        slotContents: source.studioReference ? {} : Object.fromEntries(catalogObjects(source.slots).map(slot => [String(slot.id), isObject(source.previewContent) ? String(source.previewContent.body ?? "Content") : "Content"])) };
       owner.studioComposition = { version: "1.0.0", instances: [...instances, instance] } as unknown as JsonObject;
       return;
     }
@@ -35,9 +36,11 @@ export function planStudioInstanceEdit(project: ProjectSnapshot, ownerId: string
     else if (data.kind === "refresh") Object.assign(instance, pin(instance.componentRef.id));
     else if (data.kind === "value") {
       if (typeof data.valueId !== "string" || typeof data.reset !== "boolean") throw new Error("Choose a value port and an explicit reset policy.");
+      if (!data.reset && context.component(instance.componentRef.id).studioReference) throw new Error("Original template instances retain upstream values. Individual value overrides require a provider-specific mapping.");
       if (data.reset) delete instance.values[data.valueId]; else instance.values[data.valueId] = data.value as JsonValue;
     } else if (data.kind === "content") {
       if (typeof data.slotId !== "string" || typeof data.text !== "string") throw new Error("Content requires an exposed slot and text.");
+      if (context.component(instance.componentRef.id).studioReference) throw new Error("Original template instances retain upstream content. Slot overrides require a provider-specific mapping.");
       instance.slotContents[data.slotId] = data.text;
     }
   });

@@ -19,7 +19,8 @@
     "delivery": "node apps/delivery/src/main.ts",
     "test:studio": "node scripts/verify-studio.mjs",
     "test:targets": "node scripts/verify-targets.mjs",
-    "test:workbench": "node scripts/verify-workbench.mjs"
+    "test:workbench": "node scripts/verify-workbench.mjs",
+    "test:references": "node scripts/verify-reference-studio.mjs"
   },
   "devDependencies": {
     "@types/node": "24.13.4",

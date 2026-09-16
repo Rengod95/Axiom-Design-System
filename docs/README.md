@@ -33,3 +33,5 @@ The [2026-09-14 editor follow-up](implementation/editor-completion-followup.md) 
 16. [Element composition, policy and behavior authoring](adr/0019-element-composition-policy-and-behavior-authoring.md), [policy contracts](implementation/foundation-policy-authoring.md), [behavior contracts](implementation/component-behavior-authoring.md), [Library design baselines](implementation/library-component-design-baselines.md) and [native runtime verification](implementation/native-runtime-verification.md).
 
 17. [Compound anatomy and canvas insertion](adr/0020-compound-anatomy-and-canvas-insertion.md).
+
+18. [Pinned original Library templates](adr/0021-pinned-reference-templates.md), [duplicate consolidation review](implementation/library-duplicate-review.md) and [visual review](implementation/library-reference-visual-review.md). The Studio quickstart includes the four locked reference-runtime installations.

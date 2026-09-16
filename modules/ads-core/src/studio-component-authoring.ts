@@ -12,6 +12,8 @@ import { MAX_BATCH_BYTES, STUDIO_FORMAT, STUDIO_PROFILE } from "./constants.ts";
 import { KernelError } from "./kernel-error.ts";
 import { STUDIO_ERROR } from "./studio-constants.ts";
 import { studioInstances } from "./studio-composition.ts";
+import { getStudioReferenceTemplate } from "./studio-reference.ts";
+import { studioLibraryIdentity } from "./studio-library.ts";
 
 interface Context { project: ProjectSnapshot; id(): string; component(id: string): AdsDocument; designs(id: string): AdsDocument[] }
 const EMPTY_PROJECT: ProjectSnapshot = { id: "invalid", revision: "invalid", name: "Invalid source", documents: {} };
@@ -73,14 +75,26 @@ function insert(context: Context, documents: AdsDocument[]): void {
 }
 
 /** Add one catalog component and both category designs; nothing persists before common review/apply. */
-export function planStudioComponentCreate(project: ProjectSnapshot, options: { catalogId: string; name?: string; structure?: "blank" | "stack" | "article" }, createId: () => string): StudioComponentPlan {
+export function planStudioComponentCreate(project: ProjectSnapshot, options: { catalogId: string; name?: string; structure?: "blank" | "stack" | "article"; referenceTemplateId?: string }, createId: () => string): StudioComponentPlan {
   return plan(project, options, createId, (context, data) => {
-    object(data, ["catalogId"], ["name", "structure"]);
+    object(data, ["catalogId"], ["name", "structure", "referenceTemplateId"]);
     if (typeof data.catalogId !== "string") fail("Choose a canonical catalog component.");
-    const recipe = getStudioCatalogRecipe(data.catalogId); if (!recipe || recipe.entry.kind !== "component") fail("This catalog entry is a part, template or utility and cannot be inserted as an independent component.");
+    const reference = typeof data.referenceTemplateId === "string" ? getStudioReferenceTemplate(data.referenceTemplateId) : null;
+    if (data.referenceTemplateId !== undefined && (!reference || reference.catalogId !== studioLibraryIdentity(data.catalogId) || data.structure !== undefined)) fail("Choose the pinned reference for this catalog; custom structures use their own source.");
+    const recipe = getStudioCatalogRecipe(reference?.sourceCatalogId ?? data.catalogId); if (!recipe || recipe.entry.kind !== "component") fail("This catalog entry is a part, template or utility and cannot be inserted as an independent component.");
     const name = data.name ?? recipe.entry.name; if (typeof name !== "string" || !name.trim()) fail("Component name must be nonempty text.");
     const foundation = Object.values(context.project.documents).find(entry => entry.document.kind === "foundation")?.document; if (!foundation) fail("Create a Foundation before adding components.");
     const documents = createCatalogSources(recipe, foundation, name, context.id);
+    if (reference) {
+      const component = documents.find(item => item.kind === "component")!;
+      component.studioReference = { templateId: reference.id, contentFields: [], valueIds: [] };
+      // Compatibility ports are inert until a provider mapping exists. Their
+      // canonical baseline stays stable when harmless editor metadata is renamed.
+      component.previewContent = { label: recipe.entry.name, title: recipe.entry.name, body: `${recipe.entry.name} content`, actionLabel: "Continue", closeLabel: "Close" };
+      (component.accessibility as JsonObject).label = recipe.entry.name;
+      for (const part of component.parts as JsonObject[]) delete part.studioText;
+      for (const design of documents.filter(item => item.kind === "design")) { design.appearance = []; design.referenceLayout = []; }
+    }
     if (data.structure !== undefined) {
       if (data.catalogId !== "catalog.box" || typeof data.structure !== "string" || !["blank", "stack", "article"].includes(data.structure)) fail("Choose a supported custom layout structure.");
       const component = documents.find(item => item.kind === "component")!, designs = documents.filter(item => item.kind === "design");

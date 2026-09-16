@@ -1,4 +1,5 @@
 import { normalizeStudioStructure } from "./studio-structure-authoring.ts";
+import { recordReferenceEdit, requireReferenceEditSupport } from "./studio-reference-authoring.ts";
 import { sourceElementContent } from "./studio-element-contract.ts";
 import { addStudioElement } from "./studio-elements.ts";
 import { mutateStudioBehavior } from "./studio-behavior.ts";
@@ -32,6 +33,7 @@ function expectFields(edit: StudioComponentEdit): void {
 /** Mutate only explicitly addressed contract fields on a detached candidate graph. */
 export function mutateStudioComponent(component: AdsDocument, designs: AdsDocument[], edit: StudioComponentEdit, id: () => string): void {
   expectFields(edit);
+  requireReferenceEditSupport(component, edit);
   const parts = catalogObjects(component.parts), contract = component.publicContract as JsonObject;
   const part = "partId" in edit ? parts.find(part => part.id === edit.partId) : undefined;
   if ("partId" in edit && !part) fail("The selected part no longer exists.");
@@ -174,6 +176,7 @@ export function mutateStudioComponent(component: AdsDocument, designs: AdsDocume
     }
     case "sample-content": if (!["label", "title", "body", "actionLabel", "closeLabel"].includes(edit.field) || !isObject(component.previewContent)) fail("Invalid sample content field."); else component.previewContent[edit.field] = edit.value; break;
   }
+  recordReferenceEdit(component, designs, edit);
 }
 function syncOrder(component: AdsDocument, designs: AdsDocument[]): void {
   const source = catalogObjects(component.parts), parts: JsonObject[] = [];

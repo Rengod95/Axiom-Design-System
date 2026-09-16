@@ -21,6 +21,7 @@ export function inspectCatalogTarget(component: StudioComponent, target: TargetI
   const catalog = component.catalog, recipe = catalog && getStudioCatalogRecipe(catalog.catalogId);
   const fail = (message: string): never => { throw new TargetError(TARGET_CODE.UNSUPPORTED, message, component.id); };
   if (!catalog || !recipe) throw new TargetError(TARGET_CODE.UNSUPPORTED, "Missing catalog source contract", component.id);
+  if (catalog.reference) fail("This pinned upstream template uses its original browser runtime. A target-specific source mapping is required; a generic substitute cannot preserve its design.");
   if (component.instances?.some(instance => instance.status !== "current")) fail("Review stale instance versions before export.");
   if (target !== "react" && (component.instances?.length || component.behavior?.rules.length || Object.values(component.mobile.layout).some(layout => layout.mode === "free"))) fail("Authored composition, behavior and free layout need an explicit native mapping.");
   if (component.motionTracks?.length) fail("Authored motion tracks are available in Studio preview; this target still requires an explicit motion runtime mapping.");

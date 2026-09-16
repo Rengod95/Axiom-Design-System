@@ -27,6 +27,11 @@ export type { StudioTokenBindingIssue, StudioTokenBindingReplacement } from "./s
 export type { StudioAuthoringState } from "./contracts.ts";
 export type { StudioArchetype, StudioCategory, StudioPartRole, StudioVisualProperty, StudioStyle, StudioPart, StudioPartPresentation, StudioLayout, StudioDesign, StudioComponent, StudioUsage, StudioProjection, StudioEdit, StudioEditPlan, StudioSelection, StudioDocumentReport } from "./studio-contracts.ts";
 export { listStudioCatalog, getStudioCatalogEntry, getStudioCatalogRecipe } from "./studio-catalog.ts";
+export { listStudioLibrary, studioLibraryIdentity, STUDIO_LIBRARY_ALIASES } from "./studio-library.ts";
+export type { StudioLibraryEntry } from "./studio-library.ts";
+export { getStudioReferenceTemplate, studioReferenceForCatalog, listStudioReferenceTemplates } from "./studio-reference.ts";
+export { getStudioReferencePartBinding } from "./studio-reference-bindings.ts";
+export type { StudioReferenceTemplate, StudioReferenceSelection } from "./studio-reference.ts";
 export { studioCatalogPresentation, studioCatalogProvenance } from "./studio-catalog-presentation.ts";
 export type { StudioCatalogPresentation } from "./studio-catalog-presentation.ts";
 export { planStudioComponentCreate, planStudioComponentDuplicate, planStudioComponentDelete, planStudioComponentEdit, planStudioComponentBatch, studioComponentPlanPayload } from "./studio-component-authoring.ts";

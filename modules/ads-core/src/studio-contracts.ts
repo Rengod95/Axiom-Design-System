@@ -23,6 +23,7 @@ export interface StudioLayout {
   width?: StudioSizePolicy; height?: StudioSizePolicy; alignment?: "start" | "center" | "end" | "stretch";
 }
 export interface StudioDesign {
+  referenceLayout?: Record<string, string[]>;
   id: string; category: StudioCategory;
   /** Optional, closed HTML mapping for layout definitions. Logical Parts remain platform independent. */
   elements?: Record<string, "div" | "section" | "article" | "header" | "footer" | "span" | "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "code">;

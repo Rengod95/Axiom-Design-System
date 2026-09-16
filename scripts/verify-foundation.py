@@ -247,6 +247,14 @@ def audit(root: Path, check_hashes: bool = True, check_subjects: bool = True) ->
 
 
 def self_test(root: Path, refreshed_qa: dict | None = None) -> list[str]:
+    # The fixture retains every authored reference/source file. Installed runtime
+    # packages are not document subjects and must not be copied thirteen times.
+    private_runtime_roots = {(root / "apps/studio/reference" / provider).resolve()
+                             for provider in ("shadcn", "mantine", "react-aria", "base-ui")}
+
+    def ignore_installed_reference_runtime(directory: str, names: list[str]) -> list[str]:
+        return ["node_modules"] if Path(directory).resolve() in private_runtime_roots and "node_modules" in names else []
+
     verified = []
     cases = {
         "missing-body": "body exists: GOV01",
@@ -274,7 +282,7 @@ def self_test(root: Path, refreshed_qa: dict | None = None) -> list[str]:
             shutil.copytree(root / "scripts", candidate / "scripts")
             for directory in ("modules", "apps"):
                 if (root / directory).exists():
-                    shutil.copytree(root / directory, candidate / directory)
+                    shutil.copytree(root / directory, candidate / directory, ignore=ignore_installed_reference_runtime)
             for filename in ("package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.json", "tsconfig.build.json", ".node-version"):
                 if (root / filename).exists():
                     shutil.copyfile(root / filename, candidate / filename)

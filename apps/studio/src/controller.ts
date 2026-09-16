@@ -133,7 +133,7 @@ export class StudioController {
     // Preview identities are isolated from the host allocator and never persisted.
     return planFoundationEdit(project, edit, () => `preview.import.${++next}`, this.#state.selection, this.#services.digest);
   }
-  createComponent(catalogId: string, name?: string, structure?: "blank" | "stack" | "article"): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentCreate(project, { catalogId, ...(name ? { name } : {}), ...(structure ? { structure } : {}) }, ids))); }
+  createComponent(catalogId: string, name?: string, structure?: "blank" | "stack" | "article", referenceTemplateId?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentCreate(project, { catalogId, ...(name ? { name } : {}), ...(structure ? { structure } : {}), ...(referenceTemplateId ? { referenceTemplateId } : {}) }, ids))); }
   policy(edit: import("../../../modules/ads-core/src/index.ts").FoundationPolicyEdit): boolean { return this.#editIntent(this.#intent(null, (project, selection, ids) => planFoundationPolicyEdit(project, edit, ids, selection))); }
   instance(componentId: string, edit: import("../../../modules/ads-core/src/index.ts").StudioInstanceEdit): boolean { return this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioInstanceEdit(project, componentId, edit, ids))); }
   duplicateComponent(componentId: string, name?: string): void { this.#editIntent(this.#intent(null, (project, _selection, ids) => planStudioComponentDuplicate(project, { componentId, ...(name ? { name } : {}) }, ids))); }

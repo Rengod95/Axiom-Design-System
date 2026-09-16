@@ -1,0 +1,826 @@
+{
+  "provider": "React Aria",
+  "repository": "adobe/react-spectrum",
+  "commit": "4693fcc844a341107e7dd26fe456edb1e269e44c",
+  "package": "react-aria-components",
+  "version": "1.21.1",
+  "license": "Apache-2.0",
+  "description": "Verbatim upstream component/demo/theme files. Demo adapters only supply documented initialProps and mount the first official demo in a separate iframe.",
+  "files": [
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/CheckboxGroup.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/CheckboxGroup.mdx",
+      "sha256": "521c7d35404f86b6f6e2f3cec4d2d7dd049ad905fba2920c8b6e5a4f435fdf13",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/CheckboxGroup.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/ColorArea.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/ColorArea.mdx",
+      "sha256": "d8aa27ed27f1279e37d5971e24099821f250d7801ad7102b30567b3bf7d71739",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/ColorArea.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/ColorField.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/ColorField.mdx",
+      "sha256": "2f2af2f21fd603b3238ca23303e5843ab55d93e19cbae006f6ed81588f830f83",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/ColorField.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/ColorSlider.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/ColorSlider.mdx",
+      "sha256": "b4da3155debeca219d8062d8c54785cda0650c25e6ff5fa1bb9b400973dffd32",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/ColorSlider.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/ColorSwatchPicker.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/ColorSwatchPicker.mdx",
+      "sha256": "13ed50d886811242dbeb33624e19a62fe3948d9e68263e115ad92c46576c564b",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/ColorSwatchPicker.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/ColorWheel.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/ColorWheel.mdx",
+      "sha256": "fcd1e49a436046573f7cb784d6d3dc051948898b2fae1289b69eaed05c1e91ba",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/ColorWheel.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/DateField.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/DateField.mdx",
+      "sha256": "459ebc111cf90c351ddc52adadd5a978982fc552c475d51b5936a6d98db5d0e2",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/DateField.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/DateRangePicker.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/DateRangePicker.mdx",
+      "sha256": "fe375f3c4a317305a3339b6cb2aaf307201e63f98f629e83396bcd90d57c3162",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/DateRangePicker.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/Form.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/Form.mdx",
+      "sha256": "1e161819645bd706f909da701e98b82f3c215e12ad7554c2bb2a667cfea44ca5",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/Form.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/GridList.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/GridList.mdx",
+      "sha256": "371851b19e2caca049628b57cb948ed696386f3ea61356823fe7743c973d4c3a",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/GridList.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/ListBox.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/ListBox.mdx",
+      "sha256": "e2d882cbe4d3d11cce5f540cc4dbc8dce0fa721ae9f1c2db546bd08718ff0734",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/ListBox.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/Meter.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/Meter.mdx",
+      "sha256": "c60f3c057843c3b35439bacdfded9cbe2a6e74baa4855b2c9d8189bbce6f18b6",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/Meter.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/NavigationTree.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/NavigationTree.mdx",
+      "sha256": "f6298c827798fe01d5131f9bcf4a5076ebe9c4cd8ffe75b9fc1dcb2ebd277f7d",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/NavigationTree.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/PreviewTrigger.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/PreviewTrigger.mdx",
+      "sha256": "5093625fc4aceadc29d9acc07422913275e660cf1cbaf713a3c9bbfac232e51c",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/PreviewTrigger.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/RangeCalendar.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/RangeCalendar.mdx",
+      "sha256": "dc728876e64ef2131bb8033d9f521dbf4debf9a1aafc28b89f9c70dfddc91875",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/RangeCalendar.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/Router.tsx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/Router.tsx",
+      "sha256": "f8fc1fdc311e3010c78c56e98747578f8a627a5224f5b9da9a28310a5c4bd7d5",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/Router.tsx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/SearchField.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/SearchField.mdx",
+      "sha256": "31b43676e65d4ffbdbaeae9646a6b5662172a9f54311ff377a8619b8500ffcc3",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/SearchField.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/TagGroup.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/TagGroup.mdx",
+      "sha256": "fffa72ee3fad4ef1be575b698ae172031f1cdfe3df30396724cb28bdd1e6e19d",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/TagGroup.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/TimeField.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/TimeField.mdx",
+      "sha256": "7db4d2565400f0cbe8b3653534d749bddd2556da4ce763bfa180c2286e858917",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/TimeField.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/TokenField.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/TokenField.mdx",
+      "sha256": "e426c6d6e46d6cb3d68caf4697612591026cf1099beebf3312f9ff1b3077bcef",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/TokenField.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/TokenizingFieldValue.ts",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/TokenizingFieldValue.ts",
+      "sha256": "06f60bb06e39395210246afaef8d4fe5d7deeb7dbb4056b0f442af9837739035",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/TokenizingFieldValue.ts"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/Toolbar.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/Toolbar.mdx",
+      "sha256": "b3c68c2316104861c83eb6067447b1474ef0f9c23544057d733083c127cd38c5",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/Toolbar.mdx"
+    },
+    {
+      "path": "vendor/packages/dev/s2-docs/pages/react-aria/Virtualizer.mdx",
+      "upstreamPath": "packages/dev/s2-docs/pages/react-aria/Virtualizer.mdx",
+      "sha256": "34e6a4c1daf8c21ba2ac431ea199120009051958e09708a6f167ce51b728571b",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/packages/dev/s2-docs/pages/react-aria/Virtualizer.mdx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Button.css",
+      "upstreamPath": "starters/docs/src/Button.css",
+      "sha256": "cc56efe5018487009ea5951a40e15e823db04fe03ed92984d80b0eaf847cce4a",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Button.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Button.tsx",
+      "upstreamPath": "starters/docs/src/Button.tsx",
+      "sha256": "7214f9e35a01d5e57ac6d857f0c85ba28d685d9545dd6a4f62d58c0013185451",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Button.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Calendar.css",
+      "upstreamPath": "starters/docs/src/Calendar.css",
+      "sha256": "48de7e0c25f161ff9d215f268511821f29f1d95b3007d8948aea03c08d63487d",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Calendar.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Calendar.tsx",
+      "upstreamPath": "starters/docs/src/Calendar.tsx",
+      "sha256": "89eb7f34bb611e8c543cf39cfdd8911f84217eac3e1150de8f418fae03fd8c36",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Calendar.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Checkbox.css",
+      "upstreamPath": "starters/docs/src/Checkbox.css",
+      "sha256": "c0796c9906a727d163417047014eea196acf3ce8732340141bde9fbbdb6525a3",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Checkbox.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Checkbox.tsx",
+      "upstreamPath": "starters/docs/src/Checkbox.tsx",
+      "sha256": "6aa7e7937a466669f3804e902e12a02603dbab968e539d9c40265d504b780842",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Checkbox.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/CheckboxGroup.css",
+      "upstreamPath": "starters/docs/src/CheckboxGroup.css",
+      "sha256": "4d246e3d03ee05928dce3fe8a15bf5aed6644509ac28c0295cf44a7892f66625",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/CheckboxGroup.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/CheckboxGroup.tsx",
+      "upstreamPath": "starters/docs/src/CheckboxGroup.tsx",
+      "sha256": "622c9660cb1e9f166ef9fb40ee2d0ae23edd5bc2a433c921ac8db5b4ac323492",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/CheckboxGroup.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorArea.css",
+      "upstreamPath": "starters/docs/src/ColorArea.css",
+      "sha256": "391d513d26c284bc9c7104cc868c45d031c52822ad6982b66922626454367bfb",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorArea.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorArea.tsx",
+      "upstreamPath": "starters/docs/src/ColorArea.tsx",
+      "sha256": "54fc5359fa2120a888f1d45e15432258a19d17450c0d5d01ed87a9f799864564",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorArea.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorField.css",
+      "upstreamPath": "starters/docs/src/ColorField.css",
+      "sha256": "3c47d3dd17ca6953779ccc52bf7b0a980c63d736f3c0e97e9a5a5a10b04111ce",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorField.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorField.tsx",
+      "upstreamPath": "starters/docs/src/ColorField.tsx",
+      "sha256": "3a307ff46e68ccf622f6edaa001e2861a6674a083888c26aa530b78bb9ece122",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorField.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorSlider.css",
+      "upstreamPath": "starters/docs/src/ColorSlider.css",
+      "sha256": "25d21c61a8e289e2857b2d92c32a5e797f06b8c48d10eed3a738a2906699f2be",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorSlider.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorSlider.tsx",
+      "upstreamPath": "starters/docs/src/ColorSlider.tsx",
+      "sha256": "3a62cc94a989f5ba6c5915e414d48c347362584739b127d8b90e4cec54e63b37",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorSlider.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorSwatch.css",
+      "upstreamPath": "starters/docs/src/ColorSwatch.css",
+      "sha256": "ce615b50ceeee79637da4f21dafe7304bb33fdb9276d9b7011e1d1914b03acf1",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorSwatch.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorSwatch.tsx",
+      "upstreamPath": "starters/docs/src/ColorSwatch.tsx",
+      "sha256": "9ee4fd4213182781aa3f67be29ac4f28e261d38a0d307b9066fa1f4cdf242e00",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorSwatch.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorSwatchPicker.css",
+      "upstreamPath": "starters/docs/src/ColorSwatchPicker.css",
+      "sha256": "40eddb46ebf5b31d2bf14f99efa41801d995592e4c160a8c6a6a6cd5b1bbbb64",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorSwatchPicker.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorSwatchPicker.tsx",
+      "upstreamPath": "starters/docs/src/ColorSwatchPicker.tsx",
+      "sha256": "89d65715ee2ef820e093343579b1bf8c73a1ea55f5b2fb77be96960b7439cb82",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorSwatchPicker.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorThumb.css",
+      "upstreamPath": "starters/docs/src/ColorThumb.css",
+      "sha256": "fb4d173d839507c1afdd94e8477ee8d8e96a9174e6cf8655695ff2d88987ba92",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorThumb.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorThumb.tsx",
+      "upstreamPath": "starters/docs/src/ColorThumb.tsx",
+      "sha256": "4a55ab2e8fc52b9b7c9276a1e9fea7be598adf3156646b6d401751de2d7fb3d1",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorThumb.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorWheel.css",
+      "upstreamPath": "starters/docs/src/ColorWheel.css",
+      "sha256": "98878efbf9b73e153b26e438b15334150556221ed5a41fcce8121dd7842a04d2",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorWheel.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ColorWheel.tsx",
+      "upstreamPath": "starters/docs/src/ColorWheel.tsx",
+      "sha256": "031e823ceac6d36de7bab2610ced6e179f2c0bb3a39aca2debc640f8b4b5488e",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ColorWheel.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Content.css",
+      "upstreamPath": "starters/docs/src/Content.css",
+      "sha256": "48a0f685881b4692925f6e30b57edb0c8b24ce1edad395dd790fabd611201898",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Content.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Content.tsx",
+      "upstreamPath": "starters/docs/src/Content.tsx",
+      "sha256": "ce6346e4465387d800cf75102405e56df5ef70e8ab14ba793e0b105a603411ca",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Content.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/DateField.css",
+      "upstreamPath": "starters/docs/src/DateField.css",
+      "sha256": "4233972d01d415d215a2fb9e166924337a4949ddb69a40facac88c864141ab02",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/DateField.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/DateField.tsx",
+      "upstreamPath": "starters/docs/src/DateField.tsx",
+      "sha256": "0c1f356ff371efd199c57ae2987ec6d395f0e6d3e9fd4d8867fe991f86d39280",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/DateField.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/DateRangePicker.css",
+      "upstreamPath": "starters/docs/src/DateRangePicker.css",
+      "sha256": "43da802ccdd5d56c580d797df09a445e3afb507eecb20ade82a2dfa30475472a",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/DateRangePicker.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/DateRangePicker.tsx",
+      "upstreamPath": "starters/docs/src/DateRangePicker.tsx",
+      "sha256": "66f594d28658ac38bd6f5104e09f04b5cc9cc5e6113c38197787dc6068b15d92",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/DateRangePicker.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Form.css",
+      "upstreamPath": "starters/docs/src/Form.css",
+      "sha256": "92e8e4831bef2a6a7842caa864dcc58c4ac91d5b7560c0fd222e72890973da76",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Form.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Form.tsx",
+      "upstreamPath": "starters/docs/src/Form.tsx",
+      "sha256": "eae27474fdce285eea6074003813ec2266588c56029cb31050831b923adb623d",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Form.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/GridList.css",
+      "upstreamPath": "starters/docs/src/GridList.css",
+      "sha256": "c52aab6b0d424cdd6dfeda6df0e4ed3c40f462901cb232e34070065d8151edba",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/GridList.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/GridList.tsx",
+      "upstreamPath": "starters/docs/src/GridList.tsx",
+      "sha256": "ed6603623de97425e895cd3336b36e346149e3a833b77343d2e7da4bfa1034b9",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/GridList.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Link.css",
+      "upstreamPath": "starters/docs/src/Link.css",
+      "sha256": "123c2d069c97546075539b07781c64f4e0e0cb0eb4f8e1595eef70abdc0300ae",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Link.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Link.tsx",
+      "upstreamPath": "starters/docs/src/Link.tsx",
+      "sha256": "806f8f0cfce1bbe0153cf9c05102ee04ab1377a31fe8e4e728d8e43f700641c9",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Link.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ListBox.css",
+      "upstreamPath": "starters/docs/src/ListBox.css",
+      "sha256": "737a40563b86a4b6b534a22e2bc9f6bc677b80065453c6146e020850833f761f",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ListBox.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ListBox.tsx",
+      "upstreamPath": "starters/docs/src/ListBox.tsx",
+      "sha256": "118f4c2b12dfc505718d6050b144d7efbedcc6d3e7d16478ef401f9b9fe3f4f2",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ListBox.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Meter.css",
+      "upstreamPath": "starters/docs/src/Meter.css",
+      "sha256": "b67e71d638364a71808ef7fd9c6ce7eab93374d7791538006c94ba9a28bf7946",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Meter.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Meter.tsx",
+      "upstreamPath": "starters/docs/src/Meter.tsx",
+      "sha256": "053090d6627a6ec55232122ae7968339e86d76549d4cfd7c9dc5d77fbf2ec1b2",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Meter.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/NavigationTree.css",
+      "upstreamPath": "starters/docs/src/NavigationTree.css",
+      "sha256": "615953596e7da7a3cad22c8b27b3fae7404d64e2f6ba5a38926d11b94d1c456a",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/NavigationTree.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/NavigationTree.tsx",
+      "upstreamPath": "starters/docs/src/NavigationTree.tsx",
+      "sha256": "235dcdd2e5cc631e5399f0257654ca26aa6fa6373cd3bac0f32b7264ed8314d6",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/NavigationTree.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Popover.css",
+      "upstreamPath": "starters/docs/src/Popover.css",
+      "sha256": "3e7132811e37ad1dafac4532588d953a30fe7e7cc9f86c50c8a6199a9763de86",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Popover.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Popover.tsx",
+      "upstreamPath": "starters/docs/src/Popover.tsx",
+      "sha256": "1229e7e9636cc7cad8e994aa91a5a64a70a403b3fa12137d3f7a6c9afd977604",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Popover.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ProgressCircle.tsx",
+      "upstreamPath": "starters/docs/src/ProgressCircle.tsx",
+      "sha256": "e180c2137b5aa7fbcd05b3fd50f08f50d1b694589c96c8cd146e03ee4be1048d",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ProgressCircle.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/RangeCalendar.css",
+      "upstreamPath": "starters/docs/src/RangeCalendar.css",
+      "sha256": "5550ca170ef830574347446d17f80bffefcc62974ff53f29b757015eb105d5f4",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/RangeCalendar.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/RangeCalendar.tsx",
+      "upstreamPath": "starters/docs/src/RangeCalendar.tsx",
+      "sha256": "0260cdcf31d2710fe92d2d06d5efec89452b45a442a8392a1a6d54b81ef3c1fa",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/RangeCalendar.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/SearchField.css",
+      "upstreamPath": "starters/docs/src/SearchField.css",
+      "sha256": "fc1883c47bb8a8ad6c4506970c6b17f14f2fba5f82645069fd9063414ce90b95",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/SearchField.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/SearchField.tsx",
+      "upstreamPath": "starters/docs/src/SearchField.tsx",
+      "sha256": "908e238b07d33707f47124a22586152b9b073fff71fe81038f91dd775559e188",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/SearchField.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Select.css",
+      "upstreamPath": "starters/docs/src/Select.css",
+      "sha256": "f34518d9400dc52f75e645c3bcf0801f1bcbfb56a0595e845f3b2d4ce85fd68a",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Select.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Select.tsx",
+      "upstreamPath": "starters/docs/src/Select.tsx",
+      "sha256": "cfcd330df5eb53a755f9e5dc5af1570ff61965158630bf9037e06c89fc72c794",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Select.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Separator.css",
+      "upstreamPath": "starters/docs/src/Separator.css",
+      "sha256": "a88dfcf3c59ec5e293a51eff4336bf8f0ff532f854715889caf18cdb506af2d4",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Separator.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Separator.tsx",
+      "upstreamPath": "starters/docs/src/Separator.tsx",
+      "sha256": "936a52e7b981c21075ea1e4a5b5bd858e9c494083c63a6d8c4d1f6ae8372c4dd",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Separator.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/TagGroup.css",
+      "upstreamPath": "starters/docs/src/TagGroup.css",
+      "sha256": "f218759a1a627bc9362e24ad4f08029ab7ef8eb95c4e48b458d2a9c69fbbe9d3",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TagGroup.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/TagGroup.tsx",
+      "upstreamPath": "starters/docs/src/TagGroup.tsx",
+      "sha256": "541df19f240b314e53d93ef5eeb3b62686210e19759c14412e4b6529ef6f46e7",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TagGroup.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/TextField.css",
+      "upstreamPath": "starters/docs/src/TextField.css",
+      "sha256": "cef323a3179d4d2afa6038c0115a78be6e8bde8e4d005ca5627263359dff218b",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TextField.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/TextField.tsx",
+      "upstreamPath": "starters/docs/src/TextField.tsx",
+      "sha256": "adaf40161f25cd26b075bb8f668afbd73ae5345d6a23b4bf3d35bacc47f393fa",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TextField.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/TimeField.css",
+      "upstreamPath": "starters/docs/src/TimeField.css",
+      "sha256": "92cef15ae0b8bc76b966f438b48a28aafcea9f8a1db079fa62155ce4b3f46045",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TimeField.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/TimeField.tsx",
+      "upstreamPath": "starters/docs/src/TimeField.tsx",
+      "sha256": "6a722aad6d20a1564b4ad28738890c2ac16bdb73053ee0489bde49171291f8d8",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TimeField.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ToggleButton.css",
+      "upstreamPath": "starters/docs/src/ToggleButton.css",
+      "sha256": "d6977ffbfb3ced85f57051cb83f8512111d35c0cc86bba0a27c5bffa3230ddbf",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ToggleButton.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ToggleButton.tsx",
+      "upstreamPath": "starters/docs/src/ToggleButton.tsx",
+      "sha256": "5b5b37b03af7778f5dcbc672c930114b66208573eaf582c1744654142ce1329d",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ToggleButton.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/ToggleButtonGroup.css",
+      "upstreamPath": "starters/docs/src/ToggleButtonGroup.css",
+      "sha256": "8b886e333ea18cd76e6db91c8468ec3ccabc3f1f90ac0ccb0fd1800528c12f9c",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ToggleButtonGroup.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/ToggleButtonGroup.tsx",
+      "upstreamPath": "starters/docs/src/ToggleButtonGroup.tsx",
+      "sha256": "4e52d1d881750f84396ccb2e63d2d48b50d9f09be0d647fc32d1d627d2a72c2e",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/ToggleButtonGroup.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/TokenField.css",
+      "upstreamPath": "starters/docs/src/TokenField.css",
+      "sha256": "8b8ffa15ad595ada5daa4953984a9495aa7fa9f97e6a4dbc8ddfb4d88835bdc0",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TokenField.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/TokenField.tsx",
+      "upstreamPath": "starters/docs/src/TokenField.tsx",
+      "sha256": "9949c65962354c0cdf8aa37223532915ef277a840ab57d3d8f95eafdcacb8cb9",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/TokenField.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/Toolbar.css",
+      "upstreamPath": "starters/docs/src/Toolbar.css",
+      "sha256": "1305f355b3547629994c35dae63d60b1543e74fa970f317a7eea2175a0f8264e",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Toolbar.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/Toolbar.tsx",
+      "upstreamPath": "starters/docs/src/Toolbar.tsx",
+      "sha256": "c9063e3084a636a73cb8bfbf49c2a749249e48792c5c6da884016c94f8efe08a",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/Toolbar.tsx"
+    },
+    {
+      "path": "vendor/starters/docs/src/theme.css",
+      "upstreamPath": "starters/docs/src/theme.css",
+      "sha256": "b9221d8a721028fea9aebcfd7b6f8620a7fba8d3fac19e3ef954e94a48fc511c",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/theme.css"
+    },
+    {
+      "path": "vendor/starters/docs/src/utilities.css",
+      "upstreamPath": "starters/docs/src/utilities.css",
+      "sha256": "97df44ee6db140bb92546efbfb7456f245a489ff837428e049800dcab24fb799",
+      "url": "https://github.com/adobe/react-spectrum/blob/4693fcc844a341107e7dd26fe456edb1e269e44c/starters/docs/src/utilities.css"
+    }
+  ],
+  "templates": [
+    {
+      "sourceRow": 245,
+      "catalogId": "catalog.checkboxgroup",
+      "providerName": "CheckboxGroup",
+      "docsUrl": "https://react-aria.adobe.com/CheckboxGroup",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/CheckboxGroup.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 246,
+      "catalogId": "catalog.colorarea",
+      "providerName": "ColorArea",
+      "docsUrl": "https://react-aria.adobe.com/ColorArea",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/ColorArea.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 247,
+      "catalogId": "catalog.colorfield",
+      "providerName": "ColorField",
+      "docsUrl": "https://react-aria.adobe.com/ColorField",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/ColorField.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 249,
+      "catalogId": "catalog.colorslider",
+      "providerName": "ColorSlider",
+      "docsUrl": "https://react-aria.adobe.com/ColorSlider",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/ColorSlider.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 251,
+      "catalogId": "catalog.colorswatchpicker",
+      "providerName": "ColorSwatchPicker",
+      "docsUrl": "https://react-aria.adobe.com/ColorSwatchPicker",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/ColorSwatchPicker.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 252,
+      "catalogId": "catalog.colorwheel",
+      "providerName": "ColorWheel",
+      "docsUrl": "https://react-aria.adobe.com/ColorWheel",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/ColorWheel.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 254,
+      "catalogId": "catalog.datefield",
+      "providerName": "DateField",
+      "docsUrl": "https://react-aria.adobe.com/DateField",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/DateField.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 256,
+      "catalogId": "catalog.daterangepicker",
+      "providerName": "DateRangePicker",
+      "docsUrl": "https://react-aria.adobe.com/DateRangePicker",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/DateRangePicker.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 261,
+      "catalogId": "catalog.form",
+      "providerName": "Form",
+      "docsUrl": "https://react-aria.adobe.com/Form",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/Form.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 262,
+      "catalogId": "catalog.gridlist",
+      "providerName": "GridList",
+      "docsUrl": "https://react-aria.adobe.com/GridList",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/GridList.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 265,
+      "catalogId": "catalog.listbox",
+      "providerName": "ListBox",
+      "docsUrl": "https://react-aria.adobe.com/ListBox",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/ListBox.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 267,
+      "catalogId": "catalog.meter",
+      "providerName": "Meter",
+      "docsUrl": "https://react-aria.adobe.com/Meter",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/Meter.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 269,
+      "catalogId": "catalog.navigationtree",
+      "providerName": "NavigationTree",
+      "docsUrl": "https://react-aria.adobe.com/NavigationTree",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/NavigationTree.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 272,
+      "catalogId": "catalog.previewtrigger",
+      "providerName": "PreviewTrigger",
+      "docsUrl": "https://react-aria.adobe.com/PreviewTrigger",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/PreviewTrigger.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 275,
+      "catalogId": "catalog.rangecalendar",
+      "providerName": "RangeCalendar",
+      "docsUrl": "https://react-aria.adobe.com/RangeCalendar",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/RangeCalendar.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 276,
+      "catalogId": "catalog.searchfield",
+      "providerName": "SearchField",
+      "docsUrl": "https://react-aria.adobe.com/SearchField",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/SearchField.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 283,
+      "catalogId": "catalog.taggroup",
+      "providerName": "TagGroup",
+      "docsUrl": "https://react-aria.adobe.com/TagGroup",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/TagGroup.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 285,
+      "catalogId": "catalog.timefield",
+      "providerName": "TimeField",
+      "docsUrl": "https://react-aria.adobe.com/TimeField",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/TimeField.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 289,
+      "catalogId": "catalog.tokenfield",
+      "providerName": "TokenField",
+      "docsUrl": "https://react-aria.adobe.com/TokenField",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/TokenField.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 290,
+      "catalogId": "catalog.toolbar",
+      "providerName": "Toolbar",
+      "docsUrl": "https://react-aria.adobe.com/Toolbar",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/Toolbar.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    },
+    {
+      "sourceRow": 293,
+      "catalogId": "catalog.virtualizer",
+      "providerName": "Virtualizer",
+      "docsUrl": "https://react-aria.adobe.com/Virtualizer",
+      "docsSource": "packages/dev/s2-docs/pages/react-aria/Virtualizer.mdx",
+      "defaultDemoFile": null,
+      "adaptations": [
+        "Mount the first documented Vanilla CSS demo with its documented initialProps.",
+        "Resolve vanilla-starter imports to pinned verbatim vendor files.",
+        "Independent iframe document supplies font reset and light/dark color-scheme."
+      ]
+    }
+  ]
+}

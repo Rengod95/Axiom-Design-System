@@ -121,5 +121,5 @@ export function projectStudioDesign(document: AdsDocument, component: Pick<Studi
   }
   const mappings = objectList(document.nodeMappings).filter(item => typeof item.element === "string");
   const elements = Object.fromEntries(mappings.map(item => [String(item.partRef), item.element])) as NonNullable<StudioDesign["elements"]>;
-  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout, ...(mappings.length ? { elements } : {}), ...(isObject(document.editorFrame) ? { editorFrame: document.editorFrame as unknown as NonNullable<StudioDesign["editorFrame"]> } : {}) };
+  return { id: document.id, category: document.category === "Web" ? "Web" : "Mobile", parts, layout, ...(document.referenceLayout ? { referenceLayout: Object.fromEntries(objectList(document.referenceLayout).map(row => [String(row.partRef), row.fields])) as Record<string, string[]> } : {}), ...(mappings.length ? { elements } : {}), ...(isObject(document.editorFrame) ? { editorFrame: document.editorFrame as unknown as NonNullable<StudioDesign["editorFrame"]> } : {}) };
 }

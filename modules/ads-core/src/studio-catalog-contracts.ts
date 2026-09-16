@@ -36,6 +36,7 @@ export interface StudioCatalogRecipe {
   slots: { role: string; required: boolean }[];
 }
 export interface StudioCatalogProjection {
+  reference?: import("./studio-reference.ts").StudioReferenceSelection;
   catalogId: string; kind: StudioCatalogEntry["kind"]; familyIds: string[];
   semantic: StudioSemanticDescriptor;
   /** Source contracts, not consumer callbacks or executable expressions. */

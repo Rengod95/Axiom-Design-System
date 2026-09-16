@@ -11,9 +11,10 @@ export async function verifyCompoundWorkspace({ page, origin, database, root, id
   if (await page.evaluate("document.documentElement.lang!=='en'")) await click("locale-toggle");
   await fill("project-name", "Compound anatomy"); await click("starter-enabled"); await click("start-project"); await until(`${id("studio-app")} && !${id("undo")}.disabled`);
   const originals = Object.fromEntries((await saved()).map(entry => [entry.document.id, entry.originalText]));
-  await click("view-library"); await fill("catalog-search", "Accordion"); await click("catalog-catalog.accordion"); await click("catalog-add"); await approve();
+  await click("view-library"); await click("create-custom-component"); await click("composer-accordion"); await fill("composer-name", "Accordion"); await click("composer-create"); await approve();
   const source = () => saved().then(entries => entries.find(entry => entry.document.kind === "component" && entry.document.catalogProfile?.catalogId === "catalog.accordion").document);
   const component = await source(), componentId = component.id;
+  assert.equal(component.studioReference, undefined, "Compound element authoring uses an Accordion from the custom composer");
   const role = value => component.parts.find(part => part.studioRole === value);
   const preview = id(`preview-${componentId}`);
   const nodes = partId => `${preview}.querySelectorAll('[data-part-id="${partId}"]')`;

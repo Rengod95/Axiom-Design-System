@@ -209,7 +209,8 @@ export async function verifyEditorCompletion({ page, origin, database, root, id,
   record("starterWorkspace", { domains: 11, allTokensClassified: true, semanticFilter: true, contextualDependencies: true, distinguishableDesignPropertyUses: true, usagePartNavigation: true, themeWorkspace: true });
 
   await click("view-library"); await fill("catalog-search", "");
-  assert.ok(await page.evaluate("document.querySelectorAll('.catalog-thumbnail').length > 5"));
+  await until("Array.from(document.querySelectorAll('.reference-thumbnail')).filter(image=>image.complete && image.naturalWidth>0).length > 5");
+  assert.ok(await page.evaluate("Array.from(document.querySelectorAll('.reference-thumbnail')).every(image=>image.getAttribute('src').startsWith('/references/'))"));
   await capture("07-library-dark");
   await click("create-custom-component"); await until(id("component-composer")); await click("composer-create"); await until("document.querySelectorAll('[data-component-frame]').length===4");
   const componentId = await page.evaluate("Array.from(document.querySelectorAll('[data-component-frame]')).map(e=>e.dataset.componentFrame).find(id=>!id.startsWith('component.'))");

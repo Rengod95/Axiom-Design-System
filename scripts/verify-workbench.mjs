@@ -7,6 +7,7 @@ import { verifyCompactWorkbench, verifyEditorCompletion, verifyFoundationInterop
 import { verifyFoundationBlueprints } from "./workbench-foundation-cases.mjs";
 import { verifyBlueprintChrome } from "./workbench-chrome-cases.mjs";
 import { verifyCatalogBlueprints } from "./workbench-catalog-cases.mjs";
+import { registerReferenceDebugger, verifyReferenceCheckboxSimulation } from "./verify-reference-studio.mjs";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -119,6 +120,7 @@ try {
   await browser.cdp.send("Browser.setDownloadBehavior", { behavior: "allow", downloadPath: downloads });
   const url = `${origin}/?database=axiom-studio-test-${randomUUID()}`;
   page = await browser.cdp.page(url);
+  registerReferenceDebugger(page, browser.cdp);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1600, height: 1080, deviceScaleFactor: 1, mobile: false });
   await fill("project-name", "Workbench 검증"); await click("starter-enabled"); await click("start-project");
   await until(`${id("studio-app")} && !${id("undo")}.disabled`);
@@ -181,16 +183,7 @@ try {
   await until("document.querySelectorAll('[data-component-frame]').length===4"); await approve();
   const addedId = await page.evaluate("Array.from(document.querySelectorAll('[data-component-frame]')).map(e=>e.dataset.componentFrame).find(id=>!['component.button','component.card','component.toast'].includes(id))");
   assert.ok(addedId); await click(`component-${addedId}`);
-  const simulationRevision = await revision();
-  await click("mode-run");
-  const checkbox = `(${id(`preview-${addedId}`)}).querySelector('input[type=checkbox]')`;
-  await until(`${id(`catalog-requests-${addedId}`)}?.textContent.trim()==='0'`);
-  assert.equal(await page.evaluate(`(${checkbox}).checked`), false);
-  await clickElement(checkbox);
-  await until(`(${checkbox}).checked && ${id(`catalog-requests-${addedId}`)}.textContent.trim()==='1 checkedChangeRequest'`);
-  assert.equal(await revision(), simulationRevision); assert.equal(await page.evaluate(`Boolean(${id("review-strip")})`), false);
-  await click("mode-edit"); await until(`!(${checkbox}).checked && !${id(`catalog-requests-${addedId}`)}`);
-  record("catalogSimulation", { nativeCheckboxClick: true, checkedChangeRequest: true, authoredDefaultUnchanged: true, exitRunResetsTransientState: true });
+  await verifyReferenceCheckboxSimulation({ page, componentId: addedId, click, revision, record });
   const cleanRevision = await revision(), previousZoom = await page.evaluate(`${id("zoom-level")}.value`);
   await click("zoom-in"); assert.notEqual(await page.evaluate(`${id("zoom-level")}.value`), previousZoom); await click("zoom-fit");
   await page.evaluate(`${id("canvas-viewport")}.focus()`); await key("h", "KeyH");
@@ -243,6 +236,7 @@ try {
   assert.deepEqual(await page.evaluate("({theme:localStorage.getItem('axiom.ui.theme'),locale:localStorage.getItem('axiom.ui.locale')})"), { theme: "dark", locale: "en" });
   const shutdownElapsedMs = await closeBrowserNormally();
   browser = await launch(executable, profile); page = await browser.cdp.page(url);
+  registerReferenceDebugger(page, browser.cdp);
   await page.send("Emulation.setDeviceMetricsOverride", { width: 1600, height: 1080, deviceScaleFactor: 1, mobile: false });
   await until(`${id("studio-app")}`);
   assert.equal(await page.evaluate("document.documentElement.lang"), "en"); assert.equal(await page.evaluate("document.documentElement.dataset.theme"), "dark");

@@ -4,7 +4,7 @@ import { AccessibilityInsight } from "./accessibility-insight.tsx";
 import { MotionInspector } from "./motion-inspector.tsx";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { elementContentContext, getStudioCatalogRecipe, inspectTypedValue, isStudioTokenCompatible, parseJson } from "../../../modules/ads-core/src/index.ts";
+import { elementContentContext, getStudioCatalogRecipe, getStudioReferencePartBinding, inspectTypedValue, isStudioTokenCompatible, parseJson } from "../../../modules/ads-core/src/index.ts";
 import type { JsonObject, JsonValue, StudioCategory, StudioComponent, StudioComponentEdit, StudioVisualProperty, TypeExpression } from "../../../modules/ads-core/src/index.ts";
 import type { StudioController, StudioState } from "./controller.ts";
 import type { Locale } from "./locales.ts";
@@ -51,6 +51,9 @@ export function ComponentInspector({ state, controller, component, selectedPart,
   const part = component.parts.find(item => item.id === selectedPart) ?? component.parts.find(item => item.parent === null)!;
   const source = inspectorSource(state, component, part.id, category), layout = source.design.layout[part.id];
   const catalog = component.catalog, recipe = catalog ? getStudioCatalogRecipe(catalog.catalogId) : null;
+  const referenceBinding = catalog?.reference ? getStudioReferencePartBinding(catalog.reference.templateId, part.role) : null;
+  const referenceEditable = !catalog?.reference || Boolean(part.elementKind || referenceBinding);
+  const referenceTextEditable = !catalog?.reference || Boolean(part.elementKind || referenceBinding?.text);
   const [drafts, setDrafts] = useState<Record<string, string>>({}), draftRef = useRef(drafts);
   const [addingValue, setAddingValue] = useState(false), [valueName, setValueName] = useState(""), [valueType, setValueType] = useState("string"), [valueDefault, setValueDefault] = useState('""'), [ownership, setOwnership] = useState<"consumer" | "local">("consumer");
   const [customType, setCustomType] = useState('{"kind":"string"}'), [formError, setFormError] = useState<string | null>(null);
@@ -73,14 +76,16 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     setDrafts(draftRef.current);
   };
   const textField = (key: string, label: string, value: string, make: (text: string) => StudioComponentEdit, multiline = false, testId = key): ReactNode => <Field key={key} label={label} layout="row">
-    <TextInput label={label} data-testid={testId} value={drafts[keyFor(key)] ?? value} aria-invalid={Object.hasOwn(drafts, keyFor(key))} multiline={multiline} onCommit={text => commit(key, text, make(text))} />
+    <TextInput label={label} data-testid={testId} value={drafts[keyFor(key)] ?? value} disabled={testId === "part-text" && !referenceTextEditable} aria-invalid={Object.hasOwn(drafts, keyFor(key))} multiline={multiline} onCommit={text => commit(key, text, make(text))} />
+    {testId === "part-text" && referenceEditable && !referenceTextEditable && <small className="field-hint">{t("이 원본 요소에는 편집 가능한 텍스트가 없습니다.", "This original element has no editable text node.")}</small>}
     {Object.hasOwn(drafts, keyFor(key)) && <small role="status">{t("입력을 수정해 주세요. 이전 값은 보존됩니다.", "Correct this input. The previous value is preserved.")}</small>}
   </Field>;
   const numberField = (key: string, label: string, value: number, make: (number: number) => StudioComponentEdit, min = 0, max = 4096, testId = key): ReactNode => {
-    const change = (text: string) => { const parsed = inspectorNumber(text, min, max); if (parsed === null) hold(key, text); else if (parsed !== value || Object.hasOwn(drafts, keyFor(key))) commit(key, text, make(parsed)); };
+    const change = (text: string) => { const parsed = inspectorNumber(text, min, max); if (parsed === null) hold(key, text); else if (parsed !== value || catalog?.reference && key.startsWith("layout-") || Object.hasOwn(drafts, keyFor(key))) commit(key, text, make(parsed)); };
+    const inheritedLayout = Boolean(catalog?.reference && key.startsWith("layout-") && !source.design.referenceLayout?.[part.id]?.includes(key.slice(7)));
     const slider = max === 1 || key === "motion-duration" || key === "appearance-borderRadius-value";
     return <Field key={key} label={label} layout="row">
-    {slider ? <StudioSlider label={label} sliderLabel={key === "appearance-opacity-value" ? t("불투명도 슬라이더", "Opacity slider") : undefined} locale={locale} testId={testId} value={drafts[keyFor(key)] ?? String(value)} invalid={Object.hasOwn(drafts, keyFor(key))} min={min} max={key === "appearance-borderRadius-value" ? 128 : max} step={max === 1 ? .01 : 1} variant={key === "motion-duration" ? "ruler" : "value"} onChange={change} /> : <TextInput label={label} data-testid={testId} inputMode="decimal" value={drafts[keyFor(key)] ?? String(value)} aria-invalid={Object.hasOwn(drafts, keyFor(key))} onCommit={change} />}
+    {slider ? <StudioSlider label={label} sliderLabel={key === "appearance-opacity-value" ? t("불투명도 슬라이더", "Opacity slider") : undefined} locale={locale} testId={testId} value={drafts[keyFor(key)] ?? String(value)} invalid={Object.hasOwn(drafts, keyFor(key))} min={min} max={key === "appearance-borderRadius-value" ? 128 : max} step={max === 1 ? .01 : 1} variant={key === "motion-duration" ? "ruler" : "value"} onChange={change} /> : <TextInput label={label} data-testid={testId} inputMode="decimal" value={drafts[keyFor(key)] ?? (inheritedLayout ? "" : String(value))} placeholder={inheritedLayout ? t("원본", "Original") : undefined} aria-invalid={Object.hasOwn(drafts, keyFor(key))} onCommit={text => { if (inheritedLayout && !text.trim()) return; change(text); }} />}
     {Object.hasOwn(drafts, keyFor(key)) && <small role="status">{t(`${min}–${max} 사이 숫자를 입력하세요.`, `Enter a number from ${min} to ${max}.`)}</small>}
   </Field>;
   };
@@ -145,21 +150,24 @@ export function ComponentInspector({ state, controller, component, selectedPart,
   useFormDraft({ id: "component-properties", label: t("컴포넌트 속성", "Component properties"), dirty: localDirty,
     valid: !Object.keys(drafts).length && (!addingValue || !!valueName.trim()), apply: applyForm, reset: resetForm });
   return <div className="component-property-editor" data-draft-form="component-properties">
+    {catalog?.reference && <p className="field-hint">{t("원본 템플릿 · 요소의 텍스트, 모양, 레이아웃을 편집할 수 있습니다. 동작 모드에서는 공식 예제를 실행합니다. 공개 값·변형·행동·타깃 출력은 별도 매핑이 필요합니다.", "Original template · Edit element text, paint and layout. Run mode uses the official example. Public values, variants, behavior and target output require a separate provider mapping.")}</p>}
     {localDirty && <div className="form-feedback" role="status"><p>{Object.keys(drafts).length ? t("입력값을 확인하세요. 마지막 정상 미리보기는 유지됩니다.", "Check the input. The last valid preview is retained.") : t("추가 중인 항목을 완료하거나 취소하세요.", "Complete or cancel the item being added.")}</p><Button data-testid="inspector-reset-input" onClick={resetForm}>{t("미반영 입력 초기화", "Reset uncommitted input")}</Button></div>}
+    {!referenceEditable && <p className="field-hint" data-testid="reference-unmapped-part">{t("이 파트는 원본 예제의 편집 가능한 요소에 연결되어 있지 않습니다. 캔버스의 요소나 직접 추가한 요소를 선택하세요.", "This part is not linked to an editable element in the original example. Select a mapped canvas element or an element you added.")}</p>}
+    <fieldset className="inspector-fields" disabled={!referenceEditable} data-testid="reference-part-fields">
     <Section title={t("요소", "Elements")}>
-      {(catalog?.semantic.kind === "layout" || part.elementKind) && selectField("part-element", t("HTML 요소", "HTML element"), source.design.elements?.[part.id] ?? "div", [
+      {(catalog?.semantic.kind === "layout" && !catalog.reference || part.elementKind) && selectField("part-element", t("HTML 요소", "HTML element"), source.design.elements?.[part.id] ?? "div", [
         { value: "div", label: t("프레임 · div", "Frame · div") }, { value: "section", label: t("영역 · section", "Section · section") }, { value: "article", label: t("아티클 · article", "Article · article") }, { value: "header", label: "Header" }, { value: "footer", label: "Footer" }, { value: "span", label: t("인라인 텍스트 · span", "Inline text · span") }, { value: "p", label: t("본문 · p", "Paragraph · p") }, ...[1, 2, 3, 4, 5, 6].map(level => ({ value: `h${level}`, label: `${t("제목", "Heading")} ${level}` })), { value: "code", label: "Code" }
-      ].filter(option => !part.parent || elementContentContext(component.parts, source.design.elements ?? {}, catalog!.semantic.kind, part.parent) !== "phrasing" || ["span", "code"].includes(option.value)), element => ({ kind: "part-element", category, partId: part.id, element }))}
+      ].filter(option => !part.parent || elementContentContext(component.parts, source.design.elements ?? {}, catalog!.semantic.kind, part.parent, catalog?.reference?.templateId) !== "phrasing" || ["span", "code"].includes(option.value)), element => ({ kind: "part-element", category, partId: part.id, element }))}
       {textField(`part-name/${part.id}`, t("이름", "Name"), part.name, name => ({ kind: "part-name", partId: part.id, name }), false, "part-name")}
-      {(catalog?.semantic.kind === "layout" || part.elementKind) && <>{textField(`part-text/${part.id}`, t("텍스트", "Text"), part.text ?? "", text => ({ kind: "part-text", partId: part.id, text }), true, "part-text")}</>}
+      {(catalog?.reference || catalog?.semantic.kind === "layout" || part.elementKind) && <>{textField(`part-text/${part.id}`, t("텍스트", "Text"), part.text ?? "", text => ({ kind: "part-text", partId: part.id, text }), true, "part-text")}</>}
       <details><summary>{t("기술 정보", "Technical details")}</summary><p className="field-hint">{part.role} · <code>{part.id}</code></p></details>
-      {catalog && (catalog.slots.some(slot => slot.ownerPartRef === part.id) || elementContentContext(component.parts, source.design.elements ?? {}, catalog.semantic.kind, part.id) === "flow") && <div className="content-area-settings"><strong className="field-label">{t("콘텐츠 영역", "Content area")}</strong><p className="field-hint">{t("이 요소가 받을 콘텐츠의 규칙입니다. 변형 옵션은 스타일과 상태에서 편집합니다.", "Defines content this element accepts. Variant options are edited in styles and states.")}</p>{(() => {
+      {catalog && !catalog.reference && (catalog.slots.some(slot => slot.ownerPartRef === part.id) || elementContentContext(component.parts, source.design.elements ?? {}, catalog.semantic.kind, part.id) === "flow") && <div className="content-area-settings"><strong className="field-label">{t("콘텐츠 영역", "Content area")}</strong><p className="field-hint">{t("이 요소가 받을 콘텐츠의 규칙입니다. 변형 옵션은 스타일과 상태에서 편집합니다.", "Defines content this element accepts. Variant options are edited in styles and states.")}</p>{(() => {
         const slot = catalog.slots.find(item => item.ownerPartRef === part.id);
         const required = recipe?.slots.some(item => item.required && item.role === part.role);
         return slot ? <><label className="check-row"><input type="checkbox" data-testid="content-required" checked={slot.min !== 0} disabled={required} onChange={event => perform([{ kind: "slot-update", slotId: String(slot.id), required: event.target.checked, multiple: slot.max === "unbounded" }])} />{t("콘텐츠 필수", "Content required")}</label><label className="check-row"><input type="checkbox" data-testid="content-multiple" checked={slot.max === "unbounded"} onChange={event => perform([{ kind: "slot-update", slotId: String(slot.id), required: slot.min !== 0, multiple: event.target.checked }])} />{t("여러 콘텐츠 허용", "Allow multiple items")}</label><p className="field-hint">{t("텍스트와 컴포넌트를 받는 영역입니다. 아래 인스턴스에서 재사용할 컴포넌트를 삽입하세요.", "This area accepts text and components. Insert a reusable component in Instances below.")}</p><Button tone="subtle" icon="trash" disabled={required} onClick={() => perform([{ kind: "slot-delete", slotId: String(slot.id) }])}>{t("콘텐츠 영역 해제", "Remove content area")}</Button></> : <Button data-testid="slot-add-optional" icon="plus" tone="subtle" onClick={() => perform([{ kind: "slot-add", partId: part.id, required: false, multiple: true }])}>{t("콘텐츠 영역으로 사용", "Use as content area")}</Button>;
       })()}</div>}
     </Section>
-    {catalog && elementContentContext(component.parts, source.design.elements ?? {}, catalog.semantic.kind, part.id) === "flow" && <Section title={t("인스턴스", "Instances")}><InstanceInspector component={component} partId={part.id} state={state} controller={controller} locale={locale} {...(onSelectSource ? { onSelectSource } : {})} /></Section>}
+    {catalog && !catalog.reference && elementContentContext(component.parts, source.design.elements ?? {}, catalog.semantic.kind, part.id) === "flow" && <Section title={t("인스턴스", "Instances")}><InstanceInspector component={component} partId={part.id} state={state} controller={controller} locale={locale} {...(onSelectSource ? { onSelectSource } : {})} /></Section>}
     {layout && <Section title={t("레이아웃", "Layout")}>
       {(recipe?.semantic.kind === "layout" || part.elementKind === "box" || part.elementKind === "frame") && selectField("layout-mode", t("배치", "Layout mode"), layout.mode ?? "stack", [{ value: "stack", label: t("자동 레이아웃", "Auto layout") }, { value: "free", label: t("자유 배치", "Free position") }], value => ({ kind: "layout", category, partId: part.id, field: "mode", value }))}
       {part.parent && source.design.layout[part.parent]?.mode === "free" && <div className="element-position-grid">{(["x", "y"] as const).map(axis => numberField(`element-${axis}`, axis.toUpperCase(), layout.position?.[axis] ?? 0, value => ({ kind: "layout", category, partId: part.id, field: "position", value: { x: layout.position?.x ?? 0, y: layout.position?.y ?? 0, [axis]: value } }), -16384, 16384))}</div>}
@@ -172,12 +180,13 @@ export function ComponentInspector({ state, controller, component, selectedPart,
     <Section title={t("채우기", "Fill")}>{appearance("background")}{appearance("opacity")}</Section>
     <Section title={t("텍스트", "Text")}>{appearance("color")}{appearance("fontSize")}</Section>
     <Section title={t("테두리와 모서리", "Border and corners")}>{appearance("borderColor")}{appearance("borderWidth")}{appearance("borderRadius")}</Section>
+    </fieldset>
 
     <Section title={t("컴포넌트", "Component")} defaultOpen={false}>
       {textField("component-name", t("이름", "Name"), component.name, name => ({ kind: "name", name }))}
       {textField("component-purpose", t("목적", "Purpose"), component.purpose, purpose => ({ kind: "purpose", purpose }), true)}
     </Section>
-    <Section title={t("콘텐츠", "Content")} defaultOpen={false}>{selectField("variant-default", t("기본 변형", "Default variant"), component.defaults.variant, options(["filled", "outlined"]), value => ({ kind: "variant-default", value: value as "filled" | "outlined" }))}{samples.map(field => textField(`sample-${field}`, sampleLabels[field], component.sampleContent[field], value => ({ kind: "sample-content", field, value }), field === "body"))}</Section>
+    {!catalog?.reference && <><Section title={t("콘텐츠", "Content")} defaultOpen={false}>{selectField("variant-default", t("기본 변형", "Default variant"), component.defaults.variant, options(["filled", "outlined"]), value => ({ kind: "variant-default", value: value as "filled" | "outlined" }))}{samples.map(field => textField(`sample-${field}`, sampleLabels[field], component.sampleContent[field], value => ({ kind: "sample-content", field, value }), field === "body"))}</Section>
     <AppearanceRules key={`${component.id}/${part.id}/${category}`} state={state} controller={controller} component={component} partId={part.id} category={category} locale={locale} />
     <Section title={t("공개 값", "Public values")} defaultOpen={false}>
       {source.values.map(valueEditor)}
@@ -202,6 +211,7 @@ export function ComponentInspector({ state, controller, component, selectedPart,
       {catalog && selectField("motion-easing", t("이징", "Easing"), component.motion.easing ?? "ease-out", options(["linear", "ease", "ease-in", "ease-out", "ease-in-out"]), value => ({ kind: "motion", field: "easing", value }))}
       <p className="field-hint">{t("동작 줄이기 설정에서는 즉시 전환합니다.", "Reduced motion uses an immediate transition.")}</p>
     </Section>
+    </>}
     {formError && <p className="field-error" role="alert">{formError}</p>}
   </div>;
 }

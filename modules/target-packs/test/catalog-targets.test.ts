@@ -5,7 +5,7 @@ import vm from "node:vm";
 import React from "react";
 import * as jsxRuntime from "react/jsx-runtime";
 import { renderToStaticMarkup } from "react-dom/server";
-import { canonicalJson, inspectStudioProject, planStudioComponentCreate, planStudioComponentEdit, planStudioInstanceEdit } from "../../ads-core/src/index.ts";
+import { canonicalJson, inspectStudioProject, planStudioComponentCreate, planStudioComponentEdit, planStudioInstanceEdit, studioReferenceForCatalog } from "../../ads-core/src/index.ts";
 import type { ProjectSnapshot, StudioComponentEdit, StudioComponentPlan } from "../../ads-core/src/index.ts";
 import { generateTargetPack } from "../src/index.ts";
 import { DIGEST, projectFixture } from "./target-fixture.ts";
@@ -64,6 +64,18 @@ test("target capability rejection is per semantic contract with no partial gener
   const { plan } = fixture("catalog.areachart");
   for (const target of ["react", "react-native", "swiftui", "compose"] as const) { const result = generateTargetPack(plan.project, { target }, DIGEST); assert.equal(result.valid, false); assert.equal(result.pack, undefined); assert.equal(result.diagnostics[0]!.code, "TARGET_UNSUPPORTED"); }
   const slider = fixture("catalog.slider"); assert.equal(generateTargetPack(slider.plan.project, { target: "react-native" }, DIGEST).valid, false);
+});
+
+test("pinned original templates reject every unmapped target instead of exporting generic controls", () => {
+  let count = 0;
+  const template = studioReferenceForCatalog("catalog.button")!;
+  const plan = planStudioComponentCreate(projectFixture(), { catalogId: template.catalogId, referenceTemplateId: template.id }, () => `reference.target.${++count}`);
+  assert.equal(plan.valid, true, canonicalJson(plan.diagnostics));
+  for (const target of ["react", "react-native", "swiftui", "compose"] as const) {
+    const result = generateTargetPack(plan.project, { target }, DIGEST);
+    assert.equal(result.valid, false); assert.equal(result.pack, undefined);
+    assert.ok(result.diagnostics.some(row => row.code === "TARGET_UNSUPPORTED" && row.message.includes("pinned upstream template")));
+  }
 });
 
 test("unsupported custom part and public-port edits fail output while authoring remains valid", () => {
